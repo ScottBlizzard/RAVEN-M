@@ -1,0 +1,12 @@
+repo_id,priority,name,url,official_evidence,clone_dir,status,purpose
+R001,core,android_world,https://github.com/google-research/android_world,https://github.com/google-research/android_world,android_world,verified_primary,Benchmark environment and evaluator
+R002,core,Qwen3-VL,https://github.com/QwenLM/Qwen3-VL,https://github.com/QwenLM/Qwen3-VL,Qwen3-VL,verified_primary,Official model code and mobile-agent cookbook
+R003,core,PG-Agent,https://github.com/chenwz-123/PG-Agent,https://zhoushengisnoob.github.io/,PG-Agent,verified_primary,Page Graph schemas prompts and RAG implementation
+R004,core,MP-GUI,https://github.com/BigTaige/MP-GUI,https://openaccess.thecvf.com/content/CVPR2025/html/Wang_MP-GUI_Modality_Perception_with_MLLMs_for_GUI_Understanding_CVPR_2025_paper.html,MP-GUI,verified_primary,GUI modality representation
+R005,core,HAR-GUI,https://github.com/BigTaige/HAR-GUI,https://ojs.aaai.org/index.php/AAAI/article/view/40966/44927,HAR-GUI,verified_primary,Prompt format action summarization and history reasoning
+R006,core,LAMO,https://github.com/BigTaige/LAMO,https://zhoushengisnoob.github.io/,LAMO,verified_primary,Multi-role prompts and orchestration
+R007,large_pending,MobileAgent,https://github.com/X-PLUG/MobileAgent,https://proceedings.neurips.cc/paper_files/paper/2024/hash/0520537ba799d375b8ff5523295c337a-Abstract-Conference.html,MobileAgent,verified_cross_source,Planner decision reflection memory and critic implementations; two shallow-clone attempts stalled on current network
+R008,core,Agent-S,https://github.com/simular-ai/Agent-S,https://arxiv.org/abs/2410.08164,Agent-S,verified_cross_source,Hierarchical planning and experience retrieval
+R009,core,mobile-use,https://github.com/MadeAgents/mobile-use,https://papers.neurips.cc/paper_files/paper/2025/hash/3994410d63ec68ce9a66011a34c9a2c4-Abstract-Conference.html,mobile-use,verified_cross_source,Reflection-on-demand and recovery
+R010,core,agent-workflow-memory,https://github.com/zorazrw/agent-workflow-memory,https://arxiv.org/abs/2409.07429,agent-workflow-memory,verified_cross_source,Procedural workflow memory baseline
+R011,alignment,AAA,https://github.com/eaglelab-zju/AAA,https://zhoushengisnoob.github.io/papers/AAAI2026-GRASP.pdf,AAA,verified_primary,Direct Eagle Lab evidence-audit and copilot code

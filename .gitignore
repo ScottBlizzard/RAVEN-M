@@ -1,0 +1,33 @@
+# Local third-party clones are pinned by manifests/locks, not vendored here.
+03_code/third_party/*
+!03_code/third_party/README.md
+
+# Downloaded papers and web snapshots are local research assets.
+02_literature/papers/**/*.pdf
+01_sources/official/**/*.html
+01_sources/official/**/*.json
+01_sources/official/**/*.ipynb
+
+# Large model and experiment artifacts must never enter this repository.
+models/
+checkpoints/
+runs/
+results/
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.gguf
+
+# Temporary and local environment files.
+*.part
+*.tmp
+*.log
+.env
+.venv/
+__pycache__/
+.pytest_cache/
+.idea/
+.vscode/
+Thumbs.db
+
