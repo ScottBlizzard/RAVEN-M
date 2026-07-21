@@ -24,7 +24,7 @@ RAVEN-M-Research/
 
 - `P0_must_read`：开始方法设计前必须全文阅读，优先覆盖 AndroidWorld、周晟老师/Eagle Lab 直接相关工作以及最接近的 2026 memory 方法。
 - `P1_core`：用于补齐 baseline、规划/反思、压缩与程序性记忆的核心邻域。
-- `P2_extended`：已登记但按需阅读，不应阻塞第一周环境与 baseline。
+- `P2_extended`：PDF 已全部在本地，但按实验问题选读，不应阻塞第一周环境与 baseline。
 
 完整清单见：
 

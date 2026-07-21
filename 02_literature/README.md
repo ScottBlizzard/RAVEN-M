@@ -20,7 +20,7 @@ SeeClick、Mobile-Agent-v3.5、MobileUse、GUI-Critic-R1、Agent S、Agent S2、
 
 ### P2：按实验问题查阅
 
-主要用于历史压缩、RL 对照、自演化、效率、工具调用和基础性 AppAgent，不阻塞环境部署与 B0/B3。
+14 篇 PDF 已全部在本地，主要用于历史压缩、RL 对照、自演化、效率、工具调用和基础性 AppAgent；它们按问题选读，不阻塞环境部署与 B0/B3。
 
 ## 每篇论文必须回答的问题
 
@@ -36,5 +36,4 @@ SeeClick、Mobile-Agent-v3.5、MobileUse、GUI-Critic-R1、Agent S、Agent S2、
 
 ## 本地 PDF 规则
 
-PDF 文件不进入父 Git 历史；`metadata/papers.csv` 保存 URL、优先级和本地文件名，`checksums/papers.sha256` 保存完整性信息。
-
+PDF 文件不进入父 Git 历史；`metadata/papers.csv` 保存 URL、优先级和本地文件名，`checksums/papers.sha256.csv` 保存完整性信息。

@@ -32,11 +32,14 @@ $repoRows = foreach ($repo in $repoManifest) {
 
 $summary = [pscustomobject]@{
     generated_at = (Get-Date).ToString("s")
+    papers_available = @($paperRows | Where-Object available).Count
     papers_total = $paperRows.Count
     p0_available = @($paperRows | Where-Object { $_.priority -eq "P0" -and $_.available }).Count
     p0_total = @($paperRows | Where-Object priority -eq "P0").Count
     p1_available = @($paperRows | Where-Object { $_.priority -eq "P1" -and $_.available }).Count
     p1_total = @($paperRows | Where-Object priority -eq "P1").Count
+    p2_available = @($paperRows | Where-Object { $_.priority -eq "P2" -and $_.available }).Count
+    p2_total = @($paperRows | Where-Object priority -eq "P2").Count
     repositories_available = @($repoRows | Where-Object available).Count
     repositories_total = $repoRows.Count
 }
