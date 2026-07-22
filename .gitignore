@@ -31,3 +31,12 @@ __pycache__/
 .vscode/
 Thumbs.db
 
+# Machine-local Android/Python runtime. Keep only reproducible instructions,
+# scripts, and small audit metadata in Git.
+06_local_runtime/**
+!06_local_runtime/README.md
+!06_local_runtime/scripts/
+!06_local_runtime/scripts/**
+06_local_runtime/scripts/__pycache__/
+!06_local_runtime/metadata/
+!06_local_runtime/metadata/**
