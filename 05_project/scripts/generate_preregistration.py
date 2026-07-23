@@ -36,6 +36,17 @@ FIXED_FILES = [
     "05_project/metadata/protocol_audit.json",
     "05_project/metadata/reset_determinism_g4_final.json",
     "05_project/metadata/runtime_asset_manifest.json",
+    "05_project/scripts/run_frozen_pipeline.ps1",
+    "05_project/scripts/start_frozen_pipeline.ps1",
+    "05_project/scripts/start_model_tunnel.ps1",
+    "05_project/scripts/start_model_tunnel_watchdog.ps1",
+    "05_project/scripts/stop_model_tunnel.ps1",
+    "05_project/scripts/stop_model_tunnel_watchdog.ps1",
+    "05_project/scripts/watch_model_tunnel.ps1",
+    "06_local_runtime/scripts/androidworld_compat.py",
+    "06_local_runtime/scripts/androidworld_smoke.py",
+    "06_local_runtime/scripts/start_emulator.ps1",
+    "06_local_runtime/scripts/stop_emulator.ps1",
 ]
 
 FINAL_FILES = ["05_project/metadata/g7_audit.json"]
