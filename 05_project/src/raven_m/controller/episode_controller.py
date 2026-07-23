@@ -98,6 +98,31 @@ class ModelOutputInvalid(RuntimeError):
         self.repair_error = repair_error
 
 
+def classify_failure_code(
+    *,
+    error_record: dict[str, Any] | None,
+    model_output_error: dict[str, Any] | None,
+    evaluator_reward: float | None,
+    termination_reason: str,
+) -> str | None:
+    if error_record:
+        return "INFRA_OR_CONTROLLER"
+    # The native evaluator is authoritative. A formatting failure remains in
+    # model_output_error and the validity-rate fields, but a successful task
+    # must not also carry a contradictory failure-code label.
+    if evaluator_reward == 1.0:
+        return None
+    if model_output_error:
+        return "MODEL_OUTPUT_INVALID_AFTER_REPAIR"
+    if termination_reason == "model_done":
+        return "PREMATURE_COMPLETION"
+    if termination_reason == "model_fail":
+        return "MODEL_DECLARED_INFEASIBLE"
+    if termination_reason == "model_call_budget_exhausted":
+        return "MODEL_CALL_BUDGET_EXHAUSTED"
+    return "TASK_UNSUCCESSFUL_AT_BUDGET"
+
+
 class EpisodeController:
     """Runs one non-scored B0 episode without memory or evaluator leakage."""
 
@@ -574,20 +599,12 @@ class EpisodeController:
             if "parse" in step
         )
         executed_count = sum(int(step.get("executed", False)) for step in steps)
-        if error_record:
-            failure_code = "INFRA_OR_CONTROLLER"
-        elif model_output_error:
-            failure_code = "MODEL_OUTPUT_INVALID_AFTER_REPAIR"
-        elif evaluator_reward == 1.0:
-            failure_code = None
-        elif termination_reason == "model_done":
-            failure_code = "PREMATURE_COMPLETION"
-        elif termination_reason == "model_fail":
-            failure_code = "MODEL_DECLARED_INFEASIBLE"
-        elif termination_reason == "model_call_budget_exhausted":
-            failure_code = "MODEL_CALL_BUDGET_EXHAUSTED"
-        else:
-            failure_code = "TASK_UNSUCCESSFUL_AT_BUDGET"
+        failure_code = classify_failure_code(
+            error_record=error_record,
+            model_output_error=model_output_error,
+            evaluator_reward=evaluator_reward,
+            termination_reason=termination_reason,
+        )
 
         summary = {
             "episode_id": episode_id,

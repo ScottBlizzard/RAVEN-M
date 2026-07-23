@@ -142,3 +142,15 @@
   budget remains 256 tokens and the task/seed schedule remains unchanged.
 - **Consequence:** v6 must rerun the complete non-Hard schedule and pass the
   role-output audit before protocol freeze. Hard scoring remains forbidden.
+
+## 2026-07-23 — Native success is authoritative for outcome coding
+
+- **Finding:** a v6 development episode reached native evaluator reward 1
+  after its last attempted decision failed schema repair, producing the
+  contradictory pair `success=true` and
+  `failure_code=MODEL_OUTPUT_INVALID_AFTER_REPAIR`.
+- **Decision:** native evaluator success maps to `failure_code=null`.
+  `model_output_error` and valid-after-one-repair rates remain unchanged and
+  continue to expose the formatting failure.
+- **Consequence:** this is a result-labeling correction only; it does not alter
+  prompts, actions, memory, budgets, evaluator timing, or G7 acceptance.
