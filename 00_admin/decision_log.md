@@ -181,3 +181,21 @@
   at most four short variables, short descriptions, and a 180-token target.
 - **Consequence:** v8 reruns the identical full non-Hard schedule. Generation
   and context limits are not increased; Hard scoring remains forbidden.
+
+## 2026-07-24 — Interrupted tunnel is infrastructure, not a method result
+
+- **Finding:** v8 completed three normal S0 episodes, then the local SSH
+  forward on `127.0.0.1:18000` disappeared. Every later attempted episode
+  failed before its first model response with `WinError 10061`, zero decisions,
+  and `INFRA_OR_CONTROLLER`.
+- **Decision:** stop and retain the partial v8 suite as infrastructure-failure
+  evidence. Recreate the private tunnel, require both `/health` identity checks
+  and a real screenshot inference smoke, and rerun the unchanged non-Hard
+  schedule as v9.
+- **Evidence:** the recovered endpoint reported the frozen model revision and
+  backend, and call `19a74b8a-7088-429b-9f6d-ab19359e08b7` completed against
+  screenshot SHA-256
+  `c1f060f97f3c4dc370f0a9445d962296ce1b6b2541e817caffa73de5f37987b0`.
+- **Consequence:** v8 is excluded from G7 acceptance. No prompt, router,
+  controller, model, budget, task, or seed was changed; Hard scoring remains
+  forbidden.
