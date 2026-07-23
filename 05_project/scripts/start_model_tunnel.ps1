@@ -17,6 +17,8 @@ if (-not $existing) {
         "-N",
         "-L", "${LocalPort}:127.0.0.1:${RemotePort}",
         "-o", "ExitOnForwardFailure=yes",
+        "-o", "BatchMode=yes",
+        "-o", "ConnectTimeout=10",
         "-o", "ServerAliveInterval=30",
         "-o", "ServerAliveCountMax=3",
         $SshTarget
@@ -31,6 +33,10 @@ if (-not $existing) {
 }
 
 if (-not $existing) {
+    if ($process -and -not $process.HasExited) {
+        Stop-Process -Id $process.Id -Force -ErrorAction SilentlyContinue
+    }
+    Remove-Item -LiteralPath $pidFile -Force -ErrorAction SilentlyContinue
     throw "SSH tunnel did not listen on port $LocalPort."
 }
 $health = Invoke-RestMethod -Uri "http://127.0.0.1:${LocalPort}/health" -TimeoutSec 30

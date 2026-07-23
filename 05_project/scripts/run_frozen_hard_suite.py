@@ -13,6 +13,7 @@ import random
 import shutil
 import subprocess
 import sys
+import time
 from typing import Any
 
 import numpy as np
@@ -329,6 +330,98 @@ def classify_infrastructure(summary: dict[str, Any]) -> str | None:
     return None
 
 
+def wait_for_model_service(
+    client: TransformersClient,
+    *,
+    recovery_dir: Path,
+    max_wait_seconds: float = 1800.0,
+    poll_seconds: float = 15.0,
+    sleep_fn: Any = time.sleep,
+    monotonic_fn: Any = time.monotonic,
+) -> dict[str, Any]:
+    """Wait for the exact frozen model service without spending a run retry."""
+    if max_wait_seconds < 0:
+        raise ValueError("max_wait_seconds must be non-negative.")
+    if poll_seconds <= 0:
+        raise ValueError("poll_seconds must be positive.")
+    recovery_dir.mkdir(parents=True, exist_ok=True)
+    audit_path = recovery_dir / "model_service_recovery.json"
+    started = monotonic_fn()
+    attempts: list[dict[str, Any]] = []
+    while True:
+        try:
+            health = client.health()
+            if (
+                health.get("backend") != EXPECTED_BACKEND
+                or health.get("revision") != EXPECTED_REVISION
+            ):
+                raise RuntimeError(
+                    "Recovered model service differs from the frozen "
+                    "backend/revision."
+                )
+            attempts.append(
+                {
+                    "checked_at_utc": utc_now(),
+                    "elapsed_seconds": monotonic_fn() - started,
+                    "healthy": True,
+                    "backend": health.get("backend"),
+                    "revision": health.get("revision"),
+                }
+            )
+            write_json(
+                audit_path,
+                {
+                    "schema_version": "model_service_recovery.v1",
+                    "status": "recovered",
+                    "max_wait_seconds": max_wait_seconds,
+                    "poll_seconds": poll_seconds,
+                    "attempts": attempts,
+                },
+            )
+            return health
+        except RuntimeError as exc:
+            text = str(exc).lower()
+            if (
+                "unexpected model service" in text
+                or "unexpected model revision" in text
+                or "unexpected model backend" in text
+                or "differs from the frozen" in text
+            ):
+                raise
+            error = f"{type(exc).__name__}: {exc}"
+        except Exception as exc:
+            error = f"{type(exc).__name__}: {exc}"
+        elapsed = monotonic_fn() - started
+        attempts.append(
+            {
+                "checked_at_utc": utc_now(),
+                "elapsed_seconds": elapsed,
+                "healthy": False,
+                "error": error,
+            }
+        )
+        write_json(
+            audit_path,
+            {
+                "schema_version": "model_service_recovery.v1",
+                "status": (
+                    "timed_out"
+                    if elapsed >= max_wait_seconds
+                    else "waiting"
+                ),
+                "max_wait_seconds": max_wait_seconds,
+                "poll_seconds": poll_seconds,
+                "attempts": attempts,
+            },
+        )
+        if elapsed >= max_wait_seconds:
+            raise RuntimeError(
+                "Model service did not recover within "
+                f"{max_wait_seconds:g} seconds."
+            )
+        sleep_fn(min(poll_seconds, max_wait_seconds - elapsed))
+
+
 def variant_runtime(
     variant: str,
     *,
@@ -599,6 +692,11 @@ def main() -> None:
     parser.add_argument("--console-port", type=int, default=5554)
     parser.add_argument("--grpc-port", type=int, default=8554)
     parser.add_argument(
+        "--max-model-recovery-seconds",
+        type=float,
+        default=1800.0,
+    )
+    parser.add_argument(
         "--phase",
         choices=[
             "breadth",
@@ -642,7 +740,11 @@ def main() -> None:
     write_json(suite_dir / "freeze.snapshot.json", freeze)
 
     client = TransformersClient(args.url)
-    health = client.health()
+    health = wait_for_model_service(
+        client,
+        recovery_dir=suite_dir / "recoveries" / "model_preflight",
+        max_wait_seconds=args.max_model_recovery_seconds,
+    )
     if (
         health.get("backend") != EXPECTED_BACKEND
         or health.get("revision") != EXPECTED_REVISION
@@ -755,6 +857,20 @@ def main() -> None:
                             recovery_dir=(
                                 record_dir
                                 / f"recovery_after_attempt_{attempt:02d}"
+                            ),
+                        )
+                    elif (
+                        infra_code == "INFRA_MODEL_UNAVAILABLE"
+                        and attempt < 3
+                    ):
+                        wait_for_model_service(
+                            client,
+                            recovery_dir=(
+                                record_dir
+                                / f"model_recovery_after_attempt_{attempt:02d}"
+                            ),
+                            max_wait_seconds=(
+                                args.max_model_recovery_seconds
                             ),
                         )
                     continue

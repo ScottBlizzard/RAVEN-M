@@ -309,6 +309,76 @@
   no-LLM AndroidWorld warm smoke with return codes `[0,0,0]` in 513.4 seconds.
   The smoke registered all 116 tasks, observed a `2400×1080×3` screen and 19
   UI elements. The three preceding diagnostic attempts remain retained.
+
+## 2026-07-24 — Retrieval audit population contains decision-time routes only
+
+- **Finding:** before any manual label was assigned, the first deterministic
+  packet exposed seven selected terminal route events whose route step was one
+  past the last executed decision. They had valid source provenance but no
+  current decision screenshot or action because no next decision existed.
+- **Decision:** the candidate population now requires an existing step record,
+  a current `before_screenshot`, a decision object, and a source screenshot.
+  Episode-final routing remains in the raw memory audit but is excluded from
+  decision-utility sampling. Seed `20260724`, sample size 50, route-diversity
+  rule, rubric, and all method outputs remain unchanged.
+- **Validation:** a regression fixture contains one decision-time route and
+  one terminal route for the same memory; only the decision-time route enters
+  the candidate population. The packet is regenerated before labeling, so no
+  label-dependent inclusion decision is possible.
 - **Consequence:** v13 reruns the complete unchanged non-Hard schedule. The
   same operational recovery contract is exercised by component smoke before
   freeze; scored Hard remains forbidden.
+
+## 2026-07-24 — Retrieval precision gate rejects the v13 memory bundle
+
+- **Finding:** v13 completed the exact non-Hard S0/M0 schedule without
+  infrastructure, schema, role, invariant, or stale-FACT errors. A
+  single-reviewer audit then inspected all 50 deterministic source/current
+  screenshot pairs before any protocol freeze. Only 31/50 routed items met
+  the preregistered utility definition; five were potentially harmful. One
+  action-outcome statement was incorrectly promoted to FACT even though its
+  cited screenshot showed `2m 35s`, not the claimed `14h 52m 35s`.
+- **Diagnosis:** retrieval admitted up to eight episodic items at each
+  decision, so low-ranked old page descriptions repeatedly occupied the
+  prompt. In the audited sample, the top two routed items per decision were
+  utility-positive in 19/20 cases, while precision fell sharply beyond rank
+  two. The false FACT arose because a visual change after an action was
+  treated as semantic confirmation of the intended field value.
+- **Decision:** retain v13 and its failed labels as development evidence.
+  Limit each decision to the two highest-priority routed items across all
+  memory types. An unconfirmed direct-action outcome may route only as
+  HYPOTHESIS; FACT now requires a later direct visual observation or an
+  independent deterministic confirmation. Per-type stores and quotas,
+  scoring weights, failure ALERT behavior, working memory, model, task
+  schedule, and all execution budgets remain unchanged.
+- **Validation:** two regression tests cover the cross-type global cap and
+  action-outcome downgrade; all targeted memory tests pass. The complete
+  v14 method gate and a fresh 50-item audit must pass before the component
+  suite is rerun. Scored Hard remains forbidden.
+
+## 2026-07-24 — Model recovery waits before spending an episode retry
+
+- **Finding:** v14 exercised the revised two-item router and completed all
+  five S0 cells plus the first two M0 cells. During sequence 8 the SSH tunnel
+  to the locked 4090 model host disappeared. The client correctly made its
+  one identical transport retry, but the development runner then started the
+  next two episode attempts immediately while the endpoint was still absent.
+  All three permitted infrastructure attempts were therefore consumed
+  without another model response.
+- **Decision:** retain and exclude partial v14. Development, component-smoke,
+  and frozen runners now use the same audited model-recovery barrier. Before
+  a run starts, and after a classified `INFRA_MODEL_UNAVAILABLE` attempt, the
+  runner waits up to 1,800 seconds for the exact model ID, revision, and
+  backend to become healthy. Polls and errors are persisted in a dedicated
+  `model_service_recovery.json`. No new task instance or episode attempt is
+  created while the barrier is waiting.
+- **Boundary:** the model, prompts, memory method, schedules, seeds, action
+  and token budgets, maximum three identical infrastructure attempts, and
+  scored-run exclusion rules are unchanged. A healthy endpoint with a
+  different model revision/backend is a hard failure, never a recoverable
+  outage.
+- **Validation:** two regression tests show that transient connection errors
+  recover without an episode retry and that backend drift fails immediately;
+  the complete project suite passes 73/73 tests. The 4090 host itself became
+  unreachable at 05:53 local time, so v15 starts only after the watchdog
+  restores and verifies the locked endpoint. Hard scoring remains forbidden.

@@ -170,6 +170,7 @@ class MemoryConfig:
     retrieve_min: float = 0.30
     alert_min: float = 0.20
     memory_prompt_tokens: int = 3000
+    routed_item_cap: int = 2
     working_quota: int = 3
     episodic_quota: int = 8
     failure_quota: int = 2

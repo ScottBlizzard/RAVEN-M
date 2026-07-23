@@ -38,6 +38,7 @@ from run_frozen_hard_suite import (  # noqa: E402
     digest_json,
     recover_androidworld_env,
     variant_runtime,
+    wait_for_model_service,
 )
 from run_method_dev_suite import audit_memory_episode  # noqa: E402
 
@@ -92,6 +93,11 @@ def main() -> None:
     parser.add_argument("--console-port", type=int, default=5554)
     parser.add_argument("--grpc-port", type=int, default=8554)
     parser.add_argument(
+        "--max-model-recovery-seconds",
+        type=float,
+        default=1800.0,
+    )
+    parser.add_argument(
         "--manifest",
         type=Path,
         default=PROJECT_ROOT
@@ -126,8 +132,15 @@ def main() -> None:
     if len(set(manifest["variants"])) != len(manifest["variants"]):
         raise RuntimeError("Component-smoke variants are not unique.")
 
+    suite_dir = args.output_root / args.suite_id
+    suite_dir.mkdir(parents=True, exist_ok=True)
+    write_json(suite_dir / "manifest.snapshot.json", manifest)
     client = TransformersClient(args.url)
-    health = client.health()
+    health = wait_for_model_service(
+        client,
+        recovery_dir=suite_dir / "recoveries" / "model_preflight",
+        max_wait_seconds=args.max_model_recovery_seconds,
+    )
     if (
         health.get("backend") != EXPECTED_BACKEND
         or health.get("revision") != EXPECTED_REVISION
@@ -143,9 +156,6 @@ def main() -> None:
             "critic": "prompts/critic_v1.md",
         }.items()
     }
-    suite_dir = args.output_root / args.suite_id
-    suite_dir.mkdir(parents=True, exist_ok=True)
-    write_json(suite_dir / "manifest.snapshot.json", manifest)
 
     task_registry = registry.TaskRegistry()
     registered = task_registry.get_registry(task_registry.ANDROID_WORLD_FAMILY)
@@ -285,6 +295,21 @@ def main() -> None:
                                 suite_dir
                                 / "recoveries"
                                 / f"{sequence:02d}_after_attempt_{attempt:02d}"
+                            ),
+                        )
+                    elif infra_code == "INFRA_MODEL_UNAVAILABLE":
+                        wait_for_model_service(
+                            client,
+                            recovery_dir=(
+                                suite_dir
+                                / "recoveries"
+                                / (
+                                    f"{sequence:02d}_model_after_attempt_"
+                                    f"{attempt:02d}"
+                                )
+                            ),
+                            max_wait_seconds=(
+                                args.max_model_recovery_seconds
                             ),
                         )
                 if summary is None or summary.get("error"):

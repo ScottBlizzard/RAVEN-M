@@ -151,6 +151,10 @@ def score_item(
             else 0.0
         )
     )
+    fact_eligible = (
+        item.evidence.get("origin") == "direct_visual_observation"
+        or int(item.evidence.get("independent_confirmations", 0)) >= 1
+    )
 
     if item.memory_type == "failure" and not features.scope_compatible:
         route = "SUPPRESS"
@@ -185,6 +189,7 @@ def score_item(
         reliability >= config.fact_threshold
         and features.scope_compatible
         and not features.contradiction
+        and fact_eligible
     ):
         route = "FACT"
     elif (
@@ -244,6 +249,8 @@ def retrieve_and_route(
                 reliability=value.reliability,
                 used_by=used_by,
             )
+            continue
+        if len(selected) >= config.routed_item_cap:
             continue
         memory_type = value.item.memory_type
         if used[memory_type] >= quotas[memory_type]:

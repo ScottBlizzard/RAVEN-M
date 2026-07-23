@@ -309,6 +309,7 @@ def main() -> None:
     from run_frozen_hard_suite import (
         classify_infrastructure,
         recover_androidworld_env,
+        wait_for_model_service,
     )
 
     parser = argparse.ArgumentParser()
@@ -316,6 +317,11 @@ def main() -> None:
     parser.add_argument("--adb-path", required=True)
     parser.add_argument("--console-port", type=int, default=5554)
     parser.add_argument("--grpc-port", type=int, default=8554)
+    parser.add_argument(
+        "--max-model-recovery-seconds",
+        type=float,
+        default=1800.0,
+    )
     parser.add_argument(
         "--manifest",
         type=Path,
@@ -339,7 +345,11 @@ def main() -> None:
     episode_root.mkdir(parents=True, exist_ok=True)
     write_json(suite_dir / "manifest.snapshot.json", manifest)
     client = TransformersClient(args.url)
-    health = client.health()
+    health = wait_for_model_service(
+        client,
+        recovery_dir=suite_dir / "recoveries" / "model_preflight",
+        max_wait_seconds=args.max_model_recovery_seconds,
+    )
     executor_prompt = (PROJECT_ROOT / manifest["executor_prompt"]).read_text(
         encoding="utf-8"
     )
@@ -528,6 +538,21 @@ def main() -> None:
                                 suite_dir
                                 / "recoveries"
                                 / f"{sequence:02d}_after_attempt_{attempt:02d}"
+                            ),
+                        )
+                    elif infra_code == "INFRA_MODEL_UNAVAILABLE":
+                        wait_for_model_service(
+                            client,
+                            recovery_dir=(
+                                suite_dir
+                                / "recoveries"
+                                / (
+                                    f"{sequence:02d}_model_after_attempt_"
+                                    f"{attempt:02d}"
+                                )
+                            ),
+                            max_wait_seconds=(
+                                args.max_model_recovery_seconds
                             ),
                         )
                 if summary is None or summary.get("error"):

@@ -99,6 +99,47 @@ def test_order_and_quota_are_deterministic() -> None:
     ]
 
 
+def test_global_routed_item_cap_applies_across_memory_types() -> None:
+    store = EpisodeMemoryStore(episode_id="episode-a")
+    store.write(item("m_0001"))
+    store.write(item("m_0002"))
+    store.write(
+        item(
+            "p_0001",
+            memory_type="page_hint",
+            status="candidate",
+            text="The note page may contain alpha.",
+        )
+    )
+    selected = retrieve_and_route(
+        query=query(),
+        store=store,
+        config=MemoryConfig(routed_item_cap=2),
+    )
+    assert len(selected) == 2
+    assert [value.item.memory_id for value in selected] == [
+        "m_0001",
+        "m_0002",
+    ]
+
+
+def test_action_outcome_requires_later_visual_confirmation_for_fact() -> None:
+    store = EpisodeMemoryStore(episode_id="episode-a")
+    candidate = item("m_0001")
+    candidate.evidence = {
+        "origin": "direct_action_outcome",
+        "action_outcome": "The screenshot changed.",
+        "independent_confirmations": 0,
+    }
+    store.write(candidate)
+    selected = retrieve_and_route(
+        query=query(),
+        store=store,
+        config=MemoryConfig(),
+    )
+    assert selected[0].route == "HYPOTHESIS"
+
+
 def test_failure_memory_needs_page_compatibility() -> None:
     store = EpisodeMemoryStore(episode_id="episode-a")
     store.write(

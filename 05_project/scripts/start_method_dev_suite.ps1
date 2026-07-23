@@ -1,5 +1,6 @@
 param(
-    [string]$SuiteId = "method_dev_g6_g7_20260723"
+    [string]$SuiteId = "method_dev_g6_g7_20260723",
+    [int]$MaxModelRecoverySeconds = 21600
 )
 
 $ErrorActionPreference = "Stop"
@@ -25,7 +26,8 @@ if (Test-Path -LiteralPath $pidFile) {
 $arguments = @(
     (Join-Path $PSScriptRoot "run_method_dev_suite.py"),
     "--adb-path", $adb,
-    "--suite-id", $SuiteId
+    "--suite-id", $SuiteId,
+    "--max-model-recovery-seconds", $MaxModelRecoverySeconds
 )
 $stdout = Join-Path $logRoot "stdout.log"
 $stderr = Join-Path $logRoot "stderr.log"

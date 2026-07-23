@@ -57,11 +57,23 @@ def collect(suite_dir: Path) -> list[dict[str, Any]]:
             if not item:
                 continue
             step = int(event["step"])
-            step_record = steps.get(step, {})
-            decision = step_record.get("decision") or {}
+            step_record = steps.get(step)
+            # A route emitted after the final transition has no subsequent
+            # decision and therefore cannot be audited for decision utility.
+            # Keep only retrievals that were actually paired with a current
+            # screen and an agent decision.
+            if (
+                not step_record
+                or not step_record.get("before_screenshot")
+                or not step_record.get("decision")
+            ):
+                continue
+            decision = step_record["decision"]
             source_path = (
                 item.get("source", {}).get("screenshot_paths", [None])[0]
             )
+            if not source_path:
+                continue
             candidates.append(
                 {
                     "episode_dir": episode_dir,

@@ -27,6 +27,10 @@ under `MEMORY_CONTEXT.items[].memory_id`. Working-memory transition slots have
 no memory ID and are never citable. If no supplied item supports the decision,
 use `"memory_citations":[]`; never invent an ID.
 
+At most two routed memory items are supplied per decision. Treat an
+action-outcome statement as HYPOTHESIS until a later direct screen observation
+confirms it; a visual change alone does not prove the intended semantic value.
+
 state_delta contains only new information that materially changes task
 progress, an intermediate variable, page identity/path, completion evidence,
 or a failure/recovery rule. Do not store routine pixels, every tap, or

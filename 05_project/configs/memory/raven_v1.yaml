@@ -32,6 +32,7 @@ recency_tau_steps:
   page_hint: 25
 prompt_budget:
   total_tokens: 3000
+  routed_item_cap: 2
   quotas:
     working: 3
     episodic_fact: 8
