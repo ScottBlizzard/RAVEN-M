@@ -269,3 +269,27 @@
   checks all passed.
 - **Consequence:** v12 reruns the complete non-Hard schedule. Hard scoring
   remains forbidden.
+
+## 2026-07-24 — Development runners recover only invalid infrastructure attempts
+
+- **Finding:** v12 completed all five S0 episodes and the first two M0
+  episodes without infrastructure, role, or memory errors. During M0 Expense,
+  AndroidWorld's `adb shell input text Textbooks` timed out on every internal
+  ADB retry after roughly 40 minutes of continuous emulator use. The episode
+  was correctly classified `INFRA_OR_CONTROLLER`; one invalid M0 episode out
+  of eight would exceed the fixed 10% G7 infrastructure ceiling.
+- **Decision:** stop and retain partial v12. The non-Hard method and component
+  runners now mirror the already implemented frozen-runner boundary: only a
+  controller error that is deterministically classified as infrastructure may
+  be invalidated and retried, with at most three identical attempts. Every
+  invalid attempt is archived outside the valid `episodes/` population,
+  including the full error and task-instance hashes.
+- **Recovery:** emulator/ADB loss closes the current AndroidWorld environment,
+  cold-starts the AVD, runs the fixed no-LLM AndroidWorld smoke, and then
+  regenerates the same task from the same seed. Goal and public-parameter
+  hashes must match before execution resumes. Ordinary agent failures,
+  evaluator-negative outcomes, budget exhaustion, schema failures, and memory
+  failures are never retried.
+- **Consequence:** v13 reruns the complete unchanged non-Hard schedule. The
+  same operational recovery contract is exercised by component smoke before
+  freeze; scored Hard remains forbidden.

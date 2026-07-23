@@ -34,7 +34,9 @@ from run_frozen_hard_suite import (  # noqa: E402
     EXPECTED_BACKEND,
     EXPECTED_REVISION,
     all_calls,
+    classify_infrastructure,
     digest_json,
+    recover_androidworld_env,
     variant_runtime,
 )
 from run_method_dev_suite import audit_memory_episode  # noqa: E402
@@ -155,6 +157,7 @@ def main() -> None:
         grpc_port=args.grpc_port,
     )
     results = []
+    infrastructure_attempts = []
     try:
         for sequence, variant in enumerate(manifest["variants"], start=1):
             episode_dir = suite_dir / "episodes" / (
@@ -172,36 +175,122 @@ def main() -> None:
                         + datetime.now().strftime("%Y%m%dT%H%M%S")
                     )
                     shutil.move(str(episode_dir), str(interrupted))
-                random.seed(manifest["seed"])
-                np.random.seed(manifest["seed"])
-                task_type = registered[manifest["task"]]
-                task = task_type(task_type.generate_random_params())
-                policy, prompt, schema_path, max_calls = variant_runtime(
-                    variant,
-                    client=client,
-                    max_steps=manifest["max_steps"],
-                    prompts=prompts,
+                base_episode_id = (
+                    f"{args.suite_id}_{sequence:02d}_{variant}_"
+                    f"{manifest['task']}_seed{manifest['seed']}"
                 )
-                controller = EpisodeController(
-                    client=client,
-                    system_prompt=prompt,
-                    max_steps=manifest["max_steps"],
-                    max_model_calls=max_calls,
-                    history_policy=policy,
-                    action_schema_path=schema_path,
-                )
-                summary = controller.run(
-                    env=env,
-                    task=task,
-                    episode_id=(
-                        f"{args.suite_id}_{sequence:02d}_{variant}_"
-                        f"{manifest['task']}_seed{manifest['seed']}"
-                    ),
-                    episode_dir=episode_dir,
-                    seed=manifest["seed"],
-                    protocol=manifest["protocol"],
-                    variant=variant,
-                )
+                expected_pair_hash = None
+                summary = None
+                for attempt in range(1, 4):
+                    random.seed(manifest["seed"])
+                    np.random.seed(manifest["seed"])
+                    task_type = registered[manifest["task"]]
+                    task = task_type(task_type.generate_random_params())
+                    pair_hash = (
+                        sha256(str(task.goal).encode("utf-8")).hexdigest(),
+                        digest_json(_json_safe(task.params)),
+                    )
+                    if (
+                        expected_pair_hash is not None
+                        and pair_hash != expected_pair_hash
+                    ):
+                        raise RuntimeError(
+                            "Component-smoke retry regenerated a different "
+                            "task instance."
+                        )
+                    expected_pair_hash = pair_hash
+                    policy, prompt, schema_path, max_calls = variant_runtime(
+                        variant,
+                        client=client,
+                        max_steps=manifest["max_steps"],
+                        prompts=prompts,
+                    )
+                    controller = EpisodeController(
+                        client=client,
+                        system_prompt=prompt,
+                        max_steps=manifest["max_steps"],
+                        max_model_calls=max_calls,
+                        history_policy=policy,
+                        action_schema_path=schema_path,
+                    )
+                    episode_id = f"{base_episode_id}_a{attempt}"
+                    summary = controller.run(
+                        env=env,
+                        task=task,
+                        episode_id=episode_id,
+                        episode_dir=episode_dir,
+                        seed=manifest["seed"],
+                        protocol=manifest["protocol"],
+                        variant=variant,
+                    )
+                    if not summary.get("error"):
+                        break
+                    infra_code = classify_infrastructure(summary)
+                    if infra_code is None:
+                        write_json(
+                            suite_dir / "unclassified_controller_error.json",
+                            summary,
+                        )
+                        raise RuntimeError(
+                            "Unclassified component-smoke controller error."
+                        )
+                    archive_root = (
+                        suite_dir / "invalid_infrastructure_attempts"
+                    )
+                    archive_root.mkdir(parents=True, exist_ok=True)
+                    archived = archive_root / (
+                        episode_dir.name + f"_attempt_{attempt:02d}"
+                    )
+                    if archived.exists():
+                        raise RuntimeError(
+                            f"Infrastructure archive already exists: {archived}"
+                        )
+                    shutil.move(str(episode_dir), str(archived))
+                    infrastructure_attempts.append(
+                        {
+                            "sequence": sequence,
+                            "variant": variant,
+                            "attempt": attempt,
+                            "episode_id": episode_id,
+                            "code": infra_code,
+                            "goal_sha256": pair_hash[0],
+                            "params_sha256": pair_hash[1],
+                            "archive": archived.relative_to(
+                                REPOSITORY_ROOT
+                            ).as_posix(),
+                            "error": summary["error"],
+                        }
+                    )
+                    write_json(
+                        suite_dir / "infrastructure_attempts.json",
+                        {
+                            "schema_version": (
+                                "component_infrastructure_attempts.v1"
+                            ),
+                            "attempts": infrastructure_attempts,
+                        },
+                    )
+                    if attempt >= 3:
+                        raise RuntimeError(
+                            "Component-smoke infrastructure retries "
+                            "exhausted."
+                        )
+                    if infra_code == "INFRA_EMULATOR_LOST":
+                        env.close()
+                        env = recover_androidworld_env(
+                            adb_path=args.adb_path,
+                            console_port=args.console_port,
+                            grpc_port=args.grpc_port,
+                            recovery_dir=(
+                                suite_dir
+                                / "recoveries"
+                                / f"{sequence:02d}_after_attempt_{attempt:02d}"
+                            ),
+                        )
+                if summary is None or summary.get("error"):
+                    raise RuntimeError(
+                        "No valid component-smoke episode after recovery."
+                    )
             calls = all_calls(summary)
             max_prompt_tokens = max(
                 (
@@ -297,6 +386,7 @@ def main() -> None:
         "model_backend": health["backend"],
         "model_revision": health["revision"],
         "paired_instance_hash_count": len(pair_hashes),
+        "infrastructure_attempt_count": len(infrastructure_attempts),
         "results": results,
         "errors": errors,
     }

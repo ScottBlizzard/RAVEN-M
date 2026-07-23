@@ -26,7 +26,10 @@ sys.path.insert(0, str(LOCAL_RUNTIME / "scripts"))
 import androidworld_compat  # noqa: E402,F401
 from android_world import registry  # noqa: E402
 from android_world.env import env_launcher  # noqa: E402
-from raven_m.controller.episode_controller import EpisodeController  # noqa: E402
+from raven_m.controller.episode_controller import (  # noqa: E402
+    EpisodeController,
+    _json_safe,
+)
 from raven_m.history.policies import make_history_policy  # noqa: E402
 from raven_m.memory.models import MemoryItem  # noqa: E402
 from raven_m.models.transformers_client import TransformersClient  # noqa: E402
@@ -44,6 +47,20 @@ def write_json(path: Path, value: dict[str, Any]) -> None:
         encoding="utf-8",
     )
     temporary.replace(path)
+
+
+def task_instance_hash(task: Any) -> tuple[str, str]:
+    """Hash the public goal/params used to prove an infra retry is identical."""
+    goal_hash = sha256(str(task.goal).encode("utf-8")).hexdigest()
+    params_hash = sha256(
+        json.dumps(
+            _json_safe(task.params),
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()
+    return goal_hash, params_hash
 
 
 def all_calls(summary: dict[str, Any]) -> list[dict[str, Any]]:
@@ -287,6 +304,13 @@ def aggregate(
 
 
 def main() -> None:
+    # Imported lazily to avoid the deliberate reverse import used by the
+    # frozen runner for audit_memory_episode.
+    from run_frozen_hard_suite import (
+        classify_infrastructure,
+        recover_androidworld_env,
+    )
+
     parser = argparse.ArgumentParser()
     parser.add_argument("--url", default="http://127.0.0.1:18000")
     parser.add_argument("--adb-path", required=True)
@@ -330,6 +354,7 @@ def main() -> None:
     registered = task_registry.get_registry(task_registry.ANDROID_WORLD_FAMILY)
     summaries: list[dict[str, Any]] = []
     audits: list[dict[str, Any]] = []
+    infrastructure_attempts: list[dict[str, Any]] = []
 
     if args.aggregate_only:
         for sequence, item in enumerate(manifest["schedule"], start=1):
@@ -388,43 +413,127 @@ def main() -> None:
                         + datetime.now().strftime("%Y%m%dT%H%M%S")
                     )
                     shutil.move(str(episode_dir), str(interrupted))
-                random.seed(item["seed"])
-                np.random.seed(item["seed"])
-                task_type = registered[item["task"]]
-                task = task_type(task_type.generate_random_params())
-                history_policy = make_history_policy(
-                    item["variant"],
-                    client=client,
-                    summary_system_prompt="",
-                    planner_system_prompt=planner_prompt,
-                    critic_system_prompt=critic_prompt,
-                )
-                max_model_calls = (
-                    2 * item["max_steps"]
-                    if item["variant"] == "S0"
-                    else 3 * item["max_steps"] + 4
-                )
-                controller = EpisodeController(
-                    client=client,
-                    system_prompt=executor_prompt,
-                    max_steps=item["max_steps"],
-                    max_model_calls=max_model_calls,
-                    history_policy=history_policy,
-                    action_schema_path=action_schema,
-                )
-                episode_id = (
+                base_episode_id = (
                     f"{args.suite_id}_{sequence:02d}_{item['variant']}_"
                     f"{item['task']}_seed{item['seed']}"
                 )
-                summary = controller.run(
-                    env=env,
-                    task=task,
-                    episode_id=episode_id,
-                    episode_dir=episode_dir,
-                    seed=item["seed"],
-                    protocol=manifest["protocol"],
-                    variant=item["variant"],
-                )
+                expected_instance_hash = None
+                summary = None
+                for attempt in range(1, 4):
+                    random.seed(item["seed"])
+                    np.random.seed(item["seed"])
+                    task_type = registered[item["task"]]
+                    task = task_type(task_type.generate_random_params())
+                    instance_hash = task_instance_hash(task)
+                    if (
+                        expected_instance_hash is not None
+                        and instance_hash != expected_instance_hash
+                    ):
+                        raise RuntimeError(
+                            "Infrastructure retry regenerated a different "
+                            "development task instance."
+                        )
+                    expected_instance_hash = instance_hash
+                    history_policy = make_history_policy(
+                        item["variant"],
+                        client=client,
+                        summary_system_prompt="",
+                        planner_system_prompt=planner_prompt,
+                        critic_system_prompt=critic_prompt,
+                    )
+                    max_model_calls = (
+                        2 * item["max_steps"]
+                        if item["variant"] == "S0"
+                        else 3 * item["max_steps"] + 4
+                    )
+                    controller = EpisodeController(
+                        client=client,
+                        system_prompt=executor_prompt,
+                        max_steps=item["max_steps"],
+                        max_model_calls=max_model_calls,
+                        history_policy=history_policy,
+                        action_schema_path=action_schema,
+                    )
+                    episode_id = f"{base_episode_id}_a{attempt}"
+                    summary = controller.run(
+                        env=env,
+                        task=task,
+                        episode_id=episode_id,
+                        episode_dir=episode_dir,
+                        seed=item["seed"],
+                        protocol=manifest["protocol"],
+                        variant=item["variant"],
+                    )
+                    if not summary.get("error"):
+                        break
+                    infra_code = classify_infrastructure(summary)
+                    if infra_code is None:
+                        write_json(
+                            suite_dir / "unclassified_controller_error.json",
+                            summary,
+                        )
+                        raise RuntimeError(
+                            "Unclassified controller error; development "
+                            "suite stopped without altering the method."
+                        )
+                    archive_root = (
+                        suite_dir / "invalid_infrastructure_attempts"
+                    )
+                    archive_root.mkdir(parents=True, exist_ok=True)
+                    archived = archive_root / (
+                        episode_dir.name + f"_attempt_{attempt:02d}"
+                    )
+                    if archived.exists():
+                        raise RuntimeError(
+                            f"Infrastructure archive already exists: {archived}"
+                        )
+                    shutil.move(str(episode_dir), str(archived))
+                    infrastructure_attempts.append(
+                        {
+                            "sequence": sequence,
+                            "variant": item["variant"],
+                            "task": item["task"],
+                            "seed": item["seed"],
+                            "attempt": attempt,
+                            "episode_id": episode_id,
+                            "code": infra_code,
+                            "instance_goal_sha256": instance_hash[0],
+                            "instance_params_sha256": instance_hash[1],
+                            "archive": archived.relative_to(
+                                REPOSITORY_ROOT
+                            ).as_posix(),
+                            "error": summary["error"],
+                        }
+                    )
+                    write_json(
+                        suite_dir / "infrastructure_attempts.json",
+                        {
+                            "schema_version": (
+                                "development_infrastructure_attempts.v1"
+                            ),
+                            "attempts": infrastructure_attempts,
+                        },
+                    )
+                    if attempt >= 3:
+                        raise RuntimeError(
+                            "Development infrastructure retries exhausted."
+                        )
+                    if infra_code == "INFRA_EMULATOR_LOST":
+                        env.close()
+                        env = recover_androidworld_env(
+                            adb_path=args.adb_path,
+                            console_port=args.console_port,
+                            grpc_port=args.grpc_port,
+                            recovery_dir=(
+                                suite_dir
+                                / "recoveries"
+                                / f"{sequence:02d}_after_attempt_{attempt:02d}"
+                            ),
+                        )
+                if summary is None or summary.get("error"):
+                    raise RuntimeError(
+                        "No valid development episode after recovery."
+                    )
             audit = audit_memory_episode(episode_dir, summary["episode_id"])
             summaries.append(summary)
             audits.append(audit)

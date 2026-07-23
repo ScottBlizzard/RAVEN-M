@@ -50,7 +50,7 @@ G7 uses only the non-Hard manifest:
 
 ```powershell
 .\05_project\scripts\start_method_dev_suite.ps1 `
-  -SuiteId method_dev_g6_g7_v12_20260724
+  -SuiteId method_dev_g6_g7_v13_20260724
 ```
 
 After it finishes, create the fixed 50-event review packet, complete its manual
@@ -60,10 +60,10 @@ labels, and run:
 & $python .\05_project\scripts\run_component_smoke_suite.py `
   --adb-path .\06_local_runtime\android\sdk\platform-tools\adb.exe
 & $python .\05_project\scripts\sample_retrieval_audit.py `
-  --suite-dir .\runs\method_dev_g6_g7\method_dev_g6_g7_v12_20260724
+  --suite-dir .\runs\method_dev_g6_g7\method_dev_g6_g7_v13_20260724
 & $python .\05_project\scripts\apply_retrieval_audit_labels.py
 & $python .\05_project\scripts\audit_g7.py `
-  --suite-summary .\runs\method_dev_g6_g7\method_dev_g6_g7_v12_20260724\suite_summary.json
+  --suite-summary .\runs\method_dev_g6_g7\method_dev_g6_g7_v13_20260724\suite_summary.json
 ```
 
 ## Freeze and scored execution
