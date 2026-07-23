@@ -169,7 +169,7 @@ gates:
     corruption_non_fact_rate: 1.0
   full_method_dev_check:
     status: running
-    suite_id: method_dev_g6_g7_v7_20260723
+    suite_id: method_dev_g6_g7_v8_20260723
     retained_failed_dev_suites:
       - method_dev_g6_g7_20260723
       - method_dev_g6_g7_v2_20260723
@@ -177,6 +177,7 @@ gates:
       - method_dev_g6_g7_v4_20260723
       - method_dev_g6_g7_v5_20260723
       - method_dev_g6_g7_v6_20260723
-    note: v1_schema_v2_provenance_v3_terminal_length_v4_working_slot_citation_v5_role_contract_v6_completion_contract
+      - method_dev_g6_g7_v7_20260723
+    note: v1_schema_v2_provenance_v3_terminal_length_v4_working_slot_citation_v5_role_contract_v6_completion_contract_v7_planner_length
   hard_protocol_frozen: pending
   hard_scored_runs: forbidden_until_model_and_protocol_gates_pass

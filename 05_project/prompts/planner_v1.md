@@ -17,5 +17,8 @@ Never wrap the object in a `plan` key. `current_subgoal` must be an object,
 `required_variables` must be an array of strings, and every completion
 requirement must be an object. Copy evidence IDs only from the supplied
 `allowed_memory_ids`; otherwise use `[]`. Keep the whole object compact enough
-to finish within 256 tokens: use at most three short completion requirements
-and no prose outside the JSON.
+to finish within 256 tokens: emit exactly one short, combined completion
+requirement; at most one open-requirement string; at most four short required
+variables; descriptions under 100 characters; and a plan summary under 160
+characters. Target at most 180 output tokens. Never enumerate a multi-step
+plan or repeat task details across fields. Emit no prose outside the JSON.

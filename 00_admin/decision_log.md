@@ -169,3 +169,15 @@
 - **Consequence:** v7 reruns the complete unchanged non-Hard task, seed, and
   budget schedule. The controller guard, 256-token limit, router, and native
   evaluator are unchanged; Hard scoring remains forbidden.
+
+## 2026-07-23 — Planner output bounded below the 256-token limit
+
+- **Finding:** v7 completed all five S0 and five M0 episodes with 100% executor
+  validity, no memory error, and valid Critic coverage. One FilesMoveFile
+  Planner refresh nevertheless expanded to three completion requirements and
+  was truncated at exactly 256 tokens in both initial and repair calls.
+- **Decision:** stop and retain the partial v7 suite. Planner output now uses
+  exactly one combined completion requirement, at most one open requirement,
+  at most four short variables, short descriptions, and a 180-token target.
+- **Consequence:** v8 reruns the identical full non-Hard schedule. Generation
+  and context limits are not increased; Hard scoring remains forbidden.
