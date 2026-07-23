@@ -227,3 +227,22 @@
 - **Consequence:** v10 reruns the same complete non-Hard manifest. No agent,
   prompt, memory, task, seed, generation, context, evaluator, or budget
   setting changes. Hard scoring remains forbidden.
+
+## 2026-07-24 — Transport retry waits for watchdog recovery
+
+- **Finding:** v10 passed all five S0 episodes and two M0 episodes, then its
+  third M0 episode lost the local SSH listener before decision 9. The two
+  protocol-permitted identical transport attempts occurred immediately, while
+  the watchdog restored the listener 36 seconds after the episode error. The
+  episode was correctly retained as infrastructure-invalid, but necessarily
+  breaks the fixed M0 infrastructure-rate gate.
+- **Decision:** retain and exclude partial v10. Insert a 45-second recovery
+  window after the first connection/timeout error and before the sole identical
+  retry. Payload, call ID, idempotency key, model, prompt, images, temperature,
+  and budgets remain unchanged.
+- **Validation:** 66/66 tests pass, including exact payload/header reuse. A
+  real fault-injection smoke stopped the forward before generation; the
+  watchdog restored it and the second attempt completed in 56.218 seconds
+  under call `6b5655b4-fec3-4651-97ef-7df6e0df65d8`.
+- **Consequence:** v11 reruns the full unchanged non-Hard schedule. Hard
+  scoring remains forbidden.

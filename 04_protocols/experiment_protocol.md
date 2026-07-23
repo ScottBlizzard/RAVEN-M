@@ -80,9 +80,11 @@ a no-LLM initialization/state smoke with the locked 116-task registry and
 cell. This operational recovery cannot change the variant, generated instance,
 seed, prompt, payload, budget, evaluator, or success label.
 
-Transport retries reuse the identical payload and idempotency key, at most two
-attempts. A schema failure permits exactly one model repair and counts both
-calls. The evaluator is never queried mid-episode.
+Transport retries reuse the identical payload, call ID, and idempotency key, at
+most two attempts. After the first connection/timeout error, the client waits
+45 seconds for the operational SSH watchdog before the one permitted retry.
+A schema failure permits exactly one model repair and counts both calls. The
+evaluator is never queried mid-episode.
 
 ## Statistics
 

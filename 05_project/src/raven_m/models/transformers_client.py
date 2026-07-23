@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from hashlib import sha256
 import json
 from pathlib import Path
+import time
 from typing import Any
 from uuid import uuid4
 
@@ -56,10 +57,12 @@ class TransformersClient:
         base_url: str,
         *,
         timeout_seconds: float = 600.0,
+        retry_backoff_seconds: float = 45.0,
         session: requests.Session | None = None,
     ) -> None:
         self.base_url = base_url.rstrip("/")
         self.timeout_seconds = timeout_seconds
+        self.retry_backoff_seconds = retry_backoff_seconds
         self.session = session or requests.Session()
 
     def health(self) -> dict[str, Any]:
@@ -186,7 +189,7 @@ class TransformersClient:
 
         last_error: Exception | None = None
         response: requests.Response | None = None
-        for _ in range(2):
+        for attempt in range(2):
             try:
                 response = self.session.post(
                     f"{self.base_url}/v1/chat/completions",
@@ -198,6 +201,8 @@ class TransformersClient:
                 break
             except (requests.ConnectionError, requests.Timeout) as exc:
                 last_error = exc
+                if attempt == 0:
+                    time.sleep(self.retry_backoff_seconds)
         if response is None or not response.ok:
             if last_error:
                 raise last_error
