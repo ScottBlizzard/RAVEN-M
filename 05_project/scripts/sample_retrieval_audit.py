@@ -223,13 +223,13 @@ def main() -> None:
         )
         html_rows.append(
             "<section>"
-            f"<h2>{escape(row['audit_id'])} · {escape(row['route'])} · "
+            f"<h2>{escape(row['audit_id'])} — {escape(row['route'])} — "
             f"{escape(row['memory_id'])}</h2>"
             f"<p><b>Task:</b> {escape(row['task_goal'])}</p>"
             f"<p><b>Memory:</b> {escape(row['content'])}</p>"
             f"<p><b>Decision:</b> "
             f"{escape(row['decision_summary'])}</p>"
-            f"<p><b>Action:</b> {escape(row['action'])} · "
+            f"<p><b>Action:</b> {escape(row['action'])} — "
             f"<b>Cited:</b> {row['cited']}</p>"
             '<div class="screens">'
             f"<figure><figcaption>Source evidence</figcaption>"
