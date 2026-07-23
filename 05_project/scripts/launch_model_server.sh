@@ -20,6 +20,7 @@ export CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-0,1,2,3}"
 export RAVEN_LOCAL_FILES_ONLY="${RAVEN_LOCAL_FILES_ONLY:-1}"
 export RAVEN_GPU_MAX_MEMORY="${RAVEN_GPU_MAX_MEMORY:-0:22GiB,1:22GiB,2:22GiB,3:22GiB}"
 export RAVEN_SERVER_LOG="${RAVEN_SERVER_LOG:-${PROJECT_ROOT}/outputs/model_server.jsonl}"
+export PYTORCH_CUDA_ALLOC_CONF="${PYTORCH_CUDA_ALLOC_CONF:-expandable_segments:True}"
 
 exec "${VENV_ROOT}/bin/uvicorn" \
   raven_m.models.server:app \

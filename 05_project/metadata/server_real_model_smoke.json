@@ -1,0 +1,44 @@
+{
+  "status": "ok",
+  "url": "http://127.0.0.1:8000",
+  "image": "/mnt/sdb/ccj/raven_m_research/05_project/fixtures/androidworld_smoke.png",
+  "image_sha256": "63f3f5e2a480f05b68436963b2ebc5d55ef6f77ed821ecf224d92bb753bf7351",
+  "request_call_id": "c3ce7f5d-b077-4039-ac10-9398b92e962b",
+  "request_episode_id": "connectivity_smoke_1784785950",
+  "response": {
+    "id": "c3ce7f5d-b077-4039-ac10-9398b92e962b",
+    "object": "chat.completion",
+    "created": 1784785956,
+    "model": "Qwen/Qwen3-VL-32B-Instruct",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "{\"action\": {\"action_type\": \"open_app\", \"app_name\": \"Contacts\"}}"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 2677,
+      "completion_tokens": 19,
+      "total_tokens": 2696
+    },
+    "raven_meta": {
+      "episode_id": "connectivity_smoke_1784785950",
+      "call_id": "c3ce7f5d-b077-4039-ac10-9398b92e962b",
+      "idempotency_key": "a02cfc5337f97d578fb0577a666bb5666dd99da3687133bcfede370d39436ba4",
+      "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+      "backend_id": "qwen3_vl_32b_transformers_bf16_4x4090_v1",
+      "mode": "transformers",
+      "image_sha256": [
+        "63f3f5e2a480f05b68436963b2ebc5d55ef6f77ed821ecf224d92bb753bf7351"
+      ],
+      "image_bytes": 1233100,
+      "latency_seconds": 5.304951352067292,
+      "peak_vram_bytes": 18254616576,
+      "client": "127.0.0.1"
+    }
+  }
+}

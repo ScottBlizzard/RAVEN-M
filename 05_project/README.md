@@ -57,6 +57,40 @@ python .\05_project\scripts\smoke_model_service.py `
   --image .\06_local_runtime\metadata\androidworld_smoke.png
 ```
 
+## B0 excluded dry run
+
+Start the private tunnel and the project-local emulator:
+
+```powershell
+.\05_project\scripts\start_model_tunnel.ps1
+.\06_local_runtime\scripts\start_emulator.ps1
+```
+
+Run one non-scored B0 trajectory:
+
+```powershell
+$python = ".\06_local_runtime\envs\androidworld\Scripts\python.exe"
+$adb = ".\06_local_runtime\android\sdk\platform-tools\adb.exe"
+& $python .\05_project\scripts\run_b0_dry_run.py `
+  --url http://127.0.0.1:18000 `
+  --adb-path $adb `
+  --task ContactsAddContact `
+  --seed 20260723 `
+  --max-steps 10 `
+  --max-model-calls 20
+```
+
+Raw screenshots and trajectories are written under
+`runs/excluded_protocol_dry_run/` and are deliberately excluded from Git and
+all scored results. Every episode records model/revision/backend hashes,
+first-pass and repaired action validity, normalized and pixel coordinates,
+official evaluator output, teardown and reset.
+
+The first reference backend is frozen at an 8,192-token total context cap after
+ten consecutive 7,704-token multimodal requests passed without OOM. See
+`05_project/metadata/model_max_shape_stress.json` and
+`reports/first_72_hours.md`.
+
 The mock service verifies serialization, image hashing, identifiers, tunnel
 transport, response shape, and server logging. It is never a benchmark result.
 Only the exact pinned Qwen checkpoint may satisfy the model gate.

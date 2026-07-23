@@ -1,0 +1,1 @@
+{"status":"ok","mode":"transformers","model":"Qwen/Qwen3-VL-32B-Instruct","revision":"0cfaf48183f594c314753d30a4c4974bc75f3ccb","backend":"qwen3_vl_32b_transformers_bf16_4x4090_v1","loaded":false,"loaded_at":null,"load_error":null,"concurrent_generations":1,"local_files_only":true,"time":"2026-07-23T05:51:48.569621+00:00"}

@@ -17,11 +17,12 @@ deployment:
   max_memory_per_gpu: 22GiB
   concurrent_generations: 1
   batching: false
+  pytorch_cuda_alloc_conf: expandable_segments:True
 generation:
   do_sample: false
   temperature: 0.0
   max_new_tokens: 256
-  total_context_cap: 16384
+  total_context_cap: 8192
 vision:
   preserve_aspect_ratio: true
   long_side_px: 1280
@@ -37,5 +38,6 @@ transport:
 notes:
   - This is the first measured 4090 reference candidate, not a scored condition.
   - The cache path is on the dedicated 15 TB data disk, never the root disk.
-  - The exact backend is frozen only after the ten-request maximum-shape gate.
+  - The 8192-token cap was selected after an over-cap calibration request OOM and ten 7704-token multimodal requests passed without OOM.
+  - The backend and context cap are frozen for direct comparisons after the ten-request maximum-shape gate.
   - A mock response must never be counted as a model or benchmark result.

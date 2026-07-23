@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "source_episode": "b0_ContactsAddContact_20260723T144049_6e121ef0",
+  "source_step": 0,
+  "screen_size": [1080, 2400],
+  "image_sha256": "a4ad181940c03cd02b807fe3c880a2cb620f1a0a7d51b234519507a4c26e43e5",
+  "raw_response": "{\"status\":\"continue\",\"action\":{\"type\":\"open_app\",\"app_name\":\"Contacts\"},\"expected_outcome\":\"The Contacts app opens, allowing access to the contact list and options to add a new contact.\",\"decision_summary\":\"The task requires creating a new contact, so the Contacts app must be opened first. It is not visible on the home screen, so using open_app is appropriate.\",\"state_delta\":[],\"memory_citations\":[]}",
+  "expected_decision": {
+    "status": "continue",
+    "action": {
+      "type": "open_app",
+      "app_name": "Contacts"
+    },
+    "expected_outcome": "The Contacts app opens, allowing access to the contact list and options to add a new contact.",
+    "decision_summary": "The task requires creating a new contact, so the Contacts app must be opened first. It is not visible on the home screen, so using open_app is appropriate.",
+    "state_delta": [],
+    "memory_citations": []
+  },
+  "expected_mapping": {
+    "canonical": {
+      "type": "open_app",
+      "app_name": "Contacts"
+    },
+    "screen_size": [1080, 2400],
+    "actual_pixels": {},
+    "upstream_action": {
+      "action_type": "open_app",
+      "app_name": "Contacts"
+    }
+  }
+}

@@ -1,6 +1,6 @@
 schema_version: 1
-generated_at: 2026-07-23T12:10:00+08:00
-status: model_snapshot_downloading
+generated_at: 2026-07-23T15:15:23+08:00
+status: b0_end_to_end_dry_run_passed
 scored_runs_permitted: false
 
 android_host:
@@ -48,7 +48,7 @@ model_host_4090:
 model:
   id: Qwen/Qwen3-VL-32B-Instruct
   revision: 0cfaf48183f594c314753d30a4c4974bc75f3ccb
-  upstream_snapshot_size_bytes_approx: 66700000000
+  snapshot_size_bytes: 66726519322
   cache: /mnt/sdb/ccj/raven_m_research/05_project/model_cache/huggingface
   download_endpoint: https://hf-mirror.com
   backend: qwen3_vl_32b_transformers_bf16_4x4090_v1
@@ -59,8 +59,31 @@ model:
   concurrent_generations: 1
   local_files_only_when_serving: true
   screenshot_long_side_px: 1280
-  total_context_cap: 16384
+  total_context_cap: 8192
   max_new_tokens: 256
+  validation:
+    snapshot_complete: ok
+    model_load: ok
+    real_androidworld_screenshot_action_smoke: ok
+    smoke_action: open_app_contacts
+    smoke_prompt_tokens: 2677
+    smoke_completion_tokens: 19
+    smoke_latency_seconds: 5.304951352067292
+    smoke_peak_vram_bytes: 18254616576
+    max_shape_stress:
+      status: ok
+      repeats: 10
+      prompt_tokens_per_request: 7704
+      mean_latency_seconds: 10.0032616689801
+      max_latency_seconds: 10.4250376708806
+      max_peak_vram_bytes: 19554077184
+      context_cap: 8192
+      calibration_note: an_uncalibrated_over_cap_fixture_oomed_before_single_token_padding_was_used
+  deployment_deviation:
+    planned_reference: single_a40_4bit
+    executed_reference_candidate: four_rtx4090_bfloat16
+    reason: a40_host_unreachable_and_exact_bfloat16_checkpoint_fits_four_available_4090s
+    consequence: numerically_higher_fidelity_but_backend_must_remain_fixed_within_comparisons
 
 transport:
   server_bind: 127.0.0.1:8000
@@ -73,6 +96,13 @@ transport:
     screenshot_sha256: 63f3f5e2a480f05b68436963b2ebc5d55ef6f77ed821ecf224d92bb753bf7351
     call_id: 0e4d0f8c-df52-4ff0-b9a5-dee31da546dc
     note: transport-only; never a model or benchmark result
+  real_model_smoke:
+    status: ok
+    real_androidworld_screenshot: true
+    screenshot_sha256: 63f3f5e2a480f05b68436963b2ebc5d55ef6f77ed821ecf224d92bb753bf7351
+    call_id: c3ce7f5d-b077-4039-ac10-9398b92e962b
+    action: open_app_contacts
+    note: model-service gate only; excluded from benchmark results
 
 a40_host:
   ssh: root@10.91.11.250:10008
@@ -80,8 +110,23 @@ a40_host:
   role: fallback_only_until_recovered
 
 gates:
-  exact_model_snapshot_complete: pending
-  exact_model_image_action_smoke: pending
-  ten_max_shape_requests_without_oom: pending
+  exact_model_snapshot_complete: passed
+  exact_model_image_action_smoke: passed
+  ten_max_shape_requests_without_oom: passed_at_7704_prompt_tokens
+  screenshot_to_action_adapter: passed
+  b0_end_to_end_dry_run:
+    status: passed
+    episode_id: b0_ContactsAddContact_20260723T144049_6e121ef0
+    evaluator_reward: 1.0
+    decisions: 10
+    first_pass_json_rate: 0.8
+    repaired_json_rate: 1.0
+  action_contract_dev_check:
+    status: provisional_pass
+    episode_id: b0_ContactsAddContact_20260723T145005_77952eef
+    decisions: 10
+    first_pass_json_rate: 0.9
+    repaired_json_rate: 1.0
+    note: full_g3_requires_at_least_50_dev_decisions
   hard_protocol_frozen: pending
   hard_scored_runs: forbidden_until_model_and_protocol_gates_pass

@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-07-23T07:09:49.751584+00:00",
+  "run_id": "max_shape_20260723T150932_0bbb2633",
+  "status": "ok",
+  "model_service_health": {
+    "status": "ok",
+    "mode": "transformers",
+    "model": "Qwen/Qwen3-VL-32B-Instruct",
+    "revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+    "backend": "qwen3_vl_32b_transformers_bf16_4x4090_v1",
+    "loaded": true,
+    "loaded_at": "2026-07-23T07:09:04.206693+00:00",
+    "load_error": null,
+    "concurrent_generations": 1,
+    "local_files_only": true,
+    "time": "2026-07-23T07:09:33.040342+00:00"
+  },
+  "image": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\excluded_protocol_dry_run\\b0_ContactsAddContact_20260723T144049_6e121ef0\\step_000_before.png",
+  "image_sha256": "a4ad181940c03cd02b807fe3c880a2cb620f1a0a7d51b234519507a4c26e43e5",
+  "prompt_fixture_sha256": "f8cec8ae401324e87124e7e4aeb42a242b4c03364d8d0483eeb468181a51eb9e",
+  "padding_words": 4000,
+  "context_cap": 8192,
+  "repeats_requested": 1,
+  "repeats_completed": 1,
+  "all_requests_without_oom": true,
+  "max_prompt_tokens": 7204,
+  "max_peak_vram_bytes": 19424793088,
+  "calls": [
+    {
+      "index": 0,
+      "prompt_tokens": 7204,
+      "completion_tokens": 57,
+      "latency_seconds": 11.255114505067468,
+      "peak_vram_bytes": 19424793088,
+      "response_sha256": "96183405f5b205e9194f94e8b9ffc4ac6e3f7b03f29bcb98ab5e25c766f225dc",
+      "parse_status": "ok",
+      "first_pass": true
+    }
+  ]
+}
