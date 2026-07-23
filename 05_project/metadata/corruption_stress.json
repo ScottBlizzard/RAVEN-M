@@ -1,7 +1,7 @@
 {
   "schema_version": "corruption_stress.v1",
   "scope": "synthetic_non_hard_router_fixtures",
-  "generated_at_utc": "2026-07-23T13:57:38.661889+00:00",
+  "generated_at_utc": "2026-07-23T18:03:14.472811+00:00",
   "fixture_count": 20,
   "non_fact_count": 20,
   "corruption_rejection_rate": 1.0,

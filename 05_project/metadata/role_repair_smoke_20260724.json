@@ -1,0 +1,30 @@
+{
+  "schema_version": "role_repair_smoke.v1",
+  "status": "passed",
+  "date_local": "2026-07-24",
+  "source_failure_suite": "method_dev_g6_g7_v11_20260724",
+  "source_episode": "08_M0_ExpenseAddSingle_seed20260725",
+  "source_step": 9,
+  "fault_replayed": "actual v11 Planner response missing the closing completion_requirements array delimiter",
+  "repair_policy": "one role-specific from-scratch repair without embedding the invalid response",
+  "model_call_count": 2,
+  "repair_call_id": "55d4ce54-a185-43b4-94d1-50ac498d0c3a",
+  "repair_idempotency_key": "fdc87ff49a958b94e79e2e5d3068f04be3292ff9a44c04d87c5087721920711b",
+  "image_sha256": "1efc8e044787fcaaa54b18749bdf0da4d9c262a1143c5e239be2d2e6d7cc0f78",
+  "prompt_sha256": "6b99cf5e3d03c268ee78e047dfcd9fa422ecaf80122c351cf84ab442d1292ba1",
+  "request_sha256": "0fcf9bcc2da7c86a332b4dfe06fe0aa50c010db4caa846384d35ef081925267d",
+  "response_sha256": "9045f767cd1e72b540d9dde701a8e035f39447525deae6400c11b00c7a1ac16e",
+  "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+  "backend": "qwen3_vl_32b_transformers_bf16_4x4090_v1",
+  "usage": {
+    "prompt_tokens": 3113,
+    "completion_tokens": 134,
+    "total_tokens": 3247
+  },
+  "validation": {
+    "json_object": true,
+    "plan_v1_schema": true,
+    "allowed_memory_ids_only": true,
+    "balanced_delimiters": true
+  }
+}

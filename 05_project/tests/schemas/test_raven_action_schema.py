@@ -62,5 +62,11 @@ def test_raven_schema_bounds_delta_and_forces_empty_on_done() -> None:
     decision = valid_decision()
     decision["status"] = "done"
     decision["action"] = None
-    with pytest.raises(ActionValidationError, match="too long"):
+    # jsonschema 4.17 reports maxItems=0 as "too long", while newer
+    # releases render the equivalent const=[] branch as "expected to be
+    # empty". Both prove the same protocol invariant.
+    with pytest.raises(
+        ActionValidationError,
+        match="too long|expected to be empty",
+    ):
         parse_action_response(json.dumps(decision), schema_path=SCHEMA)

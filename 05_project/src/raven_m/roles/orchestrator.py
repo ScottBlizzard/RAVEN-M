@@ -94,6 +94,36 @@ class RoleOrchestrator:
             "critic": PROJECT_ROOT / "schemas" / "critic.v1.schema.json",
         }
 
+    @staticmethod
+    def _repair_prompt(
+        *,
+        role: str,
+        user_prompt: str,
+        validation_error: str,
+    ) -> str:
+        if role == "planner":
+            contract = (
+                "Rebuild the object from scratch; do not copy the invalid "
+                "response. Use exactly the plan.v1 shape in the system "
+                "prompt. Emit one completion_requirements array containing "
+                "one object, and close it with `}]` before the "
+                "`plan_summary` key. Check every `{}` and `[]` pair."
+            )
+        else:
+            contract = (
+                "Rebuild the object from scratch; do not copy the invalid "
+                "response. Use exactly the critic.v1 shape and enumerations "
+                "in the system prompt. Check every `{}` and `[]` pair."
+            )
+        return (
+            user_prompt
+            + "\nVALIDATION_ERROR:"
+            + validation_error
+            + "\nREPAIR_CONTRACT:"
+            + contract
+            + f"\nReturn only one corrected {role} JSON object."
+        )
+
     def call(
         self,
         *,
@@ -154,13 +184,10 @@ class RoleOrchestrator:
             repaired = self.client.generate(
                 image_path=image_path,
                 system_prompt=self.prompts[role],
-                user_prompt=(
-                    user_prompt
-                    + "\nINVALID_RESPONSE:"
-                    + initial.content
-                    + "\nVALIDATION_ERROR:"
-                    + str(initial_error)
-                    + f"\nReturn only corrected {role} JSON."
+                user_prompt=self._repair_prompt(
+                    role=role,
+                    user_prompt=user_prompt,
+                    validation_error=str(initial_error),
                 ),
                 episode_id=episode_id,
                 call_label=f"{role}_step_{step:03d}_repair",

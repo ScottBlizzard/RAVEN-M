@@ -38,6 +38,7 @@ FIXED_FILES = [
     "05_project/metadata/protocol_audit.json",
     "05_project/metadata/reset_determinism_g4_final.json",
     "05_project/metadata/runtime_asset_manifest.json",
+    "05_project/metadata/role_repair_smoke_20260724.json",
     "05_project/metadata/transport_recovery_smoke_20260724.json",
     "05_project/scripts/run_frozen_pipeline.ps1",
     "05_project/scripts/start_frozen_pipeline.ps1",

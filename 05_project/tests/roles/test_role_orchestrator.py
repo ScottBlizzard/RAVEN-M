@@ -26,9 +26,11 @@ class RoleClient:
     def __init__(self, *, bad_first: bool = False) -> None:
         self.bad_first = bad_first
         self.count = 0
+        self.requests = []
 
     def generate(self, **kwargs) -> ModelCall:
         self.count += 1
+        self.requests.append(kwargs)
         label = kwargs["call_label"]
         if self.bad_first and self.count == 1:
             return call("not json", label)
@@ -76,6 +78,10 @@ def test_planner_contract_repairs_once(tmp_path: Path) -> None:
     )
     assert result.output["schema_version"] == "plan.v1"
     assert len(result.calls) == 2
+    repair_prompt = client.requests[1]["user_prompt"]
+    assert "INVALID_RESPONSE" not in repair_prompt
+    assert "close it with `}]`" in repair_prompt
+    assert "Rebuild the object from scratch" in repair_prompt
 
 
 def test_critic_rejects_unavailable_memory_id(tmp_path: Path) -> None:

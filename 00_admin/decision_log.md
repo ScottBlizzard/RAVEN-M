@@ -246,3 +246,26 @@
   under call `6b5655b4-fec3-4651-97ef-7df6e0df65d8`.
 - **Consequence:** v11 reruns the full unchanged non-Hard schedule. Hard
   scoring remains forbidden.
+
+## 2026-07-24 — Role repair rebuilds instead of echoing malformed JSON
+
+- **Finding:** v11 passed all five S0 and the first three M0 task executions
+  without infrastructure or memory invariants, but the step-9 Expense Planner
+  omitted the closing `]` of `completion_requirements`. The generic repair
+  prompt embedded that malformed response, and the model repeated it
+  byte-for-byte. G7 correctly recorded one role-output error.
+- **Decision:** retain and exclude partial v11. A role repair no longer echoes
+  invalid output. It supplies the validation error, requires a from-scratch
+  object in the already frozen role schema, and explicitly checks balanced
+  object/array delimiters; Planner repair states that its single
+  `completion_requirements` object must close with `}]` before `plan_summary`.
+- **Boundary:** the initial role prompt, role triggers, role schema, model,
+  256-token cap, task/seed schedule, executor, memory router, and action
+  budgets are unchanged. There is still exactly one bounded role repair.
+- **Validation:** replaying the exact malformed v11 response as the first
+  response and delegating only its repair to the locked 32B model produced a
+  valid `plan.v1` object in one repair. The repair call was
+  `55d4ce54-a185-43b4-94d1-50ac498d0c3a`; schema, delimiter, and allowed-memory
+  checks all passed.
+- **Consequence:** v12 reruns the complete non-Hard schedule. Hard scoring
+  remains forbidden.
