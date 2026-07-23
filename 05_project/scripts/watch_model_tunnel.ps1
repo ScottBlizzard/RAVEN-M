@@ -73,8 +73,14 @@ while (-not (Test-Path -LiteralPath $stopFile)) {
     }
     else {
         $consecutiveFailures += 1
-        $activeCalls = Get-NetTCPConnection -LocalPort $LocalPort `
-            -State Established -ErrorAction SilentlyContinue
+        $activeCalls = $null
+        if (
+            $listener -and
+            $consecutiveFailures -ge $RestartAfterFailures
+        ) {
+            $activeCalls = Get-NetTCPConnection -LocalPort $LocalPort `
+                -State Established -ErrorAction SilentlyContinue
+        }
         $restart = (
             -not $listener -or
             (
