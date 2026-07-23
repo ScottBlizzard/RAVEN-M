@@ -1,6 +1,6 @@
 # First 72-hour execution report
 
-Generated: 2026-07-23  
+Generated: 2026-07-23
 Protocol status: infrastructure/dev only; no Hard result is scored or permitted.
 
 ## Outcome
