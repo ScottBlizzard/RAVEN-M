@@ -9,6 +9,7 @@ from run_frozen_hard_suite import (  # noqa: E402
     EXPECTED_BACKEND,
     EXPECTED_REVISION,
     classify_infrastructure,
+    load_formal_infrastructure_attempts,
     wait_for_model_service,
 )
 from run_method_dev_suite import task_instance_hash  # noqa: E402
@@ -101,3 +102,60 @@ def test_model_recovery_rejects_backend_drift(tmp_path: Path) -> None:
         assert "differs from the frozen" in str(exc)
     else:
         raise AssertionError("Backend drift must fail immediately.")
+
+
+def test_formal_attempt_state_resumes_without_resetting_cap(
+    tmp_path: Path,
+) -> None:
+    path = tmp_path / "infrastructure_attempts.json"
+    path.write_text(
+        """{
+  "schema_version": "formal_infrastructure_attempts.v1",
+  "attempts": [
+    {
+      "attempt": 1,
+      "goal_sha256": "goal",
+      "params_sha256": "params",
+      "code": "INFRA_MODEL_UNAVAILABLE"
+    },
+    {
+      "attempt": 2,
+      "goal_sha256": "goal",
+      "params_sha256": "params",
+      "code": "INFRA_EMULATOR_LOST"
+    }
+  ]
+}
+""",
+        encoding="utf-8",
+    )
+    attempts, pair_hash = load_formal_infrastructure_attempts(path)
+    assert len(attempts) == 2
+    assert pair_hash == ("goal", "params")
+    assert len(attempts) + 1 == 3
+
+
+def test_formal_attempt_state_rejects_noncontiguous_history(
+    tmp_path: Path,
+) -> None:
+    path = tmp_path / "infrastructure_attempts.json"
+    path.write_text(
+        """{
+  "schema_version": "formal_infrastructure_attempts.v1",
+  "attempts": [
+    {
+      "attempt": 2,
+      "goal_sha256": "goal",
+      "params_sha256": "params"
+    }
+  ]
+}
+""",
+        encoding="utf-8",
+    )
+    try:
+        load_formal_infrastructure_attempts(path)
+    except RuntimeError as exc:
+        assert "not contiguous" in str(exc)
+    else:
+        raise AssertionError("Noncontiguous attempts must be rejected.")

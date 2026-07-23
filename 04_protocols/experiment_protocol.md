@@ -83,6 +83,14 @@ seed, prompt, payload, budget, evaluator, or success label.
 Transport retries reuse the identical payload, call ID, and idempotency key, at
 most two attempts. After the first connection/timeout error, the client waits
 45 seconds for the operational SSH watchdog before the one permitted retry.
+If both transport attempts fail and the episode is classified
+`INFRA_MODEL_UNAVAILABLE`, the runner persists that invalid attempt before
+waiting for the exact locked model ID, revision, and backend to become healthy.
+Health polls are archived, and no new episode attempt is created during this
+barrier. The frozen pipeline waits at most 21,600 seconds per barrier; a
+process restart resumes from the next persisted attempt number and can never
+reset or exceed the three-attempt cell cap. A different healthy model identity
+is a hard protocol failure.
 A schema failure permits exactly one model repair and counts both calls. The
 evaluator is never queried mid-episode.
 

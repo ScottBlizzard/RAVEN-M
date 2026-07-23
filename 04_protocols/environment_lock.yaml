@@ -162,7 +162,7 @@ gates:
     note: non_hard_development_gate_only
   inspectable_memory_unit_gate:
     status: passed
-    tests: 73
+    tests: 75
     targeted_g6_tests: 45
     scope: schemas_lifecycle_replay_routing_roles_completion_guard_provenance_page_hint
     corruption_fixtures: 20

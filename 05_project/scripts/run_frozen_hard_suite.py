@@ -330,6 +330,43 @@ def classify_infrastructure(summary: dict[str, Any]) -> str | None:
     return None
 
 
+def load_formal_infrastructure_attempts(
+    path: Path,
+) -> tuple[list[dict[str, Any]], tuple[str, str] | None]:
+    """Load and validate attempt state used to enforce caps across restarts."""
+    if not path.is_file():
+        return [], None
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if (
+        payload.get("schema_version")
+        != "formal_infrastructure_attempts.v1"
+    ):
+        raise RuntimeError(
+            "Unknown persisted infrastructure-attempt schema."
+        )
+    attempts = payload.get("attempts")
+    if not isinstance(attempts, list) or len(attempts) > 3:
+        raise RuntimeError("Invalid persisted infrastructure-attempt count.")
+    expected_numbers = list(range(1, len(attempts) + 1))
+    if [item.get("attempt") for item in attempts] != expected_numbers:
+        raise RuntimeError(
+            "Persisted infrastructure attempts are not contiguous."
+        )
+    hashes = {
+        (item.get("goal_sha256"), item.get("params_sha256"))
+        for item in attempts
+    }
+    if attempts and (
+        len(hashes) != 1
+        or None in next(iter(hashes))
+    ):
+        raise RuntimeError(
+            "Persisted infrastructure attempts have inconsistent hashes."
+        )
+    expected_hash = next(iter(hashes)) if hashes else None
+    return attempts, expected_hash
+
+
 def wait_for_model_service(
     client: TransformersClient,
     *,
@@ -780,10 +817,19 @@ def main() -> None:
                 results.append(result)
                 continue
             write_json(record_dir / "schedule_record.json", record)
-            infra_attempts: list[dict[str, Any]] = []
+            infra_path = record_dir / "infrastructure_attempts.json"
+            (
+                infra_attempts,
+                expected_pair_hash,
+            ) = load_formal_infrastructure_attempts(infra_path)
+            if len(infra_attempts) >= 3:
+                raise RuntimeError(
+                    "All permitted infrastructure retries were already "
+                    "consumed for this schedule cell."
+                )
             result = None
-            expected_pair_hash: tuple[str, str] | None = None
-            for attempt in range(1, 4):
+            first_attempt = len(infra_attempts) + 1
+            for attempt in range(first_attempt, 4):
                 attempt_dir = record_dir / f"attempt_{attempt:02d}"
                 random.seed(record["instance_seed"])
                 np.random.seed(record["instance_seed"])
@@ -841,8 +887,19 @@ def main() -> None:
                             "attempt": attempt,
                             "episode_id": episode_id,
                             "code": infra_code,
+                            "goal_sha256": pair_hash[0],
+                            "params_sha256": pair_hash[1],
                             "error": summary["error"],
                         }
+                    )
+                    write_json(
+                        infra_path,
+                        {
+                            "schema_version": (
+                                "formal_infrastructure_attempts.v1"
+                            ),
+                            "attempts": infra_attempts,
+                        },
                     )
                     if (
                         infra_code == "INFRA_EMULATOR_LOST"
