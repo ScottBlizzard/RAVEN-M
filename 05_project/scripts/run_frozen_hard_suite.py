@@ -127,6 +127,7 @@ def verify_freeze() -> dict[str, Any]:
     tag_commit = git("rev-parse", "protocol-v1^{commit}")
     if not tag_commit:
         raise RuntimeError("protocol-v1 tag is absent.")
+    git("merge-base", "--is-ancestor", tag_commit, "HEAD")
     return {
         "preregistration_sha256": sha256(
             prereg_path.read_bytes()

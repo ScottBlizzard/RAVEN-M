@@ -36,3 +36,14 @@ $summaries = @(
 if ($LASTEXITCODE -ne 0) {
     throw "Frozen result analysis failed with $LASTEXITCODE."
 }
+
+$generated = Join-Path $repositoryRoot "reports\generated"
+& $python (Join-Path $PSScriptRoot "analyze_case_studies.py") `
+    --case-selection (Join-Path $generated "case_selection.json")
+if ($LASTEXITCODE -ne 0) {
+    throw "Case-study rendering failed with $LASTEXITCODE."
+}
+& $python (Join-Path $PSScriptRoot "analyze_final_report.py")
+if ($LASTEXITCODE -ne 0) {
+    throw "Final report assembly failed with $LASTEXITCODE."
+}

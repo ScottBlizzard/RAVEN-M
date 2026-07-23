@@ -28,6 +28,7 @@ These outcomes are never excluded:
 | `TASK_UNSUCCESSFUL_AT_BUDGET` | Native environment-step budget is exhausted with evaluator reward 0. |
 | `PREMATURE_COMPLETION` | Agent proposes done but evaluator returns 0. |
 | `MODEL_DECLARED_INFEASIBLE` | Agent proposes fail before budget exhaustion. |
+| `MODEL_CALL_BUDGET_EXHAUSTED` | The frozen per-variant model-call cap is reached before task completion. |
 | `GROUNDING_ERROR` | Action targets the wrong visible control or location. |
 | `WRONG_VALUE` | Typed, selected, or retained task value is incorrect. |
 | `OMITTED_REQUIRED_FIELD` | Required task value or operation is missing. |

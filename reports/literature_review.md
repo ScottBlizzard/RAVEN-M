@@ -115,3 +115,36 @@ contradiction 或 completion-evidence 事件触发。所有角色调用都进入
 研究原型，应优先保证完整 baseline、公平预算、可追溯 memory lifecycle、
 冻结评测和诚实的负结果解释。RAVEN-M 的方法与实验正围绕这一判断展开。
 
+## 9. 核心参考文献
+
+1. Rawles et al. *AndroidWorld: A Dynamic Benchmarking Environment for
+   Autonomous Agents*. ICLR 2025.
+2. Chen et al. *PG-Agent: An Agent Powered by Page Graph*. ACM MM 2025.
+3. *History-Aware Reasoning for GUI Agents*. AAAI 2026.
+4. *ProBench: Benchmarking GUI Agents with Accurate Process Information*.
+   AAAI 2026.
+5. Wang et al. *MP-GUI: Modality Perception with MLLMs for GUI
+   Understanding*. CVPR 2025.
+6. *Towards Scalable Lightweight GUI Agents via Multi-role Orchestration
+   (LAMO)*. Findings of ACL 2026.
+7. *Hybrid Self-evolving Structured Memory for Computer-Use Agents
+   (HyMEM)*. Findings of ACL 2026.
+8. *MAGNET: Towards Adaptive GUI Agents with Memory-Driven Knowledge
+   Evolution*. ACL 2026.
+9. *UI-Copilot: Advancing Long-Horizon GUI Automation via Tool-Integrated
+   Policy Optimization*. ACL 2026.
+10. *D-Artemis: A Deliberative Cognitive Framework for Mobile GUI
+    Multi-Agents*. Findings of ACL 2026.
+11. *Remember Me, Refine Me: A Dynamic Procedural Memory Framework for
+    Experience-Driven Agent Evolution*. Findings of ACL 2026.
+12. Wang et al. *Mobile-Agent-v2: Mobile Device Operation Assistant with
+    Effective Navigation via Multi-Agent Collaboration*. NeurIPS 2024.
+13. *Darwinian Memory: A Self-Regulating Memory System for GUI Agents*.
+    arXiv preprint, 2026.
+14. *EchoTrail-GUI*. CVPR 2026 Findings.
+15. *CES: Coordinator–Executor–State Tracker for Long-Horizon GUI Agents*.
+    CVPR 2026.
+
+完整 DOI/URL、venue 核验状态与 BibTeX 见
+`02_literature/metadata/papers.csv` 和
+`02_literature/bib/references.bib`。

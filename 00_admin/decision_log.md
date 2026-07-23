@@ -127,3 +127,18 @@
 - **Consequence:** the repair instruction removes malformed, unavailable, or
   invented IDs and uses an empty list when no valid item remains. The complete
   non-Hard schedule is rerun as v5; v4 remains archived.
+
+## 2026-07-23 — Role outputs require literal compact contracts
+
+- **Finding:** v5 completed all 5 S0 and 8 M0 development episodes with zero
+  infrastructure errors, no stale FACT routes, and 77/78 valid executor
+  decisions after one repair. However, 24 conditional Planner/Critic events
+  remained invalid after repair. The dominant Planner output used an
+  unsupported outer `plan` object and frequently exhausted the frozen
+  256-token limit; Critic outputs invented wrapper keys or verdict strings.
+- **Decision:** retain v5 as failed development evidence and add literal,
+  compact, schema-valid JSON examples plus explicit key/type/enumeration
+  constraints to the Planner and Critic system prompts. The role generation
+  budget remains 256 tokens and the task/seed schedule remains unchanged.
+- **Consequence:** v6 must rerun the complete non-Hard schedule and pass the
+  role-output audit before protocol freeze. Hard scoring remains forbidden.

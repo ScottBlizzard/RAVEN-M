@@ -45,7 +45,7 @@ G7 uses only the non-Hard manifest:
 
 ```powershell
 .\05_project\scripts\start_method_dev_suite.ps1 `
-  -SuiteId method_dev_g6_g7_v4_20260723
+  -SuiteId method_dev_g6_g7_v6_20260723
 ```
 
 After it finishes, create the fixed 50-event review packet, complete its manual
@@ -53,9 +53,9 @@ labels, and run:
 
 ```powershell
 & $python .\05_project\scripts\sample_retrieval_audit.py `
-  --suite-dir .\runs\method_dev_g6_g7\method_dev_g6_g7_v4_20260723
+  --suite-dir .\runs\method_dev_g6_g7\method_dev_g6_g7_v6_20260723
 & $python .\05_project\scripts\audit_g7.py `
-  --suite-summary .\runs\method_dev_g6_g7\method_dev_g6_g7_v4_20260723\suite_summary.json
+  --suite-summary .\runs\method_dev_g6_g7\method_dev_g6_g7_v6_20260723\suite_summary.json
 ```
 
 ## Freeze and scored execution

@@ -318,6 +318,16 @@ class EpisodeController:
             logger.append({"event": "task_initialized"})
 
             for step in range(self.max_steps):
+                if model_call_count >= self.max_model_calls:
+                    termination_reason = "model_call_budget_exhausted"
+                    logger.append(
+                        {
+                            "event": "model_call_budget_exhausted",
+                            "model_call_count": model_call_count,
+                            "max_model_calls": self.max_model_calls,
+                        }
+                    )
+                    break
                 state_before = env.get_state(wait_to_stabilize=True)
                 height, width = state_before.pixels.shape[:2]
                 before_path = logger.save_screenshot(
@@ -574,6 +584,8 @@ class EpisodeController:
             failure_code = "PREMATURE_COMPLETION"
         elif termination_reason == "model_fail":
             failure_code = "MODEL_DECLARED_INFEASIBLE"
+        elif termination_reason == "model_call_budget_exhausted":
+            failure_code = "MODEL_CALL_BUDGET_EXHAUSTED"
         else:
             failure_code = "TASK_UNSUCCESSFUL_AT_BUDGET"
 
