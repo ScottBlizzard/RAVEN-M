@@ -2,17 +2,17 @@
   "schema_version": "preregistration.v1",
   "status": "draft_pending_G7",
   "scored_hard_runs_permitted": false,
-  "generated_at_utc": "2026-07-23T16:40:28.036079+00:00",
-  "git_head_before_freeze_commit": "a1372076e031768497eebf1c9e8f49c50f8a6865",
+  "generated_at_utc": "2026-07-23T22:29:22.154570+00:00",
+  "git_head_before_freeze_commit": "d373744d15f71afd9bb0b002ec20d939e0eebb3d",
   "androidworld_commit": "3e50888527ef9f29b9157ecd537e408008bb1c85",
   "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
-  "protocol_file_count": 90,
-  "protocol_records_sha256": "1af332f2a3b71e2f2b1d980aa0531945ddb2289b04c445a2c9c95f41fd3f1a95",
+  "protocol_file_count": 97,
+  "protocol_records_sha256": "c032cebd2e2459017d66423e2f3acf4f674a63af5bf6cb75887c858181826c2d",
   "files": [
     {
       "path": "00_admin/requirements_trace.md",
-      "bytes": 2092,
-      "sha256": "13f834612ea0963e0e297fb84ca537eaf54aec0fa03ebbb1f4f7c7f66f463de3"
+      "bytes": 2075,
+      "sha256": "8e9e516ef06a1ef494a40134b682b84943d29a4250030d94741f068015ed4e89"
     },
     {
       "path": "01_sources/official/androidworld/task_list.html",
@@ -21,13 +21,13 @@
     },
     {
       "path": "04_protocols/environment_lock.yaml",
-      "bytes": 6275,
-      "sha256": "d3b27de19af00585606a0a52a4acc2a8fd3762322ee23ae890abbf8475b491eb"
+      "bytes": 6702,
+      "sha256": "6307459ee733d858966f22d816799074bf982b26dd6a653595a2b51d7a1f4c81"
     },
     {
       "path": "04_protocols/experiment_protocol.md",
-      "bytes": 6378,
-      "sha256": "8bb73bc7fe2871e3b6da8aa664bfc600bb831bf8c2dd45bbeb3e768d637715cf"
+      "bytes": 6559,
+      "sha256": "d8dcc07e6e0424c04f7ef087f57f1adaeeba73a2bc1d409b47753355723e55e0"
     },
     {
       "path": "04_protocols/failure_codebook.md",
@@ -116,8 +116,8 @@
     },
     {
       "path": "05_project/configs/memory/raven_v1.yaml",
-      "bytes": 817,
-      "sha256": "e2b0633ec25010849fba68cb084e4ee6d5f3616f6aaf1a61ea52b8f767b9891d"
+      "bytes": 838,
+      "sha256": "830e70f343c8c2bd5eb923b57bebfc50c42e90d70ec0922403386e3fe53d562d"
     },
     {
       "path": "05_project/configs/task_manifests/ablation8_v1.json",
@@ -130,9 +130,24 @@
       "sha256": "e651aedeb18f112be3a06562328618d19e9d33eaea94187b1edec51cb00f6ca7"
     },
     {
+      "path": "05_project/configs/task_manifests/component_smoke_v1.json",
+      "bytes": 513,
+      "sha256": "847cbf8a2e69a2159a631ef8162407d36bc97e712955c0e3244c58bb2b51ea0a"
+    },
+    {
+      "path": "05_project/metadata/component_smoke_audit.json",
+      "bytes": 8454,
+      "sha256": "efa2b04c28a47eee44002b0c4f5d4775df6f75a854f96ecbaabdb9eb3d970691"
+    },
+    {
       "path": "05_project/metadata/corruption_stress.json",
       "bytes": 6215,
-      "sha256": "d0679bdaa435f9ac2bc996acfd76fb5b84e14e91a762bc3925e3e0e6646ecae2"
+      "sha256": "b862e0d0e26e69d49d7387b4b07cd14e6347cc2c356b71168626d38f55ffe71f"
+    },
+    {
+      "path": "05_project/metadata/emulator_recovery_smoke_20260724.json",
+      "bytes": 1149,
+      "sha256": "9e66ad1717446bfa9ab1c67230502f3530e33716dc6bc010441dfe05f2aed6c2"
     },
     {
       "path": "05_project/metadata/g4_audit.json",
@@ -141,8 +156,8 @@
     },
     {
       "path": "05_project/metadata/g6_audit.json",
-      "bytes": 1075,
-      "sha256": "91012d56b7a50b25305af20ebe8fc4d0fc8a5b33b10972b90a63410c38e38a58"
+      "bytes": 1156,
+      "sha256": "531a583ccbeffae3de20ad2bed12962ad207dcc1f3db5b8e1a2aa72c23d0a651"
     },
     {
       "path": "05_project/metadata/protocol_audit.json",
@@ -155,9 +170,19 @@
       "sha256": "b647dd499849d30daee10bd414ef780955e9faeac3657bebb4d2c3518c6b49dd"
     },
     {
+      "path": "05_project/metadata/role_repair_smoke_20260724.json",
+      "bytes": 1344,
+      "sha256": "051236af0459d95aeae3be4b93459bc43075b74ef68c9321b3fd4b06e5c85e27"
+    },
+    {
       "path": "05_project/metadata/runtime_asset_manifest.json",
       "bytes": 4483,
       "sha256": "d2a7a527711c1f538efec85c8e1c0863665ca9bc8a62e9cde5e7f1fc4851cb4d"
+    },
+    {
+      "path": "05_project/metadata/transport_recovery_smoke_20260724.json",
+      "bytes": 763,
+      "sha256": "d3bd220060df7e9725979e88370d32efd86855bee51860bf8be5e67253d222ba"
     },
     {
       "path": "05_project/prompts/critic_v1.md",
@@ -166,8 +191,8 @@
     },
     {
       "path": "05_project/prompts/executor_raven_v1.md",
-      "bytes": 3772,
-      "sha256": "2a6805da7b41b40f367c9354e293c6ab8135cf4b69b49c0dece421729031b041"
+      "bytes": 3999,
+      "sha256": "d53726ee88cb6cce1de5b38d66c3cafde6191da9b747d0f86dff6c4ffd3e63f0"
     },
     {
       "path": "05_project/prompts/executor_v1.md",
@@ -230,6 +255,11 @@
       "sha256": "9eacd6ef9d284891fa8a829ea3aa14937ff9857ea57cbf7ad95f73c775334a24"
     },
     {
+      "path": "05_project/scripts/apply_retrieval_audit_labels.py",
+      "bytes": 4496,
+      "sha256": "e9d9d631fe8cfa2a7e45ba2eab2afb1cb7ed3a3b67d3f05051ec3405e6b0fa93"
+    },
+    {
       "path": "05_project/scripts/audit_g4.py",
       "bytes": 6481,
       "sha256": "6038ff1e2ce12f61debcc2a850bfec431ca42bab0434cf0a733b1c63a2ab3ded"
@@ -241,8 +271,8 @@
     },
     {
       "path": "05_project/scripts/audit_g7.py",
-      "bytes": 6779,
-      "sha256": "7a3a972e8d6cd181b6ee57c523955edc0d7c6f31735e0522b4ae212a3314b7b1"
+      "bytes": 7396,
+      "sha256": "2a092486ca4f81ab069d9a22100a19473fa0331b2046c2324cc359f334c4eceb"
     },
     {
       "path": "05_project/scripts/audit_model_host.py",
@@ -280,19 +310,24 @@
       "sha256": "1fa7fb0915d01a7c93f374a2082ff82e253dc857cf8b3bc44c5b24bdab7ec441"
     },
     {
+      "path": "05_project/scripts/run_component_smoke_suite.py",
+      "bytes": 16325,
+      "sha256": "ee32922bbd4cbb6bef05581bc27a6c3344f997769f5e1c1dc9e80f597f88762d"
+    },
+    {
       "path": "05_project/scripts/run_corruption_stress.py",
       "bytes": 4613,
       "sha256": "c3b06b4517647ee11e647d3dfdd32802c1f4bd2b3fe206a935c90fa141682a39"
     },
     {
       "path": "05_project/scripts/run_frozen_hard_suite.py",
-      "bytes": 27189,
-      "sha256": "69b9fbb892bfc3a85a90d3ac6f4b5c2b129ac3b8b7e67722509fd4ba8078777b"
+      "bytes": 32754,
+      "sha256": "eb20bdd0275b8fbc0e7c59b7388e88a2a2fb1ccd2e83fe89f808f428e1569a84"
     },
     {
       "path": "05_project/scripts/run_frozen_pipeline.ps1",
-      "bytes": 1915,
-      "sha256": "96297f09348998a9545107664a7e45cfddf4e9e6c508cb72d5cb61fd3d4c1bcd"
+      "bytes": 1950,
+      "sha256": "9644e0fcb8e41947878481056b95d98794f42f25ccf8161cdfb16813cc15137b"
     },
     {
       "path": "05_project/scripts/run_g3_dev_suite.py",
@@ -301,23 +336,23 @@
     },
     {
       "path": "05_project/scripts/run_method_dev_suite.py",
-      "bytes": 17736,
-      "sha256": "0045bd8bd8cd83f9d6be507a19e2284a52f5e1eebd32c2d132427c9be4fb4326"
+      "bytes": 23672,
+      "sha256": "cfe5770de33cf742ca6c77cff03b6f48e2c92df34782794936883d5b9dafcac5"
     },
     {
       "path": "05_project/scripts/sample_retrieval_audit.py",
-      "bytes": 9364,
-      "sha256": "bf1c4c459f908b475e47e889184d08d91b5022c8a65be081f06707cd5c58daa9"
+      "bytes": 10894,
+      "sha256": "36e90a9cd8e7a6ab758750c660b75b58b94b92a92554d968277dfad2f89842a1"
     },
     {
       "path": "05_project/scripts/start_frozen_pipeline.ps1",
-      "bytes": 1254,
-      "sha256": "2b9dacb03c1cf05eca88e372b0f6d00b31400df3e9d5210205ddb72b716dfdc1"
+      "bytes": 1951,
+      "sha256": "44e6e271b3b650aa31915392dc8547de835e64de91e2dc920bf48744af4eb9b9"
     },
     {
       "path": "05_project/scripts/start_model_tunnel.ps1",
-      "bytes": 1517,
-      "sha256": "cf90004ad466e2e83c43f2efc7d1b3ea52769caf06cd284144c4b4b4ad6f9185"
+      "bytes": 2044,
+      "sha256": "d7ee92e5dfc8523003d8a29e11dc910ec25f86c83d1da2c532eeaa07061ca643"
     },
     {
       "path": "05_project/scripts/start_model_tunnel_watchdog.ps1",
@@ -326,8 +361,8 @@
     },
     {
       "path": "05_project/scripts/stop_model_tunnel.ps1",
-      "bytes": 806,
-      "sha256": "f70f09894a9094872904915a0b6ba654af2a5741221a937758230393dc686c32"
+      "bytes": 789,
+      "sha256": "859bc20be17f78e231bce35a3fc25fa5b49e0fb69edc7cb4454302b90b661d8e"
     },
     {
       "path": "05_project/scripts/stop_model_tunnel_watchdog.ps1",
@@ -336,8 +371,8 @@
     },
     {
       "path": "05_project/scripts/watch_model_tunnel.ps1",
-      "bytes": 3137,
-      "sha256": "383d444747acf1490712911d3e7440fa1adcc8a015b1fc661af2e11c958504f2"
+      "bytes": 3597,
+      "sha256": "e920f3fade9ae28b27917f6229ff1241835be23f37275a21fb82a2d92f8ae665"
     },
     {
       "path": "05_project/src/raven_m/__init__.py",
@@ -401,13 +436,13 @@
     },
     {
       "path": "05_project/src/raven_m/memory/models.py",
-      "bytes": 7388,
-      "sha256": "22a849936786b1bd3393788833bed499d711a67f8407e5a6f3f9e353189465b8"
+      "bytes": 7417,
+      "sha256": "b124a5bd458019c312bed96885c11ff764c5dd5ad91b4bbacaf5ac8d19bcc989"
     },
     {
       "path": "05_project/src/raven_m/memory/retrieval.py",
-      "bytes": 9573,
-      "sha256": "6440a36aeb04077d4886c4a2f232ad88d44525fb310cff778f94f6e369937089"
+      "bytes": 9838,
+      "sha256": "cb4b4876017010feb2147e0fd0e22bc68386e576e97add0544ef9916a4782d1e"
     },
     {
       "path": "05_project/src/raven_m/memory/store.py",
@@ -426,8 +461,8 @@
     },
     {
       "path": "05_project/src/raven_m/models/transformers_client.py",
-      "bytes": 8448,
-      "sha256": "c2b178e7a2226646d0505343fda6dcc088de0ca55f77f67bf9921dda96a88c83"
+      "bytes": 8662,
+      "sha256": "15f82bfdde5c30d036e2872f9bf66be02a74e43815ea284ea7b09798b2c955ae"
     },
     {
       "path": "05_project/src/raven_m/roles/__init__.py",
@@ -436,8 +471,8 @@
     },
     {
       "path": "05_project/src/raven_m/roles/orchestrator.py",
-      "bytes": 6003,
-      "sha256": "e9bcd52ddf9113cd22dda2f9ebebc81cf36032c0937b801ac7ef5436730be115"
+      "bytes": 6988,
+      "sha256": "4959b11410f7874a6560260310a7a513cbab70f196539b262432ecc7afaa4c0b"
     },
     {
       "path": "06_local_runtime/scripts/androidworld_compat.py",
@@ -451,13 +486,13 @@
     },
     {
       "path": "06_local_runtime/scripts/start_emulator.ps1",
-      "bytes": 1579,
-      "sha256": "da6cb8a661717988bb96f41ad82a4ca4620da673da596065651e9fe4e6aadf0a"
+      "bytes": 2546,
+      "sha256": "03a5aabe0a39cdb3c92f132dc5fbbf4545e2803a5e447307d604ff07b80cee4e"
     },
     {
       "path": "06_local_runtime/scripts/stop_emulator.ps1",
-      "bytes": 202,
-      "sha256": "1e2f0826b029cfb763771fac4324c667ef3610e4f45ad691ebe92b027c29c26a"
+      "bytes": 2252,
+      "sha256": "66054ce086ae1af68f2d6905878146d292f7e0fa6ef287fa68a8b0a871806be9"
     }
   ]
 }
