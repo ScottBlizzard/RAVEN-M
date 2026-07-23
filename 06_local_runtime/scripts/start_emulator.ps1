@@ -41,7 +41,7 @@ do {
     if ($booted -eq "1") {
         & $adb shell input keyevent 82 | Out-Null
         Write-Host "AndroidWorldAvd is ready."
-        exit 0
+        return
     }
     Start-Sleep -Seconds 3
 } while ((Get-Date) -lt $deadline)

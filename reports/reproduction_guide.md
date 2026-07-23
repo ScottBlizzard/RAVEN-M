@@ -79,6 +79,11 @@ Once those freeze artifacts exist, the full sequential launcher is:
 .\05_project\scripts\start_frozen_pipeline.ps1
 ```
 
+The launcher first confirms the model tunnel/watchdog, cold-starts the locked
+no-snapshot AVD, and requires a no-LLM AndroidWorld preflight before it creates
+the background pipeline process. Reinvoking the launcher while that process is
+alive returns without touching the emulator.
+
 It resumes completed result cells and runs:
 
 1. 95 breadth episodes;
