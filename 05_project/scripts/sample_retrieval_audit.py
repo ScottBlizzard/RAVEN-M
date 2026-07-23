@@ -104,6 +104,37 @@ def image_data_url(path: Path) -> str:
     return "data:image/jpeg;base64," + encoded
 
 
+def select_sample(
+    candidates: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    if len(candidates) < SAMPLE_SIZE:
+        raise ValueError(
+            f"Need {SAMPLE_SIZE} non-suppressed routes; found "
+            f"{len(candidates)}."
+        )
+    rng = random.Random(SAMPLE_SEED)
+    by_route: dict[str, list[dict[str, Any]]] = {}
+    for item in candidates:
+        by_route.setdefault(item["route"], []).append(item)
+    selected = []
+    # Guarantee route diversity, then fill from all remaining events.
+    for route in sorted(by_route):
+        group = by_route[route][:]
+        rng.shuffle(group)
+        selected.extend(group[: min(5, len(group))])
+    selected_keys = {
+        (item["episode_id"], item["event_index"]) for item in selected
+    }
+    remainder = [
+        item
+        for item in candidates
+        if (item["episode_id"], item["event_index"]) not in selected_keys
+    ]
+    rng.shuffle(remainder)
+    selected.extend(remainder[: SAMPLE_SIZE - len(selected)])
+    return selected[:SAMPLE_SIZE]
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--suite-dir", type=Path, required=True)
@@ -119,32 +150,10 @@ def main() -> None:
     )
     args = parser.parse_args()
     candidates = collect(args.suite_dir)
-    if len(candidates) < SAMPLE_SIZE:
-        raise SystemExit(
-            f"Need {SAMPLE_SIZE} non-suppressed routes; found "
-            f"{len(candidates)}."
-        )
-    rng = random.Random(SAMPLE_SEED)
-    by_route: dict[str, list[dict[str, Any]]] = {}
-    for item in candidates:
-        by_route.setdefault(item["route"], []).append(item)
-    selected = []
-    # Guarantee route diversity, then fill from all remaining events.
-    for route in sorted(by_route):
-        group = by_route[route]
-        rng.shuffle(group)
-        selected.extend(group[: min(5, len(group))])
-    selected_keys = {
-        (item["episode_id"], item["event_index"]) for item in selected
-    }
-    remainder = [
-        item
-        for item in candidates
-        if (item["episode_id"], item["event_index"]) not in selected_keys
-    ]
-    rng.shuffle(remainder)
-    selected.extend(remainder[: SAMPLE_SIZE - len(selected)])
-    selected = selected[:SAMPLE_SIZE]
+    try:
+        selected = select_sample(candidates)
+    except ValueError as error:
+        raise SystemExit(str(error)) from error
     rows = []
     html_rows = []
     for audit_index, item in enumerate(selected, start=1):

@@ -8,7 +8,11 @@ from datetime import datetime, timezone
 from hashlib import sha256
 import json
 from pathlib import Path
+import sys
 from typing import Any
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from sample_retrieval_audit import collect, select_sample
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -110,6 +114,24 @@ def main() -> None:
         (item["variant"], item["task_name"], item["seed"])
         for item in suite.get("episodes", [])
     )
+    audit_candidates = collect(args.suite_summary.parent)
+    expected_sample = select_sample(audit_candidates)
+    expected_sample_keys = [
+        (
+            item["episode_id"],
+            str(item["event_index"]),
+            item["memory_id"],
+        )
+        for item in expected_sample
+    ]
+    observed_sample_keys = [
+        (
+            row.get("episode_id", ""),
+            row.get("event_index", ""),
+            row.get("memory_id", ""),
+        )
+        for row in rows
+    ]
     checks: dict[str, Any] = {
         "suite_finished": suite.get("finished") is True,
         "non_hard_protocol_identity": (
@@ -136,6 +158,9 @@ def main() -> None:
         "g6_passed": g6["status"] == "passed",
         "corruption_stress_passed": corruption["status"] == "passed",
         "retrieval_sample_exactly_50": len(rows) == 50,
+        "retrieval_sample_deterministic": (
+            observed_sample_keys == expected_sample_keys
+        ),
         "retrieval_labels_complete": (
             not label_errors
             and not fact_errors
@@ -153,6 +178,7 @@ def main() -> None:
         "m0": m0,
         "retrieval_audit": {
             "csv_sha256": sha256(args.retrieval_audit.read_bytes()).hexdigest(),
+            "candidate_count": len(audit_candidates),
             "sample_count": len(rows),
             "utility_yes": utility_yes,
             "utility_rate": utility_rate,
