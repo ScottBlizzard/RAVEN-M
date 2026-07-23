@@ -211,3 +211,19 @@
   evaluators, budgets, or result labels. The scored runner retains its
   preregistered maximum of three infrastructure attempts per identical task
   instance and stops after exhausted or unclassified infrastructure errors.
+
+## 2026-07-24 — Warm emulator required before a clean G7 suite
+
+- **Finding:** v9 retained a first-episode `INFRA_OR_CONTROLLER` after the
+  native Contacts evaluator's ADB content query exceeded 10 seconds. The agent
+  itself completed all ten decisions and the model tunnel remained healthy.
+  One infrastructure episode among five S0 episodes necessarily exceeds the
+  fixed 10% G7 infrastructure ceiling.
+- **Decision:** stop and retain v9, cold-restart the emulator without a
+  snapshot, and require two no-LLM AndroidWorld task initialization/state
+  smokes before v10. The first smoke overlapped Android's post-boot settling;
+  the repeat completed in 42.2 seconds with 116 registered tasks, a valid
+  2400-by-1080 screen, and 19 UI elements.
+- **Consequence:** v10 reruns the same complete non-Hard manifest. No agent,
+  prompt, memory, task, seed, generation, context, evaluator, or budget
+  setting changes. Hard scoring remains forbidden.
