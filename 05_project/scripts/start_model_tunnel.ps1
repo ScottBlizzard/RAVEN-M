@@ -11,7 +11,25 @@ $tempRoot = Join-Path $runtimeRoot "06_local_runtime\temp"
 $pidFile = Join-Path $tempRoot "model_tunnel.pid"
 New-Item -ItemType Directory -Force -Path $tempRoot | Out-Null
 
-$existing = Get-NetTCPConnection -LocalPort $LocalPort -State Listen -ErrorAction SilentlyContinue
+function Test-LocalPort {
+    param([int]$Port)
+    $client = [System.Net.Sockets.TcpClient]::new()
+    try {
+        $task = $client.ConnectAsync("127.0.0.1", $Port)
+        if (-not $task.Wait(250)) {
+            return $false
+        }
+        return $client.Connected
+    }
+    catch {
+        return $false
+    }
+    finally {
+        $client.Dispose()
+    }
+}
+
+$existing = Test-LocalPort -Port $LocalPort
 if (-not $existing) {
     $arguments = @(
         "-N",
@@ -28,7 +46,7 @@ if (-not $existing) {
     $deadline = (Get-Date).AddSeconds(20)
     do {
         Start-Sleep -Milliseconds 250
-        $existing = Get-NetTCPConnection -LocalPort $LocalPort -State Listen -ErrorAction SilentlyContinue
+        $existing = Test-LocalPort -Port $LocalPort
     } while (-not $existing -and (Get-Date) -lt $deadline)
 }
 
