@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+from dataclasses import asdict, is_dataclass
+from enum import Enum
 from hashlib import sha256
 import html
 import json
@@ -35,6 +37,27 @@ def _sha256_file(path: Path) -> str:
     return sha256(path.read_bytes()).hexdigest()
 
 
+def _json_safe(value: Any) -> Any:
+    """Convert AndroidWorld parameter objects into stable JSON values."""
+    if value is None or isinstance(value, (bool, int, float, str)):
+        return value
+    if isinstance(value, Enum):
+        return _json_safe(value.value)
+    if isinstance(value, Path):
+        return str(value)
+    if is_dataclass(value):
+        return _json_safe(asdict(value))
+    if isinstance(value, dict):
+        return {str(key): _json_safe(item) for key, item in value.items()}
+    if isinstance(value, (list, tuple, set)):
+        return [_json_safe(item) for item in value]
+    if hasattr(value, "_asdict"):
+        return _json_safe(value._asdict())
+    if hasattr(value, "__dict__"):
+        return _json_safe(vars(value))
+    return repr(value)
+
+
 class EpisodeLogger:
     def __init__(self, episode_dir: Path) -> None:
         self.episode_dir = episode_dir
@@ -53,6 +76,22 @@ class EpisodeLogger:
         path = self.episode_dir / name
         Image.fromarray(pixels).save(path)
         return path
+
+
+class ModelOutputInvalid(RuntimeError):
+    """Carries both model calls when one repair still fails validation."""
+
+    def __init__(
+        self,
+        *,
+        calls: list[ModelCall],
+        initial_error: str,
+        repair_error: str,
+    ) -> None:
+        super().__init__(repair_error)
+        self.calls = calls
+        self.initial_error = initial_error
+        self.repair_error = repair_error
 
 
 class EpisodeController:
@@ -85,6 +124,8 @@ class EpisodeController:
         screen_height: int,
         previous_outcome: str,
     ) -> str:
+        example_pixel_y = min(438, screen_height - 1)
+        example_normalized_y = example_pixel_y / max(screen_height - 1, 1)
         return "\n".join(
             [
                 f"TASK: {goal}",
@@ -92,7 +133,17 @@ class EpisodeController:
                 f"model calls {model_calls}/{max_model_calls}",
                 f"PREVIOUS_ACTION_AND_OBSERVED_OUTCOME: {previous_outcome}",
                 "MEMORY_CONTEXT: []",
-                "CURRENT_SCREENSHOT: attached image",
+                "TEXT_SAFETY: type_text may contain only a value explicitly "
+                "requested by TASK.",
+                f"CURRENT_SCREENSHOT: attached image; size "
+                f"{screen_width}x{screen_height} pixels.",
+                "COORDINATE_CHECK: JSON coordinates must be normalized decimals "
+                "in [0,1], never pixels. For this image, pixel "
+                f"y={example_pixel_y} becomes y={example_normalized_y:.4f}.",
+                "COMPLETION_CHECK: a visible Save/Move/Done button is not proof "
+                "of completion; execute it and observe the result first.",
+                "LENGTH_CHECK: expected_outcome and decision_summary must each "
+                "be one short sentence under 160 characters.",
                 "Return one action.v1 JSON object now.",
             ]
         )
@@ -109,6 +160,10 @@ class EpisodeController:
             "while choosing the action from the same screenshot.\n"
             f"VALIDATION_ERROR: {error}\n"
             f"INVALID_RESPONSE: {invalid_content}\n"
+            "If a coordinate is above 1, convert it from pixels using "
+            "CURRENT_SCREENSHOT size. If text is too long, shorten it below "
+            "160 characters. status must be continue/done/fail; wait is an "
+            "action type inside status=continue.\n"
             "Return exactly one strict JSON object and no surrounding text."
         )
 
@@ -159,7 +214,14 @@ class EpisodeController:
                 call_label=f"step_{step:03d}_repair",
             )
             calls.append(repaired)
-            parsed = parse_action_response(repaired.content)
+            try:
+                parsed = parse_action_response(repaired.content)
+            except ActionValidationError as repair_error:
+                raise ModelOutputInvalid(
+                    calls=calls,
+                    initial_error=str(initial_error),
+                    repair_error=str(repair_error),
+                ) from repair_error
             return (
                 parsed.decision,
                 calls,
@@ -180,6 +242,8 @@ class EpisodeController:
         episode_id: str,
         episode_dir: Path,
         seed: int,
+        protocol: str = "excluded_protocol_dry_run",
+        variant: str = "B0",
     ) -> dict[str, Any]:
         logger = EpisodeLogger(episode_dir)
         started = _utc_now()
@@ -190,17 +254,19 @@ class EpisodeController:
         evaluator_reward: float | None = None
         task_initialized = False
         error_record: dict[str, Any] | None = None
+        model_output_error: dict[str, Any] | None = None
+        task_params = _json_safe(task.params)
 
         logger.append(
             {
                 "event": "episode_start",
                 "episode_id": episode_id,
-                "protocol": "excluded_protocol_dry_run",
-                "variant": "B0",
+                "protocol": protocol,
+                "variant": variant,
                 "seed": seed,
                 "task_name": task.name,
                 "task_goal": str(task.goal),
-                "task_params": task.params,
+                "task_params": task_params,
                 "max_steps": self.max_steps,
                 "max_model_calls": self.max_model_calls,
             }
@@ -230,14 +296,52 @@ class EpisodeController:
                     screen_height=height,
                     previous_outcome=previous_outcome,
                 )
-                decision, calls, parse_meta = self._call_and_parse(
-                    image_path=before_path,
-                    user_prompt=user_prompt,
-                    episode_id=episode_id,
-                    step=step,
-                    model_call_count=model_call_count,
-                )
+                try:
+                    decision, calls, parse_meta = self._call_and_parse(
+                        image_path=before_path,
+                        user_prompt=user_prompt,
+                        episode_id=episode_id,
+                        step=step,
+                        model_call_count=model_call_count,
+                    )
+                except ModelOutputInvalid as exc:
+                    model_call_count += len(exc.calls)
+                    termination_reason = "model_output_invalid_after_repair"
+                    model_output_error = {
+                        "type": "ActionValidationError",
+                        "initial_validation_error": exc.initial_error,
+                        "repair_validation_error": exc.repair_error,
+                    }
+                    step_record = {
+                        "event": "step",
+                        "step": step,
+                        "before_screenshot": before_path.name,
+                        "before_screenshot_sha256": _sha256_file(before_path),
+                        "screen_size": [width, height],
+                        "user_prompt": user_prompt,
+                        "model_calls": [
+                            call.audit_record() for call in exc.calls
+                        ],
+                        "parse": {
+                            "first_pass": False,
+                            "model_repair_used": True,
+                            "valid_after_one_repair": False,
+                            **model_output_error,
+                        },
+                        "decision": None,
+                        "executed": False,
+                    }
+                    steps.append(step_record)
+                    logger.append(step_record)
+                    logger.append(
+                        {
+                            "event": "model_output_invalid_after_repair",
+                            "error": model_output_error,
+                        }
+                    )
+                    break
                 model_call_count += len(calls)
+                parse_meta["valid_after_one_repair"] = True
                 step_record: dict[str, Any] = {
                     "event": "step",
                     "step": step,
@@ -262,7 +366,22 @@ class EpisodeController:
                     screen_width=width,
                     screen_height=height,
                 )
-                self.adapter.execute(env, mapped)
+                try:
+                    self.adapter.execute(env, mapped)
+                except Exception as exc:
+                    step_record.update(
+                        {
+                            "executed": False,
+                            "mapped_action": mapped.audit_record(),
+                            "execution_error": {
+                                "type": type(exc).__name__,
+                                "message": str(exc),
+                            },
+                        }
+                    )
+                    steps.append(step_record)
+                    logger.append(step_record)
+                    raise
                 state_after = env.get_state(wait_to_stabilize=True)
                 after_path = logger.save_screenshot(
                     state_after.pixels,
@@ -335,10 +454,17 @@ class EpisodeController:
         first_pass_count = sum(
             int(step["parse"]["first_pass"]) for step in steps if "parse" in step
         )
-        decision_count = sum(1 for step in steps if "parse" in step)
+        decision_attempt_count = sum(1 for step in steps if "parse" in step)
+        valid_decision_count = sum(
+            int(step["parse"].get("valid_after_one_repair", True))
+            for step in steps
+            if "parse" in step
+        )
         executed_count = sum(int(step.get("executed", False)) for step in steps)
         if error_record:
             failure_code = "INFRA_OR_CONTROLLER"
+        elif model_output_error:
+            failure_code = "MODEL_OUTPUT_INVALID_AFTER_REPAIR"
         elif evaluator_reward == 1.0:
             failure_code = None
         elif termination_reason == "model_done":
@@ -350,26 +476,31 @@ class EpisodeController:
 
         summary = {
             "episode_id": episode_id,
-            "protocol": "excluded_protocol_dry_run",
-            "variant": "B0",
+            "protocol": protocol,
+            "variant": variant,
             "started_at": started,
             "finished_at": _utc_now(),
             "task_name": task.name,
             "task_goal": str(task.goal),
-            "task_params": task.params,
+            "task_params": task_params,
             "seed": seed,
             "termination_reason": termination_reason,
             "evaluator_reward": evaluator_reward,
             "success": evaluator_reward == 1.0,
             "failure_code": failure_code,
-            "decision_count": decision_count,
+            "decision_count": valid_decision_count,
+            "decision_attempt_count": decision_attempt_count,
+            "valid_after_one_repair_count": valid_decision_count,
             "executed_action_count": executed_count,
             "model_call_count": model_call_count,
             "first_pass_parse_count": first_pass_count,
             "first_pass_parse_rate": (
-                first_pass_count / decision_count if decision_count else None
+                first_pass_count / decision_attempt_count
+                if decision_attempt_count
+                else None
             ),
             "error": error_record,
+            "model_output_error": model_output_error,
             "steps": steps,
         }
         _write_json(episode_dir / "episode.json", summary)

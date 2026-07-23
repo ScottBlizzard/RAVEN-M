@@ -47,3 +47,15 @@
 - **Reason:** the first run exposed Markdown-fence formatting and action-budget
   failures; later runs exposed irrelevant field filling and inconsistent
   completion. They are engineering and mechanism evidence, not scored results.
+
+## 2026-07-23 — G3 passed only after a frozen executor revision
+
+- **Decision:** retain the failed executor-v0 five-task suite, freeze
+  `executor_v1.md`, and rerun the same non-Hard task classes, seeds and budgets
+  in a separate suite.
+- **Evidence:** normalized v0 rates were 40/54 (74.07%) first-pass and 51/54
+  (94.44%) after one repair. V1 reached 52/55 (94.55%) and 55/55 (100%),
+  respectively, with zero infrastructure errors.
+- **Consequence:** G3 is passed by executor v1. The 2/5 evaluator success rate
+  is exploratory and exposes remaining strategy errors; it is not a Hard
+  benchmark result. Scored Hard runs remain forbidden until preregistration.

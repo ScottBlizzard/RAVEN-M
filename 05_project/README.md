@@ -86,6 +86,32 @@ all scored results. Every episode records model/revision/backend hashes,
 first-pass and repaired action validity, normalized and pixel coordinates,
 official evaluator output, teardown and reset.
 
+## G3 non-Hard development suite
+
+Run or resume the frozen executor-v1 G3 suite:
+
+```powershell
+.\05_project\scripts\start_g3_dev_suite.ps1 `
+  -SuiteId g3_b0_executor_v1_20260723 `
+  -Manifest D:\ZJU\Summer_Camp\RAVEN-M-Research\05_project\configs\task_manifests\dev_nonhard_v2.json
+```
+
+Rebuild the aggregate without reconnecting AndroidWorld:
+
+```powershell
+$python = ".\06_local_runtime\envs\androidworld\Scripts\python.exe"
+$adb = ".\06_local_runtime\android\sdk\platform-tools\adb.exe"
+& $python .\05_project\scripts\run_g3_dev_suite.py `
+  --adb-path $adb `
+  --suite-id g3_b0_executor_v1_20260723 `
+  --manifest .\05_project\configs\task_manifests\dev_nonhard_v2.json `
+  --aggregate-only
+```
+
+This is development-only. Raw G3 trajectories remain under
+`runs/dev_nonhard_g3/` and are excluded from Git and scored results. The
+measured gate report is `reports/g3_dev_gate.md`.
+
 The first reference backend is frozen at an 8,192-token total context cap after
 ten consecutive 7,704-token multimodal requests passed without OOM. See
 `05_project/metadata/model_max_shape_stress.json` and

@@ -1,6 +1,6 @@
 schema_version: 1
-generated_at: 2026-07-23T15:15:23+08:00
-status: b0_end_to_end_dry_run_passed
+generated_at: 2026-07-23T18:21:06+08:00
+status: g3_dev_gate_passed_executor_v1
 scored_runs_permitted: false
 
 android_host:
@@ -122,11 +122,22 @@ gates:
     first_pass_json_rate: 0.8
     repaired_json_rate: 1.0
   action_contract_dev_check:
-    status: provisional_pass
-    episode_id: b0_ContactsAddContact_20260723T145005_77952eef
-    decisions: 10
-    first_pass_json_rate: 0.9
+    status: passed
+    suite_id: g3_b0_executor_v1_20260723
+    task_classes: 5
+    episodes: 5
+    decision_attempts: 55
+    first_pass_json_rate: 0.9454545454545454
     repaired_json_rate: 1.0
-    note: full_g3_requires_at_least_50_dev_decisions
+    evaluator_success_rate: 0.4
+    infrastructure_errors: 0
+    model_calls: 58
+    mean_latency_seconds: 8.791269484907389
+    p90_latency_seconds: 10.206033727154136
+    max_peak_vram_bytes: 19554077184
+    prompt: executor_v1
+    manifest_sha256: 099b1d8f8fbc3c950594e9ce78a3ae9fe0ae8c4e96a758cdd53c73592f796a85
+    prompt_sha256: 9285f4b19d799ef25b0d245d10a79d76297ab240a62e6d3c15b56ae5d419b2b7
+    note: non_hard_development_gate_only
   hard_protocol_frozen: pending
   hard_scored_runs: forbidden_until_model_and_protocol_gates_pass

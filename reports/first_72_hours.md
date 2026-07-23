@@ -100,7 +100,8 @@ The reference context cap is therefore frozen at 8,192.
 
 ## Next gate
 
-Run five non-Hard B0 development episodes spanning at least 50 decisions, report
-first-pass and repaired JSON rates, invalid infrastructure rate, p50/p90
-latency, resets and evaluator completion. Then implement B1/B2/B3 and freeze the
-19-task protocol. Do not start scored Hard runs or memory implementation yet.
+G3 was subsequently completed with executor v1: five non-Hard tasks, 55
+decisions, 94.55% first-pass validity, 100% after one repair, zero
+infrastructure errors, and 2/5 evaluator successes. See
+`reports/g3_dev_gate.md`. Next implement B1/B2/B3 and freeze the 19-task
+protocol. Do not start scored Hard runs or memory implementation yet.
