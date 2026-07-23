@@ -13,11 +13,10 @@ if (Test-Path -LiteralPath $pidFile) {
     Remove-Item -LiteralPath $pidFile -Force
 }
 else {
-    $listeners = Get-NetTCPConnection -LocalPort $LocalPort -State Listen -ErrorAction SilentlyContinue
-    foreach ($listener in $listeners) {
-        $process = Get-Process -Id $listener.OwningProcess -ErrorAction SilentlyContinue
-        if ($process -and $process.ProcessName -eq "ssh") {
-            Stop-Process -Id $process.Id
-        }
+    $forwardPattern = "(^|\s)$([regex]::Escape([string]$LocalPort)):127\.0\.0\.1:"
+    $tunnels = Get-CimInstance Win32_Process -Filter "Name='ssh.exe'" |
+        Where-Object { $_.CommandLine -match $forwardPattern }
+    foreach ($tunnel in $tunnels) {
+        Stop-Process -Id $tunnel.ProcessId -ErrorAction SilentlyContinue
     }
 }
