@@ -1,0 +1,25 @@
+{
+  "manifest_id": "component_smoke_v1",
+  "protocol": "component_smoke_non_hard",
+  "task": "ContactsAddContact",
+  "seed": 20260723,
+  "max_steps": 10,
+  "variants": [
+    "MREL",
+    "MNO_WM",
+    "MNO_VEL",
+    "MNO_FRM",
+    "MNO_PSI",
+    "MNO_CRITIC",
+    "B3_CTX",
+    "B3_CALL"
+  ],
+  "acceptance": {
+    "exact_episode_count": 8,
+    "context_cap_tokens": 8192,
+    "max_new_tokens": 256,
+    "infrastructure_or_controller_errors": 0,
+    "memory_invariant_errors": 0,
+    "role_output_errors": 0
+  }
+}

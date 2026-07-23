@@ -64,6 +64,11 @@ def main() -> None:
             encoding="utf-8"
         )
     )
+    component_smoke = json.loads(
+        (PROJECT_ROOT / "metadata/component_smoke_audit.json").read_text(
+            encoding="utf-8"
+        )
+    )
     with args.retrieval_audit.open(
         encoding="utf-8",
         newline="",
@@ -157,6 +162,11 @@ def main() -> None:
         "context_cap_respected": m0["context_cap_respected"] is True,
         "g6_passed": g6["status"] == "passed",
         "corruption_stress_passed": corruption["status"] == "passed",
+        "all_component_paths_smoke_passed": (
+            component_smoke.get("status") == "passed"
+            and component_smoke.get("manifest_id") == "component_smoke_v1"
+            and len(component_smoke.get("results", [])) == 8
+        ),
         "retrieval_sample_exactly_50": len(rows) == 50,
         "retrieval_sample_deterministic": (
             observed_sample_keys == expected_sample_keys

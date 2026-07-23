@@ -57,6 +57,8 @@ After it finishes, create the fixed 50-event review packet, complete its manual
 labels, and run:
 
 ```powershell
+& $python .\05_project\scripts\run_component_smoke_suite.py `
+  --adb-path .\06_local_runtime\android\sdk\platform-tools\adb.exe
 & $python .\05_project\scripts\sample_retrieval_audit.py `
   --suite-dir .\runs\method_dev_g6_g7\method_dev_g6_g7_v10_20260724
 & $python .\05_project\scripts\audit_g7.py `
