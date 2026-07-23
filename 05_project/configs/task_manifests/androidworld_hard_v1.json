@@ -1,0 +1,50 @@
+{
+  "manifest_id": "androidworld_hard_v1",
+  "status": "draft_pending_g7_method_freeze",
+  "created_at": "2026-07-23T19:10:00+08:00",
+  "source": {
+    "repo_url": "https://github.com/google-research/android_world",
+    "git_commit": "3e50888527ef9f29b9157ecd537e408008bb1c85",
+    "task_list_snapshot": "01_sources/official/androidworld/task_list.html",
+    "task_list_snapshot_sha256": "34e72b16bc2d09bbe0634ec9db8ab8709447593ee02bc6b3e5682a8e7f425d7f"
+  },
+  "hard_definition": {
+    "rule": "difficulty field equals hard in the frozen official task-list snapshot",
+    "count": 19
+  },
+  "native_budget_rule": {
+    "source": "android_world.suite_utils._allocate_step_budget",
+    "formula": "int(10 * task.complexity)",
+    "outcome_adaptive": false
+  },
+  "protocol": {
+    "instance_seeds": [20260720, 20260721, 20260722],
+    "model_temperature": 0.0,
+    "invalid_reruns_max": 2,
+    "evaluator_visible_to_agent": false,
+    "context_cap_tokens": 8192,
+    "max_new_tokens": 256,
+    "prompt_freeze_tag": "protocol-v1"
+  },
+  "tasks": [
+    {"id":"H01","class_name":"BrowserMultiply","difficulty":"hard","optimal_steps_from_task_list":11,"complexity":2.2,"native_max_steps":22,"tags":["browser","arithmetic","variable_retention"]},
+    {"id":"H02","class_name":"ExpenseAddMultipleFromGallery","difficulty":"hard","optimal_steps_from_task_list":10,"complexity":6.0,"native_max_steps":60,"tags":["gallery","expense","multi_item"]},
+    {"id":"H03","class_name":"ExpenseAddMultipleFromMarkor","difficulty":"hard","optimal_steps_from_task_list":15,"complexity":6.0,"native_max_steps":60,"tags":["cross_app","note_to_expense","multi_item"]},
+    {"id":"H04","class_name":"ExpenseDeleteMultiple2","difficulty":"hard","optimal_steps_from_task_list":17,"complexity":3.4,"native_max_steps":34,"tags":["multi_delete","constraint"]},
+    {"id":"H05","class_name":"MarkorCreateNoteAndSms","difficulty":"hard","optimal_steps_from_task_list":9,"complexity":1.8,"native_max_steps":18,"tags":["cross_app","note","sms"]},
+    {"id":"H06","class_name":"MarkorMergeNotes","difficulty":"hard","optimal_steps_from_task_list":39,"complexity":7.8,"native_max_steps":78,"tags":["long_editing","intermediate_content"]},
+    {"id":"H07","class_name":"MarkorTranscribeVideo","difficulty":"hard","optimal_steps_from_task_list":10,"complexity":2.0,"native_max_steps":20,"tags":["gallery","video","note"]},
+    {"id":"H08","class_name":"OsmAndMarker","difficulty":"hard","optimal_steps_from_task_list":10,"complexity":2.0,"native_max_steps":20,"tags":["map","spatial_state"]},
+    {"id":"H09","class_name":"OsmAndTrack","difficulty":"hard","optimal_steps_from_task_list":60,"complexity":12.0,"native_max_steps":120,"tags":["very_long","navigation","stateful_tracking"]},
+    {"id":"H10","class_name":"RecipeAddMultipleRecipesFromImage","difficulty":"hard","optimal_steps_from_task_list":13,"complexity":6.0,"native_max_steps":60,"tags":["image","structured_multi_item"]},
+    {"id":"H11","class_name":"RecipeAddMultipleRecipesFromMarkor","difficulty":"hard","optimal_steps_from_task_list":24,"complexity":6.0,"native_max_steps":60,"tags":["cross_app","long_structured_entry"]},
+    {"id":"H12","class_name":"RecipeAddMultipleRecipesFromMarkor2","difficulty":"hard","optimal_steps_from_task_list":26,"complexity":6.0,"native_max_steps":60,"tags":["cross_app","long_structured_entry"]},
+    {"id":"H13","class_name":"RecipeDeleteMultipleRecipesWithConstraint","difficulty":"hard","optimal_steps_from_task_list":20,"complexity":4.0,"native_max_steps":40,"tags":["constraint_filtering","multi_delete"]},
+    {"id":"H14","class_name":"RetroSavePlaylist","difficulty":"hard","optimal_steps_from_task_list":25,"complexity":5.0,"native_max_steps":50,"tags":["media","multi_selection"]},
+    {"id":"H15","class_name":"SaveCopyOfReceiptTaskEval","difficulty":"hard","optimal_steps_from_task_list":8,"complexity":1.6,"native_max_steps":16,"tags":["receipt","file_state_verification"]},
+    {"id":"H16","class_name":"SimpleCalendarAddOneEvent","difficulty":"hard","optimal_steps_from_task_list":17,"complexity":3.4,"native_max_steps":34,"tags":["calendar","multi_field_state"]},
+    {"id":"H17","class_name":"SportsTrackerActivitiesOnDate","difficulty":"hard","optimal_steps_from_task_list":10,"complexity":2.0,"native_max_steps":20,"tags":["date_query","aggregation"]},
+    {"id":"H18","class_name":"SportsTrackerTotalDistanceForCategoryOverInterval","difficulty":"hard","optimal_steps_from_task_list":11,"complexity":2.2,"native_max_steps":22,"tags":["interval","calculation","variable_retention"]},
+    {"id":"H19","class_name":"SportsTrackerTotalDurationForCategoryThisWeek","difficulty":"hard","optimal_steps_from_task_list":8,"complexity":1.6,"native_max_steps":16,"tags":["weekly_aggregation","variable_retention"]}
+  ]
+}

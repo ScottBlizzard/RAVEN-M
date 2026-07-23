@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://eaglelab.example/raven-m/critic.v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "verdict",
+    "issue",
+    "recommended_constraint",
+    "memory_ids"
+  ],
+  "properties": {
+    "schema_version": {"const": "critic.v1"},
+    "verdict": {
+      "enum": ["proceed", "reobserve", "recover", "reject_completion"]
+    },
+    "issue": {"type": "string", "maxLength": 500},
+    "recommended_constraint": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+    },
+    "memory_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "maxItems": 16,
+      "items": {"type": "string", "pattern": "^[mf]_[0-9]{4,}$"}
+    }
+  }
+}

@@ -1,0 +1,216 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://eaglelab.example/raven-m/action.raven.v1.schema.json",
+  "title": "RAVEN-M memory-aware mobile action v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "status",
+    "action",
+    "expected_outcome",
+    "decision_summary",
+    "state_delta",
+    "memory_citations"
+  ],
+  "properties": {
+    "status": {"enum": ["continue", "done", "fail"]},
+    "action": {
+      "oneOf": [
+        {"type": "null"},
+        {"$ref": "#/$defs/action"}
+      ]
+    },
+    "expected_outcome": {"type": "string", "maxLength": 240},
+    "decision_summary": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 240
+    },
+    "state_delta": {
+      "type": "array",
+      "maxItems": 8,
+      "items": {"$ref": "#/$defs/state_delta"}
+    },
+    "memory_citations": {
+      "type": "array",
+      "maxItems": 16,
+      "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^[mf]_[0-9]{4,}$"}
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"status": {"const": "continue"}},
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "action": {"$ref": "#/$defs/action"}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"status": {"enum": ["done", "fail"]}},
+        "required": ["status"]
+      },
+      "then": {"properties": {"action": {"type": "null"}}}
+    }
+  ],
+  "$defs": {
+    "coordinate": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    "action": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "x", "y"],
+          "properties": {
+            "type": {"const": "tap"},
+            "x": {"$ref": "#/$defs/coordinate"},
+            "y": {"$ref": "#/$defs/coordinate"}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "x", "y", "duration_ms"],
+          "properties": {
+            "type": {"const": "long_press"},
+            "x": {"$ref": "#/$defs/coordinate"},
+            "y": {"$ref": "#/$defs/coordinate"},
+            "duration_ms": {
+              "type": "integer",
+              "minimum": 300,
+              "maximum": 3000
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "x", "y", "x2", "y2", "duration_ms"],
+          "properties": {
+            "type": {"const": "swipe"},
+            "x": {"$ref": "#/$defs/coordinate"},
+            "y": {"$ref": "#/$defs/coordinate"},
+            "x2": {"$ref": "#/$defs/coordinate"},
+            "y2": {"$ref": "#/$defs/coordinate"},
+            "duration_ms": {
+              "type": "integer",
+              "minimum": 100,
+              "maximum": 3000
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "text"],
+          "properties": {
+            "type": {"const": "type_text"},
+            "text": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000
+            },
+            "x": {"$ref": "#/$defs/coordinate"},
+            "y": {"$ref": "#/$defs/coordinate"},
+            "clear_text": {"type": "boolean"}
+          },
+          "dependentRequired": {
+            "x": ["y"],
+            "y": ["x"]
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type"],
+          "properties": {
+            "type": {
+              "enum": ["press_back", "press_home", "press_enter"]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "app_name"],
+          "properties": {
+            "type": {"const": "open_app"},
+            "app_name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "duration_ms"],
+          "properties": {
+            "type": {"const": "wait"},
+            "duration_ms": {
+              "type": "integer",
+              "minimum": 250,
+              "maximum": 5000
+            }
+          }
+        }
+      ]
+    },
+    "state_delta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "subject",
+        "predicate",
+        "object",
+        "natural_language",
+        "evidence"
+      ],
+      "properties": {
+        "kind": {
+          "enum": ["fact", "progress", "failure", "page_hypothesis"]
+        },
+        "subject": {"type": "string", "minLength": 1, "maxLength": 120},
+        "predicate": {"type": "string", "minLength": 1, "maxLength": 120},
+        "object": {},
+        "natural_language": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "evidence": {
+          "enum": ["direct_screen", "action_outcome", "inference"]
+        },
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "subgoal_id": {"type": ["string", "null"]},
+        "app_id_observed": {"type": ["string", "null"]},
+        "preconditions": {
+          "type": "array",
+          "maxItems": 8,
+          "items": {"type": "string"}
+        },
+        "expires_on": {
+          "type": "array",
+          "maxItems": 8,
+          "items": {"type": "string"}
+        },
+        "supports_completion_requirements": {
+          "type": "array",
+          "maxItems": 8,
+          "items": {"type": "string"}
+        }
+      }
+    }
+  }
+}

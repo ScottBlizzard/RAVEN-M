@@ -1,0 +1,8 @@
+variant: B1
+history_policy: sliding_window
+window_steps: 3
+history_thumbnail_long_side_px: 384
+executor_calls_per_step: 1
+summary_trigger_steps: null
+context_cap_tokens: 8192
+prompt: prompts/executor_v1.md

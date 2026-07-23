@@ -20,3 +20,4 @@ def test_b0_prompt_excludes_hidden_state_and_memory() -> None:
     assert "1080x2400" in prompt
     assert "y=438 becomes y=0.1826" in prompt
     assert "visible Save/Move/Done button is not proof" in prompt
+    assert "schema named in the system prompt" in prompt

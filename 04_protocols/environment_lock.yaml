@@ -1,6 +1,6 @@
 schema_version: 1
 generated_at: 2026-07-23T18:21:06+08:00
-status: g3_dev_gate_passed_executor_v1
+status: g4_baseline_family_passed_method_dev_in_progress
 scored_runs_permitted: false
 
 android_host:
@@ -139,5 +139,37 @@ gates:
     manifest_sha256: 099b1d8f8fbc3c950594e9ce78a3ae9fe0ae8c4e96a758cdd53c73592f796a85
     prompt_sha256: 9285f4b19d799ef25b0d245d10a79d76297ab240a62e6d3c15b56ae5d419b2b7
     note: non_hard_development_gate_only
+  baseline_family_dev_check:
+    status: passed
+    suite_id: baseline_dev_g4_20260723
+    b0_episode_count: 5
+    b1_episode_count: 2
+    b2_episode_count: 2
+    b3_episode_count: 5
+    b1_first_pass_json_rate: 0.95
+    b2_first_pass_json_rate: 1.0
+    b3_first_pass_json_rate: 0.9807692307692307
+    repaired_json_rate_all_history_variants: 1.0
+    infrastructure_errors: 0
+    max_prompt_tokens:
+      b1: 4327
+      b2: 5567
+      b3: 4410
+    g4_audit: passed
+    reset_lifecycle_runs: 9
+    runtime_asset_count: 19
+    runtime_asset_records_sha256: 1228d91ff101b9acf7e0d2e61a73e4b2b95e442b9e3a231da5da0d8e7caf2b8b
+    note: non_hard_development_gate_only
+  inspectable_memory_unit_gate:
+    status: passed
+    tests: 44
+    scope: schemas_lifecycle_replay_routing_roles_completion_guard_provenance_page_hint
+  full_method_dev_check:
+    status: running
+    suite_id: method_dev_g6_g7_v3_20260723
+    retained_failed_dev_suites:
+      - method_dev_g6_g7_20260723
+      - method_dev_g6_g7_v2_20260723
+    note: v1_exposed_action_schema_prompt_ambiguity_v2_exposed_one_frame_provenance_binding
   hard_protocol_frozen: pending
   hard_scored_runs: forbidden_until_model_and_protocol_gates_pass

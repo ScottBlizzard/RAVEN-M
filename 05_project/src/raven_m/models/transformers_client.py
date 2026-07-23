@@ -24,6 +24,7 @@ class ModelCall:
     episode_id: str
     idempotency_key: str
     image_sha256: str
+    image_sha256s: tuple[str, ...]
     prompt_sha256: str
     request_sha256: str
     response_sha256: str
@@ -37,6 +38,7 @@ class ModelCall:
             "episode_id": self.episode_id,
             "idempotency_key": self.idempotency_key,
             "image_sha256": self.image_sha256,
+            "image_sha256s": list(self.image_sha256s),
             "prompt_sha256": self.prompt_sha256,
             "request_sha256": self.request_sha256,
             "response_sha256": self.response_sha256,
@@ -86,31 +88,65 @@ class TransformersClient:
         episode_id: str,
         call_label: str,
         max_tokens: int = 256,
+        context_images: list[tuple[str, Path]] | None = None,
     ) -> ModelCall:
-        raw_image = image_path.read_bytes()
-        image_sha = sha256(raw_image).hexdigest()
-        media_type = (
-            "image/png"
-            if image_path.suffix.lower() == ".png"
-            else "image/jpeg"
-        )
-        encoded = base64.b64encode(raw_image).decode("ascii")
+        def encoded_image(path: Path) -> tuple[str, str, str]:
+            raw = path.read_bytes()
+            digest = sha256(raw).hexdigest()
+            media = (
+                "image/png"
+                if path.suffix.lower() == ".png"
+                else "image/jpeg"
+            )
+            return digest, media, base64.b64encode(raw).decode("ascii")
+
+        context_images = context_images or []
+        encoded_context = [
+            (label, *encoded_image(path)) for label, path in context_images
+        ]
+        image_sha, media_type, encoded = encoded_image(image_path)
+        all_image_hashes = tuple(
+            item[1] for item in encoded_context
+        ) + (image_sha,)
         prompt_sha = sha256(
             (system_prompt + "\n\0\n" + user_prompt).encode("utf-8")
         ).hexdigest()
+        user_content: list[dict[str, Any]] = []
+        for label, _, history_media_type, history_encoded in encoded_context:
+            user_content.extend(
+                [
+                    {
+                        "type": "text",
+                        "text": f"HISTORICAL_SCREENSHOT: {label}",
+                    },
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": (
+                                f"data:{history_media_type};base64,"
+                                f"{history_encoded}"
+                            )
+                        },
+                    },
+                ]
+            )
+        user_content.extend(
+            [
+                {"type": "text", "text": "CURRENT_SCREENSHOT:"},
+                {
+                    "type": "image_url",
+                    "image_url": {
+                        "url": f"data:{media_type};base64,{encoded}"
+                    },
+                },
+                {"type": "text", "text": user_prompt},
+            ]
+        )
         messages = [
             {"role": "system", "content": system_prompt},
             {
                 "role": "user",
-                "content": [
-                    {
-                        "type": "image_url",
-                        "image_url": {
-                            "url": f"data:{media_type};base64,{encoded}"
-                        },
-                    },
-                    {"type": "text", "text": user_prompt},
-                ],
+                "content": user_content,
             },
         ]
         payload = {
@@ -126,6 +162,10 @@ class TransformersClient:
                     "system_prompt": system_prompt,
                     "user_prompt": user_prompt,
                     "image_sha256": image_sha,
+                    "all_image_sha256": all_image_hashes,
+                    "context_image_labels": [
+                        label for label, _ in context_images
+                    ],
                     "max_tokens": max_tokens,
                     "temperature": 0,
                 },
@@ -177,7 +217,7 @@ class TransformersClient:
             raise RuntimeError("Model service did not echo the episode ID.")
         if meta.get("idempotency_key") != idempotency_key:
             raise RuntimeError("Model service did not echo the idempotency key.")
-        if meta.get("image_sha256") != [image_sha]:
+        if meta.get("image_sha256") != list(all_image_hashes):
             raise RuntimeError("Model service image hash mismatch.")
         if meta.get("model_revision") != MODEL_REVISION:
             raise RuntimeError("Model service revision drift detected.")
@@ -189,6 +229,7 @@ class TransformersClient:
             episode_id=episode_id,
             idempotency_key=idempotency_key,
             image_sha256=image_sha,
+            image_sha256s=all_image_hashes,
             prompt_sha256=prompt_sha,
             request_sha256=request_sha,
             response_sha256=sha256(content.encode("utf-8")).hexdigest(),

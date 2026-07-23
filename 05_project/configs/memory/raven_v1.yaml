@@ -1,0 +1,43 @@
+schema_version: raven_memory_config.v1
+status: dev_only_pending_G7_freeze
+scope: episode_only
+reliability_aware: true
+weights:
+  verification: 0.25
+  outcome: 0.20
+  provenance: 0.15
+  context: 0.20
+  recency: 0.10
+penalties:
+  contradiction: 0.45
+  stale: 0.20
+  unsafe_failure_transfer: 0.15
+retrieval_weights:
+  relevance: 0.20
+  subgoal: 0.15
+  page: 0.15
+  recency: 0.10
+  reliability: 0.40
+  contradiction: 0.40
+  stale: 0.20
+thresholds:
+  fact: 0.75
+  hypothesis: 0.45
+  retrieve_min: 0.30
+  alert_min: 0.20
+recency_tau_steps:
+  working: 3
+  episodic_fact: 20
+  failure: 12
+  page_hint: 25
+prompt_budget:
+  total_tokens: 3000
+  quotas:
+    working: 3
+    episodic_fact: 8
+    failure: 2
+    page_hint: 2
+leakage:
+  allow_cross_episode: false
+  allow_evaluator_input: false
+  allow_hard_trajectory_reuse: false

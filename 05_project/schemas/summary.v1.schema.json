@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://eaglelab.example/raven-m/summary.v1.schema.json",
+  "title": "Simple history summary baseline v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["summary", "completed", "pending"],
+  "properties": {
+    "summary": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1200
+    },
+    "completed": {
+      "type": "array",
+      "maxItems": 12,
+      "items": {"type": "string", "maxLength": 160}
+    },
+    "pending": {
+      "type": "array",
+      "maxItems": 12,
+      "items": {"type": "string", "maxLength": 160}
+    }
+  }
+}

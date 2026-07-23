@@ -1,0 +1,155 @@
+{
+  "b0_episode_count": 5,
+  "b0_suite_id": "g3_b0_executor_v1_20260723",
+  "checks": {
+    "context_cap": "prompt_tokens + 256 <= 8192 for every call",
+    "cross_episode_leakage": "other episode IDs absent from prompts",
+    "evaluator_leakage": "forbidden evaluator fields absent from prompts",
+    "history_images": "every referenced image exists in episode dir",
+    "repair_limit": "at most one repair per executor/history decision",
+    "summary_trigger": "B3 only at completed steps 5, 10, ..."
+  },
+  "episodes": [
+    {
+      "decision_attempt_count": 9,
+      "episode_id": "baseline_dev_g4_20260723_01_B1_ContactsAddContact_seed20260723",
+      "history_model_call_count": 0,
+      "max_prompt_tokens": 4327,
+      "model_call_count": 9,
+      "success": true,
+      "variant": "B1"
+    },
+    {
+      "decision_attempt_count": 11,
+      "episode_id": "baseline_dev_g4_20260723_02_B1_MarkorCreateNote_seed20260726",
+      "history_model_call_count": 0,
+      "max_prompt_tokens": 4300,
+      "model_call_count": 12,
+      "success": true,
+      "variant": "B1"
+    },
+    {
+      "decision_attempt_count": 10,
+      "episode_id": "baseline_dev_g4_20260723_03_B2_ContactsAddContact_seed20260723",
+      "history_model_call_count": 0,
+      "max_prompt_tokens": 5567,
+      "model_call_count": 10,
+      "success": true,
+      "variant": "B2"
+    },
+    {
+      "decision_attempt_count": 7,
+      "episode_id": "baseline_dev_g4_20260723_04_B2_MarkorCreateNote_seed20260726",
+      "history_model_call_count": 0,
+      "max_prompt_tokens": 4983,
+      "model_call_count": 7,
+      "success": true,
+      "variant": "B2"
+    },
+    {
+      "decision_attempt_count": 9,
+      "episode_id": "baseline_dev_g4_20260723_05_B3_ContactsAddContact_seed20260723",
+      "history_model_call_count": 1,
+      "max_prompt_tokens": 4216,
+      "model_call_count": 10,
+      "success": true,
+      "variant": "B3"
+    },
+    {
+      "decision_attempt_count": 10,
+      "episode_id": "baseline_dev_g4_20260723_06_B3_ClockTimerEntry_seed20260724",
+      "history_model_call_count": 1,
+      "max_prompt_tokens": 4205,
+      "model_call_count": 11,
+      "success": false,
+      "variant": "B3"
+    },
+    {
+      "decision_attempt_count": 10,
+      "episode_id": "baseline_dev_g4_20260723_07_B3_ExpenseAddSingle_seed20260725",
+      "history_model_call_count": 1,
+      "max_prompt_tokens": 4410,
+      "model_call_count": 12,
+      "success": true,
+      "variant": "B3"
+    },
+    {
+      "decision_attempt_count": 9,
+      "episode_id": "baseline_dev_g4_20260723_08_B3_MarkorCreateNote_seed20260726",
+      "history_model_call_count": 1,
+      "max_prompt_tokens": 4055,
+      "model_call_count": 10,
+      "success": true,
+      "variant": "B3"
+    },
+    {
+      "decision_attempt_count": 14,
+      "episode_id": "baseline_dev_g4_20260723_09_B3_FilesMoveFile_seed20260727",
+      "history_model_call_count": 2,
+      "max_prompt_tokens": 4199,
+      "model_call_count": 16,
+      "success": false,
+      "variant": "B3"
+    }
+  ],
+  "errors": [],
+  "g4_suite_id": "baseline_dev_g4_20260723",
+  "generated_at": "2026-07-23T11:48:55.911918+00:00",
+  "history_episode_count": 9,
+  "reset_lifecycle_runs": 9,
+  "schema_version": 1,
+  "status": "passed",
+  "variant_results": {
+    "B1": {
+      "acceptance_passed": true,
+      "context_cap_respected": true,
+      "decision_attempt_count": 20,
+      "episode_count": 2,
+      "executor_model_call_count": 21,
+      "first_pass_parse_count": 19,
+      "first_pass_parse_rate": 0.95,
+      "history_model_call_count": 0,
+      "infrastructure_error_count": 0,
+      "infrastructure_error_rate": 0.0,
+      "max_prompt_tokens": 4327,
+      "model_call_count": 21,
+      "successful_episode_count": 2,
+      "valid_after_one_repair_count": 20,
+      "valid_after_one_repair_rate": 1.0
+    },
+    "B2": {
+      "acceptance_passed": true,
+      "context_cap_respected": true,
+      "decision_attempt_count": 17,
+      "episode_count": 2,
+      "executor_model_call_count": 17,
+      "first_pass_parse_count": 17,
+      "first_pass_parse_rate": 1.0,
+      "history_model_call_count": 0,
+      "infrastructure_error_count": 0,
+      "infrastructure_error_rate": 0.0,
+      "max_prompt_tokens": 5567,
+      "model_call_count": 17,
+      "successful_episode_count": 2,
+      "valid_after_one_repair_count": 17,
+      "valid_after_one_repair_rate": 1.0
+    },
+    "B3": {
+      "acceptance_passed": true,
+      "context_cap_respected": true,
+      "decision_attempt_count": 52,
+      "episode_count": 5,
+      "executor_model_call_count": 53,
+      "first_pass_parse_count": 51,
+      "first_pass_parse_rate": 0.9807692307692307,
+      "history_model_call_count": 6,
+      "infrastructure_error_count": 0,
+      "infrastructure_error_rate": 0.0,
+      "max_prompt_tokens": 4410,
+      "model_call_count": 59,
+      "successful_episode_count": 3,
+      "valid_after_one_repair_count": 52,
+      "valid_after_one_repair_rate": 1.0
+    }
+  }
+}

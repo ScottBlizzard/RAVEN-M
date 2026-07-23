@@ -1,0 +1,9 @@
+variant: B3
+history_policy: simple_llm_summary
+summary_trigger_steps: 5
+keep_recent_steps: 2
+history_thumbnail_long_side_px: 384
+executor_calls_per_step: 1
+summary_prompt: prompts/summary_v1.md
+context_cap_tokens: 8192
+prompt: prompts/executor_v1.md

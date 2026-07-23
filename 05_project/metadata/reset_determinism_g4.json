@@ -1,0 +1,163 @@
+{
+  "acceptance": "goal, generated parameters, and post-reset home screen hashes must be stable for 3 tasks x 3 repeats",
+  "generated_at": "2026-07-23T11:42:47.673117+00:00",
+  "per_task": {
+    "ClockTimerEntry": {
+      "goal_hash_stable": true,
+      "initial_screen_hash_stable": false,
+      "params_hash_stable": true,
+      "post_reset_screen_hash_stable": false,
+      "repeats": 3,
+      "seed": 20260724
+    },
+    "ContactsAddContact": {
+      "goal_hash_stable": true,
+      "initial_screen_hash_stable": false,
+      "params_hash_stable": true,
+      "post_reset_screen_hash_stable": false,
+      "repeats": 3,
+      "seed": 20260723
+    },
+    "MarkorCreateNote": {
+      "goal_hash_stable": true,
+      "initial_screen_hash_stable": false,
+      "params_hash_stable": true,
+      "post_reset_screen_hash_stable": false,
+      "repeats": 3,
+      "seed": 20260726
+    }
+  },
+  "records": [
+    {
+      "goal": "Create a new contact for Ian Zhang. Their number is +15180612698.",
+      "goal_sha256": "99289672cc9401ee0db776b2b9dc979e61ce9ddf0498b677daca093a5efe5849",
+      "initial_screen_sha256": "d7522386f886f824ee08cdf0030ec3546340fd1cffbc5fe8a1c58c18e9a3f249",
+      "params": {
+        "name": "Ian Zhang",
+        "number": "+15180612698"
+      },
+      "params_sha256": "37a7a3092f001bfd78c2f85a85bcdfed399d65bd8270c23622153e09b2d51ba1",
+      "post_reset_screen_sha256": "4e86d6106a6127ed5032db9216536b72419fb74a8b6957ccde197634fd26e3be",
+      "repeat": 0,
+      "seed": 20260723,
+      "task": "ContactsAddContact"
+    },
+    {
+      "goal": "Create a new contact for Ian Zhang. Their number is +15180612698.",
+      "goal_sha256": "99289672cc9401ee0db776b2b9dc979e61ce9ddf0498b677daca093a5efe5849",
+      "initial_screen_sha256": "78e3a918df4c20e7c2e2e61e44c1e73b011aae740160a35564a4065a11ee14da",
+      "params": {
+        "name": "Ian Zhang",
+        "number": "+15180612698"
+      },
+      "params_sha256": "37a7a3092f001bfd78c2f85a85bcdfed399d65bd8270c23622153e09b2d51ba1",
+      "post_reset_screen_sha256": "ae17e4e2fff8d69d0392a7e2582609ffc785c94499060158d3590df66fdea9e1",
+      "repeat": 1,
+      "seed": 20260723,
+      "task": "ContactsAddContact"
+    },
+    {
+      "goal": "Create a new contact for Ian Zhang. Their number is +15180612698.",
+      "goal_sha256": "99289672cc9401ee0db776b2b9dc979e61ce9ddf0498b677daca093a5efe5849",
+      "initial_screen_sha256": "77282040874fbe303c59792ae2e994a3055029429bd75de4fd08702e3344883c",
+      "params": {
+        "name": "Ian Zhang",
+        "number": "+15180612698"
+      },
+      "params_sha256": "37a7a3092f001bfd78c2f85a85bcdfed399d65bd8270c23622153e09b2d51ba1",
+      "post_reset_screen_sha256": "b73415abb1bda8b40e79c59b52c2e872a7a1a5a4120631db90ff0b711584a8d9",
+      "repeat": 2,
+      "seed": 20260723,
+      "task": "ContactsAddContact"
+    },
+    {
+      "goal": "Create a timer with 14 hours, 52 minutes, and 35 seconds. Do not start the timer.",
+      "goal_sha256": "287621cbc07ae61ae372527f32fdd802502a2bf1e9b377ac13c9cf6dcbc16044",
+      "initial_screen_sha256": "61185ebb9781ac8ff9676c67bd5e97098474ec631c962ba31c02bc422526c2bb",
+      "params": {
+        "hours": 14,
+        "minutes": 52,
+        "seconds": 35
+      },
+      "params_sha256": "1a67ec5482bbd37ca90b69cad31e80d956f6a7a6078cd68cf9d1a3903b827a56",
+      "post_reset_screen_sha256": "4ff8289acc87dbb09e387933427f70f021f011e5c6da9077e78ed62950a697cf",
+      "repeat": 0,
+      "seed": 20260724,
+      "task": "ClockTimerEntry"
+    },
+    {
+      "goal": "Create a timer with 14 hours, 52 minutes, and 35 seconds. Do not start the timer.",
+      "goal_sha256": "287621cbc07ae61ae372527f32fdd802502a2bf1e9b377ac13c9cf6dcbc16044",
+      "initial_screen_sha256": "c4b0c49f744101b6d93e61b9afb9a8b2212ae9a2d4d12a84f10ebc565cfc8899",
+      "params": {
+        "hours": 14,
+        "minutes": 52,
+        "seconds": 35
+      },
+      "params_sha256": "1a67ec5482bbd37ca90b69cad31e80d956f6a7a6078cd68cf9d1a3903b827a56",
+      "post_reset_screen_sha256": "728d811ee0e09c480cf69cb218273b22c92a904ca841f9e960a5eeb79aaccba6",
+      "repeat": 1,
+      "seed": 20260724,
+      "task": "ClockTimerEntry"
+    },
+    {
+      "goal": "Create a timer with 14 hours, 52 minutes, and 35 seconds. Do not start the timer.",
+      "goal_sha256": "287621cbc07ae61ae372527f32fdd802502a2bf1e9b377ac13c9cf6dcbc16044",
+      "initial_screen_sha256": "a5c8bd93955494008cdafc114993cb67008a0752592e81254261e49feb4a8703",
+      "params": {
+        "hours": 14,
+        "minutes": 52,
+        "seconds": 35
+      },
+      "params_sha256": "1a67ec5482bbd37ca90b69cad31e80d956f6a7a6078cd68cf9d1a3903b827a56",
+      "post_reset_screen_sha256": "dcb1c131375b9b0405ea81442df746ca08b6faa636220e2d78e32ab1da2d9454",
+      "repeat": 2,
+      "seed": 20260724,
+      "task": "ClockTimerEntry"
+    },
+    {
+      "goal": "Create a new note in Markor named gentle_bear_copy.md with the following text: A quick brown fox.",
+      "goal_sha256": "130d21f32aa12119e9b14f417bd1128dfcbad0ed5148d7b40baeb3f8ca79a720",
+      "initial_screen_sha256": "1b336babd329e494359555ff5737c6a90c115bbcdc15a4edc5c330b4116f09b3",
+      "params": {
+        "file_name": "gentle_bear_copy.md",
+        "text": "A quick brown fox."
+      },
+      "params_sha256": "594ef47ee4e4e06b7ef412ab4a55f8e252d98134d8cac2691bd4b401dd413fa6",
+      "post_reset_screen_sha256": "e77d23ffe14b5a3f85af7962e404f1612a6bf6fe84d8eda029d30f9e25d26989",
+      "repeat": 0,
+      "seed": 20260726,
+      "task": "MarkorCreateNote"
+    },
+    {
+      "goal": "Create a new note in Markor named gentle_bear_copy.md with the following text: A quick brown fox.",
+      "goal_sha256": "130d21f32aa12119e9b14f417bd1128dfcbad0ed5148d7b40baeb3f8ca79a720",
+      "initial_screen_sha256": "c7cbf107d70d98b14e1443325887a5fa82637f73e906179c8e52d9e7774a046b",
+      "params": {
+        "file_name": "gentle_bear_copy.md",
+        "text": "A quick brown fox."
+      },
+      "params_sha256": "594ef47ee4e4e06b7ef412ab4a55f8e252d98134d8cac2691bd4b401dd413fa6",
+      "post_reset_screen_sha256": "871e16a2fc66b557d74cca1ec9e26c1f575006d42542689e1446d5cf258ac7b8",
+      "repeat": 1,
+      "seed": 20260726,
+      "task": "MarkorCreateNote"
+    },
+    {
+      "goal": "Create a new note in Markor named gentle_bear_copy.md with the following text: A quick brown fox.",
+      "goal_sha256": "130d21f32aa12119e9b14f417bd1128dfcbad0ed5148d7b40baeb3f8ca79a720",
+      "initial_screen_sha256": "61185ebb9781ac8ff9676c67bd5e97098474ec631c962ba31c02bc422526c2bb",
+      "params": {
+        "file_name": "gentle_bear_copy.md",
+        "text": "A quick brown fox."
+      },
+      "params_sha256": "594ef47ee4e4e06b7ef412ab4a55f8e252d98134d8cac2691bd4b401dd413fa6",
+      "post_reset_screen_sha256": "fadfa7b30bc6af1c29185943bc006c0d07e8f5fcbdba64a45d9efe7ea86992cd",
+      "repeat": 2,
+      "seed": 20260726,
+      "task": "MarkorCreateNote"
+    }
+  ],
+  "schema_version": 1,
+  "status": "failed"
+}

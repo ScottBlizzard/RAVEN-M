@@ -16,6 +16,10 @@ from PIL import Image
 
 from raven_m.actions.schema import ActionValidationError, parse_action_response
 from raven_m.env.androidworld_adapter import AndroidWorldAdapter
+from raven_m.history.policies import (
+    HistoryEntry,
+    HistoryPolicy,
+)
 from raven_m.models.transformers_client import ModelCall, TransformersClient
 
 
@@ -105,12 +109,16 @@ class EpisodeController:
         max_steps: int = 8,
         max_model_calls: int = 16,
         adapter: AndroidWorldAdapter | None = None,
+        history_policy: HistoryPolicy | None = None,
+        action_schema_path: Path | None = None,
     ) -> None:
         self.client = client
         self.system_prompt = system_prompt
         self.max_steps = max_steps
         self.max_model_calls = max_model_calls
         self.adapter = adapter or AndroidWorldAdapter()
+        self.history_policy = history_policy or HistoryPolicy()
+        self.action_schema_path = action_schema_path
 
     @staticmethod
     def _user_prompt(
@@ -123,6 +131,7 @@ class EpisodeController:
         screen_width: int,
         screen_height: int,
         previous_outcome: str,
+        memory_context: str = "[]",
     ) -> str:
         example_pixel_y = min(438, screen_height - 1)
         example_normalized_y = example_pixel_y / max(screen_height - 1, 1)
@@ -132,7 +141,7 @@ class EpisodeController:
                 f"STEP/BUDGET: {step + 1}/{max_steps}; "
                 f"model calls {model_calls}/{max_model_calls}",
                 f"PREVIOUS_ACTION_AND_OBSERVED_OUTCOME: {previous_outcome}",
-                "MEMORY_CONTEXT: []",
+                f"MEMORY_CONTEXT: {memory_context}",
                 "TEXT_SAFETY: type_text may contain only a value explicitly "
                 "requested by TASK.",
                 f"CURRENT_SCREENSHOT: attached image; size "
@@ -144,7 +153,8 @@ class EpisodeController:
                 "of completion; execute it and observe the result first.",
                 "LENGTH_CHECK: expected_outcome and decision_summary must each "
                 "be one short sentence under 160 characters.",
-                "Return one action.v1 JSON object now.",
+                "Return one JSON object matching the action schema named in "
+                "the system prompt now.",
             ]
         )
 
@@ -160,6 +170,10 @@ class EpisodeController:
             "while choosing the action from the same screenshot.\n"
             f"VALIDATION_ERROR: {error}\n"
             f"INVALID_RESPONSE: {invalid_content}\n"
+            "The action field must be an object such as "
+            '{"type":"tap","x":0.5,"y":0.5}, never an action name plus '
+            "action_args/action_details. state_delta must be an array of "
+            "structured objects matching the system-prompt example, or [].\n"
             "If a coordinate is above 1, convert it from pixels using "
             "CURRENT_SCREENSHOT size. If text is too long, shorten it below "
             "160 characters. status must be continue/done/fail; wait is an "
@@ -175,6 +189,7 @@ class EpisodeController:
         episode_id: str,
         step: int,
         model_call_count: int,
+        context_images: list[tuple[str, Path]] | None = None,
     ) -> tuple[dict[str, Any], list[ModelCall], dict[str, Any]]:
         if model_call_count >= self.max_model_calls:
             raise RuntimeError("Model-call budget exhausted.")
@@ -184,10 +199,17 @@ class EpisodeController:
             user_prompt=user_prompt,
             episode_id=episode_id,
             call_label=f"step_{step:03d}_initial",
+            context_images=context_images,
         )
         calls = [initial]
         try:
-            parsed = parse_action_response(initial.content)
+            parse_kwargs = (
+                {"schema_path": self.action_schema_path}
+                if self.action_schema_path
+                else {}
+            )
+            parsed = parse_action_response(initial.content, **parse_kwargs)
+            self.history_policy.validate_decision(parsed.decision)
             return (
                 parsed.decision,
                 calls,
@@ -212,10 +234,12 @@ class EpisodeController:
                 user_prompt=repair_prompt,
                 episode_id=episode_id,
                 call_label=f"step_{step:03d}_repair",
+                context_images=context_images,
             )
             calls.append(repaired)
             try:
-                parsed = parse_action_response(repaired.content)
+                parsed = parse_action_response(repaired.content, **parse_kwargs)
+                self.history_policy.validate_decision(parsed.decision)
             except ActionValidationError as repair_error:
                 raise ModelOutputInvalid(
                     calls=calls,
@@ -249,6 +273,8 @@ class EpisodeController:
         started = _utc_now()
         steps: list[dict[str, Any]] = []
         model_call_count = 0
+        executor_model_call_count = 0
+        history_model_call_count = 0
         previous_outcome = "none; this is the first observation"
         termination_reason = "max_steps"
         evaluator_reward: float | None = None
@@ -256,6 +282,12 @@ class EpisodeController:
         error_record: dict[str, Any] | None = None
         model_output_error: dict[str, Any] | None = None
         task_params = _json_safe(task.params)
+        self.history_policy.reset(
+            episode_dir=episode_dir,
+            goal=str(task.goal),
+            episode_id=episode_id,
+            task_id=task.name,
+        )
 
         logger.append(
             {
@@ -263,6 +295,7 @@ class EpisodeController:
                 "episode_id": episode_id,
                 "protocol": protocol,
                 "variant": variant,
+                "history_variant": self.history_policy.variant,
                 "seed": seed,
                 "task_name": task.name,
                 "task_goal": str(task.goal),
@@ -286,6 +319,8 @@ class EpisodeController:
                     state_before.pixels,
                     f"step_{step:03d}_before.png",
                 )
+                history_context = self.history_policy.context()
+                evidence_outcome = previous_outcome
                 user_prompt = self._user_prompt(
                     goal=str(task.goal),
                     step=step,
@@ -295,6 +330,7 @@ class EpisodeController:
                     screen_width=width,
                     screen_height=height,
                     previous_outcome=previous_outcome,
+                    memory_context=history_context.rendered,
                 )
                 try:
                     decision, calls, parse_meta = self._call_and_parse(
@@ -303,9 +339,11 @@ class EpisodeController:
                         episode_id=episode_id,
                         step=step,
                         model_call_count=model_call_count,
+                        context_images=history_context.images,
                     )
                 except ModelOutputInvalid as exc:
                     model_call_count += len(exc.calls)
+                    executor_model_call_count += len(exc.calls)
                     termination_reason = "model_output_invalid_after_repair"
                     model_output_error = {
                         "type": "ActionValidationError",
@@ -319,6 +357,18 @@ class EpisodeController:
                         "before_screenshot_sha256": _sha256_file(before_path),
                         "screen_size": [width, height],
                         "user_prompt": user_prompt,
+                        "history_context": {
+                            "variant": self.history_policy.variant,
+                            "rendered": history_context.rendered,
+                            "images": [
+                                {
+                                    "label": label,
+                                    "path": path.name,
+                                    "sha256": _sha256_file(path),
+                                }
+                                for label, path in history_context.images
+                            ],
+                        },
                         "model_calls": [
                             call.audit_record() for call in exc.calls
                         ],
@@ -341,6 +391,7 @@ class EpisodeController:
                     )
                     break
                 model_call_count += len(calls)
+                executor_model_call_count += len(calls)
                 parse_meta["valid_after_one_repair"] = True
                 step_record: dict[str, Any] = {
                     "event": "step",
@@ -349,6 +400,18 @@ class EpisodeController:
                     "before_screenshot_sha256": _sha256_file(before_path),
                     "screen_size": [width, height],
                     "user_prompt": user_prompt,
+                    "history_context": {
+                        "variant": self.history_policy.variant,
+                        "rendered": history_context.rendered,
+                        "images": [
+                            {
+                                "label": label,
+                                "path": path.name,
+                                "sha256": _sha256_file(path),
+                            }
+                            for label, path in history_context.images
+                        ],
+                    },
                     "model_calls": [call.audit_record() for call in calls],
                     "parse": parse_meta,
                     "decision": decision,
@@ -403,6 +466,41 @@ class EpisodeController:
                     f"Executed {json.dumps(decision['action'], ensure_ascii=False)}; "
                     f"the screenshot {'changed' if changed else 'did not change'}."
                 )
+                history_update = self.history_policy.observe(
+                    HistoryEntry(
+                        step=step,
+                        decision_summary=decision["decision_summary"],
+                        action=decision["action"],
+                        observed_outcome=previous_outcome,
+                        screenshot_path=after_path,
+                        screenshot_sha256=after_sha,
+                        before_screenshot_path=before_path,
+                        before_screenshot_sha256=before_sha,
+                        evidence_outcome=evidence_outcome,
+                        expected_outcome=decision["expected_outcome"],
+                        state_delta=tuple(decision["state_delta"]),
+                        model_call_id=(
+                            calls[-1].call_id if calls else None
+                        ),
+                    ),
+                    episode_id=episode_id,
+                    remaining_model_calls=(
+                        self.max_model_calls - model_call_count
+                    ),
+                )
+                model_call_count += len(history_update.calls)
+                history_model_call_count += len(history_update.calls)
+                step_record["history_update"] = {
+                    "summary_updated": history_update.summary_updated,
+                    "summary_schema_sha256": (
+                        history_update.summary_schema_sha256
+                    ),
+                    "error": history_update.error,
+                    "details": history_update.details,
+                    "model_calls": [
+                        call.audit_record() for call in history_update.calls
+                    ],
+                }
                 steps.append(step_record)
                 logger.append(step_record)
 
@@ -478,6 +576,7 @@ class EpisodeController:
             "episode_id": episode_id,
             "protocol": protocol,
             "variant": variant,
+            "history_variant": self.history_policy.variant,
             "started_at": started,
             "finished_at": _utc_now(),
             "task_name": task.name,
@@ -493,6 +592,8 @@ class EpisodeController:
             "valid_after_one_repair_count": valid_decision_count,
             "executed_action_count": executed_count,
             "model_call_count": model_call_count,
+            "executor_model_call_count": executor_model_call_count,
+            "history_model_call_count": history_model_call_count,
             "first_pass_parse_count": first_pass_count,
             "first_pass_parse_rate": (
                 first_pass_count / decision_attempt_count

@@ -1,0 +1,7 @@
+variant: B0
+history_policy: minimal
+history_images: 0
+executor_calls_per_step: 1
+summary_trigger_steps: null
+context_cap_tokens: 8192
+prompt: prompts/executor_v1.md

@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://eaglelab.example/raven-m/memory_item.v1.schema.json",
+  "title": "RAVEN-M episode-local memory item v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "memory_id",
+    "episode_id",
+    "memory_type",
+    "content",
+    "task_id",
+    "created_step",
+    "last_confirmed_step",
+    "source",
+    "evidence",
+    "verification_status",
+    "confidence_model",
+    "reliability_score",
+    "relevance_cache",
+    "validity",
+    "relations",
+    "routing_history"
+  ],
+  "properties": {
+    "schema_version": {"const": "memory_item.v1"},
+    "memory_id": {"type": "string", "pattern": "^[mf]_[0-9]{4,}$"},
+    "episode_id": {"type": "string", "minLength": 1},
+    "memory_type": {
+      "enum": ["working", "episodic_fact", "failure", "page_hint"]
+    },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["subject", "predicate", "object", "natural_language"],
+      "properties": {
+        "subject": {"type": "string", "minLength": 1},
+        "predicate": {"type": "string", "minLength": 1},
+        "object": {},
+        "natural_language": {"type": "string", "minLength": 1, "maxLength": 1000}
+      }
+    },
+    "task_id": {"type": "string", "minLength": 1},
+    "subgoal_id": {"type": ["string", "null"]},
+    "app_id_observed": {"type": ["string", "null"]},
+    "page_signature": {"type": ["string", "null"]},
+    "created_step": {"type": "integer", "minimum": 0},
+    "last_confirmed_step": {"type": "integer", "minimum": 0},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "observation_ids",
+        "action_ids",
+        "screenshot_paths",
+        "screenshot_sha256",
+        "model_call_id",
+        "extractor"
+      ],
+      "properties": {
+        "observation_ids": {"type": "array", "items": {"type": "string"}},
+        "action_ids": {"type": "array", "items": {"type": "string"}},
+        "screenshot_paths": {"type": "array", "items": {"type": "string"}},
+        "screenshot_sha256": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+        },
+        "model_call_id": {"type": ["string", "null"]},
+        "extractor": {"type": "string", "minLength": 1}
+      },
+      "anyOf": [
+        {"properties": {"observation_ids": {"minItems": 1}}},
+        {"properties": {"action_ids": {"minItems": 1}}}
+      ]
+    },
+    "evidence": {"type": "object"},
+    "verification_status": {
+      "enum": [
+        "candidate",
+        "observed",
+        "verified",
+        "stale",
+        "contradicted",
+        "revoked",
+        "superseded",
+        "archived"
+      ]
+    },
+    "confidence_model": {"type": "number", "minimum": 0, "maximum": 1},
+    "reliability_score": {"type": "number", "minimum": 0, "maximum": 1},
+    "relevance_cache": {"type": "object"},
+    "validity": {
+      "type": "object",
+      "required": ["scope", "preconditions", "expires_on"],
+      "properties": {
+        "scope": {"const": "episode"},
+        "preconditions": {"type": "array", "items": {"type": "string"}},
+        "expires_on": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "relations": {"type": "object"},
+    "routing_history": {"type": "array", "items": {"type": "object"}}
+  }
+}

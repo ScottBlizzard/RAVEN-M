@@ -1,0 +1,26 @@
+{
+  "manifest_id": "androidworld_baseline_dev_v1",
+  "protocol": "baseline_dev_g4",
+  "executor_prompt": "prompts/executor_v1.md",
+  "summary_prompt": "prompts/summary_v1.md",
+  "base_seed": 20260723,
+  "schedule": [
+    {"variant": "B1", "task": "ContactsAddContact", "seed": 20260723, "max_steps": 10},
+    {"variant": "B1", "task": "MarkorCreateNote", "seed": 20260726, "max_steps": 12},
+    {"variant": "B2", "task": "ContactsAddContact", "seed": 20260723, "max_steps": 10},
+    {"variant": "B2", "task": "MarkorCreateNote", "seed": 20260726, "max_steps": 12},
+    {"variant": "B3", "task": "ContactsAddContact", "seed": 20260723, "max_steps": 10},
+    {"variant": "B3", "task": "ClockTimerEntry", "seed": 20260724, "max_steps": 10},
+    {"variant": "B3", "task": "ExpenseAddSingle", "seed": 20260725, "max_steps": 10},
+    {"variant": "B3", "task": "MarkorCreateNote", "seed": 20260726, "max_steps": 12},
+    {"variant": "B3", "task": "FilesMoveFile", "seed": 20260727, "max_steps": 14}
+  ],
+  "acceptance": {
+    "b1_min_episodes": 2,
+    "b2_min_episodes": 2,
+    "b3_min_episodes": 5,
+    "first_pass_parse_rate_min": 0.9,
+    "valid_after_one_repair_rate_min": 0.95,
+    "infrastructure_error_rate_max": 0.1
+  }
+}

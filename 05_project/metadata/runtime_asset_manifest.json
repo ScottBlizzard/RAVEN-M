@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-07-23T11:16:24.907424+00:00",
+  "asset_count": 19,
+  "total_size_bytes": 602448727,
+  "records_sha256": "1228d91ff101b9acf7e0d2e61a73e4b2b95e442b9e3a231da5da0d8e7caf2b8b",
+  "assets": [
+    {
+      "path": "06_local_runtime/cache/android_env/2024.05.13-accessibility_forwarder.apk",
+      "size_bytes": 4490495,
+      "sha256": "97a56a544e44d79f9b3181fc7dbdd72cffa908efd3d53c82afad1773061a350a"
+    },
+    {
+      "path": "06_local_runtime/cache/android_world/app_data/androidworld.apk",
+      "size_bytes": 5713585,
+      "sha256": "d1132a67de9439aea3bbf42b4087f55dfcd76d395c14e19a0237bde9154cb790"
+    },
+    {
+      "path": "06_local_runtime/cache/android_world/app_data/clipper.apk",
+      "size_bytes": 10143,
+      "sha256": "c5f7a1e4fd78d1141164759a099cdcfb0a7b84aaf4c06a63f52e1aa4f1278539"
+    },
+    {
+      "path": "06_local_runtime/cache/android_world/app_data/code.name.monkey.retromusic_10603.apk",
+      "size_bytes": 9041986,
+      "sha256": "13212d049cb02b861c0358bde5fe5b9cdf99a16a490685f60c28636278e2ed60"
+    },
+    {
+      "path": "06_local_runtime/cache/android_world/app_data/com.arduia.expense_11.apk",
+      "size_bytes": 3020823,
+      "sha256": "e54dcc8250566ab6421119b48d6c4544066c6697c53d27ab06ee5bdf9bf1ee50"
+    },
+    {
+      "path": "06_local_runtime/cache/android_world/app_data/com.dimowner.audiorecorder_926.apk",
+      "size_bytes": 778419,
+      "sha256": "ee0bd709021e4069bb1f6fee99e3398f70ba4531dea918840ad4f5156f97b953"
+    },
+    {
+      "path": "06_local_runtime/cache/android_world/app_data/com.flauschcode.broccoli_1020600.apk",
+      "size_bytes": 7503922,
+      "sha256": "da99d9465c79398c6c25459daa82017c5faf505589ea6e62b9e85ca0dc70e8da"
+    },
+    {
+      "path": "06_local_runtime/cache/android_world/app_data/com.simplemobiletools.calendar.pro_238.apk",
+      "size_bytes": 9870704,
+      "sha256": "fb4d30ce060433fc9283e591eddc58be0ee1d75b079a13939ca7e6cce8a1f4b8"
+    },
+    {
+      "path": "06_local_runtime/cache/android_world/app_data/com.simplemobiletools.draw.pro_79.apk",
+      "size_bytes": 8320484,
+      "sha256": "3c3210590846a30468ab5acb9ef0aaa5d85b49d5930eda86eef0bd991a9f80a1"
+    },
+    {
+      "path": "06_local_runtime/cache/android_world/app_data/com.simplemobiletools.gallery.pro_396.apk",
+      "size_bytes": 32203025,
+      "sha256": "175f10c9ce4c6d5294ed20d61216d850df2c2b1928a846489a4cb372153d1607"
+    },
+    {
+      "path": "06_local_runtime/cache/android_world/app_data/com.simplemobiletools.smsmessenger_85.apk",
+      "size_bytes": 9938539,
+      "sha256": "e134a0e330514de3716dbacfa08d39707ebbb2c9ebde8d08854e159b2cd7c2f4"
+    },
+    {
+      "path": "06_local_runtime/cache/android_world/app_data/de.dennisguse.opentracks_5705.apk",
+      "size_bytes": 24268012,
+      "sha256": "3cd907e57c747b49fac9120defee4c2395c67acc87271c7c591058cb37e7802c"
+    },
+    {
+      "path": "06_local_runtime/cache/android_world/app_data/Liechtenstein_europe.obf",
+      "size_bytes": 7241271,
+      "sha256": "57a1955c6f517a114999fa50480ecc1402ed9b524db602540ac1c08f57ff140e"
+    },
+    {
+      "path": "06_local_runtime/cache/android_world/app_data/miniwobapp.apk",
+      "size_bytes": 5784454,
+      "sha256": "f51ec49b1f67c9f34bed0fb04965c4aecd63504ee070bfae62e706c9b051d357"
+    },
+    {
+      "path": "06_local_runtime/cache/android_world/app_data/net.cozic.joplin_2097740.apk",
+      "size_bytes": 43472265,
+      "sha256": "6f70a460f6bacd777d08b13a06c5ef5d545491f940de0a40ecf44fd2d9eea385"
+    },
+    {
+      "path": "06_local_runtime/cache/android_world/app_data/net.gsantner.markor_146.apk",
+      "size_bytes": 11067299,
+      "sha256": "1a328c5324b3b33d6cb4d55085637707252569d98c0ffe1cb7089aebbd903256"
+    },
+    {
+      "path": "06_local_runtime/cache/android_world/app_data/net.osmand-4.6.13.apk",
+      "size_bytes": 351679694,
+      "sha256": "0ac411942965a431a0a91b19ce990e6948e780a13a1c98bc7e5a9a057af6463c"
+    },
+    {
+      "path": "06_local_runtime/cache/android_world/app_data/org.tasks_130605.apk",
+      "size_bytes": 29656271,
+      "sha256": "3e93405882016be0e8f6c45207bdfb9d4b958bf34430256e77b043d68b8ceb00"
+    },
+    {
+      "path": "06_local_runtime/cache/android_world/app_data/org.videolan.vlc_13050408.apk",
+      "size_bytes": 38387336,
+      "sha256": "3fe17cbd8b7f507436eccc217f9168846a65cadff2f7d87490f5740b243170dc"
+    }
+  ]
+}

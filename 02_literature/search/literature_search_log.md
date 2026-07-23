@@ -27,6 +27,34 @@
 AndroidWorld AND (memory OR history OR long-horizon)
 "retrieval augmented" AND GUI agent
 "procedural memory" AND computer-use agent
+
+## 2026-07-23 update
+
+The search was refreshed after CVPR 2026 and ACL 2026 proceedings became
+available. Primary-source queries covered CVF Open Access, ACL Anthology,
+arXiv, OpenReview, Sheng Zhou's official homepage, and official project
+repositories. The following records were added after DOI/title/author
+deduplication:
+
+- Darwinian Memory (arXiv:2601.22528);
+- EchoTrail-GUI (CVPR 2026 Findings; arXiv:2512.19396);
+- CES / Training High-Level Schedulers with Execution-Feedback RL (CVPR 2026;
+  arXiv:2511.22235);
+- Executable Agentic Memory (arXiv:2605.12294);
+- MemGUI-Bench (arXiv:2602.06075);
+- ExpAct (ICML 2026 OpenReview record).
+
+Sheng Zhou/Eagle Lab was re-audited against the official homepage. The directly
+relevant sequence is MP-GUI, PG-Agent, HAR-GUI, ProBench, LAMO, plus the
+accessibility line ChartAccessMobile, Dual-branch RAG for GUI descriptions, and
+the MLLM accessibility-audit copilot.
+
+The refreshed overlap decision is recorded in
+`02_literature/notes/overlap_checkpoint_2026-07-23.md`. Five new PDFs were
+downloaded and hash-checked. ExpAct metadata is verified, but both OpenReview
+PDF endpoints returned HTTP 403 from this host; this is recorded as blocked
+rather than present. The public CES code was shallow-cloned at commit
+`bf54b363eb769b957d6f80459fd0c0aadbbed44e`.
 ```
 
 ### Current limitations
@@ -35,4 +63,3 @@ AndroidWorld AND (memory OR history OR long-horizon)
 - OpenReview may require browser verification, so AndroidWorld paper identity should also be cross-checked against arXiv and the official repository.
 - Code not linked from a paper/author/project source remains `manual_needed`.
 - Before the final report, rerun a delta search for work published after 2026-07-20.
-

@@ -1,0 +1,251 @@
+{
+  "contract": {
+    "diagnostic_only": [
+      "exact screenshot pixel hash",
+      "asynchronously sampled accessibility UI-tree hash"
+    ],
+    "rationale": "Android render frames and accessibility snapshots are sampled asynchronously and are not the benchmark task-instance key. They remain archived to expose drift but do not invalidate a stable generated task instance and successful reset lifecycle.",
+    "validity_conditions": [
+      "three repeated lifecycle runs per task complete",
+      "task goal hash is stable under the fixed seed",
+      "generated parameter hash is stable under the fixed seed",
+      "foreground activity is stable after initialization and reset"
+    ]
+  },
+  "generated_at": "2026-07-23T11:47:32.489707+00:00",
+  "lifecycle_runs": 9,
+  "locked_input_hashes": {
+    "04_protocols/environment_lock.yaml": "7a8b06886f31350b33ce68c6a6d68346ef1b224821c5ba9a9b75cd5ffba811ee",
+    "05_project/configs/task_manifests/baseline_dev_v1.json": "43ccdd04b26eb1d55bc850169e7bf7aca3d217a670d7da27ddae78a40f54f178",
+    "05_project/metadata/runtime_asset_manifest.json": "d2a7a527711c1f538efec85c8e1c0863665ca9bc8a62e9cde5e7f1fc4851cb4d"
+  },
+  "per_task": {
+    "ClockTimerEntry": {
+      "accepted": true,
+      "goal_hash_stable": true,
+      "initial_foreground_activity_stable": true,
+      "initial_screen_hash_stable": false,
+      "initial_ui_semantic_hash_stable": false,
+      "pairing_key_fields": [
+        "task",
+        "seed",
+        "goal_sha256",
+        "params_sha256"
+      ],
+      "params_hash_stable": true,
+      "post_reset_foreground_activity_stable": true,
+      "post_reset_screen_hash_stable": false,
+      "post_reset_ui_semantic_hash_stable": false,
+      "repeats": 3,
+      "seed": 20260724
+    },
+    "ContactsAddContact": {
+      "accepted": true,
+      "goal_hash_stable": true,
+      "initial_foreground_activity_stable": true,
+      "initial_screen_hash_stable": false,
+      "initial_ui_semantic_hash_stable": false,
+      "pairing_key_fields": [
+        "task",
+        "seed",
+        "goal_sha256",
+        "params_sha256"
+      ],
+      "params_hash_stable": true,
+      "post_reset_foreground_activity_stable": true,
+      "post_reset_screen_hash_stable": false,
+      "post_reset_ui_semantic_hash_stable": false,
+      "repeats": 3,
+      "seed": 20260723
+    },
+    "MarkorCreateNote": {
+      "accepted": true,
+      "goal_hash_stable": true,
+      "initial_foreground_activity_stable": true,
+      "initial_screen_hash_stable": false,
+      "initial_ui_semantic_hash_stable": false,
+      "pairing_key_fields": [
+        "task",
+        "seed",
+        "goal_sha256",
+        "params_sha256"
+      ],
+      "params_hash_stable": true,
+      "post_reset_foreground_activity_stable": true,
+      "post_reset_screen_hash_stable": false,
+      "post_reset_ui_semantic_hash_stable": false,
+      "repeats": 3,
+      "seed": 20260726
+    }
+  },
+  "raw_records": [
+    {
+      "goal": "Create a new contact for Ian Zhang. Their number is +15180612698.",
+      "goal_sha256": "99289672cc9401ee0db776b2b9dc979e61ce9ddf0498b677daca093a5efe5849",
+      "initial_foreground_activity": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+      "initial_screen_sha256": "61185ebb9781ac8ff9676c67bd5e97098474ec631c962ba31c02bc422526c2bb",
+      "initial_ui_semantic_sha256": "dcac06692cd8fce441b4afaefbb5a2bf44c4cef4428fdecb008a0bb2e30a73a0",
+      "params": {
+        "name": "Ian Zhang",
+        "number": "+15180612698"
+      },
+      "params_sha256": "37a7a3092f001bfd78c2f85a85bcdfed399d65bd8270c23622153e09b2d51ba1",
+      "post_reset_foreground_activity": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+      "post_reset_screen_sha256": "bd582a96dd864d201268ff1739c3d4bd890855f6fdff7f7614dc30254fb34c2b",
+      "post_reset_ui_semantic_sha256": "2bae74820b1ca5ddc8918ba0e6a57f2b1d9476c668b151b7d42a154c9a314f73",
+      "repeat": 0,
+      "seed": 20260723,
+      "task": "ContactsAddContact"
+    },
+    {
+      "goal": "Create a new contact for Ian Zhang. Their number is +15180612698.",
+      "goal_sha256": "99289672cc9401ee0db776b2b9dc979e61ce9ddf0498b677daca093a5efe5849",
+      "initial_foreground_activity": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+      "initial_screen_sha256": "61185ebb9781ac8ff9676c67bd5e97098474ec631c962ba31c02bc422526c2bb",
+      "initial_ui_semantic_sha256": "1e7b47361b7b2ad3a249d2157ce54d6211c6ef8a3f0518a7c95f9f396d2cf7f3",
+      "params": {
+        "name": "Ian Zhang",
+        "number": "+15180612698"
+      },
+      "params_sha256": "37a7a3092f001bfd78c2f85a85bcdfed399d65bd8270c23622153e09b2d51ba1",
+      "post_reset_foreground_activity": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+      "post_reset_screen_sha256": "728d811ee0e09c480cf69cb218273b22c92a904ca841f9e960a5eeb79aaccba6",
+      "post_reset_ui_semantic_sha256": "96161d6d6b282d31e2f89a360a65e7d7cf35afde8031be77cd208fe8545f01c7",
+      "repeat": 1,
+      "seed": 20260723,
+      "task": "ContactsAddContact"
+    },
+    {
+      "goal": "Create a new contact for Ian Zhang. Their number is +15180612698.",
+      "goal_sha256": "99289672cc9401ee0db776b2b9dc979e61ce9ddf0498b677daca093a5efe5849",
+      "initial_foreground_activity": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+      "initial_screen_sha256": "8d2c7e0d3772e73571a372a0795fcfbd74285dcec2afb24732b02b0c423c4945",
+      "initial_ui_semantic_sha256": "96161d6d6b282d31e2f89a360a65e7d7cf35afde8031be77cd208fe8545f01c7",
+      "params": {
+        "name": "Ian Zhang",
+        "number": "+15180612698"
+      },
+      "params_sha256": "37a7a3092f001bfd78c2f85a85bcdfed399d65bd8270c23622153e09b2d51ba1",
+      "post_reset_foreground_activity": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+      "post_reset_screen_sha256": "f73e32cffc49b2182c92b75cc4f09662ba0ca9569d2ceb814ed10db80f1d1f4d",
+      "post_reset_ui_semantic_sha256": "e2d282e438dc56c8799ea1740ebc2f707129772193b83a2aa22eab73e2e39c27",
+      "repeat": 2,
+      "seed": 20260723,
+      "task": "ContactsAddContact"
+    },
+    {
+      "goal": "Create a timer with 14 hours, 52 minutes, and 35 seconds. Do not start the timer.",
+      "goal_sha256": "287621cbc07ae61ae372527f32fdd802502a2bf1e9b377ac13c9cf6dcbc16044",
+      "initial_foreground_activity": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+      "initial_screen_sha256": "cd7b2dc55196b2e57e9b09e4b62911b0d05101ba21b3943e73bab33b6f5deee4",
+      "initial_ui_semantic_sha256": "1e7b47361b7b2ad3a249d2157ce54d6211c6ef8a3f0518a7c95f9f396d2cf7f3",
+      "params": {
+        "hours": 14,
+        "minutes": 52,
+        "seconds": 35
+      },
+      "params_sha256": "1a67ec5482bbd37ca90b69cad31e80d956f6a7a6078cd68cf9d1a3903b827a56",
+      "post_reset_foreground_activity": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+      "post_reset_screen_sha256": "e3d8210df1cd63bc503f1d64659350e320af5f42277f9fcf82e58bdec19f05e4",
+      "post_reset_ui_semantic_sha256": "d21488e7728d764d31d542f31ed39e931e73f849f0cb4bd6e10a2d5395ecca0a",
+      "repeat": 0,
+      "seed": 20260724,
+      "task": "ClockTimerEntry"
+    },
+    {
+      "goal": "Create a timer with 14 hours, 52 minutes, and 35 seconds. Do not start the timer.",
+      "goal_sha256": "287621cbc07ae61ae372527f32fdd802502a2bf1e9b377ac13c9cf6dcbc16044",
+      "initial_foreground_activity": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+      "initial_screen_sha256": "5dff4558777fa58ce71b3a5ca9c8f85226e35e55f6779bd4e38e725f28a78e92",
+      "initial_ui_semantic_sha256": "dcac06692cd8fce441b4afaefbb5a2bf44c4cef4428fdecb008a0bb2e30a73a0",
+      "params": {
+        "hours": 14,
+        "minutes": 52,
+        "seconds": 35
+      },
+      "params_sha256": "1a67ec5482bbd37ca90b69cad31e80d956f6a7a6078cd68cf9d1a3903b827a56",
+      "post_reset_foreground_activity": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+      "post_reset_screen_sha256": "4ff8289acc87dbb09e387933427f70f021f011e5c6da9077e78ed62950a697cf",
+      "post_reset_ui_semantic_sha256": "e7b0d81ae50fa1fb1ab8b9dc37d91446f6518cb454730f73bfe840361759697f",
+      "repeat": 1,
+      "seed": 20260724,
+      "task": "ClockTimerEntry"
+    },
+    {
+      "goal": "Create a timer with 14 hours, 52 minutes, and 35 seconds. Do not start the timer.",
+      "goal_sha256": "287621cbc07ae61ae372527f32fdd802502a2bf1e9b377ac13c9cf6dcbc16044",
+      "initial_foreground_activity": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+      "initial_screen_sha256": "4ff8289acc87dbb09e387933427f70f021f011e5c6da9077e78ed62950a697cf",
+      "initial_ui_semantic_sha256": "e7b0d81ae50fa1fb1ab8b9dc37d91446f6518cb454730f73bfe840361759697f",
+      "params": {
+        "hours": 14,
+        "minutes": 52,
+        "seconds": 35
+      },
+      "params_sha256": "1a67ec5482bbd37ca90b69cad31e80d956f6a7a6078cd68cf9d1a3903b827a56",
+      "post_reset_foreground_activity": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+      "post_reset_screen_sha256": "0dbf88071ba1b57452216cbe4191c131759e3254fe96a705c2b4621e4d2bd7f5",
+      "post_reset_ui_semantic_sha256": "e2d282e438dc56c8799ea1740ebc2f707129772193b83a2aa22eab73e2e39c27",
+      "repeat": 2,
+      "seed": 20260724,
+      "task": "ClockTimerEntry"
+    },
+    {
+      "goal": "Create a new note in Markor named gentle_bear_copy.md with the following text: A quick brown fox.",
+      "goal_sha256": "130d21f32aa12119e9b14f417bd1128dfcbad0ed5148d7b40baeb3f8ca79a720",
+      "initial_foreground_activity": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+      "initial_screen_sha256": "4ff8289acc87dbb09e387933427f70f021f011e5c6da9077e78ed62950a697cf",
+      "initial_ui_semantic_sha256": "e7b0d81ae50fa1fb1ab8b9dc37d91446f6518cb454730f73bfe840361759697f",
+      "params": {
+        "file_name": "gentle_bear_copy.md",
+        "text": "A quick brown fox."
+      },
+      "params_sha256": "594ef47ee4e4e06b7ef412ab4a55f8e252d98134d8cac2691bd4b401dd413fa6",
+      "post_reset_foreground_activity": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+      "post_reset_screen_sha256": "88e39ac5066d58564d949272e9f7bceb44fefcc80ac87ccab9b3c6cee1efdcb3",
+      "post_reset_ui_semantic_sha256": "024cd9a1138e083a2e3b01cca3c390377bc9bb7a8f6ecd3ae7d701181131440b",
+      "repeat": 0,
+      "seed": 20260726,
+      "task": "MarkorCreateNote"
+    },
+    {
+      "goal": "Create a new note in Markor named gentle_bear_copy.md with the following text: A quick brown fox.",
+      "goal_sha256": "130d21f32aa12119e9b14f417bd1128dfcbad0ed5148d7b40baeb3f8ca79a720",
+      "initial_foreground_activity": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+      "initial_screen_sha256": "6063cf096f0fa94cad2d8e5a0fd5a727285349bd995c3222234d4d4dac3e6567",
+      "initial_ui_semantic_sha256": "e2d282e438dc56c8799ea1740ebc2f707129772193b83a2aa22eab73e2e39c27",
+      "params": {
+        "file_name": "gentle_bear_copy.md",
+        "text": "A quick brown fox."
+      },
+      "params_sha256": "594ef47ee4e4e06b7ef412ab4a55f8e252d98134d8cac2691bd4b401dd413fa6",
+      "post_reset_foreground_activity": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+      "post_reset_screen_sha256": "fc687a3cd228ee139ce214dfb9c60c6043bf4f8993f323fb6e055548d4b59838",
+      "post_reset_ui_semantic_sha256": "9ce6773ed3e0f8dd6741e451a0e6928e44afe2158a454ee3db39aca2a5c8a485",
+      "repeat": 1,
+      "seed": 20260726,
+      "task": "MarkorCreateNote"
+    },
+    {
+      "goal": "Create a new note in Markor named gentle_bear_copy.md with the following text: A quick brown fox.",
+      "goal_sha256": "130d21f32aa12119e9b14f417bd1128dfcbad0ed5148d7b40baeb3f8ca79a720",
+      "initial_foreground_activity": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+      "initial_screen_sha256": "13db53d12e764d2bd4107ff8100b4dac165daa8e966abe4be03307ae738465b5",
+      "initial_ui_semantic_sha256": "d21488e7728d764d31d542f31ed39e931e73f849f0cb4bd6e10a2d5395ecca0a",
+      "params": {
+        "file_name": "gentle_bear_copy.md",
+        "text": "A quick brown fox."
+      },
+      "params_sha256": "594ef47ee4e4e06b7ef412ab4a55f8e252d98134d8cac2691bd4b401dd413fa6",
+      "post_reset_foreground_activity": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+      "post_reset_screen_sha256": "f44605c0355100a6814e6cb634e1b3564aa40f6a99fc485c9e0811a555344b9c",
+      "post_reset_ui_semantic_sha256": "96c3a94a6455c6908a7a2f1fca752507bb5f900e400d92aa90253f53454d73d1",
+      "repeat": 2,
+      "seed": 20260726,
+      "task": "MarkorCreateNote"
+    }
+  ],
+  "schema_version": 1,
+  "source_evidence": "05_project/metadata/reset_determinism_g4_v2.json",
+  "status": "passed"
+}

@@ -1,0 +1,7 @@
+{
+  "manifest_id": "androidworld_hard_ablation8_v1",
+  "selection_time": "before any scored Hard run",
+  "selection_rule": "Preselected by task length and mechanism, never by agent outcome.",
+  "task_ids": ["H01", "H03", "H04", "H06", "H09", "H12", "H14", "H16"],
+  "instance_seeds": [20260720, 20260721]
+}
