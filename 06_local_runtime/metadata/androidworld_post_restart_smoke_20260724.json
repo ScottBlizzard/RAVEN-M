@@ -1,0 +1,14 @@
+{
+  "status": "ok",
+  "task": "ContactsAddContact",
+  "goal": "Create a new contact for Emilia dos Santos. Their number is +12745619611.",
+  "registered_android_world_tasks": 116,
+  "screen_shape": [
+    2400,
+    1080,
+    3
+  ],
+  "ui_elements": 18,
+  "foreground_activity": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+  "screenshot": "06_local_runtime\\metadata\\androidworld_post_restart_smoke_20260724.png"
+}
