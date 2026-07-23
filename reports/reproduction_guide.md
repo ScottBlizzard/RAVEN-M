@@ -61,6 +61,7 @@ labels, and run:
   --adb-path .\06_local_runtime\android\sdk\platform-tools\adb.exe
 & $python .\05_project\scripts\sample_retrieval_audit.py `
   --suite-dir .\runs\method_dev_g6_g7\method_dev_g6_g7_v10_20260724
+& $python .\05_project\scripts\apply_retrieval_audit_labels.py
 & $python .\05_project\scripts\audit_g7.py `
   --suite-summary .\runs\method_dev_g6_g7\method_dev_g6_g7_v10_20260724\suite_summary.json
 ```
