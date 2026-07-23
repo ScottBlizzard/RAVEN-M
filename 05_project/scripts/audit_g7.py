@@ -171,6 +171,11 @@ def main() -> None:
         "retrieval_sample_deterministic": (
             observed_sample_keys == expected_sample_keys
         ),
+        "retrieval_evidence_screens_present": all(
+            Path(row.get("source_screenshot", "")).is_file()
+            and Path(row.get("current_screenshot", "")).is_file()
+            for row in rows
+        ),
         "retrieval_labels_complete": (
             not label_errors
             and not fact_errors

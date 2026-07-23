@@ -96,8 +96,8 @@ intervals without upgrading exploratory low-power results to universal claims.
 
 The deterministic seed-20260724 sample contains exactly 50 non-suppressed
 non-Hard retrieval events. Review uses only the task, routed item, route,
-contemporaneous decision, provenance screenshot, and source metadata; the
-evaluator result is hidden.
+contemporaneous decision, source-provenance screenshot, current decision
+screenshot, and source metadata; the evaluator result is hidden.
 
 - `relevant=yes` when the item applies to the current task or subgoal.
 - `route_appropriate=yes` when FACT is visibly supported and current,

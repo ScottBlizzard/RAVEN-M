@@ -79,6 +79,9 @@ def collect(suite_dir: Path) -> list[dict[str, Any]]:
                     "reliability": event["reliability"],
                     "content": item["content"]["natural_language"],
                     "source_screenshot": source_path,
+                    "current_screenshot": step_record.get(
+                        "before_screenshot", ""
+                    ),
                     "decision_summary": decision.get(
                         "decision_summary", ""
                     ),
@@ -159,6 +162,10 @@ def main() -> None:
     for audit_index, item in enumerate(selected, start=1):
         source = item["source_screenshot"]
         source_path = item["episode_dir"] / source if source else None
+        current = item["current_screenshot"]
+        current_path = (
+            item["episode_dir"] / current if current else None
+        )
         row = {
             "audit_id": f"R{audit_index:03d}",
             "episode_id": item["episode_id"],
@@ -180,6 +187,9 @@ def main() -> None:
             "source_screenshot": (
                 str(source_path.resolve()) if source_path else ""
             ),
+            "current_screenshot": (
+                str(current_path.resolve()) if current_path else ""
+            ),
             "relevant_label": "",
             "route_appropriate_label": "",
             "fact_supported_label": "",
@@ -189,9 +199,14 @@ def main() -> None:
             "review_notes": "",
         }
         rows.append(row)
-        image_html = (
+        source_image_html = (
             f'<img src="{image_data_url(source_path)}">'
             if source_path and source_path.is_file()
+            else "<em>missing image</em>"
+        )
+        current_image_html = (
+            f'<img src="{image_data_url(current_path)}">'
+            if current_path and current_path.is_file()
             else "<em>missing image</em>"
         )
         html_rows.append(
@@ -204,7 +219,12 @@ def main() -> None:
             f"{escape(row['decision_summary'])}</p>"
             f"<p><b>Action:</b> {escape(row['action'])} · "
             f"<b>Cited:</b> {row['cited']}</p>"
-            f"{image_html}</section>"
+            '<div class="screens">'
+            f"<figure><figcaption>Source evidence</figcaption>"
+            f"{source_image_html}</figure>"
+            f"<figure><figcaption>Current decision screen</figcaption>"
+            f"{current_image_html}</figure>"
+            "</div></section>"
         )
     args.output_csv.parent.mkdir(parents=True, exist_ok=True)
     with args.output_csv.open("w", encoding="utf-8", newline="") as stream:
@@ -217,6 +237,8 @@ def main() -> None:
 body{font:15px/1.45 system-ui;max-width:1100px;margin:auto;padding:24px}
 section{border:1px solid #bbb;border-radius:10px;padding:16px;margin:18px 0}
 img{max-width:480px;max-height:800px;border:1px solid #ddd}
+.screens{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap}
+figure{margin:0}figcaption{font-weight:700;margin:4px 0}
 h2{margin-top:0} p{overflow-wrap:anywhere}
 </style>
 <h1>Non-Hard retrieval audit — frozen sample seed 20260724</h1>
@@ -227,8 +249,8 @@ conflict/failure. Useful: reduces decision uncertainty or guides a concrete
 check/action. Harmful: accepting it could plausibly cause a wrong action,
 loop, or premature completion. Utility is yes exactly when relevant,
 route-appropriate, useful, not harmful, and any FACT is screenshot-supported.
-Use only the displayed task, memory, decision, provenance screenshot, and
-route; do not use evaluator outcomes.</p>
+Use only the displayed task, memory, decision, source-provenance screenshot,
+current decision screenshot, and route; do not use evaluator outcomes.</p>
 """ + "\n".join(html_rows)
     args.output_html.write_text(html, encoding="utf-8")
     print(
