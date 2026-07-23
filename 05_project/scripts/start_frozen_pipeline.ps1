@@ -6,6 +6,9 @@ $root = Join-Path $repositoryRoot "runs\frozen_hard_v1\pipeline"
 $pidFile = Join-Path $root "pipeline.pid"
 New-Item -ItemType Directory -Force -Path $root | Out-Null
 
+& (Join-Path $PSScriptRoot "start_model_tunnel.ps1") | Out-Null
+& (Join-Path $PSScriptRoot "start_model_tunnel_watchdog.ps1")
+
 if (Test-Path -LiteralPath $pidFile) {
     $oldPid = [int](Get-Content -LiteralPath $pidFile)
     $existing = Get-Process -Id $oldPid -ErrorAction SilentlyContinue

@@ -24,11 +24,16 @@ From the repository root:
 
 ```powershell
 .\05_project\scripts\start_model_tunnel.ps1
+.\05_project\scripts\start_model_tunnel_watchdog.ps1
 .\06_local_runtime\scripts\start_emulator.ps1
 ```
 
 Confirm `http://127.0.0.1:18000/health` reports the exact model revision and
-backend. The server itself binds only to `127.0.0.1` on the model host.
+backend. The watchdog checks the locked identity and recreates a missing or
+repeatedly unhealthy idle SSH forward; it never restarts a tunnel with an
+active model connection. Its append-only operational log is
+`06_local_runtime/temp/model_tunnel_watchdog.log`. The server itself binds only
+to `127.0.0.1` on the model host.
 
 ## Development gates
 

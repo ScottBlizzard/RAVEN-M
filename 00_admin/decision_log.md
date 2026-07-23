@@ -199,3 +199,15 @@
 - **Consequence:** v8 is excluded from G7 acceptance. No prompt, router,
   controller, model, budget, task, or seed was changed; Hard scoring remains
   forbidden.
+
+## 2026-07-24 — Long-run tunnel watchdog is operational only
+
+- **Decision:** run an append-only local watchdog for the private SSH forward
+  during long development and frozen pipelines.
+- **Behavior:** it validates the locked model revision/backend every 15 seconds,
+  immediately recreates a missing listener, and only recycles a repeatedly
+  unhealthy listener when no model connection is active.
+- **Boundary:** this does not retry or alter agent outputs, actions, tasks,
+  evaluators, budgets, or result labels. The scored runner retains its
+  preregistered maximum of three infrastructure attempts per identical task
+  instance and stops after exhausted or unclassified infrastructure errors.
