@@ -32,3 +32,5 @@ def test_repair_prompt_forbids_invented_working_memory_citations() -> None:
     assert "MEMORY_CONTEXT.items[].memory_id" in prompt
     assert "Working-memory slots are not citable" in prompt
     assert "use []" in prompt
+    assert "do not repeat done" in prompt
+    assert "supports_completion_requirements" in prompt

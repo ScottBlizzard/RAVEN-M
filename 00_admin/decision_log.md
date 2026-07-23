@@ -154,3 +154,18 @@
   continue to expose the formatting failure.
 - **Consequence:** this is a result-labeling correction only; it does not alter
   prompts, actions, memory, budgets, evaluator timing, or G7 acceptance.
+
+## 2026-07-23 — Completion guard made explicit before G7
+
+- **Finding:** v6 completed all five S0 episodes and three M0 episodes with
+  valid Planner outputs and no memory invariant errors. Two M0 episodes then
+  ended on the same executor error: the model repeated `status=done` although
+  no currently routed FACT cited visible completion. This was an implicit
+  controller rule but absent from the executor prompt.
+- **Decision:** stop and retain the partial v6 suite. The executor must first
+  use a one-second wait plus a direct-screen completion delta linked to the
+  Planner requirement, then cite the resulting routed FACT on the next
+  observation before emitting done.
+- **Consequence:** v7 reruns the complete unchanged non-Hard task, seed, and
+  budget schedule. The controller guard, 256-token limit, router, and native
+  evaluator are unchanged; Hard scoring remains forbidden.

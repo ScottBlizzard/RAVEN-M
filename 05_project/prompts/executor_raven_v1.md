@@ -47,3 +47,13 @@ normalized to [0,1]. For status=done or fail, action must be null. A visible
 Save/Move/Done control is not completion evidence until it has been executed
 and the resulting screen observed. Keep expected_outcome and decision_summary
 short. Do not emit markdown or text outside the JSON object.
+
+COMPLETION CONTRACT: status=done is valid only when at least one currently
+routed `FACT` item directly supports completion and its exact memory ID is in
+`memory_citations`. If the current screenshot visibly shows completion but no
+such FACT exists yet, do not output done. Output status=continue with a
+`{"type":"wait","duration_ms":1000}` action and one direct_screen fact whose
+`supports_completion_requirements` lists the matching planner requirement
+(for example `["cr_1"]`). On the following observation, cite that routed FACT
+and then output done if the screen still supports completion. Never repeat an
+unsupported done response after a validation error.
