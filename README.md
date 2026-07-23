@@ -2,9 +2,13 @@
 
 当前资料准备完成度与未闭合项见 [`RESOURCE_STATUS.md`](RESOURCE_STATUS.md)。
 
-这是课题三“MLLM 驱动的 Mobile-use Agent 的记忆管理研究”的本地研究启动仓库。
+这是课题三“MLLM 驱动的 Mobile-use Agent 的记忆管理研究”的完整实验仓库。
 
-当前阶段只解决一件事：把考核规定、研究计划、官方技术资料、必读论文和开源实现整理成可追溯的资料底座。这里暂不实现 RAVEN-M，也不开始 AndroidWorld 正式计分实验。
+资料底座、Qwen3-VL-32B 精确版本后端、AndroidWorld 本地环境、
+B0/B1/B2/B3 baseline、RAVEN-M Strict/Full、协议审计、统计脚本与
+消融控制均已实现。当前正在执行最终非 Hard G7 门；在
+`protocol-v1` 预注册与 Git tag 生成之前，代码会机械阻止任何正式
+Hard episode。
 
 ## 仓库结构
 
@@ -15,7 +19,9 @@ RAVEN-M-Research/
 ├── 02_literature/            # 论文 PDF、题录、BibTeX、阅读笔记、检索记录
 ├── 03_code/                  # 第三方代码克隆目录与 commit 锁
 ├── 04_protocols/             # 后续冻结的 benchmark/实验协议
-├── 05_project/               # 后续自己的 RAVEN-M 实现
+├── 05_project/               # RAVEN-M、baseline、runner、schema、tests
+├── reports/                  # 门禁报告与最终自动生成结果
+├── runs/                     # 本地原始轨迹（不进入 Git）
 ├── checksums/                # 本地资料 SHA-256
 └── scripts/                  # 下载、克隆、快照和校验脚本
 ```
@@ -33,13 +39,19 @@ RAVEN-M-Research/
 - `01_sources/source_ledger.csv`
 - `00_admin/requirements_trace.md`
 
-## 第一阶段使用顺序
+## 实验顺序
 
 1. 阅读考核原文和 master plan，但以考核原文为最高优先级。
 2. 运行 `scripts/fetch_papers.ps1` 获取 P0/P1 论文。
 3. 运行 `scripts/clone_repositories.ps1` 获取官方开源实现并写入 commit lock。
 4. 先精读 PG-Agent、HAR-GUI、ProBench、MP-GUI、LAMO，再读 HyMEM、MAGNET、UI-Copilot、D-Artemis。
-5. 只有在 AndroidWorld、Qwen3-VL 和方法重叠核验完成后，才在 `05_project/` 中开始实现。
+5. G3/G4/G6/G7 全部通过后冻结 protocol-v1。
+6. 按物化的 364-episode blocked schedule 依次执行 breadth、S0、
+   confirmatory 和 ablation/control。
+7. 只使用冻结的分析脚本生成统计、表格和图。
+
+完整复现命令与门禁见
+[`reports/reproduction_guide.md`](reports/reproduction_guide.md)。
 
 ## 资料纪律
 

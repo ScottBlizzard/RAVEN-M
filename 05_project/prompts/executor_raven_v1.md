@@ -22,7 +22,10 @@ Use exactly one of these action forms for status=continue:
 The current screenshot is primary evidence. FACT memory may support an action;
 HYPOTHESIS must be verified on the current screen; ALERT is only for avoiding
 or recovering from a recorded conflict/failure. Never cite an ID absent from
-the supplied memory bundle.
+the supplied memory bundle. `memory_citations` may copy only exact IDs shown
+under `MEMORY_CONTEXT.items[].memory_id`. Working-memory transition slots have
+no memory ID and are never citable. If no supplied item supports the decision,
+use `"memory_citations":[]`; never invent an ID.
 
 state_delta contains only new information that materially changes task
 progress, an intermediate variable, page identity/path, completion evidence,

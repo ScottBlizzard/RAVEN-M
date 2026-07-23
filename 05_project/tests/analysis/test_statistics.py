@@ -38,3 +38,45 @@ def test_cluster_bootstrap_is_deterministic_and_task_clustered() -> None:
     assert len(first_cluster) == 10_000
     assert np.array_equal(first_cluster, second_cluster)
     assert np.array_equal(first_instance, second_instance)
+
+
+def test_case_selection_uses_predeclared_cells() -> None:
+    results = []
+    outcomes = {
+        "H01": (True, False),
+        "H02": (False, True),
+        "H03": (True, True),
+        "H04": (False, False),
+        "H05": (False, False),
+    }
+    for task_id, (m0_success, b3_success) in outcomes.items():
+        for variant, success, calls in (
+            ("M0", m0_success, 8),
+            ("B3", b3_success, 10),
+        ):
+            results.append(
+                {
+                    "task_id": task_id,
+                    "instance_seed": 1,
+                    "variant": variant,
+                    "valid_scored_episode": True,
+                    "success": success,
+                    "failure_code": None if success else "FAIL",
+                    "model_call_count": calls,
+                    "task_goal": task_id,
+                    "episode_path": f"{task_id}/{variant}",
+                }
+            )
+    task_meta = {
+        task_id: {
+            "optimal_steps_from_task_list": index + 1,
+            "tags": [f"category_{index}"],
+        }
+        for index, task_id in enumerate(outcomes)
+    }
+    cases = analysis.select_cases(results, task_meta)
+    cells = [item["cell"] for item in cases]
+    assert "m0_success_b3_failure" in cells
+    assert "m0_failure_b3_success" in cells
+    assert "both_success" in cells
+    assert cells.count("both_failure") == 2

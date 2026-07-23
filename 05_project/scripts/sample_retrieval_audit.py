@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import base64
 import csv
+from html import escape
 from io import BytesIO
 import json
 from pathlib import Path
@@ -186,12 +187,13 @@ def main() -> None:
         )
         html_rows.append(
             "<section>"
-            f"<h2>{row['audit_id']} · {row['route']} · "
-            f"{row['memory_id']}</h2>"
-            f"<p><b>Task:</b> {row['task_goal']}</p>"
-            f"<p><b>Memory:</b> {row['content']}</p>"
-            f"<p><b>Decision:</b> {row['decision_summary']}</p>"
-            f"<p><b>Action:</b> {row['action']} · "
+            f"<h2>{escape(row['audit_id'])} · {escape(row['route'])} · "
+            f"{escape(row['memory_id'])}</h2>"
+            f"<p><b>Task:</b> {escape(row['task_goal'])}</p>"
+            f"<p><b>Memory:</b> {escape(row['content'])}</p>"
+            f"<p><b>Decision:</b> "
+            f"{escape(row['decision_summary'])}</p>"
+            f"<p><b>Action:</b> {escape(row['action'])} · "
             f"<b>Cited:</b> {row['cited']}</p>"
             f"{image_html}</section>"
         )

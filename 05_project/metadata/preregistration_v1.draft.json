@@ -2,12 +2,12 @@
   "schema_version": "preregistration.v1",
   "status": "draft_pending_G7",
   "scored_hard_runs_permitted": false,
-  "generated_at_utc": "2026-07-23T12:31:57.718095+00:00",
-  "git_head_before_freeze_commit": "ba6674cee2e35c91010b968ddd4ea8981a8d4a55",
+  "generated_at_utc": "2026-07-23T12:44:20.543949+00:00",
+  "git_head_before_freeze_commit": "9f0819b874de396693c3974a2ec6a7b06784b18b",
   "androidworld_commit": "3e50888527ef9f29b9157ecd537e408008bb1c85",
   "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
   "protocol_file_count": 77,
-  "protocol_records_sha256": "fa43abf75d9ad89b51c076c490d65a688743e4801cad9b772b9e88e7d8108c8d",
+  "protocol_records_sha256": "38c21bcd2e4afce19a4d39823a4a377603b667f95384d2a47bae84df62827942",
   "files": [
     {
       "path": "00_admin/requirements_trace.md",
@@ -21,8 +21,8 @@
     },
     {
       "path": "04_protocols/environment_lock.yaml",
-      "bytes": 5946,
-      "sha256": "5513e404c4c56a3f32425bc3d37685b19585e4084c9c061e4cb3eb6db41626b0"
+      "bytes": 5974,
+      "sha256": "f8ffa4695ad25c5a14db9f0b5e6f70a5454d3c80a39cd155b4dc02eee76e9b98"
     },
     {
       "path": "04_protocols/experiment_protocol.md",
@@ -141,8 +141,8 @@
     },
     {
       "path": "05_project/metadata/g6_audit.json",
-      "bytes": 882,
-      "sha256": "08f29a2e4e30ce5cd6cf4cec7a67999cf06b3a16bfe0961f447d7c98f6e892c9"
+      "bytes": 1075,
+      "sha256": "3afb574675618657687ca94729cdd5fe1a53ec1aa133746c9af03e2944d76d36"
     },
     {
       "path": "05_project/metadata/protocol_audit.json",
@@ -166,8 +166,8 @@
     },
     {
       "path": "05_project/prompts/executor_raven_v1.md",
-      "bytes": 2853,
-      "sha256": "fb302aae90e619a98a19af6302333c8d0ac0870eb0e3ec835965c12fc5d78674"
+      "bytes": 3109,
+      "sha256": "4296b871816c76bb29918eca48a7433e5a10d713b9d7760f299873fab3b05174"
     },
     {
       "path": "05_project/prompts/executor_v1.md",
@@ -216,8 +216,8 @@
     },
     {
       "path": "05_project/scripts/analyze_frozen_results.py",
-      "bytes": 14545,
-      "sha256": "f9b294d4d39a4f0f4b93741e80be3ad5aee2a3956c7c749071b0edb7a46614b7"
+      "bytes": 20703,
+      "sha256": "9eacd6ef9d284891fa8a829ea3aa14937ff9857ea57cbf7ad95f73c775334a24"
     },
     {
       "path": "05_project/scripts/audit_g4.py",
@@ -226,8 +226,8 @@
     },
     {
       "path": "05_project/scripts/audit_g6.py",
-      "bytes": 3106,
-      "sha256": "cec0bf63dc1e4bf5d486f15be496e995dd3a81fb1030e23198470579107e7260"
+      "bytes": 3866,
+      "sha256": "19f27dc0c3a4a93e32b7443034bc969b4041d7fdca51392dbd707dcc6a74b71f"
     },
     {
       "path": "05_project/scripts/audit_g7.py",
@@ -286,13 +286,13 @@
     },
     {
       "path": "05_project/scripts/run_method_dev_suite.py",
-      "bytes": 15509,
-      "sha256": "07a8d44ca51c16f27ba62f0dc2af262c57a13930e6964c9f25da0045c2328d63"
+      "bytes": 17736,
+      "sha256": "0045bd8bd8cd83f9d6be507a19e2284a52f5e1eebd32c2d132427c9be4fb4326"
     },
     {
       "path": "05_project/scripts/sample_retrieval_audit.py",
-      "bytes": 8423,
-      "sha256": "6fb9b03086d42669ffd919518eaa77f06b239afebcb76573ba9904047307faa4"
+      "bytes": 8519,
+      "sha256": "36268eb5b2387f9c7c124876e58d6d86b9cf2b8e038c34eba41b93b870532bfa"
     },
     {
       "path": "05_project/src/raven_m/__init__.py",
@@ -316,8 +316,8 @@
     },
     {
       "path": "05_project/src/raven_m/controller/episode_controller.py",
-      "bytes": 25899,
-      "sha256": "79f80342dd9310c44f27d259a78152e1c0b5ba4399a000619f9f1f5311991f82"
+      "bytes": 26186,
+      "sha256": "80f3020a2a36e39354089edaa0780193da70df8241e8f5f0a8bd521927207c5c"
     },
     {
       "path": "05_project/src/raven_m/env/__init__.py",

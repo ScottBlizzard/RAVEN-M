@@ -33,8 +33,29 @@ def main() -> None:
         PROJECT_ROOT / "tests" / "roles",
         PROJECT_ROOT / "tests" / "schemas",
     ]
-    result = subprocess.run(
-        [sys.executable, "-m", "pytest", "-q", *map(str, targets)],
+    focused_result = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "pytest",
+            "-q",
+            "--disable-warnings",
+            *map(str, targets),
+        ],
+        cwd=PROJECT_ROOT.parent,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    full_result = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "pytest",
+            "-q",
+            "--disable-warnings",
+            str(PROJECT_ROOT / "tests"),
+        ],
         cwd=PROJECT_ROOT.parent,
         capture_output=True,
         text=True,
@@ -55,8 +76,10 @@ def main() -> None:
         ).is_file(),
     }
     errors = []
-    if result.returncode:
+    if focused_result.returncode:
         errors.append("memory/history/role/schema pytest suite failed")
+    if full_result.returncode:
+        errors.append("complete project pytest suite failed")
     if MEMORY_TYPES != EXPECTED_TYPES:
         errors.append(
             f"core memory types differ: {sorted(MEMORY_TYPES)}"
@@ -70,9 +93,12 @@ def main() -> None:
         "core_memory_types": sorted(MEMORY_TYPES),
         "working_memory_representation": "fixed FIFO transition slots",
         "required_test_groups": required_tests,
-        "pytest_returncode": result.returncode,
-        "pytest_stdout": result.stdout.strip(),
-        "pytest_stderr": result.stderr.strip(),
+        "focused_pytest_returncode": focused_result.returncode,
+        "focused_pytest_stdout": focused_result.stdout.strip(),
+        "focused_pytest_stderr": focused_result.stderr.strip(),
+        "full_pytest_returncode": full_result.returncode,
+        "full_pytest_stdout": full_result.stdout.strip(),
+        "full_pytest_stderr": full_result.stderr.strip(),
         "checks": {
             "write_retrieve_invalidate": True,
             "append_only_replay_exact": True,

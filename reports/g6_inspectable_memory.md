@@ -7,7 +7,7 @@ AndroidWorld Hard result.
 
 ## Evidence
 
-- The complete project test suite passes 52 tests; the G6-focused
+- The complete project test suite passes 54 tests; the G6-focused
   memory/history/role/schema subset passes 43 tests.
 - Core representations are fixed FIFO working memory, verified episodic facts,
   failure/recovery items, and episode-local page hints.

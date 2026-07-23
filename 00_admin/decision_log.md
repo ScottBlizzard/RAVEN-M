@@ -115,3 +115,15 @@
 - **Consequence:** v3 remains archived and v4 reruns the complete unchanged
   non-Hard task/seed schedule. The model context and generation budgets are not
   increased.
+
+## 2026-07-23 — Working-memory slots are explicitly non-citable
+
+- **Finding:** v4 reached 4 S0 episodes with no invariant or stale-FACT event.
+  One invalid decision treated an unnumbered FIFO working-memory slot as a
+  persistent item and invented the citation `working_memory_0`.
+- **Decision:** citations may only copy exact IDs from
+  `MEMORY_CONTEXT.items[].memory_id`; FIFO working transitions are context,
+  not evidence-bearing persistent items, and cannot be cited.
+- **Consequence:** the repair instruction removes malformed, unavailable, or
+  invented IDs and uses an empty list when no valid item remains. The complete
+  non-Hard schedule is rerun as v5; v4 remains archived.

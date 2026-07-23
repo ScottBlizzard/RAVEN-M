@@ -178,16 +178,26 @@ def aggregate(
             audit["stale_fact_routes"] for audit in item_audits
         )
         role_counts = {"planner": 0, "critic": 0}
+        role_event_counts = {"planner": 0, "critic": 0}
+        role_output_errors = []
         for item in items:
             for step in item["steps"]:
-                counts = (
-                    step.get("history_update", {})
-                    .get("details", {})
-                    .get("role_call_counts", {})
-                    or {}
+                details = (
+                    step.get("history_update", {}).get("details", {}) or {}
                 )
+                counts = details.get("role_call_counts", {}) or {}
                 for role in role_counts:
                     role_counts[role] += int(counts.get(role, 0))
+                for event in details.get("role_events", []) or []:
+                    role = event.get("role")
+                    if role in role_event_counts:
+                        role_event_counts[role] += 1
+                    if event.get("error"):
+                        role_output_errors.append(
+                            f"{item['episode_id']}:{role}:"
+                            f"{event['error']}"
+                        )
+        invariant_errors.extend(role_output_errors)
         repair_rate = valid / attempts if attempts else 0.0
         infra_rate = infra / len(items) if items else 1.0
         context_ok = (
@@ -211,6 +221,8 @@ def aggregate(
                 item["history_model_call_count"] for item in items
             ),
             "role_call_counts": role_counts,
+            "role_event_counts": role_event_counts,
+            "role_output_error_count": len(role_output_errors),
             "model_call_count": sum(item["model_call_count"] for item in items),
             "max_prompt_tokens": max_prompt_tokens,
             "context_cap_respected": context_ok,
@@ -237,6 +249,13 @@ def aggregate(
                 and len(invariant_errors)
                 <= acceptance["invariant_error_max"]
                 and stale_fact <= acceptance["stale_fact_route_max"]
+                and (
+                    variant != "M0"
+                    or (
+                        role_event_counts["planner"] >= len(items)
+                        and role_event_counts["critic"] >= 1
+                    )
+                )
             ),
         }
     return {
@@ -287,6 +306,7 @@ def main() -> None:
         type=Path,
         default=REPOSITORY_ROOT / "runs" / "method_dev_g6_g7",
     )
+    parser.add_argument("--aggregate-only", action="store_true")
     args = parser.parse_args()
 
     manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
@@ -310,6 +330,39 @@ def main() -> None:
     registered = task_registry.get_registry(task_registry.ANDROID_WORLD_FAMILY)
     summaries: list[dict[str, Any]] = []
     audits: list[dict[str, Any]] = []
+
+    if args.aggregate_only:
+        for sequence, item in enumerate(manifest["schedule"], start=1):
+            episode_dir = episode_root / (
+                f"{sequence:02d}_{item['variant']}_{item['task']}_"
+                f"seed{item['seed']}"
+            )
+            completed = episode_dir / "episode.json"
+            if not completed.is_file():
+                continue
+            summary = json.loads(completed.read_text(encoding="utf-8"))
+            summaries.append(summary)
+            audits.append(
+                audit_memory_episode(episode_dir, summary["episode_id"])
+            )
+        final = aggregate(
+            suite_id=args.suite_id,
+            manifest=manifest,
+            health=health,
+            summaries=summaries,
+            audits=audits,
+            finished=len(summaries) == len(manifest["schedule"]),
+        )
+        write_json(suite_dir / "suite_summary.json", final)
+        write_json(suite_dir / "suite_progress.json", final)
+        print(json.dumps(final, indent=2, ensure_ascii=False))
+        if (
+            not final["finished"]
+            or not final["g6_s0_passed"]
+            or not final["g7_m0_passed"]
+        ):
+            raise SystemExit(3)
+        return
 
     env = env_launcher.load_and_setup_env(
         console_port=args.console_port,

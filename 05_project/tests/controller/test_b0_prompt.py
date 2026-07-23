@@ -21,3 +21,14 @@ def test_b0_prompt_excludes_hidden_state_and_memory() -> None:
     assert "y=438 becomes y=0.1826" in prompt
     assert "visible Save/Move/Done button is not proof" in prompt
     assert "schema named in the system prompt" in prompt
+
+
+def test_repair_prompt_forbids_invented_working_memory_citations() -> None:
+    prompt = EpisodeController._repair_prompt(
+        "original",
+        '{"memory_citations":["working_memory_0"]}',
+        "memory_citations.0 does not match pattern",
+    )
+    assert "MEMORY_CONTEXT.items[].memory_id" in prompt
+    assert "Working-memory slots are not citable" in prompt
+    assert "use []" in prompt

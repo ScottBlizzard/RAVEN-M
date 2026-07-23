@@ -250,6 +250,144 @@ def comparison(
     )
 
 
+def select_cases(
+    results: list[dict[str, Any]],
+    task_meta: dict[str, dict[str, Any]],
+) -> list[dict[str, Any]]:
+    index = {
+        (item["task_id"], item["instance_seed"], item["variant"]): item
+        for item in results
+        if item["valid_scored_episode"]
+    }
+    pairs = []
+    for task_id, seed, variant in sorted(index):
+        if variant != "M0" or (task_id, seed, "B3") not in index:
+            continue
+        full = index[(task_id, seed, "M0")]
+        baseline = index[(task_id, seed, "B3")]
+        meta = task_meta[task_id]
+        if full["success"] and not baseline["success"]:
+            cell = "m0_success_b3_failure"
+        elif baseline["success"] and not full["success"]:
+            cell = "m0_failure_b3_success"
+        elif full["success"] and baseline["success"]:
+            cell = "both_success"
+        else:
+            cell = "both_failure"
+        pairs.append(
+            {
+                "task_id": task_id,
+                "instance_seed": seed,
+                "cell": cell,
+                "optimal_steps": meta["optimal_steps_from_task_list"],
+                "primary_category": meta["tags"][0],
+                "call_difference_m0_minus_b3": (
+                    full["model_call_count"] - baseline["model_call_count"]
+                ),
+                "task_goal": full["task_goal"],
+                "m0": {
+                    "success": full["success"],
+                    "failure_code": full["failure_code"],
+                    "model_calls": full["model_call_count"],
+                    "episode_path": full["episode_path"],
+                },
+                "b3": {
+                    "success": baseline["success"],
+                    "failure_code": baseline["failure_code"],
+                    "model_calls": baseline["model_call_count"],
+                    "episode_path": baseline["episode_path"],
+                },
+            }
+        )
+    selected: list[dict[str, Any]] = []
+    wins = sorted(
+        [item for item in pairs if item["cell"] == "m0_success_b3_failure"],
+        key=lambda item: (
+            -item["optimal_steps"],
+            item["task_id"],
+            item["instance_seed"],
+        ),
+    )
+    selected.extend(wins[:2])
+    harms = sorted(
+        [item for item in pairs if item["cell"] == "m0_failure_b3_success"],
+        key=lambda item: (
+            -item["optimal_steps"],
+            item["task_id"],
+            item["instance_seed"],
+        ),
+    )
+    selected.extend(harms[:2])
+    both_success = [
+        item for item in pairs if item["cell"] == "both_success"
+    ]
+    favor_m0 = sorted(
+        [
+            item
+            for item in both_success
+            if item["call_difference_m0_minus_b3"] < 0
+        ],
+        key=lambda item: (
+            item["call_difference_m0_minus_b3"],
+            item["task_id"],
+            item["instance_seed"],
+        ),
+    )
+    favor_b3 = sorted(
+        [
+            item
+            for item in both_success
+            if item["call_difference_m0_minus_b3"] > 0
+        ],
+        key=lambda item: (
+            -item["call_difference_m0_minus_b3"],
+            item["task_id"],
+            item["instance_seed"],
+        ),
+    )
+    if favor_m0:
+        selected.append(favor_m0[0])
+    if favor_b3:
+        selected.append(favor_b3[0])
+    if len([item for item in selected if item["cell"] == "both_success"]) < 2:
+        used = {
+            (item["task_id"], item["instance_seed"]) for item in selected
+        }
+        remaining = sorted(
+            [
+                item
+                for item in both_success
+                if (item["task_id"], item["instance_seed"]) not in used
+            ],
+            key=lambda item: (
+                -abs(item["call_difference_m0_minus_b3"]),
+                item["task_id"],
+                item["instance_seed"],
+            ),
+        )
+        if remaining:
+            selected.append(remaining[0])
+    failures = sorted(
+        [item for item in pairs if item["cell"] == "both_failure"],
+        key=lambda item: (
+            -item["optimal_steps"],
+            item["task_id"],
+            item["instance_seed"],
+        ),
+    )
+    used_categories = set()
+    for item in failures:
+        if item["primary_category"] in used_categories:
+            continue
+        selected.append(item)
+        used_categories.add(item["primary_category"])
+        if len(used_categories) == 2:
+            break
+    for selection_index, item in enumerate(selected, start=1):
+        item["selection_index"] = selection_index
+    return selected
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -298,6 +436,13 @@ def main() -> None:
         summarize_variant(variant, by_variant[variant])
         for variant in EXPECTED_COVERAGE
     ]
+    manifest = json.loads(
+        (
+            PROJECT_ROOT
+            / "configs/task_manifests/androidworld_hard_v1.json"
+        ).read_text(encoding="utf-8")
+    )
+    task_meta = {item["id"]: item for item in manifest["tasks"]}
     comparisons = []
     bootstrap_rows = []
     for treatment, control in (("M0", "B3"), ("M0", "B0")):
@@ -359,7 +504,41 @@ def main() -> None:
     write_csv(output / "table_main.csv", main_rows)
     write_csv(output / "table_efficiency.csv", main_rows)
     write_csv(output / "table_ablation.csv", ablation_rows)
+    failure_rows = []
+    for variant in EXPECTED_COVERAGE:
+        codes = sorted(
+            {
+                item["failure_code"] or "SUCCESS"
+                for item in by_variant[variant]
+            }
+        )
+        for code in codes:
+            failure_rows.append(
+                {
+                    "variant": variant,
+                    "outcome_code": code,
+                    "count": sum(
+                        (item["failure_code"] or "SUCCESS") == code
+                        for item in by_variant[variant]
+                    ),
+                    "denominator": len(by_variant[variant]),
+                }
+            )
+    write_csv(output / "table_failure_codes.csv", failure_rows)
     write_csv(output / "bootstrap_replicates.csv", bootstrap_rows)
+    cases = select_cases(results, task_meta)
+    write_json(
+        output / "case_selection.json",
+        {
+            "schema_version": "case_selection.v1",
+            "selection_rule": (
+                "Predeclared outcome cells; longest task then task ID for "
+                "wins/harms; largest signed call gaps for both-success; "
+                "distinct primary categories for both-failure."
+            ),
+            "cases": cases,
+        },
+    )
     statistics = {
         "schema_version": "frozen_analysis.v1",
         "bootstrap_seed": BOOTSTRAP_SEED,
@@ -443,7 +622,9 @@ convert a low-power or null result into a universal performance claim.
 - `table_main.csv`: TSR numerators, denominators, Wilson intervals.
 - `table_efficiency.csv`: steps, calls, tokens, latency, cost-normalized rates.
 - `table_ablation.csv`: every predeclared paired component/control cell.
+- `table_failure_codes.csv`: complete outcome-code counts by variant.
 - `bootstrap_replicates.csv`: all 10,000 clustered and instance replicates.
+- `case_selection.json`: deterministic success/failure/harm case cells.
 - `figure_tsr_wilson.png` and `figure_efficiency_pareto.png`.
 """
     (output / "results_report.md").write_text(report, encoding="utf-8")
