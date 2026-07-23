@@ -137,6 +137,122 @@ def verify_freeze() -> dict[str, Any]:
     }
 
 
+def load_androidworld_env(
+    *,
+    adb_path: str,
+    console_port: int,
+    grpc_port: int,
+) -> Any:
+    return env_launcher.load_and_setup_env(
+        console_port=console_port,
+        emulator_setup=False,
+        freeze_datetime=True,
+        adb_path=adb_path,
+        grpc_port=grpc_port,
+    )
+
+
+def recover_androidworld_env(
+    *,
+    adb_path: str,
+    console_port: int,
+    grpc_port: int,
+    recovery_dir: Path,
+) -> Any:
+    """Cold-restart and warm-verify AndroidWorld after an invalid infra attempt."""
+    recovery_dir.mkdir(parents=True, exist_ok=True)
+    stop_script = LOCAL_RUNTIME / "scripts/stop_emulator.ps1"
+    start_script = LOCAL_RUNTIME / "scripts/start_emulator.ps1"
+    smoke_script = LOCAL_RUNTIME / "scripts/androidworld_smoke.py"
+    smoke_output = recovery_dir / "androidworld_smoke.json"
+    commands = [
+        [
+            "powershell.exe",
+            "-NoProfile",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-File",
+            str(stop_script),
+        ],
+        [
+            "powershell.exe",
+            "-NoProfile",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-File",
+            str(start_script),
+            "-BootTimeoutSeconds",
+            "300",
+        ],
+        [
+            sys.executable,
+            str(smoke_script),
+            "--adb-path",
+            adb_path,
+            "--console-port",
+            str(console_port),
+            "--grpc-port",
+            str(grpc_port),
+            "--output",
+            str(smoke_output),
+        ],
+    ]
+    records = []
+    for index, command in enumerate(commands, start=1):
+        timeout = 60 if index == 1 else 420
+        try:
+            completed = subprocess.run(
+                command,
+                cwd=REPOSITORY_ROOT,
+                capture_output=True,
+                text=True,
+                check=False,
+                timeout=timeout,
+            )
+        except subprocess.TimeoutExpired as error:
+            records.append(
+                {
+                    "index": index,
+                    "command": command,
+                    "returncode": None,
+                    "timed_out_after_seconds": timeout,
+                    "stdout": str(error.stdout or ""),
+                    "stderr": str(error.stderr or ""),
+                }
+            )
+            write_json(recovery_dir / "commands.json", records)
+            raise RuntimeError(
+                "AndroidWorld infrastructure recovery timed out at command "
+                f"{index}; see {recovery_dir / 'commands.json'}."
+            ) from error
+        record = {
+            "index": index,
+            "command": command,
+            "returncode": completed.returncode,
+            "stdout": completed.stdout,
+            "stderr": completed.stderr,
+        }
+        records.append(record)
+        write_json(recovery_dir / "commands.json", records)
+        if completed.returncode:
+            raise RuntimeError(
+                "AndroidWorld infrastructure recovery failed at command "
+                f"{index}; see {recovery_dir / 'commands.json'}."
+            )
+    smoke = json.loads(smoke_output.read_text(encoding="utf-8"))
+    if (
+        smoke.get("status") != "ok"
+        or smoke.get("registered_android_world_tasks") != 116
+        or smoke.get("screen_shape") != [2400, 1080, 3]
+    ):
+        raise RuntimeError("AndroidWorld recovery smoke did not pass.")
+    return load_androidworld_env(
+        adb_path=adb_path,
+        console_port=console_port,
+        grpc_port=grpc_port,
+    )
+
+
 def all_calls(summary: dict[str, Any]) -> list[dict[str, Any]]:
     calls = []
     for step in summary.get("steps", []):
@@ -516,11 +632,9 @@ def main() -> None:
     task_registry = registry.TaskRegistry()
     registered = task_registry.get_registry(task_registry.ANDROID_WORLD_FAMILY)
     results: list[dict[str, Any]] = []
-    env = env_launcher.load_and_setup_env(
-        console_port=args.console_port,
-        emulator_setup=False,
-        freeze_datetime=True,
+    env = load_androidworld_env(
         adb_path=args.adb_path,
+        console_port=args.console_port,
         grpc_port=args.grpc_port,
     )
     try:
@@ -599,6 +713,21 @@ def main() -> None:
                             "error": summary["error"],
                         }
                     )
+                    if (
+                        infra_code == "INFRA_EMULATOR_LOST"
+                        and attempt < 3
+                    ):
+                        env.close()
+                        env = None
+                        env = recover_androidworld_env(
+                            adb_path=args.adb_path,
+                            console_port=args.console_port,
+                            grpc_port=args.grpc_port,
+                            recovery_dir=(
+                                record_dir
+                                / f"recovery_after_attempt_{attempt:02d}"
+                            ),
+                        )
                     continue
                 result = record_result(
                     schedule_record=record,
@@ -666,7 +795,8 @@ def main() -> None:
         ):
             raise SystemExit(3)
     finally:
-        env.close()
+        if env is not None:
+            env.close()
 
 
 if __name__ == "__main__":

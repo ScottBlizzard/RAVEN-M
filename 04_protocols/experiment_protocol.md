@@ -73,6 +73,13 @@ errors, wrong actions, loops, false done, model fail, and budget exhaustion
 remain failures. An infrastructure-invalid seed may be retried at most twice;
 all attempts remain archived.
 
+After `INFRA_EMULATOR_LOST`, and only before an allowed identical retry, the
+runner closes AndroidWorld, cold-restarts the same no-snapshot AVD, and requires
+a no-LLM initialization/state smoke with the locked 116-task registry and
+2400-by-1080 screen. Recovery logs and screenshots remain inside that schedule
+cell. This operational recovery cannot change the variant, generated instance,
+seed, prompt, payload, budget, evaluator, or success label.
+
 Transport retries reuse the identical payload and idempotency key, at most two
 attempts. A schema failure permits exactly one model repair and counts both
 calls. The evaluator is never queried mid-episode.

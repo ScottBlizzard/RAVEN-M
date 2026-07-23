@@ -9,7 +9,7 @@ Only these codes permit rerunning the same seed, at most twice:
 
 | Code | Definition |
 |---|---|
-| `INFRA_EMULATOR_LOST` | Emulator crashed, ADB device disappeared, or reset could not complete. |
+| `INFRA_EMULATOR_LOST` | Emulator crashed, ADB device disappeared, or an environment/controller/evaluator ADB command timed out or could not complete. |
 | `INFRA_MODEL_UNAVAILABLE` | Model endpoint failed after two identical transport retries and no action was produced. |
 | `INFRA_ASSET_CORRUPT` | Required app/asset installation is damaged and manual reproduction confirms it was not caused by the agent. |
 | `INFRA_EVALUATOR_EXCEPTION` | Evaluator raised a code exception instead of returning failure. |

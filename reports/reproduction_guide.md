@@ -84,6 +84,11 @@ It resumes completed result cells and runs:
 4. 136 ablation and budget-control episodes;
 5. frozen statistical analysis.
 
+If an attempt is invalidated as `INFRA_EMULATOR_LOST`, the runner archives it,
+cold-restarts the same no-snapshot AVD, requires a no-LLM AndroidWorld smoke,
+and then uses one of the two permitted identical retries. It never applies this
+recovery to an agent failure.
+
 The ordered schedule is
 `05_project/configs/experiments/hard_schedule_v1.json`. Do not hand-edit,
 reorder, skip, or selectively rerun scored agent failures.
