@@ -211,6 +211,15 @@ img{max-width:480px;max-height:800px;border:1px solid #ddd}
 h2{margin-top:0} p{overflow-wrap:anywhere}
 </style>
 <h1>Non-Hard retrieval audit — frozen sample seed 20260724</h1>
+<p><b>Fixed rubric.</b> Relevant: applies to the current task/subgoal.
+Route-appropriate: FACT is visibly supported and current; HYPOTHESIS is
+plausible but still needs verification; ALERT correctly warns about a
+conflict/failure. Useful: reduces decision uncertainty or guides a concrete
+check/action. Harmful: accepting it could plausibly cause a wrong action,
+loop, or premature completion. Utility is yes exactly when relevant,
+route-appropriate, useful, not harmful, and any FACT is screenshot-supported.
+Use only the displayed task, memory, decision, provenance screenshot, and
+route; do not use evaluator outcomes.</p>
 """ + "\n".join(html_rows)
     args.output_html.write_text(html, encoding="utf-8")
     print(

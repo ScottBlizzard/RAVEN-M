@@ -85,6 +85,30 @@ each sampled cluster, Wilson intervals for individual proportions, and exact
 McNemar tests as secondary paired tests. Report point estimates and 95%
 intervals without upgrading exploratory low-power results to universal claims.
 
+## Frozen G7 retrieval-audit rubric
+
+The deterministic seed-20260724 sample contains exactly 50 non-suppressed
+non-Hard retrieval events. Review uses only the task, routed item, route,
+contemporaneous decision, provenance screenshot, and source metadata; the
+evaluator result is hidden.
+
+- `relevant=yes` when the item applies to the current task or subgoal.
+- `route_appropriate=yes` when FACT is visibly supported and current,
+  HYPOTHESIS is plausible but requires verification, or ALERT correctly marks
+  a conflict/failure.
+- `fact_supported=yes` is required only for FACT and means its content is
+  directly supported by the displayed provenance screenshot.
+- `useful=yes` when the item reduces decision uncertainty or supports a
+  concrete action, check, recovery, or rejection.
+- `harmful=yes` when accepting the routed item could plausibly cause a wrong
+  action, loop, or premature completion.
+- `utility=yes` is derived, not discretionary: relevant, route-appropriate,
+  and useful must all be yes; harmful must be no; and a FACT must also be
+  screenshot-supported.
+
+G7 requires every component label, exact utility consistency, zero stale FACT
+routes, all role/memory invariants, and at least 40/50 utility-positive events.
+
 ## Freeze procedure
 
 This draft becomes protocol v1 only after:
