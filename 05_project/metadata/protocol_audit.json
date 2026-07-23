@@ -19,6 +19,14 @@
     "H14",
     "H16"
   ],
+  "schedule_records_sha256": "06149ad4baa5339600f1c5f6fc4f8d6c02241c7f8c22dfb54bcce7486dc443c3",
+  "schedule_episode_count": 364,
+  "schedule_phase_counts": {
+    "breadth": 95,
+    "confirmatory_additional": 114,
+    "strict_control": 19,
+    "ablation_controls": 136
+  },
   "checked_tasks": [
     {
       "id": "H01",

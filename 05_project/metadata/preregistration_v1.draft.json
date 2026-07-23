@@ -2,12 +2,12 @@
   "schema_version": "preregistration.v1",
   "status": "draft_pending_G7",
   "scored_hard_runs_permitted": false,
-  "generated_at_utc": "2026-07-23T12:07:52.226156+00:00",
-  "git_head_before_freeze_commit": "ac1ee119d6fc6cf6dcabefa2d37c3099fb160086",
+  "generated_at_utc": "2026-07-23T12:31:57.718095+00:00",
+  "git_head_before_freeze_commit": "ba6674cee2e35c91010b968ddd4ea8981a8d4a55",
   "androidworld_commit": "3e50888527ef9f29b9157ecd537e408008bb1c85",
   "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
-  "protocol_file_count": 55,
-  "protocol_records_sha256": "6e559be81bad508cac17c1320733b84cbf4b2883df071aef31f170a512c6aa16",
+  "protocol_file_count": 77,
+  "protocol_records_sha256": "fa43abf75d9ad89b51c076c490d65a688743e4801cad9b772b9e88e7d8108c8d",
   "files": [
     {
       "path": "00_admin/requirements_trace.md",
@@ -21,13 +21,13 @@
     },
     {
       "path": "04_protocols/environment_lock.yaml",
-      "bytes": 5826,
-      "sha256": "4132b5ba54e2a91b80e44b76fcaf21bbe63f9c86e6084a43d7c543d9e8ee3296"
+      "bytes": 5946,
+      "sha256": "5513e404c4c56a3f32425bc3d37685b19585e4084c9c061e4cb3eb6db41626b0"
     },
     {
       "path": "04_protocols/experiment_protocol.md",
-      "bytes": 4034,
-      "sha256": "f409fbaedcaf1cf84b65da02907b2ac194e390234847ba63dda5df1ce7babea9"
+      "bytes": 4689,
+      "sha256": "84720d623507da657d07ae121bce3d3c1a31cc427fcc8df66e1e0da72e4a2e74"
     },
     {
       "path": "04_protocols/failure_codebook.md",
@@ -55,14 +55,59 @@
       "sha256": "746b1f0a2a3cc09f38d8eefbdd90a58484b99337510e0513182c69a0684260b7"
     },
     {
+      "path": "05_project/configs/agents/b3_call.yaml",
+      "bytes": 199,
+      "sha256": "4fd52c0ea3b69ba60cc8b7aebad276ffc2cc262581ea27ed7f4aeac391f32beb"
+    },
+    {
+      "path": "05_project/configs/agents/b3_ctx.yaml",
+      "bytes": 180,
+      "sha256": "0dc12083e3ea797ddbe034f8c8c16b808da568c67e4dd8d2fd0b97827b7b787f"
+    },
+    {
       "path": "05_project/configs/agents/m0.yaml",
       "bytes": 528,
       "sha256": "11935bc7a74da3b2f49c3672eba72a627b1fb1367220b8f8412ec103d77a50e5"
     },
     {
+      "path": "05_project/configs/agents/mno_critic.yaml",
+      "bytes": 134,
+      "sha256": "1062b9420f51158d7bcf2bdfe48db86e9b5c37868f3670f099941ac8c274d7c2"
+    },
+    {
+      "path": "05_project/configs/agents/mno_frm.yaml",
+      "bytes": 156,
+      "sha256": "798da8e9f897816024d6d4add6497da0bedf2e1e1fd654431d377263d8dce691"
+    },
+    {
+      "path": "05_project/configs/agents/mno_psi.yaml",
+      "bytes": 130,
+      "sha256": "72749c84f195ce51d26f209e7d86b1ee7eb0108f5a349e23bf97ca54e0715453"
+    },
+    {
+      "path": "05_project/configs/agents/mno_vel.yaml",
+      "bytes": 142,
+      "sha256": "06edaf837a6c509cbbbec139260dce316ac83f975cbe0505b8d90aa86387626d"
+    },
+    {
+      "path": "05_project/configs/agents/mno_wm.yaml",
+      "bytes": 125,
+      "sha256": "52099b677846e2f50773083d301b7441556e8f2d46e832839f180fa145e0d360"
+    },
+    {
+      "path": "05_project/configs/agents/mrel.yaml",
+      "bytes": 142,
+      "sha256": "a6c1a0ae1cb3a9b9c9bc4613e752acfafbfa71eaf87b91d40a987dd4fd65c15e"
+    },
+    {
       "path": "05_project/configs/agents/s0.yaml",
       "bytes": 271,
       "sha256": "526b4f965b3b46a31359f6063f1948f70b8f716315ac3f5eb6c83312b7ab08ee"
+    },
+    {
+      "path": "05_project/configs/experiments/hard_schedule_v1.json",
+      "bytes": 100258,
+      "sha256": "1b437b8b407868fcc5080c0ea371ab1c1468f78c76b76993da7fe5b250b806d3"
     },
     {
       "path": "05_project/configs/experiments/seeds_v1.json",
@@ -76,13 +121,43 @@
     },
     {
       "path": "05_project/configs/task_manifests/ablation8_v1.json",
-      "bytes": 307,
-      "sha256": "0ad2c6e9aea002ca682479bdd0de6ab54ca22ad5ab131b9b14122bfe2a4de8a4"
+      "bytes": 714,
+      "sha256": "1fcca4f5213613b5720a60f459f34c1463fb3889e6eb5ac936148af993468a5b"
     },
     {
       "path": "05_project/configs/task_manifests/androidworld_hard_v1.json",
       "bytes": 4796,
       "sha256": "e651aedeb18f112be3a06562328618d19e9d33eaea94187b1edec51cb00f6ca7"
+    },
+    {
+      "path": "05_project/metadata/corruption_stress.json",
+      "bytes": 6215,
+      "sha256": "933c310ba9652563d0a171d47328eb0a7e49a89cb60780ec6d0d0b3580f113a8"
+    },
+    {
+      "path": "05_project/metadata/g4_audit.json",
+      "bytes": 5129,
+      "sha256": "ef555b9a5157337b03f05b30355cdd54000afb52ba9f4a95920bfdbabb82f8f3"
+    },
+    {
+      "path": "05_project/metadata/g6_audit.json",
+      "bytes": 882,
+      "sha256": "08f29a2e4e30ce5cd6cf4cec7a67999cf06b3a16bfe0961f447d7c98f6e892c9"
+    },
+    {
+      "path": "05_project/metadata/protocol_audit.json",
+      "bytes": 3495,
+      "sha256": "bff443e252b25df24a25eddd621e9dcd53c186c07aa80753541ddb64e8e923d1"
+    },
+    {
+      "path": "05_project/metadata/reset_determinism_g4_final.json",
+      "bytes": 13711,
+      "sha256": "b647dd499849d30daee10bd414ef780955e9faeac3657bebb4d2c3518c6b49dd"
+    },
+    {
+      "path": "05_project/metadata/runtime_asset_manifest.json",
+      "bytes": 4483,
+      "sha256": "d2a7a527711c1f538efec85c8e1c0863665ca9bc8a62e9cde5e7f1fc4851cb4d"
     },
     {
       "path": "05_project/prompts/critic_v1.md",
@@ -91,8 +166,8 @@
     },
     {
       "path": "05_project/prompts/executor_raven_v1.md",
-      "bytes": 2724,
-      "sha256": "24fb3fb944e9c8d6ae2a7d2a540b91eaed50207c365c1e1d192b2a8f3342e533"
+      "bytes": 2853,
+      "sha256": "fb302aae90e619a98a19af6302333c8d0ac0870eb0e3ec835965c12fc5d78674"
     },
     {
       "path": "05_project/prompts/executor_v1.md",
@@ -111,8 +186,8 @@
     },
     {
       "path": "05_project/schemas/action.raven.v1.schema.json",
-      "bytes": 5827,
-      "sha256": "bf46de8ba13cb726829abb1a796cfa7342d038a9193f416607230378cd1bb478"
+      "bytes": 6072,
+      "sha256": "e9b5e45caa61472244a346cb0db0a2a69dbd371b43a01083ad81431d6c4796dc"
     },
     {
       "path": "05_project/schemas/action.v1.schema.json",
@@ -140,9 +215,24 @@
       "sha256": "c0d0dda1464c4936bfd727ebe8c7a8936480f0beec1957d5874c4a00265abf32"
     },
     {
+      "path": "05_project/scripts/analyze_frozen_results.py",
+      "bytes": 14545,
+      "sha256": "f9b294d4d39a4f0f4b93741e80be3ad5aee2a3956c7c749071b0edb7a46614b7"
+    },
+    {
       "path": "05_project/scripts/audit_g4.py",
       "bytes": 6481,
       "sha256": "6038ff1e2ce12f61debcc2a850bfec431ca42bab0434cf0a733b1c63a2ab3ded"
+    },
+    {
+      "path": "05_project/scripts/audit_g6.py",
+      "bytes": 3106,
+      "sha256": "cec0bf63dc1e4bf5d486f15be496e995dd3a81fb1030e23198470579107e7260"
+    },
+    {
+      "path": "05_project/scripts/audit_g7.py",
+      "bytes": 3805,
+      "sha256": "caa1e8c02f0eabca8462b7176c4fe7cd366ae63eb6ac14761ce9c5e96afa64e1"
     },
     {
       "path": "05_project/scripts/audit_model_host.py",
@@ -151,8 +241,8 @@
     },
     {
       "path": "05_project/scripts/audit_protocol.py",
-      "bytes": 6524,
-      "sha256": "6eac89d4ab350b594022f5f4ae859e32d1042998f2a762c11156b19f5d8715c7"
+      "bytes": 9307,
+      "sha256": "5dbbc5221ac436d8a1695d67c999af88110d72afe15e3e724e2f893593c299b3"
     },
     {
       "path": "05_project/scripts/audit_reset_determinism.py",
@@ -165,6 +255,11 @@
       "sha256": "cbd814df6a9e554ea2fba22e22de3d73424fa10394f73de15203b09e3add31fa"
     },
     {
+      "path": "05_project/scripts/generate_hard_schedule.py",
+      "bytes": 5914,
+      "sha256": "fc0280fc2d9c157dd57f42c886dae32c7d056da39a2d75ed2ae01e1c962c6e03"
+    },
+    {
       "path": "05_project/scripts/run_b0_dry_run.py",
       "bytes": 3997,
       "sha256": "33a8d318b8e1741e03d2204b95314bcbf30a4b52c3751d97bcf74d7d4eb4f32c"
@@ -175,6 +270,16 @@
       "sha256": "1fa7fb0915d01a7c93f374a2082ff82e253dc857cf8b3bc44c5b24bdab7ec441"
     },
     {
+      "path": "05_project/scripts/run_corruption_stress.py",
+      "bytes": 4613,
+      "sha256": "c3b06b4517647ee11e647d3dfdd32802c1f4bd2b3fe206a935c90fa141682a39"
+    },
+    {
+      "path": "05_project/scripts/run_frozen_hard_suite.py",
+      "bytes": 22924,
+      "sha256": "fdc34586c9de32b8c7d32f8b5af5d644d1d3bf3890e1b2da3b34e073b00143c6"
+    },
+    {
       "path": "05_project/scripts/run_g3_dev_suite.py",
       "bytes": 14583,
       "sha256": "2db161ffa72f047c8fb07c480c7d3c61e881a06b8542265ba5e2f523d9581da1"
@@ -183,6 +288,11 @@
       "path": "05_project/scripts/run_method_dev_suite.py",
       "bytes": 15509,
       "sha256": "07a8d44ca51c16f27ba62f0dc2af262c57a13930e6964c9f25da0045c2328d63"
+    },
+    {
+      "path": "05_project/scripts/sample_retrieval_audit.py",
+      "bytes": 8423,
+      "sha256": "6fb9b03086d42669ffd919518eaa77f06b239afebcb76573ba9904047307faa4"
     },
     {
       "path": "05_project/src/raven_m/__init__.py",
@@ -206,8 +316,8 @@
     },
     {
       "path": "05_project/src/raven_m/controller/episode_controller.py",
-      "bytes": 25836,
-      "sha256": "9a1f988b76c269403bc188b4d2f714a69115646b31722c47a58ab2d740109107"
+      "bytes": 25899,
+      "sha256": "79f80342dd9310c44f27d259a78152e1c0b5ba4399a000619f9f1f5311991f82"
     },
     {
       "path": "05_project/src/raven_m/env/__init__.py",
@@ -226,8 +336,8 @@
     },
     {
       "path": "05_project/src/raven_m/history/policies.py",
-      "bytes": 20754,
-      "sha256": "2a2f2e6209298c7201873060cb0d01eb71f21eea95398cde383c1a7e3912f8ae"
+      "bytes": 25167,
+      "sha256": "65dcad2de1aad6331244bfc06d5a016363d94686c342e136fcf0de8f059578a3"
     },
     {
       "path": "05_project/src/raven_m/history/summary_schema.py",
@@ -241,8 +351,8 @@
     },
     {
       "path": "05_project/src/raven_m/memory/manager.py",
-      "bytes": 12417,
-      "sha256": "0036f9850f6512eb0a7f3236cbc36b23db01706d578f00d0957b3f7ac1a494b0"
+      "bytes": 12828,
+      "sha256": "c9f9de1eb5336cb57ea42694fa28a645336bd255719ce08e3d164f2d818b030d"
     },
     {
       "path": "05_project/src/raven_m/memory/models.py",

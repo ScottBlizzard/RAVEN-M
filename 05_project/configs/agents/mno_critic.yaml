@@ -1,0 +1,6 @@
+variant: MNO_CRITIC
+control: remove_conditional_critic
+base: m0.yaml
+planner_retained: true
+critic_enabled: false
+scope: episode_only

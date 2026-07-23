@@ -3,5 +3,16 @@
   "selection_time": "before any scored Hard run",
   "selection_rule": "Preselected by task length and mechanism, never by agent outcome.",
   "task_ids": ["H01", "H03", "H04", "H06", "H09", "H12", "H14", "H16"],
-  "instance_seeds": [20260720, 20260721]
+  "instance_seeds": [20260720, 20260721],
+  "method_variants": [
+    "MREL",
+    "MNO_WM",
+    "MNO_VEL",
+    "MNO_FRM",
+    "MNO_PSI",
+    "MNO_CRITIC"
+  ],
+  "budget_controls": ["B3_CTX", "B3_CALL"],
+  "strict_control_rule": "S0 runs all 19 tasks at seed 20260720 and these eight tasks at seed 20260721.",
+  "paired_full_reference": "Reuse the frozen M0 result for the identical task ID and instance seed; never rerun M0 solely for an ablation."
 }

@@ -1,0 +1,6 @@
+variant: MNO_FRM
+control: remove_failure_recovery_memory
+base: m0.yaml
+failure_quota: 0
+deterministic_trigger_and_critic_retained: true
+scope: episode_only

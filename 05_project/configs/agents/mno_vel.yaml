@@ -1,0 +1,6 @@
+variant: MNO_VEL
+control: remove_verified_episodic_ledger
+base: m0.yaml
+episodic_fact_quota: 0
+quota_not_reassigned: true
+scope: episode_only

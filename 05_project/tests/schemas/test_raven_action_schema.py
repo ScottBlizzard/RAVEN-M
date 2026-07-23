@@ -50,3 +50,17 @@ def test_raven_schema_rejects_unknown_evidence() -> None:
     decision["state_delta"][0]["evidence"] = "hidden_state"
     with pytest.raises(ActionValidationError, match="evidence"):
         parse_action_response(json.dumps(decision), schema_path=SCHEMA)
+
+
+def test_raven_schema_bounds_delta_and_forces_empty_on_done() -> None:
+    import json
+
+    decision = valid_decision()
+    decision["state_delta"] = decision["state_delta"] * 3
+    with pytest.raises(ActionValidationError, match="too long"):
+        parse_action_response(json.dumps(decision), schema_path=SCHEMA)
+    decision = valid_decision()
+    decision["status"] = "done"
+    decision["action"] = None
+    with pytest.raises(ActionValidationError, match="too long"):
+        parse_action_response(json.dumps(decision), schema_path=SCHEMA)

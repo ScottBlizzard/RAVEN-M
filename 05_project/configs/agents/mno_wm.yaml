@@ -1,0 +1,6 @@
+variant: MNO_WM
+control: remove_working_memory
+base: m0.yaml
+working_quota: 0
+quota_not_reassigned: true
+scope: episode_only

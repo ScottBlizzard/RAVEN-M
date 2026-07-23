@@ -173,7 +173,8 @@ class EpisodeController:
             "The action field must be an object such as "
             '{"type":"tap","x":0.5,"y":0.5}, never an action name plus '
             "action_args/action_details. state_delta must be an array of "
-            "structured objects matching the system-prompt example, or [].\n"
+            "at most two structured objects matching the system-prompt "
+            "example, or []. For status=done/fail it must be [].\n"
             "If a coordinate is above 1, convert it from pixels using "
             "CURRENT_SCREENSHOT size. If text is too long, shorten it below "
             "160 characters. status must be continue/done/fail; wait is an "

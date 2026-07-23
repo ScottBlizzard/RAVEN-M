@@ -1,6 +1,6 @@
 # RAVEN-M experiment protocol v1 — pre-freeze draft
 
-Status: `draft_pending_G4_G7`
+Status: `draft_pending_G7`
 Scored Hard runs permitted: **no**
 
 ## Fixed benchmark and model
@@ -33,10 +33,22 @@ task and shared by all variants. Optimal steps are used only for stratification.
 
 - Breadth seed: B0, B1, B2, B3, and M0 on all 19 tasks.
 - Confirmatory seeds: B0, B3, and M0 on all 19 tasks and all three seeds.
+- Strict control: S0 on all 19 tasks at the breadth seed, plus the frozen
+  eight-task subset at seed 20260721.
+- Ablations on the frozen eight-task subset at two seeds: MREL, MNO_WM,
+  MNO_VEL, MNO_FRM, MNO_PSI, and MNO_CRITIC.
+- Budget controls on the same paired subset: B3_CTX and B3_CALL.
 - Primary effect: paired absolute TSR difference M0 minus B3.
 - Secondary: M0 minus B0; steps, calls, tokens, wall time, loops,
   premature completion, recovery, stale-memory use, and memory-induced errors.
 - Ablation subset: H01, H03, H04, H06, H09, H12, H14, H16 at two seeds.
+
+The materialized blocked schedule contains 364 unique episodes: 95 breadth,
+114 additional confirmatory, 19 full-set S0 controls, and 136 ablation/control
+episodes. Its ordered-record hash is
+`06149ad4baa5339600f1c5f6fc4f8d6c02241c7f8c22dfb54bcce7486dc443c3`.
+Paired M0 results are reused for ablation comparisons and are never rerun only
+to improve an estimate.
 
 The same model, weights, backend, task instances, screenshot processing,
 action adapter, system skeleton, temperature, step budget, timeout, retry

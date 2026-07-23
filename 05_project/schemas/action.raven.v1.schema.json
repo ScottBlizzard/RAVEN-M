@@ -28,7 +28,7 @@
     },
     "state_delta": {
       "type": "array",
-      "maxItems": 8,
+      "maxItems": 2,
       "items": {"$ref": "#/$defs/state_delta"}
     },
     "memory_citations": {
@@ -56,6 +56,17 @@
         "required": ["status"]
       },
       "then": {"properties": {"action": {"type": "null"}}}
+    },
+    {
+      "if": {
+        "properties": {"status": {"enum": ["done", "fail"]}},
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "state_delta": {"type": "array", "maxItems": 0}
+        }
+      }
     }
   ],
   "$defs": {

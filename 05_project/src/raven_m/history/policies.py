@@ -239,6 +239,21 @@ class SimpleSummaryPolicy(HistoryPolicy):
         self.pending.append(entry)
         if len(self.pending) < self.trigger_every:
             return HistoryUpdate()
+        return self._summarize_pending(
+            entry=entry,
+            episode_id=episode_id,
+            remaining_model_calls=remaining_model_calls,
+            call_prefix="b3_summary",
+        )
+
+    def _summarize_pending(
+        self,
+        *,
+        entry: HistoryEntry,
+        episode_id: str,
+        remaining_model_calls: int,
+        call_prefix: str,
+    ) -> HistoryUpdate:
         if remaining_model_calls < 1:
             return HistoryUpdate(
                 error={
@@ -262,7 +277,7 @@ class SimpleSummaryPolicy(HistoryPolicy):
             system_prompt=self.system_prompt,
             user_prompt=user_prompt,
             episode_id=episode_id,
-            call_label=f"b3_summary_step_{entry.step:03d}_initial",
+            call_label=f"{call_prefix}_step_{entry.step:03d}_initial",
             max_tokens=256,
         )
         calls.append(initial)
@@ -289,7 +304,7 @@ class SimpleSummaryPolicy(HistoryPolicy):
                     + "\nReturn only corrected summary.v1 JSON."
                 ),
                 episode_id=episode_id,
-                call_label=f"b3_summary_step_{entry.step:03d}_repair",
+                call_label=f"{call_prefix}_step_{entry.step:03d}_repair",
                 max_tokens=256,
             )
             calls.append(repaired)
@@ -310,6 +325,85 @@ class SimpleSummaryPolicy(HistoryPolicy):
             calls=calls,
             summary_updated=True,
             summary_schema_sha256=parsed.schema_sha256,
+        )
+
+
+class ContextMatchedSummaryPolicy(SimpleSummaryPolicy):
+    """Predeclared high-context summary control with neutral fixed padding."""
+
+    variant = "B3_CTX"
+
+    def __init__(self, *, target_chars: int = 10000, **kwargs: Any) -> None:
+        super().__init__(**kwargs)
+        self.target_chars = target_chars
+
+    def context(self) -> HistoryContext:
+        base = super().context()
+        if not self.entries:
+            return base
+        payload = json.loads(base.rendered)
+        payload["control"] = "predeclared_context_budget_padding_v1"
+        encoded = json.dumps(
+            payload,
+            ensure_ascii=False,
+            separators=(",", ":"),
+        )
+        remaining = max(0, self.target_chars - len(encoded) - 32)
+        payload["neutral_padding"] = (
+            "[unused context-budget control] " * 400
+        )[:remaining]
+        return HistoryContext(
+            rendered=json.dumps(
+                payload,
+                ensure_ascii=False,
+                separators=(",", ":"),
+            ),
+            images=base.images,
+        )
+
+
+class CallMatchedSummaryPolicy(SimpleSummaryPolicy):
+    """Summary-only control using M0's shared deterministic call triggers."""
+
+    variant = "B3_CALL"
+
+    def observe(
+        self,
+        entry: HistoryEntry,
+        *,
+        episode_id: str,
+        remaining_model_calls: int,
+    ) -> HistoryUpdate:
+        prior = self.entries[-1] if self.entries else None
+        self.entries.append(entry)
+        self.pending.append(entry)
+        loop_trigger = bool(
+            prior
+            and prior.action == entry.action
+            and entry.before_screenshot_sha256 == entry.screenshot_sha256
+        )
+        periodic_trigger = entry.step == 0 or (entry.step + 1) % 5 == 0
+        if not (periodic_trigger or loop_trigger):
+            return HistoryUpdate()
+        update = self._summarize_pending(
+            entry=entry,
+            episode_id=episode_id,
+            remaining_model_calls=remaining_model_calls,
+            call_prefix="b3_call_control",
+        )
+        details = {
+            "call_control_trigger": (
+                "repeated_no_effect_loop"
+                if loop_trigger
+                else "first_or_periodic"
+            )
+        }
+        return HistoryUpdate(
+            calls=update.calls,
+            summary_updated=update.summary_updated,
+            error=update.error,
+            summary_schema_sha256=update.summary_schema_sha256,
+            details=details,
         )
 
 
@@ -421,8 +515,11 @@ class FullRavenMemoryPolicy(RavenMemoryPolicy):
         planner_prompt: str,
         critic_prompt: str,
         config: MemoryConfig | None = None,
+        critic_enabled: bool = True,
+        variant: str = "M0",
     ) -> None:
-        super().__init__(config=config, variant="M0")
+        super().__init__(config=config, variant=variant)
+        self.critic_enabled = critic_enabled
         self.roles = RoleOrchestrator(
             client=client,
             planner_prompt=planner_prompt,
@@ -539,7 +636,7 @@ class FullRavenMemoryPolicy(RavenMemoryPolicy):
                     ],
                 }
             )
-        if critic_trigger:
+        if critic_trigger and self.critic_enabled:
             trigger = (
                 "contradiction"
                 if details.get("contradiction_detected")
@@ -612,6 +709,21 @@ def make_history_policy(
             trigger_every=5,
             keep_recent=2,
         )
+    if normalized in {"B3_CTX", "B3-CTX"}:
+        return ContextMatchedSummaryPolicy(
+            client=client,
+            system_prompt=summary_system_prompt,
+            trigger_every=5,
+            keep_recent=2,
+            target_chars=10000,
+        )
+    if normalized in {"B3_CALL", "B3-CALL"}:
+        return CallMatchedSummaryPolicy(
+            client=client,
+            system_prompt=summary_system_prompt,
+            trigger_every=5,
+            keep_recent=2,
+        )
     if normalized in {"S0", "RAVEN_STRICT"}:
         return RavenMemoryPolicy(config=MemoryConfig(), variant="S0")
     if normalized in {"M0", "RAVEN_FULL"}:
@@ -622,5 +734,26 @@ def make_history_policy(
             planner_prompt=planner_system_prompt,
             critic_prompt=critic_system_prompt,
             config=MemoryConfig(),
+        )
+    ablation_configs = {
+        "MREL": MemoryConfig(reliability_aware=False),
+        "MNO_WM": MemoryConfig(working_quota=0),
+        "MNO_VEL": MemoryConfig(episodic_quota=0),
+        "MNO_FRM": MemoryConfig(failure_quota=0),
+        "MNO_PSI": MemoryConfig(page_hint_quota=0),
+        "MNO_CRITIC": MemoryConfig(),
+    }
+    if normalized in ablation_configs:
+        if not planner_system_prompt or not critic_system_prompt:
+            raise ValueError(
+                f"{normalized} requires Planner and Critic system prompts."
+            )
+        return FullRavenMemoryPolicy(
+            client=client,
+            planner_prompt=planner_system_prompt,
+            critic_prompt=critic_system_prompt,
+            config=ablation_configs[normalized],
+            critic_enabled=normalized != "MNO_CRITIC",
+            variant=normalized,
         )
     raise ValueError(f"Unknown baseline history variant: {variant}")

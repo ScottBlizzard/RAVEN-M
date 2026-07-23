@@ -102,3 +102,16 @@
   that decision. Deterministic loop evidence remains tied to the post-action
   frame. Page-local deltas are written before transition invalidation, so they
   become stale immediately when the action leaves their supporting page.
+
+## 2026-07-23 — Bound terminal output before G7
+
+- **Finding:** v3 reached 4 S0 episodes with no invariant or stale-FACT event,
+  but one otherwise correct completion response emitted too many state deltas
+  and was truncated at the frozen 256-token generation limit. Its single
+  repair repeated the same truncation.
+- **Decision:** a continue decision may emit at most two deltas; done/fail must
+  emit an empty delta array because terminal deltas have no following
+  transition and are not persisted by the controller.
+- **Consequence:** v3 remains archived and v4 reruns the complete unchanged
+  non-Hard task/seed schedule. The model context and generation budgets are not
+  increased.

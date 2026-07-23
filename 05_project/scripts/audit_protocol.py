@@ -83,6 +83,14 @@ def main() -> None:
         / "task_list.html",
     )
     parser.add_argument(
+        "--schedule",
+        type=Path,
+        default=PROJECT_ROOT
+        / "configs"
+        / "experiments"
+        / "hard_schedule_v1.json",
+    )
+    parser.add_argument(
         "--output",
         type=Path,
         default=PROJECT_ROOT / "metadata" / "protocol_audit.json",
@@ -91,6 +99,7 @@ def main() -> None:
 
     manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
     ablation = json.loads(args.ablation.read_text(encoding="utf-8"))
+    schedule = json.loads(args.schedule.read_text(encoding="utf-8"))
     errors: list[str] = []
 
     actual_source_hash = sha256(args.task_list.read_bytes()).hexdigest()
@@ -169,6 +178,80 @@ def main() -> None:
     if not set(ablation_ids).issubset(set(ids)):
         errors.append("Ablation task IDs are not a subset of the Hard manifest.")
 
+    records = schedule["records"]
+    canonical_records = json.dumps(
+        records,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    schedule_hash = sha256(canonical_records).hexdigest()
+    if schedule_hash != schedule["records_sha256"]:
+        errors.append("Hard schedule record hash differs from its header.")
+    expected_phase_counts = {
+        "breadth": 95,
+        "confirmatory_additional": 114,
+        "strict_control": 19,
+        "ablation_controls": 136,
+    }
+    actual_phase_counts = {
+        phase: sum(record["phase"] == phase for record in records)
+        for phase in expected_phase_counts
+    }
+    if actual_phase_counts != expected_phase_counts:
+        errors.append(
+            f"Hard schedule phase counts differ: {actual_phase_counts}"
+        )
+    if len(records) != 364:
+        errors.append(f"Expected 364 scheduled episodes, found {len(records)}.")
+    if [record["sequence"] for record in records] != list(
+        range(1, len(records) + 1)
+    ):
+        errors.append("Hard schedule sequence is not contiguous.")
+    unique_keys = {
+        (
+            record["task_id"],
+            record["instance_seed"],
+            record["variant"],
+        )
+        for record in records
+    }
+    if len(unique_keys) != len(records):
+        errors.append("Hard schedule contains duplicate task/seed/variant cells.")
+    by_id = {item["id"]: item for item in manifest["tasks"]}
+    for record in records:
+        task = by_id.get(record["task_id"])
+        if task is None:
+            errors.append(
+                f"Schedule references unknown task ID {record['task_id']}."
+            )
+            continue
+        if (
+            record["task_class"] != task["class_name"]
+            or record["native_max_steps"] != task["native_max_steps"]
+        ):
+            errors.append(
+                f"Schedule metadata differs for {record['task_id']}."
+            )
+    allowed_variants = {
+        "B0",
+        "B1",
+        "B2",
+        "B3",
+        "S0",
+        "M0",
+        "MREL",
+        "MNO_WM",
+        "MNO_VEL",
+        "MNO_FRM",
+        "MNO_PSI",
+        "MNO_CRITIC",
+        "B3_CTX",
+        "B3_CALL",
+    }
+    if {record["variant"] for record in records} - allowed_variants:
+        errors.append("Hard schedule contains an unregistered variant.")
+
     result = {
         "status": "passed" if not errors else "failed",
         "hard_task_count": len(names),
@@ -177,6 +260,9 @@ def main() -> None:
         "androidworld_commit_expected": manifest["source"]["git_commit"],
         "instance_seeds": manifest["protocol"]["instance_seeds"],
         "ablation_task_ids": ablation_ids,
+        "schedule_records_sha256": schedule_hash,
+        "schedule_episode_count": len(records),
+        "schedule_phase_counts": actual_phase_counts,
         "checked_tasks": checked,
         "errors": errors,
     }

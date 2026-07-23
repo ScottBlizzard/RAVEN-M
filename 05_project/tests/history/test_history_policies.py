@@ -5,6 +5,8 @@ from pathlib import Path
 from PIL import Image
 
 from raven_m.history.policies import (
+    CallMatchedSummaryPolicy,
+    ContextMatchedSummaryPolicy,
     HistoryEntry,
     RawFullHistoryPolicy,
     SimpleSummaryPolicy,
@@ -118,3 +120,59 @@ def test_simple_summary_triggers_at_five_and_keeps_two_recent(
     assert '"step":3' in context.rendered
     assert '"step":2' not in context.rendered
     assert len(context.images) == 2
+
+
+def test_context_control_uses_predeclared_padding(tmp_path: Path) -> None:
+    policy = ContextMatchedSummaryPolicy(
+        client=FakeClient(),  # type: ignore[arg-type]
+        system_prompt="summary",
+        trigger_every=5,
+        keep_recent=2,
+        target_chars=2000,
+    )
+    episode_dir = tmp_path / "episode"
+    episode_dir.mkdir()
+    policy.reset(episode_dir=episode_dir, goal="task")
+    policy.observe(
+        _entry(tmp_path, 0),
+        episode_id="episode",
+        remaining_model_calls=10,
+    )
+    context = policy.context()
+    assert "predeclared_context_budget_padding_v1" in context.rendered
+    assert "neutral_padding" in context.rendered
+    assert len(context.rendered) >= 1900
+
+
+def test_call_control_triggers_first_and_periodic_steps(
+    tmp_path: Path,
+) -> None:
+    policy = CallMatchedSummaryPolicy(
+        client=FakeClient(),  # type: ignore[arg-type]
+        system_prompt="summary",
+        trigger_every=5,
+        keep_recent=2,
+    )
+    episode_dir = tmp_path / "episode"
+    episode_dir.mkdir()
+    policy.reset(episode_dir=episode_dir, goal="task")
+    first = policy.observe(
+        _entry(tmp_path, 0),
+        episode_id="episode",
+        remaining_model_calls=10,
+    )
+    assert first.summary_updated
+    assert first.details["call_control_trigger"] == "first_or_periodic"
+    for step in range(1, 4):
+        update = policy.observe(
+            _entry(tmp_path, step),
+            episode_id="episode",
+            remaining_model_calls=10,
+        )
+        assert not update.calls
+    fifth = policy.observe(
+        _entry(tmp_path, 4),
+        episode_id="episode",
+        remaining_model_calls=10,
+    )
+    assert fifth.summary_updated

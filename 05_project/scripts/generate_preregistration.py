@@ -26,10 +26,19 @@ FIXED_FILES = [
     "05_project/prompts/planner_v1.md",
     "05_project/prompts/critic_v1.md",
     "05_project/configs/experiments/seeds_v1.json",
+    "05_project/configs/experiments/hard_schedule_v1.json",
     "05_project/configs/memory/raven_v1.yaml",
     "05_project/configs/task_manifests/androidworld_hard_v1.json",
     "05_project/configs/task_manifests/ablation8_v1.json",
+    "05_project/metadata/g4_audit.json",
+    "05_project/metadata/g6_audit.json",
+    "05_project/metadata/corruption_stress.json",
+    "05_project/metadata/protocol_audit.json",
+    "05_project/metadata/reset_determinism_g4_final.json",
+    "05_project/metadata/runtime_asset_manifest.json",
 ]
+
+FINAL_FILES = ["05_project/metadata/g7_audit.json"]
 
 GLOB_GROUPS = [
     "05_project/configs/agents/*.yaml",
@@ -37,11 +46,15 @@ GLOB_GROUPS = [
     "05_project/src/raven_m/**/*.py",
     "05_project/scripts/run_*.py",
     "05_project/scripts/audit_*.py",
+    "05_project/scripts/analyze_*.py",
+    "05_project/scripts/sample_*.py",
+    "05_project/scripts/generate_hard_schedule.py",
 ]
 
 
-def selected_files() -> list[Path]:
-    paths = {REPOSITORY_ROOT / item for item in FIXED_FILES}
+def selected_files(final: bool = False) -> list[Path]:
+    items = [*FIXED_FILES, *(FINAL_FILES if final else [])]
+    paths = {REPOSITORY_ROOT / item for item in items}
     for pattern in GLOB_GROUPS:
         paths.update(REPOSITORY_ROOT.glob(pattern))
     missing = [path for path in sorted(paths) if not path.is_file()]
@@ -92,7 +105,7 @@ def main() -> None:
         if gate.get("status") != "passed":
             raise SystemExit("G7 audit has not passed; final freeze is forbidden.")
 
-    records = [record(path) for path in selected_files()]
+    records = [record(path) for path in selected_files(final=args.final)]
     canonical_records = json.dumps(
         records,
         ensure_ascii=False,

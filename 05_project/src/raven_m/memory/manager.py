@@ -110,6 +110,13 @@ class RavenMemoryManager:
         }.get(kind)
         if memory_type is None:
             return None
+        quotas = {
+            "episodic_fact": self.config.episodic_quota,
+            "failure": self.config.failure_quota,
+            "page_hint": self.config.page_hint_quota,
+        }
+        if quotas[memory_type] <= 0:
+            return None
         evidence_label = delta.get("evidence", "model_inference")
         origin = {
             "direct_screen": "direct_visual_observation",
@@ -204,16 +211,19 @@ class RavenMemoryManager:
             transition.before_screenshot_sha256
             == transition.after_screenshot_sha256
         )
-        self.working.append(
-            {
-                "step": transition.step,
-                "decision_summary": transition.decision_summary,
-                "action": transition.action,
-                "observed_outcome": transition.observed_outcome,
-                "page_signature": after_page_signature,
-            }
-        )
-        self.working = self.working[-self.config.working_quota :]
+        if self.config.working_quota > 0:
+            self.working.append(
+                {
+                    "step": transition.step,
+                    "decision_summary": transition.decision_summary,
+                    "action": transition.action,
+                    "observed_outcome": transition.observed_outcome,
+                    "page_signature": after_page_signature,
+                }
+            )
+            self.working = self.working[-self.config.working_quota :]
+        else:
+            self.working = []
         self.action_signatures.append(action_signature)
         self.action_signatures = self.action_signatures[-3:]
 
@@ -242,7 +252,7 @@ class RavenMemoryManager:
             and len(self.action_signatures) >= 2
             and self.action_signatures[-1] == self.action_signatures[-2]
         )
-        if loop_detected:
+        if loop_detected and self.config.failure_quota > 0:
             failure = MemoryItem(
                 memory_id=self.store.allocate_id("f"),
                 episode_id=self.episode_id,

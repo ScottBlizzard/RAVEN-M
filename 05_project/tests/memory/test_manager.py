@@ -3,6 +3,7 @@ from __future__ import annotations
 from hashlib import sha256
 
 from raven_m.memory.manager import RavenMemoryManager, TransitionObservation
+from raven_m.memory.models import MemoryConfig
 
 
 def transition(
@@ -185,3 +186,31 @@ def test_page_hypothesis_is_candidate_and_retrievable(tmp_path) -> None:
     context, routed = manager.context(step=1)
     assert item.memory_id in context
     assert routed[0].route == "HYPOTHESIS"
+
+
+def test_zero_quotas_remove_working_vel_frm_and_psi(tmp_path) -> None:
+    manager = RavenMemoryManager(
+        MemoryConfig(
+            working_quota=0,
+            episodic_quota=0,
+            failure_quota=0,
+            page_hint_quota=0,
+        )
+    )
+    manager.reset(
+        episode_id="episode-a",
+        task_id="DevTask",
+        task_goal="Inspect the page",
+        episode_dir=tmp_path,
+    )
+    digest = sha256(b"same").hexdigest()
+    observation = transition(step=0, before=digest, after=digest)
+    first = manager.observe_transition(observation)
+    second = manager.observe_transition(
+        TransitionObservation(**{**observation.__dict__, "step": 1})
+    )
+    assert first["written_memory_ids"] == []
+    assert second["loop_detected"]
+    assert second["written_memory_ids"] == []
+    assert manager.working == []
+    assert manager.store.all_items() == []

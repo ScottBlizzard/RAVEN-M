@@ -31,7 +31,9 @@ free-form reasoning. Use evidence=direct_screen only for information visible
 now, evidence=action_outcome only for the supplied previous outcome, and
 evidence=inference for an unverified hypothesis. A model inference must not be
 presented as observed fact.
-state_delta is always a JSON array. Use [] when nothing material changed.
+state_delta is always a JSON array with at most two entries. Use [] when
+nothing material changed. For status=done or status=fail, state_delta must be
+[] because no following transition will persist it.
 Each non-empty entry must use this exact structure:
 {"kind":"fact","subject":"page","predicate":"identity","object":"contact list","natural_language":"The contact list is visible.","evidence":"direct_screen","confidence":0.98}
 kind must be fact, progress, failure, or page_hypothesis; evidence must be
