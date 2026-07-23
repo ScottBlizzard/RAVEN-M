@@ -117,12 +117,18 @@ Q(m,q)=0.20L+0.15G+0.15M+0.10T+0.40R-0.40X-0.20S,
 | 组件 | 表示与容量 | 作用 |
 |---|---|---|
 | WM | 最近 3 个 transition，FIFO | 短期动作连续性 |
-| VEL | top-8 episodic facts | 中间变量、完成证据、子目标进度 |
+| VEL | store top-8 episodic facts | 中间变量、完成证据、子目标进度 |
 | FRM | top-2 failures/alerts | 避免相同页面重复无效动作 |
 | PSI-lite | top-2 episode-local page hints | 页面兼容性与导航假设 |
 
 跨 episode procedural memory、latent encoder、全局 Page Graph 和 MCTS
 均不属于核心方法。
+
+四类 store 的容量彼此独立，但每个决策最终只向角色路由全局得分最高的
+2 条 item。这个全局上限在 v13 的 50 条人工检索审计失败后、Hard 冻结前
+确定：审计样本的前两名中 19/20 有用，而继续加入低排名旧页面描述会显著
+降低精度。直接动作后的结果先保留为 HYPOTHESIS；只有后续直接视觉观察或
+独立确定性确认才能升级为 FACT。
 
 ## 6. 动作与完成约束
 

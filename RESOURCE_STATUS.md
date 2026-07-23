@@ -1,6 +1,6 @@
 # 资料准备状态
 
-更新时间：2026-07-21
+更新时间：2026-07-24
 
 本文件是资料库的入口状态页。它只描述已经在本地验证过的事实；规划中的内容不会被写成“已完成”。
 
@@ -35,19 +35,20 @@
 
 当前没有需要用户手动补充克隆的仓库。
 
-## 有意暂不执行的内容
+## 实验阶段状态
 
-- 不下载 Qwen3-VL 模型权重。
-- 不安装 AndroidWorld、Android Emulator 或推理环境。
-- 不运行 baseline 或正式计分任务。
-- 不实现 RAVEN-M。
-
-这些属于下一阶段的环境冻结、baseline 复现与方法实现，不应和“资料准备完成”混在一起。
+- Qwen3-VL-32B-Instruct 精确 revision 已下载到 4090 服务器，并以
+  4×RTX 4090 BF16 后端通过真实截图调用和 10 次最大形状压力测试。
+- AndroidWorld、Android API 33 模拟器、B0/B1/B2/B3 与 RAVEN-M
+  均已实现；G3、G4、G6 已通过。
+- 当前执行最终非 Hard G7 v15。4090 主机短时不可达时，运行器只进行有审计
+  的模型健康等待，不创建 episode 或消耗实验重试。
+- 19-task Hard 正式计分仍由代码机械禁止；只有 G7、最终预注册、干净 commit
+  与 `protocol-v1` tag 全部通过后才会解锁。
 
 ## 推荐从这里开始
 
-1. 读 `00_admin/requirements_trace.md`，确认每项官方要求对应的后续证据。
-2. 按 `02_literature/README.md` 的 P0 顺序精读，并用统一模板记笔记。
-3. 检查 `03_code/manifests/repositories.lock.csv`，后续实验始终以锁定 commit 为准。
-4. 在 `04_protocols/` 冻结 AndroidWorld Hard 任务、模型配置和计分协议。
-5. 协议冻结后，才在 `05_project/` 开始 baseline 与 RAVEN-M 实现。
+1. 等待并完成 `method_dev_g6_g7_v15_20260724`。
+2. 对固定 50 条 route 样本重新进行逐图人工审计，并重跑八条组件路径。
+3. G7 全部通过后生成最终预注册和 `protocol-v1` tag。
+4. 严格按 364-episode 冻结 schedule 执行正式实验、统计与案例审计。

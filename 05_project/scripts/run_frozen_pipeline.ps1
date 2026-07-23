@@ -20,7 +20,7 @@ $phases = @(
 
 foreach ($item in $phases) {
     & $python $runner --adb-path $adb --phase $item.Phase `
-        --suite-id $item.Suite
+        --suite-id $item.Suite --max-model-recovery-seconds 21600
     if ($LASTEXITCODE -ne 0) {
         throw "Frozen phase $($item.Phase) failed with $LASTEXITCODE."
     }

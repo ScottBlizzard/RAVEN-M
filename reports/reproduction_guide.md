@@ -50,7 +50,7 @@ G7 uses only the non-Hard manifest:
 
 ```powershell
 .\05_project\scripts\start_method_dev_suite.ps1 `
-  -SuiteId method_dev_g6_g7_v13_20260724
+  -SuiteId method_dev_g6_g7_v15_20260724
 ```
 
 After it finishes, create the fixed 50-event review packet, complete its manual
@@ -60,10 +60,10 @@ labels, and run:
 & $python .\05_project\scripts\run_component_smoke_suite.py `
   --adb-path .\06_local_runtime\android\sdk\platform-tools\adb.exe
 & $python .\05_project\scripts\sample_retrieval_audit.py `
-  --suite-dir .\runs\method_dev_g6_g7\method_dev_g6_g7_v13_20260724
+  --suite-dir .\runs\method_dev_g6_g7\method_dev_g6_g7_v15_20260724
 & $python .\05_project\scripts\apply_retrieval_audit_labels.py
 & $python .\05_project\scripts\audit_g7.py `
-  --suite-summary .\runs\method_dev_g6_g7\method_dev_g6_g7_v13_20260724\suite_summary.json
+  --suite-summary .\runs\method_dev_g6_g7\method_dev_g6_g7_v15_20260724\suite_summary.json
 ```
 
 ## Freeze and scored execution
@@ -96,6 +96,11 @@ If an attempt is invalidated as `INFRA_EMULATOR_LOST`, the runner archives it,
 cold-restarts the same no-snapshot AVD, requires a no-LLM AndroidWorld smoke,
 and then uses one of the two permitted identical retries. It never applies this
 recovery to an agent failure.
+
+If the locked model endpoint is unavailable, the runner first records health
+polls and waits for the exact revision/backend to return. It does not create a
+new episode attempt during this recovery barrier. A different healthy model
+identity is a hard failure rather than a recoverable outage.
 
 The pipeline intentionally stops after deterministic case selection if
 `reports/generated/case_annotations.json` is not complete. Inspect the linked

@@ -8,7 +8,8 @@ param(
     )]
     [string]$Phase,
     [Parameter(Mandatory = $true)]
-    [string]$SuiteId
+    [string]$SuiteId,
+    [int]$MaxModelRecoverySeconds = 21600
 )
 
 $ErrorActionPreference = "Stop"
@@ -35,7 +36,8 @@ $arguments = @(
     (Join-Path $PSScriptRoot "run_frozen_hard_suite.py"),
     "--adb-path", $adb,
     "--phase", $Phase,
-    "--suite-id", $SuiteId
+    "--suite-id", $SuiteId,
+    "--max-model-recovery-seconds", $MaxModelRecoverySeconds
 )
 $stdout = Join-Path $logRoot "stdout.log"
 $stderr = Join-Path $logRoot "stderr.log"

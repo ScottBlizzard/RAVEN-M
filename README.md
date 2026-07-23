@@ -42,13 +42,12 @@ RAVEN-M-Research/
 ## 实验顺序
 
 1. 阅读考核原文和 master plan，但以考核原文为最高优先级。
-2. 运行 `scripts/fetch_papers.ps1` 获取 P0/P1 论文。
-3. 运行 `scripts/clone_repositories.ps1` 获取官方开源实现并写入 commit lock。
-4. 先精读 PG-Agent、HAR-GUI、ProBench、MP-GUI、LAMO，再读 HyMEM、MAGNET、UI-Copilot、D-Artemis。
-5. G3/G4/G6/G7 全部通过后冻结 protocol-v1。
-6. 按物化的 364-episode blocked schedule 依次执行 breadth、S0、
+2. P0/P1/P2 论文与官方开源实现已全部落地并锁定来源、SHA-256/commit。
+3. G3/G4/G6 已通过；完成 v15、50 条人工 route 审计和组件 smoke 后关闭 G7。
+4. G7 通过后生成最终 preregistration commit 与 `protocol-v1` tag。
+5. 按物化的 364-episode blocked schedule 依次执行 breadth、S0、
    confirmatory 和 ablation/control。
-7. 只使用冻结的分析脚本生成统计、表格和图。
+6. 只使用冻结的分析脚本生成统计、表格和图。
 
 完整复现命令与门禁见
 [`reports/reproduction_guide.md`](reports/reproduction_guide.md)。
@@ -58,5 +57,5 @@ RAVEN-M-Research/
 - 论文 venue/status 只以 proceedings、出版社、OpenReview 或作者官方页面为依据。
 - GitHub 仓库必须由论文、作者主页或正式项目页反向确认，名称相同不等于官方实现。
 - 每次下载和克隆都记录 URL、访问日期、commit 或 SHA-256。
-- 模型权重不在本阶段下载，也不进入 Git。
+- 精确 revision 的模型权重已下载到 4090 服务器专用缓存，但不进入 Git。
 - `third_party` 与论文 PDF 在本地保留，但父仓库只追踪清单、锁文件与校验和，避免 Git 历史膨胀。
