@@ -34,6 +34,7 @@ FIXED_FILES = [
     "05_project/metadata/g4_audit.json",
     "05_project/metadata/g6_audit.json",
     "05_project/metadata/corruption_stress.json",
+    "05_project/metadata/emulator_recovery_smoke_20260724.json",
     "05_project/metadata/component_smoke_audit.json",
     "05_project/metadata/protocol_audit.json",
     "05_project/metadata/reset_determinism_g4_final.json",

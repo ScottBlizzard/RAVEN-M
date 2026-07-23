@@ -167,6 +167,16 @@ gates:
     scope: schemas_lifecycle_replay_routing_roles_completion_guard_provenance_page_hint
     corruption_fixtures: 20
     corruption_non_fact_rate: 1.0
+  emulator_infrastructure_recovery:
+    status: passed
+    validation: preflight_recovery_v4
+    elapsed_seconds: 513.4
+    command_returncodes: [0, 0, 0]
+    registered_android_world_tasks: 116
+    screen_shape: [2400, 1080, 3]
+    ui_elements: 19
+    retry_scope: classified_infrastructure_only
+    max_identical_attempts: 3
   full_method_dev_check:
     status: running
     suite_id: method_dev_g6_g7_v13_20260724

@@ -201,14 +201,43 @@ def recover_androidworld_env(
     for index, command in enumerate(commands, start=1):
         timeout = 60 if index == 1 else 420
         try:
-            completed = subprocess.run(
-                command,
-                cwd=REPOSITORY_ROOT,
-                capture_output=True,
-                text=True,
-                check=False,
-                timeout=timeout,
-            )
+            if index == 2:
+                # The emulator is intentionally long-lived. On Windows its
+                # descendants can inherit a captured PowerShell pipe even
+                # after start_emulator.ps1 exits, preventing communicate()
+                # from observing EOF. Direct the launcher output to files so
+                # recovery waits only for the PowerShell process.
+                stdout_path = recovery_dir / "start_emulator_stdout.log"
+                stderr_path = recovery_dir / "start_emulator_stderr.log"
+                with (
+                    stdout_path.open("wb") as stdout_stream,
+                    stderr_path.open("wb") as stderr_stream,
+                ):
+                    completed = subprocess.run(
+                        command,
+                        cwd=REPOSITORY_ROOT,
+                        stdout=stdout_stream,
+                        stderr=stderr_stream,
+                        check=False,
+                        timeout=timeout,
+                    )
+                command_stdout = stdout_path.read_bytes().decode(
+                    "utf-8", errors="replace"
+                )
+                command_stderr = stderr_path.read_bytes().decode(
+                    "utf-8", errors="replace"
+                )
+            else:
+                completed = subprocess.run(
+                    command,
+                    cwd=REPOSITORY_ROOT,
+                    capture_output=True,
+                    text=True,
+                    check=False,
+                    timeout=timeout,
+                )
+                command_stdout = completed.stdout
+                command_stderr = completed.stderr
         except subprocess.TimeoutExpired as error:
             records.append(
                 {
@@ -229,8 +258,8 @@ def recover_androidworld_env(
             "index": index,
             "command": command,
             "returncode": completed.returncode,
-            "stdout": completed.stdout,
-            "stderr": completed.stderr,
+            "stdout": command_stdout,
+            "stderr": command_stderr,
         }
         records.append(record)
         write_json(recovery_dir / "commands.json", records)

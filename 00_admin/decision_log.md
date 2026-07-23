@@ -290,6 +290,25 @@
   hashes must match before execution resumes. Ordinary agent failures,
   evaluator-negative outcomes, budget exhaustion, schema failures, and memory
   failures are never retried.
+- **Boot-loop hardening:** the first real recovery validation showed the new
+  AVD process was alive but the boot script aborted on a normal transient
+  `adb: error: closed` while adbd restarted. Boot and unlock probes now absorb
+  only their native nonzero exit inside the existing 300-second bounded loop;
+  the script still fails if the emulator never becomes ready.
+- **Windows launcher boundary:** a second validation reached
+  `sys.boot_completed=1` but exposed inherited output-pipe handles from the
+  intentionally long-lived emulator process. The recovery helper now writes
+  the PowerShell launcher output directly to audit files instead of capturing
+  a pipe, so it waits for the launcher process rather than emulator lifetime.
+- **Shutdown boundary:** a third validation found `adb emu kill` returns
+  before Windows necessarily releases the named AVD process and lock. The
+  stop script now waits up to 60 seconds for both `emulator-5554` and the
+  `AndroidWorldAvd` process to disappear, then force-stops only that named AVD
+  within a final 15-second bound. Restart never races the previous AVD lock.
+- **Validation:** `preflight_recovery_v4` completed stop, cold start, and
+  no-LLM AndroidWorld warm smoke with return codes `[0,0,0]` in 513.4 seconds.
+  The smoke registered all 116 tasks, observed a `2400×1080×3` screen and 19
+  UI elements. The three preceding diagnostic attempts remain retained.
 - **Consequence:** v13 reruns the complete unchanged non-Hard schedule. The
   same operational recovery contract is exercised by component smoke before
   freeze; scored Hard remains forbidden.

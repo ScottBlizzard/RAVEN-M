@@ -34,12 +34,34 @@ if (-not $running) {
     Start-Process -FilePath $emulator -ArgumentList $arguments -WindowStyle Hidden -RedirectStandardOutput $stdout -RedirectStandardError $stderr | Out-Null
 }
 
-& $adb wait-for-device
 $deadline = (Get-Date).AddSeconds($BootTimeoutSeconds)
 do {
-    $booted = (& $adb shell getprop sys.boot_completed 2>$null).Trim()
-    if ($booted -eq "1") {
-        & $adb shell input keyevent 82 | Out-Null
+    # A freshly spawned emulator can briefly accept the transport and then
+    # close it while adbd restarts. PowerShell converts native stderr into a
+    # terminating error under ErrorActionPreference=Stop, so probe quietly
+    # and let the bounded boot loop absorb that expected transient.
+    $previousErrorActionPreference = $ErrorActionPreference
+    $ErrorActionPreference = "SilentlyContinue"
+    try {
+        $bootOutput = & $adb shell getprop sys.boot_completed 2>&1
+        $bootExitCode = $LASTEXITCODE
+    } finally {
+        $ErrorActionPreference = $previousErrorActionPreference
+    }
+    $booted = ($bootOutput | Out-String).Trim()
+    if ($bootExitCode -eq 0 -and $booted -eq "1") {
+        $previousErrorActionPreference = $ErrorActionPreference
+        $ErrorActionPreference = "SilentlyContinue"
+        try {
+            & $adb shell input keyevent 82 2>&1 | Out-Null
+            $unlockExitCode = $LASTEXITCODE
+        } finally {
+            $ErrorActionPreference = $previousErrorActionPreference
+        }
+        if ($unlockExitCode -ne 0) {
+            Start-Sleep -Seconds 3
+            continue
+        }
         Write-Host "AndroidWorldAvd is ready."
         return
     }
