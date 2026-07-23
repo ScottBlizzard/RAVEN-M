@@ -89,6 +89,15 @@ cold-restarts the same no-snapshot AVD, requires a no-LLM AndroidWorld smoke,
 and then uses one of the two permitted identical retries. It never applies this
 recovery to an agent failure.
 
+The pipeline intentionally stops after deterministic case selection if
+`reports/generated/case_annotations.json` is not complete. Inspect the linked
+M0/B3 screenshots and steps, set
+`review_status=completed_single_reviewer`, and fill every effect, evidence-step
+list, and interpretation. Then rerun `analyze_case_studies.py` followed by
+`analyze_final_report.py`. The final assembler rejects pending annotations;
+the report explicitly states that this summer-camp audit has one reviewer and
+does not claim inter-annotator agreement.
+
 The ordered schedule is
 `05_project/configs/experiments/hard_schedule_v1.json`. Do not hand-edit,
 reorder, skip, or selectively rerun scored agent failures.

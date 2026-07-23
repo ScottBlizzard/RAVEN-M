@@ -10,6 +10,83 @@ from typing import Any
 
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
+ALLOWED_MEMORY_EFFECTS = {"helpful", "harmful", "neutral", "unclear"}
+
+
+def case_key(case: dict[str, Any]) -> tuple[int, str, str, int]:
+    return (
+        int(case["selection_index"]),
+        str(case["cell"]),
+        str(case["task_id"]),
+        int(case["instance_seed"]),
+    )
+
+
+def annotation_template(selection: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "schema_version": "case_annotations.v1",
+        "review_status": "pending_single_reviewer",
+        "reviewer_count": 1,
+        "reviewer_scope": (
+            "Primary project review of frozen screenshots, decisions, routed "
+            "memory, actions, and evaluator outcome; no claim of independent "
+            "inter-annotator agreement."
+        ),
+        "cases": [
+            {
+                "selection_index": case["selection_index"],
+                "cell": case["cell"],
+                "task_id": case["task_id"],
+                "instance_seed": case["instance_seed"],
+                "memory_effect": "",
+                "m0_evidence_steps": [],
+                "b3_evidence_steps": [],
+                "annotation": "",
+            }
+            for case in selection["cases"]
+        ],
+    }
+
+
+def load_annotations(
+    *,
+    selection: dict[str, Any],
+    annotation_path: Path,
+) -> dict[tuple[int, str, str, int], dict[str, Any]]:
+    if not annotation_path.is_file():
+        template = annotation_template(selection)
+        annotation_path.parent.mkdir(parents=True, exist_ok=True)
+        annotation_path.write_text(
+            json.dumps(template, indent=2, ensure_ascii=False) + "\n",
+            encoding="utf-8",
+        )
+        raise SystemExit(
+            "Case annotations are required before final report assembly. "
+            f"Review and complete {annotation_path}."
+        )
+    payload = json.loads(annotation_path.read_text(encoding="utf-8"))
+    if payload.get("schema_version") != "case_annotations.v1":
+        raise ValueError("Unexpected case-annotation schema.")
+    if payload.get("review_status") != "completed_single_reviewer":
+        raise ValueError("Case review_status is not completed_single_reviewer.")
+    observed = {
+        case_key(item): item for item in payload.get("cases", [])
+    }
+    expected = {case_key(item) for item in selection["cases"]}
+    if set(observed) != expected:
+        raise ValueError("Case annotations do not match frozen selection.")
+    for key, item in observed.items():
+        if item.get("memory_effect") not in ALLOWED_MEMORY_EFFECTS:
+            raise ValueError(f"Invalid memory_effect for {key}.")
+        if not str(item.get("annotation", "")).strip():
+            raise ValueError(f"Missing mechanism annotation for {key}.")
+        for field in ("m0_evidence_steps", "b3_evidence_steps"):
+            if not isinstance(item.get(field), list) or not all(
+                isinstance(value, int) and value >= 0
+                for value in item[field]
+            ):
+                raise ValueError(f"Invalid {field} for {key}.")
+    return observed
 
 
 def selected_steps(episode: dict[str, Any]) -> list[dict[str, Any]]:
@@ -106,9 +183,19 @@ def main() -> None:
         type=Path,
         default=REPOSITORY_ROOT / "reports/generated/case_studies.md",
     )
+    parser.add_argument(
+        "--annotations",
+        type=Path,
+        default=REPOSITORY_ROOT
+        / "reports/generated/case_annotations.json",
+    )
     args = parser.parse_args()
     selection = json.loads(
         args.case_selection.read_text(encoding="utf-8")
+    )
+    annotations = load_annotations(
+        selection=selection,
+        annotation_path=args.annotations,
     )
     sections = [
         "# Predeclared paired case timelines",
@@ -119,6 +206,7 @@ def main() -> None:
         "loops, contradictions, and terminal proposals.",
     ]
     for case in selection["cases"]:
+        annotation = annotations[case_key(case)]
         sections.extend(
             [
                 "",
@@ -141,7 +229,26 @@ def main() -> None:
                     report_dir=args.output.parent,
                 ),
                 "",
-                "Manual mechanism annotation: **pending blinded review**.",
+                "### Single-reviewer mechanism annotation",
+                "",
+                f"- Memory effect: `{annotation['memory_effect']}`",
+                "- M0 evidence steps: "
+                + (
+                    ", ".join(
+                        str(value)
+                        for value in annotation["m0_evidence_steps"]
+                    )
+                    or "none"
+                ),
+                "- B3 evidence steps: "
+                + (
+                    ", ".join(
+                        str(value)
+                        for value in annotation["b3_evidence_steps"]
+                    )
+                    or "none"
+                ),
+                f"- Interpretation: {annotation['annotation']}",
             ]
         )
     args.output.parent.mkdir(parents=True, exist_ok=True)

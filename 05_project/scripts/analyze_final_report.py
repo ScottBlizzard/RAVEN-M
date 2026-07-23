@@ -69,6 +69,13 @@ def main() -> None:
     case_text = strip_title(
         (generated / "case_studies.md").read_text(encoding="utf-8")
     )
+    if (
+        "pending blinded review" in case_text.lower()
+        or "pending_single_reviewer" in case_text
+    ):
+        raise SystemExit(
+            "Case mechanism review is incomplete; final report is blocked."
+        )
     report = f"""# RAVEN-M：面向长程 Mobile-use Agent 的可审计记忆管理
 
 ## 摘要
