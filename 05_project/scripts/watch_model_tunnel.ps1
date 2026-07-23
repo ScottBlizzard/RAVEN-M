@@ -24,12 +24,29 @@ function Write-WatchdogLog {
     Add-Content -LiteralPath $logPath -Value "$timestamp`t$Message" -Encoding utf8
 }
 
+function Test-LocalPort {
+    param([int]$Port)
+    $client = [System.Net.Sockets.TcpClient]::new()
+    try {
+        $task = $client.ConnectAsync("127.0.0.1", $Port)
+        if (-not $task.Wait(250)) {
+            return $false
+        }
+        return $client.Connected
+    }
+    catch {
+        return $false
+    }
+    finally {
+        $client.Dispose()
+    }
+}
+
 $consecutiveFailures = 0
 Write-WatchdogLog "watchdog_started target=$SshTarget local=$LocalPort remote=$RemotePort"
 
 while (-not (Test-Path -LiteralPath $stopFile)) {
-    $listener = Get-NetTCPConnection -LocalPort $LocalPort -State Listen `
-        -ErrorAction SilentlyContinue
+    $listener = Test-LocalPort -Port $LocalPort
     $healthy = $false
     if ($listener) {
         try {
