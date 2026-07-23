@@ -9,10 +9,12 @@
 01_sources/official/**/*.ipynb
 
 # Large model and experiment artifacts must never enter this repository.
-models/
-checkpoints/
-runs/
-results/
+/models/
+/checkpoints/
+/runs/
+/results/
+05_project/outputs/
+05_project/.venv-model-server/
 *.safetensors
 *.bin
 *.pt

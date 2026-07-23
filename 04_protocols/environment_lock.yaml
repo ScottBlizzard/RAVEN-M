@@ -1,0 +1,87 @@
+schema_version: 1
+generated_at: 2026-07-23T12:10:00+08:00
+status: model_snapshot_downloading
+scored_runs_permitted: false
+
+android_host:
+  os: Windows
+  project_root: D:\ZJU\Summer_Camp\RAVEN-M-Research
+  runtime_root: D:\ZJU\Summer_Camp\RAVEN-M-Research\06_local_runtime
+  python: 3.11.9
+  android_api: 33
+  avd: AndroidWorldAvd
+  device_profile: Pixel 6
+  emulator_grpc_port: 8554
+  androidworld_tasks_registered: 116
+  validation:
+    initial_smoke: ok
+    repeat_smoke: ok
+    official_random_agent_runner: ok
+
+model_host_4090:
+  ssh_alias: ccj@10.10.217.244
+  os: Ubuntu 20.04.6 LTS
+  kernel: 5.15.0-67-generic
+  physical_project_root: /mnt/sdb/ccj/raven_m_research
+  compatibility_symlink: /home/ccj/workspace_1/raven_m_research
+  storage:
+    mount: /mnt/sdb
+    total_bytes: 15873633447936
+    free_bytes_at_audit: 14840087875584
+  gpu:
+    inventory: 8 x NVIDIA GeForce RTX 4090
+    visible_for_reference_backend: [0, 1, 2, 3]
+    memory_per_gpu_bytes: 25262096384
+    driver: "570.144"
+  python: 3.11.15
+  cuda_runtime: "12.8"
+  cudnn: 91002
+  packages:
+    torch: 2.8.0
+    transformers: 5.10.2
+    accelerate: 1.13.0
+    qwen-vl-utils: 0.0.14
+    huggingface-hub: 1.19.0
+    fastapi: 0.139.2
+    uvicorn: 0.51.0
+
+model:
+  id: Qwen/Qwen3-VL-32B-Instruct
+  revision: 0cfaf48183f594c314753d30a4c4974bc75f3ccb
+  upstream_snapshot_size_bytes_approx: 66700000000
+  cache: /mnt/sdb/ccj/raven_m_research/05_project/model_cache/huggingface
+  download_endpoint: https://hf-mirror.com
+  backend: qwen3_vl_32b_transformers_bf16_4x4090_v1
+  dtype: bfloat16
+  device_map: auto
+  max_memory_per_visible_gpu: 22GiB
+  attention: sdpa
+  concurrent_generations: 1
+  local_files_only_when_serving: true
+  screenshot_long_side_px: 1280
+  total_context_cap: 16384
+  max_new_tokens: 256
+
+transport:
+  server_bind: 127.0.0.1:8000
+  windows_tunnel: 127.0.0.1:18000
+  public_model_port: false
+  idempotency_required: true
+  mock_connectivity_smoke:
+    status: ok
+    real_androidworld_screenshot: true
+    screenshot_sha256: 63f3f5e2a480f05b68436963b2ebc5d55ef6f77ed821ecf224d92bb753bf7351
+    call_id: 0e4d0f8c-df52-4ff0-b9a5-dee31da546dc
+    note: transport-only; never a model or benchmark result
+
+a40_host:
+  ssh: root@10.91.11.250:10008
+  status: unreachable_connection_refused
+  role: fallback_only_until_recovered
+
+gates:
+  exact_model_snapshot_complete: pending
+  exact_model_image_action_smoke: pending
+  ten_max_shape_requests_without_oom: pending
+  hard_protocol_frozen: pending
+  hard_scored_runs: forbidden_until_model_and_protocol_gates_pass

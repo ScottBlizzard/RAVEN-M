@@ -1,0 +1,41 @@
+schema_version: 1
+backend_id: qwen3_vl_32b_transformers_bf16_4x4090_v1
+model:
+  id: Qwen/Qwen3-VL-32B-Instruct
+  revision: 0cfaf48183f594c314753d30a4c4974bc75f3ccb
+  dtype: bfloat16
+  attention: sdpa
+  trust_remote_code: false
+deployment:
+  host_role: model_server
+  project_root: /mnt/sdb/ccj/raven_m_research
+  model_cache: /mnt/sdb/ccj/raven_m_research/05_project/model_cache/huggingface
+  bind_host: 127.0.0.1
+  port: 8000
+  visible_gpus: [0, 1, 2, 3]
+  device_map: auto
+  max_memory_per_gpu: 22GiB
+  concurrent_generations: 1
+  batching: false
+generation:
+  do_sample: false
+  temperature: 0.0
+  max_new_tokens: 256
+  total_context_cap: 16384
+vision:
+  preserve_aspect_ratio: true
+  long_side_px: 1280
+  historical_full_screenshots: 0
+transport:
+  protocol: ssh_tunneled_http
+  remote_bind: 127.0.0.1
+  remote_port: 8000
+  local_tunnel_port: 18000
+  timeout_seconds: 300
+  retries: 1
+  idempotency_required: true
+notes:
+  - This is the first measured 4090 reference candidate, not a scored condition.
+  - The cache path is on the dedicated 15 TB data disk, never the root disk.
+  - The exact backend is frozen only after the ten-request maximum-shape gate.
+  - A mock response must never be counted as a model or benchmark result.
