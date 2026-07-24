@@ -178,8 +178,32 @@ gates:
     retry_scope: classified_infrastructure_only
     max_identical_attempts: 3
   full_method_dev_check:
-    status: running
+    status: method_execution_passed_g7_evidence_pending
     suite_id: method_dev_g6_g7_v15_20260724
+    episode_count: 13
+    infrastructure_errors: 0
+    s0:
+      acceptance_passed: true
+      episodes: 5
+      evaluator_successes: 2
+      decision_attempts: 53
+      max_prompt_tokens: 4806
+    m0:
+      acceptance_passed: true
+      episodes: 8
+      evaluator_successes: 4
+      decision_attempts: 80
+      planner_events: 22
+      critic_events: 15
+      role_output_errors: 0
+      invariant_errors: 0
+      stale_fact_routes: 0
+      max_prompt_tokens: 5184
+    aggregate_only_recheck: passed
+    pending:
+      - fresh_50_item_manual_retrieval_audit
+      - fresh_eight_path_component_smoke
+      - final_g7_audit
     retained_failed_dev_suites:
       - method_dev_g6_g7_20260723
       - method_dev_g6_g7_v2_20260723
@@ -195,6 +219,6 @@ gates:
       - method_dev_g6_g7_v12_20260724
       - method_dev_g6_g7_v13_20260724
       - method_dev_g6_g7_v14_20260724
-    note: v13_failed_manual_retrieval_precision_v14_model_host_outage_v15_pending_exact_model_recovery
+    note: v13_failed_manual_retrieval_precision_v14_model_host_outage_v15_method_execution_passed
   hard_protocol_frozen: pending
   hard_scored_runs: forbidden_until_model_and_protocol_gates_pass

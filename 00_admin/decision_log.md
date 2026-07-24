@@ -382,3 +382,26 @@
   the complete project suite passes 73/73 tests. The 4090 host itself became
   unreachable at 05:53 local time, so v15 starts only after the watchdog
   restores and verifies the locked endpoint. Hard scoring remains forbidden.
+
+## 2026-07-24 — v15 passes the complete non-Hard method execution gate
+
+- **Outage boundary:** the locked 4090 host was unreachable before v15
+  created an episode. The preflight barrier recorded the outage while the
+  suite directory remained at zero episodes. After the host returned, the
+  exact model revision/backend passed health immediately. The stale
+  AndroidWorld initialization process was stopped, its outage evidence was
+  archived, and the no-snapshot AVD was cold-started and passed the fixed
+  116-task, 2400-by-1080 smoke before v15 restarted.
+- **Result:** all 13 fixed non-Hard cells completed with no episode-level
+  infrastructure error. S0 passed 5/5 engineering cells with 53 decision
+  attempts and 2 evaluator successes. M0 passed 8/8 engineering cells with
+  80 decision attempts, 4 evaluator successes, 22 Planner events, 15 Critic
+  events, zero role-output errors, zero memory invariant errors, zero stale
+  FACT routes, and a maximum prompt length of 5,184 tokens.
+- **Independent recheck:** aggregate-only mode rescanned the persisted
+  episode summaries and memory-event ledgers and exited zero with
+  `finished=true`, `g6_s0_passed=true`, and `g7_m0_passed=true`.
+- **Boundary:** this closes only the method-execution portion of G7. A fresh
+  deterministic 50-item manual retrieval audit, a fresh eight-path component
+  smoke, and the final G7 audit remain required. Hard scoring remains
+  forbidden.
