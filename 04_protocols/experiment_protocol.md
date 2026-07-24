@@ -1,7 +1,7 @@
-# RAVEN-M experiment protocol v1 — pre-freeze draft
+# RAVEN-M experiment protocol v1 — frozen
 
-Status: `draft_pending_G7`
-Scored Hard runs permitted: **no**
+Status: `frozen`
+Scored Hard runs permitted: **yes, only under protocol-v1**
 
 ## Fixed benchmark and model
 

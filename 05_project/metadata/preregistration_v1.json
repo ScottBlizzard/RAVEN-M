@@ -1,0 +1,513 @@
+{
+  "schema_version": "preregistration.v1",
+  "status": "frozen",
+  "scored_hard_runs_permitted": true,
+  "generated_at_utc": "2026-07-24T11:33:39.364771+00:00",
+  "git_head_before_freeze_commit": "8c7ec84ba58197eacc06ab9999146d0fe9589761",
+  "androidworld_commit": "3e50888527ef9f29b9157ecd537e408008bb1c85",
+  "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+  "protocol_file_count": 100,
+  "protocol_records_sha256": "0ead31e96d5b8a0769fd3cb771d5635a66fd5a327aec6658b82dbd8d95bf6de2",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "bytes": 244,
+      "sha256": "9adc7f93111be4b25b2fc69598c42b759ac4d602f8c29c4d7dc4f0fb8d936679"
+    },
+    {
+      "path": "00_admin/requirements_trace.md",
+      "bytes": 2094,
+      "sha256": "188831a70117e0bc81d9716305792b5807a558f1d399cd5ce891a92bde409913"
+    },
+    {
+      "path": "01_sources/official/androidworld/task_list.html",
+      "bytes": 63144,
+      "sha256": "34e72b16bc2d09bbe0634ec9db8ab8709447593ee02bc6b3e5682a8e7f425d7f"
+    },
+    {
+      "path": "04_protocols/environment_lock.yaml",
+      "bytes": 7697,
+      "sha256": "cd04a919e8ff739ea79577946847040b17645766647ccd669fa447cfff521882"
+    },
+    {
+      "path": "04_protocols/experiment_protocol.md",
+      "bytes": 7115,
+      "sha256": "9f50312c90486c43cfdfc5be0bc9d9d595f1f0fba624d1d87e025b688463c428"
+    },
+    {
+      "path": "04_protocols/failure_codebook.md",
+      "bytes": 2359,
+      "sha256": "f4b5187cea8dbf9b22570f3cc9b86e8cea1aad269166de409990e52599068fbb"
+    },
+    {
+      "path": "05_project/configs/agents/b0.yaml",
+      "bytes": 165,
+      "sha256": "a2179ee8927c91301bed841e8f0096f863858419a02bef24eb453a144f55cc91"
+    },
+    {
+      "path": "05_project/configs/agents/b1.yaml",
+      "bytes": 206,
+      "sha256": "cf48c62f9506026fdbb5d5ab39295ab6b2176cadd414c3c007aedbf36b42f606"
+    },
+    {
+      "path": "05_project/configs/agents/b2.yaml",
+      "bytes": 244,
+      "sha256": "0dcf6e9366f168a48de9078d5a44e97071fe49236b5b82f4df5b3bf63772beac"
+    },
+    {
+      "path": "05_project/configs/agents/b3.yaml",
+      "bytes": 250,
+      "sha256": "746b1f0a2a3cc09f38d8eefbdd90a58484b99337510e0513182c69a0684260b7"
+    },
+    {
+      "path": "05_project/configs/agents/b3_call.yaml",
+      "bytes": 199,
+      "sha256": "4fd52c0ea3b69ba60cc8b7aebad276ffc2cc262581ea27ed7f4aeac391f32beb"
+    },
+    {
+      "path": "05_project/configs/agents/b3_ctx.yaml",
+      "bytes": 180,
+      "sha256": "0dc12083e3ea797ddbe034f8c8c16b808da568c67e4dd8d2fd0b97827b7b787f"
+    },
+    {
+      "path": "05_project/configs/agents/m0.yaml",
+      "bytes": 528,
+      "sha256": "11935bc7a74da3b2f49c3672eba72a627b1fb1367220b8f8412ec103d77a50e5"
+    },
+    {
+      "path": "05_project/configs/agents/mno_critic.yaml",
+      "bytes": 134,
+      "sha256": "1062b9420f51158d7bcf2bdfe48db86e9b5c37868f3670f099941ac8c274d7c2"
+    },
+    {
+      "path": "05_project/configs/agents/mno_frm.yaml",
+      "bytes": 156,
+      "sha256": "798da8e9f897816024d6d4add6497da0bedf2e1e1fd654431d377263d8dce691"
+    },
+    {
+      "path": "05_project/configs/agents/mno_psi.yaml",
+      "bytes": 130,
+      "sha256": "72749c84f195ce51d26f209e7d86b1ee7eb0108f5a349e23bf97ca54e0715453"
+    },
+    {
+      "path": "05_project/configs/agents/mno_vel.yaml",
+      "bytes": 142,
+      "sha256": "06edaf837a6c509cbbbec139260dce316ac83f975cbe0505b8d90aa86387626d"
+    },
+    {
+      "path": "05_project/configs/agents/mno_wm.yaml",
+      "bytes": 125,
+      "sha256": "52099b677846e2f50773083d301b7441556e8f2d46e832839f180fa145e0d360"
+    },
+    {
+      "path": "05_project/configs/agents/mrel.yaml",
+      "bytes": 142,
+      "sha256": "a6c1a0ae1cb3a9b9c9bc4613e752acfafbfa71eaf87b91d40a987dd4fd65c15e"
+    },
+    {
+      "path": "05_project/configs/agents/s0.yaml",
+      "bytes": 271,
+      "sha256": "526b4f965b3b46a31359f6063f1948f70b8f716315ac3f5eb6c83312b7ab08ee"
+    },
+    {
+      "path": "05_project/configs/experiments/hard_schedule_v1.json",
+      "bytes": 96605,
+      "sha256": "d2715228ab4fb6fc997cc23ef5dbcdaaab66bf665b44e4a0cc5aee17a41e8642"
+    },
+    {
+      "path": "05_project/configs/experiments/seeds_v1.json",
+      "bytes": 620,
+      "sha256": "2165680e286781af4e6baac856d743421c3c303054fa366f54acdaff32c6a02e"
+    },
+    {
+      "path": "05_project/configs/memory/raven_v1.yaml",
+      "bytes": 838,
+      "sha256": "830e70f343c8c2bd5eb923b57bebfc50c42e90d70ec0922403386e3fe53d562d"
+    },
+    {
+      "path": "05_project/configs/task_manifests/ablation8_v1.json",
+      "bytes": 714,
+      "sha256": "1fcca4f5213613b5720a60f459f34c1463fb3889e6eb5ac936148af993468a5b"
+    },
+    {
+      "path": "05_project/configs/task_manifests/androidworld_hard_v1.json",
+      "bytes": 4796,
+      "sha256": "e651aedeb18f112be3a06562328618d19e9d33eaea94187b1edec51cb00f6ca7"
+    },
+    {
+      "path": "05_project/configs/task_manifests/component_smoke_v1.json",
+      "bytes": 513,
+      "sha256": "847cbf8a2e69a2159a631ef8162407d36bc97e712955c0e3244c58bb2b51ea0a"
+    },
+    {
+      "path": "05_project/metadata/component_smoke_audit.json",
+      "bytes": 8602,
+      "sha256": "fcaacbdd1a3b0ca33ddab92b6af726b65bbe144becbd2f4d84613bf580db10d9"
+    },
+    {
+      "path": "05_project/metadata/corruption_stress.json",
+      "bytes": 5984,
+      "sha256": "9c39ff687f304f0be8352a08f0a688b6c6d1930be077786cda4ee70bb5e7d1ef"
+    },
+    {
+      "path": "05_project/metadata/emulator_recovery_smoke_20260724.json",
+      "bytes": 1149,
+      "sha256": "9e66ad1717446bfa9ab1c67230502f3530e33716dc6bc010441dfe05f2aed6c2"
+    },
+    {
+      "path": "05_project/metadata/g4_audit.json",
+      "bytes": 4974,
+      "sha256": "d1f096f170da89d62368d1b82fac78f893e9a8778fda736e69433746a27df8b6"
+    },
+    {
+      "path": "05_project/metadata/g6_audit.json",
+      "bytes": 1124,
+      "sha256": "65639f5bd672fa3c6d65d3209371b43da65dcfb36f9d39f65ff8f3e5585ecb40"
+    },
+    {
+      "path": "05_project/metadata/g7_audit.json",
+      "bytes": 2139,
+      "sha256": "ec9d368934b922dfaac5f994fec64f73930240a3758838f95c1065b5097b491f"
+    },
+    {
+      "path": "05_project/metadata/protocol_audit.json",
+      "bytes": 3348,
+      "sha256": "ac4300c3492528f44fe425adba212308bb3c630fb33b2b14284e5b77f57ba8c9"
+    },
+    {
+      "path": "05_project/metadata/reset_determinism_g4_final.json",
+      "bytes": 13460,
+      "sha256": "4c9cac4c85fb65ce25ec63f187b0febad9f0c8bcb8840847b27d9fbdf9ceaa9a"
+    },
+    {
+      "path": "05_project/metadata/role_repair_smoke_20260724.json",
+      "bytes": 1344,
+      "sha256": "051236af0459d95aeae3be4b93459bc43075b74ef68c9321b3fd4b06e5c85e27"
+    },
+    {
+      "path": "05_project/metadata/runtime_asset_manifest.json",
+      "bytes": 4379,
+      "sha256": "c01c4a2bc72601fcb56277a31f12bf5e48023326854e5ecb69ad1a329958dcc7"
+    },
+    {
+      "path": "05_project/metadata/transport_recovery_smoke_20260724.json",
+      "bytes": 763,
+      "sha256": "d3bd220060df7e9725979e88370d32efd86855bee51860bf8be5e67253d222ba"
+    },
+    {
+      "path": "05_project/prompts/critic_v1.md",
+      "bytes": 1029,
+      "sha256": "25d4e409ff0b5ed89a75f4668ab311c5649531d39f963b0f22116ca5861b0f75"
+    },
+    {
+      "path": "05_project/prompts/executor_raven_v1.md",
+      "bytes": 3999,
+      "sha256": "d53726ee88cb6cce1de5b38d66c3cafde6191da9b747d0f86dff6c4ffd3e63f0"
+    },
+    {
+      "path": "05_project/prompts/executor_v1.md",
+      "bytes": 2689,
+      "sha256": "9285f4b19d799ef25b0d245d10a79d76297ab240a62e6d3c15b56ae5d419b2b7"
+    },
+    {
+      "path": "05_project/prompts/planner_v1.md",
+      "bytes": 1736,
+      "sha256": "d83352bd7dcf95f5a5c938b4cd4572d1a079ad23631002bd9d29f70318249b8e"
+    },
+    {
+      "path": "05_project/prompts/summary_v1.md",
+      "bytes": 724,
+      "sha256": "e9dbb03f28d07362bd2490f48d135be0b2833bbbb0224d1ef0ac7a215cd5cc29"
+    },
+    {
+      "path": "05_project/schemas/action.raven.v1.schema.json",
+      "bytes": 6072,
+      "sha256": "e9b5e45caa61472244a346cb0db0a2a69dbd371b43a01083ad81431d6c4796dc"
+    },
+    {
+      "path": "05_project/schemas/action.v1.schema.json",
+      "bytes": 4365,
+      "sha256": "b93d27969ce3144cfd6f20fb8c9e4ef25321411ceae5c445fbbaba09806f837b"
+    },
+    {
+      "path": "05_project/schemas/critic.v1.schema.json",
+      "bytes": 788,
+      "sha256": "00d3d92f439c8873a0d14d6e6ee768227d0ab14ea2f1013f5db398511bce8d3f"
+    },
+    {
+      "path": "05_project/schemas/memory_item.v1.schema.json",
+      "bytes": 3394,
+      "sha256": "1f2705315aed270e76d976e6de3fe9014aa6d9d45f0f4e1d6c2ea02ae47c5f10"
+    },
+    {
+      "path": "05_project/schemas/plan.v1.schema.json",
+      "bytes": 1670,
+      "sha256": "537a52e33ebcb46840b2eb3e27f3fb81a529ba41ab131cbc560b19572aee286c"
+    },
+    {
+      "path": "05_project/schemas/summary.v1.schema.json",
+      "bytes": 645,
+      "sha256": "c0d0dda1464c4936bfd727ebe8c7a8936480f0beec1957d5874c4a00265abf32"
+    },
+    {
+      "path": "05_project/scripts/analyze_case_studies.py",
+      "bytes": 8969,
+      "sha256": "842c465130cb7502ccfc413e58dbe8e665f17d3a614b723be971509784ad4667"
+    },
+    {
+      "path": "05_project/scripts/analyze_final_report.py",
+      "bytes": 5160,
+      "sha256": "279c9458ed3e64a65eeb6177a0ee38120c1f1c8ab9bd86a69fd4b6138535a7e5"
+    },
+    {
+      "path": "05_project/scripts/analyze_frozen_results.py",
+      "bytes": 20703,
+      "sha256": "9eacd6ef9d284891fa8a829ea3aa14937ff9857ea57cbf7ad95f73c775334a24"
+    },
+    {
+      "path": "05_project/scripts/apply_retrieval_audit_labels.py",
+      "bytes": 4496,
+      "sha256": "e9d9d631fe8cfa2a7e45ba2eab2afb1cb7ed3a3b67d3f05051ec3405e6b0fa93"
+    },
+    {
+      "path": "05_project/scripts/audit_g4.py",
+      "bytes": 6481,
+      "sha256": "6038ff1e2ce12f61debcc2a850bfec431ca42bab0434cf0a733b1c63a2ab3ded"
+    },
+    {
+      "path": "05_project/scripts/audit_g6.py",
+      "bytes": 3866,
+      "sha256": "19f27dc0c3a4a93e32b7443034bc969b4041d7fdca51392dbd707dcc6a74b71f"
+    },
+    {
+      "path": "05_project/scripts/audit_g7.py",
+      "bytes": 7396,
+      "sha256": "2a092486ca4f81ab069d9a22100a19473fa0331b2046c2324cc359f334c4eceb"
+    },
+    {
+      "path": "05_project/scripts/audit_model_host.py",
+      "bytes": 4392,
+      "sha256": "d3be6deeb9dc4e995010e9d6789c39af83df96fd995c21eea3822d7c3b0839dd"
+    },
+    {
+      "path": "05_project/scripts/audit_protocol.py",
+      "bytes": 9307,
+      "sha256": "5dbbc5221ac436d8a1695d67c999af88110d72afe15e3e724e2f893593c299b3"
+    },
+    {
+      "path": "05_project/scripts/audit_reset_determinism.py",
+      "bytes": 7497,
+      "sha256": "ea4dc7dd973668afd7ce9dba8d421ecb88d284ddc25d3a6de19f2c76d13bb522"
+    },
+    {
+      "path": "05_project/scripts/audit_runtime_assets.py",
+      "bytes": 2431,
+      "sha256": "cbd814df6a9e554ea2fba22e22de3d73424fa10394f73de15203b09e3add31fa"
+    },
+    {
+      "path": "05_project/scripts/generate_hard_schedule.py",
+      "bytes": 5914,
+      "sha256": "fc0280fc2d9c157dd57f42c886dae32c7d056da39a2d75ed2ae01e1c962c6e03"
+    },
+    {
+      "path": "05_project/scripts/generate_preregistration.py",
+      "bytes": 5879,
+      "sha256": "62f3133766bbefc3fdbae90ab1be58348508e7f894789d8fc105073f8d1cae76"
+    },
+    {
+      "path": "05_project/scripts/run_b0_dry_run.py",
+      "bytes": 3997,
+      "sha256": "33a8d318b8e1741e03d2204b95314bcbf30a4b52c3751d97bcf74d7d4eb4f32c"
+    },
+    {
+      "path": "05_project/scripts/run_baseline_dev_suite.py",
+      "bytes": 12195,
+      "sha256": "1fa7fb0915d01a7c93f374a2082ff82e253dc857cf8b3bc44c5b24bdab7ec441"
+    },
+    {
+      "path": "05_project/scripts/run_component_smoke_suite.py",
+      "bytes": 16325,
+      "sha256": "ee32922bbd4cbb6bef05581bc27a6c3344f997769f5e1c1dc9e80f597f88762d"
+    },
+    {
+      "path": "05_project/scripts/run_corruption_stress.py",
+      "bytes": 4613,
+      "sha256": "c3b06b4517647ee11e647d3dfdd32802c1f4bd2b3fe206a935c90fa141682a39"
+    },
+    {
+      "path": "05_project/scripts/run_frozen_hard_suite.py",
+      "bytes": 34931,
+      "sha256": "33331b3a0eeb55c88802f62c76db0b5c241210522deaa4b2595c5bcf154ff16b"
+    },
+    {
+      "path": "05_project/scripts/run_frozen_pipeline.ps1",
+      "bytes": 1950,
+      "sha256": "9644e0fcb8e41947878481056b95d98794f42f25ccf8161cdfb16813cc15137b"
+    },
+    {
+      "path": "05_project/scripts/run_g3_dev_suite.py",
+      "bytes": 14583,
+      "sha256": "2db161ffa72f047c8fb07c480c7d3c61e881a06b8542265ba5e2f523d9581da1"
+    },
+    {
+      "path": "05_project/scripts/run_method_dev_suite.py",
+      "bytes": 23672,
+      "sha256": "cfe5770de33cf742ca6c77cff03b6f48e2c92df34782794936883d5b9dafcac5"
+    },
+    {
+      "path": "05_project/scripts/sample_retrieval_audit.py",
+      "bytes": 10894,
+      "sha256": "36e90a9cd8e7a6ab758750c660b75b58b94b92a92554d968277dfad2f89842a1"
+    },
+    {
+      "path": "05_project/scripts/start_frozen_pipeline.ps1",
+      "bytes": 1951,
+      "sha256": "44e6e271b3b650aa31915392dc8547de835e64de91e2dc920bf48744af4eb9b9"
+    },
+    {
+      "path": "05_project/scripts/start_model_tunnel.ps1",
+      "bytes": 2044,
+      "sha256": "d7ee92e5dfc8523003d8a29e11dc910ec25f86c83d1da2c532eeaa07061ca643"
+    },
+    {
+      "path": "05_project/scripts/start_model_tunnel_watchdog.ps1",
+      "bytes": 1374,
+      "sha256": "21eda84b525f8c420681e8d2a720cef65b662f6409131df723a84fb3e00f25a1"
+    },
+    {
+      "path": "05_project/scripts/stop_model_tunnel.ps1",
+      "bytes": 789,
+      "sha256": "859bc20be17f78e231bce35a3fc25fa5b49e0fb69edc7cb4454302b90b661d8e"
+    },
+    {
+      "path": "05_project/scripts/stop_model_tunnel_watchdog.ps1",
+      "bytes": 808,
+      "sha256": "b7b461dae7916eedbdd35fc3ccfc873d2084ba1cac2f2d6d50700274bd2baa35"
+    },
+    {
+      "path": "05_project/scripts/watch_model_tunnel.ps1",
+      "bytes": 3597,
+      "sha256": "e920f3fade9ae28b27917f6229ff1241835be23f37275a21fb82a2d92f8ae665"
+    },
+    {
+      "path": "05_project/src/raven_m/__init__.py",
+      "bytes": 34,
+      "sha256": "83c1229d32f6e1b873cb8447f7d3e0926b6b69304743f5111cec61642f37a561"
+    },
+    {
+      "path": "05_project/src/raven_m/actions/__init__.py",
+      "bytes": 308,
+      "sha256": "614c4c39cf113992065f0ca845fe9ab458ea074fb82a4942a7f5e5f673121a3f"
+    },
+    {
+      "path": "05_project/src/raven_m/actions/schema.py",
+      "bytes": 3530,
+      "sha256": "1b9d0d415721bbcdb4a2c825dc681400df444831ad88f61688c5505d404bab2b"
+    },
+    {
+      "path": "05_project/src/raven_m/controller/__init__.py",
+      "bytes": 131,
+      "sha256": "bb2bec4fd4d77cc1b840477a22d21c99852e47015dcfc425c07a1cf552b7b503"
+    },
+    {
+      "path": "05_project/src/raven_m/controller/episode_controller.py",
+      "bytes": 27650,
+      "sha256": "9b0e47bd3c109226879c7d173334be7a1e68cc32816e5eabe0a58a07e6c006a2"
+    },
+    {
+      "path": "05_project/src/raven_m/env/__init__.py",
+      "bytes": 159,
+      "sha256": "ebd568a4e585b3ad8342d6374b61a3accb1b29432fe1dd0050bf14997b2a6afc"
+    },
+    {
+      "path": "05_project/src/raven_m/env/androidworld_adapter.py",
+      "bytes": 4543,
+      "sha256": "4ccbaa5d48e714cf0de5143025d62e16b07b174a9ed73f4ba591d6ffde6ded20"
+    },
+    {
+      "path": "05_project/src/raven_m/history/__init__.py",
+      "bytes": 55,
+      "sha256": "72920a0c6f8bd7fb78f294a9a22da939f2960674922b73d19600cf022830a667"
+    },
+    {
+      "path": "05_project/src/raven_m/history/policies.py",
+      "bytes": 25167,
+      "sha256": "65dcad2de1aad6331244bfc06d5a016363d94686c342e136fcf0de8f059578a3"
+    },
+    {
+      "path": "05_project/src/raven_m/history/summary_schema.py",
+      "bytes": 1559,
+      "sha256": "7f6572534c4c8798b0b44f77e49bd5695e843bc7a49b60e3bc19675e7b8fc97d"
+    },
+    {
+      "path": "05_project/src/raven_m/memory/__init__.py",
+      "bytes": 452,
+      "sha256": "4adb2d2788232bd36d769b559258fe4c894c769fb315aa7b9f23d98efc155a6a"
+    },
+    {
+      "path": "05_project/src/raven_m/memory/manager.py",
+      "bytes": 12828,
+      "sha256": "c9f9de1eb5336cb57ea42694fa28a645336bd255719ce08e3d164f2d818b030d"
+    },
+    {
+      "path": "05_project/src/raven_m/memory/models.py",
+      "bytes": 7417,
+      "sha256": "b124a5bd458019c312bed96885c11ff764c5dd5ad91b4bbacaf5ac8d19bcc989"
+    },
+    {
+      "path": "05_project/src/raven_m/memory/retrieval.py",
+      "bytes": 9838,
+      "sha256": "cb4b4876017010feb2147e0fd0e22bc68386e576e97add0544ef9916a4782d1e"
+    },
+    {
+      "path": "05_project/src/raven_m/memory/store.py",
+      "bytes": 10774,
+      "sha256": "2143a15073fcc7c8be97f556b74c31af38524523dee6d39d85d2bbfcf2379ee8"
+    },
+    {
+      "path": "05_project/src/raven_m/models/__init__.py",
+      "bytes": 42,
+      "sha256": "7f29bbd82dbc576e3290daac8dcdb3ef1be192b6b621d9521946317167e34332"
+    },
+    {
+      "path": "05_project/src/raven_m/models/server.py",
+      "bytes": 13567,
+      "sha256": "1e7d57e6a68b2475d95015db6fdc7844375b26bbfb54cad87f82217bc97ebec1"
+    },
+    {
+      "path": "05_project/src/raven_m/models/transformers_client.py",
+      "bytes": 8662,
+      "sha256": "15f82bfdde5c30d036e2872f9bf66be02a74e43815ea284ea7b09798b2c955ae"
+    },
+    {
+      "path": "05_project/src/raven_m/roles/__init__.py",
+      "bytes": 162,
+      "sha256": "72029e7b8117b3bcb3949fe39e4f23fefdc9ee71ca4c700bd0c60223863d0305"
+    },
+    {
+      "path": "05_project/src/raven_m/roles/orchestrator.py",
+      "bytes": 6988,
+      "sha256": "4959b11410f7874a6560260310a7a513cbab70f196539b262432ecc7afaa4c0b"
+    },
+    {
+      "path": "06_local_runtime/scripts/androidworld_compat.py",
+      "bytes": 6650,
+      "sha256": "76bd4cae773543986275c9b6e14bc5eef47b25a2af9e08fb8c69930e25b13865"
+    },
+    {
+      "path": "06_local_runtime/scripts/androidworld_smoke.py",
+      "bytes": 2106,
+      "sha256": "ae5967c18be6b564159f2c0bf609423fabf6226f7bf09471367d2a0ff8511147"
+    },
+    {
+      "path": "06_local_runtime/scripts/start_emulator.ps1",
+      "bytes": 2546,
+      "sha256": "03a5aabe0a39cdb3c92f132dc5fbbf4545e2803a5e447307d604ff07b80cee4e"
+    },
+    {
+      "path": "06_local_runtime/scripts/stop_emulator.ps1",
+      "bytes": 2252,
+      "sha256": "66054ce086ae1af68f2d6905878146d292f7e0fa6ef287fa68a8b0a871806be9"
+    }
+  ]
+}

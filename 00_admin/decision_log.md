@@ -427,3 +427,22 @@
 - **Decision:** G7 is closed. This authorizes protocol-freeze preparation
   only. The preregistration hash/tag has not been created, so scored
   AndroidWorld Hard runs remain forbidden.
+
+## 2026-07-24 — protocol-v1 is frozen before the first scored Hard episode
+
+- **Pre-freeze checks:** G7 passed again on the persisted v15 suite; the full
+  project test suite passed 75/75; the protocol auditor matched all 19 Hard
+  registry names and native budgets and verified the 364-cell blocked
+  schedule. The locked model endpoint reported the exact revision/backend,
+  and the artifact volume had 76.42 GiB free.
+- **Frozen scope:** 100 protocol-critical source, prompt, config, schema,
+  runner, environment, source-snapshot, and audit files were recorded in
+  `preregistration_v1.json`.
+- **Digests:** the canonical protocol-record digest is
+  `0ead31e96d5b8a0769fd3cb771d5635a66fd5a327aec6658b82dbd8d95bf6de2`;
+  the preregistration-file SHA-256 is
+  `6cfde3bcf80a9e9ccb7adb2476350a8a132d5a244d898d576c850e20ba8ec6d7`.
+- **Boundary:** the environment permission now applies only to the frozen
+  runner under tag `protocol-v1`. Any change to a recorded file invalidates
+  the runner preflight and requires a separately named protocol version.
+  No scored Hard episode was created during this freeze round.

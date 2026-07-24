@@ -1,0 +1,19 @@
+* text=auto eol=lf
+
+*.7z binary
+*.apk binary
+*.gif binary
+*.gguf binary
+*.gz binary
+*.ico binary
+*.jpeg binary
+*.jpg binary
+*.nbib binary
+*.pdf binary
+*.png binary
+*.pyc binary
+*.tar binary
+*.tif binary
+*.tiff binary
+*.webp binary
+*.zip binary

@@ -1,7 +1,7 @@
 schema_version: 1
-generated_at: 2026-07-24T19:24:13+08:00
-status: g7_method_gate_passed_protocol_freeze_pending
-scored_runs_permitted: false
+generated_at: 2026-07-24T19:30:00+08:00
+status: protocol_v1_frozen
+scored_runs_permitted: true
 
 android_host:
   os: Windows
@@ -234,5 +234,5 @@ gates:
       - method_dev_g6_g7_v13_20260724
       - method_dev_g6_g7_v14_20260724
     note: v13_failed_manual_retrieval_precision_v14_model_host_outage_v15_and_fresh_evidence_passed
-  hard_protocol_frozen: pending
-  hard_scored_runs: forbidden_until_model_and_protocol_gates_pass
+  hard_protocol_frozen: passed
+  hard_scored_runs: permitted_only_under_protocol_v1
