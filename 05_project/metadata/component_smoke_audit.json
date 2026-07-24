@@ -1,0 +1,234 @@
+{
+  "errors": [],
+  "generated_at_utc": "2026-07-24T11:22:36.979472+00:00",
+  "infrastructure_attempt_count": 0,
+  "manifest_id": "component_smoke_v1",
+  "model_backend": "qwen3_vl_32b_transformers_bf16_4x4090_v1",
+  "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+  "paired_instance_hash_count": 1,
+  "protocol": "component_smoke_non_hard",
+  "results": [
+    {
+      "episode_id": "component_smoke_v2_20260724_01_MREL_ContactsAddContact_seed20260723_a1",
+      "episode_path": "runs/component_smoke/component_smoke_v2_20260724/episodes/01_MREL_ContactsAddContact_seed20260723",
+      "errors": [],
+      "failure_code": "TASK_UNSUCCESSFUL_AT_BUDGET",
+      "goal_sha256": "99289672cc9401ee0db776b2b9dc979e61ce9ddf0498b677daca093a5efe5849",
+      "max_prompt_tokens": 5203,
+      "memory_audit": {
+        "errors": [],
+        "event_count": 42,
+        "memory_types": [
+          "episodic_fact"
+        ],
+        "route_counts": {
+          "ALERT": 15,
+          "FACT": 15,
+          "HYPOTHESIS": 2
+        },
+        "stale_fact_routes": 0
+      },
+      "model_call_count": 16,
+      "params_sha256": "37a7a3092f001bfd78c2f85a85bcdfed399d65bd8270c23622153e09b2d51ba1",
+      "role_audit": {
+        "critic_events": 1,
+        "output_errors": [],
+        "planner_events": 3
+      },
+      "success": false,
+      "task_goal": "Create a new contact for Ian Zhang. Their number is +15180612698.",
+      "variant": "MREL"
+    },
+    {
+      "episode_id": "component_smoke_v2_20260724_02_MNO_WM_ContactsAddContact_seed20260723_a1",
+      "episode_path": "runs/component_smoke/component_smoke_v2_20260724/episodes/02_MNO_WM_ContactsAddContact_seed20260723",
+      "errors": [],
+      "failure_code": "TASK_UNSUCCESSFUL_AT_BUDGET",
+      "goal_sha256": "99289672cc9401ee0db776b2b9dc979e61ce9ddf0498b677daca093a5efe5849",
+      "max_prompt_tokens": 4517,
+      "memory_audit": {
+        "errors": [],
+        "event_count": 50,
+        "memory_types": [
+          "episodic_fact",
+          "failure"
+        ],
+        "route_counts": {
+          "ALERT": 20,
+          "FACT": 10,
+          "HYPOTHESIS": 2
+        },
+        "stale_fact_routes": 0
+      },
+      "model_call_count": 18,
+      "params_sha256": "37a7a3092f001bfd78c2f85a85bcdfed399d65bd8270c23622153e09b2d51ba1",
+      "role_audit": {
+        "critic_events": 5,
+        "output_errors": [],
+        "planner_events": 3
+      },
+      "success": false,
+      "task_goal": "Create a new contact for Ian Zhang. Their number is +15180612698.",
+      "variant": "MNO_WM"
+    },
+    {
+      "episode_id": "component_smoke_v2_20260724_03_MNO_VEL_ContactsAddContact_seed20260723_a1",
+      "episode_path": "runs/component_smoke/component_smoke_v2_20260724/episodes/03_MNO_VEL_ContactsAddContact_seed20260723",
+      "errors": [],
+      "failure_code": "TASK_UNSUCCESSFUL_AT_BUDGET",
+      "goal_sha256": "99289672cc9401ee0db776b2b9dc979e61ce9ddf0498b677daca093a5efe5849",
+      "max_prompt_tokens": 4536,
+      "memory_audit": {
+        "errors": [],
+        "event_count": 0,
+        "memory_types": [],
+        "route_counts": {},
+        "stale_fact_routes": 0
+      },
+      "model_call_count": 15,
+      "params_sha256": "37a7a3092f001bfd78c2f85a85bcdfed399d65bd8270c23622153e09b2d51ba1",
+      "role_audit": {
+        "critic_events": 0,
+        "output_errors": [],
+        "planner_events": 3
+      },
+      "success": false,
+      "task_goal": "Create a new contact for Ian Zhang. Their number is +15180612698.",
+      "variant": "MNO_VEL"
+    },
+    {
+      "episode_id": "component_smoke_v2_20260724_04_MNO_FRM_ContactsAddContact_seed20260723_a1",
+      "episode_path": "runs/component_smoke/component_smoke_v2_20260724/episodes/04_MNO_FRM_ContactsAddContact_seed20260723",
+      "errors": [],
+      "failure_code": "TASK_UNSUCCESSFUL_AT_BUDGET",
+      "goal_sha256": "99289672cc9401ee0db776b2b9dc979e61ce9ddf0498b677daca093a5efe5849",
+      "max_prompt_tokens": 5203,
+      "memory_audit": {
+        "errors": [],
+        "event_count": 42,
+        "memory_types": [
+          "episodic_fact"
+        ],
+        "route_counts": {
+          "ALERT": 15,
+          "FACT": 15,
+          "HYPOTHESIS": 2
+        },
+        "stale_fact_routes": 0
+      },
+      "model_call_count": 16,
+      "params_sha256": "37a7a3092f001bfd78c2f85a85bcdfed399d65bd8270c23622153e09b2d51ba1",
+      "role_audit": {
+        "critic_events": 1,
+        "output_errors": [],
+        "planner_events": 3
+      },
+      "success": false,
+      "task_goal": "Create a new contact for Ian Zhang. Their number is +15180612698.",
+      "variant": "MNO_FRM"
+    },
+    {
+      "episode_id": "component_smoke_v2_20260724_05_MNO_PSI_ContactsAddContact_seed20260723_a1",
+      "episode_path": "runs/component_smoke/component_smoke_v2_20260724/episodes/05_MNO_PSI_ContactsAddContact_seed20260723",
+      "errors": [],
+      "failure_code": "TASK_UNSUCCESSFUL_AT_BUDGET",
+      "goal_sha256": "99289672cc9401ee0db776b2b9dc979e61ce9ddf0498b677daca093a5efe5849",
+      "max_prompt_tokens": 5203,
+      "memory_audit": {
+        "errors": [],
+        "event_count": 42,
+        "memory_types": [
+          "episodic_fact"
+        ],
+        "route_counts": {
+          "ALERT": 15,
+          "FACT": 15,
+          "HYPOTHESIS": 2
+        },
+        "stale_fact_routes": 0
+      },
+      "model_call_count": 16,
+      "params_sha256": "37a7a3092f001bfd78c2f85a85bcdfed399d65bd8270c23622153e09b2d51ba1",
+      "role_audit": {
+        "critic_events": 1,
+        "output_errors": [],
+        "planner_events": 3
+      },
+      "success": false,
+      "task_goal": "Create a new contact for Ian Zhang. Their number is +15180612698.",
+      "variant": "MNO_PSI"
+    },
+    {
+      "episode_id": "component_smoke_v2_20260724_06_MNO_CRITIC_ContactsAddContact_seed20260723_a1",
+      "episode_path": "runs/component_smoke/component_smoke_v2_20260724/episodes/06_MNO_CRITIC_ContactsAddContact_seed20260723",
+      "errors": [],
+      "failure_code": "TASK_UNSUCCESSFUL_AT_BUDGET",
+      "goal_sha256": "99289672cc9401ee0db776b2b9dc979e61ce9ddf0498b677daca093a5efe5849",
+      "max_prompt_tokens": 5105,
+      "memory_audit": {
+        "errors": [],
+        "event_count": 42,
+        "memory_types": [
+          "episodic_fact"
+        ],
+        "route_counts": {
+          "ALERT": 18,
+          "FACT": 12,
+          "HYPOTHESIS": 2
+        },
+        "stale_fact_routes": 0
+      },
+      "model_call_count": 15,
+      "params_sha256": "37a7a3092f001bfd78c2f85a85bcdfed399d65bd8270c23622153e09b2d51ba1",
+      "role_audit": {
+        "critic_events": 0,
+        "output_errors": [],
+        "planner_events": 3
+      },
+      "success": false,
+      "task_goal": "Create a new contact for Ian Zhang. Their number is +15180612698.",
+      "variant": "MNO_CRITIC"
+    },
+    {
+      "episode_id": "component_smoke_v2_20260724_07_B3_CTX_ContactsAddContact_seed20260723_a1",
+      "episode_path": "runs/component_smoke/component_smoke_v2_20260724/episodes/07_B3_CTX_ContactsAddContact_seed20260723",
+      "errors": [],
+      "failure_code": "MODEL_DECLARED_INFEASIBLE",
+      "goal_sha256": "99289672cc9401ee0db776b2b9dc979e61ce9ddf0498b677daca093a5efe5849",
+      "max_prompt_tokens": 5661,
+      "memory_audit": null,
+      "model_call_count": 11,
+      "params_sha256": "37a7a3092f001bfd78c2f85a85bcdfed399d65bd8270c23622153e09b2d51ba1",
+      "role_audit": {
+        "critic_events": 0,
+        "output_errors": [],
+        "planner_events": 0
+      },
+      "success": false,
+      "task_goal": "Create a new contact for Ian Zhang. Their number is +15180612698.",
+      "variant": "B3_CTX"
+    },
+    {
+      "episode_id": "component_smoke_v2_20260724_08_B3_CALL_ContactsAddContact_seed20260723_a1",
+      "episode_path": "runs/component_smoke/component_smoke_v2_20260724/episodes/08_B3_CALL_ContactsAddContact_seed20260723",
+      "errors": [],
+      "failure_code": "MODEL_DECLARED_INFEASIBLE",
+      "goal_sha256": "99289672cc9401ee0db776b2b9dc979e61ce9ddf0498b677daca093a5efe5849",
+      "max_prompt_tokens": 3988,
+      "memory_audit": null,
+      "model_call_count": 13,
+      "params_sha256": "37a7a3092f001bfd78c2f85a85bcdfed399d65bd8270c23622153e09b2d51ba1",
+      "role_audit": {
+        "critic_events": 0,
+        "output_errors": [],
+        "planner_events": 0
+      },
+      "success": false,
+      "task_goal": "Create a new contact for Ian Zhang. Their number is +15180612698.",
+      "variant": "B3_CALL"
+    }
+  ],
+  "schema_version": "component_smoke_audit.v1",
+  "status": "passed",
+  "suite_id": "component_smoke_v2_20260724"
+}

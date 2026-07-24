@@ -405,3 +405,25 @@
   deterministic 50-item manual retrieval audit, a fresh eight-path component
   smoke, and the final G7 audit remain required. Hard scoring remains
   forbidden.
+
+## 2026-07-24 — G7 passes with fresh manual and component evidence
+
+- **Retrieval evidence:** the deterministic v15 packet contained 300 eligible
+  decision-time routes and sampled 50 with seed `20260724`, including source
+  and current screenshots. A single reviewer inspected all 50 pairs under the
+  fixed rubric before the final audit. Forty items met every utility
+  component (80.0%); five were potentially harmful. Negative labels and their
+  visual reasons are retained rather than removed.
+- **Component evidence:** `component_smoke_v2_20260724` executed all eight
+  fixed component paths on the same paired Contacts instance with the locked
+  model revision/backend. It produced no infrastructure attempt, structural
+  audit error, role-output error, or stale FACT route. This smoke establishes
+  component executability and instrumentation coverage; its per-episode task
+  outcomes are not treated as a quality estimate.
+- **Independent checks:** the complete project suite passed 75/75 tests. The
+  final G7 audit recomputed the deterministic sample, label-derived utility,
+  exact method schedule, model identity, M0 role/invariant checks, G6 and
+  corruption gates, and the fresh eight-path smoke; every check passed.
+- **Decision:** G7 is closed. This authorizes protocol-freeze preparation
+  only. The preregistration hash/tag has not been created, so scored
+  AndroidWorld Hard runs remain forbidden.

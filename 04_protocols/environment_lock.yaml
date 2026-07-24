@@ -1,6 +1,6 @@
 schema_version: 1
-generated_at: 2026-07-23T18:21:06+08:00
-status: g4_baseline_family_passed_method_dev_in_progress
+generated_at: 2026-07-24T19:24:13+08:00
+status: g7_method_gate_passed_protocol_freeze_pending
 scored_runs_permitted: false
 
 android_host:
@@ -178,7 +178,7 @@ gates:
     retry_scope: classified_infrastructure_only
     max_identical_attempts: 3
   full_method_dev_check:
-    status: method_execution_passed_g7_evidence_pending
+    status: passed
     suite_id: method_dev_g6_g7_v15_20260724
     episode_count: 13
     infrastructure_errors: 0
@@ -200,10 +200,24 @@ gates:
       stale_fact_routes: 0
       max_prompt_tokens: 5184
     aggregate_only_recheck: passed
-    pending:
-      - fresh_50_item_manual_retrieval_audit
-      - fresh_eight_path_component_smoke
-      - final_g7_audit
+    retrieval_audit:
+      sample_seed: 20260724
+      candidate_count: 300
+      sample_count: 50
+      utility_positive: 40
+      utility_rate: 0.8
+      harmful_items: 5
+      labels_complete: true
+      deterministic_sample_recheck: passed
+    component_smoke:
+      status: passed
+      suite_id: component_smoke_v2_20260724
+      paths: 8
+      infrastructure_attempts: 0
+      paired_instance_hash_count: 1
+      structural_errors: 0
+      note: execution_and_instrumentation_smoke_not_task_quality_estimate
+    final_g7_audit: passed
     retained_failed_dev_suites:
       - method_dev_g6_g7_20260723
       - method_dev_g6_g7_v2_20260723
@@ -219,6 +233,6 @@ gates:
       - method_dev_g6_g7_v12_20260724
       - method_dev_g6_g7_v13_20260724
       - method_dev_g6_g7_v14_20260724
-    note: v13_failed_manual_retrieval_precision_v14_model_host_outage_v15_method_execution_passed
+    note: v13_failed_manual_retrieval_precision_v14_model_host_outage_v15_and_fresh_evidence_passed
   hard_protocol_frozen: pending
   hard_scored_runs: forbidden_until_model_and_protocol_gates_pass
