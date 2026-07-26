@@ -141,14 +141,12 @@ def episode_result(
         for step in summary["steps"]
         if "evaluator" in step.get("user_prompt", "").lower()
     ]
-    answer_steps = [
-        step
-        for step in summary["steps"]
-        if (
-            isinstance(step.get("decision", {}).get("action"), dict)
-            and step["decision"]["action"].get("type") == "answer"
-        )
-    ]
+    answer_steps = []
+    for step in summary["steps"]:
+        decision = step.get("decision") or {}
+        action = decision.get("action")
+        if isinstance(action, dict) and action.get("type") == "answer":
+            answer_steps.append(step)
     completion_adjudications = [
         record
         for step in summary["steps"]
@@ -626,6 +624,10 @@ def main() -> int:
                 ),
                 flush=True,
             )
+            if not result["valid_after_one_repair"]:
+                stopped_early = True
+                stop_reason = "model_output_invalid_after_one_bounded_repair"
+                break
     finally:
         env.close()
 

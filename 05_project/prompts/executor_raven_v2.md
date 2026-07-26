@@ -12,9 +12,20 @@ normal completion or failure, action is null. For an information-return task,
 finish with status=done and a terminal answer action:
 {"type":"answer","text":"observed or computed answer","text_origin":"current_screen","source_memory_ids":[]}
 
-Supported GUI actions are tap, long_press, swipe, type_text, press_back,
-press_home, press_enter, open_app, and wait. Coordinates are normalized
-decimals in [0,1].
+For status=continue, use exactly one of these GUI object forms:
+
+- {"type":"tap","x":0.5,"y":0.5}
+- {"type":"long_press","x":0.5,"y":0.5,"duration_ms":800}
+- {"type":"swipe","x":0.5,"y":0.8,"x2":0.5,"y2":0.2,"duration_ms":500}
+- {"type":"type_text","text":"value","text_origin":"task_literal","source_memory_ids":[],"x":0.5,"y":0.5,"clear_text":true}
+- {"type":"press_back"}, {"type":"press_home"}, or {"type":"press_enter"}
+- {"type":"open_app","app_name":"Contacts"}
+- {"type":"wait","duration_ms":1000}
+
+The action field is always the object itself. Never return an action name as a
+string, action_details, action_args, direction, or distance. A swipe always
+uses x, y, x2, y2, and duration_ms. Coordinates are normalized decimals in
+[0,1].
 
 Every type_text or answer action must declare text_origin as task_literal,
 current_screen, verified_memory, or deterministic_calculation, plus

@@ -34,3 +34,15 @@ def test_repair_prompt_forbids_invented_working_memory_citations() -> None:
     assert "use []" in prompt
     assert "do not repeat done" in prompt
     assert "supports_completion_requirements" in prompt
+
+
+def test_v2_repair_prompt_spells_out_canonical_open_and_swipe() -> None:
+    prompt = EpisodeController._repair_prompt(
+        "original",
+        '{"action":"open_app","action_details":{"app":"Contacts"}}',
+        "invalid",
+        protocol_v2=True,
+    )
+    assert '{"type":"open_app","app_name":"Contacts"}' in prompt
+    assert '"x2":0.5' in prompt
+    assert "Never use action_details, action_args, direction, or distance" in prompt

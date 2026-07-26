@@ -250,7 +250,19 @@ class EpisodeController:
         original_prompt: str,
         invalid_content: str,
         error: str,
+        protocol_v2: bool = False,
     ) -> str:
+        v2_contract = (
+            "\nPROTOCOL_V2_ACTION_CONTRACT: The action field is the object "
+            "itself. open_app is "
+            '{"type":"open_app","app_name":"Contacts"}. swipe is '
+            '{"type":"swipe","x":0.5,"y":0.8,"x2":0.5,"y2":0.2,'
+            '"duration_ms":500}. Never use action_details, action_args, '
+            "direction, or distance. type_text and answer require "
+            "text_origin and source_memory_ids.\n"
+            if protocol_v2
+            else ""
+        )
         return (
             original_prompt
             + "\n\nYour previous response was invalid. Correct its format only "
@@ -277,7 +289,8 @@ class EpisodeController:
             "use one named recovery class: change_target, "
             "reverse_scroll_direction, navigate_back, reopen_app, "
             "inspect_different_visible_control, or fail_safely.\n"
-            "If a coordinate is above 1, convert it from pixels using "
+            + v2_contract
+            + "If a coordinate is above 1, convert it from pixels using "
             "CURRENT_SCREENSHOT size. If text is too long, shorten it below "
             "160 characters. status must be continue/done/fail; wait is an "
             "action type inside status=continue.\n"
@@ -378,6 +391,7 @@ class EpisodeController:
                 user_prompt,
                 initial.content,
                 str(initial_error),
+                protocol_v2=self.protocol_v2,
             )
             repaired = self.client.generate(
                 image_path=image_path,
