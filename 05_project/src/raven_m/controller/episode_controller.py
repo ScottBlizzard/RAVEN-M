@@ -267,6 +267,20 @@ class EpisodeController:
             '"direct_screen","confidence":0.98}. Never use free-form '
             "key/value state objects. If the system prompt requires an empty "
             "state_delta, use [].\n"
+            "PROTOCOL_V2_STATUS_MATRIX: For an unfinished task use "
+            "status=continue with one GUI action. For a completed ordinary "
+            "GUI task use status=done and action=null. Only a completed "
+            "information-return task may use status=done with an answer "
+            "object. For an infeasible task use status=fail and action=null. "
+            "Creating, editing, moving, deleting, saving, or sending is an "
+            "ordinary GUI task, not an information-return task. If "
+            "VALIDATION_ERROR says answer is permitted only for an "
+            "information-return goal, remove the answer action and use "
+            "action=null; never repeat the forbidden answer. For a schema "
+            "that requires completion_evidence: continue and fail use [], "
+            "while done uses one or more exact "
+            '{"claim":"The requested result is complete.",'
+            '"evidence":"direct_screen","memory_ids":[]} objects.\n'
             if protocol_v2
             else ""
         )

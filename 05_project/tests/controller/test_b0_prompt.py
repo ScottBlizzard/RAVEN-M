@@ -1,4 +1,9 @@
+from pathlib import Path
+
 from raven_m.controller.episode_controller import EpisodeController
+
+
+ROOT = Path(__file__).resolve().parents[3]
 
 
 def test_b0_prompt_excludes_hidden_state_and_memory() -> None:
@@ -62,3 +67,39 @@ def test_v2_repair_prompt_spells_out_canonical_state_delta() -> None:
     assert '"evidence":"direct_screen"' in prompt
     assert "Never use free-form key/value state objects" in prompt
     assert "If the system prompt requires an empty state_delta, use []" in prompt
+
+
+def test_v2_repair_prompt_has_complete_status_action_matrix() -> None:
+    prompt = EpisodeController._repair_prompt(
+        "original",
+        '{"status":"done","action":{"type":"answer","text":"value"}}',
+        "answer is permitted only for an information-return goal.",
+        protocol_v2=True,
+    )
+    assert "completed ordinary GUI task use status=done and action=null" in prompt
+    assert "Only a completed information-return task" in prompt
+    assert "Creating, editing, moving, deleting, saving, or sending" in prompt
+    assert "remove the answer action and use action=null" in prompt
+    assert "never repeat the forbidden answer" in prompt
+    assert "continue and fail use []" in prompt
+    assert '"claim":"The requested result is complete."' in prompt
+
+
+def test_v2_system_prompts_distinguish_ordinary_and_answer_completion() -> None:
+    for filename in ("executor_v2.md", "executor_raven_v2.md"):
+        prompt = (ROOT / "05_project/prompts" / filename).read_text(
+            encoding="utf-8"
+        )
+        normalized = " ".join(prompt.split())
+        assert "unfinished task: status=continue" in normalized
+        assert (
+            "completed ordinary GUI task: status=done with action=null"
+            in normalized
+        )
+        assert "completed information-return task only" in normalized
+        assert "infeasible task: status=fail with action=null" in normalized
+        assert (
+            "Creating, editing, moving, deleting, saving, or sending"
+            in normalized
+        )
+        assert "Never use answer for such a task" in normalized

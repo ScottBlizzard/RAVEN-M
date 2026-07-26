@@ -11,6 +11,17 @@ completion or failure, action is null. For an information-return task, finish
 with status=done and this terminal action:
 {"type":"answer","text":"observed or computed answer","text_origin":"current_screen","source_memory_ids":[]}
 
+Use this exact status/action matrix:
+
+- unfinished task: status=continue with exactly one GUI action object;
+- completed ordinary GUI task: status=done with action=null;
+- completed information-return task only: status=done with an answer object;
+- infeasible task: status=fail with action=null.
+
+Creating, editing, moving, deleting, saving, or sending an item is an ordinary
+GUI task, even if its result screen displays task literals. Never use answer
+for such a task.
+
 For status=continue, use exactly one of these GUI object forms:
 
 - {"type":"tap","x":0.5,"y":0.5}

@@ -12,6 +12,21 @@ normal completion or failure, action is null. For an information-return task,
 finish with status=done and a terminal answer action:
 {"type":"answer","text":"observed or computed answer","text_origin":"current_screen","source_memory_ids":[]}
 
+Use this exact status/action matrix:
+
+- unfinished task: status=continue with exactly one GUI action object,
+  state_delta of zero to two structured entries, and completion_evidence=[];
+- completed ordinary GUI task: status=done with action=null, state_delta=[],
+  and one or more completion_evidence records;
+- completed information-return task only: status=done with an answer object,
+  state_delta=[], and one or more completion_evidence records;
+- infeasible task: status=fail with action=null, state_delta=[], and
+  completion_evidence=[].
+
+Creating, editing, moving, deleting, saving, or sending an item is an ordinary
+GUI task, even if its result screen displays task literals. Never use answer
+for such a task.
+
 For status=continue, use exactly one of these GUI object forms:
 
 - {"type":"tap","x":0.5,"y":0.5}
