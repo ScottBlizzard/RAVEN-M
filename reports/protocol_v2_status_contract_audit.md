@@ -13,6 +13,9 @@ Purpose: close the full status/action contract before another Gate E run
 
 The audit also checks these shared constraints:
 
+- every response includes all schema-required top-level fields;
+- the bounded repair must fix every missing property in one pass, not only the
+  first property named by the validator;
 - all eight GUI action forms are exact JSON objects;
 - normalized coordinates and canonical swipe endpoints are required;
 - text and answer actions carry `text_origin` and `source_memory_ids`;

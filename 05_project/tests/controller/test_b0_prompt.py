@@ -85,6 +85,29 @@ def test_v2_repair_prompt_has_complete_status_action_matrix() -> None:
     assert '"claim":"The requested result is complete."' in prompt
 
 
+def test_v2_repair_prompt_requires_all_top_level_fields_in_one_repair() -> None:
+    prompt = EpisodeController._repair_prompt(
+        "original",
+        '{"status":"done","action":null}',
+        "$: 'expected_outcome' is required; "
+        "$: 'memory_citations' is required",
+        protocol_v2=True,
+    )
+    for field in (
+        "status",
+        "action",
+        "expected_outcome",
+        "decision_summary",
+        "state_delta",
+        "memory_citations",
+        "completion_evidence",
+    ):
+        assert field in prompt
+    assert "Fix every missing required property" in prompt
+    assert "do not fix only the first" in prompt
+    assert '"expected_outcome":"The screen stabilizes."' in prompt
+
+
 def test_v2_system_prompts_distinguish_ordinary_and_answer_completion() -> None:
     for filename in ("executor_v2.md", "executor_raven_v2.md"):
         prompt = (ROOT / "05_project/prompts" / filename).read_text(
@@ -103,3 +126,7 @@ def test_v2_system_prompts_distinguish_ordinary_and_answer_completion() -> None:
             in normalized
         )
         assert "Never use answer for such a task" in normalized
+        assert "Never omit expected_outcome" in normalized
+        assert '"memory_citations":[]' in normalized
+        if filename == "executor_raven_v2.md":
+            assert '"completion_evidence":[]' in normalized

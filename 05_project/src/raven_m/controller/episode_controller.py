@@ -281,6 +281,18 @@ class EpisodeController:
             "while done uses one or more exact "
             '{"claim":"The requested result is complete.",'
             '"evidence":"direct_screen","memory_ids":[]} objects.\n'
+            "PROTOCOL_V2_REQUIRED_FIELDS: Every response must include "
+            "status, action, expected_outcome, decision_summary, "
+            "state_delta, and memory_citations. If the system prompt names "
+            "completion_evidence, include it too. Fix every missing required "
+            "property listed in VALIDATION_ERROR in this one repair; do not "
+            "fix only the first. Use this complete M0-shaped top-level "
+            "skeleton when completion_evidence is required: "
+            '{"status":"continue","action":{"type":"wait",'
+            '"duration_ms":1000},"expected_outcome":"The screen '
+            'stabilizes.","decision_summary":"Wait for the visible page to '
+            'stabilize.","state_delta":[],"memory_citations":[],'
+            '"completion_evidence":[]}.\n'
             if protocol_v2
             else ""
         )

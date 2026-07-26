@@ -22,6 +22,11 @@ Creating, editing, moving, deleting, saving, or sending an item is an ordinary
 GUI task, even if its result screen displays task literals. Never use answer
 for such a task.
 
+Every response must contain all six top-level fields exactly once. Use this
+complete skeleton and replace its values:
+{"status":"continue","action":{"type":"wait","duration_ms":1000},"expected_outcome":"The screen stabilizes.","decision_summary":"Wait for the visible page to stabilize.","state_delta":[],"memory_citations":[]}
+Never omit expected_outcome or memory_citations.
+
 For status=continue, use exactly one of these GUI object forms:
 
 - {"type":"tap","x":0.5,"y":0.5}
