@@ -1,0 +1,105 @@
+{
+  "schema_version": "protocol_v2_gate_e_result.v1",
+  "protocol": "androidworld_protocol_v2_exploratory",
+  "suite_id": "nonhard_capability_seed20260729_rerun5",
+  "source_tag": "protocol-v2-dev-r4",
+  "source_commit": "de5278b6fc78ca01d4b530ef1442e5060dccbf10",
+  "freeze_tag": "protocol-v2-gate-e-rerun5-freeze",
+  "decision": "PASS",
+  "gate_passed": true,
+  "automatic_gate_f_transition": false,
+  "gate_f_started": false,
+  "started_at": "2026-07-26T16:57:49.819154+00:00",
+  "finished_at": "2026-07-26T17:41:58.769107+00:00",
+  "elapsed_seconds": 2648.953,
+  "result_count": 8,
+  "success_count": 5,
+  "variant_successes": {
+    "B3": 2,
+    "M0": 3
+  },
+  "infrastructure_attempt_count": 0,
+  "criteria": {
+    "valid_scored_cells": true,
+    "pairing": true,
+    "task_action_compatibility": true,
+    "ir_cache_populated": true,
+    "ir_correct": true,
+    "minimum_total_success": true,
+    "b3_success": true,
+    "m0_success": true,
+    "loop_guard": true,
+    "m0_completion": true,
+    "valid_output": true,
+    "evaluator_leakage": true,
+    "memory_isolation": true,
+    "model_identity": true
+  },
+  "results": [
+    {
+      "sequence": 1,
+      "variant": "B3",
+      "task": "ContactsAddContact",
+      "success": true,
+      "failure_code": null
+    },
+    {
+      "sequence": 2,
+      "variant": "M0",
+      "task": "SimpleCalendarEventsOnDate",
+      "success": true,
+      "failure_code": null,
+      "answer_cache_match_count": 1,
+      "completion_adjudication_count": 1
+    },
+    {
+      "sequence": 3,
+      "variant": "B3",
+      "task": "ExpenseAddSingle",
+      "success": true,
+      "failure_code": null
+    },
+    {
+      "sequence": 4,
+      "variant": "M0",
+      "task": "FilesMoveFile",
+      "success": false,
+      "failure_code": "TASK_UNSUCCESSFUL_AT_BUDGET"
+    },
+    {
+      "sequence": 5,
+      "variant": "M0",
+      "task": "ContactsAddContact",
+      "success": true,
+      "failure_code": null
+    },
+    {
+      "sequence": 6,
+      "variant": "B3",
+      "task": "SimpleCalendarEventsOnDate",
+      "success": false,
+      "failure_code": "INCORRECT_ANSWER",
+      "answer_cache_match_count": 1
+    },
+    {
+      "sequence": 7,
+      "variant": "M0",
+      "task": "ExpenseAddSingle",
+      "success": true,
+      "failure_code": null
+    },
+    {
+      "sequence": 8,
+      "variant": "B3",
+      "task": "FilesMoveFile",
+      "success": false,
+      "failure_code": "PREMATURE_COMPLETION"
+    }
+  ],
+  "integrity": {
+    "suite_summary_sha256": "69dfdf29e84e8efeb3ad52e82a566205de733e414432ef1677340962b927a501",
+    "suite_progress_sha256": "69dfdf29e84e8efeb3ad52e82a566205de733e414432ef1677340962b927a501",
+    "manifest_snapshot_sha256": "f0e35c51d02974a0a5f5c0f3618d740bf84c799f877156b75bf1534d2c17238a",
+    "instances_snapshot_sha256": "13d6ab543008b94d38e789105210d7fc56eb2eec7f66ed498f7113c910ae79b5"
+  }
+}
