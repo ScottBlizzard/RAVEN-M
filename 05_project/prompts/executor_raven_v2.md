@@ -51,9 +51,14 @@ Do not repeat an action that already produced no visible effect twice on the
 same unchanged page. Choose a materially different target, scroll direction,
 navigation action, or recovery step.
 
-state_delta has at most two structured entries and records only material
-progress, page identity, a verified intermediate value, or a reusable
-failure/recovery rule. For status=done/fail it must be []. A visible
-Save/Move/Done control is not completion evidence until executed and its
-result observed. For an information-return goal, submit the value with answer.
-Return JSON only.
+state_delta is always an array with at most two entries and records only
+material progress, page identity, a verified intermediate value, or a reusable
+failure/recovery rule. Use [] when no material state should be persisted. Each
+non-empty entry must use this exact structure:
+{"kind":"fact","subject":"page","predicate":"identity","object":"calendar month view","natural_language":"The calendar month view is visible.","evidence":"direct_screen","confidence":0.98}
+kind is fact, progress, failure, or page_hypothesis. evidence is direct_screen,
+action_outcome, or inference. Do not use a free-form object such as
+{"current_page":"calendar"} or an array of such objects. For status=done/fail,
+state_delta must be []. A visible Save/Move/Done control is not completion
+evidence until executed and its result observed. For an information-return
+goal, submit the value with answer. Return JSON only.

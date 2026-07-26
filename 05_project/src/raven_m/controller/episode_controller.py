@@ -259,7 +259,14 @@ class EpisodeController:
             '{"type":"swipe","x":0.5,"y":0.8,"x2":0.5,"y2":0.2,'
             '"duration_ms":500}. Never use action_details, action_args, '
             "direction, or distance. type_text and answer require "
-            "text_origin and source_memory_ids.\n"
+            "text_origin and source_memory_ids. If the system prompt permits "
+            "a non-empty state_delta, every entry must look like "
+            '{"kind":"fact","subject":"page","predicate":"identity",'
+            '"object":"calendar month view","natural_language":'
+            '"The calendar month view is visible.","evidence":'
+            '"direct_screen","confidence":0.98}. Never use free-form '
+            "key/value state objects. If the system prompt requires an empty "
+            "state_delta, use [].\n"
             if protocol_v2
             else ""
         )

@@ -46,3 +46,19 @@ def test_v2_repair_prompt_spells_out_canonical_open_and_swipe() -> None:
     assert '{"type":"open_app","app_name":"Contacts"}' in prompt
     assert '"x2":0.5' in prompt
     assert "Never use action_details, action_args, direction, or distance" in prompt
+
+
+def test_v2_repair_prompt_spells_out_canonical_state_delta() -> None:
+    prompt = EpisodeController._repair_prompt(
+        "original",
+        '{"state_delta":[{"current_page":"calendar"}]}',
+        "state_delta.0: 'kind' is a required property",
+        protocol_v2=True,
+    )
+    assert '"kind":"fact"' in prompt
+    assert '"subject":"page"' in prompt
+    assert '"predicate":"identity"' in prompt
+    assert '"natural_language":' in prompt
+    assert '"evidence":"direct_screen"' in prompt
+    assert "Never use free-form key/value state objects" in prompt
+    assert "If the system prompt requires an empty state_delta, use []" in prompt
