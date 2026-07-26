@@ -15,10 +15,10 @@ MANIFEST = (
 
 def test_gate_e_is_exactly_four_paired_nonhard_tasks() -> None:
     value = json.loads(MANIFEST.read_text(encoding="utf-8"))
-    assert value["source_tag"] == "protocol-v2-dev-r2"
+    assert value["source_tag"] == "protocol-v2-dev-r3"
     assert (
         value["source_commit"]
-        == "ad610e1f6ebe5e993cc07e84af38c8ed4b6ef74e"
+        == "46f8b7c21649029a8884fc7c16f859a1642d6f2f"
     )
     assert len(value["schedule"]) == 8
     assert {item["variant"] for item in value["schedule"]} == {"B3", "M0"}
