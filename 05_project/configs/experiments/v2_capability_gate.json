@@ -4,7 +4,7 @@
   "protocol": "androidworld_protocol_v2_exploratory",
   "source_tag": "protocol-v2-dev-r1",
   "source_commit": "60c98caa53912b5319ae71cab5ea5d71fc4e8b97",
-  "suite_id": "nonhard_capability_seed20260729_rerun1",
+  "suite_id": "nonhard_capability_seed20260729_rerun2",
   "output_root": "runs/protocol_v2",
   "instance_seed": 20260729,
   "blocked_order_seed": 2026072901,

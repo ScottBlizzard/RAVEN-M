@@ -73,21 +73,14 @@ while (-not (Test-Path -LiteralPath $stopFile)) {
     }
     else {
         $consecutiveFailures += 1
-        $activeCalls = $null
-        if (
-            $listener -and
-            $consecutiveFailures -ge $RestartAfterFailures
-        ) {
-            $activeCalls = Get-NetTCPConnection -LocalPort $LocalPort `
-                -State Established -ErrorAction SilentlyContinue
-        }
-        $restart = (
-            -not $listener -or
-            (
-                $consecutiveFailures -ge $RestartAfterFailures -and
-                -not $activeCalls
-            )
-        )
+        # The model server handles one long synchronous generation at a time.
+        # During that generation /health can legitimately time out even though
+        # the SSH forward and the in-flight request are healthy.  Restarting a
+        # listening tunnel on health timeout aborts that request and corrupts
+        # an otherwise valid experiment attempt.  OpenSSH keepalives terminate
+        # a genuinely disconnected tunnel; the missing listener is therefore
+        # the safe, transport-level restart signal.
+        $restart = -not $listener
         if ($restart) {
             Write-WatchdogLog "restart_begin failures=$consecutiveFailures listener=$([bool]$listener)"
             try {
