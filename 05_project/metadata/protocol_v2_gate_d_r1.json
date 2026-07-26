@@ -1,0 +1,40 @@
+{
+  "schema_version": "protocol_v2_gate_d_r1.v1",
+  "protocol": "androidworld_protocol_v2_exploratory",
+  "implementation_commit": "56c96424a6aaa422867682ce29f854a6f5d60a23",
+  "trigger": "gate_e_attempt1_action_shape_failure",
+  "decision": "PASS",
+  "checks": {
+    "protocol_v1_seal": {
+      "passed": true,
+      "sealed_file_count": 197,
+      "hash_failure_count": 0
+    },
+    "task_action_coverage": {
+      "passed": true,
+      "selected_task_count": 19,
+      "passed_task_count": 19
+    },
+    "full_local_tests": {
+      "passed": true,
+      "test_count": 128
+    },
+    "live_android_answer_smoke": {
+      "passed": true,
+      "correct_answer_scores": [1.0, 1.0, 1.0],
+      "wrong_answer_score": 0.0,
+      "reset_isolation_cycles": 3
+    },
+    "action_contract_regression": {
+      "exact_open_app_form_documented": true,
+      "exact_swipe_form_documented": true,
+      "legacy_action_details_forbidden": true,
+      "legacy_direction_distance_forbidden": true,
+      "bounded_repair_contract_tested": true,
+      "null_decision_aggregation_tested": true,
+      "invalid_after_repair_immediate_stop": true
+    }
+  },
+  "gpu_cells_run_during_gate_d_r1": 0,
+  "hard_cells_run": 0
+}
