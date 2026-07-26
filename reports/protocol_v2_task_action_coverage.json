@@ -1,0 +1,189 @@
+{
+  "generated_at": "2026-07-26T14:04:07.387359+00:00",
+  "passed": true,
+  "passed_task_count": 19,
+  "protocol": "androidworld_protocol_v2_exploratory",
+  "rows": [
+    {
+      "declared_supported": true,
+      "errors": [],
+      "passed": true,
+      "selected": true,
+      "task_class": "BrowserMultiply",
+      "task_id": "H01"
+    },
+    {
+      "declared_supported": true,
+      "errors": [],
+      "passed": true,
+      "selected": true,
+      "task_class": "ExpenseAddMultipleFromGallery",
+      "task_id": "H02"
+    },
+    {
+      "declared_supported": true,
+      "errors": [],
+      "passed": true,
+      "selected": true,
+      "task_class": "ExpenseAddMultipleFromMarkor",
+      "task_id": "H03"
+    },
+    {
+      "declared_supported": true,
+      "errors": [],
+      "passed": true,
+      "selected": true,
+      "task_class": "ExpenseDeleteMultiple2",
+      "task_id": "H04"
+    },
+    {
+      "declared_supported": true,
+      "errors": [],
+      "passed": true,
+      "selected": true,
+      "task_class": "MarkorCreateNoteAndSms",
+      "task_id": "H05"
+    },
+    {
+      "declared_supported": true,
+      "errors": [],
+      "passed": true,
+      "selected": true,
+      "task_class": "MarkorMergeNotes",
+      "task_id": "H06"
+    },
+    {
+      "declared_supported": true,
+      "errors": [],
+      "passed": true,
+      "selected": true,
+      "task_class": "MarkorTranscribeVideo",
+      "task_id": "H07"
+    },
+    {
+      "declared_supported": true,
+      "errors": [],
+      "passed": true,
+      "selected": true,
+      "task_class": "OsmAndMarker",
+      "task_id": "H08"
+    },
+    {
+      "declared_supported": true,
+      "errors": [],
+      "passed": true,
+      "selected": true,
+      "task_class": "OsmAndTrack",
+      "task_id": "H09"
+    },
+    {
+      "declared_supported": true,
+      "errors": [],
+      "passed": true,
+      "selected": true,
+      "task_class": "RecipeAddMultipleRecipesFromImage",
+      "task_id": "H10"
+    },
+    {
+      "declared_supported": true,
+      "errors": [],
+      "passed": true,
+      "selected": true,
+      "task_class": "RecipeAddMultipleRecipesFromMarkor",
+      "task_id": "H11"
+    },
+    {
+      "declared_supported": true,
+      "errors": [],
+      "passed": true,
+      "selected": true,
+      "task_class": "RecipeAddMultipleRecipesFromMarkor2",
+      "task_id": "H12"
+    },
+    {
+      "declared_supported": true,
+      "errors": [],
+      "passed": true,
+      "selected": true,
+      "task_class": "RecipeDeleteMultipleRecipesWithConstraint",
+      "task_id": "H13"
+    },
+    {
+      "declared_supported": true,
+      "errors": [],
+      "passed": true,
+      "selected": true,
+      "task_class": "RetroSavePlaylist",
+      "task_id": "H14"
+    },
+    {
+      "declared_supported": true,
+      "errors": [],
+      "passed": true,
+      "selected": true,
+      "task_class": "SaveCopyOfReceiptTaskEval",
+      "task_id": "H15"
+    },
+    {
+      "declared_supported": true,
+      "errors": [],
+      "passed": true,
+      "selected": true,
+      "task_class": "SimpleCalendarAddOneEvent",
+      "task_id": "H16"
+    },
+    {
+      "declared_supported": true,
+      "errors": [],
+      "passed": true,
+      "selected": true,
+      "task_class": "SportsTrackerActivitiesOnDate",
+      "task_id": "H17"
+    },
+    {
+      "declared_supported": true,
+      "errors": [],
+      "passed": true,
+      "selected": true,
+      "task_class": "SportsTrackerTotalDistanceForCategoryOverInterval",
+      "task_id": "H18"
+    },
+    {
+      "declared_supported": true,
+      "errors": [],
+      "passed": true,
+      "selected": true,
+      "task_class": "SportsTrackerTotalDurationForCategoryThisWeek",
+      "task_id": "H19"
+    }
+  ],
+  "schema_actions": [
+    [
+      "answer",
+      "long_press",
+      "open_app",
+      "press_back",
+      "press_enter",
+      "press_home",
+      "swipe",
+      "tap",
+      "type_text",
+      "wait"
+    ],
+    [
+      "answer",
+      "long_press",
+      "open_app",
+      "press_back",
+      "press_enter",
+      "press_home",
+      "swipe",
+      "tap",
+      "type_text",
+      "wait"
+    ]
+  ],
+  "schema_version": "task_action_coverage_audit.v2",
+  "selected_task_count": 19,
+  "task_count": 19
+}

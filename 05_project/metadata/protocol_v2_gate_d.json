@@ -1,0 +1,72 @@
+{
+  "schema_version": "protocol_v2_gate_d.v1",
+  "protocol": "androidworld_protocol_v2_exploratory",
+  "branch": "protocol-v2-exploratory",
+  "implementation_commit": "31a9e33dd31311caf0f11cafa928caafb9aee0af",
+  "decision": "GO_FOR_GATE_E_PREPARATION_ONLY",
+  "gpu_experiment_authorized": false,
+  "checks": {
+    "protocol_v1_seal": {
+      "passed": true,
+      "sealed_file_count": 197,
+      "hash_failure_count": 0
+    },
+    "task_action_coverage": {
+      "passed": true,
+      "selected_task_count": 19,
+      "passed_task_count": 19,
+      "negative_fail_closed_test": true,
+      "report": "reports/protocol_v2_task_action_coverage.json"
+    },
+    "unit_and_local_tests": {
+      "passed": true,
+      "test_count": 124,
+      "original_test_count": 86,
+      "new_test_count": 38,
+      "warnings_only": true
+    },
+    "live_android_answer_smoke": {
+      "passed": true,
+      "model_call_count": 0,
+      "native_fixture": "SportsTrackerActivitiesOnDate",
+      "correct_answer_scores": [1.0, 1.0, 1.0],
+      "wrong_answer_score": 0.0,
+      "empty_cache_scores": [0.0, 0.0, 0.0],
+      "reset_isolation_cycles": 3,
+      "report": "reports/protocol_v2_live_android_answer_smoke.json"
+    },
+    "canonical_action_execution_paths": {
+      "passed": true,
+      "action_count": 10,
+      "actions": [
+        "tap",
+        "long_press",
+        "swipe",
+        "type_text",
+        "press_back",
+        "press_home",
+        "press_enter",
+        "open_app",
+        "answer",
+        "wait"
+      ]
+    },
+    "semantic_guards": {
+      "answer_terminal_channel": true,
+      "text_provenance": true,
+      "same_action_no_effect_block": true,
+      "ab_ab_cycle_block": true,
+      "named_recovery_classes": true,
+      "same_turn_completion_adjudication": true,
+      "m0_mrel_shared_adjudicator": true,
+      "risk_authority_audit": true,
+      "evaluator_prompt_leakage_test": true
+    }
+  },
+  "constraints": [
+    "Protocol-v1 and protocol-v2 results must never be pooled.",
+    "Passing Gate D does not authorize the eight-cell Gate E run.",
+    "No Hard task and no GPU experiment was run in Gate D.",
+    "Any later semantic change invalidates this freeze and requires Gate D again."
+  ]
+}

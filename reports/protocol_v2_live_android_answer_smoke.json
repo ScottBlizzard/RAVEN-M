@@ -1,0 +1,42 @@
+{
+  "cache_empty_after_wrong_answer_reset": true,
+  "console_port": 5554,
+  "correct_answer_sha256": "bbe8720329f08185f51d19cdf44f833c8c577f38305504ef36f8ae241664cc80",
+  "expected_answer_count": 2,
+  "finished_at": "2026-07-26T14:10:46.153176+00:00",
+  "fixture_task": "SportsTrackerActivitiesOnDate",
+  "gpu_experiment": false,
+  "initial_interaction_cache_matches": true,
+  "integration_mode": "AsyncAndroidEnv answer cache plus live ADB health",
+  "isolation_cycles": [
+    {
+      "cache_empty_after_reset": true,
+      "correct_score": 1.0,
+      "cycle": 1,
+      "empty_score": 0.0
+    },
+    {
+      "cache_empty_after_reset": true,
+      "correct_score": 1.0,
+      "cycle": 2,
+      "empty_score": 0.0
+    },
+    {
+      "cache_empty_after_reset": true,
+      "correct_score": 1.0,
+      "cycle": 3,
+      "empty_score": 0.0
+    }
+  ],
+  "mapped_upstream_action": {
+    "action_type": "answer",
+    "text": "protocol-v2-answer-smoke"
+  },
+  "model_calls": 0,
+  "passed": true,
+  "post_smoke_reset": true,
+  "schema_version": "protocol_v2_live_android_answer_smoke.v1",
+  "serial": "emulator-5554",
+  "started_at": "2026-07-26T14:10:36.384417+00:00",
+  "wrong_answer_score": 0.0
+}
