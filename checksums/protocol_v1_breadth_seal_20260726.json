@@ -1,0 +1,1665 @@
+{
+  "breadth_answer_incompatible_cell_count": 15,
+  "breadth_answer_incompatible_cells": [
+    {
+      "episode_id": "hard_v1_breadth_031_H17-s20260720_B2_a1",
+      "pair_id": "H17-s20260720",
+      "sequence": 31,
+      "task_class": "SportsTrackerActivitiesOnDate",
+      "variant": "B2"
+    },
+    {
+      "episode_id": "hard_v1_breadth_032_H17-s20260720_M0_a1",
+      "pair_id": "H17-s20260720",
+      "sequence": 32,
+      "task_class": "SportsTrackerActivitiesOnDate",
+      "variant": "M0"
+    },
+    {
+      "episode_id": "hard_v1_breadth_033_H17-s20260720_B0_a1",
+      "pair_id": "H17-s20260720",
+      "sequence": 33,
+      "task_class": "SportsTrackerActivitiesOnDate",
+      "variant": "B0"
+    },
+    {
+      "episode_id": "hard_v1_breadth_034_H17-s20260720_B1_a1",
+      "pair_id": "H17-s20260720",
+      "sequence": 34,
+      "task_class": "SportsTrackerActivitiesOnDate",
+      "variant": "B1"
+    },
+    {
+      "episode_id": "hard_v1_breadth_035_H17-s20260720_B3_a1",
+      "pair_id": "H17-s20260720",
+      "sequence": 35,
+      "task_class": "SportsTrackerActivitiesOnDate",
+      "variant": "B3"
+    },
+    {
+      "episode_id": "hard_v1_breadth_071_H19-s20260720_B0_a1",
+      "pair_id": "H19-s20260720",
+      "sequence": 71,
+      "task_class": "SportsTrackerTotalDurationForCategoryThisWeek",
+      "variant": "B0"
+    },
+    {
+      "episode_id": "hard_v1_breadth_072_H19-s20260720_B2_a1",
+      "pair_id": "H19-s20260720",
+      "sequence": 72,
+      "task_class": "SportsTrackerTotalDurationForCategoryThisWeek",
+      "variant": "B2"
+    },
+    {
+      "episode_id": "hard_v1_breadth_073_H19-s20260720_B1_a1",
+      "pair_id": "H19-s20260720",
+      "sequence": 73,
+      "task_class": "SportsTrackerTotalDurationForCategoryThisWeek",
+      "variant": "B1"
+    },
+    {
+      "episode_id": "hard_v1_breadth_074_H19-s20260720_M0_a1",
+      "pair_id": "H19-s20260720",
+      "sequence": 74,
+      "task_class": "SportsTrackerTotalDurationForCategoryThisWeek",
+      "variant": "M0"
+    },
+    {
+      "episode_id": "hard_v1_breadth_075_H19-s20260720_B3_a1",
+      "pair_id": "H19-s20260720",
+      "sequence": 75,
+      "task_class": "SportsTrackerTotalDurationForCategoryThisWeek",
+      "variant": "B3"
+    },
+    {
+      "episode_id": "hard_v1_breadth_091_H18-s20260720_B3_a1",
+      "pair_id": "H18-s20260720",
+      "sequence": 91,
+      "task_class": "SportsTrackerTotalDistanceForCategoryOverInterval",
+      "variant": "B3"
+    },
+    {
+      "episode_id": "hard_v1_breadth_092_H18-s20260720_B1_a1",
+      "pair_id": "H18-s20260720",
+      "sequence": 92,
+      "task_class": "SportsTrackerTotalDistanceForCategoryOverInterval",
+      "variant": "B1"
+    },
+    {
+      "episode_id": "hard_v1_breadth_093_H18-s20260720_B2_a1",
+      "pair_id": "H18-s20260720",
+      "sequence": 93,
+      "task_class": "SportsTrackerTotalDistanceForCategoryOverInterval",
+      "variant": "B2"
+    },
+    {
+      "episode_id": "hard_v1_breadth_094_H18-s20260720_M0_a1",
+      "pair_id": "H18-s20260720",
+      "sequence": 94,
+      "task_class": "SportsTrackerTotalDistanceForCategoryOverInterval",
+      "variant": "M0"
+    },
+    {
+      "episode_id": "hard_v1_breadth_095_H18-s20260720_B0_a1",
+      "pair_id": "H18-s20260720",
+      "sequence": 95,
+      "task_class": "SportsTrackerTotalDistanceForCategoryOverInterval",
+      "variant": "B0"
+    }
+  ],
+  "created_at_utc": "2026-07-26T13:39:16.435533+00:00",
+  "files": [
+    {
+      "bytes": 971155,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/suite_summary.json",
+      "role": "suite_summary",
+      "sha256": "508f152747b4c4279c15737f16b076233d515df78a1ee452f3715aaa4898e3db"
+    },
+    {
+      "bytes": 23256,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/schedule.snapshot.json",
+      "role": "schedule_snapshot",
+      "sha256": "271e29f8fcc0a780f307e0ab8432dcb3fdd5fac9f2d3f1fb91c6bdb2db0838e4"
+    },
+    {
+      "bytes": 14822,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/001_H04-s20260720_B1_ExpenseDeleteMultiple2/scored_result.json",
+      "role": "scored_result",
+      "sha256": "50defcab0a109cf667cca35205d98936be78cc09a33fef84b82300fb0e3ad064"
+    },
+    {
+      "bytes": 14837,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/002_H04-s20260720_B2_ExpenseDeleteMultiple2/scored_result.json",
+      "role": "scored_result",
+      "sha256": "18f2ab886d19fc34a0dc022a46099eb9527a9d49ffbfb6e89310b8594b7cfca3"
+    },
+    {
+      "bytes": 14839,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/003_H04-s20260720_B0_ExpenseDeleteMultiple2/scored_result.json",
+      "role": "scored_result",
+      "sha256": "abd7a1d420b78ee6498bdd04c71b060d1ee248f19063bb5bb66b46f21fabbcac"
+    },
+    {
+      "bytes": 15109,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/004_H04-s20260720_M0_ExpenseDeleteMultiple2/scored_result.json",
+      "role": "scored_result",
+      "sha256": "b552a47dafc76a31cecd4157669c2b1a6a7d4377d3c8ce0c266329a1592898e6"
+    },
+    {
+      "bytes": 14835,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/005_H04-s20260720_B3_ExpenseDeleteMultiple2/scored_result.json",
+      "role": "scored_result",
+      "sha256": "d32d798b7255e8e1ec6cff2952f861b2c22586f0e4496639127c35f9d29edffb"
+    },
+    {
+      "bytes": 2433,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/006_H14-s20260720_B0_RetroSavePlaylist/scored_result.json",
+      "role": "scored_result",
+      "sha256": "efde44578cfae85af9aee97c1605e79c305d9826c58f0991e543497d7c013bad"
+    },
+    {
+      "bytes": 9216,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/007_H14-s20260720_B2_RetroSavePlaylist/scored_result.json",
+      "role": "scored_result",
+      "sha256": "f95c9e6f2982338909feb7e59568d4a152219f85fa2b9c18f9cb4967e4f87425"
+    },
+    {
+      "bytes": 2714,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/008_H14-s20260720_M0_RetroSavePlaylist/scored_result.json",
+      "role": "scored_result",
+      "sha256": "340e943c08788f63dbd2e139792199583b6188ac79ee4f535932d70847b4b2f6"
+    },
+    {
+      "bytes": 2428,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/009_H14-s20260720_B3_RetroSavePlaylist/scored_result.json",
+      "role": "scored_result",
+      "sha256": "69189ad8dda9a663fc3d610b4c7192eb34446bf21eaf8a70f84e61c5eab329cc"
+    },
+    {
+      "bytes": 2428,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/010_H14-s20260720_B1_RetroSavePlaylist/scored_result.json",
+      "role": "scored_result",
+      "sha256": "d9a831e7c829e6322af153fa85f9706c2b20b9b818a7ffccf7d6e9ea40f68296"
+    },
+    {
+      "bytes": 1994,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/011_H09-s20260720_B3_OsmAndTrack/scored_result.json",
+      "role": "scored_result",
+      "sha256": "58bd5ac976631d00b76d90eb20d38edac4d51ed987b4a97d270314ab2f4feb90"
+    },
+    {
+      "bytes": 2006,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/012_H09-s20260720_B1_OsmAndTrack/scored_result.json",
+      "role": "scored_result",
+      "sha256": "4eebb9a5b55a453c305ac032d2f44dbfc5dc6d99b37b352536e9f0da4f55afc0"
+    },
+    {
+      "bytes": 22574,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/013_H09-s20260720_B2_OsmAndTrack/scored_result.json",
+      "role": "scored_result",
+      "sha256": "73d82c2c9f391a7797d4958efcf6aad15778c94452dba196867ab3bd0fc4a684"
+    },
+    {
+      "bytes": 2625,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/014_H09-s20260720_M0_OsmAndTrack/scored_result.json",
+      "role": "scored_result",
+      "sha256": "fc7f531821cbe0305cedf925a0c3708a45ff5bbb3f7c60f7beba3bf48b1b2981"
+    },
+    {
+      "bytes": 8426,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/015_H09-s20260720_B0_OsmAndTrack/scored_result.json",
+      "role": "scored_result",
+      "sha256": "6a32a1dd5f707989db30a1bffcbdb02a391756bcb68819b35cebf2559ea232ab"
+    },
+    {
+      "bytes": 2151,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/016_H08-s20260720_B1_OsmAndMarker/scored_result.json",
+      "role": "scored_result",
+      "sha256": "0bfba17972d21eb72b5f0bf3dd2be82e9cbac186a8796ed1e1deb03f48616f92"
+    },
+    {
+      "bytes": 2150,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/017_H08-s20260720_B0_OsmAndMarker/scored_result.json",
+      "role": "scored_result",
+      "sha256": "dc10c105345f30e4e342ac5d9d40df495745fa6d9af4f5458cf3a3c83ae4d8fd"
+    },
+    {
+      "bytes": 2148,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/018_H08-s20260720_B3_OsmAndMarker/scored_result.json",
+      "role": "scored_result",
+      "sha256": "d154248dab471eba6634deab54849bba895fe498a3efa0d6c8d7243d4de062ec"
+    },
+    {
+      "bytes": 16263,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/019_H08-s20260720_M0_OsmAndMarker/scored_result.json",
+      "role": "scored_result",
+      "sha256": "5615910b4d3c152f949b77ea9df6f4a243efb095736891ac0f35dfb4bfeafc79"
+    },
+    {
+      "bytes": 2155,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/020_H08-s20260720_B2_OsmAndMarker/scored_result.json",
+      "role": "scored_result",
+      "sha256": "1c515faa4fb1102dc2e33fb23dbe04b02051c7bfcadf634e83ec865eb15d7697"
+    },
+    {
+      "bytes": 2955,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/021_H15-s20260720_B3_SaveCopyOfReceiptTaskEval/scored_result.json",
+      "role": "scored_result",
+      "sha256": "b726ccbe02e038e70b4005f858d9df586ec7de18e60a5b9620f9fa29f29d349a"
+    },
+    {
+      "bytes": 2951,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/022_H15-s20260720_B2_SaveCopyOfReceiptTaskEval/scored_result.json",
+      "role": "scored_result",
+      "sha256": "e2db29f7ba71c68ac9c2fc14ff6c1eeb2b9bbe03c15cd7a7b913c5ea641db89c"
+    },
+    {
+      "bytes": 2964,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/023_H15-s20260720_B0_SaveCopyOfReceiptTaskEval/scored_result.json",
+      "role": "scored_result",
+      "sha256": "415b0c928423871c70cf5ff00bf5412349c7a15e53b99bec86dc9fe1553e6672"
+    },
+    {
+      "bytes": 2954,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/024_H15-s20260720_B1_SaveCopyOfReceiptTaskEval/scored_result.json",
+      "role": "scored_result",
+      "sha256": "df3f46085dd7bedb3c26dd0e5f3137039b40db8b253542e7e3a67088167eef84"
+    },
+    {
+      "bytes": 3191,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/025_H15-s20260720_M0_SaveCopyOfReceiptTaskEval/scored_result.json",
+      "role": "scored_result",
+      "sha256": "132839c3c1dc9931495bbb7e64e389fb61acc60a0b24345ffa7eed3c4db11852"
+    },
+    {
+      "bytes": 2289,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/026_H01-s20260720_B1_BrowserMultiply/scored_result.json",
+      "role": "scored_result",
+      "sha256": "6a69d6d12e317bb11f7061894719e4895b1a33627d0993cd6265ee3bde4817b4"
+    },
+    {
+      "bytes": 2288,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/027_H01-s20260720_B0_BrowserMultiply/scored_result.json",
+      "role": "scored_result",
+      "sha256": "384427c8146b601351d369c38e0df41dcd9d8acf5be2f82999afbeb6c78edf7d"
+    },
+    {
+      "bytes": 2281,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/028_H01-s20260720_B3_BrowserMultiply/scored_result.json",
+      "role": "scored_result",
+      "sha256": "e3e6ae0dd470bab513c954e8f6ac57c8b73bb1884b6528636135df12c5bbc912"
+    },
+    {
+      "bytes": 2551,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/029_H01-s20260720_M0_BrowserMultiply/scored_result.json",
+      "role": "scored_result",
+      "sha256": "3314418f6ca1c8d47dd2877db42ed5742e23c15d84ca53ce3838a41e76355b8b"
+    },
+    {
+      "bytes": 2287,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/030_H01-s20260720_B2_BrowserMultiply/scored_result.json",
+      "role": "scored_result",
+      "sha256": "231a15d406b9cd825302a3e60cb310b3a465a63039014e1a65ef4ab31bc8e320"
+    },
+    {
+      "bytes": 2507,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/031_H17-s20260720_B2_SportsTrackerActivitiesOnDate/scored_result.json",
+      "role": "scored_result",
+      "sha256": "78f65b66667859007ab7d6f8afce9a9b40ecd6c8c4fd686d6f1270b63358cc2c"
+    },
+    {
+      "bytes": 2801,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/032_H17-s20260720_M0_SportsTrackerActivitiesOnDate/scored_result.json",
+      "role": "scored_result",
+      "sha256": "b31a291321ae0ec8de1926ac5852feab149ea0e8f4aae2e39787b4a73f49a7fb"
+    },
+    {
+      "bytes": 2507,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/033_H17-s20260720_B0_SportsTrackerActivitiesOnDate/scored_result.json",
+      "role": "scored_result",
+      "sha256": "546046cf5a5e52d0f198e2f65992ea20c5ae3cf533f3f413487c045f6ae4b56a"
+    },
+    {
+      "bytes": 2508,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/034_H17-s20260720_B1_SportsTrackerActivitiesOnDate/scored_result.json",
+      "role": "scored_result",
+      "sha256": "e75437b11dc6fe5421270bd156188fd69e84b2893dcc7d28480a87ba94ebe90c"
+    },
+    {
+      "bytes": 2507,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/035_H17-s20260720_B3_SportsTrackerActivitiesOnDate/scored_result.json",
+      "role": "scored_result",
+      "sha256": "bb3689df4ab4c807d00256aa445babbba8d9e0bfa2b928cfc48754c62cf84662"
+    },
+    {
+      "bytes": 2580,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/036_H06-s20260720_B1_MarkorMergeNotes/scored_result.json",
+      "role": "scored_result",
+      "sha256": "6f69629e65c7e7e6e70be5c5279cf68e8b24810926a5250cab0df08b6fdb4021"
+    },
+    {
+      "bytes": 2904,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/037_H06-s20260720_B3_MarkorMergeNotes/scored_result.json",
+      "role": "scored_result",
+      "sha256": "f18286691c4514b34c9c9dea61e733859195cd51c8e5702f8673186deb347e98"
+    },
+    {
+      "bytes": 9536,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/038_H06-s20260720_B2_MarkorMergeNotes/scored_result.json",
+      "role": "scored_result",
+      "sha256": "67fb739c7d54f4a1d29ca9d7fb665e64f31841fd731c654023e4a8949e0131e8"
+    },
+    {
+      "bytes": 3203,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/039_H06-s20260720_M0_MarkorMergeNotes/scored_result.json",
+      "role": "scored_result",
+      "sha256": "34f3637d941cbea97df90d447de0b6b9982ea1aef6ffe88ac64deba137f658ed"
+    },
+    {
+      "bytes": 2906,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/040_H06-s20260720_B0_MarkorMergeNotes/scored_result.json",
+      "role": "scored_result",
+      "sha256": "7fdfb9928caa08b907ef1f14011f72807d5d8b3ed21f8c7dfd3d2e60bf1ed2c8"
+    },
+    {
+      "bytes": 16406,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/041_H16-s20260720_B2_SimpleCalendarAddOneEvent/scored_result.json",
+      "role": "scored_result",
+      "sha256": "49b84c1f3d1c592f2632282129f19feb7dd77205d256c63f867638ee71d6ed4c"
+    },
+    {
+      "bytes": 16440,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/042_H16-s20260720_B3_SimpleCalendarAddOneEvent/scored_result.json",
+      "role": "scored_result",
+      "sha256": "1169f9f6c15a11ad407d675da774d5b596273d77444a03fed2c70ad76b7a5ed4"
+    },
+    {
+      "bytes": 16432,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/043_H16-s20260720_B0_SimpleCalendarAddOneEvent/scored_result.json",
+      "role": "scored_result",
+      "sha256": "5e3ece189bae9c3d3797cf315c6dbc4a68db6fad958d149b33dbf29001f1c6f4"
+    },
+    {
+      "bytes": 16439,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/044_H16-s20260720_B1_SimpleCalendarAddOneEvent/scored_result.json",
+      "role": "scored_result",
+      "sha256": "8a1c2b2320ab84c854be3b42c1984454eb6659cb8267a0f8430217e2a0806707"
+    },
+    {
+      "bytes": 16696,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/045_H16-s20260720_M0_SimpleCalendarAddOneEvent/scored_result.json",
+      "role": "scored_result",
+      "sha256": "5396983bb2525d0b7d19412e66a9313d2977a68dd12772d2d82d1f65b1fdd84e"
+    },
+    {
+      "bytes": 20106,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/046_H13-s20260720_B1_RecipeDeleteMultipleRecipesWithConstraint/scored_result.json",
+      "role": "scored_result",
+      "sha256": "5014e1d00e7468d7f1a5ed398611a8842314d10b5e69d225211081cba9dc8d53"
+    },
+    {
+      "bytes": 20099,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/047_H13-s20260720_B2_RecipeDeleteMultipleRecipesWithConstraint/scored_result.json",
+      "role": "scored_result",
+      "sha256": "ed90e4e287dad0d6364489cb2e052e7dd2a06ddd8b4a697638cd22e75763ac3c"
+    },
+    {
+      "bytes": 20315,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/048_H13-s20260720_M0_RecipeDeleteMultipleRecipesWithConstraint/scored_result.json",
+      "role": "scored_result",
+      "sha256": "61f5c4c570d8f8d2082cc64e402f2a970eec1ac0e6b72744d610fd608601deb1"
+    },
+    {
+      "bytes": 20107,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/049_H13-s20260720_B3_RecipeDeleteMultipleRecipesWithConstraint/scored_result.json",
+      "role": "scored_result",
+      "sha256": "0776cc0cda24f4252fc5fe9c29828df4e795ae6214e3590c688ad8f909c479c0"
+    },
+    {
+      "bytes": 20096,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/050_H13-s20260720_B0_RecipeDeleteMultipleRecipesWithConstraint/scored_result.json",
+      "role": "scored_result",
+      "sha256": "d27bd2324fedf016cd1b8552f59c477e8f06b787b42e8c473f97c5e5a3b07e38"
+    },
+    {
+      "bytes": 3346,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/051_H07-s20260720_B0_MarkorTranscribeVideo/scored_result.json",
+      "role": "scored_result",
+      "sha256": "39dbb4516181838bcf6dcb0370d9951e9212ff0967ea19462ba3815548268714"
+    },
+    {
+      "bytes": 3631,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/052_H07-s20260720_M0_MarkorTranscribeVideo/scored_result.json",
+      "role": "scored_result",
+      "sha256": "a561d7554f242293e424109925b04b82ec8ae6275647c756e77c4db3bed62a23"
+    },
+    {
+      "bytes": 3349,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/053_H07-s20260720_B2_MarkorTranscribeVideo/scored_result.json",
+      "role": "scored_result",
+      "sha256": "d1e88ceb72c545972177b100cb1fc4a6b6fb5130b903e7ade230c81566781c82"
+    },
+    {
+      "bytes": 3346,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/054_H07-s20260720_B1_MarkorTranscribeVideo/scored_result.json",
+      "role": "scored_result",
+      "sha256": "c03fbb376951bb7903aaaf64c130df0de0ef458d24b06107b6c1c0380eec9d86"
+    },
+    {
+      "bytes": 3349,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/055_H07-s20260720_B3_MarkorTranscribeVideo/scored_result.json",
+      "role": "scored_result",
+      "sha256": "19a06200607622f50ccc2084120b0a1cdb3b4f220ca15a97f07379887037ba15"
+    },
+    {
+      "bytes": 26234,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/056_H12-s20260720_B2_RecipeAddMultipleRecipesFromMarkor2/scored_result.json",
+      "role": "scored_result",
+      "sha256": "bfe25763d23a78f67fb630921b9a8d45298a559b61fa1a2f2facaffa18278d7e"
+    },
+    {
+      "bytes": 26234,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/057_H12-s20260720_B0_RecipeAddMultipleRecipesFromMarkor2/scored_result.json",
+      "role": "scored_result",
+      "sha256": "c98f60aaeab85255019808b65d3b1341e9e0b831dcbb31657997ee729007e678"
+    },
+    {
+      "bytes": 26235,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/058_H12-s20260720_B1_RecipeAddMultipleRecipesFromMarkor2/scored_result.json",
+      "role": "scored_result",
+      "sha256": "efdc50af7dc6c46279f86e33c6c890fcd53d2dd3aa17af39762406bb430dbbe6"
+    },
+    {
+      "bytes": 26211,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/059_H12-s20260720_B3_RecipeAddMultipleRecipesFromMarkor2/scored_result.json",
+      "role": "scored_result",
+      "sha256": "4cfb80e9929a9bf9425fa69fc98184c46b5a8ef699d70fe02626d91f6a45ecaa"
+    },
+    {
+      "bytes": 26452,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/060_H12-s20260720_M0_RecipeAddMultipleRecipesFromMarkor2/scored_result.json",
+      "role": "scored_result",
+      "sha256": "aceff3b8ec10baeb9707fdb1876c34bedede3927b33d6768f4410e3c4f18ef96"
+    },
+    {
+      "bytes": 9729,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/061_H11-s20260720_B2_RecipeAddMultipleRecipesFromMarkor/scored_result.json",
+      "role": "scored_result",
+      "sha256": "68b29210b02383e753e39677f2cef69f269766152ff6d15b38433b8bf89086cc"
+    },
+    {
+      "bytes": 9729,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/062_H11-s20260720_B1_RecipeAddMultipleRecipesFromMarkor/scored_result.json",
+      "role": "scored_result",
+      "sha256": "1db763cdc69246933eea74594a76bfe87a2ae14e660398013002836842fac306"
+    },
+    {
+      "bytes": 10024,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/063_H11-s20260720_M0_RecipeAddMultipleRecipesFromMarkor/scored_result.json",
+      "role": "scored_result",
+      "sha256": "f026797dc2c609c5b7c85cc026cb3b5d7500bb9948f7de2e8f14c31eaeffdbc5"
+    },
+    {
+      "bytes": 16369,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/064_H11-s20260720_B3_RecipeAddMultipleRecipesFromMarkor/scored_result.json",
+      "role": "scored_result",
+      "sha256": "83f643321259018d4131964b45ba4b770016f019ad0c3243264fc9c8cc7c1882"
+    },
+    {
+      "bytes": 9722,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/065_H11-s20260720_B0_RecipeAddMultipleRecipesFromMarkor/scored_result.json",
+      "role": "scored_result",
+      "sha256": "fb35aa35dfb72349779fb47101c5553ff44978b20a5d7e370213a8ab2d6c3078"
+    },
+    {
+      "bytes": 2754,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/066_H05-s20260720_B0_MarkorCreateNoteAndSms/scored_result.json",
+      "role": "scored_result",
+      "sha256": "aa7eff56e1fd2f841d0276f0f7c72c8512026e201df3b1c0e9c55db613b710c1"
+    },
+    {
+      "bytes": 2980,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/067_H05-s20260720_M0_MarkorCreateNoteAndSms/scored_result.json",
+      "role": "scored_result",
+      "sha256": "f67faa20338a71e41a413c0193455192f40cf9ebf14871623c5288499a91c884"
+    },
+    {
+      "bytes": 2770,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/068_H05-s20260720_B1_MarkorCreateNoteAndSms/scored_result.json",
+      "role": "scored_result",
+      "sha256": "b0638126aca682ca6a25f7c1c031111c16e9962af3b6cfcabb5882485f29ac4e"
+    },
+    {
+      "bytes": 2771,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/069_H05-s20260720_B3_MarkorCreateNoteAndSms/scored_result.json",
+      "role": "scored_result",
+      "sha256": "aec1ce61968c121f18ede9ea803ead406c843a3668f563bc61ebfc7b2c307752"
+    },
+    {
+      "bytes": 2765,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/070_H05-s20260720_B2_MarkorCreateNoteAndSms/scored_result.json",
+      "role": "scored_result",
+      "sha256": "078524c47e3273af0af0ed2543b1daf0d84d89c5ce2d928e09bdb7db51168384"
+    },
+    {
+      "bytes": 2876,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/071_H19-s20260720_B0_SportsTrackerTotalDurationForCategoryThisWeek/scored_result.json",
+      "role": "scored_result",
+      "sha256": "2dc6b847f7891611f2c99f07d5bb2654f1b885dfee427dee31c56f74e7fb17ca"
+    },
+    {
+      "bytes": 2870,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/072_H19-s20260720_B2_SportsTrackerTotalDurationForCategoryThisWeek/scored_result.json",
+      "role": "scored_result",
+      "sha256": "bbf09c129be19e52f385cfa2a01c3a345238c01992a19196b4d5fe2088e0d695"
+    },
+    {
+      "bytes": 2868,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/073_H19-s20260720_B1_SportsTrackerTotalDurationForCategoryThisWeek/scored_result.json",
+      "role": "scored_result",
+      "sha256": "b974e6ae74351f50ce3a1272cd1b8e1b360254cf6c946e99a4bd5194e6047518"
+    },
+    {
+      "bytes": 3155,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/074_H19-s20260720_M0_SportsTrackerTotalDurationForCategoryThisWeek/scored_result.json",
+      "role": "scored_result",
+      "sha256": "c74848c5986f84d15546239f36bb6dedbfe5bd936c56ce68b71b24d4fd832440"
+    },
+    {
+      "bytes": 2871,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/075_H19-s20260720_B3_SportsTrackerTotalDurationForCategoryThisWeek/scored_result.json",
+      "role": "scored_result",
+      "sha256": "fc00cc56e872f777d8f53034681e68be498ceb8d6194ddd9d8d1439acc0d4741"
+    },
+    {
+      "bytes": 9745,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/076_H10-s20260720_B2_RecipeAddMultipleRecipesFromImage/scored_result.json",
+      "role": "scored_result",
+      "sha256": "eb627e0e58dd7ec581e012d89f51554935bbb3738f4a465f87f99167d3c8687b"
+    },
+    {
+      "bytes": 16932,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/077_H10-s20260720_M0_RecipeAddMultipleRecipesFromImage/scored_result.json",
+      "role": "scored_result",
+      "sha256": "655e0ba7665a9c1d9a6a45acb3310047affe68f06c1c6052e160a6bc0a0b1770"
+    },
+    {
+      "bytes": 9731,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/078_H10-s20260720_B1_RecipeAddMultipleRecipesFromImage/scored_result.json",
+      "role": "scored_result",
+      "sha256": "481a4ff71e578cd58c8b34501356d520dae6a8d405876c6e7df9de63d1ab8f07"
+    },
+    {
+      "bytes": 9743,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/079_H10-s20260720_B0_RecipeAddMultipleRecipesFromImage/scored_result.json",
+      "role": "scored_result",
+      "sha256": "3d2cfd4d01707f7eaf9c64c84679d23ce2f0b90489c73d0e57e45ae0e7af2447"
+    },
+    {
+      "bytes": 9734,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/080_H10-s20260720_B3_RecipeAddMultipleRecipesFromImage/scored_result.json",
+      "role": "scored_result",
+      "sha256": "edba3f6484953e144d9f553fb5888417d08fc6b7cbf37aa1d49f33796783b99c"
+    },
+    {
+      "bytes": 5758,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/081_H02-s20260720_B0_ExpenseAddMultipleFromGallery/scored_result.json",
+      "role": "scored_result",
+      "sha256": "7a97f0f918ae417e4be70c11ba142f8da4f93f42c61b718676f51411a3c1c53f"
+    },
+    {
+      "bytes": 6039,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/082_H02-s20260720_M0_ExpenseAddMultipleFromGallery/scored_result.json",
+      "role": "scored_result",
+      "sha256": "76221137f7d5d730086f2e34388903fe748a7d2f3d5743ae980cce86aacba3b8"
+    },
+    {
+      "bytes": 5737,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/083_H02-s20260720_B2_ExpenseAddMultipleFromGallery/scored_result.json",
+      "role": "scored_result",
+      "sha256": "652ade84dc0bf1b66a7c3029294c288a824905deb8f71582fd6e08af7e147e9f"
+    },
+    {
+      "bytes": 5749,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/084_H02-s20260720_B3_ExpenseAddMultipleFromGallery/scored_result.json",
+      "role": "scored_result",
+      "sha256": "b9c632b45877cc1b80700596e3cca9ed9c2ae881585c396420714acaac030a4c"
+    },
+    {
+      "bytes": 5746,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/085_H02-s20260720_B1_ExpenseAddMultipleFromGallery/scored_result.json",
+      "role": "scored_result",
+      "sha256": "df5a2994c87e798b923b86281334aa4e46a5ea2a9ed2246654257866d9f1ca96"
+    },
+    {
+      "bytes": 27595,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/086_H03-s20260720_B3_ExpenseAddMultipleFromMarkor/scored_result.json",
+      "role": "scored_result",
+      "sha256": "e77793f75357f1b9eae57f9d94e568d6c8ef356fedbf6686cdce99b34e6d7578"
+    },
+    {
+      "bytes": 34504,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/087_H03-s20260720_M0_ExpenseAddMultipleFromMarkor/scored_result.json",
+      "role": "scored_result",
+      "sha256": "c581014e01b06db8b2d5f01398b8b50f735dd6bb10a125d4526472fd83b8e69f"
+    },
+    {
+      "bytes": 27594,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/088_H03-s20260720_B1_ExpenseAddMultipleFromMarkor/scored_result.json",
+      "role": "scored_result",
+      "sha256": "6b827d0ee3d23676ce5904301642a6fa642eb8ff92e3f5f27e1b62a32ff0ea67"
+    },
+    {
+      "bytes": 27594,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/089_H03-s20260720_B2_ExpenseAddMultipleFromMarkor/scored_result.json",
+      "role": "scored_result",
+      "sha256": "080217fa8cf33ae6403aaafb24fb5efd3a049f4f6f55356e4ba5d1fe885debe9"
+    },
+    {
+      "bytes": 27594,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/090_H03-s20260720_B0_ExpenseAddMultipleFromMarkor/scored_result.json",
+      "role": "scored_result",
+      "sha256": "0a0ab8e3c3b080f4e540466635c7a7d6300fb494a92a4dacdd17cf2d629dbe1b"
+    },
+    {
+      "bytes": 2947,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/091_H18-s20260720_B3_SportsTrackerTotalDistanceForCategoryOverInterval/scored_result.json",
+      "role": "scored_result",
+      "sha256": "4d19244d112aa4ba54f2dcd0f0d2d625b1ec3f0c6e1bd5a3c600296eeff64a0b"
+    },
+    {
+      "bytes": 2952,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/092_H18-s20260720_B1_SportsTrackerTotalDistanceForCategoryOverInterval/scored_result.json",
+      "role": "scored_result",
+      "sha256": "7210c7cd0c5743616cca68ea9ce13eda7777323d06636e8cd652e6f018df7d62"
+    },
+    {
+      "bytes": 2948,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/093_H18-s20260720_B2_SportsTrackerTotalDistanceForCategoryOverInterval/scored_result.json",
+      "role": "scored_result",
+      "sha256": "61e081a5091d04822c140ea76a5ceee423aef8488b05b9be50ea92a889ac7f0d"
+    },
+    {
+      "bytes": 3166,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/094_H18-s20260720_M0_SportsTrackerTotalDistanceForCategoryOverInterval/scored_result.json",
+      "role": "scored_result",
+      "sha256": "4f96fd5089b21ff1119465fb443d60547fbd41c536a70fac8ad92cec9f7a2dc0"
+    },
+    {
+      "bytes": 2952,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/095_H18-s20260720_B0_SportsTrackerTotalDistanceForCategoryOverInterval/scored_result.json",
+      "role": "scored_result",
+      "sha256": "e8c1dbb6a0600998029b30cac742ae205aba99eb2e78c32b10ea40785400ba15"
+    },
+    {
+      "bytes": 319918,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/001_H04-s20260720_B1_ExpenseDeleteMultiple2/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "2b244de7ddc7b2a28bb551b2f3facffcff928388474123f70cf44daf622cea88"
+    },
+    {
+      "bytes": 502991,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/002_H04-s20260720_B2_ExpenseDeleteMultiple2/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "9ac9cfbfc5630f9338cdf2387b34d89382d86e8895bd42d0956f010f2eb528a5"
+    },
+    {
+      "bytes": 193666,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/003_H04-s20260720_B0_ExpenseDeleteMultiple2/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "2023e83ebe45ad663c0240fa81425a10646109291afa90f17660e8a9cbadbbd7"
+    },
+    {
+      "bytes": 507948,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/004_H04-s20260720_M0_ExpenseDeleteMultiple2/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "2046b4b75bc266cfc54ad1e8f16408b56df8fc745028824f2a5b790c71d2dee3"
+    },
+    {
+      "bytes": 330976,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/005_H04-s20260720_B3_ExpenseDeleteMultiple2/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "f50efdc0ff6f590f23a66abc43f52edbd8b7892506c06653ffe001bf2a57e5dd"
+    },
+    {
+      "bytes": 31882,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/006_H14-s20260720_B0_RetroSavePlaylist/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "946c83a3488019c40e48439d7efc28e1d877e625e453871982c9afb1bdc64ab3"
+    },
+    {
+      "bytes": 706127,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/007_H14-s20260720_B2_RetroSavePlaylist/attempt_02/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "9a9c9a799741a7c020245452d51b9158b5d161fc49bd5788e8612cf8b46d81a9"
+    },
+    {
+      "bytes": 688006,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/008_H14-s20260720_M0_RetroSavePlaylist/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "e3cfd33f8d591e0f4c4302840b4c03b315560502cd44d073ed78f97f37996a3b"
+    },
+    {
+      "bytes": 452818,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/009_H14-s20260720_B3_RetroSavePlaylist/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "3c472ab1ddb0e619825011914779b70e5f5716b725b536c3e681e0fdfa3936dd"
+    },
+    {
+      "bytes": 435915,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/010_H14-s20260720_B1_RetroSavePlaylist/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "c537476fd8afed3c8f880cc237ce8c005d736ca3c1e8161b0d07964da8cecb5b"
+    },
+    {
+      "bytes": 1201662,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/011_H09-s20260720_B3_OsmAndTrack/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "bfbde1211b748cf101d00fa3e50b82dff21da646f46d49c6a0f399764f5b8432"
+    },
+    {
+      "bytes": 1153754,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/012_H09-s20260720_B1_OsmAndTrack/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "7c7725f847fbc682eed2a967881c5784d816656438ac6ab7d62677df2fa7af2b"
+    },
+    {
+      "bytes": 2015833,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/013_H09-s20260720_B2_OsmAndTrack/attempt_05/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "619e4e618cab92b7e3c2f527fc09ccb84d71548257b1014e031b47e2604061d4"
+    },
+    {
+      "bytes": 1863069,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/014_H09-s20260720_M0_OsmAndTrack/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "971c5e26f43bc25fe80164266446e9f0ab493b885c64ad3e42146e837a3a02f0"
+    },
+    {
+      "bytes": 609424,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/015_H09-s20260720_B0_OsmAndTrack/attempt_02/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "3827a0300f0bbabb2b55e7536a507bca53c00619b4d4476c3422116469e20159"
+    },
+    {
+      "bytes": 170795,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/016_H08-s20260720_B1_OsmAndMarker/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "ff7ddad713eacbd15d8c42b9f3d6deecc252d2cc0f77d79f95c4f13cab2a0bb3"
+    },
+    {
+      "bytes": 97812,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/017_H08-s20260720_B0_OsmAndMarker/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "d9df4be2af81cc7af96e515f105db7e4ed4493acf4514811f3eaf7dad80f0e1b"
+    },
+    {
+      "bytes": 165168,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/018_H08-s20260720_B3_OsmAndMarker/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "d1b7fc1d4609b73bf4a06d2da45bffbb358e904ea7ded54984ba5e2f6a178ca9"
+    },
+    {
+      "bytes": 348938,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/019_H08-s20260720_M0_OsmAndMarker/attempt_03/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "c2446f1a446ac25c80e07de6671881a1c5986f71d802e36e2cf600c961ab5d41"
+    },
+    {
+      "bytes": 94905,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/020_H08-s20260720_B2_OsmAndMarker/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "964cddb960493e9e55fe5987cb51199250e00e334cc55ac904c3842c4ddb5522"
+    },
+    {
+      "bytes": 80610,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/021_H15-s20260720_B3_SaveCopyOfReceiptTaskEval/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "f7f95903c1499a57ab4d9c3785e43b4aa98d19671fae742dbabe51facb473d8a"
+    },
+    {
+      "bytes": 91557,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/022_H15-s20260720_B2_SaveCopyOfReceiptTaskEval/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "14dd5df5df502c3c39721ab615a5fa060e775afbb872c6888cad92ce7b59b6f7"
+    },
+    {
+      "bytes": 78607,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/023_H15-s20260720_B0_SaveCopyOfReceiptTaskEval/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "9beca43aec27ef484959ac674c4ba04e85127eaad7347016217edc06cda8e5d7"
+    },
+    {
+      "bytes": 80266,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/024_H15-s20260720_B1_SaveCopyOfReceiptTaskEval/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "5bdec49009d8a1493abbc1f85d077857804ea5b5e7d8fda52fedba970220ceea"
+    },
+    {
+      "bytes": 204744,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/025_H15-s20260720_M0_SaveCopyOfReceiptTaskEval/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "81c3ae5db062a446ed28e6e37bc6944e6e767717dba1609b64e82da90ee7c9c7"
+    },
+    {
+      "bytes": 193367,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/026_H01-s20260720_B1_BrowserMultiply/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "ce47f6e4f7691d1719f990a332dac0185e2f18d4ea59c9cb9bcd2bd0dfa4a8ad"
+    },
+    {
+      "bytes": 125276,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/027_H01-s20260720_B0_BrowserMultiply/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "ba435b938a21e9a43c9c6b95804c7ea80be53dbcf78ab2b38434aca39a815aca"
+    },
+    {
+      "bytes": 173246,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/028_H01-s20260720_B3_BrowserMultiply/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "bf74243ab290e57a0a0da970e0311a0b5e5ff165fd146977676ee976e091571c"
+    },
+    {
+      "bytes": 315220,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/029_H01-s20260720_M0_BrowserMultiply/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "a854bf195bfb2bc23ab474ea5bd4809b41774533974bc8f338736e5e8a8e15a5"
+    },
+    {
+      "bytes": 290491,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/030_H01-s20260720_B2_BrowserMultiply/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "9a286e871a6ec1f56f7371147452010c87e650b0ec666795bb82091d31915b40"
+    },
+    {
+      "bytes": 14242,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/031_H17-s20260720_B2_SportsTrackerActivitiesOnDate/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "f466809d8836237a409ef5d41f9b513bfa64d28e67089c4d855af8396d6f41ca"
+    },
+    {
+      "bytes": 301793,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/032_H17-s20260720_M0_SportsTrackerActivitiesOnDate/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "3a042fe27887805c00247a2bc276f062ab3980d0e78c1aeaad4b5662adbfd0a1"
+    },
+    {
+      "bytes": 12300,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/033_H17-s20260720_B0_SportsTrackerActivitiesOnDate/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "ad4b27e4901df45b55af4cee15c8ee09e5711cba2e64971ebac4e72102aae7e3"
+    },
+    {
+      "bytes": 13990,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/034_H17-s20260720_B1_SportsTrackerActivitiesOnDate/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "1db7c04dcd41709fafb0e47d3cde09a08c9e0d81fd769f5d1aaa3e055fd5e555"
+    },
+    {
+      "bytes": 14014,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/035_H17-s20260720_B3_SportsTrackerActivitiesOnDate/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "d42b1394b638f2bb2d32eafc065ed89b739e1a0ea17295f1ec54063e12cff85b"
+    },
+    {
+      "bytes": 675055,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/036_H06-s20260720_B1_MarkorMergeNotes/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "70277a34f8f068a0ae5de0b5f8eb0570854f7697298a4e2589be47b452fb33d5"
+    },
+    {
+      "bytes": 228294,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/037_H06-s20260720_B3_MarkorMergeNotes/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "cb7ce0edab760e0401640169678af6e4c6cb351821be8bfd4e974ccc78e63c24"
+    },
+    {
+      "bytes": 1138914,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/038_H06-s20260720_B2_MarkorMergeNotes/attempt_02/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "79f96f680fa20625495c0f991a8b1afad2101e3384deba0ae129cb54df09ffb9"
+    },
+    {
+      "bytes": 1168189,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/039_H06-s20260720_M0_MarkorMergeNotes/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "a2183687165a14a59ef8461a39ad32ba1a5df1178d072637f1b68d4d585a4f76"
+    },
+    {
+      "bytes": 383915,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/040_H06-s20260720_B0_MarkorMergeNotes/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "94706c05eddc8f88b942555fc5f52309fa08d7744c57f89a248bbde50cc45e59"
+    },
+    {
+      "bytes": 304551,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/041_H16-s20260720_B2_SimpleCalendarAddOneEvent/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "06bb3efd76035c93e77f916c42391629a2063990827f99c00173b29e2d916ee3"
+    },
+    {
+      "bytes": 310217,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/042_H16-s20260720_B3_SimpleCalendarAddOneEvent/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "1b08b4142907fa39f1c5dfad400abd307f55afe14ad45ce8f95e44c9855a033a"
+    },
+    {
+      "bytes": 181858,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/043_H16-s20260720_B0_SimpleCalendarAddOneEvent/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "336af99b6f2b7f11e47b294687b5b18b50bed3cc329d437dc1c90aae89ca3044"
+    },
+    {
+      "bytes": 169610,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/044_H16-s20260720_B1_SimpleCalendarAddOneEvent/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "418082239045bf8a5597d42427f17743b21d8bc3517e692ef4c29027bec79dc3"
+    },
+    {
+      "bytes": 469338,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/045_H16-s20260720_M0_SimpleCalendarAddOneEvent/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "dfa47e0737a7360e7cb6a2c749c0f76d065bdd64df72521d812240ff283ed1d6"
+    },
+    {
+      "bytes": 377306,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/046_H13-s20260720_B1_RecipeDeleteMultipleRecipesWithConstraint/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "17ce29958d2bafe2e0a3296608cd9e2229bce024195121c9b0178d75002ddc54"
+    },
+    {
+      "bytes": 580370,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/047_H13-s20260720_B2_RecipeDeleteMultipleRecipesWithConstraint/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "72380d19b074863239867dd04967b72d909b7da4872b28ed9108e0df8abafbfb"
+    },
+    {
+      "bytes": 559080,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/048_H13-s20260720_M0_RecipeDeleteMultipleRecipesWithConstraint/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "86ed0f57a19c80fd54af57be0744ebdbe57649842fcc0f49aeda1474ac1e94a1"
+    },
+    {
+      "bytes": 402438,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/049_H13-s20260720_B3_RecipeDeleteMultipleRecipesWithConstraint/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "c99568f3eb562c5499ad1a76ddd1a05e4e26ba131240f4c2ecc533f363dd150b"
+    },
+    {
+      "bytes": 37237,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/050_H13-s20260720_B0_RecipeDeleteMultipleRecipesWithConstraint/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "528c6ca0abb7ce35ceb88951e462c7ba6400fef380ea50dd898801dcadfc31ac"
+    },
+    {
+      "bytes": 108376,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/051_H07-s20260720_B0_MarkorTranscribeVideo/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "17afca707399057d75b4542e74beb82fb10cbe59593caf6dc2d3cf5544772df9"
+    },
+    {
+      "bytes": 307250,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/052_H07-s20260720_M0_MarkorTranscribeVideo/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "4cbf351e7441fd44c2acf873c37d79cd4d8c4273b8e951479c1ac35868970bb5"
+    },
+    {
+      "bytes": 266146,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/053_H07-s20260720_B2_MarkorTranscribeVideo/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "ad5d753c8ee3b61056acf048cc829168676f24e7912073e1adf5c10fd425374a"
+    },
+    {
+      "bytes": 176703,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/054_H07-s20260720_B1_MarkorTranscribeVideo/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "d57c36041c12d8091718663960e23712445593fe14ead7caa582a32d6b410411"
+    },
+    {
+      "bytes": 190347,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/055_H07-s20260720_B3_MarkorTranscribeVideo/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "2a6f1a61633492b96a729fac8d31cfd7abebfc8fc35427dbbd9b5d9b2c916bc1"
+    },
+    {
+      "bytes": 854579,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/056_H12-s20260720_B2_RecipeAddMultipleRecipesFromMarkor2/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "79dc0cf25ebc8c40b87bcd58426f1a49b045b5a841f3cc552430fb6f007f00fb"
+    },
+    {
+      "bytes": 334673,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/057_H12-s20260720_B0_RecipeAddMultipleRecipesFromMarkor2/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "f58440db2e0086a607e67e5f6112c8ce0e8afe5e6bb7eccfecc945e491df64d2"
+    },
+    {
+      "bytes": 552149,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/058_H12-s20260720_B1_RecipeAddMultipleRecipesFromMarkor2/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "353fed53d83408a18c1ac60781318aa2e26d769ed541fb14d2c5468d58992976"
+    },
+    {
+      "bytes": 200624,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/059_H12-s20260720_B3_RecipeAddMultipleRecipesFromMarkor2/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "2132d3ae60373da380a136ceadb5ebffc5ed29dfc215b7dd166f3a54172fbce0"
+    },
+    {
+      "bytes": 872383,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/060_H12-s20260720_M0_RecipeAddMultipleRecipesFromMarkor2/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "ca99b064506b1e4423ec607f194d9958caea49f974e942b40f269132d5304a9e"
+    },
+    {
+      "bytes": 246582,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/061_H11-s20260720_B2_RecipeAddMultipleRecipesFromMarkor/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "c9b2d82cf4e9d67239f8e6358f69fb007dee74ab461e6d8595063803e050cc0f"
+    },
+    {
+      "bytes": 154146,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/062_H11-s20260720_B1_RecipeAddMultipleRecipesFromMarkor/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "54cb3b4cb1be91dddc8eba9489eaf810199625b26b7520183a94f3b678b308ea"
+    },
+    {
+      "bytes": 912396,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/063_H11-s20260720_M0_RecipeAddMultipleRecipesFromMarkor/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "c9f28d9645faf3bb43c87fc5dba61e1c5a748e2728bff16ff93d899d6686aba3"
+    },
+    {
+      "bytes": 463191,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/064_H11-s20260720_B3_RecipeAddMultipleRecipesFromMarkor/attempt_02/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "8131862bcfcf75a4db3a62b46363008011047fd5a7957b5f37caaad5960acf23"
+    },
+    {
+      "bytes": 311620,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/065_H11-s20260720_B0_RecipeAddMultipleRecipesFromMarkor/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "d9511fd01ae985a6261100a5ee1c7232e8d787eb25c94bba1d0807173f642cda"
+    },
+    {
+      "bytes": 90137,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/066_H05-s20260720_B0_MarkorCreateNoteAndSms/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "f94c53d9f9c7f35de25b5afd9b56fcbb35f5f888a6809b19c035c2b2d0b25e05"
+    },
+    {
+      "bytes": 293233,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/067_H05-s20260720_M0_MarkorCreateNoteAndSms/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "6166ad8e01c1b9266011e3f3ac1f566d1e977a6057170ab8644e6b2b25916a54"
+    },
+    {
+      "bytes": 156803,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/068_H05-s20260720_B1_MarkorCreateNoteAndSms/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "4d6d3694962a4b482476885966dee3572e189b68f09d190eaf42acb001711d24"
+    },
+    {
+      "bytes": 167117,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/069_H05-s20260720_B3_MarkorCreateNoteAndSms/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "e95c6e3175b4ad8ac6cca2c925229e80c895de8cfe79e89521a9f505cf4c8789"
+    },
+    {
+      "bytes": 237314,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/070_H05-s20260720_B2_MarkorCreateNoteAndSms/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "48a5126796fefbc9d882f10479da58956827017889ffb288c1a4ef0b41e3c8d7"
+    },
+    {
+      "bytes": 108358,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/071_H19-s20260720_B0_SportsTrackerTotalDurationForCategoryThisWeek/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "f573425fff47158440f7e23f03b91aa9d34d44c4796288cb8cf2ac55ecaae78c"
+    },
+    {
+      "bytes": 205973,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/072_H19-s20260720_B2_SportsTrackerTotalDurationForCategoryThisWeek/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "236a2904d70bd1d226214f47d278ea4511ee630d2f0c655ea8f155dde9ce7658"
+    },
+    {
+      "bytes": 132186,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/073_H19-s20260720_B1_SportsTrackerTotalDurationForCategoryThisWeek/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "3a2a7f0d58fad8572e2455e00ab8a932b45a3a22a386e4462dad38b68066e5de"
+    },
+    {
+      "bytes": 227685,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/074_H19-s20260720_M0_SportsTrackerTotalDurationForCategoryThisWeek/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "310fd8964a220e6b7f9d82b7e6e8578f40aee853e4265c6c3d612ef1f8716021"
+    },
+    {
+      "bytes": 143578,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/075_H19-s20260720_B3_SportsTrackerTotalDurationForCategoryThisWeek/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "4c90987d7a5330f4944cec63e677c4c9adc706e6da84daf8e7fb458ed49c78e8"
+    },
+    {
+      "bytes": 855671,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/076_H10-s20260720_B2_RecipeAddMultipleRecipesFromImage/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "b8a52fb62f69adaf88520fbd9ac3a1c1c44c1557fb1b0ded6b5923a82ea5ba7f"
+    },
+    {
+      "bytes": 928034,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/077_H10-s20260720_M0_RecipeAddMultipleRecipesFromImage/attempt_02/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "aa13399fd40dbeec94853f7c0666636e6ff6ea477f9b8fb53682349b37b0333c"
+    },
+    {
+      "bytes": 549953,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/078_H10-s20260720_B1_RecipeAddMultipleRecipesFromImage/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "212b96a854f6136c0aaf49446ca2893c3f530d3cc1b56e7b0b0802fd9e8cf0a6"
+    },
+    {
+      "bytes": 71358,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/079_H10-s20260720_B0_RecipeAddMultipleRecipesFromImage/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "9b6466e3383761aac393e2e463938ddbf5df8fef24aeba2661151aefdd6d0a99"
+    },
+    {
+      "bytes": 559733,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/080_H10-s20260720_B3_RecipeAddMultipleRecipesFromImage/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "2283e78a2370070da67e09ffd762d16dcd973a34b0f106988b3f4e51cdf9a59a"
+    },
+    {
+      "bytes": 62320,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/081_H02-s20260720_B0_ExpenseAddMultipleFromGallery/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "cca5658195d0dab7ca3e1a7f5013539bf3574c8d83ddc33c732f680efab11cc1"
+    },
+    {
+      "bytes": 984427,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/082_H02-s20260720_M0_ExpenseAddMultipleFromGallery/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "ef416317132cd2f94f869873179ccf1c853b23a11437a3136ae37aa1827c2998"
+    },
+    {
+      "bytes": 53942,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/083_H02-s20260720_B2_ExpenseAddMultipleFromGallery/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "f0077c7ba96260be01dd0dd6dd94a2cf2669679d63e2e291f5b5c1a3e8856d1c"
+    },
+    {
+      "bytes": 568051,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/084_H02-s20260720_B3_ExpenseAddMultipleFromGallery/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "38b1f5340cdadfaa746ca49a35134680932c5d322cafa3a31c556fca1a3dafab"
+    },
+    {
+      "bytes": 536585,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/085_H02-s20260720_B1_ExpenseAddMultipleFromGallery/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "17c29c2c016f7c0779d9783c0513c5cf911f394d38b994b8a3c3676ffa889af6"
+    },
+    {
+      "bytes": 612435,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/086_H03-s20260720_B3_ExpenseAddMultipleFromMarkor/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "042ed895c76c6195016f0d59dac45f61b9ff53bb2e73b4f164af1a831bd13800"
+    },
+    {
+      "bytes": 924634,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/087_H03-s20260720_M0_ExpenseAddMultipleFromMarkor/attempt_02/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "4b021921557311cb246150824b8e594db6169ad1b2d4d768046fb1850c35c273"
+    },
+    {
+      "bytes": 582690,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/088_H03-s20260720_B1_ExpenseAddMultipleFromMarkor/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "49e6e1925c0889133c0a412cb57f4c13c30b31cdfad8413b1b9b7f73f2465486"
+    },
+    {
+      "bytes": 997912,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/089_H03-s20260720_B2_ExpenseAddMultipleFromMarkor/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "d34e88daf378e40914e68badcd9b7571465e3574c9ef03768b0f0845dc372986"
+    },
+    {
+      "bytes": 331866,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/090_H03-s20260720_B0_ExpenseAddMultipleFromMarkor/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "5c4d9b041b80aeb7bd9ef39cd4bcf2471b576ed32d5121b3a65e0299eaf19b61"
+    },
+    {
+      "bytes": 102208,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/091_H18-s20260720_B3_SportsTrackerTotalDistanceForCategoryOverInterval/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "8bd75c728a466798ee6768ee5374141bd90a665bf4d8a9def9be06e2f4a383e7"
+    },
+    {
+      "bytes": 147413,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/092_H18-s20260720_B1_SportsTrackerTotalDistanceForCategoryOverInterval/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "c34443caf4507711832339d7c7fd4a4e2b0ba42a626067d953175fcc84f68572"
+    },
+    {
+      "bytes": 297347,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/093_H18-s20260720_B2_SportsTrackerTotalDistanceForCategoryOverInterval/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "d4abaef73e66751c0bbc2aac07142669d1627f23d6871ebe8c80853f37004adb"
+    },
+    {
+      "bytes": 303538,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/094_H18-s20260720_M0_SportsTrackerTotalDistanceForCategoryOverInterval/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "749078da5d80294e91df44eeaffef602afc158e7f0cf5a9e96c6dfcdf341cce8"
+    },
+    {
+      "bytes": 112674,
+      "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/095_H18-s20260720_B0_SportsTrackerTotalDistanceForCategoryOverInterval/attempt_01/episode.json",
+      "role": "scored_raw_episode",
+      "sha256": "19d79af7f34f68796c2c2db833c02226ccfccf5ab145670afb52a1033fa0e0ea"
+    },
+    {
+      "bytes": 1968,
+      "path": "05_project/metadata/protocol_amendment_001.json",
+      "role": "protocol_amendment_manifest",
+      "sha256": "f049e2190f91cd7ba7d7faddef7c661bf3b57447115de3474fa3472492835a53"
+    },
+    {
+      "bytes": 2515,
+      "path": "05_project/metadata/protocol_amendment_002.json",
+      "role": "protocol_amendment_manifest",
+      "sha256": "438f1f95bd1167662d5c801cc31fe271760edd9b7cc09f5d1ef3b51d93db4208"
+    },
+    {
+      "bytes": 2192,
+      "path": "05_project/metadata/protocol_amendment_003.json",
+      "role": "protocol_amendment_manifest",
+      "sha256": "d437365a958426d372b9d1894d517e90c7b4b6d9be9782632b4892c60e90fd4b"
+    },
+    {
+      "bytes": 2233,
+      "path": "05_project/metadata/protocol_amendment_004.json",
+      "role": "protocol_amendment_manifest",
+      "sha256": "dae2e2c87b1eea6dbc8f1d2f77bf146941c6ebe440ecd509cf151d4a67684319"
+    },
+    {
+      "bytes": 2039,
+      "path": "05_project/metadata/protocol_amendment_005.json",
+      "role": "protocol_amendment_manifest",
+      "sha256": "6fecf2f9afccd37843fb4a82e494a251b5a1045ebf67c09f0124a38517709833"
+    }
+  ],
+  "full_schedule_answer_incompatible_cell_count": 36,
+  "full_schedule_answer_incompatible_cells": [
+    {
+      "instance_seed": 20260720,
+      "native_max_steps": 20,
+      "pair_id": "H17-s20260720",
+      "phase": "breadth",
+      "sequence": 31,
+      "task_class": "SportsTrackerActivitiesOnDate",
+      "task_id": "H17",
+      "variant": "B2"
+    },
+    {
+      "instance_seed": 20260720,
+      "native_max_steps": 20,
+      "pair_id": "H17-s20260720",
+      "phase": "breadth",
+      "sequence": 32,
+      "task_class": "SportsTrackerActivitiesOnDate",
+      "task_id": "H17",
+      "variant": "M0"
+    },
+    {
+      "instance_seed": 20260720,
+      "native_max_steps": 20,
+      "pair_id": "H17-s20260720",
+      "phase": "breadth",
+      "sequence": 33,
+      "task_class": "SportsTrackerActivitiesOnDate",
+      "task_id": "H17",
+      "variant": "B0"
+    },
+    {
+      "instance_seed": 20260720,
+      "native_max_steps": 20,
+      "pair_id": "H17-s20260720",
+      "phase": "breadth",
+      "sequence": 34,
+      "task_class": "SportsTrackerActivitiesOnDate",
+      "task_id": "H17",
+      "variant": "B1"
+    },
+    {
+      "instance_seed": 20260720,
+      "native_max_steps": 20,
+      "pair_id": "H17-s20260720",
+      "phase": "breadth",
+      "sequence": 35,
+      "task_class": "SportsTrackerActivitiesOnDate",
+      "task_id": "H17",
+      "variant": "B3"
+    },
+    {
+      "instance_seed": 20260720,
+      "native_max_steps": 16,
+      "pair_id": "H19-s20260720",
+      "phase": "breadth",
+      "sequence": 71,
+      "task_class": "SportsTrackerTotalDurationForCategoryThisWeek",
+      "task_id": "H19",
+      "variant": "B0"
+    },
+    {
+      "instance_seed": 20260720,
+      "native_max_steps": 16,
+      "pair_id": "H19-s20260720",
+      "phase": "breadth",
+      "sequence": 72,
+      "task_class": "SportsTrackerTotalDurationForCategoryThisWeek",
+      "task_id": "H19",
+      "variant": "B2"
+    },
+    {
+      "instance_seed": 20260720,
+      "native_max_steps": 16,
+      "pair_id": "H19-s20260720",
+      "phase": "breadth",
+      "sequence": 73,
+      "task_class": "SportsTrackerTotalDurationForCategoryThisWeek",
+      "task_id": "H19",
+      "variant": "B1"
+    },
+    {
+      "instance_seed": 20260720,
+      "native_max_steps": 16,
+      "pair_id": "H19-s20260720",
+      "phase": "breadth",
+      "sequence": 74,
+      "task_class": "SportsTrackerTotalDurationForCategoryThisWeek",
+      "task_id": "H19",
+      "variant": "M0"
+    },
+    {
+      "instance_seed": 20260720,
+      "native_max_steps": 16,
+      "pair_id": "H19-s20260720",
+      "phase": "breadth",
+      "sequence": 75,
+      "task_class": "SportsTrackerTotalDurationForCategoryThisWeek",
+      "task_id": "H19",
+      "variant": "B3"
+    },
+    {
+      "instance_seed": 20260720,
+      "native_max_steps": 22,
+      "pair_id": "H18-s20260720",
+      "phase": "breadth",
+      "sequence": 91,
+      "task_class": "SportsTrackerTotalDistanceForCategoryOverInterval",
+      "task_id": "H18",
+      "variant": "B3"
+    },
+    {
+      "instance_seed": 20260720,
+      "native_max_steps": 22,
+      "pair_id": "H18-s20260720",
+      "phase": "breadth",
+      "sequence": 92,
+      "task_class": "SportsTrackerTotalDistanceForCategoryOverInterval",
+      "task_id": "H18",
+      "variant": "B1"
+    },
+    {
+      "instance_seed": 20260720,
+      "native_max_steps": 22,
+      "pair_id": "H18-s20260720",
+      "phase": "breadth",
+      "sequence": 93,
+      "task_class": "SportsTrackerTotalDistanceForCategoryOverInterval",
+      "task_id": "H18",
+      "variant": "B2"
+    },
+    {
+      "instance_seed": 20260720,
+      "native_max_steps": 22,
+      "pair_id": "H18-s20260720",
+      "phase": "breadth",
+      "sequence": 94,
+      "task_class": "SportsTrackerTotalDistanceForCategoryOverInterval",
+      "task_id": "H18",
+      "variant": "M0"
+    },
+    {
+      "instance_seed": 20260720,
+      "native_max_steps": 22,
+      "pair_id": "H18-s20260720",
+      "phase": "breadth",
+      "sequence": 95,
+      "task_class": "SportsTrackerTotalDistanceForCategoryOverInterval",
+      "task_id": "H18",
+      "variant": "B0"
+    },
+    {
+      "instance_seed": 20260721,
+      "native_max_steps": 20,
+      "pair_id": "H17-s20260721",
+      "phase": "confirmatory_additional",
+      "sequence": 117,
+      "task_class": "SportsTrackerActivitiesOnDate",
+      "task_id": "H17",
+      "variant": "B3"
+    },
+    {
+      "instance_seed": 20260721,
+      "native_max_steps": 20,
+      "pair_id": "H17-s20260721",
+      "phase": "confirmatory_additional",
+      "sequence": 118,
+      "task_class": "SportsTrackerActivitiesOnDate",
+      "task_id": "H17",
+      "variant": "B0"
+    },
+    {
+      "instance_seed": 20260721,
+      "native_max_steps": 20,
+      "pair_id": "H17-s20260721",
+      "phase": "confirmatory_additional",
+      "sequence": 119,
+      "task_class": "SportsTrackerActivitiesOnDate",
+      "task_id": "H17",
+      "variant": "M0"
+    },
+    {
+      "instance_seed": 20260721,
+      "native_max_steps": 22,
+      "pair_id": "H18-s20260721",
+      "phase": "confirmatory_additional",
+      "sequence": 138,
+      "task_class": "SportsTrackerTotalDistanceForCategoryOverInterval",
+      "task_id": "H18",
+      "variant": "B0"
+    },
+    {
+      "instance_seed": 20260721,
+      "native_max_steps": 22,
+      "pair_id": "H18-s20260721",
+      "phase": "confirmatory_additional",
+      "sequence": 139,
+      "task_class": "SportsTrackerTotalDistanceForCategoryOverInterval",
+      "task_id": "H18",
+      "variant": "M0"
+    },
+    {
+      "instance_seed": 20260721,
+      "native_max_steps": 22,
+      "pair_id": "H18-s20260721",
+      "phase": "confirmatory_additional",
+      "sequence": 140,
+      "task_class": "SportsTrackerTotalDistanceForCategoryOverInterval",
+      "task_id": "H18",
+      "variant": "B3"
+    },
+    {
+      "instance_seed": 20260721,
+      "native_max_steps": 16,
+      "pair_id": "H19-s20260721",
+      "phase": "confirmatory_additional",
+      "sequence": 147,
+      "task_class": "SportsTrackerTotalDurationForCategoryThisWeek",
+      "task_id": "H19",
+      "variant": "B3"
+    },
+    {
+      "instance_seed": 20260721,
+      "native_max_steps": 16,
+      "pair_id": "H19-s20260721",
+      "phase": "confirmatory_additional",
+      "sequence": 148,
+      "task_class": "SportsTrackerTotalDurationForCategoryThisWeek",
+      "task_id": "H19",
+      "variant": "B0"
+    },
+    {
+      "instance_seed": 20260721,
+      "native_max_steps": 16,
+      "pair_id": "H19-s20260721",
+      "phase": "confirmatory_additional",
+      "sequence": 149,
+      "task_class": "SportsTrackerTotalDurationForCategoryThisWeek",
+      "task_id": "H19",
+      "variant": "M0"
+    },
+    {
+      "instance_seed": 20260722,
+      "native_max_steps": 20,
+      "pair_id": "H17-s20260722",
+      "phase": "confirmatory_additional",
+      "sequence": 183,
+      "task_class": "SportsTrackerActivitiesOnDate",
+      "task_id": "H17",
+      "variant": "B0"
+    },
+    {
+      "instance_seed": 20260722,
+      "native_max_steps": 20,
+      "pair_id": "H17-s20260722",
+      "phase": "confirmatory_additional",
+      "sequence": 184,
+      "task_class": "SportsTrackerActivitiesOnDate",
+      "task_id": "H17",
+      "variant": "M0"
+    },
+    {
+      "instance_seed": 20260722,
+      "native_max_steps": 20,
+      "pair_id": "H17-s20260722",
+      "phase": "confirmatory_additional",
+      "sequence": 185,
+      "task_class": "SportsTrackerActivitiesOnDate",
+      "task_id": "H17",
+      "variant": "B3"
+    },
+    {
+      "instance_seed": 20260722,
+      "native_max_steps": 16,
+      "pair_id": "H19-s20260722",
+      "phase": "confirmatory_additional",
+      "sequence": 186,
+      "task_class": "SportsTrackerTotalDurationForCategoryThisWeek",
+      "task_id": "H19",
+      "variant": "M0"
+    },
+    {
+      "instance_seed": 20260722,
+      "native_max_steps": 16,
+      "pair_id": "H19-s20260722",
+      "phase": "confirmatory_additional",
+      "sequence": 187,
+      "task_class": "SportsTrackerTotalDurationForCategoryThisWeek",
+      "task_id": "H19",
+      "variant": "B0"
+    },
+    {
+      "instance_seed": 20260722,
+      "native_max_steps": 16,
+      "pair_id": "H19-s20260722",
+      "phase": "confirmatory_additional",
+      "sequence": 188,
+      "task_class": "SportsTrackerTotalDurationForCategoryThisWeek",
+      "task_id": "H19",
+      "variant": "B3"
+    },
+    {
+      "instance_seed": 20260722,
+      "native_max_steps": 22,
+      "pair_id": "H18-s20260722",
+      "phase": "confirmatory_additional",
+      "sequence": 195,
+      "task_class": "SportsTrackerTotalDistanceForCategoryOverInterval",
+      "task_id": "H18",
+      "variant": "B3"
+    },
+    {
+      "instance_seed": 20260722,
+      "native_max_steps": 22,
+      "pair_id": "H18-s20260722",
+      "phase": "confirmatory_additional",
+      "sequence": 196,
+      "task_class": "SportsTrackerTotalDistanceForCategoryOverInterval",
+      "task_id": "H18",
+      "variant": "B0"
+    },
+    {
+      "instance_seed": 20260722,
+      "native_max_steps": 22,
+      "pair_id": "H18-s20260722",
+      "phase": "confirmatory_additional",
+      "sequence": 197,
+      "task_class": "SportsTrackerTotalDistanceForCategoryOverInterval",
+      "task_id": "H18",
+      "variant": "M0"
+    },
+    {
+      "instance_seed": 20260720,
+      "native_max_steps": 20,
+      "pair_id": "H17-s20260720",
+      "phase": "strict_control",
+      "sequence": 216,
+      "task_class": "SportsTrackerActivitiesOnDate",
+      "task_id": "H17",
+      "variant": "S0"
+    },
+    {
+      "instance_seed": 20260720,
+      "native_max_steps": 16,
+      "pair_id": "H19-s20260720",
+      "phase": "strict_control",
+      "sequence": 224,
+      "task_class": "SportsTrackerTotalDurationForCategoryThisWeek",
+      "task_id": "H19",
+      "variant": "S0"
+    },
+    {
+      "instance_seed": 20260720,
+      "native_max_steps": 22,
+      "pair_id": "H18-s20260720",
+      "phase": "strict_control",
+      "sequence": 228,
+      "task_class": "SportsTrackerTotalDistanceForCategoryOverInterval",
+      "task_id": "H18",
+      "variant": "S0"
+    }
+  ],
+  "halt_reason": "task_interface_gap_and_supported_task_floor_effect",
+  "later_phases_halted": true,
+  "schema_version": "protocol_v1_breadth_seal.v1",
+  "scientific_status": "diagnostic_only",
+  "scored_raw_episode_count": 95,
+  "scored_result_count": 95,
+  "suite_id": "hard_v1_breadth"
+}

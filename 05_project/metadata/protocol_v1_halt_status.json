@@ -1,0 +1,14 @@
+{
+  "breadth_complete": true,
+  "breadth_episode_count": 95,
+  "halt_reason": "task_interface_gap_and_supported_task_floor_effect",
+  "later_phases_halted": true,
+  "protocol": "androidworld_hard_protocol_v1",
+  "replacement_protocol": "androidworld_protocol_v2_exploratory",
+  "schema_version": "protocol_status.v1",
+  "scientific_status": "diagnostic_only",
+  "seal_manifest": "checksums/protocol_v1_breadth_seal_20260726.json",
+  "seal_manifest_sha256": "8b707052bbf3d22ff9643dc1fd4bc55d8f09461a00be9c13728e6eacdfa37ac9",
+  "semantic_resumption_permitted": false,
+  "updated_at_utc": "2026-07-26T13:39:16.435533+00:00"
+}
