@@ -80,6 +80,11 @@ class AndroidWorldAdapter:
                 "action_type": "open_app",
                 "app_name": canonical["app_name"],
             }
+        elif action_type == "answer":
+            upstream = {
+                "action_type": "answer",
+                "text": canonical["text"],
+            }
         elif action_type in {"swipe", "long_press", "wait"}:
             upstream = None
         else:
@@ -97,6 +102,14 @@ class AndroidWorldAdapter:
         from android_world.env import adb_utils, json_action
 
         action_type = mapped.canonical["type"]
+        if action_type == "answer":
+            # AndroidWorld's evaluator reads interaction_cache. Its upstream
+            # answer branch sets this value and then sends a cosmetic overlay
+            # broadcast; the latter can block on an unhealthy overlay service
+            # even though the terminal answer is already available. Preserve
+            # the benchmark semantics without coupling evaluation to the UI.
+            env.interaction_cache = mapped.canonical["text"]
+            return
         if mapped.upstream_action is not None:
             env.execute_action(json_action.JSONAction(**mapped.upstream_action))
             return

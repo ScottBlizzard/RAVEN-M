@@ -1,0 +1,231 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://eaglelab.example/raven-m/action.v2.schema.json",
+  "title": "RAVEN-M canonical mobile action v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "status",
+    "action",
+    "expected_outcome",
+    "decision_summary",
+    "state_delta",
+    "memory_citations"
+  ],
+  "properties": {
+    "status": {"enum": ["continue", "done", "fail"]},
+    "action": {
+      "oneOf": [
+        {"type": "null"},
+        {"$ref": "#/$defs/gui_action"},
+        {"$ref": "#/$defs/answer_action"}
+      ]
+    },
+    "expected_outcome": {"type": "string", "maxLength": 240},
+    "decision_summary": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 240
+    },
+    "state_delta": {"type": "array", "maxItems": 0},
+    "memory_citations": {"type": "array", "maxItems": 0}
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"status": {"const": "continue"}},
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {"action": {"$ref": "#/$defs/gui_action"}}
+      }
+    },
+    {
+      "if": {
+        "properties": {"status": {"const": "done"}},
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "action": {
+            "oneOf": [
+              {"type": "null"},
+              {"$ref": "#/$defs/answer_action"}
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"status": {"const": "fail"}},
+        "required": ["status"]
+      },
+      "then": {"properties": {"action": {"type": "null"}}}
+    }
+  ],
+  "$defs": {
+    "coordinate": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    "text_origin": {
+      "enum": [
+        "task_literal",
+        "current_screen",
+        "verified_memory",
+        "deterministic_calculation"
+      ]
+    },
+    "source_memory_ids_empty": {
+      "type": "array",
+      "maxItems": 0
+    },
+    "gui_action": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "x", "y"],
+          "properties": {
+            "type": {"const": "tap"},
+            "x": {"$ref": "#/$defs/coordinate"},
+            "y": {"$ref": "#/$defs/coordinate"}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "x", "y", "duration_ms"],
+          "properties": {
+            "type": {"const": "long_press"},
+            "x": {"$ref": "#/$defs/coordinate"},
+            "y": {"$ref": "#/$defs/coordinate"},
+            "duration_ms": {
+              "type": "integer",
+              "minimum": 300,
+              "maximum": 3000
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "x", "y", "x2", "y2", "duration_ms"],
+          "properties": {
+            "type": {"const": "swipe"},
+            "x": {"$ref": "#/$defs/coordinate"},
+            "y": {"$ref": "#/$defs/coordinate"},
+            "x2": {"$ref": "#/$defs/coordinate"},
+            "y2": {"$ref": "#/$defs/coordinate"},
+            "duration_ms": {
+              "type": "integer",
+              "minimum": 100,
+              "maximum": 3000
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "text",
+            "text_origin",
+            "source_memory_ids"
+          ],
+          "properties": {
+            "type": {"const": "type_text"},
+            "text": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000
+            },
+            "text_origin": {
+              "enum": [
+                "task_literal",
+                "current_screen",
+                "deterministic_calculation"
+              ]
+            },
+            "source_memory_ids": {
+              "$ref": "#/$defs/source_memory_ids_empty"
+            },
+            "x": {"$ref": "#/$defs/coordinate"},
+            "y": {"$ref": "#/$defs/coordinate"},
+            "clear_text": {"type": "boolean"}
+          },
+          "dependentRequired": {
+            "x": ["y"],
+            "y": ["x"]
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type"],
+          "properties": {
+            "type": {
+              "enum": ["press_back", "press_home", "press_enter"]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "app_name"],
+          "properties": {
+            "type": {"const": "open_app"},
+            "app_name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "duration_ms"],
+          "properties": {
+            "type": {"const": "wait"},
+            "duration_ms": {
+              "type": "integer",
+              "minimum": 250,
+              "maximum": 5000
+            }
+          }
+        }
+      ]
+    },
+    "answer_action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "text",
+        "text_origin",
+        "source_memory_ids"
+      ],
+      "properties": {
+        "type": {"const": "answer"},
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "text_origin": {
+          "enum": [
+            "task_literal",
+            "current_screen",
+            "deterministic_calculation"
+          ]
+        },
+        "source_memory_ids": {
+          "$ref": "#/$defs/source_memory_ids_empty"
+        }
+      }
+    }
+  }
+}

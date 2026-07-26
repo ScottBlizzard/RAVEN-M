@@ -15,6 +15,7 @@ from typing import Any
 from PIL import Image
 
 from raven_m.actions.schema import ActionValidationError, parse_action_response
+from raven_m.controller.protocol_v2_guard import ProtocolV2DecisionGuard
 from raven_m.env.androidworld_adapter import AndroidWorldAdapter
 from raven_m.history.policies import (
     HistoryEntry,
@@ -62,6 +63,48 @@ def _json_safe(value: Any) -> Any:
     return repr(value)
 
 
+def action_authority_record(
+    decision: dict[str, Any],
+    *,
+    completion_adjudications: list[dict[str, Any]] | None = None,
+) -> dict[str, Any]:
+    """Derive a conservative, auditable action-risk/authority record."""
+    action = decision.get("action")
+    action_type = action.get("type") if isinstance(action, dict) else None
+    if decision.get("status") != "continue":
+        risk_class = "terminal_answer_or_completion"
+    elif action_type in {"swipe", "press_back", "press_home", "open_app", "wait"}:
+        risk_class = "observe_navigation"
+    elif action_type == "type_text":
+        risk_class = "reversible_edit"
+    else:
+        # A tap, long press, or Enter may activate Save/Delete/Send. Treat it
+        # conservatively as a possible commit rather than guessing from pixels.
+        risk_class = "irreversible_commit"
+    citations = list(decision.get("memory_citations", []))
+    sources = ["current_screen"]
+    if citations:
+        sources.append("routed_memory")
+    adjudications = completion_adjudications or []
+    if any(item.get("output") is not None for item in adjudications):
+        sources.append("same_turn_critic")
+    return {
+        "schema_version": "action_authority.v2",
+        "risk_class": risk_class,
+        "authority_sources": sources,
+        "memory_citations": citations,
+        "text_origin": (
+            action.get("text_origin") if isinstance(action, dict) else None
+        ),
+        "source_memory_ids": (
+            list(action.get("source_memory_ids", []))
+            if isinstance(action, dict)
+            else []
+        ),
+        "same_turn_adjudication_count": len(adjudications),
+    }
+
+
 class EpisodeLogger:
     def __init__(self, episode_dir: Path) -> None:
         self.episode_dir = episode_dir
@@ -91,11 +134,15 @@ class ModelOutputInvalid(RuntimeError):
         calls: list[ModelCall],
         initial_error: str,
         repair_error: str,
+        adjudication_model_call_count: int = 0,
+        completion_adjudications: list[dict[str, Any]] | None = None,
     ) -> None:
         super().__init__(repair_error)
         self.calls = calls
         self.initial_error = initial_error
         self.repair_error = repair_error
+        self.adjudication_model_call_count = adjudication_model_call_count
+        self.completion_adjudications = completion_adjudications or []
 
 
 def classify_failure_code(
@@ -116,6 +163,8 @@ def classify_failure_code(
         return "MODEL_OUTPUT_INVALID_AFTER_REPAIR"
     if termination_reason == "model_done":
         return "PREMATURE_COMPLETION"
+    if termination_reason == "model_answer":
+        return "INCORRECT_ANSWER"
     if termination_reason == "model_fail":
         return "MODEL_DECLARED_INFEASIBLE"
     if termination_reason == "model_call_budget_exhausted":
@@ -136,6 +185,8 @@ class EpisodeController:
         adapter: AndroidWorldAdapter | None = None,
         history_policy: HistoryPolicy | None = None,
         action_schema_path: Path | None = None,
+        decision_guard: ProtocolV2DecisionGuard | None = None,
+        protocol_v2: bool = False,
     ) -> None:
         self.client = client
         self.system_prompt = system_prompt
@@ -144,6 +195,8 @@ class EpisodeController:
         self.adapter = adapter or AndroidWorldAdapter()
         self.history_policy = history_policy or HistoryPolicy()
         self.action_schema_path = action_schema_path
+        self.decision_guard = decision_guard
+        self.protocol_v2 = protocol_v2
 
     @staticmethod
     def _user_prompt(
@@ -157,6 +210,7 @@ class EpisodeController:
         screen_height: int,
         previous_outcome: str,
         memory_context: str = "[]",
+        protocol_v2: bool = False,
     ) -> str:
         example_pixel_y = min(438, screen_height - 1)
         example_normalized_y = example_pixel_y / max(screen_height - 1, 1)
@@ -167,8 +221,16 @@ class EpisodeController:
                 f"model calls {model_calls}/{max_model_calls}",
                 f"PREVIOUS_ACTION_AND_OBSERVED_OUTCOME: {previous_outcome}",
                 f"MEMORY_CONTEXT: {memory_context}",
-                "TEXT_SAFETY: type_text may contain only a value explicitly "
-                "requested by TASK.",
+                (
+                    "TEXT_PROVENANCE: type_text/answer text must come from a "
+                    "TASK literal, the current screen, verified routed memory, "
+                    "or a deterministic calculation; declare text_origin and "
+                    "source_memory_ids exactly as required by the schema."
+                    if protocol_v2
+                    else
+                    "TEXT_SAFETY: type_text may contain only a value explicitly "
+                    "requested by TASK."
+                ),
                 f"CURRENT_SCREENSHOT: attached image; size "
                 f"{screen_width}x{screen_height} pixels.",
                 "COORDINATE_CHECK: JSON coordinates must be normalized decimals "
@@ -209,6 +271,12 @@ class EpisodeController:
             "one direct_screen fact linked through "
             "supports_completion_requirements; cite it only on a later "
             "observation if it is then routed as FACT.\n"
+            "For protocol-v2 text actions, preserve valid text_origin and "
+            "source_memory_ids provenance. An answer action is terminal and "
+            "only valid for information-return tasks. If LOOP_GUARD appears, "
+            "use one named recovery class: change_target, "
+            "reverse_scroll_direction, navigate_back, reopen_app, "
+            "inspect_different_visible_control, or fail_safely.\n"
             "If a coordinate is above 1, convert it from pixels using "
             "CURRENT_SCREENSHOT size. If text is too long, shorten it below "
             "160 characters. status must be continue/done/fail; wait is an "
@@ -237,14 +305,47 @@ class EpisodeController:
             context_images=context_images,
         )
         calls = [initial]
-        try:
-            parse_kwargs = (
-                {"schema_path": self.action_schema_path}
-                if self.action_schema_path
-                else {}
+        adjudication_model_call_count = 0
+        completion_adjudications: list[dict[str, Any]] = []
+        page_sha256 = _sha256_file(image_path)
+        parse_kwargs = (
+            {"schema_path": self.action_schema_path}
+            if self.action_schema_path
+            else {}
+        )
+
+        def parse_and_validate(content: str) -> Any:
+            nonlocal adjudication_model_call_count
+            parsed_candidate = parse_action_response(content, **parse_kwargs)
+            self.history_policy.validate_decision(parsed_candidate.decision)
+            if self.decision_guard is not None:
+                self.decision_guard.validate_decision(
+                    parsed_candidate.decision,
+                    page_sha256=page_sha256,
+                )
+            adjudication = self.history_policy.adjudicate_completion(
+                parsed_candidate.decision,
+                image_path=image_path,
+                episode_id=episode_id,
+                step=step,
+                remaining_model_calls=max(
+                    0,
+                    self.max_model_calls - model_call_count - len(calls),
+                ),
             )
-            parsed = parse_action_response(initial.content, **parse_kwargs)
-            self.history_policy.validate_decision(parsed.decision)
+            calls.extend(adjudication.calls)
+            adjudication_model_call_count += len(adjudication.calls)
+            if adjudication.record is not None:
+                completion_adjudications.append(adjudication.record)
+            if not adjudication.accepted:
+                raise ActionValidationError(
+                    adjudication.error
+                    or "Same-turn completion adjudication rejected completion."
+                )
+            return parsed_candidate
+
+        try:
+            parsed = parse_and_validate(initial.content)
             return (
                 parsed.decision,
                 calls,
@@ -253,11 +354,26 @@ class EpisodeController:
                     "extraction_used": parsed.extraction_used,
                     "model_repair_used": False,
                     "schema_sha256": parsed.schema_sha256,
+                    "adjudication_model_call_count": (
+                        adjudication_model_call_count
+                    ),
+                    "completion_adjudications": completion_adjudications,
                 },
             )
         except ActionValidationError as initial_error:
-            if model_call_count + 1 >= self.max_model_calls:
-                raise
+            if model_call_count + len(calls) >= self.max_model_calls:
+                raise ModelOutputInvalid(
+                    calls=calls,
+                    initial_error=str(initial_error),
+                    repair_error=(
+                        "Repair unavailable because the model-call budget "
+                        "was exhausted after validation/adjudication."
+                    ),
+                    adjudication_model_call_count=(
+                        adjudication_model_call_count
+                    ),
+                    completion_adjudications=completion_adjudications,
+                ) from initial_error
             repair_prompt = self._repair_prompt(
                 user_prompt,
                 initial.content,
@@ -273,13 +389,16 @@ class EpisodeController:
             )
             calls.append(repaired)
             try:
-                parsed = parse_action_response(repaired.content, **parse_kwargs)
-                self.history_policy.validate_decision(parsed.decision)
+                parsed = parse_and_validate(repaired.content)
             except ActionValidationError as repair_error:
                 raise ModelOutputInvalid(
                     calls=calls,
                     initial_error=str(initial_error),
                     repair_error=str(repair_error),
+                    adjudication_model_call_count=(
+                        adjudication_model_call_count
+                    ),
+                    completion_adjudications=completion_adjudications,
                 ) from repair_error
             return (
                 parsed.decision,
@@ -290,6 +409,10 @@ class EpisodeController:
                     "model_repair_used": True,
                     "initial_validation_error": str(initial_error),
                     "schema_sha256": parsed.schema_sha256,
+                    "adjudication_model_call_count": (
+                        adjudication_model_call_count
+                    ),
+                    "completion_adjudications": completion_adjudications,
                 },
             )
 
@@ -323,6 +446,8 @@ class EpisodeController:
             episode_id=episode_id,
             task_id=task.name,
         )
+        if self.decision_guard is not None:
+            self.decision_guard.reset(goal=str(task.goal))
 
         logger.append(
             {
@@ -376,6 +501,7 @@ class EpisodeController:
                     screen_height=height,
                     previous_outcome=previous_outcome,
                     memory_context=history_context.rendered,
+                    protocol_v2=self.protocol_v2,
                 )
                 try:
                     decision, calls, parse_meta = self._call_and_parse(
@@ -388,12 +514,20 @@ class EpisodeController:
                     )
                 except ModelOutputInvalid as exc:
                     model_call_count += len(exc.calls)
-                    executor_model_call_count += len(exc.calls)
+                    history_model_call_count += (
+                        exc.adjudication_model_call_count
+                    )
+                    executor_model_call_count += (
+                        len(exc.calls) - exc.adjudication_model_call_count
+                    )
                     termination_reason = "model_output_invalid_after_repair"
                     model_output_error = {
                         "type": "ActionValidationError",
                         "initial_validation_error": exc.initial_error,
                         "repair_validation_error": exc.repair_error,
+                        "completion_adjudications": (
+                            exc.completion_adjudications
+                        ),
                     }
                     step_record = {
                         "event": "step",
@@ -436,7 +570,13 @@ class EpisodeController:
                     )
                     break
                 model_call_count += len(calls)
-                executor_model_call_count += len(calls)
+                adjudication_call_count = int(
+                    parse_meta.get("adjudication_model_call_count", 0)
+                )
+                history_model_call_count += adjudication_call_count
+                executor_model_call_count += (
+                    len(calls) - adjudication_call_count
+                )
                 parse_meta["valid_after_one_repair"] = True
                 step_record: dict[str, Any] = {
                     "event": "step",
@@ -460,9 +600,20 @@ class EpisodeController:
                     "model_calls": [call.audit_record() for call in calls],
                     "parse": parse_meta,
                     "decision": decision,
+                    "action_authority": action_authority_record(
+                        decision,
+                        completion_adjudications=parse_meta.get(
+                            "completion_adjudications", []
+                        ),
+                    ),
                 }
 
-                if decision["status"] != "continue":
+                answer_action = bool(
+                    decision["status"] == "done"
+                    and isinstance(decision.get("action"), dict)
+                    and decision["action"].get("type") == "answer"
+                )
+                if decision["status"] != "continue" and not answer_action:
                     termination_reason = f"model_{decision['status']}"
                     step_record["executed"] = False
                     steps.append(step_record)
@@ -507,6 +658,35 @@ class EpisodeController:
                         "screenshot_changed": changed,
                     }
                 )
+                if self.decision_guard is not None:
+                    step_record["protocol_v2_guard"] = (
+                        self.decision_guard.observe_transition(
+                            before_sha256=before_sha,
+                            action=decision["action"],
+                            after_sha256=after_sha,
+                        )
+                    )
+                if answer_action:
+                    answer_text = str(decision["action"]["text"])
+                    interaction_cache = getattr(
+                        env, "interaction_cache", None
+                    )
+                    step_record["answer_audit"] = {
+                        "text_sha256": sha256(
+                            answer_text.encode("utf-8")
+                        ).hexdigest(),
+                        "text_length": len(answer_text),
+                        "interaction_cache_populated": (
+                            bool(interaction_cache)
+                        ),
+                        "interaction_cache_matches_answer": (
+                            interaction_cache == answer_text
+                        ),
+                    }
+                    termination_reason = "model_answer"
+                    steps.append(step_record)
+                    logger.append(step_record)
+                    break
                 previous_outcome = (
                     f"Executed {json.dumps(decision['action'], ensure_ascii=False)}; "
                     f"the screenshot {'changed' if changed else 'did not change'}."
@@ -641,6 +821,11 @@ class EpisodeController:
             ),
             "error": error_record,
             "model_output_error": model_output_error,
+            "protocol_v2_guard": (
+                self.decision_guard.audit_record()
+                if self.decision_guard is not None
+                else None
+            ),
             "steps": steps,
         }
         _write_json(episode_dir / "episode.json", summary)

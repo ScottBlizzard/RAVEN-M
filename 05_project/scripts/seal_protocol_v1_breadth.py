@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import argparse
 from datetime import datetime, timezone
 from hashlib import sha256
 import json
@@ -49,7 +50,59 @@ def file_record(path: Path, *, role: str) -> dict[str, Any]:
     }
 
 
-def main() -> None:
+def verify_existing_seal() -> dict[str, Any]:
+    seal = json.loads(SEAL_PATH.read_text(encoding="utf-8"))
+    failures = []
+    for record in seal["files"]:
+        path = REPOSITORY_ROOT / record["path"]
+        if not path.is_file():
+            failures.append({"path": record["path"], "error": "missing"})
+            continue
+        data = path.read_bytes()
+        if len(data) != record["bytes"]:
+            failures.append(
+                {
+                    "path": record["path"],
+                    "error": "byte_count_mismatch",
+                }
+            )
+        digest = sha256(data).hexdigest()
+        if digest != record["sha256"]:
+            failures.append(
+                {"path": record["path"], "error": "sha256_mismatch"}
+            )
+    status = json.loads(STATUS_PATH.read_text(encoding="utf-8"))
+    seal_digest = sha256(SEAL_PATH.read_bytes()).hexdigest()
+    if status["seal_manifest_sha256"] != seal_digest:
+        failures.append(
+            {
+                "path": STATUS_PATH.relative_to(REPOSITORY_ROOT).as_posix(),
+                "error": "seal_manifest_sha256_mismatch",
+            }
+        )
+    return {
+        "schema_version": "protocol_v1_seal_verification.v1",
+        "seal_path": SEAL_PATH.relative_to(REPOSITORY_ROOT).as_posix(),
+        "file_count": len(seal["files"]),
+        "failure_count": len(failures),
+        "failures": failures,
+        "passed": not failures,
+    }
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--verify",
+        action="store_true",
+        help="Verify the existing seal without rewriting any artifact.",
+    )
+    args = parser.parse_args()
+    if args.verify:
+        result = verify_existing_seal()
+        print(json.dumps(result, indent=2, ensure_ascii=False))
+        return 0 if result["passed"] else 1
+
     summary_path = SUITE_DIR / "suite_summary.json"
     summary = json.loads(summary_path.read_text(encoding="utf-8"))
     if (
@@ -188,7 +241,8 @@ def main() -> None:
             ensure_ascii=False,
         )
     )
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

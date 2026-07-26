@@ -60,6 +60,14 @@ class HistoryUpdate:
     details: dict[str, Any] | None = None
 
 
+@dataclass(frozen=True)
+class CompletionAdjudication:
+    accepted: bool = True
+    calls: list[ModelCall] = field(default_factory=list)
+    record: dict[str, Any] | None = None
+    error: str | None = None
+
+
 class HistoryPolicy:
     variant = "B0"
 
@@ -78,6 +86,18 @@ class HistoryPolicy:
 
     def validate_decision(self, decision: dict[str, Any]) -> None:
         del decision
+
+    def adjudicate_completion(
+        self,
+        decision: dict[str, Any],
+        *,
+        image_path: Path,
+        episode_id: str,
+        step: int,
+        remaining_model_calls: int,
+    ) -> CompletionAdjudication:
+        del decision, image_path, episode_id, step, remaining_model_calls
+        return CompletionAdjudication()
 
     def context(self) -> HistoryContext:
         return HistoryContext(rendered="[]")
@@ -462,6 +482,11 @@ class RavenMemoryPolicy(HistoryPolicy):
 
     def validate_decision(self, decision: dict[str, Any]) -> None:
         cited = set(decision.get("memory_citations", []))
+        action = decision.get("action")
+        if isinstance(action, dict):
+            cited.update(action.get("source_memory_ids", []))
+        for evidence in decision.get("completion_evidence", []):
+            cited.update(evidence.get("memory_ids", []))
         unknown = cited - self.last_routed_ids
         if unknown:
             raise ActionValidationError(
@@ -687,6 +712,99 @@ class FullRavenMemoryPolicy(RavenMemoryPolicy):
         return HistoryUpdate(calls=role_calls, details=details)
 
 
+class FullRavenMemoryPolicyV2(FullRavenMemoryPolicy):
+    """Protocol-v2 full method with same-turn completion adjudication."""
+
+    def validate_decision(self, decision: dict[str, Any]) -> None:
+        RavenMemoryPolicy.validate_decision(self, decision)
+        if decision.get("status") != "done":
+            return
+        evidence = decision.get("completion_evidence", [])
+        cited = set(decision.get("memory_citations", []))
+        for item in evidence:
+            cited.update(item.get("memory_ids", []))
+        has_fact = bool(cited & self.last_fact_ids)
+        has_direct = any(
+            item.get("evidence") in {"direct_screen", "mixed"}
+            for item in evidence
+        )
+        if not (has_fact or has_direct):
+            raise ActionValidationError(
+                "Protocol v2 completion requires current-screen evidence "
+                "or a currently routed FACT."
+            )
+
+    def adjudicate_completion(
+        self,
+        decision: dict[str, Any],
+        *,
+        image_path: Path,
+        episode_id: str,
+        step: int,
+        remaining_model_calls: int,
+    ) -> CompletionAdjudication:
+        if decision.get("status") != "done":
+            return CompletionAdjudication()
+        bundle_text, routed = self.manager.context(step=len(self.entries))
+        allowed_ids = {
+            value.item.memory_id
+            for value in routed
+            if value.route != "SUPPRESS"
+        }
+        latest_transition = (
+            self.entries[-1].record() if self.entries else None
+        )
+        critic = self.roles.call(
+            role="critic",
+            image_path=image_path,
+            payload={
+                "task": self.goal,
+                "step": step,
+                "trigger": "completion_candidate",
+                "completion_candidate": decision,
+                "latest_transition": latest_transition,
+                "memory_bundle": json.loads(bundle_text),
+                "planner_state": self.plan_state,
+            },
+            episode_id=episode_id,
+            step=step,
+            remaining_model_calls=remaining_model_calls,
+            allowed_memory_ids=allowed_ids,
+        )
+        record = {
+            "schema_version": "completion_adjudication.v2",
+            "trigger": "completion_candidate",
+            "output": critic.output,
+            "error": critic.error,
+            "model_call_ids": [call.call_id for call in critic.calls],
+        }
+        if critic.output is not None:
+            self.critic_alert = critic.output
+        if critic.error is not None or critic.output is None:
+            return CompletionAdjudication(
+                accepted=False,
+                calls=list(critic.calls),
+                record=record,
+                error="Completion critic did not return a valid verdict.",
+            )
+        if critic.output.get("verdict") != "proceed":
+            constraint = critic.output.get(
+                "recommended_constraint",
+                "satisfy the unresolved completion requirement",
+            )
+            return CompletionAdjudication(
+                accepted=False,
+                calls=list(critic.calls),
+                record=record,
+                error=f"Completion critic rejected completion: {constraint}",
+            )
+        return CompletionAdjudication(
+            accepted=True,
+            calls=list(critic.calls),
+            record=record,
+        )
+
+
 def make_history_policy(
     variant: str,
     *,
@@ -757,3 +875,39 @@ def make_history_policy(
             variant=normalized,
         )
     raise ValueError(f"Unknown baseline history variant: {variant}")
+
+
+def make_history_policy_v2(
+    variant: str,
+    *,
+    client: TransformersClient,
+    summary_system_prompt: str,
+    planner_system_prompt: str = "",
+    critic_system_prompt: str = "",
+) -> HistoryPolicy:
+    """Build protocol-v2 policies without changing protocol-v1 factories."""
+    normalized = variant.upper()
+    if normalized not in {"M0", "RAVEN_FULL", "MREL"}:
+        return make_history_policy(
+            normalized,
+            client=client,
+            summary_system_prompt=summary_system_prompt,
+            planner_system_prompt=planner_system_prompt,
+            critic_system_prompt=critic_system_prompt,
+        )
+    if not planner_system_prompt or not critic_system_prompt:
+        raise ValueError(
+            f"{normalized} requires Planner and Critic system prompts."
+        )
+    config = (
+        MemoryConfig(reliability_aware=False)
+        if normalized == "MREL"
+        else MemoryConfig()
+    )
+    return FullRavenMemoryPolicyV2(
+        client=client,
+        planner_prompt=planner_system_prompt,
+        critic_prompt=critic_system_prompt,
+        config=config,
+        variant=("MREL" if normalized == "MREL" else "M0"),
+    )
