@@ -1,0 +1,42 @@
+{
+  "schema_version": "protocol_v2_repair_contract_smoke_evidence.v1",
+  "date": "2026-07-27",
+  "passed": true,
+  "model": "Qwen/Qwen3-VL-32B-Instruct",
+  "revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+  "backend": "qwen3_vl_32b_transformers_bf16_4x4090_v1",
+  "gui_actions_executed": 0,
+  "evaluator_accessed": false,
+  "cases": [
+    {
+      "name": "missing_required_fields",
+      "passed": true,
+      "strict_json_first_pass": true,
+      "extraction_used": false,
+      "call_id": "8430e504-4d75-476d-976d-7d45597c79d3",
+      "prompt_sha256": "19e679ff2bee9245bbe66acdcdca584619e8cdaa86289fa85ba15da56bb7c234",
+      "response_sha256": "99fc1483c1ea78f783490758732174c3908757a9fe28b31e0cdd80a950d68244",
+      "required_fields_present": [
+        "status",
+        "action",
+        "expected_outcome",
+        "decision_summary",
+        "state_delta",
+        "memory_citations",
+        "completion_evidence"
+      ]
+    },
+    {
+      "name": "ordinary_completion_forbidden_answer",
+      "passed": true,
+      "strict_json_first_pass": true,
+      "extraction_used": false,
+      "call_id": "6cd03887-32f3-452a-afcb-1aee76b1fba7",
+      "prompt_sha256": "314d4c3efa4f7a00a1e3a180873b6720143c129fffa4feb6167a23f1dbd42d0a",
+      "response_sha256": "d0b0da147e5a502a6e3d7b5fb83d2d72c03b3e71b68dea674c47e923762af325",
+      "status": "done",
+      "action": null,
+      "forbidden_answer_repeated": false
+    }
+  ]
+}
