@@ -337,7 +337,7 @@ def main() -> int:
     args = parser.parse_args()
 
     manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
-    if manifest["source_commit"] != "46f8b7c21649029a8884fc7c16f859a1642d6f2f":
+    if manifest["source_commit"] != "de5278b6fc78ca01d4b530ef1442e5060dccbf10":
         raise RuntimeError("Gate-E source commit is not frozen.")
     if len(manifest["schedule"]) != 8:
         raise RuntimeError("Gate E requires exactly eight frozen cells.")
