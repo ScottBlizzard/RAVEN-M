@@ -43,6 +43,96 @@ class RepeatingSaveClient:
         )
 
 
+class PickerBackThenDrawerClient:
+    def generate(self, **kwargs) -> ModelCall:
+        repair = kwargs["call_label"].endswith("_repair")
+        action = (
+            {"type": "tap", "x": 0.07, "y": 0.08}
+            if repair
+            else {"type": "press_back"}
+        )
+        decision = {
+            "status": "continue",
+            "action": action,
+            "expected_outcome": "The destination navigation changes.",
+            "decision_summary": "Navigate within the destination picker.",
+            "state_delta": [],
+            "memory_citations": [],
+            "completion_evidence": [],
+        }
+        label = kwargs["call_label"]
+        return ModelCall(
+            call_id=label,
+            episode_id=kwargs["episode_id"],
+            idempotency_key=label,
+            image_sha256="0" * 64,
+            image_sha256s=("0" * 64,),
+            prompt_sha256=label,
+            request_sha256=label,
+            response_sha256=label,
+            content=json.dumps(decision),
+            usage={
+                "prompt_tokens": 1,
+                "completion_tokens": 1,
+                "total_tokens": 2,
+            },
+            raven_meta={},
+        )
+
+
+class DestinationPickerEnv:
+    def __init__(self) -> None:
+        self.execute_count = 0
+
+    def reset(self, go_home: bool) -> None:
+        assert go_home
+
+    def hide_automation_ui(self) -> None:
+        pass
+
+    def get_state(self, wait_to_stabilize: bool):
+        assert wait_to_stabilize
+        return SimpleNamespace(
+            pixels=np.zeros((100, 100, 3), dtype=np.uint8),
+            ui_elements=[
+                SimpleNamespace(
+                    package_name="files",
+                    text="CANCEL",
+                    is_visible=True,
+                    is_enabled=True,
+                    bbox=SimpleNamespace(y_min=0.91, y_max=0.98),
+                ),
+                SimpleNamespace(
+                    package_name="files",
+                    text="MOVE",
+                    is_visible=True,
+                    is_enabled=True,
+                    bbox=SimpleNamespace(y_min=0.91, y_max=0.98),
+                ),
+            ],
+        )
+
+    def execute_action(self, action) -> None:
+        assert action.action_type == "click"
+        self.execute_count += 1
+
+
+class FilesTask:
+    name = "FilesMoveFile"
+    goal = "Move the requested file to the requested folder."
+    params = {}
+
+    def initialize_task(self, env) -> None:
+        del env
+
+    def is_successful(self, env) -> float:
+        del env
+        return 0.0
+
+    def tear_down(self, env) -> None:
+        del env
+
+
 class SemanticFailureEnv:
     def __init__(self) -> None:
         self.state_call_count = 0
@@ -310,3 +400,39 @@ def test_controller_routes_visible_failure_and_blocks_repeat(
         and event.get("item", {}).get("memory_type") == "failure"
     ]
     assert len(failure_writes) == 1
+
+
+def test_controller_repairs_back_inside_destination_picker(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = DestinationPickerEnv()
+    controller = EpisodeController(
+        client=PickerBackThenDrawerClient(),  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=1,
+        max_model_calls=2,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="picker-repair-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="B3",
+    )
+    assert env.execute_count == 1
+    assert summary["model_call_count"] == 2
+    assert summary["steps"][0]["decision"]["action"]["type"] == "tap"
+    assert summary["steps"][0]["parse"]["model_repair_used"]
+    assert "DESTINATION_PICKER_GUARD" in summary["steps"][0]["parse"][
+        "initial_validation_error"
+    ]
+    assert summary["protocol_v2_guard"][
+        "destination_picker_back_block_count"
+    ] == 1

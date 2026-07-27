@@ -75,6 +75,14 @@ ordinary empty Ringtones folder. r6 remains prompt-only: bottom `CANCEL` plus
 folder navigation while those controls are present, and the drawer must be
 opened without leaving the pending operation.
 
+The complete r6 replay violated that prompt twice, exited the picker twice,
+and exhausted the budget before reaching Ringtones. Prompt compliance is
+therefore not an adequate invariant. r7 detects bottom-anchored `CANCEL` plus
+`COPY`/`MOVE` controls from the current accessibility state and rejects
+`press_back` before execution. The existing one-repair contract must replace
+it on the same screenshot, so the rejection uses a model call but no policy
+action or environment transition.
+
 ## Qualification order
 
 1. Targeted unit and integration tests.

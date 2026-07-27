@@ -33,6 +33,9 @@ memory authority, and Critic enforcement.
   destination-picker state. Navigation must use the picker's drawer directly;
   Back is not a folder-navigation action because it exits the picker and loses
   the pending operation.
+- The controller deterministically rejects `press_back` on that state before
+  execution. The bounded same-screen repair must choose the picker drawer or
+  another non-exit action, and the rejection is recorded in the guard audit.
 
 ## Visible infrastructure failures
 

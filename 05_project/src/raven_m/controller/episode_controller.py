@@ -18,6 +18,7 @@ from PIL import Image
 from raven_m.actions.schema import ActionValidationError, parse_action_response
 from raven_m.controller.protocol_v2_guard import (
     ProtocolV2DecisionGuard,
+    destination_picker_active,
     semantic_ui_snapshot,
 )
 from raven_m.env.androidworld_adapter import AndroidWorldAdapter
@@ -528,6 +529,7 @@ class EpisodeController:
         *,
         image_path: Path,
         page_semantic_sha256: str,
+        destination_picker_is_active: bool,
         user_prompt: str,
         episode_id: str,
         step: int,
@@ -562,6 +564,9 @@ class EpisodeController:
                 self.decision_guard.validate_decision(
                     parsed_candidate.decision,
                     page_sha256=page_semantic_sha256,
+                    destination_picker_is_active=(
+                        destination_picker_is_active
+                    ),
                 )
             action_adjudication = self.history_policy.adjudicate_action(
                 parsed_candidate.decision,
@@ -808,9 +813,14 @@ class EpisodeController:
                     protocol_v2_2=self.protocol_v2_2,
                 )
                 try:
+                    picker_active = destination_picker_active(
+                        getattr(state_before, "ui_elements", ()),
+                        screen_height=height,
+                    )
                     decision, calls, parse_meta = self._call_and_parse(
                         image_path=before_path,
                         page_semantic_sha256=before_semantic["sha256"],
+                        destination_picker_is_active=picker_active,
                         user_prompt=user_prompt,
                         episode_id=episode_id,
                         step=step,

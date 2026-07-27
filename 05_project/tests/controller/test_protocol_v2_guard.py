@@ -5,6 +5,7 @@ import pytest
 from raven_m.actions.schema import ActionValidationError
 from raven_m.controller.protocol_v2_guard import (
     ProtocolV2DecisionGuard,
+    destination_picker_active,
     semantic_ui_snapshot,
 )
 
@@ -382,4 +383,53 @@ def test_guard_blocks_fourth_identical_coordinate_action_across_states() -> None
     guard.validate_decision(
         decision({"type": "tap", "x": 0.94, "y": 0.08}),
         page_sha256="state-3",
+    )
+
+
+def test_destination_picker_requires_bottom_cancel_and_commit_controls() -> None:
+    controls = [
+        {
+            "text": "CANCEL",
+            "is_visible": True,
+            "is_enabled": True,
+            "bbox": {"y_min": 0.91, "y_max": 0.98},
+        },
+        {
+            "text": "MOVE",
+            "is_visible": True,
+            "is_enabled": True,
+            "bbox": {"y_min": 0.91, "y_max": 0.98},
+        },
+    ]
+    assert destination_picker_active(controls, screen_height=2400)
+    controls[1]["bbox"] = {"y_min": 0.2, "y_max": 0.3}
+    assert not destination_picker_active(controls, screen_height=2400)
+
+
+def test_destination_picker_guard_blocks_back_but_allows_drawer() -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(goal="Move a file")
+    with pytest.raises(
+        ActionValidationError,
+        match="DESTINATION_PICKER_GUARD",
+    ):
+        guard.validate_decision(
+            decision({"type": "press_back"}),
+            page_sha256="picker",
+            destination_picker_is_active=True,
+        )
+    guard.validate_decision(
+        decision({"type": "tap", "x": 0.07, "y": 0.08}),
+        page_sha256="picker",
+        destination_picker_is_active=True,
+    )
+    guard.validate_decision(
+        decision({"type": "press_back"}),
+        page_sha256="ordinary-folder",
+        destination_picker_is_active=False,
+    )
+    audit = guard.audit_record()
+    assert audit["destination_picker_back_block_count"] == 1
+    assert audit["validation_blocks"][-1]["reason"] == (
+        "destination_picker_back_blocked"
     )

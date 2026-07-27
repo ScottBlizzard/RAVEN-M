@@ -90,6 +90,57 @@ def _normalized_text(value: Any) -> str | None:
     return normalized or None
 
 
+def _box_value(box: Any, field: str) -> Any:
+    if isinstance(box, dict):
+        return box.get(field)
+    return getattr(box, field, None)
+
+
+def destination_picker_active(
+    ui_elements: Any,
+    *,
+    screen_height: int,
+) -> bool:
+    """Detect a bottom-anchored Android copy/move destination picker."""
+    bottom_controls: set[str] = set()
+    for element in ui_elements or []:
+        if _element_value(element, "is_visible") is False:
+            continue
+        if _element_value(element, "is_enabled") is False:
+            continue
+        texts = {
+            text.casefold()
+            for field in ("text", "content_description")
+            if (text := _normalized_text(_element_value(element, field)))
+        }
+        controls = texts & {"cancel", "copy", "move"}
+        if not controls:
+            continue
+        box = _element_value(element, "bbox")
+        y_min = _box_value(box, "y_min") if box is not None else None
+        y_max = _box_value(box, "y_max") if box is not None else None
+        if y_min is None or y_max is None:
+            box = _element_value(element, "bbox_pixels")
+            y_min = _box_value(box, "y_min") if box is not None else None
+            y_max = _box_value(box, "y_max") if box is not None else None
+        if not isinstance(y_min, (int, float)) or not isinstance(
+            y_max, (int, float)
+        ):
+            continue
+        center_y = (float(y_min) + float(y_max)) / 2.0
+        if max(float(y_min), float(y_max)) <= 1.5:
+            center_fraction = center_y
+        elif screen_height > 0:
+            center_fraction = center_y / float(screen_height)
+        else:
+            continue
+        if center_fraction >= 0.8:
+            bottom_controls.update(controls)
+    return "cancel" in bottom_controls and bool(
+        bottom_controls & {"copy", "move"}
+    )
+
+
 def semantic_ui_snapshot(
     ui_elements: Any,
     *,
@@ -227,6 +278,7 @@ class ProtocolV2DecisionGuard:
         self.last_coordinate_action_key: str | None = None
         self.identical_coordinate_action_count = 0
         self.identical_coordinate_block_count = 0
+        self.destination_picker_back_block_count = 0
 
     def _block_fingerprint(
         self,
@@ -282,11 +334,33 @@ class ProtocolV2DecisionGuard:
         decision: dict[str, Any],
         *,
         page_sha256: str,
+        destination_picker_is_active: bool = False,
     ) -> None:
         self._validate_text_provenance(decision)
         action = decision.get("action")
         if not isinstance(action, dict):
             return
+        if (
+            destination_picker_is_active
+            and action.get("type") == "press_back"
+        ):
+            record = {
+                "semantic_state_sha256": page_sha256,
+                "action": action,
+                "reason": "destination_picker_back_blocked",
+                "required_recovery_classes": [
+                    "inspect_different_visible_control"
+                ],
+            }
+            self.validation_blocks.append(record)
+            self.destination_picker_back_block_count += 1
+            raise ActionValidationError(
+                "DESTINATION_PICKER_GUARD: bottom Cancel and Copy/Move "
+                "controls prove that the destination picker is active. "
+                "press_back would exit it and discard the pending operation. "
+                "Keep the picker open and tap its top-left navigation drawer "
+                "to change folders."
+            )
         action_key = canonical_action_key(action)
         if (
             action.get("type") in COORDINATE_STREAK_ACTIONS
@@ -414,6 +488,9 @@ class ProtocolV2DecisionGuard:
             "validation_block_count": len(self.validation_blocks),
             "identical_coordinate_block_count": (
                 self.identical_coordinate_block_count
+            ),
+            "destination_picker_back_block_count": (
+                self.destination_picker_back_block_count
             ),
             "ab_ab_cycle_trigger_count": self.cycle_trigger_count,
             "visible_failure_trigger_count": (
