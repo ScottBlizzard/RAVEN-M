@@ -1,0 +1,123 @@
+{
+  "schema_version": "protocol_v2_gate_f_batch_checkpoint.v1",
+  "status": "diagnostic_pause",
+  "batch": 1,
+  "batch_completed": true,
+  "batch_2_authorized": false,
+  "automatic_next_batch": false,
+  "automatic_gate_g_transition": false,
+  "freeze_tag": "protocol-v2-gate-f-freeze",
+  "freeze_commit": "5bc6292480eb56ddb0213294ccc5629f1ffd3bf8",
+  "suite_id": "hard_micro_seed20260730",
+  "instance_seed": 20260730,
+  "valid_cell_count": 4,
+  "success_count": 0,
+  "cumulative_active_seconds": 3359.8439999999973,
+  "projected_total_active_seconds": 8363.170477068568,
+  "hard_wall_time_seconds": 12600,
+  "m0_b3_mean_model_call_ratio": 0.59,
+  "m0_b3_mean_wall_time_ratio": 0.5500474664679841,
+  "automatic_audits": {
+    "pairing_errors": 0,
+    "provenance_audit_errors": 0,
+    "context_cap_errors": 0,
+    "reset_errors": 0,
+    "memory_isolation_errors": 0,
+    "evaluator_leakage_errors": 0,
+    "invalid_after_repair_cells": 0,
+    "unhandled_pixel_identical_third_no_effect_cells": 0
+  },
+  "results": [
+    {
+      "sequence": 1,
+      "task_id": "H01",
+      "task": "BrowserMultiply",
+      "variant": "B3",
+      "success": false,
+      "failure_code": "TASK_UNSUCCESSFUL_AT_BUDGET",
+      "termination_reason": "max_steps",
+      "model_call_count": 26,
+      "wall_time_seconds": 559.743257,
+      "max_prompt_tokens": 4284
+    },
+    {
+      "sequence": 2,
+      "task_id": "H17",
+      "task": "SportsTrackerActivitiesOnDate",
+      "variant": "M0",
+      "success": false,
+      "failure_code": "INCORRECT_ANSWER",
+      "termination_reason": "model_answer",
+      "model_call_count": 13,
+      "wall_time_seconds": 248.331702,
+      "max_prompt_tokens": 4540,
+      "answer_action_count": 1,
+      "answer_cache_match_count": 1
+    },
+    {
+      "sequence": 3,
+      "task_id": "H03",
+      "task": "ExpenseAddMultipleFromMarkor",
+      "variant": "B3",
+      "success": false,
+      "failure_code": "TASK_UNSUCCESSFUL_AT_BUDGET",
+      "termination_reason": "max_steps",
+      "model_call_count": 74,
+      "wall_time_seconds": 1529.804464,
+      "max_prompt_tokens": 5248
+    },
+    {
+      "sequence": 4,
+      "task_id": "H16",
+      "task": "SimpleCalendarAddOneEvent",
+      "variant": "M0",
+      "success": false,
+      "failure_code": "TASK_UNSUCCESSFUL_AT_BUDGET",
+      "termination_reason": "max_steps",
+      "model_call_count": 46,
+      "wall_time_seconds": 901.018728,
+      "max_prompt_tokens": 6033
+    }
+  ],
+  "manual_semantic_progress_audit": {
+    "passed": false,
+    "findings": [
+      {
+        "task_id": "H01",
+        "steps": "9-21",
+        "finding": "Chrome recovery and sync prompts oscillated while pixel hashes changed; the task page was never reached."
+      },
+      {
+        "task_id": "H17",
+        "steps": "8",
+        "finding": "The model answered Bicycle although the frozen expected activity type was swimming; the answer channel itself was valid."
+      },
+      {
+        "task_id": "H03",
+        "steps": "45-59",
+        "finding": "The agent repeated scrolling and file-opening actions without transitioning to expense entry; pixel changes masked semantic non-progress."
+      },
+      {
+        "task_id": "H16",
+        "steps": "19-33",
+        "finding": "The agent repeated the same save tap fifteen times while the visible UI reported that the event ended before it started; transient pixel changes bypassed the exact-screenshot loop guard."
+      }
+    ]
+  },
+  "startup_infrastructure_invalid_attempt": {
+    "count": 1,
+    "scored_cells": 0,
+    "cause": "AndroidEnv accessibility APK install timed out before environment construction.",
+    "recovery": "Project emulator cold-restarted; load-reset-close smoke test passed before the scored batch was relaunched.",
+    "runner_recorded_count": 0,
+    "runner_gap": "Initial environment construction failures occur before the current runner infrastructure-attempt recorder."
+  },
+  "integrity": {
+    "gate_summary_sha256": "6a1265b7dbedccda082f6233282c82c488f1aed9fafb1ac15da601fb0b29e83d",
+    "batch_checkpoint_sha256": "6a1265b7dbedccda082f6233282c82c488f1aed9fafb1ac15da601fb0b29e83d",
+    "manifest_snapshot_sha256": "90f1cdd1210090ee4efde70635e42bac3f0b44ff54c90c4b8b51441779c24b46",
+    "instances_snapshot_sha256": "87d5ed0c734d97be6617fbe817caece832316fd86e5308ba1520397102596c84",
+    "startup_attempt_stderr_sha256": "25038af68cf535b282cafe6fafc6ec5d1196cc25909ec19538a2e3d2e1ca8d2f"
+  },
+  "recommended_next_action": "Do not run batch 2. Add generic semantic-progress and visible-failure recovery enforcement plus initial-environment recovery accounting, requalify Gates D and E, then restart Gate F from batch 1 under a new protocol version."
+}
