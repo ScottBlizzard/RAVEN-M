@@ -1,0 +1,85 @@
+{
+  "schema_version": "protocol_v2_1_gate_d.v1",
+  "protocol": "androidworld_protocol_v2_1_exploratory",
+  "implementation_commit": "5c1cb952aaa93f1c526ae38fb68a1339a073d5df",
+  "trigger": "protocol_v2_gate_f_batch1_semantic_false_progress",
+  "decision": "PASS",
+  "checks": {
+    "protocol_v1_seal": {
+      "passed": true,
+      "sealed_file_count": 197,
+      "hash_failure_count": 0
+    },
+    "task_action_coverage": {
+      "passed": true,
+      "selected_task_count": 19,
+      "passed_task_count": 19,
+      "report": "reports/protocol_v2_1_task_action_coverage.json",
+      "report_sha256": "b565384fafbfcaa48cecaf9a445c79aec833a1367c1cf3130e23b308f6e506ad"
+    },
+    "full_local_tests": {
+      "passed": true,
+      "test_count": 153
+    },
+    "protocol_v1_isolation": {
+      "passed": true,
+      "semantic_prompt_absent": true,
+      "semantic_state_used": false,
+      "legacy_page_signature_prefix_preserved": true,
+      "legacy_loop_extractor_preserved": true
+    },
+    "live_android_answer_smoke": {
+      "passed": true,
+      "correct_answer_scores": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "empty_cache_scores": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "wrong_answer_score": 0.0,
+      "reset_isolation_cycles": 3,
+      "model_calls": 0,
+      "gpu_experiment": false,
+      "report": "reports/protocol_v2_live_android_answer_smoke_v2_1.json",
+      "report_sha256": "e9b1c76b59cb8572a3897363b36a955806e83b0fd1e6c93764f4de278596dfc5"
+    },
+    "live_semantic_ui_smoke": {
+      "passed": true,
+      "source": "accessibility",
+      "raw_ui_element_count": 19,
+      "excluded_system_ui_element_count": 5,
+      "semantic_element_count": 14,
+      "semantic_sha256": "ba789853585aa4340f9397e5551b32239ab5ddb292dc933799017f4c32d7c886",
+      "visible_failure_count": 0,
+      "model_calls": 0,
+      "gpu_experiment": false,
+      "report": "reports/protocol_v2_semantic_ui_smoke.json",
+      "report_sha256": "11264bbc6ad0be2c4a6669aaa20302e5f99b6676a5d7d107605e59aa51cb9dae"
+    },
+    "startup_environment_audit": {
+      "passed": true,
+      "post_freeze_invocation": 2,
+      "post_freeze_status": "clean",
+      "cumulative_failure_count": 0,
+      "cumulative_recovery_success_count": 0,
+      "report": "reports/protocol_v2_semantic_ui_startup_audit.json",
+      "report_sha256": "f3b4d2a0faace4c4959089bc72b36a33a7176db336330613ff96afdefeba5d1f"
+    }
+  },
+  "old_protocol_v2_gate_f": {
+    "status": "diagnostic_pause",
+    "completed_batch": 1,
+    "completed_cell_count": 4,
+    "batch_2_authorized": false,
+    "batch_2_cell_count": 0,
+    "continuation_guard_installed": true
+  },
+  "gpu_experiment_cells_run_during_gate_d": 0,
+  "gate_e_v2_1_cells_run": 0,
+  "hard_v2_1_cells_run": 0,
+  "automatic_next_gate": false
+}

@@ -1,0 +1,19 @@
+{
+  "checked_at": "2026-07-27T03:35:39.971185+00:00",
+  "gpu_experiment": false,
+  "model_calls": 0,
+  "passed": true,
+  "raw_system_ui_element_count": 5,
+  "raw_ui_element_count": 19,
+  "schema_version": "protocol_v2_semantic_ui_smoke.v1",
+  "semantic_snapshot": {
+    "element_count": 14,
+    "schema_version": "semantic_ui_snapshot.v1",
+    "sha256": "ba789853585aa4340f9397e5551b32239ab5ddb292dc933799017f4c32d7c886",
+    "source": "accessibility",
+    "visible_failure_texts": []
+  },
+  "startup_environment_failure_count": 0,
+  "startup_environment_recovery_success_count": 0,
+  "startup_environment_status": "clean"
+}
