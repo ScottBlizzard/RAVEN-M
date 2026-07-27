@@ -1,0 +1,66 @@
+{
+  "schema_version": "protocol_v2_1_gate_e_preflight_decision.v1",
+  "protocol": "androidworld_protocol_v2_1_exploratory",
+  "suite_id": "nonhard_capability_v2_1_seed20260729_r1",
+  "decision": "READY_TO_LAUNCH",
+  "automatic_launch": false,
+  "source_tag": "protocol-v2-1-gate-e-dev",
+  "source_commit": "9c39b75f7eea3952da738a092deb7eb02c506468",
+  "checks": {
+    "full_local_tests": {
+      "passed": true,
+      "test_count": 159
+    },
+    "frozen_file_hashes": {
+      "passed": true,
+      "file_count": 14,
+      "failure_count": 0
+    },
+    "paired_design": {
+      "passed": true,
+      "task_count": 4,
+      "cell_count": 8,
+      "variants": [
+        "B3",
+        "M0"
+      ],
+      "same_instance_seed_as_v2": true,
+      "same_blocked_order_as_v2": true,
+      "hard_task_overlap_count": 0
+    },
+    "model_service": {
+      "passed": true,
+      "model": "Qwen/Qwen3-VL-32B-Instruct",
+      "revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+      "backend": "qwen3_vl_32b_transformers_bf16_4x4090_v1",
+      "loaded": true
+    },
+    "android_emulator": {
+      "passed": true,
+      "serial": "emulator-5554"
+    },
+    "fresh_suite_directory": {
+      "passed": true,
+      "path": "runs/protocol_v2_1/nonhard_capability_v2_1_seed20260729_r1",
+      "exists": false
+    }
+  },
+  "preflight_model_calls": 0,
+  "preflight_gpu_experiment_cells": 0,
+  "gate_e_cells_started": 0,
+  "gate_f_cells_started": 0,
+  "artifacts": {
+    "manifest": {
+      "path": "05_project/configs/experiments/v2_1_capability_gate.json",
+      "sha256": "05aec1078d0956e1a90ca05c6563bb11599bc37f2a75a42916d6441f6fcba026"
+    },
+    "wrapper": {
+      "path": "05_project/scripts/run_protocol_v2_1_gate_e.py",
+      "sha256": "788341052940c616c5aa367c0d46cb4502ba908240ff0726617bdfb83cb0d640"
+    },
+    "preflight_report": {
+      "path": "reports/protocol_v2_1_gate_e_preflight.json",
+      "sha256": "f67c7996b9b7bc38a61975997e57666cb0a8575df52b9523326e99d41b8ace7e"
+    }
+  }
+}

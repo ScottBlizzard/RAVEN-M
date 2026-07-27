@@ -3,7 +3,7 @@
   "manifest_id": "protocol_v2_1_gate_e_seed20260729",
   "protocol": "androidworld_protocol_v2_1_exploratory",
   "source_tag": "protocol-v2-1-gate-e-dev",
-  "source_commit": "PENDING_PROTOCOL_V2_1_GATE_E_FREEZE",
+  "source_commit": "9c39b75f7eea3952da738a092deb7eb02c506468",
   "suite_id": "nonhard_capability_v2_1_seed20260729_r1",
   "output_root": "runs/protocol_v2_1",
   "instance_seed": 20260729,
@@ -95,7 +95,64 @@
     "B3": "schemas/action.v2.schema.json",
     "M0": "schemas/action.raven.v2.schema.json"
   },
-  "freeze_files": [],
+  "freeze_files": [
+    {
+      "path": "05_project/scripts/run_protocol_v2_gate_e.py",
+      "sha256": "3c52076c24c6443babbacb6ea7aa1be950d29f3871f0590cc21afea156b76348"
+    },
+    {
+      "path": "05_project/scripts/protocol_v2_runtime.py",
+      "sha256": "09bd30ed6556bd74c08bfee48a5f5d61837f21169aa19c805a9428df8fd9400c"
+    },
+    {
+      "path": "05_project/src/raven_m/controller/episode_controller.py",
+      "sha256": "6aeefcebb3828c298a8854a30c815f653114e3322190802ec9462cec88289749"
+    },
+    {
+      "path": "05_project/src/raven_m/controller/protocol_v2_guard.py",
+      "sha256": "c17d4504b43bed98f73015ea0b056be91411b3faae81df17885593a0584b79c8"
+    },
+    {
+      "path": "05_project/src/raven_m/history/policies.py",
+      "sha256": "7403deeb2ad95d689e2da57fecd1d59f09c17dc10793a032154164d4ad473de3"
+    },
+    {
+      "path": "05_project/src/raven_m/memory/manager.py",
+      "sha256": "79a08cde1f27f659f7bc9073fe2835c6515796e95cf0e6d1226dccd1479e86f9"
+    },
+    {
+      "path": "05_project/prompts/executor_v2.md",
+      "sha256": "4482d51c257e260b93f72bee03ba703e1370d6b0ed8e5f04fd3dbe562b0c90b3"
+    },
+    {
+      "path": "05_project/prompts/executor_raven_v2.md",
+      "sha256": "39b7c2a8cac0ac7a04d73af826b39d86be5a6d41aab331384dc6a5846eae4ef2"
+    },
+    {
+      "path": "05_project/prompts/summary_v1.md",
+      "sha256": "e9dbb03f28d07362bd2490f48d135be0b2833bbbb0224d1ef0ac7a215cd5cc29"
+    },
+    {
+      "path": "05_project/prompts/planner_v1.md",
+      "sha256": "d83352bd7dcf95f5a5c938b4cd4572d1a079ad23631002bd9d29f70318249b8e"
+    },
+    {
+      "path": "05_project/prompts/critic_v1.md",
+      "sha256": "25d4e409ff0b5ed89a75f4668ab311c5649531d39f963b0f22116ca5861b0f75"
+    },
+    {
+      "path": "05_project/schemas/action.v2.schema.json",
+      "sha256": "6c82f2b8aca5362f395747715f54efa658be2c6c99f6a7ccd3e694547c6a1323"
+    },
+    {
+      "path": "05_project/schemas/action.raven.v2.schema.json",
+      "sha256": "84c6f6389052b594d834a9438e9df3978470ef7aa9cc0ac81a8c22ba80af8027"
+    },
+    {
+      "path": "05_project/configs/task_capabilities_v2.json",
+      "sha256": "9d488716df6dccfcb07e1c897c2e1cb3aab348a988bf853abf5deb26493c1951"
+    }
+  ],
   "limits": {
     "max_valid_cells": 8,
     "max_infrastructure_attempts_per_cell": 2,
