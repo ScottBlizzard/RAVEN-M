@@ -151,8 +151,11 @@ def score_item(
             else 0.0
         )
     )
+    # A model-authored interpretation of one screenshot is observed evidence,
+    # not a verified fact. FACT authority requires a later direct
+    # re-observation (or an explicitly verified lifecycle state).
     fact_eligible = (
-        item.evidence.get("origin") == "direct_visual_observation"
+        item.verification_status == "verified"
         or int(item.evidence.get("independent_confirmations", 0)) >= 1
     )
 

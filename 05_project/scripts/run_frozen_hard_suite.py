@@ -296,6 +296,19 @@ def classify_infrastructure(summary: dict[str, Any]) -> str | None:
     if not error:
         return None
     text = json.dumps(error, ensure_ascii=False).lower()
+    if any(
+        token in text
+        for token in (
+            "visibleinfrastructurefailure",
+            "infra_emulator_anr",
+            "isn't responding",
+            "is not responding",
+            "not responding",
+            "keeps stopping",
+            "has stopped",
+        )
+    ):
+        return "INFRA_EMULATOR_ANR"
     if "is_successful" in text:
         return "INFRA_EVALUATOR_EXCEPTION"
     if any(

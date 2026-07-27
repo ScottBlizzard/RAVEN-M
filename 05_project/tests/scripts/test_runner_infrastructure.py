@@ -42,7 +42,17 @@ def test_only_classified_infrastructure_is_retriable() -> None:
             "message": "planner response was invalid",
         }
     }
+    visible_anr = {
+        "error": {
+            "type": "VisibleInfrastructureFailure",
+            "message": (
+                "INFRA_EMULATOR_ANR: "
+                "Process system isn't responding"
+            ),
+        }
+    }
     assert classify_infrastructure(adb_failure) == "INFRA_EMULATOR_LOST"
+    assert classify_infrastructure(visible_anr) == "INFRA_EMULATOR_ANR"
     assert classify_infrastructure(method_failure) is None
     assert classify_infrastructure({"error": None}) is None
 

@@ -6,7 +6,11 @@ function Get-AndroidWorldEmulatorProcess {
     @(
         Get-CimInstance Win32_Process -ErrorAction SilentlyContinue |
             Where-Object {
-                $_.Name -in @("emulator.exe", "qemu-system-x86_64.exe") -and
+                $_.Name -in @(
+                    "emulator.exe",
+                    "qemu-system-x86_64.exe",
+                    "qemu-system-x86_64-headless.exe"
+                ) -and
                 $_.CommandLine -match "AndroidWorldAvd"
             }
     )

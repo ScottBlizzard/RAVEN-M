@@ -75,6 +75,14 @@ target, scroll direction, navigation action, or recovery step. A
 deterministically detected visible failure is routed as an observed ALERT;
 obey it until a different action changes the invalid state.
 
+When planner_state is present, its current_subgoal and required_variables are
+frozen anchors for the episode. Do not re-resolve a relative date, replace a
+target value, or navigate away from those anchors merely because the current
+screen changed. The current screenshot is primary when it contradicts a
+memory item. A critic_constraint with verdict reobserve or recover is binding:
+do not repeat its blocked_action; choose a materially different recovery
+action and verify the resulting screen.
+
 state_delta is always an array with at most two entries and records only
 material progress, page identity, a verified intermediate value, or a reusable
 failure/recovery rule. Use [] when no material state should be persisted. Each
@@ -86,3 +94,9 @@ action_outcome, or inference. Do not use a free-form object such as
 state_delta must be []. A visible Save/Move/Done control is not completion
 evidence until executed and its result observed. For an information-return
 goal, submit the value with answer. Return JSON only.
+
+A direct_screen entry is one observed claim, not independently verified FACT
+authority. Page/screen identity claims are page-local and expire when the
+semantic page changes. Describe the exact visible mode (for example, month
+view versus day view); never promote an intended action outcome into the
+current screen state.

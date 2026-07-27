@@ -67,6 +67,8 @@ DEFAULT_GATE_E_SOURCE_COMMIT = (
     "de5278b6fc78ca01d4b530ef1442e5060dccbf10"
 )
 PROTOCOL_V2_1 = "androidworld_protocol_v2_1_exploratory"
+PROTOCOL_V2_2 = "androidworld_protocol_v2_2_exploratory"
+VERSIONED_PROTOCOLS = {PROTOCOL_V2_1, PROTOCOL_V2_2}
 
 
 def utc_now() -> str:
@@ -305,8 +307,14 @@ def episode_result(
         ),
         **loop_audit,
     }
-    if summary.get("protocol") == PROTOCOL_V2_1:
+    if summary.get("protocol") in VERSIONED_PROTOCOLS:
         result["semantic_progress_audit"] = semantic_progress_audit(summary)
+        result["readiness_observation_count"] = int(
+            summary.get("readiness_observation_count", 0)
+        )
+        result["readiness_retry_count"] = int(
+            summary.get("readiness_retry_count", 0)
+        )
     return result
 
 
@@ -344,7 +352,8 @@ def aggregate(
         for item in results
         if item["task"] == "SimpleCalendarEventsOnDate"
     ]
-    protocol_v2_1 = manifest["protocol"] == PROTOCOL_V2_1
+    versioned_protocol = manifest["protocol"] in VERSIONED_PROTOCOLS
+    protocol_v2_2 = manifest["protocol"] == PROTOCOL_V2_2
     semantic_audits = [
         item.get("semantic_progress_audit", {})
         for item in results
@@ -371,7 +380,7 @@ def aggregate(
                 not item.get("semantic_progress_audit", {}).get(
                     "passed", False
                 )
-                if protocol_v2_1
+                if versioned_protocol
                 else item["unhandled_third_identical_no_effect_action"]
             )
             for item in results
@@ -396,7 +405,7 @@ def aggregate(
             and health.get("revision") == EXPECTED_REVISION
         ),
     }
-    if protocol_v2_1:
+    if versioned_protocol:
         criteria.update(
             {
                 "semantic_progress_audit": all(
@@ -415,13 +424,22 @@ def aggregate(
                 ),
             }
         )
+    if protocol_v2_2:
+        criteria["readiness_accounting"] = all(
+            item.get("readiness_observation_count", 0) >= 1
+            for item in results
+        )
     finished = valid_count == len(manifest["schedule"]) and not stopped_early
     gate_passed = finished and all(criteria.values())
     result = {
         "schema_version": (
-            "protocol_v2_1_gate_e_summary.v1"
-            if protocol_v2_1
-            else "protocol_v2_gate_e_summary.v1"
+            "protocol_v2_2_gate_e_summary.v1"
+            if protocol_v2_2
+            else (
+                "protocol_v2_1_gate_e_summary.v1"
+                if versioned_protocol
+                else "protocol_v2_gate_e_summary.v1"
+            )
         ),
         "suite_id": manifest["suite_id"],
         "protocol": manifest["protocol"],
@@ -445,7 +463,7 @@ def aggregate(
         "criteria": criteria,
         "results": results,
     }
-    if protocol_v2_1:
+    if versioned_protocol:
         result["startup_environment_audit"] = startup_audit
     return result
 
@@ -489,7 +507,7 @@ def validate_gate_e_manifest(
     if not coverage["passed"]:
         raise RuntimeError("Protocol-v2 capability audit failed.")
     freeze_checks = []
-    if manifest["protocol"] == PROTOCOL_V2_1:
+    if manifest["protocol"] in VERSIONED_PROTOCOLS:
         if _git_output("rev-list", "-n", "1", manifest["source_tag"]) != (
             expected_source_commit
         ):
@@ -511,7 +529,7 @@ def validate_gate_e_manifest(
             raise RuntimeError("Gate-E source is not an ancestor of HEAD.")
         records = manifest.get("freeze_files", [])
         if not records:
-            raise RuntimeError("Protocol-v2.1 freeze file list is empty.")
+            raise RuntimeError("Versioned protocol freeze file list is empty.")
         for record in records:
             path = REPOSITORY_ROOT / record["path"]
             actual = (
@@ -529,7 +547,7 @@ def validate_gate_e_manifest(
                 }
             )
         if not all(item["passed"] for item in freeze_checks):
-            raise RuntimeError("Protocol-v2.1 freeze file hash mismatch.")
+            raise RuntimeError("Versioned protocol freeze file hash mismatch.")
     return {
         "selected_tasks": sorted(selected),
         "selected_task_count": len(selected),
@@ -591,7 +609,11 @@ def run_preflight(
             }
         )
     result = {
-        "schema_version": "protocol_v2_1_gate_e_preflight.v1",
+        "schema_version": (
+            "protocol_v2_2_gate_e_preflight.v1"
+            if manifest["protocol"] == PROTOCOL_V2_2
+            else "protocol_v2_1_gate_e_preflight.v1"
+        ),
         "checked_at": utc_now(),
         "passed": True,
         "protocol": manifest["protocol"],
@@ -631,26 +653,56 @@ def main(
     parser.add_argument("--aggregate-only", action="store_true")
     parser.add_argument("--preflight-only", action="store_true")
     parser.add_argument(
+        "--development-smoke-cells",
+        type=int,
+        default=0,
+        help=(
+            "Run the first N cells in a separate non-scored development "
+            "directory; valid values are 1-7."
+        ),
+    )
+    parser.add_argument(
         "--preflight-output",
         type=Path,
-        default=REPOSITORY_ROOT
-        / "reports/protocol_v2_1_gate_e_preflight.json",
+        default=None,
     )
     args = parser.parse_args()
 
     manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
+    preflight_output = args.preflight_output or (
+        REPOSITORY_ROOT
+        / (
+            "reports/protocol_v2_2_gate_e_preflight.json"
+            if manifest["protocol"] == PROTOCOL_V2_2
+            else "reports/protocol_v2_1_gate_e_preflight.json"
+        )
+    )
     manifest_audit = validate_gate_e_manifest(
         manifest,
         expected_source_commit=expected_source_commit,
     )
     selected = set(manifest_audit["selected_tasks"])
+    if args.development_smoke_cells:
+        if not 1 <= args.development_smoke_cells < 8:
+            raise RuntimeError(
+                "--development-smoke-cells must be between 1 and 7."
+            )
+        manifest = json.loads(json.dumps(manifest))
+        manifest["schedule"] = manifest["schedule"][
+            : args.development_smoke_cells
+        ]
+        manifest["suite_id"] = (
+            manifest["suite_id"]
+            + f"_development_smoke_{args.development_smoke_cells}"
+        )
+        manifest["output_root"] = "runs/protocol_v2_2_development"
     if args.preflight_only:
         return run_preflight(
             manifest=manifest,
             manifest_audit=manifest_audit,
             url=args.url,
             adb_path=args.adb_path,
-            output=args.preflight_output,
+            output=preflight_output,
         )
 
     suite_dir = (
@@ -727,7 +779,7 @@ def main(
         print(json.dumps(final, indent=2, ensure_ascii=False))
         return 0 if final["gate_passed"] else 3
 
-    if manifest["protocol"] == PROTOCOL_V2_1:
+    if manifest["protocol"] in VERSIONED_PROTOCOLS:
         try:
             env, startup_audit = initialize_androidworld_environment(
                 audit_path=startup_audit_path,
@@ -845,6 +897,9 @@ def main(
                     action_schema_path=schemas[item["variant"]],
                     decision_guard=ProtocolV2DecisionGuard(),
                     protocol_v2=True,
+                    protocol_v2_2=(
+                        manifest["protocol"] == PROTOCOL_V2_2
+                    ),
                 )
                 episode_id = (
                     f"{manifest['suite_id']}_{item['sequence']:02d}_"
@@ -901,7 +956,10 @@ def main(
                         + infra_code
                     )
                     break
-                if infra_code == "INFRA_EMULATOR_LOST":
+                if infra_code in {
+                    "INFRA_EMULATOR_LOST",
+                    "INFRA_EMULATOR_ANR",
+                }:
                     env.close()
                     env = recover_androidworld_env(
                         adb_path=args.adb_path,

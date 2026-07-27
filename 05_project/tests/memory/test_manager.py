@@ -261,3 +261,99 @@ def test_visible_failure_writes_observed_typed_failure(tmp_path) -> None:
     context, routed = manager.context(step=1)
     assert failures[0].memory_id in context
     assert routed[0].route == "ALERT"
+
+
+def test_page_identity_claim_expires_on_semantic_change(tmp_path) -> None:
+    manager = RavenMemoryManager()
+    manager.reset(
+        episode_id="episode-a",
+        task_id="CalendarTask",
+        task_goal="Inspect October 25",
+        episode_dir=tmp_path,
+    )
+    before_semantic = sha256(b"month-view").hexdigest()
+    after_semantic = sha256(b"day-view").hexdigest()
+    observation = TransitionObservation(
+        step=0,
+        decision_summary="Open October 25.",
+        action={"type": "tap", "x": 0.5, "y": 0.75},
+        expected_outcome="The day view opens.",
+        observed_outcome="The semantic UI changed.",
+        evidence_outcome="The month view was visible.",
+        before_screenshot_path="step_000_before.png",
+        before_screenshot_sha256=sha256(b"before").hexdigest(),
+        after_screenshot_sha256=sha256(b"after").hexdigest(),
+        after_screenshot_path="step_000_after.png",
+        before_semantic_ui_sha256=before_semantic,
+        after_semantic_ui_sha256=after_semantic,
+        state_delta=(
+            {
+                "kind": "fact",
+                "subject": "page",
+                "predicate": "identity",
+                "object": "calendar month view",
+                "natural_language": "The calendar month view is visible.",
+                "evidence": "direct_screen",
+            },
+        ),
+    )
+    result = manager.observe_transition(observation)
+    item = manager.store.get(result["written_memory_ids"][0])
+    assert item.validity["preconditions"] == ["same_task", "same_page"]
+    assert "semantic_page_changed" in item.validity["expires_on"]
+    assert item.verification_status == "stale"
+    _, routed = manager.context(step=1)
+    assert all(value.item.memory_id != item.memory_id for value in routed)
+
+
+def test_repeated_direct_observation_promotes_one_item(tmp_path) -> None:
+    manager = RavenMemoryManager()
+    manager.reset(
+        episode_id="episode-a",
+        task_id="NoteTask",
+        task_goal="Read the note",
+        episode_dir=tmp_path,
+    )
+    semantic = sha256(b"same-semantic-page").hexdigest()
+    first = transition(
+        step=0,
+        before=sha256(b"pixel-a").hexdigest(),
+        after=sha256(b"pixel-a").hexdigest(),
+    )
+    first = TransitionObservation(
+        **{
+            **first.__dict__,
+            "before_semantic_ui_sha256": semantic,
+            "after_semantic_ui_sha256": semantic,
+        }
+    )
+    first_result = manager.observe_transition(first)
+    memory_id = first_result["written_memory_ids"][0]
+    _, first_routes = manager.context(step=1)
+    assert first_routes[0].route == "HYPOTHESIS"
+
+    second = transition(
+        step=1,
+        before=sha256(b"pixel-b").hexdigest(),
+        after=sha256(b"pixel-b").hexdigest(),
+    )
+    second = TransitionObservation(
+        **{
+            **second.__dict__,
+            "before_semantic_ui_sha256": semantic,
+            "after_semantic_ui_sha256": semantic,
+        }
+    )
+    second_result = manager.observe_transition(second)
+    assert memory_id in second_result["written_memory_ids"]
+    episodic = [
+        item
+        for item in manager.store.all_items()
+        if item.memory_type == "episodic_fact"
+    ]
+    assert len(episodic) == 1
+    verified = manager.store.get(memory_id)
+    assert verified.verification_status == "verified"
+    assert verified.evidence["independent_confirmations"] == 1
+    _, second_routes = manager.context(step=2)
+    assert second_routes[0].route == "FACT"

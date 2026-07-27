@@ -9,6 +9,7 @@ from hashlib import sha256
 import html
 import json
 from pathlib import Path
+import time
 import traceback
 from typing import Any
 
@@ -155,6 +156,15 @@ class ModelOutputInvalid(RuntimeError):
         self.completion_adjudications = completion_adjudications or []
 
 
+class VisibleInfrastructureFailure(RuntimeError):
+    """A visible OS/app failure that must be retried outside the policy."""
+
+    def __init__(self, messages: list[str]) -> None:
+        rendered = " | ".join(messages)
+        super().__init__(f"INFRA_EMULATOR_ANR: {rendered}")
+        self.messages = tuple(messages)
+
+
 def classify_failure_code(
     *,
     error_record: dict[str, Any] | None,
@@ -197,6 +207,9 @@ class EpisodeController:
         action_schema_path: Path | None = None,
         decision_guard: ProtocolV2DecisionGuard | None = None,
         protocol_v2: bool = False,
+        protocol_v2_2: bool = False,
+        readiness_max_observations: int = 12,
+        readiness_retry_delay_seconds: float = 0.75,
     ) -> None:
         self.client = client
         self.system_prompt = system_prompt
@@ -207,6 +220,114 @@ class EpisodeController:
         self.action_schema_path = action_schema_path
         self.decision_guard = decision_guard
         self.protocol_v2 = protocol_v2
+        self.protocol_v2_2 = protocol_v2_2
+        self.readiness_max_observations = max(1, readiness_max_observations)
+        self.readiness_retry_delay_seconds = max(
+            0.0, readiness_retry_delay_seconds
+        )
+
+    def _observe_state(
+        self,
+        env: Any,
+        *,
+        require_accessibility: bool,
+    ) -> tuple[Any, list[dict[str, Any]]]:
+        """Observe without spending a policy step until an opened app is ready."""
+        maximum = (
+            self.readiness_max_observations
+            if self.protocol_v2_2 and require_accessibility
+            else 1
+        )
+        observations: list[dict[str, Any]] = []
+        state = None
+        for attempt in range(1, maximum + 1):
+            state = env.get_state(wait_to_stabilize=True)
+            raw_pixel_sha = sha256(state.pixels.tobytes()).hexdigest()
+            semantic = (
+                semantic_ui_snapshot(
+                    getattr(state, "ui_elements", ()),
+                    fallback_sha256=raw_pixel_sha,
+                )
+                if self.protocol_v2
+                else {
+                    "source": "protocol_v1_screenshot",
+                    "element_count": 0,
+                    "visible_failure_texts": [],
+                    "infrastructure_failure_texts": [],
+                }
+            )
+            observations.append(
+                {
+                    "attempt": attempt,
+                    "source": semantic["source"],
+                    "element_count": int(semantic["element_count"]),
+                    "foreground_package": self._foreground_package(env),
+                    "accessibility_packages": self._accessibility_packages(
+                        state
+                    ),
+                    "matches_foreground": (
+                        self._accessibility_matches_foreground(
+                            env,
+                            state,
+                            semantic,
+                        )
+                    ),
+                    "infrastructure_failure_texts": list(
+                        semantic.get("infrastructure_failure_texts", [])
+                    ),
+                }
+            )
+            if semantic.get("infrastructure_failure_texts"):
+                break
+            if not require_accessibility or (
+                semantic["source"] == "accessibility"
+                and self._accessibility_matches_foreground(
+                    env,
+                    state,
+                    semantic,
+                )
+            ):
+                break
+            if attempt < maximum and self.readiness_retry_delay_seconds:
+                time.sleep(self.readiness_retry_delay_seconds)
+        assert state is not None
+        return state, observations
+
+    @staticmethod
+    def _foreground_package(env: Any) -> str | None:
+        activity = getattr(env, "foreground_activity_name", None)
+        if not isinstance(activity, str) or not activity:
+            return None
+        return activity.split("/", 1)[0]
+
+    @staticmethod
+    def _accessibility_packages(state: Any) -> list[str]:
+        packages = set()
+        for element in getattr(state, "ui_elements", ()):
+            package = (
+                element.get("package_name")
+                if isinstance(element, dict)
+                else getattr(element, "package_name", None)
+            )
+            if package:
+                packages.add(str(package))
+        return sorted(packages)
+
+    @classmethod
+    def _accessibility_matches_foreground(
+        cls,
+        env: Any,
+        state: Any,
+        semantic: dict[str, Any],
+    ) -> bool:
+        if semantic["source"] != "accessibility":
+            return False
+        foreground_package = cls._foreground_package(env)
+        if foreground_package is None:
+            # Test doubles and non-Android adapters may not expose an
+            # activity name. Accessibility itself remains the best signal.
+            return True
+        return foreground_package in cls._accessibility_packages(state)
 
     @staticmethod
     def _user_prompt(
@@ -221,6 +342,7 @@ class EpisodeController:
         previous_outcome: str,
         memory_context: str = "[]",
         protocol_v2: bool = False,
+        protocol_v2_2: bool = False,
     ) -> str:
         example_pixel_y = min(438, screen_height - 1)
         example_normalized_y = example_pixel_y / max(screen_height - 1, 1)
@@ -258,6 +380,20 @@ class EpisodeController:
                         "or use a named recovery class."
                     ]
                     if protocol_v2
+                    else []
+                ),
+                *(
+                    [
+                        "PLANNER_CONSISTENCY: when MEMORY_CONTEXT contains "
+                        "planner_state, its current_subgoal and "
+                        "required_variables are frozen anchors. Do not "
+                        "re-resolve a relative date or replace a target "
+                        "because the UI has navigated; recover toward the "
+                        "anchored target. A reobserve/recover critic "
+                        "constraint is binding until a materially different "
+                        "action changes the semantic state."
+                    ]
+                    if protocol_v2_2
                     else []
                 ),
                 "LENGTH_CHECK: expected_outcome and decision_summary must each "
@@ -508,6 +644,8 @@ class EpisodeController:
         task_initialized = False
         error_record: dict[str, Any] | None = None
         model_output_error: dict[str, Any] | None = None
+        readiness_observation_count = 0
+        readiness_retry_count = 0
         task_params = _json_safe(task.params)
         self.history_policy.reset(
             episode_dir=episode_dir,
@@ -552,7 +690,12 @@ class EpisodeController:
                         }
                     )
                     break
-                state_before = env.get_state(wait_to_stabilize=True)
+                state_before, before_readiness = self._observe_state(
+                    env,
+                    require_accessibility=False,
+                )
+                readiness_observation_count += len(before_readiness)
+                readiness_retry_count += max(0, len(before_readiness) - 1)
                 height, width = state_before.pixels.shape[:2]
                 before_path = logger.save_screenshot(
                     state_before.pixels,
@@ -570,8 +713,24 @@ class EpisodeController:
                         "sha256": before_pixel_sha,
                         "element_count": 0,
                         "visible_failure_texts": [],
+                        "infrastructure_failure_texts": [],
                     }
                 )
+                if before_semantic.get("infrastructure_failure_texts"):
+                    messages = list(
+                        before_semantic["infrastructure_failure_texts"]
+                    )
+                    logger.append(
+                        {
+                            "event": "visible_infrastructure_failure",
+                            "phase": "before_decision",
+                            "step": step,
+                            "messages": messages,
+                            "screenshot": before_path.name,
+                            "readiness_observations": before_readiness,
+                        }
+                    )
+                    raise VisibleInfrastructureFailure(messages)
                 history_context = self.history_policy.context()
                 evidence_outcome = previous_outcome
                 user_prompt = self._user_prompt(
@@ -585,6 +744,7 @@ class EpisodeController:
                     previous_outcome=previous_outcome,
                     memory_context=history_context.rendered,
                     protocol_v2=self.protocol_v2,
+                    protocol_v2_2=self.protocol_v2_2,
                 )
                 try:
                     decision, calls, parse_meta = self._call_and_parse(
@@ -692,6 +852,7 @@ class EpisodeController:
                             "completion_adjudications", []
                         ),
                     ),
+                    "before_readiness_observations": before_readiness,
                 }
                 if self.protocol_v2:
                     step_record["before_semantic_ui"] = before_semantic
@@ -729,7 +890,15 @@ class EpisodeController:
                     steps.append(step_record)
                     logger.append(step_record)
                     raise
-                state_after = env.get_state(wait_to_stabilize=True)
+                state_after, after_readiness = self._observe_state(
+                    env,
+                    require_accessibility=bool(
+                        self.protocol_v2_2
+                        and decision["action"].get("type") == "open_app"
+                    ),
+                )
+                readiness_observation_count += len(after_readiness)
+                readiness_retry_count += max(0, len(after_readiness) - 1)
                 after_path = logger.save_screenshot(
                     state_after.pixels,
                     f"step_{step:03d}_after.png",
@@ -747,6 +916,7 @@ class EpisodeController:
                         "sha256": after_sha,
                         "element_count": 0,
                         "visible_failure_texts": [],
+                        "infrastructure_failure_texts": [],
                     }
                 )
                 changed = before_sha != after_sha
@@ -757,10 +927,22 @@ class EpisodeController:
                         "after_screenshot": after_path.name,
                         "after_screenshot_sha256": after_sha,
                         "screenshot_changed": changed,
+                        "after_readiness_observations": after_readiness,
                     }
                 )
                 if self.protocol_v2:
                     step_record["after_semantic_ui"] = after_semantic
+                if after_semantic.get("infrastructure_failure_texts"):
+                    messages = list(
+                        after_semantic["infrastructure_failure_texts"]
+                    )
+                    step_record["visible_infrastructure_failure"] = {
+                        "phase": "after_action",
+                        "messages": messages,
+                    }
+                    steps.append(step_record)
+                    logger.append(step_record)
+                    raise VisibleInfrastructureFailure(messages)
                 guard_transition = None
                 if self.decision_guard is not None:
                     guard_transition = self.decision_guard.observe_transition(
@@ -963,6 +1145,8 @@ class EpisodeController:
             "model_call_count": model_call_count,
             "executor_model_call_count": executor_model_call_count,
             "history_model_call_count": history_model_call_count,
+            "readiness_observation_count": readiness_observation_count,
+            "readiness_retry_count": readiness_retry_count,
             "first_pass_parse_count": first_pass_count,
             "first_pass_parse_rate": (
                 first_pass_count / decision_attempt_count

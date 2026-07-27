@@ -230,6 +230,29 @@ def test_semantic_snapshot_ignores_clock_and_separates_failure() -> None:
     assert after["visible_failure_texts"] == [
         "The event cannot end earlier than it starts"
     ]
+    assert after["infrastructure_failure_texts"] == []
+
+
+def test_semantic_snapshot_separates_android_anr_from_validation() -> None:
+    snapshot = semantic_ui_snapshot(
+        [
+            {
+                "package_name": "android",
+                "text": "Process system isn't responding",
+                "class_name": "android.widget.TextView",
+            },
+            {
+                "package_name": "android",
+                "text": "Wait",
+                "class_name": "android.widget.Button",
+            },
+        ],
+        fallback_sha256="pixel-a",
+    )
+    assert snapshot["infrastructure_failure_texts"] == [
+        "Process system isn't responding"
+    ]
+    assert snapshot["visible_failure_texts"] == []
 
 
 def test_semantic_snapshot_changes_for_task_relevant_text() -> None:

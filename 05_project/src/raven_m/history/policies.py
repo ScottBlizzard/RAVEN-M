@@ -573,12 +573,14 @@ class FullRavenMemoryPolicy(RavenMemoryPolicy):
         )
         self.plan_state: dict[str, Any] | None = None
         self.critic_alert: dict[str, Any] | None = None
+        self.critic_constraint: dict[str, Any] | None = None
 
     def context(self) -> HistoryContext:
         base = super().context()
         payload = json.loads(base.rendered)
         payload["planner_state"] = self.plan_state
         payload["critic_alert"] = self.critic_alert
+        payload["critic_constraint"] = self.critic_constraint
         return HistoryContext(
             rendered=json.dumps(
                 payload,
@@ -588,8 +590,31 @@ class FullRavenMemoryPolicy(RavenMemoryPolicy):
             )
         )
 
+    def _validate_critic_constraint(
+        self, decision: dict[str, Any]
+    ) -> None:
+        action = decision.get("action")
+        if (
+            self.critic_constraint
+            and decision.get("status") == "continue"
+            and isinstance(action, dict)
+            and action == self.critic_constraint.get("blocked_action")
+        ):
+            raise ActionValidationError(
+                "CRITIC_CONSTRAINT: the latest reobserve/recover verdict "
+                "forbids repeating the same action. Choose a materially "
+                "different recovery action that satisfies: "
+                + str(
+                    self.critic_constraint.get(
+                        "recommended_constraint",
+                        "re-observe or recover",
+                    )
+                )
+            )
+
     def validate_decision(self, decision: dict[str, Any]) -> None:
         super().validate_decision(decision)
+        self._validate_critic_constraint(decision)
         if decision.get("status") != "done":
             return
         cited = set(decision.get("memory_citations", []))
@@ -620,6 +645,24 @@ class FullRavenMemoryPolicy(RavenMemoryPolicy):
             remaining_model_calls=remaining_model_calls,
         )
         details = dict(base.details or {})
+        if self.critic_constraint:
+            semantic_changed = bool(
+                entry.before_semantic_ui_sha256
+                and entry.semantic_ui_sha256
+                and entry.before_semantic_ui_sha256
+                != entry.semantic_ui_sha256
+            )
+            materially_different = (
+                entry.action
+                != self.critic_constraint.get("blocked_action")
+            )
+            if semantic_changed and materially_different:
+                details["critic_constraint_cleared"] = {
+                    "reason": "different_action_changed_semantic_state",
+                    "constraint": self.critic_constraint,
+                }
+                self.critic_constraint = None
+                self.critic_alert = None
         planner_trigger = entry.step == 0 or (entry.step + 1) % 5 == 0
         critic_trigger = bool(
             details.get("loop_detected")
@@ -696,6 +739,20 @@ class FullRavenMemoryPolicy(RavenMemoryPolicy):
             role_calls.extend(critic.calls)
             if critic.output is not None:
                 self.critic_alert = critic.output
+                verdict = critic.output.get("verdict")
+                if verdict in {"reobserve", "recover"}:
+                    self.critic_constraint = {
+                        "schema_version": "critic_constraint.v1",
+                        "verdict": verdict,
+                        "blocked_action": entry.action,
+                        "recommended_constraint": critic.output.get(
+                            "recommended_constraint",
+                            "re-observe or recover",
+                        ),
+                        "created_step": entry.step,
+                    }
+                elif verdict == "proceed":
+                    self.critic_constraint = None
             role_records.append(
                 {
                     "role": "critic",
@@ -728,6 +785,7 @@ class FullRavenMemoryPolicyV2(FullRavenMemoryPolicy):
 
     def validate_decision(self, decision: dict[str, Any]) -> None:
         RavenMemoryPolicy.validate_decision(self, decision)
+        self._validate_critic_constraint(decision)
         if decision.get("status") != "done":
             return
         evidence = decision.get("completion_evidence", [])

@@ -136,6 +136,100 @@ class RavenMemoryManager:
             if origin in {"direct_visual_observation", "direct_action_outcome"}
             else "candidate"
         )
+        subject = str(delta["subject"])
+        predicate = str(delta["predicate"])
+        page_local = (
+            kind == "page_hypothesis"
+            or (
+                subject.strip().lower()
+                in {"page", "screen", "current_page", "current_screen"}
+                and predicate.strip().lower()
+                in {"identity", "visible", "visibility", "state"}
+            )
+        )
+        preconditions = list(delta.get("preconditions", ["same_task"]))
+        expires_on = list(delta.get("expires_on", []))
+        if page_local:
+            if "same_page" not in preconditions:
+                preconditions.append("same_page")
+            if "semantic_page_changed" not in expires_on:
+                expires_on.append("semantic_page_changed")
+        current_source = self._source(
+            step=transition.step,
+            screenshot_path=transition.before_screenshot_path,
+            screenshot_sha256=transition.before_screenshot_sha256,
+            model_call_id=model_call_id,
+            extractor="executor_state_delta_v2",
+        )
+        if origin in {"direct_visual_observation", "direct_action_outcome"}:
+            for existing in self.store.active_items():
+                if existing.verification_status not in {
+                    "candidate",
+                    "observed",
+                    "verified",
+                }:
+                    continue
+                same_claim = (
+                    existing.memory_type == memory_type
+                    and existing.content["subject"] == subject
+                    and existing.content["predicate"] == predicate
+                    and existing.content["object"] == delta["object"]
+                    and existing.page_signature == page_signature
+                )
+                independently_reobserved = (
+                    same_claim
+                    and transition.step > existing.last_confirmed_step
+                    and transition.before_screenshot_sha256
+                    not in existing.source.screenshot_sha256
+                )
+                if not independently_reobserved:
+                    continue
+                confirmations = int(
+                    existing.evidence.get("independent_confirmations", 0)
+                ) + 1
+                evidence = {
+                    **existing.evidence,
+                    "independent_confirmations": confirmations,
+                }
+                combined_source = MemorySource(
+                    observation_ids=tuple(
+                        dict.fromkeys(
+                            (
+                                *existing.source.observation_ids,
+                                *current_source.observation_ids,
+                            )
+                        )
+                    ),
+                    action_ids=tuple(
+                        dict.fromkeys(
+                            (
+                                *existing.source.action_ids,
+                                *current_source.action_ids,
+                            )
+                        )
+                    ),
+                    screenshot_paths=(
+                        *existing.source.screenshot_paths,
+                        *current_source.screenshot_paths,
+                    ),
+                    screenshot_sha256=(
+                        *existing.source.screenshot_sha256,
+                        *current_source.screenshot_sha256,
+                    ),
+                    model_call_id=model_call_id,
+                    extractor="executor_state_delta_confirmation_v2",
+                )
+                self.store.transition(
+                    existing.memory_id,
+                    status="verified",
+                    step=transition.step,
+                    reason="independent_direct_reobservation",
+                    patch={
+                        "evidence": evidence,
+                        "source": combined_source,
+                    },
+                )
+                return existing.memory_id
         # state_delta is emitted from the decision-time observation. Its
         # screenshot provenance is therefore always the *before* frame. An
         # action_outcome label refers to PREVIOUS_ACTION_AND_OBSERVED_OUTCOME
@@ -147,8 +241,8 @@ class RavenMemoryManager:
             episode_id=self.episode_id,
             memory_type=memory_type,
             content={
-                "subject": str(delta["subject"]),
-                "predicate": str(delta["predicate"]),
+                "subject": subject,
+                "predicate": predicate,
                 "object": delta["object"],
                 "natural_language": str(delta["natural_language"]),
             },
@@ -158,13 +252,7 @@ class RavenMemoryManager:
             page_signature=page_signature,
             created_step=transition.step,
             last_confirmed_step=transition.step,
-            source=self._source(
-                step=transition.step,
-                screenshot_path=transition.before_screenshot_path,
-                screenshot_sha256=transition.before_screenshot_sha256,
-                model_call_id=model_call_id,
-                extractor="executor_state_delta_v1",
-            ),
+            source=current_source,
             evidence={
                 "origin": origin,
                 "action_outcome": (
@@ -178,10 +266,8 @@ class RavenMemoryManager:
             confidence_model=float(delta.get("confidence", 0.5)),
             validity={
                 "scope": "episode",
-                "preconditions": list(
-                    delta.get("preconditions", ["same_task"])
-                ),
-                "expires_on": list(delta.get("expires_on", [])),
+                "preconditions": preconditions,
+                "expires_on": expires_on,
             },
             relations={
                 "supersedes": None,

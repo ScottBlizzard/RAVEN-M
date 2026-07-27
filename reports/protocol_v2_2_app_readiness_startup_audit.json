@@ -1,0 +1,30 @@
+{
+  "events": [
+    {
+      "checked_at": "2026-07-27T05:15:04.178866+00:00",
+      "event": "invocation_started",
+      "invocation": 1
+    },
+    {
+      "attempt": 1,
+      "checked_at": "2026-07-27T05:15:40.917406+00:00",
+      "event": "success",
+      "phase": "initial_load"
+    },
+    {
+      "checked_at": "2026-07-27T05:18:45.002852+00:00",
+      "event": "invocation_started",
+      "invocation": 2
+    },
+    {
+      "attempt": 1,
+      "checked_at": "2026-07-27T05:19:09.129668+00:00",
+      "event": "success",
+      "phase": "initial_load"
+    }
+  ],
+  "failure_count": 0,
+  "last_status": "clean",
+  "recovery_success_count": 0,
+  "schema_version": "protocol_v2_startup_environment_audit.v1"
+}

@@ -4,7 +4,9 @@ import json
 from pathlib import Path
 
 from PIL import Image
+import pytest
 
+from raven_m.actions.schema import ActionValidationError
 from raven_m.history.policies import (
     FullRavenMemoryPolicyV2,
     make_history_policy_v2,
@@ -121,3 +123,23 @@ def test_m0_and_mrel_share_v2_completion_implementation() -> None:
     assert isinstance(mrel, FullRavenMemoryPolicyV2)
     assert m0.manager.config.reliability_aware
     assert not mrel.manager.config.reliability_aware
+
+
+def test_v2_critic_constraint_blocks_same_action(tmp_path: Path) -> None:
+    value, _ = policy(tmp_path, "proceed")
+    blocked = {"type": "tap", "x": 0.9, "y": 0.1}
+    value.critic_constraint = {
+        "schema_version": "critic_constraint.v1",
+        "verdict": "reobserve",
+        "blocked_action": blocked,
+        "recommended_constraint": "re-observe before retrying",
+        "created_step": 3,
+    }
+    decision = {
+        "status": "continue",
+        "action": blocked,
+        "memory_citations": [],
+        "completion_evidence": [],
+    }
+    with pytest.raises(ActionValidationError, match="CRITIC_CONSTRAINT"):
+        value.validate_decision(decision)

@@ -54,7 +54,7 @@ def query() -> RetrievalQuery:
     )
 
 
-def test_direct_observed_memory_can_be_fact() -> None:
+def test_single_direct_observation_is_only_a_hypothesis() -> None:
     store = EpisodeMemoryStore(episode_id="episode-a")
     store.write(item("m_0001"))
     selected = retrieve_and_route(
@@ -62,8 +62,21 @@ def test_direct_observed_memory_can_be_fact() -> None:
         store=store,
         config=MemoryConfig(),
     )
-    assert selected[0].route == "FACT"
+    assert selected[0].route == "HYPOTHESIS"
     assert selected[0].reliability >= 0.75
+
+
+def test_verified_reobservation_can_be_fact() -> None:
+    store = EpisodeMemoryStore(episode_id="episode-a")
+    verified = item("m_0001", status="verified")
+    verified.evidence["independent_confirmations"] = 1
+    store.write(verified)
+    selected = retrieve_and_route(
+        query=query(),
+        store=store,
+        config=MemoryConfig(),
+    )
+    assert selected[0].route == "FACT"
 
 
 def test_stale_or_contradicted_memory_is_never_fact() -> None:

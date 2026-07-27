@@ -37,6 +37,15 @@ VISIBLE_FAILURE_RE = re.compile(
     r"already exists)\b",
     flags=re.IGNORECASE,
 )
+INFRASTRUCTURE_FAILURE_RE = re.compile(
+    r"(?:\bis(?:n't| not)\s+responding\b|"
+    r"\bnot\s+responding\b|"
+    r"\bkeeps?\s+stopping\b|"
+    r"\bhas\s+stopped\b|"
+    r"\bprocess\s+system\b.*\bresponding\b|"
+    r"\bsystem\s+ui\b.*\bresponding\b)",
+    flags=re.IGNORECASE,
+)
 IGNORED_UI_PACKAGES = {"com.android.systemui"}
 SEMANTIC_FIELDS = (
     "text",
@@ -88,6 +97,7 @@ def semantic_ui_snapshot(
     """Build a stable UI digest and separate visible failure messages."""
     records: list[dict[str, Any]] = []
     visible_failures: set[str] = set()
+    infrastructure_failures: set[str] = set()
     for element in ui_elements or []:
         if _element_value(element, "is_visible") is False:
             continue
@@ -104,6 +114,17 @@ def semantic_ui_snapshot(
             )
             if (text := _normalized_text(_element_value(element, field)))
         }
+        infrastructure = {
+            text
+            for text in texts
+            if INFRASTRUCTURE_FAILURE_RE.search(text)
+        }
+        if infrastructure:
+            infrastructure_failures.update(infrastructure)
+            # OS/app crash and ANR dialogs are environment evidence. They
+            # must never be treated as ordinary task progress or as a
+            # validation error that the policy should solve in-band.
+            continue
         failures = {
             text for text in texts if VISIBLE_FAILURE_RE.search(text)
         }
@@ -137,6 +158,9 @@ def semantic_ui_snapshot(
             "sha256": fallback_sha256,
             "element_count": 0,
             "visible_failure_texts": sorted(visible_failures),
+            "infrastructure_failure_texts": sorted(
+                infrastructure_failures
+            ),
         }
     encoded_records = sorted(
         (
@@ -162,6 +186,9 @@ def semantic_ui_snapshot(
         "sha256": digest,
         "element_count": len(records),
         "visible_failure_texts": sorted(visible_failures),
+        "infrastructure_failure_texts": sorted(
+            infrastructure_failures
+        ),
     }
 
 

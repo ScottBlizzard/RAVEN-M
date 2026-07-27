@@ -116,6 +116,92 @@ class CalendarTask:
         del env
 
 
+class DelayedAccessibilityEnv:
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def get_state(self, wait_to_stabilize: bool):
+        assert wait_to_stabilize
+        self.calls += 1
+        elements = (
+            []
+            if self.calls < 3
+            else [
+                SimpleNamespace(
+                    package_name="contacts",
+                    text="No contacts yet",
+                    resource_id="empty_state",
+                )
+            ]
+        )
+        return SimpleNamespace(
+            pixels=np.full((16, 12, 3), self.calls, dtype=np.uint8),
+            ui_elements=elements,
+        )
+
+
+class StaleAccessibilityEnv:
+    foreground_activity_name = "expense/expense.MainActivity"
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def get_state(self, wait_to_stabilize: bool):
+        assert wait_to_stabilize
+        self.calls += 1
+        package = "calendar" if self.calls == 1 else "expense"
+        return SimpleNamespace(
+            pixels=np.full((16, 12, 3), self.calls, dtype=np.uint8),
+            ui_elements=[
+                SimpleNamespace(
+                    package_name=package,
+                    text="Home",
+                    resource_id="home",
+                )
+            ],
+        )
+
+
+def test_v2_2_readiness_retries_do_not_consume_policy_steps() -> None:
+    env = DelayedAccessibilityEnv()
+    controller = EpisodeController(
+        client=RepeatingSaveClient(),  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        protocol_v2=True,
+        protocol_v2_2=True,
+        readiness_max_observations=4,
+        readiness_retry_delay_seconds=0,
+    )
+    _, observations = controller._observe_state(
+        env,
+        require_accessibility=True,
+    )
+    assert env.calls == 3
+    assert len(observations) == 3
+    assert observations[-1]["source"] == "accessibility"
+
+
+def test_v2_2_readiness_rejects_stale_previous_app_tree() -> None:
+    env = StaleAccessibilityEnv()
+    controller = EpisodeController(
+        client=RepeatingSaveClient(),  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        protocol_v2=True,
+        protocol_v2_2=True,
+        readiness_max_observations=3,
+        readiness_retry_delay_seconds=0,
+    )
+    _, observations = controller._observe_state(
+        env,
+        require_accessibility=True,
+    )
+    assert env.calls == 2
+    assert not observations[0]["matches_foreground"]
+    assert observations[0]["accessibility_packages"] == ["calendar"]
+    assert observations[1]["matches_foreground"]
+    assert observations[1]["accessibility_packages"] == ["expense"]
+
+
 def test_controller_routes_visible_failure_and_blocks_repeat(
     tmp_path: Path,
 ) -> None:
