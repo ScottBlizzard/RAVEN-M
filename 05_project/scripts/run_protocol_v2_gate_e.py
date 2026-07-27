@@ -10,6 +10,7 @@ import math
 from pathlib import Path
 import random
 import shutil
+import subprocess
 import sys
 import time
 from typing import Any
@@ -40,6 +41,10 @@ from raven_m.history.policies import (  # noqa: E402
     make_history_policy_v2,
 )
 from raven_m.models.transformers_client import TransformersClient  # noqa: E402
+from protocol_v2_runtime import (  # noqa: E402
+    initialize_androidworld_environment,
+    load_startup_audit,
+)
 from run_frozen_hard_suite import (  # noqa: E402
     EXPECTED_BACKEND,
     EXPECTED_REVISION,
@@ -55,6 +60,13 @@ from run_method_dev_suite import audit_memory_episode  # noqa: E402
 HARD_MANIFEST = (
     PROJECT_ROOT / "configs/task_manifests/androidworld_hard_v1.json"
 )
+DEFAULT_GATE_E_MANIFEST = (
+    PROJECT_ROOT / "configs/experiments/v2_capability_gate.json"
+)
+DEFAULT_GATE_E_SOURCE_COMMIT = (
+    "de5278b6fc78ca01d4b530ef1442e5060dccbf10"
+)
+PROTOCOL_V2_1 = "androidworld_protocol_v2_1_exploratory"
 
 
 def utc_now() -> str:
@@ -127,6 +139,81 @@ def repeated_no_effect_audit(summary: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def semantic_progress_audit(summary: dict[str, Any]) -> dict[str, Any]:
+    """Audit protocol-v2.1 semantic evidence without evaluator state."""
+    missing_steps: list[int] = []
+    fallback_observation_count = 0
+    visible_failure_count = 0
+    maximum_no_progress_repeats = 0
+    blocked_fingerprints: set[tuple[str, str]] = set()
+    executed_blocked_steps: list[int] = []
+    for step in summary.get("steps", []):
+        if not step.get("executed") or not step.get("decision"):
+            continue
+        before = step.get("before_semantic_ui")
+        after = step.get("after_semantic_ui")
+        guard = step.get("protocol_v2_guard")
+        if not all(isinstance(value, dict) for value in (before, after, guard)):
+            missing_steps.append(int(step["step"]))
+            continue
+        fallback_observation_count += sum(
+            value.get("source") == "screenshot_fallback"
+            for value in (before, after)
+        )
+        action = step["decision"].get("action")
+        fingerprint = (
+            str(before.get("sha256")),
+            json.dumps(
+                action,
+                ensure_ascii=False,
+                sort_keys=True,
+                separators=(",", ":"),
+            ),
+        )
+        if fingerprint in blocked_fingerprints:
+            executed_blocked_steps.append(int(step["step"]))
+        visible_failure_count += len(
+            guard.get("new_visible_failures", [])
+        )
+        maximum_no_progress_repeats = max(
+            maximum_no_progress_repeats,
+            int(guard.get("semantic_no_progress_repeat_count", 0)),
+        )
+        if guard.get("fingerprint_blocked"):
+            blocked_fingerprints.add(fingerprint)
+    guard_summary = summary.get("protocol_v2_guard") or {}
+    unresolved_guard_repair = bool(
+        guard_summary.get("validation_block_count", 0)
+        and summary.get("failure_code")
+        == "MODEL_OUTPUT_INVALID_AFTER_REPAIR"
+    )
+    return {
+        "schema_version": "protocol_v2_1_semantic_episode_audit.v1",
+        "executed_step_count": sum(
+            bool(step.get("executed"))
+            for step in summary.get("steps", [])
+        ),
+        "missing_semantic_audit_steps": missing_steps,
+        "screenshot_fallback_observation_count": (
+            fallback_observation_count
+        ),
+        "visible_failure_count": visible_failure_count,
+        "maximum_semantic_no_progress_repeat_count": (
+            maximum_no_progress_repeats
+        ),
+        "validation_block_count": int(
+            guard_summary.get("validation_block_count", 0)
+        ),
+        "executed_blocked_action_steps": executed_blocked_steps,
+        "unresolved_guard_repair": unresolved_guard_repair,
+        "passed": (
+            not missing_steps
+            and not executed_blocked_steps
+            and not unresolved_guard_repair
+        ),
+    }
+
+
 def episode_result(
     *,
     item: dict[str, Any],
@@ -160,7 +247,7 @@ def episode_result(
         if "parse" in step
     )
     loop_audit = repeated_no_effect_audit(summary)
-    return {
+    result = {
         "sequence": item["sequence"],
         "task": item["task"],
         "variant": item["variant"],
@@ -218,6 +305,9 @@ def episode_result(
         ),
         **loop_audit,
     }
+    if summary.get("protocol") == PROTOCOL_V2_1:
+        result["semantic_progress_audit"] = semantic_progress_audit(summary)
+    return result
 
 
 def aggregate(
@@ -230,6 +320,7 @@ def aggregate(
     elapsed_seconds: float,
     stopped_early: bool,
     stop_reason: str | None,
+    startup_audit: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     pairing_errors = []
     for task in {item["task"] for item in manifest["schedule"]}:
@@ -253,6 +344,11 @@ def aggregate(
         for item in results
         if item["task"] == "SimpleCalendarEventsOnDate"
     ]
+    protocol_v2_1 = manifest["protocol"] == PROTOCOL_V2_1
+    semantic_audits = [
+        item.get("semantic_progress_audit", {})
+        for item in results
+    ]
     criteria = {
         "valid_scored_cells": valid_count == 8,
         "pairing": not pairing_errors,
@@ -271,7 +367,13 @@ def aggregate(
         "b3_success": variant_successes["B3"] >= 1,
         "m0_success": variant_successes["M0"] >= 1,
         "loop_guard": not any(
-            item["unhandled_third_identical_no_effect_action"]
+            (
+                not item.get("semantic_progress_audit", {}).get(
+                    "passed", False
+                )
+                if protocol_v2_1
+                else item["unhandled_third_identical_no_effect_action"]
+            )
             for item in results
         ),
         "m0_completion": not any(
@@ -294,10 +396,33 @@ def aggregate(
             and health.get("revision") == EXPECTED_REVISION
         ),
     }
+    if protocol_v2_1:
+        criteria.update(
+            {
+                "semantic_progress_audit": all(
+                    audit.get("passed", False)
+                    for audit in semantic_audits
+                ),
+                "visible_failure_enforcement": not any(
+                    audit.get("executed_blocked_action_steps")
+                    or audit.get("unresolved_guard_repair")
+                    for audit in semantic_audits
+                ),
+                "startup_environment_accounting": bool(
+                    startup_audit
+                    and startup_audit.get("last_status")
+                    in {"clean", "recovered"}
+                ),
+            }
+        )
     finished = valid_count == len(manifest["schedule"]) and not stopped_early
     gate_passed = finished and all(criteria.values())
-    return {
-        "schema_version": "protocol_v2_gate_e_summary.v1",
+    result = {
+        "schema_version": (
+            "protocol_v2_1_gate_e_summary.v1"
+            if protocol_v2_1
+            else "protocol_v2_gate_e_summary.v1"
+        ),
         "suite_id": manifest["suite_id"],
         "protocol": manifest["protocol"],
         "source_tag": manifest["source_tag"],
@@ -320,9 +445,179 @@ def aggregate(
         "criteria": criteria,
         "results": results,
     }
+    if protocol_v2_1:
+        result["startup_environment_audit"] = startup_audit
+    return result
 
 
-def main() -> int:
+def _git_output(*args: str) -> str:
+    completed = subprocess.run(
+        ["git", *args],
+        cwd=REPOSITORY_ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+        timeout=30,
+    )
+    return completed.stdout.strip()
+
+
+def validate_gate_e_manifest(
+    manifest: dict[str, Any],
+    *,
+    expected_source_commit: str,
+) -> dict[str, Any]:
+    if manifest["source_commit"] != expected_source_commit:
+        raise RuntimeError("Gate-E source commit is not frozen.")
+    if len(manifest["schedule"]) != 8:
+        raise RuntimeError("Gate E requires exactly eight frozen cells.")
+    if {item["variant"] for item in manifest["schedule"]} != {"B3", "M0"}:
+        raise RuntimeError("Gate E is restricted to B3 and M0.")
+    paired: dict[str, set[str]] = {}
+    for item in manifest["schedule"]:
+        paired.setdefault(item["task"], set()).add(item["variant"])
+    if len(paired) != 4 or any(
+        variants != {"B3", "M0"} for variants in paired.values()
+    ):
+        raise RuntimeError("Gate E requires four paired B3/M0 tasks.")
+    hard = json.loads(HARD_MANIFEST.read_text(encoding="utf-8"))
+    hard_names = {item["class_name"] for item in hard["tasks"]}
+    selected = set(paired)
+    if selected & hard_names:
+        raise RuntimeError("Gate E must not contain any Hard task.")
+    coverage = capability_audit(REPOSITORY_ROOT)
+    if not coverage["passed"]:
+        raise RuntimeError("Protocol-v2 capability audit failed.")
+    freeze_checks = []
+    if manifest["protocol"] == PROTOCOL_V2_1:
+        if _git_output("rev-list", "-n", "1", manifest["source_tag"]) != (
+            expected_source_commit
+        ):
+            raise RuntimeError("Gate-E source tag does not resolve to source.")
+        ancestor = subprocess.run(
+            [
+                "git",
+                "merge-base",
+                "--is-ancestor",
+                expected_source_commit,
+                "HEAD",
+            ],
+            cwd=REPOSITORY_ROOT,
+            check=False,
+            capture_output=True,
+            timeout=30,
+        )
+        if ancestor.returncode != 0:
+            raise RuntimeError("Gate-E source is not an ancestor of HEAD.")
+        records = manifest.get("freeze_files", [])
+        if not records:
+            raise RuntimeError("Protocol-v2.1 freeze file list is empty.")
+        for record in records:
+            path = REPOSITORY_ROOT / record["path"]
+            actual = (
+                sha256(path.read_bytes()).hexdigest()
+                if path.is_file()
+                else None
+            )
+            passed = actual == record["sha256"]
+            freeze_checks.append(
+                {
+                    "path": record["path"],
+                    "expected_sha256": record["sha256"],
+                    "actual_sha256": actual,
+                    "passed": passed,
+                }
+            )
+        if not all(item["passed"] for item in freeze_checks):
+            raise RuntimeError("Protocol-v2.1 freeze file hash mismatch.")
+    return {
+        "selected_tasks": sorted(selected),
+        "selected_task_count": len(selected),
+        "schedule_cell_count": len(manifest["schedule"]),
+        "paired": True,
+        "hard_overlap": [],
+        "capability_audit_passed": True,
+        "freeze_file_checks": freeze_checks,
+    }
+
+
+def run_preflight(
+    *,
+    manifest: dict[str, Any],
+    manifest_audit: dict[str, Any],
+    url: str,
+    adb_path: str,
+    output: Path,
+) -> int:
+    suite_dir = (
+        REPOSITORY_ROOT / manifest["output_root"] / manifest["suite_id"]
+    )
+    if suite_dir.exists():
+        raise RuntimeError(
+            "Fresh Gate-E suite directory already exists; refusing reuse."
+        )
+    adb = subprocess.run(
+        [adb_path, "devices"],
+        check=True,
+        capture_output=True,
+        text=True,
+        timeout=30,
+    )
+    emulator_connected = any(
+        line.startswith("emulator-5554") and line.rstrip().endswith("device")
+        for line in adb.stdout.splitlines()
+    )
+    if not emulator_connected:
+        raise RuntimeError("Gate-E emulator is not connected.")
+    client = TransformersClient(url)
+    health = client.health()
+    task_registry = registry.TaskRegistry()
+    registered = task_registry.get_registry(
+        task_registry.ANDROID_WORLD_FAMILY
+    )
+    seed = int(manifest["instance_seed"])
+    instance_records = []
+    for task_name in manifest_audit["selected_tasks"]:
+        if task_name not in registered:
+            raise RuntimeError(f"Unknown Gate-E task: {task_name}")
+        task = generate_task(registered, task_name, seed)
+        goal_hash, params_hash = instance_hash(task)
+        instance_records.append(
+            {
+                "task": task_name,
+                "seed": seed,
+                "goal_sha256": goal_hash,
+                "params_sha256": params_hash,
+            }
+        )
+    result = {
+        "schema_version": "protocol_v2_1_gate_e_preflight.v1",
+        "checked_at": utc_now(),
+        "passed": True,
+        "protocol": manifest["protocol"],
+        "suite_id": manifest["suite_id"],
+        "source_tag": manifest["source_tag"],
+        "source_commit": manifest["source_commit"],
+        "manifest_audit": manifest_audit,
+        "instance_records": instance_records,
+        "model_health": health,
+        "emulator_connected": emulator_connected,
+        "fresh_suite_directory_absent": True,
+        "model_calls": 0,
+        "gpu_experiment_cells": 0,
+        "automatic_gate_e_launch": False,
+        "automatic_gate_f_transition": False,
+    }
+    write_json(output, result)
+    print(json.dumps(result, indent=2, ensure_ascii=False))
+    return 0
+
+
+def main(
+    *,
+    default_manifest: Path = DEFAULT_GATE_E_MANIFEST,
+    expected_source_commit: str = DEFAULT_GATE_E_SOURCE_COMMIT,
+) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--url", default="http://127.0.0.1:18000")
     parser.add_argument("--adb-path", required=True)
@@ -331,26 +626,32 @@ def main() -> int:
     parser.add_argument(
         "--manifest",
         type=Path,
-        default=PROJECT_ROOT / "configs/experiments/v2_capability_gate.json",
+        default=default_manifest,
     )
     parser.add_argument("--aggregate-only", action="store_true")
+    parser.add_argument("--preflight-only", action="store_true")
+    parser.add_argument(
+        "--preflight-output",
+        type=Path,
+        default=REPOSITORY_ROOT
+        / "reports/protocol_v2_1_gate_e_preflight.json",
+    )
     args = parser.parse_args()
 
     manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
-    if manifest["source_commit"] != "de5278b6fc78ca01d4b530ef1442e5060dccbf10":
-        raise RuntimeError("Gate-E source commit is not frozen.")
-    if len(manifest["schedule"]) != 8:
-        raise RuntimeError("Gate E requires exactly eight frozen cells.")
-    if {item["variant"] for item in manifest["schedule"]} != {"B3", "M0"}:
-        raise RuntimeError("Gate E is restricted to B3 and M0.")
-    hard = json.loads(HARD_MANIFEST.read_text(encoding="utf-8"))
-    hard_names = {item["class_name"] for item in hard["tasks"]}
-    selected = {item["task"] for item in manifest["schedule"]}
-    if selected & hard_names:
-        raise RuntimeError("Gate E must not contain any Hard task.")
-    coverage = capability_audit(REPOSITORY_ROOT)
-    if not coverage["passed"]:
-        raise RuntimeError("Protocol-v2 capability audit failed.")
+    manifest_audit = validate_gate_e_manifest(
+        manifest,
+        expected_source_commit=expected_source_commit,
+    )
+    selected = set(manifest_audit["selected_tasks"])
+    if args.preflight_only:
+        return run_preflight(
+            manifest=manifest,
+            manifest_audit=manifest_audit,
+            url=args.url,
+            adb_path=args.adb_path,
+            output=args.preflight_output,
+        )
 
     suite_dir = (
         REPOSITORY_ROOT / manifest["output_root"] / manifest["suite_id"]
@@ -398,12 +699,16 @@ def main() -> int:
     existing_progress = suite_dir / "suite_progress.json"
     results: list[dict[str, Any]] = []
     infrastructure_attempts: list[dict[str, Any]] = []
+    startup_audit_path = suite_dir / "startup_environment_audit.json"
+    startup_audit: dict[str, Any] | None = None
     if existing_progress.is_file():
         prior = json.loads(existing_progress.read_text(encoding="utf-8"))
         results = list(prior.get("results", []))
         infrastructure_attempts = list(
             prior.get("infrastructure_attempts", [])
         )
+    if startup_audit_path.is_file():
+        startup_audit = load_startup_audit(startup_audit_path)
     started_at = utc_now()
     started_clock = time.monotonic()
     if args.aggregate_only:
@@ -416,18 +721,60 @@ def main() -> int:
             elapsed_seconds=0.0,
             stopped_early=False,
             stop_reason=None,
+            startup_audit=startup_audit,
         )
         write_json(suite_dir / "suite_summary.json", final)
         print(json.dumps(final, indent=2, ensure_ascii=False))
         return 0 if final["gate_passed"] else 3
 
-    env = env_launcher.load_and_setup_env(
-        console_port=args.console_port,
-        emulator_setup=False,
-        freeze_datetime=True,
-        adb_path=args.adb_path,
-        grpc_port=args.grpc_port,
-    )
+    if manifest["protocol"] == PROTOCOL_V2_1:
+        try:
+            env, startup_audit = initialize_androidworld_environment(
+                audit_path=startup_audit_path,
+                load_fn=lambda: env_launcher.load_and_setup_env(
+                    console_port=args.console_port,
+                    emulator_setup=False,
+                    freeze_datetime=True,
+                    adb_path=args.adb_path,
+                    grpc_port=args.grpc_port,
+                ),
+                recover_fn=lambda: recover_androidworld_env(
+                    adb_path=args.adb_path,
+                    console_port=args.console_port,
+                    grpc_port=args.grpc_port,
+                    recovery_dir=(
+                        suite_dir / "recoveries/startup_environment"
+                    ),
+                ),
+            )
+        except Exception as exc:
+            startup_audit = load_startup_audit(startup_audit_path)
+            final = aggregate(
+                manifest=manifest,
+                health=health,
+                results=results,
+                infrastructure_attempts=infrastructure_attempts,
+                started_at=started_at,
+                elapsed_seconds=time.monotonic() - started_clock,
+                stopped_early=True,
+                stop_reason=(
+                    "startup_environment_failed_twice:"
+                    f"{type(exc).__name__}"
+                ),
+                startup_audit=startup_audit,
+            )
+            write_json(suite_dir / "suite_summary.json", final)
+            write_json(suite_dir / "suite_progress.json", final)
+            print(json.dumps(final, indent=2, ensure_ascii=False))
+            return 3
+    else:
+        env = env_launcher.load_and_setup_env(
+            console_port=args.console_port,
+            emulator_setup=False,
+            freeze_datetime=True,
+            adb_path=args.adb_path,
+            grpc_port=args.grpc_port,
+        )
     stopped_early = False
     stop_reason = None
     consecutive_infra_codes: list[str] = []
@@ -610,6 +957,7 @@ def main() -> int:
                 elapsed_seconds=time.monotonic() - started_clock,
                 stopped_early=False,
                 stop_reason=None,
+                startup_audit=startup_audit,
             )
             write_json(suite_dir / "suite_progress.json", progress)
             print(
@@ -628,6 +976,11 @@ def main() -> int:
                 stopped_early = True
                 stop_reason = "model_output_invalid_after_one_bounded_repair"
                 break
+            semantic_audit = result.get("semantic_progress_audit")
+            if semantic_audit and not semantic_audit["passed"]:
+                stopped_early = True
+                stop_reason = "semantic_progress_audit_failed"
+                break
     finally:
         env.close()
 
@@ -640,6 +993,7 @@ def main() -> int:
         elapsed_seconds=time.monotonic() - started_clock,
         stopped_early=stopped_early,
         stop_reason=stop_reason,
+        startup_audit=startup_audit,
     )
     write_json(suite_dir / "suite_summary.json", final)
     write_json(suite_dir / "suite_progress.json", final)
