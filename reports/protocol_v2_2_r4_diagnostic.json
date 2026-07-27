@@ -1,0 +1,29 @@
+{
+  "schema_version": "protocol_v2_2_development_diagnostic.v1",
+  "suite_id": "nonhard_capability_v2_2_seed20260729_r4_development_smoke_sequence_4",
+  "source_commit": "21d5da1d0404667a5b9404bf21e7d6fb220b5912",
+  "finished": true,
+  "stopped_early": false,
+  "stop_reason": null,
+  "infrastructure_attempt_count": 0,
+  "result_count": 1,
+  "success_count": 0,
+  "elapsed_minutes": 11.3,
+  "suite_summary": "runs/protocol_v2_2_development/nonhard_capability_v2_2_seed20260729_r4_development_smoke_sequence_4/suite_summary.json",
+  "suite_summary_sha256": "35b82c058061a154cd7ad54dab22a908cf25d6e0c4e406004c02d6e0ecb1c3ab",
+  "results": [
+    {
+      "sequence": 4,
+      "task": "FilesMoveFile",
+      "variant": "M0",
+      "success": false,
+      "failure_code": "TASK_UNSUCCESSFUL_AT_BUDGET",
+      "termination_reason": "max_steps",
+      "readiness_observation_count": 44,
+      "readiness_retry_count": 4,
+      "screenshot_fallback_observation_count": 0,
+      "diagnosis": "r4 eliminated the stale-tree fallback and wrong toolbar coordinate loop. The executor selected one plausible exact file and opened Move to, but treated the valid empty Downloads destination as a loading screen, spending four waits and then restarting the operation."
+    }
+  ],
+  "decision": "Preserve r4. Apply a prompt-only r5 rule that No items means the destination folder is empty and ready; navigate via the drawer immediately and allow at most one wait."
+}
