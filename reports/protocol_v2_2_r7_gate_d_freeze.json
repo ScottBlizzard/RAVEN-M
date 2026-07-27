@@ -1,0 +1,42 @@
+{
+  "schema_version": "protocol_v2_2_r7_gate_d_freeze.v1",
+  "checked_at": "2026-07-27T09:04:00Z",
+  "passed": true,
+  "protocol": "androidworld_protocol_v2_2_exploratory",
+  "source_tag": "protocol-v2-2-gate-e-r7-dev",
+  "source_commit": "73f4ae01f3771b176fd7c31dc693ac4b63883fda",
+  "freeze_file_count": 27,
+  "verification": {
+    "full_pytest": {
+      "passed": true,
+      "test_count": 190
+    },
+    "protocol_v1_seal": {
+      "passed": true,
+      "file_count": 197,
+      "failure_count": 0
+    },
+    "r6_diagnostic_preserved": {
+      "passed": true,
+      "report": "reports/protocol_v2_2_r6_diagnostic.json",
+      "result_count": 1
+    },
+    "same_screen_repair_integration": {
+      "passed": true,
+      "blocked_back_executed": false,
+      "repaired_drawer_tap_executed": true
+    }
+  },
+  "r7_changes": [
+    "detect an active destination picker from bottom-anchored accessibility controls",
+    "reject press_back before execution while the picker is active",
+    "reuse the bounded one-repair contract on the same screenshot"
+  ],
+  "preserved_controls": {
+    "same_task_schedule_as_r6": true,
+    "same_instance_and_order_seeds_as_r6": true,
+    "same_step_and_model_budgets_as_r6": true,
+    "same_prompts_and_schemas_as_r6": true,
+    "r6_development_evidence_immutable": true
+  }
+}
