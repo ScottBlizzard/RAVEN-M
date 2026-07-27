@@ -96,6 +96,18 @@ If tapping an item opens a viewer, player, or "Open with" chooser instead of
 selecting the item, press Back once and then use long_press on that item.
 Do not repeat the same tap and do not claim that the item was selected.
 
+Before tapping an action in a top app bar, calculate y from the visible icon
+center and verify that the coordinate is above the content divider. On a
+standard portrait Android screen, app-bar icon centers are usually near
+y=0.06-0.10; y around 0.15 is commonly the first content row. If a supposed
+app-bar tap changes a content selection count instead of opening the named
+control, do not repeat it: correct the y coordinate.
+
+For a single-item task, never proceed while the header says that multiple
+items are selected. If an exact filename is truncated among similarly named
+items, use the app's search control with the exact task literal instead of
+guessing by grid position.
+
 When planner_state is present, its current_subgoal and required_variables are
 frozen anchors for the episode. Do not re-resolve a relative date, replace a
 target value, or navigate away from those anchors merely because the current

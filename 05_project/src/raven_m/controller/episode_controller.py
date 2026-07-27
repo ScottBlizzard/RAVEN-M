@@ -212,6 +212,7 @@ class EpisodeController:
         protocol_v2_2: bool = False,
         readiness_max_observations: int = 12,
         readiness_retry_delay_seconds: float = 0.75,
+        readiness_reconnect_after_observations: int = 3,
     ) -> None:
         self.client = client
         self.system_prompt = system_prompt
@@ -226,6 +227,9 @@ class EpisodeController:
         self.readiness_max_observations = max(1, readiness_max_observations)
         self.readiness_retry_delay_seconds = max(
             0.0, readiness_retry_delay_seconds
+        )
+        self.readiness_reconnect_after_observations = max(
+            1, readiness_reconnect_after_observations
         )
 
     def _observe_state(
@@ -242,6 +246,7 @@ class EpisodeController:
         )
         observations: list[dict[str, Any]] = []
         state = None
+        accessibility_recovery_attempted = False
         for attempt in range(1, maximum + 1):
             state = env.get_state(wait_to_stabilize=True)
             raw_pixel_sha = sha256(state.pixels.tobytes()).hexdigest()
@@ -258,27 +263,26 @@ class EpisodeController:
                     "infrastructure_failure_texts": [],
                 }
             )
-            observations.append(
-                {
-                    "attempt": attempt,
-                    "source": semantic["source"],
-                    "element_count": int(semantic["element_count"]),
-                    "foreground_package": self._foreground_package(env),
-                    "accessibility_packages": self._accessibility_packages(
-                        state
-                    ),
-                    "matches_foreground": (
-                        self._accessibility_matches_foreground(
-                            env,
-                            state,
-                            semantic,
-                        )
-                    ),
-                    "infrastructure_failure_texts": list(
-                        semantic.get("infrastructure_failure_texts", [])
-                    ),
-                }
-            )
+            observation = {
+                "attempt": attempt,
+                "source": semantic["source"],
+                "element_count": int(semantic["element_count"]),
+                "foreground_package": self._foreground_package(env),
+                "accessibility_packages": self._accessibility_packages(state),
+                "matches_foreground": (
+                    self._accessibility_matches_foreground(
+                        env,
+                        state,
+                        semantic,
+                    )
+                ),
+                "infrastructure_failure_texts": list(
+                    semantic.get("infrastructure_failure_texts", [])
+                ),
+                "accessibility_recovery_attempted": False,
+                "accessibility_recovery_error": None,
+            }
+            observations.append(observation)
             if semantic.get("infrastructure_failure_texts"):
                 break
             if not require_accessibility or (
@@ -290,6 +294,27 @@ class EpisodeController:
                 )
             ):
                 break
+            if (
+                self.protocol_v2_2
+                and require_accessibility
+                and not accessibility_recovery_attempted
+                and attempt >= self.readiness_reconnect_after_observations
+                and attempt < maximum
+            ):
+                refresh = getattr(
+                    getattr(env, "controller", None),
+                    "refresh_env",
+                    None,
+                )
+                if callable(refresh):
+                    observation["accessibility_recovery_attempted"] = True
+                    accessibility_recovery_attempted = True
+                    try:
+                        refresh()
+                    except Exception as exc:  # pragma: no cover - runtime only
+                        observation["accessibility_recovery_error"] = (
+                            f"{type(exc).__name__}: {exc}"
+                        )
             if attempt < maximum and self.readiness_retry_delay_seconds:
                 time.sleep(self.readiness_retry_delay_seconds)
         assert state is not None

@@ -353,3 +353,33 @@ def test_repeated_action_is_allowed_when_semantic_content_changes() -> None:
         after_sha256="value-2",
     )
     guard.validate_decision(decision(action), page_sha256="value-2")
+
+
+def test_guard_blocks_fourth_identical_coordinate_action_across_states() -> None:
+    guard = ProtocolV2DecisionGuard(
+        max_no_effect_repeats=10,
+        max_identical_coordinate_actions=3,
+    )
+    guard.reset(goal="Open the toolbar menu")
+    action = {"type": "tap", "x": 0.94, "y": 0.155}
+    for index in range(3):
+        guard.validate_decision(
+            decision(action),
+            page_sha256=f"state-{index}",
+        )
+        guard.observe_transition(
+            before_sha256=f"state-{index}",
+            action=action,
+            after_sha256=f"state-{index + 1}",
+        )
+    with pytest.raises(
+        ActionValidationError,
+        match="same coordinate action",
+    ):
+        guard.validate_decision(decision(action), page_sha256="state-3")
+    audit = guard.audit_record()
+    assert audit["identical_coordinate_block_count"] == 1
+    guard.validate_decision(
+        decision({"type": "tap", "x": 0.94, "y": 0.08}),
+        page_sha256="state-3",
+    )

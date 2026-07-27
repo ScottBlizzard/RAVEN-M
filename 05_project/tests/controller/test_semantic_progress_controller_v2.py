@@ -162,6 +162,39 @@ class StaleAccessibilityEnv:
         )
 
 
+class RecoverableAccessibilityController:
+    def __init__(self) -> None:
+        self.refresh_calls = 0
+
+    def refresh_env(self) -> None:
+        self.refresh_calls += 1
+
+
+class RecoverableAccessibilityEnv:
+    foreground_activity_name = "files/files.MainActivity"
+
+    def __init__(self) -> None:
+        self.calls = 0
+        self.controller = RecoverableAccessibilityController()
+
+    def get_state(self, wait_to_stabilize: bool):
+        assert wait_to_stabilize
+        self.calls += 1
+        elements = []
+        if self.controller.refresh_calls:
+            elements = [
+                SimpleNamespace(
+                    package_name="files",
+                    text="Music",
+                    resource_id="title",
+                )
+            ]
+        return SimpleNamespace(
+            pixels=np.full((16, 12, 3), self.calls, dtype=np.uint8),
+            ui_elements=elements,
+        )
+
+
 def test_v2_2_readiness_retries_do_not_consume_policy_steps() -> None:
     env = DelayedAccessibilityEnv()
     controller = EpisodeController(
@@ -200,6 +233,29 @@ def test_v2_2_readiness_rejects_stale_previous_app_tree() -> None:
     assert observations[0]["accessibility_packages"] == ["calendar"]
     assert observations[1]["matches_foreground"]
     assert observations[1]["accessibility_packages"] == ["expense"]
+
+
+def test_v2_2_readiness_refreshes_accessibility_once_then_recovers() -> None:
+    env = RecoverableAccessibilityEnv()
+    controller = EpisodeController(
+        client=RepeatingSaveClient(),  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        protocol_v2=True,
+        protocol_v2_2=True,
+        readiness_max_observations=6,
+        readiness_retry_delay_seconds=0,
+        readiness_reconnect_after_observations=3,
+    )
+    _, observations = controller._observe_state(
+        env,
+        require_accessibility=True,
+    )
+    assert env.controller.refresh_calls == 1
+    assert env.calls == 4
+    assert observations[2]["accessibility_recovery_attempted"]
+    assert observations[2]["accessibility_recovery_error"] is None
+    assert observations[-1]["source"] == "accessibility"
+    assert observations[-1]["matches_foreground"]
 
 
 def test_controller_routes_visible_failure_and_blocks_repeat(

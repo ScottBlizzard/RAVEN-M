@@ -54,6 +54,13 @@ activity. r3 therefore applies the foreground/tree consistency wait after
 every action, not only after `open_app`, and makes tap-to-view versus
 long-press-to-select recovery explicit.
 
+The r3 replay again reached 3/4, and the Files episode recovered from the
+chooser. Its accessibility stream then remained unavailable and the executor
+toggled the same content coordinate eleven times while calling it a toolbar
+menu. r4 therefore performs one audited accessibility refresh, adds app-bar
+coordinate and single-selection checks, and supports a frozen single-sequence
+development diagnostic so the three passing cells need not be rerun.
+
 ## Qualification order
 
 1. Targeted unit and integration tests.

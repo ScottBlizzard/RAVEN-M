@@ -20,6 +20,12 @@ memory authority, and Critic enforcement.
 - The same foreground/tree consistency check runs after every action, because
   chooser and resolver overlays can temporarily change the foreground
   activity even when the main app remains open.
+- After three consecutive mismatched or missing accessibility observations,
+  the controller performs at most one audited AndroidWorld accessibility
+  refresh, then continues within the original twelve-observation bound.
+- A fourth consecutive identical `tap` or `long_press` coordinate is rejected
+  even if screenshot-only state hashes change; the bounded repair must
+  recalculate the coordinate or choose a different recovery action.
 
 ## Visible infrastructure failures
 

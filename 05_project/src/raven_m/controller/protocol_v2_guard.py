@@ -17,6 +17,7 @@ ANSWER_GOAL_RE = re.compile(
     flags=re.IGNORECASE,
 )
 TEXT_ACTIONS = {"type_text", "answer"}
+COORDINATE_STREAK_ACTIONS = {"tap", "long_press"}
 TEXT_ORIGINS = {
     "task_literal",
     "current_screen",
@@ -195,10 +196,22 @@ def semantic_ui_snapshot(
 class ProtocolV2DecisionGuard:
     """Fail closed on provenance errors and semantic no-progress loops."""
 
-    def __init__(self, *, max_no_effect_repeats: int = 2) -> None:
+    def __init__(
+        self,
+        *,
+        max_no_effect_repeats: int = 2,
+        max_identical_coordinate_actions: int = 3,
+    ) -> None:
         if max_no_effect_repeats < 1:
             raise ValueError("max_no_effect_repeats must be positive.")
+        if max_identical_coordinate_actions < 1:
+            raise ValueError(
+                "max_identical_coordinate_actions must be positive."
+            )
         self.max_no_effect_repeats = max_no_effect_repeats
+        self.max_identical_coordinate_actions = (
+            max_identical_coordinate_actions
+        )
         self.reset(goal="")
 
     def reset(self, *, goal: str) -> None:
@@ -211,6 +224,9 @@ class ProtocolV2DecisionGuard:
         self.visible_failure_trigger_count = 0
         self.recovery_obligations = 0
         self.recovery_completions = 0
+        self.last_coordinate_action_key: str | None = None
+        self.identical_coordinate_action_count = 0
+        self.identical_coordinate_block_count = 0
 
     def _block_fingerprint(
         self,
@@ -271,7 +287,27 @@ class ProtocolV2DecisionGuard:
         action = decision.get("action")
         if not isinstance(action, dict):
             return
-        fingerprint = (page_sha256, canonical_action_key(action))
+        action_key = canonical_action_key(action)
+        if (
+            action.get("type") in COORDINATE_STREAK_ACTIONS
+            and action_key == self.last_coordinate_action_key
+            and self.identical_coordinate_action_count
+            >= self.max_identical_coordinate_actions
+        ):
+            record = {
+                "semantic_state_sha256": page_sha256,
+                "action": action,
+                "reason": "identical_coordinate_action_streak_blocked",
+                "required_recovery_classes": list(RECOVERY_CLASSES),
+            }
+            self.validation_blocks.append(record)
+            self.identical_coordinate_block_count += 1
+            raise ActionValidationError(
+                "LOOP_GUARD: the same coordinate action has already been "
+                "executed three consecutive times. Recalculate the target "
+                "coordinate or choose a different recovery action."
+            )
+        fingerprint = (page_sha256, action_key)
         if fingerprint in self.blocked_fingerprints:
             record = {
                 "semantic_state_sha256": page_sha256,
@@ -300,6 +336,15 @@ class ProtocolV2DecisionGuard:
         after_visible_failures: list[str] | tuple[str, ...] = (),
     ) -> dict[str, Any]:
         action_key = canonical_action_key(action)
+        if action.get("type") in COORDINATE_STREAK_ACTIONS:
+            if action_key == self.last_coordinate_action_key:
+                self.identical_coordinate_action_count += 1
+            else:
+                self.last_coordinate_action_key = action_key
+                self.identical_coordinate_action_count = 1
+        else:
+            self.last_coordinate_action_key = None
+            self.identical_coordinate_action_count = 0
         fingerprint = (before_sha256, action_key)
         semantic_changed = before_sha256 != after_sha256
         pixel_changed = (
@@ -352,6 +397,9 @@ class ProtocolV2DecisionGuard:
             ),
             "fingerprint_blocked": fingerprint in self.blocked_fingerprints,
             "blocked_fingerprint_count": len(self.blocked_fingerprints),
+            "identical_coordinate_action_count": (
+                self.identical_coordinate_action_count
+            ),
             "new_visible_failures": new_visible_failures,
         }
 
@@ -359,8 +407,14 @@ class ProtocolV2DecisionGuard:
         return {
             "schema_version": "protocol_v2_guard_audit.v1",
             "max_no_effect_repeats": self.max_no_effect_repeats,
+            "max_identical_coordinate_actions": (
+                self.max_identical_coordinate_actions
+            ),
             "blocked_fingerprint_count": len(self.blocked_fingerprints),
             "validation_block_count": len(self.validation_blocks),
+            "identical_coordinate_block_count": (
+                self.identical_coordinate_block_count
+            ),
             "ab_ab_cycle_trigger_count": self.cycle_trigger_count,
             "visible_failure_trigger_count": (
                 self.visible_failure_trigger_count

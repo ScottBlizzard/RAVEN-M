@@ -681,6 +681,15 @@ def main(
         ),
     )
     parser.add_argument(
+        "--development-smoke-sequence",
+        type=int,
+        default=0,
+        help=(
+            "Run exactly one frozen sequence in a separate non-scored "
+            "development directory; valid values are 1-8."
+        ),
+    )
+    parser.add_argument(
         "--preflight-output",
         type=Path,
         default=None,
@@ -701,7 +710,30 @@ def main(
         expected_source_commit=expected_source_commit,
     )
     selected = set(manifest_audit["selected_tasks"])
-    if args.development_smoke_cells:
+    if args.development_smoke_cells and args.development_smoke_sequence:
+        raise RuntimeError(
+            "Choose only one development smoke selection mode."
+        )
+    if args.development_smoke_sequence:
+        if not 1 <= args.development_smoke_sequence <= 8:
+            raise RuntimeError(
+                "--development-smoke-sequence must be between 1 and 8."
+            )
+        manifest = json.loads(json.dumps(manifest))
+        manifest["schedule"] = [
+            item
+            for item in manifest["schedule"]
+            if item["sequence"] == args.development_smoke_sequence
+        ]
+        if len(manifest["schedule"]) != 1:
+            raise RuntimeError("Requested development sequence is absent.")
+        manifest["suite_id"] = (
+            manifest["suite_id"]
+            + "_development_smoke_sequence_"
+            + str(args.development_smoke_sequence)
+        )
+        manifest["output_root"] = "runs/protocol_v2_2_development"
+    elif args.development_smoke_cells:
         if not 1 <= args.development_smoke_cells < 8:
             raise RuntimeError(
                 "--development-smoke-cells must be between 1 and 7."
