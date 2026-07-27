@@ -15,7 +15,10 @@ from typing import Any
 from PIL import Image
 
 from raven_m.actions.schema import ActionValidationError, parse_action_response
-from raven_m.controller.protocol_v2_guard import ProtocolV2DecisionGuard
+from raven_m.controller.protocol_v2_guard import (
+    ProtocolV2DecisionGuard,
+    semantic_ui_snapshot,
+)
 from raven_m.env.androidworld_adapter import AndroidWorldAdapter
 from raven_m.history.policies import (
     HistoryEntry,
@@ -245,6 +248,18 @@ class EpisodeController:
                 f"y={example_pixel_y} becomes y={example_normalized_y:.4f}.",
                 "COMPLETION_CHECK: a visible Save/Move/Done button is not proof "
                 "of completion; execute it and observe the result first.",
+                *(
+                    [
+                        "SEMANTIC_PROGRESS_CHECK: status-bar clocks, toast "
+                        "animation, and other transient pixels are not task "
+                        "progress. If the previous outcome says the semantic "
+                        "UI did not change or reports a visible failure, do "
+                        "not repeat the same action; change the invalid input "
+                        "or use a named recovery class."
+                    ]
+                    if protocol_v2
+                    else []
+                ),
                 "LENGTH_CHECK: expected_outcome and decision_summary must each "
                 "be one short sentence under 160 characters.",
                 "Return one JSON object matching the action schema named in "
@@ -341,6 +356,7 @@ class EpisodeController:
         self,
         *,
         image_path: Path,
+        page_semantic_sha256: str,
         user_prompt: str,
         episode_id: str,
         step: int,
@@ -360,7 +376,6 @@ class EpisodeController:
         calls = [initial]
         adjudication_model_call_count = 0
         completion_adjudications: list[dict[str, Any]] = []
-        page_sha256 = _sha256_file(image_path)
         parse_kwargs = (
             {"schema_path": self.action_schema_path}
             if self.action_schema_path
@@ -374,7 +389,7 @@ class EpisodeController:
             if self.decision_guard is not None:
                 self.decision_guard.validate_decision(
                     parsed_candidate.decision,
-                    page_sha256=page_sha256,
+                    page_sha256=page_semantic_sha256,
                 )
             adjudication = self.history_policy.adjudicate_completion(
                 parsed_candidate.decision,
@@ -543,6 +558,20 @@ class EpisodeController:
                     state_before.pixels,
                     f"step_{step:03d}_before.png",
                 )
+                before_pixel_sha = _sha256_file(before_path)
+                before_semantic = (
+                    semantic_ui_snapshot(
+                        getattr(state_before, "ui_elements", ()),
+                        fallback_sha256=before_pixel_sha,
+                    )
+                    if self.protocol_v2
+                    else {
+                        "source": "protocol_v1_screenshot",
+                        "sha256": before_pixel_sha,
+                        "element_count": 0,
+                        "visible_failure_texts": [],
+                    }
+                )
                 history_context = self.history_policy.context()
                 evidence_outcome = previous_outcome
                 user_prompt = self._user_prompt(
@@ -560,6 +589,7 @@ class EpisodeController:
                 try:
                     decision, calls, parse_meta = self._call_and_parse(
                         image_path=before_path,
+                        page_semantic_sha256=before_semantic["sha256"],
                         user_prompt=user_prompt,
                         episode_id=episode_id,
                         step=step,
@@ -587,7 +617,7 @@ class EpisodeController:
                         "event": "step",
                         "step": step,
                         "before_screenshot": before_path.name,
-                        "before_screenshot_sha256": _sha256_file(before_path),
+                        "before_screenshot_sha256": before_pixel_sha,
                         "screen_size": [width, height],
                         "user_prompt": user_prompt,
                         "history_context": {
@@ -614,6 +644,8 @@ class EpisodeController:
                         "decision": None,
                         "executed": False,
                     }
+                    if self.protocol_v2:
+                        step_record["before_semantic_ui"] = before_semantic
                     steps.append(step_record)
                     logger.append(step_record)
                     logger.append(
@@ -636,7 +668,7 @@ class EpisodeController:
                     "event": "step",
                     "step": step,
                     "before_screenshot": before_path.name,
-                    "before_screenshot_sha256": _sha256_file(before_path),
+                    "before_screenshot_sha256": before_pixel_sha,
                     "screen_size": [width, height],
                     "user_prompt": user_prompt,
                     "history_context": {
@@ -661,6 +693,8 @@ class EpisodeController:
                         ),
                     ),
                 }
+                if self.protocol_v2:
+                    step_record["before_semantic_ui"] = before_semantic
 
                 answer_action = bool(
                     decision["status"] == "done"
@@ -702,6 +736,19 @@ class EpisodeController:
                 )
                 before_sha = step_record["before_screenshot_sha256"]
                 after_sha = _sha256_file(after_path)
+                after_semantic = (
+                    semantic_ui_snapshot(
+                        getattr(state_after, "ui_elements", ()),
+                        fallback_sha256=after_sha,
+                    )
+                    if self.protocol_v2
+                    else {
+                        "source": "protocol_v1_screenshot",
+                        "sha256": after_sha,
+                        "element_count": 0,
+                        "visible_failure_texts": [],
+                    }
+                )
                 changed = before_sha != after_sha
                 step_record.update(
                     {
@@ -712,14 +759,24 @@ class EpisodeController:
                         "screenshot_changed": changed,
                     }
                 )
+                if self.protocol_v2:
+                    step_record["after_semantic_ui"] = after_semantic
+                guard_transition = None
                 if self.decision_guard is not None:
-                    step_record["protocol_v2_guard"] = (
-                        self.decision_guard.observe_transition(
-                            before_sha256=before_sha,
-                            action=decision["action"],
-                            after_sha256=after_sha,
-                        )
+                    guard_transition = self.decision_guard.observe_transition(
+                        before_sha256=before_semantic["sha256"],
+                        action=decision["action"],
+                        after_sha256=after_semantic["sha256"],
+                        before_pixel_sha256=before_sha,
+                        after_pixel_sha256=after_sha,
+                        before_visible_failures=before_semantic[
+                            "visible_failure_texts"
+                        ],
+                        after_visible_failures=after_semantic[
+                            "visible_failure_texts"
+                        ],
                     )
+                    step_record["protocol_v2_guard"] = guard_transition
                 if answer_action:
                     answer_text = str(decision["action"]["text"])
                     interaction_cache = getattr(
@@ -741,10 +798,34 @@ class EpisodeController:
                     steps.append(step_record)
                     logger.append(step_record)
                     break
-                previous_outcome = (
-                    f"Executed {json.dumps(decision['action'], ensure_ascii=False)}; "
-                    f"the screenshot {'changed' if changed else 'did not change'}."
+                semantic_changed = (
+                    guard_transition["semantic_changed"]
+                    if guard_transition is not None
+                    else changed
                 )
+                new_visible_failures = (
+                    guard_transition["new_visible_failures"]
+                    if guard_transition is not None
+                    else []
+                )
+                if self.protocol_v2:
+                    previous_outcome = (
+                        f"Executed {json.dumps(decision['action'], ensure_ascii=False)}; "
+                        f"the screenshot {'changed' if changed else 'did not change'}; "
+                        "the semantic UI "
+                        f"{'changed' if semantic_changed else 'did not change'}."
+                    )
+                    if new_visible_failures:
+                        previous_outcome += (
+                            " Visible failure: "
+                            + " | ".join(new_visible_failures)
+                            + "."
+                        )
+                else:
+                    previous_outcome = (
+                        f"Executed {json.dumps(decision['action'], ensure_ascii=False)}; "
+                        f"the screenshot {'changed' if changed else 'did not change'}."
+                    )
                 history_update = self.history_policy.observe(
                     HistoryEntry(
                         step=step,
@@ -753,8 +834,23 @@ class EpisodeController:
                         observed_outcome=previous_outcome,
                         screenshot_path=after_path,
                         screenshot_sha256=after_sha,
+                        semantic_ui_sha256=(
+                            after_semantic["sha256"]
+                            if self.protocol_v2
+                            else ""
+                        ),
                         before_screenshot_path=before_path,
                         before_screenshot_sha256=before_sha,
+                        before_semantic_ui_sha256=(
+                            before_semantic["sha256"]
+                            if self.protocol_v2
+                            else ""
+                        ),
+                        visible_failure_texts=(
+                            tuple(new_visible_failures)
+                            if self.protocol_v2
+                            else ()
+                        ),
                         evidence_outcome=evidence_outcome,
                         expected_outcome=decision["expected_outcome"],
                         state_delta=tuple(decision["state_delta"]),

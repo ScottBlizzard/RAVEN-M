@@ -3,7 +3,10 @@ from __future__ import annotations
 import pytest
 
 from raven_m.actions.schema import ActionValidationError
-from raven_m.controller.protocol_v2_guard import ProtocolV2DecisionGuard
+from raven_m.controller.protocol_v2_guard import (
+    ProtocolV2DecisionGuard,
+    semantic_ui_snapshot,
+)
 
 
 def decision(action: dict, *, citations: list[str] | None = None) -> dict:
@@ -180,3 +183,150 @@ def test_guard_audit_records_block_and_recovery() -> None:
     assert "navigate_back" in audit["validation_blocks"][0][
         "required_recovery_classes"
     ]
+
+
+def test_semantic_snapshot_ignores_clock_and_separates_failure() -> None:
+    form = [
+        {
+            "package_name": "com.android.systemui",
+            "text": "15:43",
+            "class_name": "android.widget.TextView",
+        },
+        {
+            "package_name": "calendar",
+            "text": "Meeting with Marketing",
+            "resource_id": "title",
+            "is_editable": True,
+        },
+        {
+            "package_name": "calendar",
+            "text": "08:00",
+            "resource_id": "start_time",
+        },
+        {
+            "package_name": "calendar",
+            "text": "00:30",
+            "resource_id": "end_time",
+        },
+    ]
+    before = semantic_ui_snapshot(form, fallback_sha256="pixel-a")
+    after = semantic_ui_snapshot(
+        [
+            *form,
+            {
+                "package_name": "calendar",
+                "text": "The event cannot end earlier than it starts",
+                "class_name": "android.widget.Toast",
+            },
+            {
+                "package_name": "com.android.systemui",
+                "text": "15:48",
+            },
+        ],
+        fallback_sha256="pixel-b",
+    )
+    assert before["source"] == "accessibility"
+    assert before["sha256"] == after["sha256"]
+    assert after["visible_failure_texts"] == [
+        "The event cannot end earlier than it starts"
+    ]
+
+
+def test_semantic_snapshot_changes_for_task_relevant_text() -> None:
+    first = semantic_ui_snapshot(
+        [{"package_name": "browser", "text": "7", "resource_id": "value"}],
+        fallback_sha256="pixel-a",
+    )
+    second = semantic_ui_snapshot(
+        [{"package_name": "browser", "text": "11", "resource_id": "value"}],
+        fallback_sha256="pixel-b",
+    )
+    assert first["sha256"] != second["sha256"]
+
+
+def test_semantic_snapshot_excludes_hidden_accessibility_nodes() -> None:
+    first = semantic_ui_snapshot(
+        [
+            {
+                "package_name": "app",
+                "text": "Visible",
+                "is_visible": True,
+            },
+            {
+                "package_name": "app",
+                "text": "Hidden secret A",
+                "is_visible": False,
+            },
+        ],
+        fallback_sha256="pixel-a",
+    )
+    second = semantic_ui_snapshot(
+        [
+            {
+                "package_name": "app",
+                "text": "Visible",
+                "is_visible": True,
+            },
+            {
+                "package_name": "app",
+                "text": "Hidden secret B",
+                "is_visible": False,
+            },
+        ],
+        fallback_sha256="pixel-b",
+    )
+    assert first["sha256"] == second["sha256"]
+
+
+def test_dynamic_pixels_do_not_mask_semantic_no_progress() -> None:
+    guard = ProtocolV2DecisionGuard(max_no_effect_repeats=2)
+    guard.reset(goal="Save the event")
+    action = {"type": "tap", "x": 0.94, "y": 0.085}
+    guard.observe_transition(
+        before_sha256="same-ui",
+        action=action,
+        after_sha256="same-ui",
+        before_pixel_sha256="clock-1543",
+        after_pixel_sha256="toast-frame-1",
+    )
+    second = guard.observe_transition(
+        before_sha256="same-ui",
+        action=action,
+        after_sha256="same-ui",
+        before_pixel_sha256="toast-frame-2",
+        after_pixel_sha256="clock-1544",
+    )
+    assert second["pixel_changed"]
+    assert not second["semantic_changed"]
+    with pytest.raises(ActionValidationError, match="LOOP_GUARD"):
+        guard.validate_decision(decision(action), page_sha256="same-ui")
+
+
+def test_visible_failure_blocks_same_action_before_repeat() -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(goal="Save the event")
+    action = {"type": "tap", "x": 0.94, "y": 0.085}
+    outcome = guard.observe_transition(
+        before_sha256="same-ui",
+        action=action,
+        after_sha256="same-ui",
+        before_visible_failures=[],
+        after_visible_failures=[
+            "The event cannot end earlier than it starts"
+        ],
+    )
+    assert outcome["new_visible_failures"]
+    with pytest.raises(ActionValidationError, match="visible failure"):
+        guard.validate_decision(decision(action), page_sha256="same-ui")
+
+
+def test_repeated_action_is_allowed_when_semantic_content_changes() -> None:
+    guard = ProtocolV2DecisionGuard(max_no_effect_repeats=1)
+    guard.reset(goal="Click the button five times")
+    action = {"type": "tap", "x": 0.5, "y": 0.5}
+    guard.observe_transition(
+        before_sha256="value-1",
+        action=action,
+        after_sha256="value-2",
+    )
+    guard.validate_decision(decision(action), page_sha256="value-2")

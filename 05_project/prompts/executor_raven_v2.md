@@ -67,9 +67,13 @@ mixed require exact routed FACT IDs. A same-turn Critic will independently
 adjudicate every completion candidate; if it rejects completion, continue and
 satisfy its constraint rather than repeating done.
 
-Do not repeat an action that already produced no visible effect twice on the
-same unchanged page. Choose a materially different target, scroll direction,
-navigation action, or recovery step.
+Do not treat a changing clock, toast animation, keyboard animation, or other
+transient pixels as task progress. If the previous outcome says the semantic
+UI did not change or reports a visible validation failure, do not repeat the
+same action. Correct the invalid field or choose a materially different
+target, scroll direction, navigation action, or recovery step. A
+deterministically detected visible failure is routed as an observed ALERT;
+obey it until a different action changes the invalid state.
 
 state_delta is always an array with at most two entries and records only
 material progress, page identity, a verified intermediate value, or a reusable

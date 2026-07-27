@@ -55,6 +55,10 @@ from run_protocol_v2_gate_e import (  # noqa: E402
 
 
 EXPECTED_SOURCE_COMMIT = "0ddf83cad60647409b16a0c60c16b528a9cb19e6"
+DIAGNOSTIC_PAUSE = (
+    PROJECT_ROOT
+    / "metadata/protocol_v2_gate_f_batch1_checkpoint.json"
+)
 HARD_MANIFEST = (
     PROJECT_ROOT / "configs/task_manifests/androidworld_hard_v1.json"
 )
@@ -413,6 +417,17 @@ def main() -> int:
     )
     args = parser.parse_args()
 
+    if DIAGNOSTIC_PAUSE.exists():
+        pause = json.loads(DIAGNOSTIC_PAUSE.read_text(encoding="utf-8"))
+        if (
+            pause.get("status") == "diagnostic_pause"
+            and not pause.get("batch_2_authorized", False)
+        ):
+            raise RuntimeError(
+                "The frozen Gate-F v2 run is diagnostically paused. "
+                "Continuation would mix known-invalid semantic-progress "
+                "enforcement with revised cells."
+            )
     manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
     validate_manifest(manifest)
     coverage = capability_audit(REPOSITORY_ROOT)

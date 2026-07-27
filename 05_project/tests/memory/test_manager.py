@@ -97,12 +97,18 @@ def test_repeated_no_change_action_creates_failure_alert(tmp_path) -> None:
     second = TransitionObservation(**{**no_delta.__dict__, "step": 1})
     result = manager.observe_transition(second)
     assert result["loop_detected"]
+    assert not result["semantic_state_used"]
     failures = [
         item
         for item in manager.store.all_items()
         if item.memory_type == "failure"
     ]
     assert len(failures) == 1
+    assert failures[0].source.extractor == "deterministic_loop_detector_v1"
+    assert failures[0].page_signature.startswith("screen:")
+    assert failures[0].evidence["action_outcome"] == (
+        "same_action_same_page_no_visual_change"
+    )
     context, routed = manager.context(step=2)
     assert routed[0].route == "ALERT"
     assert failures[0].memory_id in context
@@ -214,3 +220,44 @@ def test_zero_quotas_remove_working_vel_frm_and_psi(tmp_path) -> None:
     assert second["written_memory_ids"] == []
     assert manager.working == []
     assert manager.store.all_items() == []
+
+
+def test_visible_failure_writes_observed_typed_failure(tmp_path) -> None:
+    manager = RavenMemoryManager()
+    manager.reset(
+        episode_id="episode-a",
+        task_id="CalendarTask",
+        task_goal="Save the event",
+        episode_dir=tmp_path,
+    )
+    observation = TransitionObservation(
+        step=0,
+        decision_summary="Tap save.",
+        action={"type": "tap", "x": 0.94, "y": 0.085},
+        expected_outcome="The event closes.",
+        observed_outcome="A visible validation failure appeared.",
+        evidence_outcome="The form was visible.",
+        before_screenshot_path="step_000_before.png",
+        before_screenshot_sha256=sha256(b"pixel-before").hexdigest(),
+        after_screenshot_sha256=sha256(b"pixel-after").hexdigest(),
+        after_screenshot_path="step_000_after.png",
+        before_semantic_ui_sha256=sha256(b"same-form").hexdigest(),
+        after_semantic_ui_sha256=sha256(b"same-form").hexdigest(),
+        visible_failure_texts=(
+            "The event cannot end earlier than it starts",
+        ),
+    )
+    result = manager.observe_transition(observation)
+    assert result["failure_detected"]
+    assert result["semantic_state_used"]
+    failures = [
+        item
+        for item in manager.store.all_items()
+        if item.memory_type == "failure"
+    ]
+    assert len(failures) == 1
+    assert failures[0].verification_status == "observed"
+    assert failures[0].content["predicate"] == "visible_validation_failure"
+    context, routed = manager.context(step=1)
+    assert failures[0].memory_id in context
+    assert routed[0].route == "ALERT"

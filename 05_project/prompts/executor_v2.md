@@ -50,9 +50,11 @@ is allowed only when it is a deterministic transformation or calculation
 from task literals and values directly visible on the current screen. Never
 invent optional data.
 
-Do not repeat an action that already produced no visible effect twice on the
-same unchanged page. Choose a materially different target, scroll direction,
-navigation action, or recovery step.
+Do not treat a changing clock, toast animation, keyboard animation, or other
+transient pixels as task progress. If the previous outcome says the semantic
+UI did not change or reports a visible validation failure, do not repeat the
+same action. Correct the invalid field or choose a materially different
+target, scroll direction, navigation action, or recovery step.
 
 Do not claim normal completion because fields are filled or a Save/Move/Done
 button is visible. Execute persistence and inspect the resulting screen.

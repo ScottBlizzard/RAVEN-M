@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from collections import defaultdict
+from hashlib import sha256
 import json
 import re
 from typing import Any
@@ -30,6 +31,31 @@ RECOVERY_CLASSES = (
     "inspect_different_visible_control",
     "fail_safely",
 )
+VISIBLE_FAILURE_RE = re.compile(
+    r"\b(cannot|can't|could not|invalid|error|failed|failure|must be|"
+    r"not allowed|not found|required|unable to|ended? earlier|"
+    r"already exists)\b",
+    flags=re.IGNORECASE,
+)
+IGNORED_UI_PACKAGES = {"com.android.systemui"}
+SEMANTIC_FIELDS = (
+    "text",
+    "content_description",
+    "hint_text",
+    "tooltip",
+    "class_name",
+    "package_name",
+    "resource_name",
+    "resource_id",
+    "is_checked",
+    "is_checkable",
+    "is_clickable",
+    "is_editable",
+    "is_enabled",
+    "is_focused",
+    "is_scrollable",
+    "is_selected",
+)
 
 
 def canonical_action_key(action: dict[str, Any]) -> str:
@@ -41,8 +67,106 @@ def canonical_action_key(action: dict[str, Any]) -> str:
     )
 
 
+def _element_value(element: Any, field: str) -> Any:
+    if isinstance(element, dict):
+        return element.get(field)
+    return getattr(element, field, None)
+
+
+def _normalized_text(value: Any) -> str | None:
+    if not isinstance(value, str):
+        return None
+    normalized = " ".join(value.split())
+    return normalized or None
+
+
+def semantic_ui_snapshot(
+    ui_elements: Any,
+    *,
+    fallback_sha256: str,
+) -> dict[str, Any]:
+    """Build a stable UI digest and separate visible failure messages."""
+    records: list[dict[str, Any]] = []
+    visible_failures: set[str] = set()
+    for element in ui_elements or []:
+        if _element_value(element, "is_visible") is False:
+            continue
+        package = _normalized_text(_element_value(element, "package_name"))
+        if package in IGNORED_UI_PACKAGES:
+            continue
+        texts = {
+            text
+            for field in (
+                "text",
+                "content_description",
+                "hint_text",
+                "tooltip",
+            )
+            if (text := _normalized_text(_element_value(element, field)))
+        }
+        failures = {
+            text for text in texts if VISIBLE_FAILURE_RE.search(text)
+        }
+        if failures:
+            visible_failures.update(failures)
+            # Treat transient validation overlays as evidence, not page
+            # progress. The underlying form remains the semantic state.
+            continue
+        record: dict[str, Any] = {}
+        for field in SEMANTIC_FIELDS:
+            value = _element_value(element, field)
+            if field in {
+                "text",
+                "content_description",
+                "hint_text",
+                "tooltip",
+                "class_name",
+                "package_name",
+                "resource_name",
+                "resource_id",
+            }:
+                value = _normalized_text(value)
+            if value is not None:
+                record[field] = value
+        if record:
+            records.append(record)
+    if not records:
+        return {
+            "schema_version": "semantic_ui_snapshot.v1",
+            "source": "screenshot_fallback",
+            "sha256": fallback_sha256,
+            "element_count": 0,
+            "visible_failure_texts": sorted(visible_failures),
+        }
+    encoded_records = sorted(
+        (
+            json.dumps(
+                record,
+                ensure_ascii=False,
+                sort_keys=True,
+                separators=(",", ":"),
+            )
+            for record in records
+        )
+    )
+    digest = sha256(
+        json.dumps(
+            encoded_records,
+            ensure_ascii=False,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()
+    return {
+        "schema_version": "semantic_ui_snapshot.v1",
+        "source": "accessibility",
+        "sha256": digest,
+        "element_count": len(records),
+        "visible_failure_texts": sorted(visible_failures),
+    }
+
+
 class ProtocolV2DecisionGuard:
-    """Fail closed on unsupported text provenance and no-effect loops."""
+    """Fail closed on provenance errors and semantic no-progress loops."""
 
     def __init__(self, *, max_no_effect_repeats: int = 2) -> None:
         if max_no_effect_repeats < 1:
@@ -57,8 +181,18 @@ class ProtocolV2DecisionGuard:
         self.transition_fingerprints: list[tuple[str, str, str]] = []
         self.validation_blocks: list[dict[str, Any]] = []
         self.cycle_trigger_count = 0
+        self.visible_failure_trigger_count = 0
         self.recovery_obligations = 0
         self.recovery_completions = 0
+
+    def _block_fingerprint(
+        self,
+        fingerprint: tuple[str, str],
+    ) -> None:
+        if fingerprint in self.blocked_fingerprints:
+            return
+        self.blocked_fingerprints.add(fingerprint)
+        self.recovery_obligations += 1
 
     def _validate_text_provenance(
         self,
@@ -113,16 +247,16 @@ class ProtocolV2DecisionGuard:
         fingerprint = (page_sha256, canonical_action_key(action))
         if fingerprint in self.blocked_fingerprints:
             record = {
-                "page_sha256": page_sha256,
+                "semantic_state_sha256": page_sha256,
                 "action": action,
-                "reason": "repeated_no_effect_action_blocked",
+                "reason": "semantic_no_progress_action_blocked",
                 "required_recovery_classes": list(RECOVERY_CLASSES),
             }
             self.validation_blocks.append(record)
-            self.recovery_obligations += 1
             raise ActionValidationError(
-                "LOOP_GUARD: this exact action already produced no effect "
-                "twice on the unchanged page. Choose one recovery class: "
+                "LOOP_GUARD: this action is blocked on the current semantic "
+                "UI state after no progress or a visible failure. Choose one "
+                "recovery class: "
                 + ", ".join(RECOVERY_CLASSES)
                 + "."
             )
@@ -133,11 +267,24 @@ class ProtocolV2DecisionGuard:
         before_sha256: str,
         action: dict[str, Any],
         after_sha256: str,
+        before_pixel_sha256: str | None = None,
+        after_pixel_sha256: str | None = None,
+        before_visible_failures: list[str] | tuple[str, ...] = (),
+        after_visible_failures: list[str] | tuple[str, ...] = (),
     ) -> dict[str, Any]:
         action_key = canonical_action_key(action)
         fingerprint = (before_sha256, action_key)
-        changed = before_sha256 != after_sha256
-        if changed:
+        semantic_changed = before_sha256 != after_sha256
+        pixel_changed = (
+            before_pixel_sha256 != after_pixel_sha256
+            if before_pixel_sha256 is not None
+            and after_pixel_sha256 is not None
+            else semantic_changed
+        )
+        new_visible_failures = sorted(
+            set(after_visible_failures) - set(before_visible_failures)
+        )
+        if semantic_changed:
             self.no_effect_counts.pop(fingerprint, None)
         else:
             self.no_effect_counts[fingerprint] += 1
@@ -145,27 +292,40 @@ class ProtocolV2DecisionGuard:
                 self.no_effect_counts[fingerprint]
                 >= self.max_no_effect_repeats
             ):
-                self.blocked_fingerprints.add(fingerprint)
+                self._block_fingerprint(fingerprint)
+        if new_visible_failures:
+            self._block_fingerprint(fingerprint)
+            self.visible_failure_trigger_count += 1
         self.transition_fingerprints.append(
             (before_sha256, action_key, after_sha256)
         )
         if len(self.transition_fingerprints) >= 4:
             a1, b1, a2, b2 = self.transition_fingerprints[-4:]
             if a1 == a2 and b1 == b2 and a1 != b1:
-                self.blocked_fingerprints.update(
-                    {(a1[0], a1[1]), (b1[0], b1[1])}
-                )
+                self._block_fingerprint((a1[0], a1[1]))
+                self._block_fingerprint((b1[0], b1[1]))
                 self.cycle_trigger_count += 1
-        if self.recovery_obligations and fingerprint not in self.blocked_fingerprints:
+        if (
+            self.recovery_obligations
+            and fingerprint not in self.blocked_fingerprints
+            and semantic_changed
+            and not new_visible_failures
+        ):
             self.recovery_completions += 1
             self.recovery_obligations -= 1
         return {
-            "changed": changed,
+            "changed": pixel_changed,
+            "pixel_changed": pixel_changed,
+            "semantic_changed": semantic_changed,
+            "semantic_no_progress_repeat_count": self.no_effect_counts.get(
+                fingerprint, 0
+            ),
             "no_effect_repeat_count": self.no_effect_counts.get(
                 fingerprint, 0
             ),
             "fingerprint_blocked": fingerprint in self.blocked_fingerprints,
             "blocked_fingerprint_count": len(self.blocked_fingerprints),
+            "new_visible_failures": new_visible_failures,
         }
 
     def audit_record(self) -> dict[str, Any]:
@@ -175,6 +335,9 @@ class ProtocolV2DecisionGuard:
             "blocked_fingerprint_count": len(self.blocked_fingerprints),
             "validation_block_count": len(self.validation_blocks),
             "ab_ab_cycle_trigger_count": self.cycle_trigger_count,
+            "visible_failure_trigger_count": (
+                self.visible_failure_trigger_count
+            ),
             "validation_blocks": self.validation_blocks,
             "recovery_obligation_count": self.recovery_obligations,
             "recovery_completion_count": self.recovery_completions,

@@ -31,6 +31,9 @@ class TransitionObservation:
     before_screenshot_sha256: str
     after_screenshot_sha256: str
     after_screenshot_path: str
+    before_semantic_ui_sha256: str = ""
+    after_semantic_ui_sha256: str = ""
+    visible_failure_texts: tuple[str, ...] = ()
     state_delta: tuple[dict[str, Any], ...] = ()
 
 
@@ -59,8 +62,13 @@ class RavenMemoryManager:
         self.last_page_signature: str | None = None
 
     @staticmethod
-    def page_signature(screenshot_sha256: str) -> str:
-        return f"screen:{screenshot_sha256[:16]}"
+    def page_signature(
+        screenshot_sha256: str,
+        *,
+        semantic: bool = False,
+    ) -> str:
+        prefix = "ui" if semantic else "screen"
+        return f"{prefix}:{screenshot_sha256[:16]}"
 
     @staticmethod
     def action_signature(action: dict[str, Any]) -> str:
@@ -200,17 +208,30 @@ class RavenMemoryManager:
         *,
         model_call_id: str | None = None,
     ) -> dict[str, Any]:
+        semantic_available = bool(
+            transition.before_semantic_ui_sha256
+            and transition.after_semantic_ui_sha256
+        )
+        before_state_sha = (
+            transition.before_semantic_ui_sha256
+            if semantic_available
+            else transition.before_screenshot_sha256
+        )
+        after_state_sha = (
+            transition.after_semantic_ui_sha256
+            if semantic_available
+            else transition.after_screenshot_sha256
+        )
         before_page_signature = self.page_signature(
-            transition.before_screenshot_sha256
+            before_state_sha,
+            semantic=semantic_available,
         )
         after_page_signature = self.page_signature(
-            transition.after_screenshot_sha256
+            after_state_sha,
+            semantic=semantic_available,
         )
         action_signature = self.action_signature(transition.action)
-        no_visual_change = (
-            transition.before_screenshot_sha256
-            == transition.after_screenshot_sha256
-        )
+        no_semantic_change = before_state_sha == after_state_sha
         if self.config.working_quota > 0:
             self.working.append(
                 {
@@ -241,6 +262,58 @@ class RavenMemoryManager:
             if memory_id:
                 written.append(memory_id)
 
+        failure_detected = bool(transition.visible_failure_texts)
+        if failure_detected and self.config.failure_quota > 0:
+            failure = MemoryItem(
+                memory_id=self.store.allocate_id("f"),
+                episode_id=self.episode_id,
+                memory_type="failure",
+                content={
+                    "subject": after_page_signature,
+                    "predicate": "visible_validation_failure",
+                    "object": {
+                        "action": transition.action,
+                        "messages": list(
+                            transition.visible_failure_texts
+                        ),
+                    },
+                    "natural_language": (
+                        "The action produced a visible validation failure: "
+                        + " | ".join(transition.visible_failure_texts)
+                        + ". Change the invalid input or choose a different "
+                        "recovery action before retrying."
+                    ),
+                },
+                task_id=self.task_id,
+                created_step=transition.step,
+                last_confirmed_step=transition.step,
+                page_signature=after_page_signature,
+                source=self._source(
+                    step=transition.step,
+                    screenshot_path=transition.after_screenshot_path,
+                    screenshot_sha256=transition.after_screenshot_sha256,
+                    model_call_id=model_call_id,
+                    extractor="deterministic_visible_failure_v1",
+                ),
+                evidence={
+                    "origin": "direct_visual_observation",
+                    "action_outcome": "visible_validation_failure",
+                    "independent_confirmations": 1,
+                },
+                verification_status="observed",
+                confidence_model=1.0,
+                validity={
+                    "scope": "episode",
+                    "preconditions": ["same_task", "same_page"],
+                    "expires_on": [
+                        "semantic_page_changed",
+                        "recovery_succeeded",
+                    ],
+                },
+            )
+            self.store.write(failure)
+            written.append(failure.memory_id)
+
         # Invalidate after decision-time deltas are written so a page-local
         # assertion cannot survive the transition that already left its page.
         invalidated = self.store.invalidate_page_local(
@@ -248,7 +321,7 @@ class RavenMemoryManager:
             step=transition.step,
         )
         loop_detected = (
-            no_visual_change
+            no_semantic_change
             and len(self.action_signatures) >= 2
             and self.action_signatures[-1] == self.action_signatures[-2]
         )
@@ -262,8 +335,17 @@ class RavenMemoryManager:
                     "predicate": "action_had_no_effect",
                     "object": transition.action,
                     "natural_language": (
-                        "Repeated action produced no visible change; avoid the "
-                        "same action on this page and re-observe or recover."
+                        (
+                            "Repeated action produced no semantic UI change; "
+                            "avoid the same action on this page and re-observe "
+                            "or recover."
+                        )
+                        if semantic_available
+                        else (
+                            "Repeated action produced no visible change; avoid "
+                            "the same action on this page and re-observe or "
+                            "recover."
+                        )
                     ),
                 },
                 task_id=self.task_id,
@@ -275,11 +357,19 @@ class RavenMemoryManager:
                     screenshot_path=transition.after_screenshot_path,
                     screenshot_sha256=transition.after_screenshot_sha256,
                     model_call_id=model_call_id,
-                    extractor="deterministic_loop_detector_v1",
+                    extractor=(
+                        "deterministic_semantic_loop_detector_v2"
+                        if semantic_available
+                        else "deterministic_loop_detector_v1"
+                    ),
                 ),
                 evidence={
                     "origin": "direct_action_outcome",
-                    "action_outcome": "same_action_same_page_no_visual_change",
+                    "action_outcome": (
+                        "same_action_same_semantic_page_no_progress"
+                        if semantic_available
+                        else "same_action_same_page_no_visual_change"
+                    ),
                     "independent_confirmations": 1,
                 },
                 verification_status="observed",
@@ -306,6 +396,11 @@ class RavenMemoryManager:
             "written_memory_ids": written,
             "invalidated_memory_ids": invalidated,
             "loop_detected": loop_detected,
+            "failure_detected": failure_detected,
+            "visible_failure_texts": list(
+                transition.visible_failure_texts
+            ),
+            "semantic_state_used": semantic_available,
             "contradiction_detected": (
                 contradiction_events_after > contradiction_events_before
             ),

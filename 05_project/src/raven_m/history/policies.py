@@ -25,8 +25,11 @@ class HistoryEntry:
     observed_outcome: str
     screenshot_path: Path
     screenshot_sha256: str
+    semantic_ui_sha256: str = ""
     before_screenshot_path: Path | None = None
     before_screenshot_sha256: str = ""
+    before_semantic_ui_sha256: str = ""
+    visible_failure_texts: tuple[str, ...] = ()
     evidence_outcome: str = "none; this is the first observation"
     expected_outcome: str = ""
     state_delta: tuple[dict[str, Any], ...] = ()
@@ -519,8 +522,11 @@ class RavenMemoryPolicy(HistoryPolicy):
                 before_screenshot_sha256=(
                     entry.before_screenshot_sha256 or entry.screenshot_sha256
                 ),
+                before_semantic_ui_sha256=entry.before_semantic_ui_sha256,
                 after_screenshot_sha256=entry.screenshot_sha256,
+                after_semantic_ui_sha256=entry.semantic_ui_sha256,
                 after_screenshot_path=entry.screenshot_path.name,
+                visible_failure_texts=entry.visible_failure_texts,
                 state_delta=entry.state_delta,
             ),
             model_call_id=entry.model_call_id,
@@ -617,6 +623,7 @@ class FullRavenMemoryPolicy(RavenMemoryPolicy):
         planner_trigger = entry.step == 0 or (entry.step + 1) % 5 == 0
         critic_trigger = bool(
             details.get("loop_detected")
+            or details.get("failure_detected")
             or details.get("contradiction_detected")
             or details.get("completion_evidence_detected")
         )
@@ -666,9 +673,13 @@ class FullRavenMemoryPolicy(RavenMemoryPolicy):
                 "contradiction"
                 if details.get("contradiction_detected")
                 else (
-                    "repeated_no_effect_loop"
-                    if details.get("loop_detected")
-                    else "completion_evidence"
+                    "visible_validation_failure"
+                    if details.get("failure_detected")
+                    else (
+                        "semantic_no_progress_loop"
+                        if details.get("loop_detected")
+                        else "completion_evidence"
+                    )
                 )
             )
             critic = self.roles.call(
