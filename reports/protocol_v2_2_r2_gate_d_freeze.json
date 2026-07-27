@@ -1,0 +1,38 @@
+{
+  "schema_version": "protocol_v2_2_r2_gate_d_freeze.v1",
+  "checked_at": "2026-07-27T06:05:00+00:00",
+  "passed": true,
+  "protocol": "androidworld_protocol_v2_2_exploratory",
+  "source_tag": "protocol-v2-2-gate-e-r2-dev",
+  "source_commit": "ae7575597cc3f548d960cf29045577a6ddda714e",
+  "freeze_file_count": 27,
+  "verification": {
+    "full_pytest": {
+      "passed": true,
+      "test_count": 173
+    },
+    "protocol_v1_seal": {
+      "passed": true,
+      "file_count": 197,
+      "failure_count": 0
+    },
+    "r1_diagnostic_preserved": {
+      "passed": true,
+      "report": "reports/protocol_v2_2_r1_diagnostic.json",
+      "result_count": 4
+    }
+  },
+  "r2_changes": [
+    "same-model repeated observations remain HYPOTHESIS",
+    "planner completion evidence accepts routed FACT IDs only",
+    "terminal answers require full untruncated text in a detail or second view",
+    "consequential commits receive same-turn target-binding adjudication"
+  ],
+  "preserved_controls": {
+    "same_task_schedule_as_r1": true,
+    "same_instance_and_order_seeds_as_r1": true,
+    "same_step_and_model_budgets_as_r1": true,
+    "same_b3_summary_prompt_as_r1": true,
+    "r1_development_evidence_immutable": true
+  }
+}
