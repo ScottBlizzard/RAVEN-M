@@ -50,6 +50,13 @@ def _json_safe(value: Any) -> Any:
         return _json_safe(value.value)
     if isinstance(value, Path):
         return str(value)
+    if isinstance(value, Image.Image):
+        return {
+            "__type__": "PIL.Image.Image",
+            "mode": value.mode,
+            "size": list(value.size),
+            "pixel_sha256": sha256(value.tobytes()).hexdigest(),
+        }
     if is_dataclass(value):
         return _json_safe(asdict(value))
     if isinstance(value, dict):
