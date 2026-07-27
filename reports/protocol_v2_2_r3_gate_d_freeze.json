@@ -1,0 +1,36 @@
+{
+  "schema_version": "protocol_v2_2_r3_gate_d_freeze.v1",
+  "checked_at": "2026-07-27T06:29:25Z",
+  "passed": true,
+  "protocol": "androidworld_protocol_v2_2_exploratory",
+  "source_tag": "protocol-v2-2-gate-e-r3-dev",
+  "source_commit": "af1d8788a1b09bbae2f198800f591ecbe17469b6",
+  "freeze_file_count": 27,
+  "verification": {
+    "full_pytest": {
+      "passed": true,
+      "test_count": 175
+    },
+    "protocol_v1_seal": {
+      "passed": true,
+      "file_count": 197,
+      "failure_count": 0
+    },
+    "r2_diagnostic_preserved": {
+      "passed": true,
+      "report": "reports/protocol_v2_2_r2_diagnostic.json",
+      "result_count": 4
+    }
+  },
+  "r3_changes": [
+    "foreground/accessibility consistency is required after every action",
+    "chooser or viewer mis-open recovery uses one Back followed by long_press"
+  ],
+  "preserved_controls": {
+    "same_task_schedule_as_r2": true,
+    "same_instance_and_order_seeds_as_r2": true,
+    "same_step_and_model_budgets_as_r2": true,
+    "same_b3_summary_prompt_as_r2": true,
+    "r2_development_evidence_immutable": true
+  }
+}
