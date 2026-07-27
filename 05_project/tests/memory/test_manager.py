@@ -306,7 +306,7 @@ def test_page_identity_claim_expires_on_semantic_change(tmp_path) -> None:
     assert all(value.item.memory_id != item.memory_id for value in routed)
 
 
-def test_repeated_direct_observation_promotes_one_item(tmp_path) -> None:
+def test_repeated_model_observation_stays_hypothesis(tmp_path) -> None:
     manager = RavenMemoryManager()
     manager.reset(
         episode_id="episode-a",
@@ -352,8 +352,12 @@ def test_repeated_direct_observation_promotes_one_item(tmp_path) -> None:
         if item.memory_type == "episodic_fact"
     ]
     assert len(episodic) == 1
-    verified = manager.store.get(memory_id)
-    assert verified.verification_status == "verified"
-    assert verified.evidence["independent_confirmations"] == 1
+    repeated = manager.store.get(memory_id)
+    assert repeated.verification_status == "observed"
+    assert repeated.evidence["independent_confirmations"] == 0
+    assert repeated.evidence["model_reobservations"] == 1
     _, second_routes = manager.context(step=2)
-    assert second_routes[0].route == "FACT"
+    repeated_route = next(
+        value for value in second_routes if value.item.memory_id == memory_id
+    )
+    assert repeated_route.route == "HYPOTHESIS"

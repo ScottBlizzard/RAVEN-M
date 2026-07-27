@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 import json
 from pathlib import Path
+import re
 from typing import Any
 
 from PIL import Image
@@ -15,6 +16,19 @@ from raven_m.memory.manager import RavenMemoryManager, TransitionObservation
 from raven_m.memory.models import MemoryConfig
 from raven_m.models.transformers_client import ModelCall, TransformersClient
 from raven_m.roles.orchestrator import RoleOrchestrator
+
+
+CONSEQUENTIAL_OUTCOME_RE = re.compile(
+    r"\b(?:is|are|will be|gets?|becomes?)\s+(?:successfully\s+)?"
+    r"(?:saved|sent|deleted|submitted|moved|copied|created|added|"
+    r"committed|persisted)\b",
+    flags=re.IGNORECASE,
+)
+CONSEQUENTIAL_SUMMARY_RE = re.compile(
+    r"\b(?:confirm|finalize|commit|persist)\b|"
+    r"\b(?:save|send|delete|submit|move|done|finish)['\"\s]*button\b",
+    flags=re.IGNORECASE,
+)
 
 
 @dataclass(frozen=True)
@@ -91,6 +105,18 @@ class HistoryPolicy:
         del decision
 
     def adjudicate_completion(
+        self,
+        decision: dict[str, Any],
+        *,
+        image_path: Path,
+        episode_id: str,
+        step: int,
+        remaining_model_calls: int,
+    ) -> CompletionAdjudication:
+        del decision, image_path, episode_id, step, remaining_model_calls
+        return CompletionAdjudication()
+
+    def adjudicate_action(
         self,
         decision: dict[str, Any],
         *,
@@ -676,6 +702,11 @@ class FullRavenMemoryPolicy(RavenMemoryPolicy):
             for value in routed
             if value.route != "SUPPRESS"
         }
+        fact_ids = {
+            value.item.memory_id
+            for value in routed
+            if value.route == "FACT"
+        }
         role_calls: list[ModelCall] = []
         role_records: list[dict[str, Any]] = []
         common_payload = {
@@ -695,7 +726,9 @@ class FullRavenMemoryPolicy(RavenMemoryPolicy):
                 remaining_model_calls=(
                     remaining_model_calls - len(role_calls)
                 ),
-                allowed_memory_ids=allowed_ids,
+                # A planner may use hypotheses to decide what to verify, but
+                # only routed FACTs can satisfy completion evidence slots.
+                allowed_memory_ids=fact_ids,
             )
             role_calls.extend(planner.calls)
             if planner.output is not None:
@@ -802,6 +835,103 @@ class FullRavenMemoryPolicyV2(FullRavenMemoryPolicy):
                 "Protocol v2 completion requires current-screen evidence "
                 "or a currently routed FACT."
             )
+
+    @staticmethod
+    def _is_consequential_action(decision: dict[str, Any]) -> bool:
+        if decision.get("status") != "continue":
+            return False
+        action = decision.get("action")
+        if not isinstance(action, dict) or action.get("type") not in {
+            "tap",
+            "press_enter",
+        }:
+            return False
+        expected = str(decision.get("expected_outcome", ""))
+        summary = str(decision.get("decision_summary", ""))
+        return bool(
+            CONSEQUENTIAL_OUTCOME_RE.search(expected)
+            or CONSEQUENTIAL_SUMMARY_RE.search(summary)
+        )
+
+    def adjudicate_action(
+        self,
+        decision: dict[str, Any],
+        *,
+        image_path: Path,
+        episode_id: str,
+        step: int,
+        remaining_model_calls: int,
+    ) -> CompletionAdjudication:
+        if not self._is_consequential_action(decision):
+            return CompletionAdjudication()
+        bundle_text, routed = self.manager.context(step=len(self.entries))
+        allowed_ids = {
+            value.item.memory_id
+            for value in routed
+            if value.route != "SUPPRESS"
+        }
+        latest_transition = (
+            self.entries[-1].record() if self.entries else None
+        )
+        critic = self.roles.call(
+            role="critic",
+            image_path=image_path,
+            payload={
+                "task": self.goal,
+                "step": step,
+                "trigger": "consequential_action_candidate",
+                "action_candidate": decision,
+                "latest_transition": latest_transition,
+                "memory_bundle": json.loads(bundle_text),
+                "planner_state": self.plan_state,
+            },
+            episode_id=episode_id,
+            step=step,
+            remaining_model_calls=remaining_model_calls,
+            allowed_memory_ids=allowed_ids,
+        )
+        record = {
+            "schema_version": "action_adjudication.v1",
+            "trigger": "consequential_action_candidate",
+            "output": critic.output,
+            "error": critic.error,
+            "model_call_ids": [call.call_id for call in critic.calls],
+        }
+        if critic.output is not None:
+            self.critic_alert = critic.output
+        if critic.error is not None or critic.output is None:
+            return CompletionAdjudication(
+                accepted=False,
+                calls=list(critic.calls),
+                record=record,
+                error="Action critic did not return a valid verdict.",
+            )
+        if critic.output.get("verdict") != "proceed":
+            constraint = critic.output.get(
+                "recommended_constraint",
+                "verify the exact target binding before committing",
+            )
+            action = decision.get("action")
+            if isinstance(action, dict):
+                self.critic_constraint = {
+                    "schema_version": "critic_constraint.v1",
+                    "verdict": critic.output.get("verdict"),
+                    "blocked_action": action,
+                    "recommended_constraint": constraint,
+                    "created_step": step,
+                    "trigger": "consequential_action_candidate",
+                }
+            return CompletionAdjudication(
+                accepted=False,
+                calls=list(critic.calls),
+                record=record,
+                error=f"Action critic rejected commit: {constraint}",
+            )
+        return CompletionAdjudication(
+            accepted=True,
+            calls=list(critic.calls),
+            record=record,
+        )
 
     def adjudicate_completion(
         self,

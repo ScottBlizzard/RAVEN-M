@@ -146,6 +146,7 @@ class ModelOutputInvalid(RuntimeError):
         initial_error: str,
         repair_error: str,
         adjudication_model_call_count: int = 0,
+        action_adjudications: list[dict[str, Any]] | None = None,
         completion_adjudications: list[dict[str, Any]] | None = None,
     ) -> None:
         super().__init__(repair_error)
@@ -153,6 +154,7 @@ class ModelOutputInvalid(RuntimeError):
         self.initial_error = initial_error
         self.repair_error = repair_error
         self.adjudication_model_call_count = adjudication_model_call_count
+        self.action_adjudications = action_adjudications or []
         self.completion_adjudications = completion_adjudications or []
 
 
@@ -474,6 +476,14 @@ class EpisodeController:
             "one direct_screen fact linked through "
             "supports_completion_requirements; cite it only on a later "
             "observation if it is then routed as FACT.\n"
+            "If VALIDATION_ERROR says the completion critic rejected an "
+            "answer, do not repeat the partial answer. Open the relevant "
+            "detail view or obtain a second view where the exact full text "
+            "is readable without clipping, then answer on a later step.\n"
+            "If VALIDATION_ERROR says the action critic rejected a commit, "
+            "do not repeat that action. Use a non-commit navigation or "
+            "re-observation action until the exact task target and selected "
+            "destination/value are visibly bound on the current screen.\n"
             "For protocol-v2 text actions, preserve valid text_origin and "
             "source_memory_ids provenance. An answer action is terminal and "
             "only valid for information-return tasks. If LOOP_GUARD appears, "
@@ -511,6 +521,7 @@ class EpisodeController:
         )
         calls = [initial]
         adjudication_model_call_count = 0
+        action_adjudications: list[dict[str, Any]] = []
         completion_adjudications: list[dict[str, Any]] = []
         parse_kwargs = (
             {"schema_path": self.action_schema_path}
@@ -526,6 +537,27 @@ class EpisodeController:
                 self.decision_guard.validate_decision(
                     parsed_candidate.decision,
                     page_sha256=page_semantic_sha256,
+                )
+            action_adjudication = self.history_policy.adjudicate_action(
+                parsed_candidate.decision,
+                image_path=image_path,
+                episode_id=episode_id,
+                step=step,
+                remaining_model_calls=max(
+                    0,
+                    self.max_model_calls - model_call_count - len(calls),
+                ),
+            )
+            calls.extend(action_adjudication.calls)
+            adjudication_model_call_count += len(
+                action_adjudication.calls
+            )
+            if action_adjudication.record is not None:
+                action_adjudications.append(action_adjudication.record)
+            if not action_adjudication.accepted:
+                raise ActionValidationError(
+                    action_adjudication.error
+                    or "Same-turn action adjudication rejected the action."
                 )
             adjudication = self.history_policy.adjudicate_completion(
                 parsed_candidate.decision,
@@ -561,6 +593,7 @@ class EpisodeController:
                     "adjudication_model_call_count": (
                         adjudication_model_call_count
                     ),
+                    "action_adjudications": action_adjudications,
                     "completion_adjudications": completion_adjudications,
                 },
             )
@@ -576,6 +609,7 @@ class EpisodeController:
                     adjudication_model_call_count=(
                         adjudication_model_call_count
                     ),
+                    action_adjudications=action_adjudications,
                     completion_adjudications=completion_adjudications,
                 ) from initial_error
             repair_prompt = self._repair_prompt(
@@ -603,6 +637,7 @@ class EpisodeController:
                     adjudication_model_call_count=(
                         adjudication_model_call_count
                     ),
+                    action_adjudications=action_adjudications,
                     completion_adjudications=completion_adjudications,
                 ) from repair_error
             return (
@@ -617,6 +652,7 @@ class EpisodeController:
                     "adjudication_model_call_count": (
                         adjudication_model_call_count
                     ),
+                    "action_adjudications": action_adjudications,
                     "completion_adjudications": completion_adjudications,
                 },
             )
@@ -769,6 +805,9 @@ class EpisodeController:
                         "type": "ActionValidationError",
                         "initial_validation_error": exc.initial_error,
                         "repair_validation_error": exc.repair_error,
+                        "action_adjudications": (
+                            exc.action_adjudications
+                        ),
                         "completion_adjudications": (
                             exc.completion_adjudications
                         ),
@@ -848,9 +887,13 @@ class EpisodeController:
                     "decision": decision,
                     "action_authority": action_authority_record(
                         decision,
-                        completion_adjudications=parse_meta.get(
-                            "completion_adjudications", []
-                        ),
+                        completion_adjudications=[
+                            *parse_meta.get("action_adjudications", []),
+                            *parse_meta.get(
+                                "completion_adjudications",
+                                [],
+                            ),
+                        ],
                     ),
                     "before_readiness_observations": before_readiness,
                 }

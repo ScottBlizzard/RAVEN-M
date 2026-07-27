@@ -243,6 +243,13 @@ def episode_result(
             "completion_adjudications", []
         )
     ]
+    action_adjudications = [
+        record
+        for step in summary["steps"]
+        for record in step.get("parse", {}).get(
+            "action_adjudications", []
+        )
+    ]
     valid_decisions = all(
         step.get("parse", {}).get("valid_after_one_repair", True)
         for step in summary["steps"]
@@ -299,6 +306,12 @@ def episode_result(
         "completion_rejection_count": sum(
             record.get("output", {}).get("verdict") != "proceed"
             for record in completion_adjudications
+            if record.get("output") is not None
+        ),
+        "action_adjudication_count": len(action_adjudications),
+        "action_rejection_count": sum(
+            record.get("output", {}).get("verdict") != "proceed"
+            for record in action_adjudications
             if record.get("output") is not None
         ),
         "evaluator_prompt_leak_steps": user_prompt_leaks,
@@ -429,6 +442,12 @@ def aggregate(
             item.get("readiness_observation_count", 0) >= 1
             for item in results
         )
+        if manifest["acceptance"].get(
+            "consequential_action_adjudication_accounting"
+        ):
+            criteria["consequential_action_adjudication_accounting"] = all(
+                "action_adjudication_count" in item for item in results
+            )
     finished = valid_count == len(manifest["schedule"]) and not stopped_early
     gate_passed = finished and all(criteria.values())
     result = {

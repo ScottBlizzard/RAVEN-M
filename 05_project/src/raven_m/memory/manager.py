@@ -176,20 +176,23 @@ class RavenMemoryManager:
                     and existing.content["object"] == delta["object"]
                     and existing.page_signature == page_signature
                 )
-                independently_reobserved = (
+                repeated_model_observation = (
                     same_claim
                     and transition.step > existing.last_confirmed_step
                     and transition.before_screenshot_sha256
                     not in existing.source.screenshot_sha256
                 )
-                if not independently_reobserved:
+                if not repeated_model_observation:
                     continue
-                confirmations = int(
-                    existing.evidence.get("independent_confirmations", 0)
+                repetitions = int(
+                    existing.evidence.get("model_reobservations", 0)
                 ) + 1
                 evidence = {
                     **existing.evidence,
-                    "independent_confirmations": confirmations,
+                    # Repeating a model-authored interpretation on a later
+                    # screenshot is useful provenance, but it is not
+                    # independent verification. Keep it out of FACT routing.
+                    "model_reobservations": repetitions,
                 }
                 combined_source = MemorySource(
                     observation_ids=tuple(
@@ -217,13 +220,13 @@ class RavenMemoryManager:
                         *current_source.screenshot_sha256,
                     ),
                     model_call_id=model_call_id,
-                    extractor="executor_state_delta_confirmation_v2",
+                    extractor="executor_state_delta_reobservation_v3",
                 )
                 self.store.transition(
                     existing.memory_id,
-                    status="verified",
+                    status="observed",
                     step=transition.step,
-                    reason="independent_direct_reobservation",
+                    reason="repeated_model_observation",
                     patch={
                         "evidence": evidence,
                         "source": combined_source,

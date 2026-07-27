@@ -62,6 +62,17 @@ def candidate() -> dict:
     }
 
 
+def consequential_candidate() -> dict:
+    return {
+        "status": "continue",
+        "action": {"type": "tap", "x": 0.9, "y": 0.1},
+        "expected_outcome": "The item is saved.",
+        "decision_summary": "Tap the SAVE button to persist the item.",
+        "memory_citations": [],
+        "completion_evidence": [],
+    }
+
+
 def policy(tmp_path: Path, verdict: str) -> tuple[FullRavenMemoryPolicyV2, Path]:
     image = tmp_path / "screen.png"
     Image.new("RGB", (8, 8), "white").save(image)
@@ -108,6 +119,45 @@ def test_v2_rejects_completion_when_same_turn_critic_rejects(
     )
     assert not result.accepted
     assert "rejected completion" in result.error
+
+
+def test_v2_rejects_consequential_action_without_critic_approval(
+    tmp_path: Path,
+) -> None:
+    value, image = policy(tmp_path, "reobserve")
+    decision = consequential_candidate()
+    result = value.adjudicate_action(
+        decision,
+        image_path=image,
+        episode_id="e",
+        step=2,
+        remaining_model_calls=2,
+    )
+    assert not result.accepted
+    assert "rejected commit" in result.error
+    assert result.record["trigger"] == "consequential_action_candidate"
+    assert value.critic_constraint["blocked_action"] == decision["action"]
+
+
+def test_v2_skips_action_critic_for_reversible_navigation(
+    tmp_path: Path,
+) -> None:
+    value, image = policy(tmp_path, "reobserve")
+    decision = {
+        **consequential_candidate(),
+        "expected_outcome": "The details page opens.",
+        "decision_summary": "Open the visible details page.",
+    }
+    result = value.adjudicate_action(
+        decision,
+        image_path=image,
+        episode_id="e",
+        step=2,
+        remaining_model_calls=2,
+    )
+    assert result.accepted
+    assert not result.calls
+    assert result.record is None
 
 
 def test_m0_and_mrel_share_v2_completion_implementation() -> None:

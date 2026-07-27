@@ -23,14 +23,28 @@ with later evidence.
    policy action until accessibility is available or the bound is reached.
 2. Detect ANR/crash text separately from task validation failures and retry the
    cell through typed infrastructure recovery.
-3. Route a single model-authored direct-screen claim as HYPOTHESIS. FACT
-   authority requires a later direct re-observation.
+3. Route a model-authored direct-screen claim as HYPOTHESIS. Repetition by the
+   same model is recorded but is not independent verification and cannot
+   promote the claim to FACT.
 4. Make page/screen identity claims page-local and stale them after semantic
    page change.
 5. Treat Critic `reobserve` and `recover` verdicts as binding against repeating
    the blocked action.
 6. Keep Planner required variables as frozen episode anchors, including
    resolved relative dates.
+7. Reject terminal answers copied from width-limited or clipped overview text;
+   require a full detail or second view.
+8. Adjudicate consequential commits on the same screenshot and require visible
+   binding of the exact target/destination before execution.
+
+## r1 development replay and r2 decision
+
+The four-cell r1 development replay finished cleanly with no infrastructure or
+protocol audit failure. Contacts-B3 and Expense-B3 succeeded. Calendar-M0
+submitted the clipped visible prefix `Board me`; Files-M0 confirmed a move
+without visibly selecting the required destination and then repeated false
+model-authored observations. These are generic epistemic-authority gaps, so r1
+is retained as diagnostic evidence and a separate r2 source tag/suite is used.
 
 ## Qualification order
 

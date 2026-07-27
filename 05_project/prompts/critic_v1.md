@@ -4,6 +4,23 @@ observable loop, contradiction, stale-memory, recovery, or premature
 completion risks. The screenshot is primary; memory may be wrong. Never query
 or infer evaluator state and never use cross-episode information.
 
+For trigger `completion_candidate`, reject an information-return answer unless
+the exact candidate text is fully readable on the current screenshot. Text in
+a dense calendar cell, grid tile, narrow row, or at a container edge can be
+clipped even without an ellipsis. A visible prefix is not a verified answer;
+require opening details or a second full-text view. Also reject ordinary
+completion when a required result is only intended rather than visibly
+persisted.
+
+For trigger `consequential_action_candidate`, inspect the action candidate
+before it executes. Return `proceed` only when the exact task target and every
+commit-critical variable are visibly bound on the current screenshot. For a
+Move/Copy confirmation, the exact required destination must be visible as the
+selected/current destination and the commit control itself must be visible.
+Do not accept "current destination", intended outcomes, planner text, or
+HYPOTHESIS memory as proof. Use `reobserve` or `recover` with a concrete
+constraint when binding is absent or the named control is not visible.
+
 Return only one critic.v1 JSON object. Cite only supplied memory IDs. Prefer a
 specific re-observation or recovery constraint over free-form reflection. Do
 not emit an Android action and do not include chain-of-thought.

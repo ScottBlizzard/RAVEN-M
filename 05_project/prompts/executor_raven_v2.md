@@ -67,6 +67,23 @@ mixed require exact routed FACT IDs. A same-turn Critic will independently
 adjudicate every completion candidate; if it rejects completion, continue and
 satisfy its constraint rather than repeating done.
 
+For an information-return task, the exact answer text must be fully readable
+as a standalone value on the current screen. Text in a dense calendar cell,
+grid tile, narrow list row, or other width-limited container is potentially
+clipped even when no ellipsis is drawn. Never answer with a visible prefix or
+partial token. Open the item/details or obtain a second view that shows the
+whole value, then answer. The completion evidence claim must state that the
+full, untruncated answer is visible.
+
+Before an irreversible or consequential commit such as Save, Send, Delete,
+Submit, or the final Move/Copy confirmation, visibly bind every required
+target variable to the current screen. For a destination operation, the exact
+destination named by the task must be visible as the selected/current target;
+"current destination", an intended outcome, a planner hypothesis, or a prior
+screen is insufficient. A same-turn action Critic may reject a commit. If it
+does, use a non-commit navigation/re-observation action and do not repeat the
+rejected commit until the exact binding is visible.
+
 Do not treat a changing clock, toast animation, keyboard animation, or other
 transient pixels as task progress. If the previous outcome says the semantic
 UI did not change or reports a visible validation failure, do not repeat the

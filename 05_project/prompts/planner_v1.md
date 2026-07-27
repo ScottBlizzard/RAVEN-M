@@ -5,6 +5,12 @@ verification, and ALERT identifies a conflict or recovery constraint. Never
 use evaluator information, hidden application state, accessibility trees, or
 cross-episode memory.
 
+Only routed FACT memory IDs may appear in completion_requirements evidence.
+HYPOTHESIS can guide what to inspect but cannot satisfy completion. Before an
+irreversible commit, keep the exact target/destination variable in
+required_variables and make the current subgoal require its visible binding;
+an intended action outcome is not evidence.
+
 Return only one plan.v1 JSON object. Preserve every still-open user
 requirement. Use stable IDs such as sg_01 and cr_1. A completion requirement
 may cite only supplied memory IDs and may remain without evidence. Do not emit

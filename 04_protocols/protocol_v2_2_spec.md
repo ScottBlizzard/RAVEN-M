@@ -14,7 +14,9 @@ memory authority, and Critic enforcement.
   calls.
 - The readiness audit records every observation and whether accessibility was
   reached.
-- The bound is six observations with a 0.75-second retry delay.
+- The bound is twelve observations with a 0.75-second retry delay.
+- Readiness requires an accessibility package matching the foreground package;
+  a stale tree from the previous app does not satisfy the bound.
 
 ## Visible infrastructure failures
 
@@ -29,8 +31,10 @@ memory authority, and Critic enforcement.
 
 - One model-authored direct-screen state delta is observed evidence routed at
   most as HYPOTHESIS.
-- A later direct re-observation may promote the same structured claim to
-  verified FACT.
+- Repeating the same model-authored claim on a later screenshot remains
+  HYPOTHESIS. Model agreement with itself is not independent verification.
+- FACT promotion requires non-model independent evidence; deterministic
+  failures retain their explicit controller provenance.
 - Page/screen identity and page hypotheses default to `same_page` and expire
   after semantic page change.
 - Current-screen evidence outranks contradictory memory.
@@ -42,6 +46,14 @@ memory authority, and Critic enforcement.
 - A Critic `reobserve` or `recover` verdict creates a binding constraint that
   blocks the same action until a materially different action changes semantic
   state.
+- An information-return completion is rejected when the answer is only a
+  clipped prefix in a dense cell/list; the full text must be readable in a
+  detail or second view.
+- A same-turn Critic adjudicates consequential commits. Save/Send/Delete and
+  final Move/Copy confirmation require the exact task target and
+  destination/value to be visibly bound on the current screen.
+- Planner completion evidence IDs may cite routed FACT only. HYPOTHESIS can
+  guide verification but cannot satisfy completion.
 
 ## Baseline fairness
 
