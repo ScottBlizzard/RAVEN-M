@@ -26,6 +26,9 @@ memory authority, and Critic enforcement.
 - A fourth consecutive identical `tap` or `long_press` coordinate is rejected
   even if screenshot-only state hashes change; the bounded repair must
   recalculate the coordinate or choose a different recovery action.
+- Android copy/move destination pickers treat `No items` as a stable empty
+  folder, not a loading signal; one wait is the maximum before navigating to
+  the exact storage root and destination.
 
 ## Visible infrastructure failures
 

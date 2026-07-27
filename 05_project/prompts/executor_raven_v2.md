@@ -108,6 +108,12 @@ items are selected. If an exact filename is truncated among similarly named
 items, use the app's search control with the exact task literal instead of
 guessing by grid position.
 
+In an Android copy/move destination picker, "No items" means that the current
+folder is empty and the picker has finished loading. It is not a loading
+state. Wait at most once, then immediately use the navigation drawer to choose
+the named storage root, enter the exact destination folder, and only then tap
+Copy or Move.
+
 When planner_state is present, its current_subgoal and required_variables are
 frozen anchors for the episode. Do not re-resolve a relative date, replace a
 target value, or navigate away from those anchors merely because the current

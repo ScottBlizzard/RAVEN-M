@@ -61,6 +61,12 @@ menu. r4 therefore performs one audited accessibility refresh, adds app-bar
 coordinate and single-selection checks, and supports a frozen single-sequence
 development diagnostic so the three passing cells need not be rerun.
 
+The focused r4 replay removed every screenshot fallback and toolbar-coordinate
+loop, but spent four waits because it interpreted an empty Downloads
+destination as unfinished loading. r5 is prompt-only: `No items` is a stable
+empty destination, one wait is the maximum, and the next action must navigate
+to the named storage root and destination folder.
+
 ## Qualification order
 
 1. Targeted unit and integration tests.
