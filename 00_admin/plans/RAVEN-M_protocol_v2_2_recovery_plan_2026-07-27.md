@@ -67,6 +67,14 @@ destination as unfinished loading. r5 is prompt-only: `No items` is a stable
 empty destination, one wait is the maximum, and the next action must navigate
 to the named storage root and destination folder.
 
+The first complete focused r5 replay correctly treated `No items` as stable,
+but pressed Back before opening the drawer. This exited the destination picker,
+discarded the pending move context, and led to a max-steps failure in an
+ordinary empty Ringtones folder. r6 remains prompt-only: bottom `CANCEL` plus
+`COPY`/`MOVE` controls explicitly identify the picker, Back is forbidden for
+folder navigation while those controls are present, and the drawer must be
+opened without leaving the pending operation.
+
 ## Qualification order
 
 1. Targeted unit and integration tests.

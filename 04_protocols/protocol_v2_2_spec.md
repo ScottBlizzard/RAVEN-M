@@ -29,6 +29,10 @@ memory authority, and Critic enforcement.
 - Android copy/move destination pickers treat `No items` as a stable empty
   folder, not a loading signal; one wait is the maximum before navigating to
   the exact storage root and destination.
+- Persistent bottom `CANCEL` and `COPY`/`MOVE` controls identify the
+  destination-picker state. Navigation must use the picker's drawer directly;
+  Back is not a folder-navigation action because it exits the picker and loses
+  the pending operation.
 
 ## Visible infrastructure failures
 
