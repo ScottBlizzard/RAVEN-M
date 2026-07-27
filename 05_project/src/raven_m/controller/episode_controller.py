@@ -935,10 +935,11 @@ class EpisodeController:
                     raise
                 state_after, after_readiness = self._observe_state(
                     env,
-                    require_accessibility=bool(
-                        self.protocol_v2_2
-                        and decision["action"].get("type") == "open_app"
-                    ),
+                    # Any action can transiently change the foreground
+                    # activity (for example, an Android chooser overlay).
+                    # Do not pair a new screenshot with the previous
+                    # activity's stale accessibility tree.
+                    require_accessibility=self.protocol_v2_2,
                 )
                 readiness_observation_count += len(after_readiness)
                 readiness_retry_count += max(0, len(after_readiness) - 1)

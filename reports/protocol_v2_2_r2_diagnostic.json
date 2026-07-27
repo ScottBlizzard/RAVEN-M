@@ -1,0 +1,45 @@
+{
+  "schema_version": "protocol_v2_2_development_diagnostic.v1",
+  "suite_id": "nonhard_capability_v2_2_seed20260729_r2_development_smoke_4",
+  "source_commit": "ae7575597cc3f548d960cf29045577a6ddda714e",
+  "finished": false,
+  "stopped_early": true,
+  "stop_reason": "model_output_invalid_after_one_bounded_repair",
+  "infrastructure_attempt_count": 0,
+  "result_count": 4,
+  "success_count": 3,
+  "elapsed_minutes": 16.6,
+  "suite_summary": "runs/protocol_v2_2_development/nonhard_capability_v2_2_seed20260729_r2_development_smoke_4/suite_summary.json",
+  "suite_summary_sha256": "02ea752f3d99ff0977ff82d43ca9e552892ab316c8b7fa3bd2d7e8939fe18ec6",
+  "results": [
+    {
+      "sequence": 1,
+      "task": "ContactsAddContact",
+      "variant": "B3",
+      "success": true
+    },
+    {
+      "sequence": 2,
+      "task": "SimpleCalendarEventsOnDate",
+      "variant": "M0",
+      "success": true,
+      "answer": "Board meeting",
+      "diagnosis": "r2 fixed the clipped-prefix failure by opening October 25 before answering."
+    },
+    {
+      "sequence": 3,
+      "task": "ExpenseAddSingle",
+      "variant": "B3",
+      "success": true
+    },
+    {
+      "sequence": 4,
+      "task": "FilesMoveFile",
+      "variant": "M0",
+      "success": false,
+      "failure_code": "MODEL_OUTPUT_INVALID_AFTER_REPAIR",
+      "diagnosis": "A chooser overlay changed pixels before accessibility caught up; stale semantic state blocked a valid Back recovery and the repair repeated it."
+    }
+  ],
+  "decision": "Preserve r2. Apply foreground/accessibility consistency after every action in a separate r3 source and suite."
+}

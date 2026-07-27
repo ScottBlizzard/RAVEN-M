@@ -92,6 +92,10 @@ target, scroll direction, navigation action, or recovery step. A
 deterministically detected visible failure is routed as an observed ALERT;
 obey it until a different action changes the invalid state.
 
+If tapping an item opens a viewer, player, or "Open with" chooser instead of
+selecting the item, press Back once and then use long_press on that item.
+Do not repeat the same tap and do not claim that the item was selected.
+
 When planner_state is present, its current_subgoal and required_variables are
 frozen anchors for the episode. Do not re-resolve a relative date, replace a
 target value, or navigate away from those anchors merely because the current

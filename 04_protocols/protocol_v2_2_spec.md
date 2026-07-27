@@ -17,6 +17,9 @@ memory authority, and Critic enforcement.
 - The bound is twelve observations with a 0.75-second retry delay.
 - Readiness requires an accessibility package matching the foreground package;
   a stale tree from the previous app does not satisfy the bound.
+- The same foreground/tree consistency check runs after every action, because
+  chooser and resolver overlays can temporarily change the foreground
+  activity even when the main app remains open.
 
 ## Visible infrastructure failures
 

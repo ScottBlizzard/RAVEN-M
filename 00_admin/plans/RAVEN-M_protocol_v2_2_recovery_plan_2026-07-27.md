@@ -46,6 +46,14 @@ without visibly selecting the required destination and then repeated false
 model-authored observations. These are generic epistemic-authority gaps, so r1
 is retained as diagnostic evidence and a separate r2 source tag/suite is used.
 
+The r2 replay fixed Calendar and reached 3/4 successes, but Files stopped
+correctly when the model repeated Back on an `Open with` overlay after the
+guard blocked that semantic fingerprint. The screenshot had changed while the
+captured accessibility tree still belonged to the previous foreground
+activity. r3 therefore applies the foreground/tree consistency wait after
+every action, not only after `open_app`, and makes tap-to-view versus
+long-press-to-select recovery explicit.
+
 ## Qualification order
 
 1. Targeted unit and integration tests.
