@@ -19,6 +19,7 @@ from raven_m.actions.schema import ActionValidationError, parse_action_response
 from raven_m.controller.protocol_v2_guard import (
     ProtocolV2DecisionGuard,
     destination_picker_active,
+    destination_picker_commit_action,
     semantic_ui_snapshot,
 )
 from raven_m.env.androidworld_adapter import AndroidWorldAdapter
@@ -530,6 +531,9 @@ class EpisodeController:
         image_path: Path,
         page_semantic_sha256: str,
         destination_picker_is_active: bool,
+        ui_elements: Any,
+        screen_width: int,
+        screen_height: int,
         user_prompt: str,
         episode_id: str,
         step: int,
@@ -561,11 +565,20 @@ class EpisodeController:
             parsed_candidate = parse_action_response(content, **parse_kwargs)
             self.history_policy.validate_decision(parsed_candidate.decision)
             if self.decision_guard is not None:
+                picker_commit_is_action = destination_picker_commit_action(
+                    ui_elements,
+                    parsed_candidate.decision.get("action"),
+                    screen_width=screen_width,
+                    screen_height=screen_height,
+                )
                 self.decision_guard.validate_decision(
                     parsed_candidate.decision,
                     page_sha256=page_semantic_sha256,
                     destination_picker_is_active=(
                         destination_picker_is_active
+                    ),
+                    destination_picker_commit_is_action=(
+                        picker_commit_is_action
                     ),
                 )
             action_adjudication = self.history_policy.adjudicate_action(
@@ -821,6 +834,11 @@ class EpisodeController:
                         image_path=before_path,
                         page_semantic_sha256=before_semantic["sha256"],
                         destination_picker_is_active=picker_active,
+                        ui_elements=getattr(
+                            state_before, "ui_elements", ()
+                        ),
+                        screen_width=width,
+                        screen_height=height,
                         user_prompt=user_prompt,
                         episode_id=episode_id,
                         step=step,
@@ -935,6 +953,12 @@ class EpisodeController:
                 if self.protocol_v2:
                     step_record["before_semantic_ui"] = before_semantic
 
+                picker_commit_executed = destination_picker_commit_action(
+                    getattr(state_before, "ui_elements", ()),
+                    decision.get("action"),
+                    screen_width=width,
+                    screen_height=height,
+                )
                 answer_action = bool(
                     decision["status"] == "done"
                     and isinstance(decision.get("action"), dict)
@@ -1036,6 +1060,9 @@ class EpisodeController:
                         after_visible_failures=after_semantic[
                             "visible_failure_texts"
                         ],
+                        destination_picker_commit_executed=(
+                            picker_commit_executed
+                        ),
                     )
                     step_record["protocol_v2_guard"] = guard_transition
                 if answer_action:

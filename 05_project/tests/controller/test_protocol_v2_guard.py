@@ -6,6 +6,7 @@ from raven_m.actions.schema import ActionValidationError
 from raven_m.controller.protocol_v2_guard import (
     ProtocolV2DecisionGuard,
     destination_picker_active,
+    destination_picker_commit_action,
     semantic_ui_snapshot,
 )
 
@@ -406,6 +407,41 @@ def test_destination_picker_requires_bottom_cancel_and_commit_controls() -> None
     assert not destination_picker_active(controls, screen_height=2400)
 
 
+def test_destination_picker_commit_action_requires_enabled_bottom_hit() -> None:
+    controls = [
+        {
+            "text": "MOVE",
+            "is_visible": True,
+            "is_enabled": True,
+            "bbox": {
+                "x_min": 0.28,
+                "x_max": 0.50,
+                "y_min": 0.91,
+                "y_max": 0.98,
+            },
+        }
+    ]
+    assert destination_picker_commit_action(
+        controls,
+        {"type": "tap", "x": 0.385, "y": 0.945},
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert not destination_picker_commit_action(
+        controls,
+        {"type": "tap", "x": 0.08, "y": 0.08},
+        screen_width=1080,
+        screen_height=2400,
+    )
+    controls[0]["is_enabled"] = False
+    assert not destination_picker_commit_action(
+        controls,
+        {"type": "tap", "x": 0.385, "y": 0.945},
+        screen_width=1080,
+        screen_height=2400,
+    )
+
+
 def test_destination_picker_guard_blocks_back_but_allows_drawer() -> None:
     guard = ProtocolV2DecisionGuard()
     guard.reset(goal="Move a file")
@@ -433,3 +469,51 @@ def test_destination_picker_guard_blocks_back_but_allows_drawer() -> None:
     assert audit["validation_blocks"][-1]["reason"] == (
         "destination_picker_back_blocked"
     )
+
+
+def test_post_destination_commit_blocks_new_selection_not_navigation() -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(goal="Move a file")
+    guard.observe_transition(
+        before_sha256="picker",
+        action={"type": "tap", "x": 0.385, "y": 0.945},
+        after_sha256="source",
+        destination_picker_commit_executed=True,
+    )
+    guard.validate_decision(
+        decision({"duration_ms": 1000, "type": "wait"}),
+        page_sha256="source",
+    )
+    guard.validate_decision(
+        decision({"type": "tap", "x": 0.07, "y": 0.08}),
+        page_sha256="source",
+    )
+    with pytest.raises(
+        ActionValidationError,
+        match="POST_DESTINATION_COMMIT_GUARD",
+    ):
+        guard.validate_decision(
+            decision(
+                {
+                    "duration_ms": 800,
+                    "type": "long_press",
+                    "x": 0.25,
+                    "y": 0.625,
+                }
+            ),
+            page_sha256="source",
+        )
+    with pytest.raises(
+        ActionValidationError,
+        match="POST_DESTINATION_COMMIT_GUARD",
+    ):
+        guard.validate_decision(
+            decision({"type": "tap", "x": 0.385, "y": 0.945}),
+            page_sha256="picker-again",
+            destination_picker_is_active=True,
+            destination_picker_commit_is_action=True,
+        )
+    audit = guard.audit_record()
+    assert audit["destination_picker_commit_count"] == 1
+    assert audit["post_destination_commit_block_count"] == 2
+    assert audit["post_destination_commit_active"]

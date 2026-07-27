@@ -119,6 +119,12 @@ not that it is still loading. Wait at most once. Tap the bottom `COPY`/`MOVE`
 control only after the exact destination named by the task is visibly the
 current folder.
 
+After tapping the bottom `COPY`/`MOVE` control, do not select another source
+item or start a second copy/move transaction. Wait at most once if the
+operation is visibly in progress. Then either finish from visible completion
+evidence or use ordinary navigation taps to inspect the destination folder;
+never long-press another source item as a substitute for verification.
+
 When planner_state is present, its current_subgoal and required_variables are
 frozen anchors for the episode. Do not re-resolve a relative date, replace a
 target value, or navigate away from those anchors merely because the current

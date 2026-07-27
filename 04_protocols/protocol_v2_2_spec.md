@@ -36,6 +36,10 @@ memory authority, and Critic enforcement.
 - The controller deterministically rejects `press_back` on that state before
   execution. The bounded same-screen repair must choose the picker drawer or
   another non-exit action, and the rejection is recorded in the guard audit.
+- An executed tap inside the enabled bottom `COPY`/`MOVE` control creates an
+  auditable post-destination-commit state. Later long-press selection or a
+  second bottom commit is rejected before execution; bounded waiting and
+  ordinary navigation remain available for visible destination verification.
 
 ## Visible infrastructure failures
 

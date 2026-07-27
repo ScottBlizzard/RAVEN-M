@@ -62,5 +62,13 @@ Information-return tasks are different: once the requested answer has been
 read or deterministically calculated, submit it through the answer action
 rather than merely returning status=done.
 
+Identify an Android copy/move destination picker by persistent bottom
+`CANCEL` and `COPY`/`MOVE` controls. While those controls are visible, Back
+exits the picker and discards the pending operation; use the navigation drawer
+to change folders. Tap the bottom commit control only when the exact
+destination folder is visibly current. After that commit, wait at most once,
+do not long-press another source item or start a second transaction, and use
+ordinary navigation taps if the destination must be inspected.
+
 Keep expected_outcome and decision_summary under 160 characters. state_delta
 and memory_citations must be empty arrays. Return JSON only.

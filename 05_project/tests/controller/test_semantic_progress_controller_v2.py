@@ -80,6 +80,51 @@ class PickerBackThenDrawerClient:
         )
 
 
+class CommitThenRepeatClient:
+    def generate(self, **kwargs) -> ModelCall:
+        label = kwargs["call_label"]
+        if label.startswith("step_000"):
+            action = {"type": "tap", "x": 0.40, "y": 0.94}
+            summary = "Commit the pending move."
+        elif label.endswith("_repair"):
+            action = {"type": "tap", "x": 0.07, "y": 0.08}
+            summary = "Open navigation to verify the destination."
+        else:
+            action = {
+                "type": "long_press",
+                "x": 0.25,
+                "y": 0.625,
+                "duration_ms": 800,
+            }
+            summary = "Select another source item."
+        decision = {
+            "status": "continue",
+            "action": action,
+            "expected_outcome": "The file operation advances.",
+            "decision_summary": summary,
+            "state_delta": [],
+            "memory_citations": [],
+            "completion_evidence": [],
+        }
+        return ModelCall(
+            call_id=label,
+            episode_id=kwargs["episode_id"],
+            idempotency_key=label,
+            image_sha256="0" * 64,
+            image_sha256s=("0" * 64,),
+            prompt_sha256=label,
+            request_sha256=label,
+            response_sha256=label,
+            content=json.dumps(decision),
+            usage={
+                "prompt_tokens": 1,
+                "completion_tokens": 1,
+                "total_tokens": 2,
+            },
+            raven_meta={},
+        )
+
+
 class DestinationPickerEnv:
     def __init__(self) -> None:
         self.execute_count = 0
@@ -115,6 +160,56 @@ class DestinationPickerEnv:
     def execute_action(self, action) -> None:
         assert action.action_type == "click"
         self.execute_count += 1
+
+
+class PostCommitEnv(DestinationPickerEnv):
+    def get_state(self, wait_to_stabilize: bool):
+        assert wait_to_stabilize
+        if self.execute_count == 0:
+            elements = [
+                SimpleNamespace(
+                    package_name="files",
+                    text="CANCEL",
+                    is_visible=True,
+                    is_enabled=True,
+                    bbox=SimpleNamespace(
+                        x_min=0.03,
+                        x_max=0.26,
+                        y_min=0.91,
+                        y_max=0.98,
+                    ),
+                ),
+                SimpleNamespace(
+                    package_name="files",
+                    text="MOVE",
+                    is_visible=True,
+                    is_enabled=True,
+                    bbox=SimpleNamespace(
+                        x_min=0.28,
+                        x_max=0.50,
+                        y_min=0.91,
+                        y_max=0.98,
+                    ),
+                ),
+            ]
+        else:
+            elements = [
+                SimpleNamespace(
+                    package_name="files",
+                    text="Music",
+                    is_visible=True,
+                    is_enabled=True,
+                    resource_id="toolbar_title",
+                )
+            ]
+        return SimpleNamespace(
+            pixels=np.full(
+                (100, 100, 3),
+                min(self.execute_count, 1),
+                dtype=np.uint8,
+            ),
+            ui_elements=elements,
+        )
 
 
 class FilesTask:
@@ -435,4 +530,43 @@ def test_controller_repairs_back_inside_destination_picker(
     ]
     assert summary["protocol_v2_guard"][
         "destination_picker_back_block_count"
+    ] == 1
+
+
+def test_controller_repairs_new_selection_after_destination_commit(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = PostCommitEnv()
+    controller = EpisodeController(
+        client=CommitThenRepeatClient(),  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=2,
+        max_model_calls=3,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="post-commit-repair-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="M0",
+    )
+    assert env.execute_count == 2
+    assert summary["model_call_count"] == 3
+    assert summary["steps"][0]["protocol_v2_guard"][
+        "destination_picker_commit_executed"
+    ]
+    assert summary["steps"][1]["decision"]["action"]["type"] == "tap"
+    assert summary["steps"][1]["parse"]["model_repair_used"]
+    assert "POST_DESTINATION_COMMIT_GUARD" in summary["steps"][1]["parse"][
+        "initial_validation_error"
+    ]
+    assert summary["protocol_v2_guard"][
+        "post_destination_commit_block_count"
     ] == 1

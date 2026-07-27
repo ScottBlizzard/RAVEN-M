@@ -141,6 +141,69 @@ def destination_picker_active(
     )
 
 
+def destination_picker_commit_action(
+    ui_elements: Any,
+    action: dict[str, Any] | None,
+    *,
+    screen_width: int,
+    screen_height: int,
+) -> bool:
+    """Return whether a tap hits the bottom Copy/Move picker control."""
+    if not isinstance(action, dict) or action.get("type") != "tap":
+        return False
+    tap_x = action.get("x")
+    tap_y = action.get("y")
+    if not isinstance(tap_x, (int, float)) or not isinstance(
+        tap_y, (int, float)
+    ):
+        return False
+    for element in ui_elements or []:
+        if _element_value(element, "is_visible") is False:
+            continue
+        if _element_value(element, "is_enabled") is False:
+            continue
+        texts = {
+            text.casefold()
+            for field in ("text", "content_description")
+            if (text := _normalized_text(_element_value(element, field)))
+        }
+        if not texts & {"copy", "move"}:
+            continue
+        box = _element_value(element, "bbox")
+        if box is None:
+            box = _element_value(element, "bbox_pixels")
+        x_min = _box_value(box, "x_min") if box is not None else None
+        x_max = _box_value(box, "x_max") if box is not None else None
+        y_min = _box_value(box, "y_min") if box is not None else None
+        y_max = _box_value(box, "y_max") if box is not None else None
+        values = (x_min, x_max, y_min, y_max)
+        if not all(isinstance(value, (int, float)) for value in values):
+            continue
+        normalized = max(float(value) for value in values) <= 1.5
+        if normalized:
+            nx_min, nx_max = sorted((float(x_min), float(x_max)))
+            ny_min, ny_max = sorted((float(y_min), float(y_max)))
+        elif screen_width > 0 and screen_height > 0:
+            nx_min, nx_max = sorted(
+                (float(x_min) / screen_width, float(x_max) / screen_width)
+            )
+            ny_min, ny_max = sorted(
+                (
+                    float(y_min) / screen_height,
+                    float(y_max) / screen_height,
+                )
+            )
+        else:
+            continue
+        if ny_min < 0.8:
+            continue
+        if nx_min <= float(tap_x) <= nx_max and ny_min <= float(
+            tap_y
+        ) <= ny_max:
+            return True
+    return False
+
+
 def semantic_ui_snapshot(
     ui_elements: Any,
     *,
@@ -279,6 +342,9 @@ class ProtocolV2DecisionGuard:
         self.identical_coordinate_action_count = 0
         self.identical_coordinate_block_count = 0
         self.destination_picker_back_block_count = 0
+        self.destination_picker_commit_count = 0
+        self.post_destination_commit_block_count = 0
+        self.post_destination_commit_active = False
 
     def _block_fingerprint(
         self,
@@ -335,11 +401,35 @@ class ProtocolV2DecisionGuard:
         *,
         page_sha256: str,
         destination_picker_is_active: bool = False,
+        destination_picker_commit_is_action: bool = False,
     ) -> None:
         self._validate_text_provenance(decision)
         action = decision.get("action")
         if not isinstance(action, dict):
             return
+        if self.post_destination_commit_active and (
+            action.get("type") == "long_press"
+            or destination_picker_commit_is_action
+        ):
+            record = {
+                "semantic_state_sha256": page_sha256,
+                "action": action,
+                "reason": "post_destination_commit_mutation_blocked",
+                "required_recovery_classes": [
+                    "inspect_different_visible_control",
+                    "fail_safely",
+                ],
+            }
+            self.validation_blocks.append(record)
+            self.post_destination_commit_block_count += 1
+            raise ActionValidationError(
+                "POST_DESTINATION_COMMIT_GUARD: the bottom Copy/Move "
+                "control was already executed in this task. Do not select "
+                "another source item or submit a second copy/move "
+                "transaction. If verification is needed, wait once or use "
+                "ordinary navigation taps to inspect the destination; "
+                "otherwise return a terminal status."
+            )
         if (
             destination_picker_is_active
             and action.get("type") == "press_back"
@@ -408,8 +498,12 @@ class ProtocolV2DecisionGuard:
         after_pixel_sha256: str | None = None,
         before_visible_failures: list[str] | tuple[str, ...] = (),
         after_visible_failures: list[str] | tuple[str, ...] = (),
+        destination_picker_commit_executed: bool = False,
     ) -> dict[str, Any]:
         action_key = canonical_action_key(action)
+        if destination_picker_commit_executed:
+            self.destination_picker_commit_count += 1
+            self.post_destination_commit_active = True
         if action.get("type") in COORDINATE_STREAK_ACTIONS:
             if action_key == self.last_coordinate_action_key:
                 self.identical_coordinate_action_count += 1
@@ -474,6 +568,12 @@ class ProtocolV2DecisionGuard:
             "identical_coordinate_action_count": (
                 self.identical_coordinate_action_count
             ),
+            "destination_picker_commit_executed": (
+                destination_picker_commit_executed
+            ),
+            "post_destination_commit_active": (
+                self.post_destination_commit_active
+            ),
             "new_visible_failures": new_visible_failures,
         }
 
@@ -491,6 +591,15 @@ class ProtocolV2DecisionGuard:
             ),
             "destination_picker_back_block_count": (
                 self.destination_picker_back_block_count
+            ),
+            "destination_picker_commit_count": (
+                self.destination_picker_commit_count
+            ),
+            "post_destination_commit_block_count": (
+                self.post_destination_commit_block_count
+            ),
+            "post_destination_commit_active": (
+                self.post_destination_commit_active
             ),
             "ab_ab_cycle_trigger_count": self.cycle_trigger_count,
             "visible_failure_trigger_count": (

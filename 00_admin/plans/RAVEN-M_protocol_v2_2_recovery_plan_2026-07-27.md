@@ -83,6 +83,15 @@ therefore not an adequate invariant. r7 detects bottom-anchored `CANCEL` plus
 it on the same screenshot, so the rejection uses a model call but no policy
 action or environment transition.
 
+The focused r7 replay proved that guard effective and executed the final
+`MOVE` in the exact Ringtones destination. The executor then waited once but
+long-pressed another source item and started a second move transaction instead
+of verifying or terminating. r8 records a successful bottom `COPY`/`MOVE` tap
+as post-commit state and rejects later long-press selection or a duplicate
+bottom commit before execution. Ordinary taps and one bounded wait remain
+available so the destination can be inspected without forcing an unsupported
+completion claim.
+
 ## Qualification order
 
 1. Targeted unit and integration tests.
