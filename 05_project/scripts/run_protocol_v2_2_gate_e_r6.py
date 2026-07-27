@@ -8,7 +8,7 @@ from run_protocol_v2_gate_e import main
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-SOURCE_COMMIT = "PENDING_PROTOCOL_V2_2_GATE_E_R6_FREEZE"
+SOURCE_COMMIT = "d7d9ba87416090e8bdb2d99f9ba4ae772687cd7a"
 
 
 if __name__ == "__main__":
