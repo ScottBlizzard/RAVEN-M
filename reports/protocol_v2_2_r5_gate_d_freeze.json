@@ -1,0 +1,36 @@
+{
+  "schema_version": "protocol_v2_2_r5_gate_d_freeze.v1",
+  "checked_at": "2026-07-27T07:26:30Z",
+  "passed": true,
+  "protocol": "androidworld_protocol_v2_2_exploratory",
+  "source_tag": "protocol-v2-2-gate-e-r5-dev",
+  "source_commit": "751addb8ccf30561918fd97bbdb2b151523956b5",
+  "freeze_file_count": 27,
+  "verification": {
+    "full_pytest": {
+      "passed": true,
+      "test_count": 182
+    },
+    "protocol_v1_seal": {
+      "passed": true,
+      "file_count": 197,
+      "failure_count": 0
+    },
+    "r4_diagnostic_preserved": {
+      "passed": true,
+      "report": "reports/protocol_v2_2_r4_diagnostic.json",
+      "result_count": 1
+    }
+  },
+  "r5_changes": [
+    "No items is treated as a stable empty destination rather than loading",
+    "destination-picker waits are capped at one before drawer navigation"
+  ],
+  "preserved_controls": {
+    "same_task_schedule_as_r4": true,
+    "same_instance_and_order_seeds_as_r4": true,
+    "same_step_and_model_budgets_as_r4": true,
+    "same_b3_summary_prompt_as_r4": true,
+    "r4_development_evidence_immutable": true
+  }
+}
