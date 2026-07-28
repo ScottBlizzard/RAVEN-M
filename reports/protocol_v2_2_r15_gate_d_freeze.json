@@ -1,0 +1,51 @@
+{
+  "schema_version": "protocol_v2_2_r15_gate_d_freeze.v1",
+  "checked_at": "2026-07-28T12:56:42Z",
+  "passed": true,
+  "protocol": "androidworld_protocol_v2_2_exploratory",
+  "source_tag": "protocol-v2-2-gate-e-r15-dev",
+  "source_commit": "c690fb9bb2be9b1e2d493cc3694bd0f2d4e6a365",
+  "freeze_file_count": 27,
+  "verification": {
+    "full_pytest": {
+      "passed": true,
+      "test_count": 221
+    },
+    "protocol_v1_seal": {
+      "passed": true,
+      "file_count": 197,
+      "failure_count": 0
+    },
+    "r14_diagnostic_preserved": {
+      "passed": true,
+      "report": "reports/protocol_v2_2_r14_diagnostic.json",
+      "result_count": 1
+    },
+    "focused_input_guard": {
+      "passed": true,
+      "visible_accessibility_flags_only": true,
+      "bbox_exposed": false,
+      "coordinate_action_silently_rewritten": false,
+      "same_bounded_repair_budget": true
+    }
+  },
+  "r15_changes": [
+    "summarize visible focused editable state without retaining a bbox",
+    "validation-block coordinate-bearing type_text into an already focused field",
+    "validation-block clear_text=true when the focused field is empty",
+    "repair by preserving exact text and provenance while explicitly removing x,y"
+  ],
+  "preserved_controls": {
+    "same_task_schedule_as_r14": true,
+    "same_instance_and_order_seeds_as_r14": true,
+    "same_step_and_model_budgets_as_r14": true,
+    "same_prompt_files_and_schemas_as_r14": true,
+    "adapter_execution_unchanged": true,
+    "no_deterministic_action_rewrite": true,
+    "no_target_coordinate_injection": true,
+    "no_silent_action_retargeting": true,
+    "one_bounded_repair_unchanged": true,
+    "no_evaluator_state_in_model_inputs": true,
+    "r14_development_evidence_immutable": true
+  }
+}
