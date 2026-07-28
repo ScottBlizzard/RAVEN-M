@@ -78,6 +78,12 @@ memory authority, and Critic enforcement.
   auditable post-destination-commit state. Reversible inspection of the exact
   item remains available, but a second `Move to`, `Copy to`, or bottom commit
   is rejected before execution.
+- A visible focused editable node or a visible Android Latin input-method
+  package is current-screen evidence that text input is already active.
+  Coordinate-bearing `type_text` is rejected before AndroidWorld can click
+  away from that input. The bounded repair preserves the exact text and
+  provenance while removing `x,y`; keyboard presence alone does not imply an
+  empty field or disclose any input coordinate.
 
 ## Visible infrastructure failures
 

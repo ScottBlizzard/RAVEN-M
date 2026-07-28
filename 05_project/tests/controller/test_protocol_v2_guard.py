@@ -91,12 +91,47 @@ def test_focused_editable_input_assessment_uses_visible_state_only() -> None:
         ]
     )
     assert assessment == {
-        "schema_version": "focused_editable_input_assessment.v1",
+        "schema_version": "focused_editable_input_assessment.v2",
         "present": True,
         "focused_count": 1,
         "empty": True,
+        "soft_keyboard_present": False,
+        "soft_keyboard_packages": [],
+        "input_ready": True,
     }
     assert "bbox" not in assessment
+
+
+def test_focused_input_assessment_uses_visible_soft_keyboard_fallback() -> None:
+    assessment = focused_editable_input_assessment(
+        [
+            {
+                "package_name": "com.google.android.documentsui",
+                "text": "Search",
+                "is_visible": True,
+                "is_editable": False,
+                "is_focused": False,
+            },
+            {
+                "package_name": "com.google.android.inputmethod.latin",
+                "text": "q",
+                "is_visible": True,
+                "is_editable": False,
+                "is_focused": False,
+            },
+        ]
+    )
+    assert assessment == {
+        "schema_version": "focused_editable_input_assessment.v2",
+        "present": False,
+        "focused_count": 0,
+        "empty": False,
+        "soft_keyboard_present": True,
+        "soft_keyboard_packages": [
+            "com.google.android.inputmethod.latin"
+        ],
+        "input_ready": True,
+    }
 
 
 def test_focused_input_guard_blocks_click_before_type_and_allows_repair() -> None:
@@ -120,6 +155,34 @@ def test_focused_input_guard_blocks_click_before_type_and_allows_repair() -> Non
     guard.validate_decision(
         decision(text_action(clear_text=False)),
         page_sha256="focused-search",
+        focused_input_assessment=assessment,
+    )
+    assert guard.audit_record()["focused_input_block_count"] == 1
+
+
+def test_focused_input_guard_blocks_coordinate_type_with_keyboard_only() -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(goal="Search for nature_sounds.mp3")
+    assessment = {
+        "schema_version": "focused_editable_input_assessment.v2",
+        "present": False,
+        "focused_count": 0,
+        "empty": False,
+        "soft_keyboard_present": True,
+        "soft_keyboard_packages": [
+            "com.google.android.inputmethod.latin"
+        ],
+        "input_ready": True,
+    }
+    with pytest.raises(ActionValidationError, match="FOCUSED_INPUT_GUARD"):
+        guard.validate_decision(
+            decision(text_action(x=0.5, y=0.5, clear_text=True)),
+            page_sha256="search-with-keyboard",
+            focused_input_assessment=assessment,
+        )
+    guard.validate_decision(
+        decision(text_action(clear_text=True)),
+        page_sha256="search-with-keyboard",
         focused_input_assessment=assessment,
     )
     assert guard.audit_record()["focused_input_block_count"] == 1

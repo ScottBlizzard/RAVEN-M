@@ -186,3 +186,20 @@ provenance while removing `x,y` and disabling clearing for an empty field.
 - v2.2 uses a new protocol ID, source tag, suite ID, and output root.
 - B3 prompt and summary schema remain unchanged.
 - No v2.1 or development-smoke cell is a v2.2 scored cell.
+
+## r16 focused-input evidence extension
+
+The r15 focused FilesMoveFile diagnostic showed that DocumentsUI can open
+Search and expose the visible Latin input-method package without preserving
+the parent Search field in AndroidWorld's leaf-only accessibility projection.
+The focused-editable-only guard therefore missed coordinate-bearing
+`type_text`, and AndroidWorld's pre-input click selected 14 filesystem items.
+
+r16 keeps all r15 controls and adds one secondary, current-screen-only signal:
+the visible `com.google.android.inputmethod.latin` or
+`com.android.inputmethod.latin` package proves that text input is already
+active. When that signal or a focused editable node is present,
+coordinate-bearing `type_text` is rejected before execution and repaired
+within the existing one-repair budget by preserving text and provenance while
+removing `x,y`. Keyboard presence alone does not infer that the field is empty,
+does not expose a coordinate, and does not authorize a silent action rewrite.

@@ -364,6 +364,32 @@ class FocusedInputEnv(DestinationPickerEnv):
         self.execute_count += 1
 
 
+class SoftKeyboardOnlyInputEnv(FocusedInputEnv):
+    def get_state(self, wait_to_stabilize: bool):
+        assert wait_to_stabilize
+        return SimpleNamespace(
+            pixels=np.zeros((100, 100, 3), dtype=np.uint8),
+            ui_elements=[
+                SimpleNamespace(
+                    package_name="com.google.android.documentsui",
+                    text="Search",
+                    is_visible=True,
+                    is_enabled=True,
+                    is_editable=False,
+                    is_focused=False,
+                ),
+                SimpleNamespace(
+                    package_name="com.google.android.inputmethod.latin",
+                    text="q",
+                    is_visible=True,
+                    is_enabled=True,
+                    is_editable=False,
+                    is_focused=False,
+                ),
+            ],
+        )
+
+
 class FilesTask:
     name = "FilesMoveFile"
     goal = "Move the requested file to the requested folder."
@@ -810,3 +836,45 @@ def test_controller_repairs_coordinate_type_into_focused_input(
     assert "Remove x and y" in repair_prompt
     assert "set clear_text=false" in repair_prompt
     assert "Do not tap, navigate, change the text" in repair_prompt
+
+
+def test_controller_repairs_coordinate_type_with_keyboard_only(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = SoftKeyboardOnlyInputEnv()
+    client = FocusedInputThenSafeTextClient()
+    controller = EpisodeController(
+        client=client,  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=1,
+        max_model_calls=2,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="keyboard-input-repair-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="M0",
+    )
+    assert env.execute_count == 1
+    assert summary["model_call_count"] == 2
+    action = summary["steps"][0]["decision"]["action"]
+    assert action["type"] == "type_text"
+    assert "x" not in action
+    assert "y" not in action
+    assert summary["steps"][0]["parse"]["model_repair_used"]
+    assert "FOCUSED_INPUT_GUARD" in summary["steps"][0]["parse"][
+        "initial_validation_error"
+    ]
+    block = summary["protocol_v2_guard"]["validation_blocks"][0]
+    assessment = block["focused_input_assessment"]
+    assert assessment["present"] is False
+    assert assessment["soft_keyboard_present"] is True
+    assert assessment["input_ready"] is True

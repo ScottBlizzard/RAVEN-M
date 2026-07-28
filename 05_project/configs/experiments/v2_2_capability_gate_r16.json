@@ -1,0 +1,131 @@
+{
+  "schema_version": "protocol_v2_2_gate_e_r16.v1",
+  "manifest_id": "protocol_v2_2_gate_e_seed20260729_r16",
+  "protocol": "androidworld_protocol_v2_2_exploratory",
+  "source_tag": "protocol-v2-2-gate-e-r16-dev",
+  "source_commit": "PENDING_R16_SOURCE_COMMIT",
+  "suite_id": "nonhard_capability_v2_2_seed20260729_r16",
+  "output_root": "runs/protocol_v2_2",
+  "instance_seed": 20260729,
+  "blocked_order_seed": 2026072901,
+  "variants": ["B3", "M0"],
+  "task_families": [
+    {
+      "task": "SimpleCalendarEventsOnDate",
+      "max_steps": 10,
+      "capability": "information retrieval and terminal answer"
+    },
+    {
+      "task": "ContactsAddContact",
+      "max_steps": 12,
+      "capability": "ordinary persistence"
+    },
+    {
+      "task": "ExpenseAddSingle",
+      "max_steps": 12,
+      "capability": "multiple fields and category selection"
+    },
+    {
+      "task": "FilesMoveFile",
+      "max_steps": 20,
+      "capability": "file operation and destination persistence"
+    }
+  ],
+  "schedule": [
+    {
+      "sequence": 1,
+      "task": "ContactsAddContact",
+      "variant": "B3",
+      "max_steps": 12
+    },
+    {
+      "sequence": 2,
+      "task": "SimpleCalendarEventsOnDate",
+      "variant": "M0",
+      "max_steps": 10
+    },
+    {
+      "sequence": 3,
+      "task": "ExpenseAddSingle",
+      "variant": "B3",
+      "max_steps": 12
+    },
+    {
+      "sequence": 4,
+      "task": "FilesMoveFile",
+      "variant": "M0",
+      "max_steps": 20
+    },
+    {
+      "sequence": 5,
+      "task": "ContactsAddContact",
+      "variant": "M0",
+      "max_steps": 12
+    },
+    {
+      "sequence": 6,
+      "task": "SimpleCalendarEventsOnDate",
+      "variant": "B3",
+      "max_steps": 10
+    },
+    {
+      "sequence": 7,
+      "task": "ExpenseAddSingle",
+      "variant": "M0",
+      "max_steps": 12
+    },
+    {
+      "sequence": 8,
+      "task": "FilesMoveFile",
+      "variant": "B3",
+      "max_steps": 20
+    }
+  ],
+  "prompts": {
+    "executor": "prompts/executor_v2.md",
+    "executor_raven": "prompts/executor_raven_v2.md",
+    "summary": "prompts/summary_v1.md",
+    "planner": "prompts/planner_v1.md",
+    "critic": "prompts/critic_v1.md"
+  },
+  "schemas": {
+    "B3": "schemas/action.v2.schema.json",
+    "M0": "schemas/action.raven.v2.schema.json"
+  },
+  "freeze_files": [],
+  "limits": {
+    "max_valid_cells": 8,
+    "max_infrastructure_attempts_per_cell": 2,
+    "hard_wall_time_seconds": 7200,
+    "context_cap_tokens": 8192,
+    "max_new_tokens": 256
+  },
+  "acceptance": {
+    "valid_scored_cells": 8,
+    "task_action_compatibility_errors": 0,
+    "information_retrieval_cache_cells": 2,
+    "minimum_correct_information_retrieval_cells": 1,
+    "minimum_total_successes": 4,
+    "minimum_b3_successes": 1,
+    "minimum_m0_successes": 1,
+    "semantic_progress_audit_errors": 0,
+    "executed_blocked_action_errors": 0,
+    "unresolved_guard_repair_errors": 0,
+    "m0_completion_deadlocks": 0,
+    "valid_output_after_one_repair_rate": 1.0,
+    "evaluator_leakage_errors": 0,
+    "cross_episode_memory_errors": 0,
+    "startup_environment_accounting": true,
+    "readiness_accounting": true,
+    "consequential_action_adjudication_accounting": true
+  },
+  "stop_policy": {
+    "automatic_gate_f_transition": false,
+    "stop_on_semantic_controller_error": true,
+    "stop_on_unsupported_action": true,
+    "stop_on_semantic_progress_audit_error": true,
+    "stop_on_unresolved_guard_repair": true,
+    "stop_after_two_consecutive_same_infrastructure_failures": true,
+    "result_dependent_tuning": false
+  }
+}

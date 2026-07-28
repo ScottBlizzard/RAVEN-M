@@ -49,6 +49,10 @@ INFRASTRUCTURE_FAILURE_RE = re.compile(
     flags=re.IGNORECASE,
 )
 IGNORED_UI_PACKAGES = {"com.android.systemui"}
+SOFT_KEYBOARD_PACKAGES = {
+    "com.android.inputmethod.latin",
+    "com.google.android.inputmethod.latin",
+}
 SEMANTIC_FIELDS = (
     "text",
     "content_description",
@@ -94,11 +98,17 @@ def _normalized_text(value: Any) -> str | None:
 def focused_editable_input_assessment(
     ui_elements: Any,
 ) -> dict[str, Any]:
-    """Summarize visible focused editable state without exposing a bbox."""
+    """Summarize visible evidence that text input is already active."""
     focused = []
+    soft_keyboard_packages = set()
     for element in ui_elements or ():
         if _element_value(element, "is_visible") is False:
             continue
+        package_name = _normalized_text(
+            _element_value(element, "package_name")
+        )
+        if package_name in SOFT_KEYBOARD_PACKAGES:
+            soft_keyboard_packages.add(package_name)
         if _element_value(element, "is_editable") is not True:
             continue
         if _element_value(element, "is_focused") is not True:
@@ -112,10 +122,13 @@ def focused_editable_input_assessment(
             }
         )
     return {
-        "schema_version": "focused_editable_input_assessment.v1",
+        "schema_version": "focused_editable_input_assessment.v2",
         "present": bool(focused),
         "focused_count": len(focused),
         "empty": bool(focused) and all(item["empty"] for item in focused),
+        "soft_keyboard_present": bool(soft_keyboard_packages),
+        "soft_keyboard_packages": sorted(soft_keyboard_packages),
+        "input_ready": bool(focused or soft_keyboard_packages),
     }
 
 
@@ -630,7 +643,11 @@ class ProtocolV2DecisionGuard:
             and action.get("clear_text") is True
             and focused_assessment.get("empty") is True
         )
-        if focused_assessment.get("present") is True and (
+        input_ready = focused_assessment.get(
+            "input_ready",
+            focused_assessment.get("present") is True,
+        )
+        if input_ready is True and (
             coordinate_bearing_type_text or clears_focused_empty_field
         ):
             record = {
@@ -650,10 +667,12 @@ class ProtocolV2DecisionGuard:
                 else ""
             )
             raise ActionValidationError(
-                "FOCUSED_INPUT_GUARD: a visible editable field is already "
-                "focused. AndroidWorld clicks supplied x,y before input, "
-                "which can destroy that focus. Keep the same type_text text "
-                "and provenance but omit x and y."
+                "FOCUSED_INPUT_GUARD: visible accessibility evidence shows "
+                "that text input is already active through a focused "
+                "editable field or the soft keyboard. AndroidWorld clicks "
+                "supplied x,y before input, which can destroy that input "
+                "target. Keep the same type_text text and provenance but "
+                "omit x and y."
                 + empty_directive
             )
         assessment = exact_selection_assessment or {}

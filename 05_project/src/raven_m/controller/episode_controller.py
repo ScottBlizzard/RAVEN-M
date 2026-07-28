@@ -478,7 +478,7 @@ class EpisodeController:
         if focused_input_rejected:
             repair_directive = (
                 "\n\nYour previous JSON was structurally valid, but its "
-                "type_text action would destroy a visibly focused input. "
+                "type_text action would destroy an already-active input. "
                 "Keep action.type=type_text, the exact same text, text_origin, "
                 "and source_memory_ids. Remove x and y. If VALIDATION_ERROR "
                 "says the focused field is empty, set clear_text=false. Do not "
