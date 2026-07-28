@@ -9,6 +9,7 @@ from raven_m.controller.protocol_v2_guard import (
     declared_text_source_assessment,
     destination_picker_active,
     destination_picker_commit_action,
+    destination_picker_empty_stall_assessment,
     exact_selection_long_press_assessment,
     focused_editable_input_assessment,
     post_destination_transfer_command_action,
@@ -1283,6 +1284,89 @@ def test_destination_picker_commit_action_requires_enabled_bottom_hit() -> None:
         {"type": "tap", "x": 0.385, "y": 0.945},
         screen_width=1080,
         screen_height=2400,
+    )
+
+
+def test_destination_picker_empty_stall_assessment_exposes_no_ui_text() -> None:
+    elements = [
+        {
+            "text": "No items",
+            "is_visible": True,
+            "is_enabled": True,
+        },
+        {
+            "content_description": "Show roots",
+            "is_visible": True,
+            "is_enabled": True,
+        },
+    ]
+    assessment = destination_picker_empty_stall_assessment(
+        elements,
+        {
+            "type": "swipe",
+            "x": 0.5,
+            "y": 0.8,
+            "x2": 0.5,
+            "y2": 0.2,
+            "duration_ms": 500,
+        },
+    )
+    assert assessment == {
+        "schema_version": (
+            "destination_picker_empty_stall_assessment.v1"
+        ),
+        "adjudicable": True,
+        "action_type": "swipe",
+        "empty_destination_state": True,
+        "visible_empty_marker_count": 1,
+        "stalling_action": True,
+    }
+    assert not any(
+        key in assessment
+        for key in ("text", "directory", "bbox", "coordinate")
+    )
+    no_marker = destination_picker_empty_stall_assessment(
+        [{"text": "Ringtones", "is_visible": True}],
+        {"type": "wait", "duration_ms": 1000},
+    )
+    assert not no_marker["adjudicable"]
+    assert not no_marker["empty_destination_state"]
+
+
+def test_destination_picker_guard_blocks_empty_wait_or_swipe() -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(goal="Move a file")
+    elements = [{"text": "No items", "is_visible": True}]
+    wait_action = {"type": "wait", "duration_ms": 1000}
+    assessment = destination_picker_empty_stall_assessment(
+        elements,
+        wait_action,
+    )
+    with pytest.raises(
+        ActionValidationError,
+        match="DESTINATION_PICKER_EMPTY_STALL_REQUIRED",
+    ):
+        guard.validate_decision(
+            decision(wait_action),
+            page_sha256="empty-picker",
+            destination_picker_is_active=True,
+            destination_picker_empty_stall_assessment=assessment,
+        )
+    guard.validate_decision(
+        decision({"type": "tap", "x": 0.07, "y": 0.08}),
+        page_sha256="empty-picker",
+        destination_picker_is_active=True,
+        destination_picker_empty_stall_assessment=(
+            destination_picker_empty_stall_assessment(
+                elements,
+                {"type": "tap", "x": 0.07, "y": 0.08},
+            )
+        ),
+    )
+    audit = guard.audit_record()
+    assert audit["destination_picker_empty_stall_block_count"] == 1
+    assert audit["validation_blocks"][-1]["reason"] == (
+        "destination_picker_empty_stall_blocked"
     )
 
 

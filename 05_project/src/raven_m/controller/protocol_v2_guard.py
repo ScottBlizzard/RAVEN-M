@@ -602,6 +602,39 @@ def destination_picker_active(
     )
 
 
+def destination_picker_empty_stall_assessment(
+    ui_elements: Any,
+    action: dict[str, Any] | None,
+) -> dict[str, Any]:
+    """Detect navigation-stalling actions in a rendered empty destination."""
+    action_type = (
+        action.get("type") if isinstance(action, dict) else None
+    )
+    visible_empty_marker_count = 0
+    for element in ui_elements or ():
+        if _element_value(element, "is_visible") is False:
+            continue
+        texts = {
+            text.casefold()
+            for field in ("text", "content_description")
+            if (text := _normalized_text(_element_value(element, field)))
+        }
+        if texts & {"no items", "folder is empty", "empty folder"}:
+            visible_empty_marker_count += 1
+    empty_destination_state = visible_empty_marker_count > 0
+    stalling_action = action_type in {"wait", "swipe"}
+    return {
+        "schema_version": (
+            "destination_picker_empty_stall_assessment.v1"
+        ),
+        "adjudicable": empty_destination_state,
+        "action_type": action_type,
+        "empty_destination_state": empty_destination_state,
+        "visible_empty_marker_count": visible_empty_marker_count,
+        "stalling_action": stalling_action,
+    }
+
+
 def destination_picker_commit_action(
     ui_elements: Any,
     action: dict[str, Any] | None,
@@ -918,6 +951,7 @@ class ProtocolV2DecisionGuard:
         self.identical_coordinate_action_count = 0
         self.identical_coordinate_block_count = 0
         self.destination_picker_back_block_count = 0
+        self.destination_picker_empty_stall_block_count = 0
         self.destination_picker_commit_count = 0
         self.post_destination_commit_block_count = 0
         self.post_destination_commit_active = False
@@ -1015,6 +1049,9 @@ class ProtocolV2DecisionGuard:
         page_sha256: str,
         destination_picker_is_active: bool = False,
         destination_picker_commit_is_action: bool = False,
+        destination_picker_empty_stall_assessment: (
+            dict[str, Any] | None
+        ) = None,
         post_destination_transfer_command_is_action: bool = False,
         exact_selection_assessment: dict[str, Any] | None = None,
         focused_input_assessment: dict[str, Any] | None = None,
@@ -1353,6 +1390,42 @@ class ProtocolV2DecisionGuard:
                 "Keep the picker open and tap its top-left navigation drawer "
                 "to change folders."
             )
+        empty_picker_assessment = (
+            destination_picker_empty_stall_assessment or {}
+        )
+        if (
+            destination_picker_is_active
+            and empty_picker_assessment.get("adjudicable") is True
+            and empty_picker_assessment.get(
+                "empty_destination_state"
+            )
+            is True
+            and empty_picker_assessment.get("stalling_action") is True
+        ):
+            record = {
+                "semantic_state_sha256": page_sha256,
+                "action": action,
+                "reason": "destination_picker_empty_stall_blocked",
+                "destination_picker_empty_stall_assessment": (
+                    empty_picker_assessment
+                ),
+                "required_recovery_classes": [
+                    "inspect_different_visible_control",
+                    "commit_current_destination_if_requested",
+                ],
+            }
+            self.validation_blocks.append(record)
+            self.destination_picker_empty_stall_block_count += 1
+            raise ActionValidationError(
+                "DESTINATION_PICKER_GUARD: "
+                "DESTINATION_PICKER_EMPTY_STALL_REQUIRED: the destination "
+                "picker has fully rendered an empty current directory. "
+                "Waiting or swiping cannot reveal sibling folders. If the "
+                "visible current directory is the TASK destination, tap the "
+                "visible bottom Copy/Move control; otherwise tap the visible "
+                "top-left navigation drawer. Do not wait, swipe, press back, "
+                "or guess a content-area coordinate."
+            )
         action_key = canonical_action_key(action)
         if (
             action.get("type") in COORDINATE_STREAK_ACTIONS
@@ -1494,6 +1567,9 @@ class ProtocolV2DecisionGuard:
             ),
             "destination_picker_back_block_count": (
                 self.destination_picker_back_block_count
+            ),
+            "destination_picker_empty_stall_block_count": (
+                self.destination_picker_empty_stall_block_count
             ),
             "destination_picker_commit_count": (
                 self.destination_picker_commit_count

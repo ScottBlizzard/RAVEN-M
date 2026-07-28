@@ -80,6 +80,47 @@ class PickerBackThenDrawerClient:
         )
 
 
+class EmptyPickerWaitThenDrawerClient:
+    def __init__(self) -> None:
+        self.requests: list[dict] = []
+
+    def generate(self, **kwargs) -> ModelCall:
+        self.requests.append(kwargs)
+        repair = kwargs["call_label"].endswith("_repair")
+        action = (
+            {"type": "tap", "x": 0.07, "y": 0.08}
+            if repair
+            else {"type": "wait", "duration_ms": 1000}
+        )
+        decision = {
+            "status": "continue",
+            "action": action,
+            "expected_outcome": "Destination navigation advances.",
+            "decision_summary": "Navigate to the requested destination.",
+            "state_delta": [],
+            "memory_citations": [],
+            "completion_evidence": [],
+        }
+        label = kwargs["call_label"]
+        return ModelCall(
+            call_id=label,
+            episode_id=kwargs["episode_id"],
+            idempotency_key=label,
+            image_sha256="0" * 64,
+            image_sha256s=("0" * 64,),
+            prompt_sha256=label,
+            request_sha256=label,
+            response_sha256=label,
+            content=json.dumps(decision),
+            usage={
+                "prompt_tokens": 1,
+                "completion_tokens": 1,
+                "total_tokens": 2,
+            },
+            raven_meta={},
+        )
+
+
 class CommitThenRepeatClient:
     def generate(self, **kwargs) -> ModelCall:
         label = kwargs["call_label"]
@@ -461,6 +502,20 @@ class DestinationPickerEnv:
     def execute_action(self, action) -> None:
         assert action.action_type == "click"
         self.execute_count += 1
+
+
+class EmptyDestinationPickerEnv(DestinationPickerEnv):
+    def get_state(self, wait_to_stabilize: bool):
+        state = super().get_state(wait_to_stabilize)
+        state.ui_elements.append(
+            SimpleNamespace(
+                package_name="files",
+                text="No items",
+                is_visible=True,
+                is_enabled=True,
+            )
+        )
+        return state
 
 
 class PostCommitEnv(DestinationPickerEnv):
@@ -1143,6 +1198,49 @@ def test_controller_repairs_back_inside_destination_picker(
     assert summary["protocol_v2_guard"][
         "destination_picker_back_block_count"
     ] == 1
+
+
+def test_controller_repairs_empty_picker_wait_to_navigation(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = EmptyDestinationPickerEnv()
+    client = EmptyPickerWaitThenDrawerClient()
+    controller = EpisodeController(
+        client=client,  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=1,
+        max_model_calls=2,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="empty-picker-repair-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="B3",
+    )
+    assert env.execute_count == 1
+    assert summary["model_call_count"] == 2
+    action = summary["steps"][0]["decision"]["action"]
+    assert action == {"type": "tap", "x": 0.07, "y": 0.08}
+    assert summary["steps"][0]["parse"]["model_repair_used"]
+    assert "DESTINATION_PICKER_EMPTY_STALL_REQUIRED" in summary[
+        "steps"
+    ][0]["parse"]["initial_validation_error"]
+    assert summary["protocol_v2_guard"][
+        "destination_picker_empty_stall_block_count"
+    ] == 1
+    repair_prompt = client.requests[1]["user_prompt"]
+    assert "action.type must be tap" in repair_prompt
+    assert "visible current directory" in repair_prompt
+    assert "visible top-left navigation drawer" in repair_prompt
+    assert "Do not wait, swipe, press_back" in repair_prompt
 
 
 def test_controller_repairs_repeat_transfer_after_destination_commit(

@@ -115,6 +115,14 @@ memory authority, and Critic enforcement.
   field, but it may not swipe while the keyboard is active. The assessment and
   audit expose only booleans, package names, and counts, never keyboard bboxes,
   coordinates, text, field labels, or evaluator state.
+- When bottom Cancel and Copy/Move controls prove that the Android destination
+  picker is active and a visible marker shows that the current directory is
+  empty, `wait` and `swipe` are rejected. Neither action can reveal a sibling
+  folder. The bounded repair must tap a visible control: bottom Copy/Move when
+  the current directory is the TASK destination, otherwise the top-left
+  navigation drawer. It may not press back or guess a content coordinate. The
+  assessment exposes only the action type, booleans, and an empty-marker count,
+  never directory text, geometry, TASK values, or evaluator state.
 - Text declared as `task_literal` must be a case-insensitive,
   whitespace-normalized substring of TASK. Text declared as `current_screen`
   must similarly match a visible accessibility text, content description,

@@ -354,3 +354,23 @@ the exact requested value into a visibly supported role-compatible field; if
 that is not possible, it must dismiss the keyboard rather than swipe. The
 assessment and audit expose only booleans, package names, and counts—never
 keyboard geometry, task text, field labels, or evaluator state.
+
+## r25 empty destination-picker progress
+
+The r24 Contacts diagnostic passed natively and semantically. It entered only
+the requested first name, last name, and phone number, saved the contact, and
+left no organization row. The r24 Files replay also preserved exact-file
+selection and safe focused search input, but it spent six policy steps waiting
+and swiping in an already rendered empty Downloads destination. It eventually
+opened the navigation drawer and reached Ringtones on the final step, leaving
+no budget to execute the bottom Move control. Native reward was 0.0.
+
+r25 recognizes a visible empty-directory marker while the bottom Cancel and
+Copy/Move controls prove that the Android destination picker is active. A
+`wait` or `swipe` in that state is rejected: neither can reveal a sibling
+folder. The bounded repair must tap a visibly supported control—bottom
+Copy/Move if the current directory is the requested destination, otherwise the
+top-left navigation drawer. It may not wait, swipe, press back, or guess a
+content coordinate. The assessment exposes only the action type, booleans, and
+an empty-marker count, never directory text, geometry, task literals, or
+evaluator state.

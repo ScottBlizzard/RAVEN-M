@@ -22,6 +22,7 @@ from raven_m.controller.protocol_v2_guard import (
     declared_text_source_assessment,
     destination_picker_active,
     destination_picker_commit_action,
+    destination_picker_empty_stall_assessment,
     exact_selection_long_press_assessment,
     focused_editable_input_assessment,
     post_destination_transfer_command_action,
@@ -506,7 +507,21 @@ class EpisodeController:
         keyboard_swipe_forbidden = (
             "SOFT_KEYBOARD_SWIPE_FORBIDDEN:" in error
         )
-        if keyboard_dismiss_required:
+        empty_picker_stall_required = (
+            "DESTINATION_PICKER_EMPTY_STALL_REQUIRED:" in error
+        )
+        if empty_picker_stall_required:
+            repair_directive = (
+                "\n\nYour previous JSON would stall in a fully rendered "
+                "empty destination directory. For this one repair, "
+                "action.type must be tap. If the visible current directory "
+                "is the requested TASK destination, tap the visible bottom "
+                "Copy/Move control; otherwise tap the visible top-left "
+                "navigation drawer. Do not wait, swipe, press_back, type, "
+                "or guess a content-area coordinate. Use only a control "
+                "visibly supported by the unchanged screenshot.\n"
+            )
+        elif keyboard_dismiss_required:
             repair_directive = (
                 "\n\nYour previous JSON was structurally valid, but the soft "
                 "keyboard is visible and the focused field must not be "
@@ -745,6 +760,12 @@ class EpisodeController:
                     screen_width=screen_width,
                     screen_height=screen_height,
                 )
+                empty_picker_stall_assessment = (
+                    destination_picker_empty_stall_assessment(
+                        ui_elements,
+                        parsed_candidate.decision.get("action"),
+                    )
+                )
                 transfer_command_is_action = (
                     post_destination_transfer_command_action(
                         ui_elements,
@@ -805,6 +826,9 @@ class EpisodeController:
                     ),
                     destination_picker_commit_is_action=(
                         picker_commit_is_action
+                    ),
+                    destination_picker_empty_stall_assessment=(
+                        empty_picker_stall_assessment
                     ),
                     post_destination_transfer_command_is_action=(
                         transfer_command_is_action
