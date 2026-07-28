@@ -85,6 +85,22 @@ def write_json(path: Path, value: Any) -> None:
     temporary.replace(path)
 
 
+def classify_gate_e_infrastructure(
+    summary: dict[str, Any],
+) -> str | None:
+    """Extend shared infra typing for AndroidWorld accessibility loss."""
+    classified = classify_infrastructure(summary)
+    if classified is not None:
+        return classified
+    error = summary.get("error")
+    if not error:
+        return None
+    text = json.dumps(error, ensure_ascii=False).casefold()
+    if "could not get a11y tree" in text:
+        return "INFRA_EMULATOR_LOST"
+    return None
+
+
 def instance_hash(task: Any) -> tuple[str, str]:
     return (
         sha256(str(task.goal).encode("utf-8")).hexdigest(),
@@ -969,7 +985,7 @@ def main(
                 if not summary.get("error"):
                     consecutive_infra_codes.clear()
                     break
-                infra_code = classify_infrastructure(summary)
+                infra_code = classify_gate_e_infrastructure(summary)
                 if infra_code is None:
                     stopped_early = True
                     stop_reason = "semantic_or_unclassified_controller_error"

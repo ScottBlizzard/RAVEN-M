@@ -14,6 +14,9 @@ from run_frozen_hard_suite import (  # noqa: E402
     wait_for_model_service,
 )
 from run_method_dev_suite import task_instance_hash  # noqa: E402
+from run_protocol_v2_gate_e import (  # noqa: E402
+    classify_gate_e_infrastructure,
+)
 
 
 class DummyTask:
@@ -72,6 +75,27 @@ def test_only_classified_infrastructure_is_retriable() -> None:
     assert classify_infrastructure(visible_anr) == "INFRA_EMULATOR_ANR"
     assert classify_infrastructure(method_failure) is None
     assert classify_infrastructure({"error": None}) is None
+
+
+def test_gate_e_classifies_accessibility_tree_loss_as_emulator_loss() -> None:
+    accessibility_loss = {
+        "error": {
+            "type": "RuntimeError",
+            "message": "Could not get a11y tree.",
+        }
+    }
+    method_failure = {
+        "error": {
+            "type": "RoleValidationError",
+            "message": "planner response was invalid",
+        }
+    }
+    assert classify_infrastructure(accessibility_loss) is None
+    assert classify_gate_e_infrastructure(accessibility_loss) == (
+        "INFRA_EMULATOR_LOST"
+    )
+    assert classify_gate_e_infrastructure(method_failure) is None
+    assert classify_gate_e_infrastructure({"error": None}) is None
 
 
 class RecoveringClient:

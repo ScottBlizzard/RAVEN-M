@@ -397,3 +397,19 @@ single repair and requires one reversible action to open a relevant detail or
 obtain a clearer view; repeating the answer is forbidden. The adjudication is
 cached by candidate hash within the turn, recorded in the completion audit,
 and M0 still undergoes its separate completion Critic after source acceptance.
+
+## r27 accessibility-loss infrastructure typing
+
+Both r26 policy diagnostics passed with native reward 1.0. Before the
+successful Contacts retry, one attempt lost AndroidWorld's accessibility tree
+immediately after task initialization. No task action executed, but the shared
+infrastructure classifier did not recognize the exact
+`Could not get a11y tree.` error and conservatively stopped the development
+suite as unclassified instead of using its bounded emulator-recovery attempt.
+
+r27 changes only Gate-E orchestration. It preserves the shared classifier and
+adds one exact fallback mapping from that AndroidWorld error to
+`INFRA_EMULATOR_LOST`. The existing retry cap, attempt archive, cold recovery,
+two-consecutive-failure stop, and startup audit remain authoritative. No
+controller, prompt, schema, task, seed, step/model budget, evaluator, or
+acceptance threshold changes.

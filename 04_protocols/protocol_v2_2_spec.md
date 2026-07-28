@@ -167,6 +167,10 @@ memory authority, and Critic enforcement.
   file-backed recovery logs. This prevents long-lived emulator or ADB
   descendants from retaining captured pipes and preserves the existing
   bounded recovery timeouts.
+- AndroidWorld's exact `Could not get a11y tree.` runtime error is typed as
+  `INFRA_EMULATOR_LOST` for Gate-E orchestration. The failed attempt is
+  archived and consumes the same bounded emulator-recovery allowance; it is
+  not converted into a policy or model failure.
 
 ## Memory authority
 
