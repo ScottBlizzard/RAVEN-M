@@ -1,0 +1,147 @@
+{
+  "schema_version": "protocol_v2_2_r30_formal_stop.v1",
+  "checked_at": "2026-07-28T21:08:56Z",
+  "source_tag": "protocol-v2-2-gate-e-r30-dev",
+  "source_commit": "d7e79b63df742bbc5a038b31aacf2b5d86382185",
+  "suite": "runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r30",
+  "started_at": "2026-07-28T20:37:55.270183+00:00",
+  "stopped_at": "2026-07-28T21:05:33.500140+00:00",
+  "elapsed_seconds": 1658.2339999999967,
+  "stopped_early": true,
+  "stop_reason": "model_output_invalid_after_one_bounded_repair",
+  "result_count": 4,
+  "success_count": 3,
+  "formal_continuation_authorized": false,
+  "completed_cells": [
+    {
+      "sequence": 1,
+      "variant": "B3",
+      "task": "ContactsAddContact",
+      "evaluator_reward": 1.0,
+      "success": true,
+      "executed_steps": 8,
+      "model_calls": 10,
+      "semantic_progress_audit_passed": true
+    },
+    {
+      "sequence": 2,
+      "variant": "M0",
+      "task": "SimpleCalendarEventsOnDate",
+      "evaluator_reward": 1.0,
+      "success": true,
+      "executed_steps": 3,
+      "model_calls": 6,
+      "semantic_progress_audit_passed": true
+    },
+    {
+      "sequence": 3,
+      "variant": "B3",
+      "task": "ExpenseAddSingle",
+      "evaluator_reward": 1.0,
+      "success": true,
+      "executed_steps": 12,
+      "model_calls": 16,
+      "semantic_progress_audit_passed": true
+    }
+  ],
+  "stopped_cell": {
+    "sequence": 4,
+    "variant": "M0",
+    "task": "FilesMoveFile",
+    "goal": "Move the file nature_sounds.mp3 from Music within the sdk_gphone_x86_64 storage area to the Ringtones within the same sdk_gphone_x86_64 storage area in the Android filesystem.",
+    "evaluator_reward": 0.0,
+    "success": false,
+    "executed_steps": 16,
+    "model_calls": 28,
+    "failure_code": "MODEL_OUTPUT_INVALID_AFTER_REPAIR",
+    "termination_reason": "model_output_invalid_after_repair",
+    "semantic_progress_audit_passed": false,
+    "validation_block_count": 5,
+    "executed_blocked_action_steps": [],
+    "unresolved_guard_repair": true
+  },
+  "failure_evidence": {
+    "episode": "runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r30/episodes/04_M0_FilesMoveFile_seed20260729",
+    "screenshot": "step_016_before.png",
+    "screenshot_sha256": "ffa68f47eb4ec6b866a813b874c8302f38ca2383353fc25bed95d445cde3042d",
+    "visible_state": {
+      "destination_picker_active": true,
+      "title": "Ringtones",
+      "breadcrumb": "sdk_gphone64_x86_64 > Ringtones",
+      "empty_directory_marker": "No items",
+      "bottom_controls": [
+        "CANCEL",
+        "MOVE"
+      ],
+      "top_left_navigation_drawer_visible": true
+    },
+    "initial_candidate": {
+      "action": {
+        "type": "tap",
+        "x": 0.385,
+        "y": 0.075
+      },
+      "declared_target": "top-left menu icon",
+      "actual_target": "unbound title-bar area",
+      "misclassified_as_consequential": true,
+      "classification_trigger": "decision_summary contained the word confirm"
+    },
+    "critic_result": {
+      "verdict": "reobserve",
+      "issue": "The critic treated the empty-folder illustration as a loading spinner and did not accept the visible Ringtones title and breadcrumb as current-destination binding.",
+      "recommended_constraint": "reobserve while confirming the Ringtones folder is fully loaded and the destination is visibly selected before committing the move"
+    },
+    "bounded_repair_candidate": {
+      "action": {
+        "type": "wait",
+        "duration_ms": 1000
+      },
+      "blocked": true,
+      "error": "DESTINATION_PICKER_EMPTY_STALL_REQUIRED",
+      "reason": "No items proves a fully rendered empty current directory; waiting cannot reveal sibling folders."
+    },
+    "wrong_similar_file_long_press_executed": false,
+    "incorrect_destination_commit_executed": false,
+    "blocked_action_executed": false,
+    "destination_picker_commit_count": 0
+  },
+  "audit": {
+    "infrastructure_failure_count": 0,
+    "startup_environment_clean": true,
+    "model_healthy": true,
+    "transient_adb_warnings_recovered": true,
+    "executed_blocked_action_count": 0,
+    "evaluator_data_exposed_to_model": false,
+    "automatic_gate_f_transition": false,
+    "formal_stop_enforced": true
+  },
+  "root_cause": {
+    "summary": "The action classifier used planner prose instead of the actual destination-picker control hit, and the visual critic misread a valid empty destination as an incompletely loaded folder.",
+    "details": [
+      "The exact requested file was safely selected after the existing search and focus repairs.",
+      "Ringtones was visible both as the current title and in the storage breadcrumb, and MOVE was enabled.",
+      "A reversible title-bar tap was sent to the consequential-action critic only because the planner summary used confirm.",
+      "The critic then reasoned about a Move commit that was not the proposed action and mistook the native empty-folder illustration for a loading spinner.",
+      "The sole repair proposed wait; the existing empty-picker guard correctly rejected it without executing either candidate."
+    ],
+    "algorithm_or_model_failure": true,
+    "infrastructure_failure": false
+  },
+  "r31_required_change": {
+    "scope": "Action classification and navigation inside a visibly empty Android Files destination picker.",
+    "mechanism": [
+      "Classify a destination-picker action as consequential from an accessibility hit on the enabled bottom Copy/Move control, not from planner prose.",
+      "Reject wait, swipe, or an unbound tap in a fully rendered empty destination before execution.",
+      "Keep only two valid progress controls in that state: the visible bottom Copy/Move commit or the visible top-left roots drawer.",
+      "Teach the visual critic that an exact title or breadcrumb plus an enabled commit control binds the current destination; No items is a valid empty directory, not loading evidence.",
+      "Exercise the real Files cell in a fresh development smoke before authorizing another formal suite."
+    ],
+    "prohibited": [
+      "Injecting the destination coordinate",
+      "Skipping critic review of the actual Copy/Move commit",
+      "Reading evaluator state in the policy loop",
+      "Adding a second repair call",
+      "Changing task instances, seed, budgets, evaluator, schedule, or acceptance thresholds"
+    ]
+  }
+}
