@@ -29,6 +29,11 @@ memory authority, and Critic enforcement.
   `x`, `y`, and `duration_ms`; `swipe` requires both endpoints and
   `duration_ms`; `wait` requires `duration_ms`. The strict schemas are not
   weakened and no missing value is silently inserted.
+- A coordinate-bearing `type_text` causes AndroidWorld to click before typing.
+  If an empty text field visibly already has a caret, the model must preserve
+  that focus by omitting `x,y` and setting `clear_text=false`. Coordinates are
+  reserved for a visible text field that is not already focused; the controller
+  does not silently strip or retarget them.
 - After three consecutive mismatched or missing accessibility observations,
   the controller performs at most one audited AndroidWorld accessibility
   refresh, then continues within the original twelve-observation bound.

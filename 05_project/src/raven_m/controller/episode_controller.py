@@ -414,6 +414,10 @@ class EpisodeController:
                 "ACTION_FIELD_CHECK: long_press requires x, y, and duration_ms "
                 "from 300-3000; swipe requires x, y, x2, y2, and duration_ms; "
                 "wait requires duration_ms. Do not omit required action fields.",
+                "FOCUSED_TEXT_INPUT_CHECK: AndroidWorld clicks x,y before "
+                "type_text. If an empty text field already visibly has a caret, "
+                "preserve focus by omitting x and y and using clear_text=false. "
+                "Supply x,y only when a visible field is not already focused.",
                 "COMPLETION_CHECK: a visible Save/Move/Done button is not proof "
                 "of completion; execute it and observe the result first.",
                 *(
@@ -490,7 +494,10 @@ class EpisodeController:
                     "screen is observed. For a visible magnifying-glass Search "
                     "icon in a portrait top app bar, target its icon center "
                     "with y in 0.06-0.10; y around 0.18 is content and must "
-                    "not be used for that app-bar control.\n"
+                    "not be used for that app-bar control. After Search opens, "
+                    "if its empty field visibly has a caret, a later type_text "
+                    "must omit x and y and use clear_text=false so the extra "
+                    "click cannot destroy focus.\n"
                 )
         else:
             repair_directive = (

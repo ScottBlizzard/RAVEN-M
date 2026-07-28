@@ -30,6 +30,10 @@ def test_b0_prompt_excludes_hidden_state_and_memory() -> None:
     assert "ACTION_FIELD_CHECK" in prompt
     assert "long_press requires x, y, and duration_ms from 300-3000" in prompt
     assert "swipe requires x, y, x2, y2, and duration_ms" in prompt
+    assert "FOCUSED_TEXT_INPUT_CHECK" in prompt
+    assert "AndroidWorld clicks x,y before type_text" in prompt
+    assert "preserve focus by omitting x and y" in prompt
+    assert "using clear_text=false" in prompt
     assert "visible Save/Move/Done button is not proof" in prompt
     assert "schema named in the system prompt" in prompt
     assert "SEMANTIC_PROGRESS_CHECK" not in prompt
@@ -98,6 +102,8 @@ def test_v2_semantic_action_repair_requires_a_different_action() -> None:
     assert "only on a later policy step" in prompt
     assert "y in 0.06-0.10" in prompt
     assert "y around 0.18 is content" in prompt
+    assert "a later type_text must omit x and y" in prompt
+    assert "the extra click cannot destroy focus" in prompt
     assert "Correct its format only" not in prompt
     assert error in prompt
 

@@ -151,6 +151,15 @@ file and reject it. r13 adds a generic required-action-field reminder to the
 normal observation prompt so schema completion does not hide semantic guard
 feedback. The schema, one-repair budget, and exact-target guard are unchanged.
 
+The focused r13 replay then validated that chain: the first wrong target was
+blocked, the single repair tapped Search at `(0.82, 0.075)`, and the exact task
+literal was sent to `type_text`. Search was visibly focused before typing, but
+the action also supplied `x,y` and `clear_text=true`. AndroidWorld clicks any
+supplied coordinate before input, so the extra click moved focus and Ctrl+A
+selected 14 files. r14 makes this execution semantic explicit: when an empty
+field visibly has a caret, omit `x,y` and use `clear_text=false`. No controller
+rewrite or hidden UI coordinate is introduced.
+
 ## Qualification order
 
 1. Targeted unit and integration tests.
