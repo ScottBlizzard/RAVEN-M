@@ -1,0 +1,44 @@
+{
+  "schema_version": "protocol_v2_2_r22_diagnostic.v1",
+  "checked_at": "2026-07-28T16:03:28Z",
+  "passed": false,
+  "formal_gate_authorized": false,
+  "source_tag": "protocol-v2-2-gate-e-r22-dev",
+  "source_commit": "c24d3e466c525e6073556113d6f962e6ffb8c4db",
+  "run": "runs/protocol_v2_2_development/nonhard_capability_v2_2_seed20260729_r22_development_smoke_sequence_4",
+  "cell": {
+    "sequence": 4,
+    "task": "FilesMoveFile",
+    "variant": "M0",
+    "seed": 20260729,
+    "stopped_after_step": 11,
+    "evaluator_reward": null,
+    "success": false,
+    "valid_for_gate_authorization": false
+  },
+  "validated_r22_behavior": {
+    "inactive_input_clear_action_blocked_before_execution": true,
+    "bounded_repair_tapped_visible_search_input": true,
+    "soft_keyboard_visible_after_repair": true,
+    "selection_count_after_repair": 0
+  },
+  "remaining_failure_chain": [
+    "on the next policy step the model again proposed coordinate-bearing type_text with clear_text=true",
+    "the soft keyboard made input_ready true and the coordinate matched the sole visible editable",
+    "the r18 multi-field-switch exception treated that redundant same-input coordinate as safe",
+    "DocumentsUI handled Ctrl+A as select-all and selected 14 surrounding items",
+    "the run was terminated before any Move, Delete, or filesystem commit"
+  ],
+  "root_cause": {
+    "class": "unique_active_editable_misclassified_as_field_switch",
+    "r22_inactive_input_guard_worked": true,
+    "not_an_infrastructure_failure": true,
+    "semantic_controller_error": true
+  },
+  "r23_minimal_change": [
+    "when input is active and exactly one visible editable matches the coordinate, treat the coordinate as redundant rather than an explicit field switch",
+    "reuse the focused-input repair to remove x,y and set clear_text=false when the matched unique editable is empty",
+    "continue allowing coordinate field switches when multiple visible editables support a genuine target change",
+    "record only matched editable counts and emptiness, never field text or coordinates"
+  ]
+}

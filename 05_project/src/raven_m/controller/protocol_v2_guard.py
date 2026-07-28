@@ -421,17 +421,19 @@ def coordinate_type_text_target_assessment(
     )
     if not action_is_type_text:
         return {
-            "schema_version": "coordinate_text_target_assessment.v1",
+            "schema_version": "coordinate_text_target_assessment.v2",
             "adjudicable": False,
             "coordinate_bearing": False,
             "visible_editable_count": 0,
             "boxed_editable_count": 0,
+            "matched_editable_count": 0,
+            "matched_empty": False,
             "matched": False,
         }
     elements = list(ui_elements or ())
     visible_editable = []
     boxed_editable_count = 0
-    matched = False
+    matched_editable = []
     tap_action = (
         {
             "type": "tap",
@@ -464,14 +466,20 @@ def coordinate_type_text_target_assessment(
             screen_width=screen_width,
             screen_height=screen_height,
         ):
-            matched = True
+            matched_editable.append(element)
     return {
-        "schema_version": "coordinate_text_target_assessment.v1",
+        "schema_version": "coordinate_text_target_assessment.v2",
         "adjudicable": bool(elements),
         "coordinate_bearing": coordinate_bearing,
         "visible_editable_count": len(visible_editable),
         "boxed_editable_count": boxed_editable_count,
-        "matched": matched,
+        "matched_editable_count": len(matched_editable),
+        "matched_empty": bool(matched_editable)
+        and all(
+            _normalized_text(_element_value(element, "text")) is None
+            for element in matched_editable
+        ),
+        "matched": bool(matched_editable),
     }
 
 
@@ -994,6 +1002,17 @@ class ProtocolV2DecisionGuard:
             "input_ready",
             focused_assessment.get("present") is True,
         )
+        redundant_unique_input_coordinate = (
+            input_ready is True
+            and coordinate_targets_editable
+            and int(
+                text_target_assessment.get(
+                    "visible_editable_count",
+                    0,
+                )
+            )
+            == 1
+        )
         if (
             coordinate_targets_editable
             and input_ready is not True
@@ -1026,7 +1045,10 @@ class ProtocolV2DecisionGuard:
         if input_ready is True and (
             (
                 coordinate_bearing_type_text
-                and not coordinate_targets_editable
+                and (
+                    not coordinate_targets_editable
+                    or redundant_unique_input_coordinate
+                )
             )
             or (
                 clears_focused_empty_field
@@ -1036,7 +1058,11 @@ class ProtocolV2DecisionGuard:
             record = {
                 "semantic_state_sha256": page_sha256,
                 "action": action,
-                "reason": "focused_input_click_before_type_blocked",
+                "reason": (
+                    "focused_input_redundant_unique_coordinate_blocked"
+                    if redundant_unique_input_coordinate
+                    else "focused_input_click_before_type_blocked"
+                ),
                 "focused_input_assessment": focused_assessment,
                 "coordinate_text_target_assessment": (
                     text_target_assessment
@@ -1048,8 +1074,15 @@ class ProtocolV2DecisionGuard:
             self.validation_blocks.append(record)
             self.focused_input_block_count += 1
             empty_directive = (
-                " The focused field is empty, so set clear_text=false."
-                if focused_assessment.get("empty") is True
+                " The target input is empty, so set clear_text=false."
+                if (
+                    focused_assessment.get("empty") is True
+                    or (
+                        redundant_unique_input_coordinate
+                        and text_target_assessment.get("matched_empty")
+                        is True
+                    )
+                )
                 else ""
             )
             raise ActionValidationError(

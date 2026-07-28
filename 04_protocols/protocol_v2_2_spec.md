@@ -101,6 +101,12 @@ memory authority, and Critic enforcement.
   observe the next screen. After a focused editable or soft keyboard proves
   readiness, a later empty-field edit omits coordinates and uses
   `clear_text=false`. Keyboard-active explicit field switching is unchanged.
+- When input is active and the coordinate matches the sole visible editable,
+  the coordinate is redundant rather than a field switch and is rejected.
+  The focused-input repair removes `x,y`; if the matched editable is empty it
+  also sets `clear_text=false`. A coordinate may still switch fields when
+  multiple visible editables support a genuine target change. This assessment
+  exposes only editable counts, a matched boolean, and matched emptiness.
 - Text declared as `task_literal` must be a case-insensitive,
   whitespace-normalized substring of TASK. Text declared as `current_screen`
   must similarly match a visible accessibility text, content description,

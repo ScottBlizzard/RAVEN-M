@@ -316,3 +316,22 @@ bounded repair must be a reversible tap on the same visibly supported input;
 typing occurs only on a later observed screen after a focused editable or soft
 keyboard proves readiness. Existing keyboard-active field switching remains
 valid, and no coordinate, focus state, or task action is injected.
+
+## r23 unique active input binding
+
+The r22 Files replay proved the new inactive-input guard: the dangerous first
+`type_text` was blocked, the bounded repair tapped the visible Search input,
+and the next screenshot showed a caret and soft keyboard with zero selected
+items. On the following policy step, however, the model again supplied the
+same input coordinate with `clear_text=true`. Because the keyboard made input
+ready and the coordinate matched an editable, the r18 multi-field exception
+treated this redundant same-field click as a valid switch. DocumentsUI again
+handled Ctrl+A as select-all. The run was stopped before any file commit.
+
+r23 distinguishes an actual multi-field switch from a redundant coordinate on
+the sole visible editable. With active input and exactly one visible editable
+matched by the coordinate, the existing focused-input guard removes `x,y`; if
+that matched input is visibly empty, the bounded repair also requires
+`clear_text=false`. Multiple visible editables continue to allow explicit
+field switching. The assessment records only counts and an emptiness boolean,
+never text, labels, bboxes, coordinates, or evaluator state.

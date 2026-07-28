@@ -210,6 +210,31 @@ class FocusedInputThenSafeTextClient:
         )
 
 
+class UniqueSearchCoordinateThenSafeTextClient(
+    FocusedInputThenSafeTextClient
+):
+    def generate(self, **kwargs) -> ModelCall:
+        call = super().generate(**kwargs)
+        if kwargs["call_label"].endswith("_repair"):
+            return call
+        value = json.loads(call.content)
+        value["action"]["x"] = 0.5
+        value["action"]["y"] = 0.075
+        return ModelCall(
+            call_id=call.call_id,
+            episode_id=call.episode_id,
+            idempotency_key=call.idempotency_key,
+            image_sha256=call.image_sha256,
+            image_sha256s=call.image_sha256s,
+            prompt_sha256=call.prompt_sha256,
+            request_sha256=call.request_sha256,
+            response_sha256=call.response_sha256,
+            content=json.dumps(value),
+            usage=call.usage,
+            raven_meta=call.raven_meta,
+        )
+
+
 class UnboundTextThenActivateInputClient:
     def __init__(self) -> None:
         self.requests: list[dict] = []
@@ -529,6 +554,32 @@ class SoftKeyboardOnlyInputEnv(FocusedInputEnv):
                     is_enabled=True,
                     is_editable=False,
                     is_focused=False,
+                ),
+            ],
+        )
+
+
+class UniqueFocusedSearchEnv(FocusedInputEnv):
+    def get_state(self, wait_to_stabilize: bool):
+        assert wait_to_stabilize
+        return SimpleNamespace(
+            pixels=np.zeros((100, 100, 3), dtype=np.uint8),
+            ui_elements=[
+                SimpleNamespace(
+                    package_name="com.google.android.documentsui",
+                    text="",
+                    hint_text="Search",
+                    class_name="android.widget.EditText",
+                    is_visible=True,
+                    is_enabled=True,
+                    is_editable=True,
+                    is_focused=True,
+                    bbox=SimpleNamespace(
+                        x_min=0.20,
+                        x_max=0.90,
+                        y_min=0.05,
+                        y_max=0.10,
+                    ),
                 ),
             ],
         )
@@ -1171,6 +1222,54 @@ def test_controller_repairs_coordinate_type_with_keyboard_only(
     assert assessment["present"] is False
     assert assessment["soft_keyboard_present"] is True
     assert assessment["input_ready"] is True
+
+
+def test_controller_repairs_coordinate_for_unique_active_input(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = UniqueFocusedSearchEnv()
+    client = UniqueSearchCoordinateThenSafeTextClient()
+    controller = EpisodeController(
+        client=client,  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=1,
+        max_model_calls=2,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="unique-active-input-repair-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="M0",
+    )
+    assert env.execute_count == 1
+    action = summary["steps"][0]["decision"]["action"]
+    assert action["type"] == "type_text"
+    assert "x" not in action
+    assert "y" not in action
+    assert action["clear_text"] is False
+    assert summary["steps"][0]["parse"]["model_repair_used"]
+    assert "FOCUSED_INPUT_GUARD" in summary["steps"][0]["parse"][
+        "initial_validation_error"
+    ]
+    block = summary["protocol_v2_guard"]["validation_blocks"][0]
+    assert block["reason"] == (
+        "focused_input_redundant_unique_coordinate_blocked"
+    )
+    target = block["coordinate_text_target_assessment"]
+    assert target["visible_editable_count"] == 1
+    assert target["matched_empty"] is True
+    repair_prompt = client.requests[1]["user_prompt"]
+    assert "Remove x and y" in repair_prompt
+    assert "target input is empty" in repair_prompt
+    assert "set clear_text=false" in repair_prompt
 
 
 def test_controller_repairs_unbound_coordinate_type_to_input_activation(

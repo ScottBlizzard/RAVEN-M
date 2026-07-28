@@ -576,6 +576,8 @@ def test_coordinate_text_target_assessment_matches_editable_only() -> None:
     assert matched["coordinate_bearing"] is True
     assert matched["visible_editable_count"] == 1
     assert matched["boxed_editable_count"] == 1
+    assert matched["matched_editable_count"] == 1
+    assert matched["matched_empty"] is False
     assert matched["matched"] is True
     assert missed["matched"] is False
     assert "bbox" not in matched
@@ -677,6 +679,39 @@ def test_guard_blocks_clearing_coordinate_text_until_input_is_active() -> None:
     assert audit["unfocused_clear_text_block_count"] == 1
     assert audit["validation_blocks"][0]["reason"] == (
         "unfocused_clear_text_race_blocked"
+    )
+
+
+def test_guard_blocks_redundant_coordinate_for_unique_active_input() -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(goal="Search for nature_sounds.mp3")
+    with pytest.raises(ActionValidationError, match="FOCUSED_INPUT_GUARD") as caught:
+        guard.validate_decision(
+            decision(text_action(x=0.5, y=0.075, clear_text=True)),
+            page_sha256="unique-search-with-keyboard",
+            focused_input_assessment={
+                "input_ready": True,
+                "present": False,
+                "empty": False,
+                "soft_keyboard_present": True,
+            },
+            coordinate_text_target_assessment={
+                "schema_version": "coordinate_text_target_assessment.v2",
+                "adjudicable": True,
+                "coordinate_bearing": True,
+                "visible_editable_count": 1,
+                "boxed_editable_count": 1,
+                "matched_editable_count": 1,
+                "matched_empty": True,
+                "matched": True,
+            },
+        )
+    assert "omit x and y" in str(caught.value)
+    assert "target input is empty" in str(caught.value)
+    audit = guard.audit_record()
+    assert audit["focused_input_block_count"] == 1
+    assert audit["validation_blocks"][0]["reason"] == (
+        "focused_input_redundant_unique_coordinate_blocked"
     )
 
 
