@@ -3,7 +3,7 @@
   "manifest_id": "protocol_v2_2_gate_e_seed20260729_r32",
   "protocol": "androidworld_protocol_v2_2_exploratory",
   "source_tag": "protocol-v2-2-gate-e-r32-dev",
-  "source_commit": "PENDING_SOURCE_COMMIT",
+  "source_commit": "cb84d89c9d17ceffdedb7915c2b8f5d2fa5d73bb",
   "suite_id": "nonhard_capability_v2_2_seed20260729_r32",
   "output_root": "runs/protocol_v2_2",
   "instance_seed": 20260729,

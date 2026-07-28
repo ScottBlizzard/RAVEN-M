@@ -1,0 +1,48 @@
+{
+  "schema_version": "protocol_v2_2_gate_d_freeze.v1",
+  "checked_at": "2026-07-28T21:43:01Z",
+  "passed": true,
+  "source_tag": "protocol-v2-2-gate-e-r32-dev",
+  "source_commit": "cb84d89c9d17ceffdedb7915c2b8f5d2fa5d73bb",
+  "manifest": "05_project/configs/experiments/v2_2_capability_gate_r32.json",
+  "wrapper": "05_project/scripts/run_protocol_v2_2_gate_e_r32.py",
+  "source_tag_resolves_to_source_commit": true,
+  "tests": {
+    "protocol_v2_suite": {
+      "passed": true,
+      "test_count": 306
+    },
+    "protocol_v1_seal": {
+      "passed": true,
+      "file_count": 197,
+      "failure_count": 0,
+      "seal_sha256": "8b707052bbf3d22ff9643dc1fd4bc55d8f09461a00be9c13728e6eacdfa37ac9"
+    }
+  },
+  "freeze": {
+    "file_count": 27,
+    "failure_count": 0,
+    "source_files_changed_from_r31": [
+      {
+        "path": "05_project/src/raven_m/controller/episode_controller.py",
+        "sha256": "35a16186e2ea7bddc2f71aa80412ec0a41f218030e73411c29fdd4ec08dbcf19"
+      },
+      {
+        "path": "05_project/src/raven_m/controller/protocol_v2_guard.py",
+        "sha256": "8e17f658b0496e73b679e0b51f8d474dc2b9c20c2a95a859fb962b64c72f0004"
+      }
+    ],
+    "all_other_frozen_file_hashes_preserved_from_r31": true
+  },
+  "scope": {
+    "task_seed_schedule_unchanged": true,
+    "step_and_model_call_budgets_unchanged": true,
+    "prompts_and_schemas_unchanged": true,
+    "evaluator_and_acceptance_unchanged": true,
+    "single_bounded_repair_preserved": true,
+    "evaluator_state_exposed": false,
+    "new_behavior": "When the Android Files roots drawer and a storage row are visible, only a tap hitting a visible enabled drawer row may execute; no target or coordinate is injected."
+  },
+  "automatic_gate_e_launch": false,
+  "automatic_gate_f_transition": false
+}
