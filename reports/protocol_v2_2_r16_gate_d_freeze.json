@@ -1,0 +1,52 @@
+{
+  "schema_version": "protocol_v2_2_r16_gate_d_freeze.v1",
+  "checked_at": "2026-07-28T13:21:24Z",
+  "passed": true,
+  "protocol": "androidworld_protocol_v2_2_exploratory",
+  "source_tag": "protocol-v2-2-gate-e-r16-dev",
+  "source_commit": "72bd12dd7edc806ef2071475961c418813205577",
+  "freeze_file_count": 27,
+  "verification": {
+    "full_pytest": {
+      "passed": true,
+      "test_count": 226
+    },
+    "protocol_v1_seal": {
+      "passed": true,
+      "file_count": 197,
+      "failure_count": 0
+    },
+    "r15_diagnostic_preserved": {
+      "passed": true,
+      "report": "reports/protocol_v2_2_r15_diagnostic.json",
+      "result_count": 1
+    },
+    "active_input_guard": {
+      "passed": true,
+      "focused_editable_signal_preserved": true,
+      "soft_keyboard_signal_added": true,
+      "bbox_exposed": false,
+      "coordinate_action_silently_rewritten": false,
+      "same_bounded_repair_budget": true
+    }
+  },
+  "r16_changes": [
+    "treat a visible Android Latin input-method package as secondary evidence that text input is already active",
+    "validation-block coordinate-bearing type_text when focused-editable or soft-keyboard evidence is present",
+    "repair by preserving exact text and provenance while explicitly removing x,y",
+    "do not infer an empty field from soft-keyboard presence alone"
+  ],
+  "preserved_controls": {
+    "same_task_schedule_as_r15": true,
+    "same_instance_and_order_seeds_as_r15": true,
+    "same_step_and_model_budgets_as_r15": true,
+    "same_prompt_files_and_schemas_as_r15": true,
+    "adapter_execution_unchanged": true,
+    "no_deterministic_action_rewrite": true,
+    "no_target_coordinate_injection": true,
+    "no_silent_action_retargeting": true,
+    "one_bounded_repair_unchanged": true,
+    "no_evaluator_state_in_model_inputs": true,
+    "r15_development_evidence_immutable": true
+  }
+}
