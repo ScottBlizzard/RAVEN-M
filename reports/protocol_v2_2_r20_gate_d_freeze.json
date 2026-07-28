@@ -1,0 +1,56 @@
+{
+  "schema_version": "protocol_v2_2_r20_gate_d_freeze.v1",
+  "checked_at": "2026-07-28T14:55:58Z",
+  "passed": true,
+  "protocol": "androidworld_protocol_v2_2_exploratory",
+  "source_tag": "protocol-v2-2-gate-e-r20-dev",
+  "source_commit": "da65c41c90c29c4b9b37d7430d2b55ecdb84f951",
+  "freeze_file_count": 27,
+  "verification": {
+    "full_pytest": {
+      "passed": true,
+      "test_count": 250
+    },
+    "protocol_v1_seal": {
+      "passed": true,
+      "file_count": 197,
+      "failure_count": 0
+    },
+    "r19_diagnostic_preserved": {
+      "passed": true,
+      "report": "reports/protocol_v2_2_r19_diagnostic.json",
+      "result_count": 1,
+      "valid_for_gate_authorization": false
+    },
+    "task_value_field_role_binding": {
+      "passed": true,
+      "phone_company_mismatch_blocked": true,
+      "phone_phone_match_allowed": true,
+      "person_name_match_allowed": true,
+      "search_query_target_allowed": true,
+      "expense_amount_category_mismatch_blocked": true,
+      "task_values_exposed": false,
+      "field_coordinates_exposed": false,
+      "same_bounded_repair_budget": true
+    }
+  },
+  "r20_changes": [
+    "derive task-value roles from the local task sentence or line containing the literal",
+    "derive target roles from the visible metadata of the editable hit by the action",
+    "reject only adjudicable disjoint role pairs while allowing generic Search/Filter/Query targets",
+    "repair by preserving exact text and provenance while choosing a visibly supported role-compatible field"
+  ],
+  "preserved_controls": {
+    "same_task_schedule_as_r19": true,
+    "same_instance_and_order_seeds_as_r19": true,
+    "same_step_and_model_budgets_as_r19": true,
+    "same_prompt_files_and_schemas_as_r19": true,
+    "adapter_execution_unchanged": true,
+    "no_deterministic_action_rewrite": true,
+    "no_target_coordinate_injection": true,
+    "no_silent_action_retargeting": true,
+    "one_bounded_repair_unchanged": true,
+    "no_evaluator_state_in_model_inputs": true,
+    "r19_development_evidence_immutable": true
+  }
+}
