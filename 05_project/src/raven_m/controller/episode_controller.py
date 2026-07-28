@@ -36,6 +36,7 @@ from raven_m.history.policies import (
     HistoryPolicy,
 )
 from raven_m.models.transformers_client import ModelCall, TransformersClient
+from raven_m.roles.orchestrator import RoleOrchestrator
 
 
 def _utc_now() -> str:
@@ -220,6 +221,7 @@ class EpisodeController:
         decision_guard: ProtocolV2DecisionGuard | None = None,
         protocol_v2: bool = False,
         protocol_v2_2: bool = False,
+        visual_source_critic_prompt: str = "",
         readiness_max_observations: int = 12,
         readiness_retry_delay_seconds: float = 0.75,
         readiness_reconnect_after_observations: int = 3,
@@ -234,6 +236,15 @@ class EpisodeController:
         self.decision_guard = decision_guard
         self.protocol_v2 = protocol_v2
         self.protocol_v2_2 = protocol_v2_2
+        self.visual_source_roles = (
+            RoleOrchestrator(
+                client=client,
+                planner_prompt="",
+                critic_prompt=visual_source_critic_prompt,
+            )
+            if protocol_v2_2 and visual_source_critic_prompt
+            else None
+        )
         self.readiness_max_observations = max(1, readiness_max_observations)
         self.readiness_retry_delay_seconds = max(
             0.0, readiness_retry_delay_seconds
@@ -510,7 +521,21 @@ class EpisodeController:
         empty_picker_stall_required = (
             "DESTINATION_PICKER_EMPTY_STALL_REQUIRED:" in error
         )
-        if empty_picker_stall_required:
+        visual_source_rejected = (
+            "VISUAL_SOURCE_ADJUDICATION_REJECTED:" in error
+        )
+        if visual_source_rejected:
+            repair_directive = (
+                "\n\nThe bounded visual-source critic did not verify the "
+                "terminal answer on this unchanged screenshot. For this one "
+                "repair, return status=continue with exactly one reversible "
+                "GUI action that opens the relevant visible detail or obtains "
+                "a materially clearer view of the task-bound text. Do not "
+                "return an answer, do not repeat the candidate, do not change "
+                "text_origin, and do not commit any mutation. Use only a "
+                "control visibly supported by the current screenshot.\n"
+            )
+        elif empty_picker_stall_required:
             repair_directive = (
                 "\n\nYour previous JSON would stall in a fully rendered "
                 "empty destination directory. For this one repair, "
@@ -743,6 +768,7 @@ class EpisodeController:
         adjudication_model_call_count = 0
         action_adjudications: list[dict[str, Any]] = []
         completion_adjudications: list[dict[str, Any]] = []
+        visual_source_cache: dict[str, dict[str, Any]] = {}
         parse_kwargs = (
             {"schema_path": self.action_schema_path}
             if self.action_schema_path
@@ -809,6 +835,122 @@ class EpisodeController:
                     ui_elements,
                     parsed_candidate.decision.get("action"),
                 )
+                candidate_action = parsed_candidate.decision.get("action")
+                visual_source_required = bool(
+                    self.protocol_v2_2
+                    and parsed_candidate.decision.get("status") == "done"
+                    and isinstance(candidate_action, dict)
+                    and candidate_action.get("type") == "answer"
+                    and candidate_action.get("text_origin")
+                    == "current_screen"
+                    and source_assessment.get("matched") is not True
+                )
+                if visual_source_required:
+                    candidate_text = str(candidate_action.get("text", ""))
+                    candidate_sha256 = sha256(
+                        candidate_text.encode("utf-8")
+                    ).hexdigest()
+                    cached = visual_source_cache.get(candidate_sha256)
+                    if cached is None:
+                        if self.visual_source_roles is None:
+                            record = {
+                                "schema_version": (
+                                    "visual_text_source_adjudication.v1"
+                                ),
+                                "trigger": (
+                                    "current_screen_text_source_candidate"
+                                ),
+                                "candidate_sha256": candidate_sha256,
+                                "candidate_length": len(candidate_text),
+                                "accepted": False,
+                                "output": None,
+                                "error": {
+                                    "type": "VisualSourceCriticUnavailable",
+                                    "message": (
+                                        "No visual-source critic prompt was "
+                                        "configured."
+                                    ),
+                                },
+                                "model_call_ids": [],
+                            }
+                            cached = {
+                                "accepted": False,
+                                "adjudicated": False,
+                                "record": record,
+                            }
+                        else:
+                            visual_source = self.visual_source_roles.call(
+                                role="critic",
+                                image_path=image_path,
+                                payload={
+                                    "task": task_goal,
+                                    "step": step,
+                                    "trigger": (
+                                        "current_screen_text_source_candidate"
+                                    ),
+                                    "answer_candidate": candidate_action,
+                                    "completion_evidence": (
+                                        parsed_candidate.decision.get(
+                                            "completion_evidence",
+                                            [],
+                                        )
+                                    ),
+                                    "accessibility_source_assessment": (
+                                        source_assessment
+                                    ),
+                                },
+                                episode_id=episode_id,
+                                step=step,
+                                remaining_model_calls=max(
+                                    0,
+                                    self.max_model_calls
+                                    - model_call_count
+                                    - len(calls),
+                                ),
+                                allowed_memory_ids=set(),
+                            )
+                            calls.extend(visual_source.calls)
+                            adjudication_model_call_count += len(
+                                visual_source.calls
+                            )
+                            accepted = bool(
+                                visual_source.error is None
+                                and visual_source.output is not None
+                                and visual_source.output.get("verdict")
+                                == "proceed"
+                            )
+                            record = {
+                                "schema_version": (
+                                    "visual_text_source_adjudication.v1"
+                                ),
+                                "trigger": (
+                                    "current_screen_text_source_candidate"
+                                ),
+                                "candidate_sha256": candidate_sha256,
+                                "candidate_length": len(candidate_text),
+                                "accepted": accepted,
+                                "output": visual_source.output,
+                                "error": visual_source.error,
+                                "model_call_ids": [
+                                    call.call_id
+                                    for call in visual_source.calls
+                                ],
+                            }
+                            cached = {
+                                "accepted": accepted,
+                                "adjudicated": True,
+                                "record": record,
+                            }
+                        visual_source_cache[candidate_sha256] = cached
+                        completion_adjudications.append(cached["record"])
+                    source_assessment = {
+                        **source_assessment,
+                        "adjudicable": True,
+                        "visual_adjudication_required": True,
+                        "visual_adjudicated": cached["adjudicated"],
+                        "visual_adjudication_accepted": cached["accepted"],
+                        "matched": cached["accepted"],
+                    }
                 field_role_assessment = (
                     task_literal_field_role_assessment(
                         task_goal,

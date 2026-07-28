@@ -130,6 +130,16 @@ memory authority, and Critic enforcement.
   execution, and the repaired action is checked again so changing only the
   provenance label cannot authorize invented text. The assessment exposes
   only the declared origin, source-value count, and a matched boolean.
+- Accessibility absence alone is not sufficient to reject a terminal
+  information-return answer that declares `current_screen`. When exact
+  accessibility matching fails, one same-turn visual-source Critic may accept
+  the unchanged candidate only if its full text is readable in the screenshot
+  and visibly bound to the TASK target. The Critic cannot rewrite the answer,
+  cite memory, inspect evaluator state, authorize `type_text`, or use another
+  screenshot. Rejection requires a reversible detail/re-observation action in
+  the existing single repair; the same answer may not be repeated. Candidate
+  hashes, verdicts, and model-call IDs are audited, and a repeated candidate in
+  the same turn reuses the cached verdict.
 - When declared-source repair can see an empty editable whose semantic role
   matches a remaining TASK value, it asks the model to fill that value now
   rather than perform generic navigation. If no such field is visible, the
@@ -180,6 +190,10 @@ memory authority, and Critic enforcement.
 - An information-return completion is rejected when the answer is only a
   clipped prefix in a dense cell/list; the full text must be readable in a
   detail or second view.
+- A screenshot-visible answer missed by accessibility first requires the
+  bounded visual-source verdict above. M0 then still requires its independent
+  completion-candidate verdict; source acceptance is not completion
+  acceptance.
 - A same-turn Critic adjudicates consequential commits. Save/Send/Delete and
   final Move/Copy confirmation require the exact task target and
   destination/value to be visibly bound on the current screen.

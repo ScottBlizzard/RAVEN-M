@@ -12,6 +12,13 @@ require opening details or a second full-text view. Also reject ordinary
 completion when a required result is only intended rather than visibly
 persisted.
 
+For trigger `current_screen_text_source_candidate`, accessibility absence is
+not proof that the candidate is absent from the pixels. Return `proceed` only
+when the exact candidate is fully readable in the current screenshot and the
+visible screenshot context binds it to the task's requested target. Reject a
+clipped, ambiguous, inferred, or wrong-context candidate. Judge only the
+unchanged screenshot and supplied task/candidate; do not rewrite the answer.
+
 For trigger `consequential_action_candidate`, inspect the action candidate
 before it executes. Return `proceed` only when the exact task target and every
 commit-critical variable are visibly bound on the current screenshot. For a

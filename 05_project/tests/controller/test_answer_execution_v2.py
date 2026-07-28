@@ -88,6 +88,131 @@ class AnswerTask:
         del env
 
 
+def model_call(kwargs: dict, content: str) -> ModelCall:
+    label = kwargs["call_label"]
+    return ModelCall(
+        call_id=label,
+        episode_id=kwargs["episode_id"],
+        idempotency_key=label,
+        image_sha256="0" * 64,
+        image_sha256s=("0" * 64,),
+        prompt_sha256=label,
+        request_sha256=label,
+        response_sha256=label,
+        content=content,
+        usage={
+            "prompt_tokens": 1,
+            "completion_tokens": 1,
+            "total_tokens": 2,
+        },
+        raven_meta={},
+    )
+
+
+class VisualSourceClient:
+    def __init__(self, *, verdict: str) -> None:
+        self.verdict = verdict
+        self.requests: list[dict] = []
+
+    def generate(self, **kwargs) -> ModelCall:
+        self.requests.append(kwargs)
+        label = kwargs["call_label"]
+        if label.startswith("critic_step_"):
+            content = json.dumps(
+                {
+                    "schema_version": "critic.v1",
+                    "verdict": self.verdict,
+                    "issue": (
+                        ""
+                        if self.verdict == "proceed"
+                        else "The exact title is not sufficiently verified."
+                    ),
+                    "recommended_constraint": (
+                        "Open the event detail and re-observe the full title."
+                    ),
+                    "memory_ids": [],
+                }
+            )
+            return model_call(kwargs, content)
+        if label.endswith("_repair"):
+            content = json.dumps(
+                {
+                    "status": "continue",
+                    "action": {"type": "tap", "x": 0.5, "y": 0.5},
+                    "expected_outcome": "The event detail opens.",
+                    "decision_summary": "Open the visible event detail.",
+                    "state_delta": [],
+                    "memory_citations": [],
+                }
+            )
+            return model_call(kwargs, content)
+        content = json.dumps(
+            {
+                "status": "done",
+                "action": {
+                    "type": "answer",
+                    "text": "Board meeting",
+                    "text_origin": "current_screen",
+                    "source_memory_ids": [],
+                },
+                "expected_outcome": "The visible event title is returned.",
+                "decision_summary": "Return the fully visible event title.",
+                "state_delta": [],
+                "memory_citations": [],
+            }
+        )
+        return model_call(kwargs, content)
+
+
+class VisualSourceEnv:
+    def __init__(self) -> None:
+        self.interaction_cache = ""
+        self.executed_actions: list[str] = []
+
+    def reset(self, go_home: bool) -> None:
+        assert go_home
+        self.interaction_cache = ""
+
+    def hide_automation_ui(self) -> None:
+        pass
+
+    def get_state(self, wait_to_stabilize: bool):
+        assert wait_to_stabilize
+        return SimpleNamespace(
+            pixels=np.zeros((32, 24, 3), dtype=np.uint8),
+            ui_elements=[
+                {
+                    "text": "October 25 (Wed)",
+                    "is_visible": True,
+                },
+                {
+                    "text": "16:00 - 16:05",
+                    "is_visible": True,
+                },
+            ],
+        )
+
+    def execute_action(self, action) -> None:
+        self.executed_actions.append(action.action_type)
+        if action.action_type == "answer":
+            self.interaction_cache = action.text
+
+
+class VisualSourceTask:
+    name = "SimpleCalendarEventsOnDate"
+    goal = "What events do I have October 25 2023? Answer with titles only."
+    params = {}
+
+    def initialize_task(self, env) -> None:
+        del env
+
+    def is_successful(self, env) -> float:
+        return float(env.interaction_cache == "Board meeting")
+
+    def tear_down(self, env) -> None:
+        del env
+
+
 def test_controller_executes_answer_before_native_evaluator(
     tmp_path: Path,
 ) -> None:
@@ -134,3 +259,109 @@ def test_controller_executes_answer_before_native_evaluator(
     )
     assert answer_event < evaluator_event
     assert summary["failure_code"] is None
+
+
+def test_v22_visual_source_critic_accepts_pixel_visible_answer(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    client = VisualSourceClient(verdict="proceed")
+    env = VisualSourceEnv()
+    controller = EpisodeController(
+        client=client,  # type: ignore[arg-type]
+        system_prompt="v2",
+        max_steps=1,
+        max_model_calls=3,
+        history_policy=HistoryPolicy(),
+        action_schema_path=root / "schemas/action.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+        visual_source_critic_prompt="critic",
+    )
+    summary = controller.run(
+        env=env,
+        task=VisualSourceTask(),
+        episode_id="visual-source-accept-v22",
+        episode_dir=tmp_path / "accept",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+    )
+    assert summary["success"]
+    assert env.executed_actions == []
+    assert summary["steps"][0]["answer_audit"][
+        "interaction_cache_matches_answer"
+    ]
+    assert summary["model_call_count"] == 2
+    assert summary["executor_model_call_count"] == 1
+    assert summary["history_model_call_count"] == 1
+    parse = summary["steps"][0]["parse"]
+    adjudications = parse["completion_adjudications"]
+    assert len(adjudications) == 1
+    assert adjudications[0]["schema_version"] == (
+        "visual_text_source_adjudication.v1"
+    )
+    assert adjudications[0]["accepted"] is True
+    critic_request = next(
+        request
+        for request in client.requests
+        if request["call_label"].startswith("critic_step_")
+    )
+    payload = json.loads(critic_request["user_prompt"])
+    assert payload["trigger"] == "current_screen_text_source_candidate"
+    assert payload["answer_candidate"]["text"] == "Board meeting"
+    assert payload["accessibility_source_assessment"][
+        "source_value_count"
+    ] == 2
+    assert "source_values" not in payload["accessibility_source_assessment"]
+
+
+def test_v22_visual_source_rejection_repairs_to_reversible_action(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    client = VisualSourceClient(verdict="reject_completion")
+    env = VisualSourceEnv()
+    controller = EpisodeController(
+        client=client,  # type: ignore[arg-type]
+        system_prompt="v2",
+        max_steps=1,
+        max_model_calls=3,
+        history_policy=HistoryPolicy(),
+        action_schema_path=root / "schemas/action.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+        visual_source_critic_prompt="critic",
+    )
+    summary = controller.run(
+        env=env,
+        task=VisualSourceTask(),
+        episode_id="visual-source-reject-v22",
+        episode_dir=tmp_path / "reject",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+    )
+    assert not summary["success"]
+    assert env.executed_actions == ["click"]
+    assert summary["model_call_count"] == 3
+    assert summary["executor_model_call_count"] == 2
+    assert summary["history_model_call_count"] == 1
+    step = summary["steps"][0]
+    assert step["decision"]["status"] == "continue"
+    assert step["decision"]["action"]["type"] == "tap"
+    assert "VISUAL_SOURCE_ADJUDICATION_REJECTED" in step["parse"][
+        "initial_validation_error"
+    ]
+    repair_request = next(
+        request
+        for request in client.requests
+        if request["call_label"].endswith("_repair")
+    )
+    assert "do not repeat the candidate" in repair_request[
+        "user_prompt"
+    ]
+    assert len(step["parse"]["completion_adjudications"]) == 1
+    assert step["parse"]["completion_adjudications"][0][
+        "accepted"
+    ] is False

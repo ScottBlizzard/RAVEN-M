@@ -368,6 +368,39 @@ def test_guard_blocks_text_not_bound_to_declared_source(origin: str) -> None:
     ]["matched"] is False
 
 
+def test_guard_marks_rejected_visual_source_answer() -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(goal="What events are visible? Answer with titles only.")
+    answer_decision = decision(
+        {
+            "type": "answer",
+            "text": "Board meeting",
+            "text_origin": "current_screen",
+            "source_memory_ids": [],
+        }
+    )
+    answer_decision["status"] = "done"
+    with pytest.raises(
+        ActionValidationError,
+        match="VISUAL_SOURCE_ADJUDICATION_REJECTED",
+    ):
+        guard.validate_decision(
+            answer_decision,
+            page_sha256="calendar-detail",
+            declared_text_source_assessment={
+                "schema_version": "declared_text_source_assessment.v1",
+                "origin": "current_screen",
+                "adjudicable": True,
+                "source_value_count": 0,
+                "matched": False,
+                "visual_adjudication_required": True,
+                "visual_adjudicated": True,
+                "visual_adjudication_accepted": False,
+            },
+        )
+    assert guard.audit_record()["declared_text_source_block_count"] == 1
+
+
 def test_task_literal_field_role_assessment_rejects_phone_in_company() -> None:
     elements = [
         {

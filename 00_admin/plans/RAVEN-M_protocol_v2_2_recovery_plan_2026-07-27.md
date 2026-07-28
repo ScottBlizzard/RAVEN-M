@@ -374,3 +374,26 @@ top-left navigation drawer. It may not wait, swipe, press back, or guess a
 content coordinate. The assessment exposes only the action type, booleans, and
 an empty-marker count, never directory text, geometry, task literals, or
 evaluator state.
+
+## r26 screenshot-visible terminal-answer provenance
+
+The r25 formal suite stopped correctly after its first successful Contacts
+cell. In the second Calendar cell, the frozen screenshot clearly showed
+`October 25 (Wed)`, the full title `Board meeting`, and `16:00 - 16:05`.
+The executor returned that exact title with `text_origin=current_screen`, but
+the accessibility tree omitted the title. The deterministic declared-source
+guard therefore rejected a visually supported answer twice and stopped the
+suite before any incorrect answer was executed.
+
+r26 does not weaken general text provenance. It adds one bounded, same-turn
+visual-source adjudication only for a terminal `answer` that declares
+`current_screen` when accessibility cannot match the exact candidate. The
+Critic receives the unchanged screenshot, task, exact candidate, completion
+evidence, and a count-only accessibility assessment. It may return `proceed`
+only when the exact candidate is fully readable and the visible context binds
+it to the requested task target. It cannot rewrite the answer, use evaluator
+state, cite memory, or authorize `type_text`. A rejection invokes the existing
+single repair and requires one reversible action to open a relevant detail or
+obtain a clearer view; repeating the answer is forbidden. The adjudication is
+cached by candidate hash within the turn, recorded in the completion audit,
+and M0 still undergoes its separate completion Critic after source acceptance.

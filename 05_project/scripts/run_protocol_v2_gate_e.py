@@ -951,6 +951,7 @@ def main(
                     protocol_v2_2=(
                         manifest["protocol"] == PROTOCOL_V2_2
                     ),
+                    visual_source_critic_prompt=prompts["critic"],
                 )
                 episode_id = (
                     f"{manifest['suite_id']}_{item['sequence']:02d}_"

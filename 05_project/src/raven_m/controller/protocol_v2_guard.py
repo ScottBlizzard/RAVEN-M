@@ -1026,10 +1026,19 @@ class ProtocolV2DecisionGuard:
                 }
             )
             self.declared_text_source_block_count += 1
+            visual_rejection = ""
+            if source_assessment.get("visual_adjudication_required") is True:
+                visual_rejection = (
+                    " VISUAL_SOURCE_ADJUDICATION_REJECTED: the bounded "
+                    "same-turn visual critic did not verify the exact answer "
+                    "as fully readable and task-bound."
+                )
             raise ActionValidationError(
                 "DECLARED_TEXT_SOURCE_GUARD: the proposed text declares "
                 f"text_origin={origin}, but it is not present in that "
-                "declared source on this turn. Do not relabel or invent the "
+                "declared source on this turn."
+                + visual_rejection
+                + " Do not relabel or invent the "
                 "text. Use only a value visibly present in TASK or the "
                 "current screen as declared, or leave an unspecified "
                 "optional field untouched."
