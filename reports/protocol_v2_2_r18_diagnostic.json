@@ -1,0 +1,48 @@
+{
+  "schema_version": "protocol_v2_2_r18_diagnostic.v1",
+  "checked_at": "2026-07-28T14:31:00Z",
+  "passed": false,
+  "formal_gate_authorized": false,
+  "source_tag": "protocol-v2-2-gate-e-r18-dev",
+  "source_commit": "6ec0f8eac0b160c1013f12e777b4fcc9bca0a87d",
+  "run": "runs/protocol_v2_2_development/nonhard_capability_v2_2_seed20260729_r18_development_smoke_sequence_1",
+  "cell": {
+    "sequence": 1,
+    "task": "ContactsAddContact",
+    "variant": "B3",
+    "seed": 20260729,
+    "evaluator_reward": 1.0,
+    "success": true,
+    "valid_for_gate_authorization": false
+  },
+  "r18_hypothesis_result": {
+    "passed": true,
+    "last_name_coordinate_switch_preserved": true,
+    "company_coordinate_switch_preserved": true,
+    "phone_coordinate_switch_preserved": true,
+    "focused_input_false_positive_count": 0,
+    "model_repair_count_for_field_switches": 0
+  },
+  "semantic_error": {
+    "class": "declared_task_literal_not_bound_to_task_text",
+    "step": 6,
+    "executed_text": "Tech Solutions",
+    "declared_text_origin": "task_literal",
+    "task_goal": "Create a new contact for Sofija Martin. Their number is +17634322348.",
+    "visible_on_current_screen": false,
+    "requested_by_task": false,
+    "native_reward_detected_error": false
+  },
+  "root_cause": [
+    "the model invented an optional Company value and declared it as task_literal",
+    "the existing provenance guard validated the text_origin label and memory-ID shape but did not bind the text content to the declared source",
+    "the coordinate target and resulting edit were structurally valid, so no other pre-execution guard rejected the action",
+    "the official evaluator returned reward 1.0 because the requested name and phone number were present despite the extra unsupported field"
+  ],
+  "r19_minimal_change": [
+    "for task_literal and current_screen origins, compute a current-turn source-binding assessment before execution",
+    "reject a declared source when the normalized proposed text is not a substring of the task or any visible current-screen text field",
+    "prevent one-repair provenance relabeling by applying the same binding check to the repaired action",
+    "do not expose task or screen source strings, coordinates, or evaluator state through the assessment"
+  ]
+}

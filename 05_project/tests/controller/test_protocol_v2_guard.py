@@ -6,6 +6,7 @@ from raven_m.actions.schema import ActionValidationError
 from raven_m.controller.protocol_v2_guard import (
     ProtocolV2DecisionGuard,
     coordinate_type_text_target_assessment,
+    declared_text_source_assessment,
     destination_picker_active,
     destination_picker_commit_action,
     exact_selection_long_press_assessment,
@@ -133,6 +134,94 @@ def test_focused_input_assessment_uses_visible_soft_keyboard_fallback() -> None:
         ],
         "input_ready": True,
     }
+
+
+def test_declared_text_source_assessment_binds_task_and_screen_text() -> None:
+    elements = [
+        {
+            "text": "Visible account name",
+            "content_description": "Search",
+            "is_visible": True,
+        },
+        {
+            "text": "Hidden value",
+            "is_visible": False,
+        },
+    ]
+    task_match = declared_text_source_assessment(
+        "Create a contact for Sofija Martin.",
+        elements,
+        {
+            **text_action(),
+            "text": "Sofija",
+            "text_origin": "task_literal",
+        },
+    )
+    task_miss = declared_text_source_assessment(
+        "Create a contact for Sofija Martin.",
+        elements,
+        {
+            **text_action(),
+            "text": "Tech Solutions",
+            "text_origin": "task_literal",
+        },
+    )
+    screen_match = declared_text_source_assessment(
+        "Open the current account.",
+        elements,
+        {
+            **text_action(),
+            "text": "Search",
+            "text_origin": "current_screen",
+        },
+    )
+    screen_miss = declared_text_source_assessment(
+        "Open the current account.",
+        elements,
+        {
+            **text_action(),
+            "text": "Hidden value",
+            "text_origin": "current_screen",
+        },
+    )
+    assert task_match["matched"] is True
+    assert task_miss["matched"] is False
+    assert screen_match["matched"] is True
+    assert screen_miss["matched"] is False
+    assert task_match["source_value_count"] == 1
+    assert screen_match["source_value_count"] == 2
+    assert "source_values" not in screen_match
+
+
+@pytest.mark.parametrize("origin", ["task_literal", "current_screen"])
+def test_guard_blocks_text_not_bound_to_declared_source(origin: str) -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(goal="Create a contact for Sofija Martin")
+    action = {
+        **text_action(),
+        "text": "Tech Solutions",
+        "text_origin": origin,
+    }
+    with pytest.raises(
+        ActionValidationError,
+        match="DECLARED_TEXT_SOURCE_GUARD",
+    ):
+        guard.validate_decision(
+            decision(action),
+            page_sha256="contact-form",
+            declared_text_source_assessment={
+                "schema_version": "declared_text_source_assessment.v1",
+                "origin": origin,
+                "adjudicable": True,
+                "source_value_count": 1,
+                "matched": False,
+            },
+        )
+    audit = guard.audit_record()
+    assert audit["declared_text_source_block_count"] == 1
+    assert audit["validation_blocks"][0][
+        "declared_text_source_assessment"
+    ]["matched"] is False
 
 
 def test_focused_input_guard_blocks_click_before_type_and_allows_repair() -> None:

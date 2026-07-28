@@ -93,6 +93,13 @@ memory authority, and Critic enforcement.
   bounded repair must first activate or reopen an input with a non-text
   reversible action and observe the next screen; no editable bbox or target
   coordinate is disclosed.
+- Text declared as `task_literal` must be a case-insensitive,
+  whitespace-normalized substring of TASK. Text declared as `current_screen`
+  must similarly match a visible accessibility text, content description,
+  hint, or tooltip on the current turn. A mismatch is rejected before
+  execution, and the repaired action is checked again so changing only the
+  provenance label cannot authorize invented text. The assessment exposes
+  only the declared origin, source-value count, and a matched boolean.
 
 ## Visible infrastructure failures
 

@@ -132,6 +132,57 @@ def focused_editable_input_assessment(
     }
 
 
+def declared_text_source_assessment(
+    goal: str,
+    ui_elements: Any,
+    action: dict[str, Any] | None,
+) -> dict[str, Any]:
+    """Bind declared task/screen text provenance to current evidence."""
+    is_text_action = (
+        isinstance(action, dict) and action.get("type") in TEXT_ACTIONS
+    )
+    origin = action.get("text_origin") if is_text_action else None
+    candidate = (
+        _normalized_text(action.get("text")) if is_text_action else None
+    )
+    candidate_key = candidate.casefold() if candidate is not None else None
+    source_values: list[str] = []
+    if origin == "task_literal":
+        goal_text = _normalized_text(goal)
+        if goal_text is not None:
+            source_values.append(goal_text)
+    elif origin == "current_screen":
+        for element in ui_elements or ():
+            if _element_value(element, "is_visible") is False:
+                continue
+            for field in (
+                "text",
+                "content_description",
+                "hint_text",
+                "tooltip",
+            ):
+                value = _normalized_text(_element_value(element, field))
+                if value is not None:
+                    source_values.append(value)
+    adjudicable = (
+        is_text_action
+        and origin in {"task_literal", "current_screen"}
+        and candidate_key is not None
+        and bool(source_values)
+    )
+    matched = bool(
+        adjudicable
+        and any(candidate_key in value.casefold() for value in source_values)
+    )
+    return {
+        "schema_version": "declared_text_source_assessment.v1",
+        "origin": origin,
+        "adjudicable": adjudicable,
+        "source_value_count": len(source_values),
+        "matched": matched,
+    }
+
+
 def _box_value(box: Any, field: str) -> Any:
     if isinstance(box, dict):
         return box.get(field)
@@ -641,6 +692,7 @@ class ProtocolV2DecisionGuard:
         self.exact_target_long_press_block_count = 0
         self.focused_input_block_count = 0
         self.coordinate_text_target_block_count = 0
+        self.declared_text_source_block_count = 0
 
     def _block_fingerprint(
         self,
@@ -654,6 +706,9 @@ class ProtocolV2DecisionGuard:
     def _validate_text_provenance(
         self,
         decision: dict[str, Any],
+        *,
+        page_sha256: str,
+        declared_source_assessment: dict[str, Any] | None = None,
     ) -> None:
         action = decision.get("action")
         if not isinstance(action, dict) or action.get("type") not in TEXT_ACTIONS:
@@ -683,6 +738,33 @@ class ProtocolV2DecisionGuard:
             raise ActionValidationError(
                 "source_memory_ids must also appear in memory_citations."
             )
+        source_assessment = declared_source_assessment or {}
+        if (
+            origin in {"task_literal", "current_screen"}
+            and source_assessment.get("adjudicable") is True
+            and source_assessment.get("matched") is not True
+        ):
+            self.validation_blocks.append(
+                {
+                    "semantic_state_sha256": page_sha256,
+                    "action": action,
+                    "reason": "declared_text_source_not_matched",
+                    "declared_text_source_assessment": source_assessment,
+                    "required_recovery_classes": [
+                        "use_bound_declared_text_source",
+                        "leave_unspecified_optional_field_untouched",
+                    ],
+                }
+            )
+            self.declared_text_source_block_count += 1
+            raise ActionValidationError(
+                "DECLARED_TEXT_SOURCE_GUARD: the proposed text declares "
+                f"text_origin={origin}, but it is not present in that "
+                "declared source on this turn. Do not relabel or invent the "
+                "text. Use only a value visibly present in TASK or the "
+                "current screen as declared, or leave an unspecified "
+                "optional field untouched."
+            )
         if action_type == "answer":
             if decision.get("status") != "done":
                 raise ActionValidationError("answer must be terminal.")
@@ -702,8 +784,13 @@ class ProtocolV2DecisionGuard:
         exact_selection_assessment: dict[str, Any] | None = None,
         focused_input_assessment: dict[str, Any] | None = None,
         coordinate_text_target_assessment: dict[str, Any] | None = None,
+        declared_text_source_assessment: dict[str, Any] | None = None,
     ) -> None:
-        self._validate_text_provenance(decision)
+        self._validate_text_provenance(
+            decision,
+            page_sha256=page_sha256,
+            declared_source_assessment=declared_text_source_assessment,
+        )
         action = decision.get("action")
         if not isinstance(action, dict):
             return
@@ -1063,6 +1150,9 @@ class ProtocolV2DecisionGuard:
             "focused_input_block_count": self.focused_input_block_count,
             "coordinate_text_target_block_count": (
                 self.coordinate_text_target_block_count
+            ),
+            "declared_text_source_block_count": (
+                self.declared_text_source_block_count
             ),
             "ab_ab_cycle_trigger_count": self.cycle_trigger_count,
             "visible_failure_trigger_count": (

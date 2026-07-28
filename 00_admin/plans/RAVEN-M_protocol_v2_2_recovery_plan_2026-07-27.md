@@ -237,3 +237,23 @@ active. If it does not match, the r17 focused-input rejection and bounded
 coordinate-removal repair remain in force. The failed r17 formal directory is
 diagnostic only; r18 must pass focused Contacts and Files diagnostics, receive
 a new source tag and freeze, and rerun all eight formal cells from scratch.
+
+## r19 declared text-source binding
+
+The r18 Contacts diagnostic validated all three keyboard-active editable-field
+switches without a focused-input false positive. It also exposed a separate
+provenance gap: the model inserted the unrequested Company value
+`Tech Solutions` and declared it as `task_literal`. The existing provenance
+check verified the label and memory-ID shape, but did not bind the proposed
+text content to the declared source. Native reward remained 1.0 because the
+requested name and number were also present.
+
+r19 binds `task_literal` text to the task string and `current_screen` text to
+visible current accessibility text, content descriptions, hints, or tooltips.
+Matching is case-insensitive with whitespace normalization and records only
+the origin, source-value count, and matched boolean. A mismatch is rejected
+before execution, and the same check applies to the single repair so a model
+cannot launder invented text by changing only its provenance label. Values
+from verified memory and deterministic calculations retain their existing
+separate authority checks. r19 must rerun focused Contacts and Files
+diagnostics before any fresh eight-cell formal attempt.

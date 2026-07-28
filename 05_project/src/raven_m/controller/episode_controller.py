@@ -19,6 +19,7 @@ from raven_m.actions.schema import ActionValidationError, parse_action_response
 from raven_m.controller.protocol_v2_guard import (
     ProtocolV2DecisionGuard,
     coordinate_type_text_target_assessment,
+    declared_text_source_assessment,
     destination_picker_active,
     destination_picker_commit_action,
     exact_selection_long_press_assessment,
@@ -398,7 +399,10 @@ class EpisodeController:
                     "TEXT_PROVENANCE: type_text/answer text must come from a "
                     "TASK literal, the current screen, verified routed memory, "
                     "or a deterministic calculation; declare text_origin and "
-                    "source_memory_ids exactly as required by the schema."
+                    "source_memory_ids exactly as required by the schema. A "
+                    "task_literal value must occur in TASK, and a "
+                    "current_screen value must occur in the visible current "
+                    "UI; do not invent optional field values or relabel them."
                     if protocol_v2
                     else
                     "TEXT_SAFETY: type_text may contain only a value explicitly "
@@ -466,6 +470,7 @@ class EpisodeController:
             "EXACT_TARGET_GUARD:",
             "FOCUSED_INPUT_GUARD:",
             "TEXT_TARGET_GUARD:",
+            "DECLARED_TEXT_SOURCE_GUARD:",
             "POST_DESTINATION_COMMIT_GUARD:",
             "DESTINATION_PICKER_GUARD:",
             "LOOP_GUARD:",
@@ -478,7 +483,22 @@ class EpisodeController:
         exact_target_rejected = error.startswith("EXACT_TARGET_GUARD:")
         focused_input_rejected = error.startswith("FOCUSED_INPUT_GUARD:")
         text_target_rejected = error.startswith("TEXT_TARGET_GUARD:")
-        if focused_input_rejected:
+        declared_source_rejected = error.startswith(
+            "DECLARED_TEXT_SOURCE_GUARD:"
+        )
+        if declared_source_rejected:
+            repair_directive = (
+                "\n\nYour previous JSON was structurally valid, but its "
+                "declared text source did not contain the proposed text. Do "
+                "not merely change text_origin and do not invent an optional "
+                "field value. A task_literal value must occur in TASK; a "
+                "current_screen value must occur in the visible current UI. "
+                "Either issue a new source-bound action for an actually "
+                "requested value and its intended visible field, or choose a "
+                "non-commit action that leaves the unspecified field "
+                "untouched.\n"
+            )
+        elif focused_input_rejected:
             repair_directive = (
                 "\n\nYour previous JSON was structurally valid, but its "
                 "type_text action would destroy an already-active input. "
@@ -624,6 +644,7 @@ class EpisodeController:
         ui_elements: Any,
         screen_width: int,
         screen_height: int,
+        task_goal: str,
         user_prompt: str,
         episode_id: str,
         step: int,
@@ -691,6 +712,11 @@ class EpisodeController:
                         screen_height=screen_height,
                     )
                 )
+                source_assessment = declared_text_source_assessment(
+                    task_goal,
+                    ui_elements,
+                    parsed_candidate.decision.get("action"),
+                )
                 self.decision_guard.validate_decision(
                     parsed_candidate.decision,
                     page_sha256=page_semantic_sha256,
@@ -708,6 +734,7 @@ class EpisodeController:
                     coordinate_text_target_assessment=(
                         text_target_assessment
                     ),
+                    declared_text_source_assessment=source_assessment,
                 )
             action_adjudication = self.history_policy.adjudicate_action(
                 parsed_candidate.decision,
@@ -975,6 +1002,7 @@ class EpisodeController:
                         ),
                         screen_width=width,
                         screen_height=height,
+                        task_goal=task.goal,
                         user_prompt=user_prompt,
                         episode_id=episode_id,
                         step=step,

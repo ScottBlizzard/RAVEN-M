@@ -259,6 +259,57 @@ class UnboundTextThenActivateInputClient:
         )
 
 
+class FabricatedTaskLiteralThenPhoneClient:
+    def __init__(self) -> None:
+        self.requests: list[dict] = []
+
+    def generate(self, **kwargs) -> ModelCall:
+        self.requests.append(kwargs)
+        label = kwargs["call_label"]
+        if label.endswith("_repair"):
+            text = "+17634322348"
+            x, y = 0.45, 0.60
+            summary = "Enter the requested phone number in Phone."
+        else:
+            text = "Tech Solutions"
+            x, y = 0.45, 0.55
+            summary = "Invent a company value not present in the task."
+        decision = {
+            "status": "continue",
+            "action": {
+                "type": "type_text",
+                "text": text,
+                "text_origin": "task_literal",
+                "source_memory_ids": [],
+                "x": x,
+                "y": y,
+                "clear_text": True,
+            },
+            "expected_outcome": "The selected contact field is updated.",
+            "decision_summary": summary,
+            "state_delta": [],
+            "memory_citations": [],
+            "completion_evidence": [],
+        }
+        return ModelCall(
+            call_id=label,
+            episode_id=kwargs["episode_id"],
+            idempotency_key=label,
+            image_sha256="0" * 64,
+            image_sha256s=("0" * 64,),
+            prompt_sha256=label,
+            request_sha256=label,
+            response_sha256=label,
+            content=json.dumps(decision),
+            usage={
+                "prompt_tokens": 1,
+                "completion_tokens": 1,
+                "total_tokens": 2,
+            },
+            raven_meta={},
+        )
+
+
 class DestinationPickerEnv:
     def __init__(self) -> None:
         self.execute_count = 0
@@ -483,10 +534,89 @@ class UnboundTextTargetEnv(DestinationPickerEnv):
         self.execute_count += 1
 
 
+class ContactFieldsEnv(DestinationPickerEnv):
+    def get_state(self, wait_to_stabilize: bool):
+        assert wait_to_stabilize
+        return SimpleNamespace(
+            pixels=np.zeros((100, 100, 3), dtype=np.uint8),
+            ui_elements=[
+                SimpleNamespace(
+                    package_name="contacts",
+                    text="",
+                    hint_text="Company",
+                    is_visible=True,
+                    is_enabled=True,
+                    is_editable=True,
+                    is_focused=True,
+                    bbox=SimpleNamespace(
+                        x_min=0.10,
+                        x_max=0.80,
+                        y_min=0.50,
+                        y_max=0.57,
+                    ),
+                ),
+                SimpleNamespace(
+                    package_name="contacts",
+                    text="",
+                    hint_text="Phone",
+                    is_visible=True,
+                    is_enabled=True,
+                    is_editable=True,
+                    is_focused=False,
+                    bbox=SimpleNamespace(
+                        x_min=0.10,
+                        x_max=0.80,
+                        y_min=0.58,
+                        y_max=0.65,
+                    ),
+                ),
+                SimpleNamespace(
+                    package_name="com.google.android.inputmethod.latin",
+                    text="q",
+                    is_visible=True,
+                    is_enabled=True,
+                    is_editable=False,
+                    is_focused=False,
+                ),
+            ],
+        )
+
+    def execute_action(self, action) -> None:
+        assert action.action_type == "input_text"
+        assert action.text == "+17634322348"
+        assert action.clear_text is True
+        self.execute_count += 1
+
+
 class FilesTask:
     name = "FilesMoveFile"
-    goal = "Move the requested file to the requested folder."
+    goal = (
+        "Move nature_sounds.mp3 from the requested source to the requested "
+        "folder."
+    )
     params = {"file_name": "nature_sounds.mp3"}
+
+    def initialize_task(self, env) -> None:
+        del env
+
+    def is_successful(self, env) -> float:
+        del env
+        return 0.0
+
+    def tear_down(self, env) -> None:
+        del env
+
+
+class ContactTask:
+    name = "ContactsAddContact"
+    goal = (
+        "Create a new contact for Sofija Martin. Their number is "
+        "+17634322348."
+    )
+    params = {
+        "name": "Sofija Martin",
+        "number": "+17634322348",
+    }
 
     def initialize_task(self, env) -> None:
         del env
@@ -1015,3 +1145,47 @@ def test_controller_repairs_unbound_coordinate_type_to_input_activation(
     repair_prompt = client.requests[1]["user_prompt"]
     assert "action.type must not be type_text" in repair_prompt
     assert "activate or reopen a visible input control" in repair_prompt
+
+
+def test_controller_repairs_fabricated_task_literal_to_requested_value(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = ContactFieldsEnv()
+    client = FabricatedTaskLiteralThenPhoneClient()
+    controller = EpisodeController(
+        client=client,  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=1,
+        max_model_calls=2,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=ContactTask(),
+        episode_id="declared-source-repair-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="M0",
+    )
+    assert env.execute_count == 1
+    assert summary["model_call_count"] == 2
+    action = summary["steps"][0]["decision"]["action"]
+    assert action["text"] == "+17634322348"
+    assert action["text_origin"] == "task_literal"
+    assert action["x"] == 0.45
+    assert action["y"] == 0.60
+    assert summary["steps"][0]["parse"]["model_repair_used"]
+    assert "DECLARED_TEXT_SOURCE_GUARD" in summary["steps"][0]["parse"][
+        "initial_validation_error"
+    ]
+    audit = summary["protocol_v2_guard"]
+    assert audit["declared_text_source_block_count"] == 1
+    repair_prompt = client.requests[1]["user_prompt"]
+    assert "Do not merely change text_origin" in repair_prompt
+    assert "do not invent an optional field value" in repair_prompt
+    assert "leaves the unspecified field untouched" in repair_prompt
