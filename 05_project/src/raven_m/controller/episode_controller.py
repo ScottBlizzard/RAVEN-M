@@ -511,10 +511,11 @@ class EpisodeController:
                 "not merely change text_origin and do not invent an optional "
                 "field value. A task_literal value must occur in TASK; a "
                 "current_screen value must occur in the visible current UI. "
-                "Either issue a new source-bound action for an actually "
-                "requested value and its intended visible field, or choose a "
-                "non-commit action that leaves the unspecified field "
-                "untouched.\n"
+                "If a visible empty editable field corresponds to a remaining "
+                "TASK value, fill that requested value in its matching field "
+                "now. Otherwise choose one non-commit action that leaves the "
+                "unspecified field untouched. Do not repeat a navigation "
+                "action that has already produced no semantic progress.\n"
             )
         elif focused_input_rejected:
             repair_directive = (

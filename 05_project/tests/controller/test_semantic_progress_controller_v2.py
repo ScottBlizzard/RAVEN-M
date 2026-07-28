@@ -1232,6 +1232,8 @@ def test_controller_repairs_fabricated_task_literal_to_requested_value(
     repair_prompt = client.requests[1]["user_prompt"]
     assert "Do not merely change text_origin" in repair_prompt
     assert "do not invent an optional field value" in repair_prompt
+    assert "visible empty editable field" in repair_prompt
+    assert "fill that requested value in its matching field now" in repair_prompt
     assert "leaves the unspecified field untouched" in repair_prompt
 
 

@@ -18,7 +18,7 @@ ANSWER_GOAL_RE = re.compile(
     flags=re.IGNORECASE,
 )
 TEXT_ACTIONS = {"type_text", "answer"}
-COORDINATE_STREAK_ACTIONS = {"tap", "long_press"}
+COORDINATE_STREAK_ACTIONS = {"tap", "long_press", "swipe"}
 TEXT_ORIGINS = {
     "task_literal",
     "current_screen",

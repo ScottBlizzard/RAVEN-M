@@ -990,6 +990,38 @@ def test_guard_blocks_fourth_identical_coordinate_action_across_states() -> None
     )
 
 
+def test_guard_blocks_fourth_identical_swipe_across_states() -> None:
+    guard = ProtocolV2DecisionGuard(
+        max_no_effect_repeats=10,
+        max_identical_coordinate_actions=3,
+    )
+    guard.reset(goal="Complete a contact form")
+    action = {
+        "type": "swipe",
+        "x": 0.5,
+        "y": 0.75,
+        "x2": 0.5,
+        "y2": 0.30,
+        "duration_ms": 500,
+    }
+    for index in range(3):
+        guard.validate_decision(
+            decision(action),
+            page_sha256=f"state-{index}",
+        )
+        guard.observe_transition(
+            before_sha256=f"state-{index}",
+            action=action,
+            after_sha256=f"state-{index + 1}",
+        )
+    with pytest.raises(
+        ActionValidationError,
+        match="same coordinate action",
+    ):
+        guard.validate_decision(decision(action), page_sha256="state-3")
+    assert guard.audit_record()["identical_coordinate_block_count"] == 1
+
+
 def test_destination_picker_requires_bottom_cancel_and_commit_controls() -> None:
     controls = [
         {

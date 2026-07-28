@@ -276,3 +276,23 @@ roles are disjoint. The repair keeps the exact requested value and provenance
 but must select a visibly supported role-compatible field. The audit records
 role groups and counts, not task values, field labels, bboxes, coordinates, or
 evaluator state.
+
+## r21 bounded navigation recovery
+
+The r20 Contacts diagnostic safely blocked the fabricated optional Company
+value and prevented the task phone number from entering Company. The bounded
+repair then chose an upward swipe instead of filling the visible empty Phone
+field and repeated the same swipe through the remaining policy steps. Because
+the cross-state coordinate streak covered only `tap` and `long_press`, the
+episode exhausted its twelve-step budget without an unsafe mutation but also
+without completing the requested field.
+
+r21 extends the existing three-action cross-state streak limit to canonical
+`swipe` actions. A fourth identical swipe is rejected even when incidental
+screenshot state changes, and its bounded repair must choose a materially
+different action. The declared-source repair also states a generic priority:
+when a visible empty editable corresponds to a remaining TASK value, fill that
+requested value in its matching field now; otherwise choose one non-commit
+action and do not repeat navigation that produced no semantic progress. The
+controller does not inject a field coordinate, rewrite an action, add model
+calls, change the twelve-step budget, or use evaluator state.

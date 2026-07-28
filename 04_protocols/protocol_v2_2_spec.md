@@ -43,9 +43,10 @@ memory authority, and Critic enforcement.
 - After three consecutive mismatched or missing accessibility observations,
   the controller performs at most one audited AndroidWorld accessibility
   refresh, then continues within the original twelve-observation bound.
-- A fourth consecutive identical `tap` or `long_press` coordinate is rejected
-  even if screenshot-only state hashes change; the bounded repair must
-  recalculate the coordinate or choose a different recovery action.
+- A fourth consecutive identical `tap`, `long_press`, or canonical `swipe`
+  coordinate action is rejected even if screenshot-only state hashes change;
+  the bounded repair must recalculate the coordinate or choose a different
+  recovery action.
 - Android copy/move destination pickers treat `No items` as a stable empty
   folder, not a loading signal; one wait is the maximum before navigating to
   the exact storage root and destination.
@@ -100,6 +101,12 @@ memory authority, and Critic enforcement.
   execution, and the repaired action is checked again so changing only the
   provenance label cannot authorize invented text. The assessment exposes
   only the declared origin, source-value count, and a matched boolean.
+- When declared-source repair can see an empty editable whose semantic role
+  matches a remaining TASK value, it asks the model to fill that value now
+  rather than perform generic navigation. If no such field is visible, the
+  repair remains a single non-commit action and may not repeat navigation that
+  already produced no semantic progress. No field coordinate is injected and
+  no action is silently rewritten.
 - For a coordinate-bearing `task_literal` edit, the controller derives coarse
   semantic roles from the task sentence/line containing that literal and the
   visible label metadata of the editable hit by the coordinate. When both
