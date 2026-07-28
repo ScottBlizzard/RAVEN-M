@@ -431,3 +431,28 @@ exactly `press_back`, dismissing the keyboard and deferring field navigation
 to a later observed step. It does not expose keyboard geometry, authorize the
 invalid text, select a field, inject a coordinate, rewrite a task value, or add
 a model call.
+
+## r29 critic-rejected destination renavigation
+
+The r28 formal suite completed Contacts, Calendar, and Expense with native
+reward 1.0 in all three cells. In Files, the exact-target guard first prevented
+selection of the similarly named `nature_sounds_SvQQ.mp3`; Search then exposed
+and selected the requested `nature_sounds.mp3`. After Move to opened the
+destination picker, the model proposed the bottom Move control while the
+visible title was still Downloads rather than the requested Ringtones. The
+consequential-action Critic correctly rejected that commit. Its rejection
+string was not routed to a semantic destination-repair branch, so the single
+generic repair proposed `press_back`; the destination-picker guard correctly
+blocked that action because it would discard the pending move. Neither unsafe
+action executed.
+
+r29 marks this exact boundary when a Critic rejects a bottom Copy/Move commit
+while the Android destination picker is visibly active. The one bounded repair
+must be a tap that hits the visible, enabled, top-left `Show roots` or
+navigation-drawer accessibility element. A deterministic hit test validates
+the repaired tap before execution; Copy/Move, Cancel, `press_back`, waiting,
+swiping, typing, and unbound content coordinates remain forbidden. Selecting
+Ringtones and submitting Move stay separate later policy steps, and the final
+commit still requires a fresh consequential-action Critic verdict. No target
+coordinate, evaluator state, extra repair, task, seed, budget, or threshold is
+introduced.

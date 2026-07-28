@@ -8,7 +8,11 @@ import numpy as np
 
 from raven_m.controller.episode_controller import EpisodeController
 from raven_m.controller.protocol_v2_guard import ProtocolV2DecisionGuard
-from raven_m.history.policies import RavenMemoryPolicy
+from raven_m.history.policies import (
+    CompletionAdjudication,
+    HistoryPolicy,
+    RavenMemoryPolicy,
+)
 from raven_m.models.transformers_client import ModelCall
 
 
@@ -119,6 +123,87 @@ class EmptyPickerWaitThenDrawerClient:
             },
             raven_meta={},
         )
+
+
+class CriticRejectedCommitThenDrawerClient:
+    def __init__(self, *, valid_repair: bool = True) -> None:
+        self.valid_repair = valid_repair
+        self.requests: list[dict] = []
+
+    def generate(self, **kwargs) -> ModelCall:
+        self.requests.append(kwargs)
+        label = kwargs["call_label"]
+        if label.endswith("_repair"):
+            action = (
+                {"type": "tap", "x": 0.065, "y": 0.08}
+                if self.valid_repair
+                else {"type": "press_back"}
+            )
+            summary = "Open the visible roots navigation drawer."
+            outcome = "The storage roots drawer opens."
+        else:
+            action = {"type": "tap", "x": 0.385, "y": 0.945}
+            summary = "Tap the Move button to commit the pending operation."
+            outcome = "The file is moved to the current destination."
+        decision = {
+            "status": "continue",
+            "action": action,
+            "expected_outcome": outcome,
+            "decision_summary": summary,
+            "state_delta": [],
+            "memory_citations": [],
+            "completion_evidence": [],
+        }
+        return ModelCall(
+            call_id=label,
+            episode_id=kwargs["episode_id"],
+            idempotency_key=label,
+            image_sha256="0" * 64,
+            image_sha256s=("0" * 64,),
+            prompt_sha256=label,
+            request_sha256=label,
+            response_sha256=label,
+            content=json.dumps(decision),
+            usage={
+                "prompt_tokens": 1,
+                "completion_tokens": 1,
+                "total_tokens": 2,
+            },
+            raven_meta={},
+        )
+
+
+class RejectWrongDestinationCommitPolicy(HistoryPolicy):
+    variant = "M0"
+
+    def adjudicate_action(self, decision, **kwargs) -> CompletionAdjudication:
+        del kwargs
+        action = decision.get("action", {})
+        if (
+            action.get("type") == "tap"
+            and action.get("y", 0) > 0.9
+        ):
+            return CompletionAdjudication(
+                accepted=False,
+                record={
+                    "schema_version": "action_adjudication.v1",
+                    "trigger": "consequential_action_candidate",
+                    "output": {
+                        "schema_version": "critic.v1",
+                        "verdict": "reobserve",
+                        "recommended_constraint": (
+                            "confirm Ringtones instead of Downloads"
+                        ),
+                    },
+                    "error": None,
+                    "model_call_ids": [],
+                },
+                error=(
+                    "Action critic rejected commit: confirm Ringtones "
+                    "instead of Downloads"
+                ),
+            )
+        return CompletionAdjudication()
 
 
 class CommitThenRepeatClient:
@@ -564,6 +649,70 @@ class EmptyDestinationPickerEnv(DestinationPickerEnv):
             )
         )
         return state
+
+
+class CriticRejectedDestinationPickerEnv(DestinationPickerEnv):
+    def get_state(self, wait_to_stabilize: bool):
+        assert wait_to_stabilize
+        return SimpleNamespace(
+            pixels=np.zeros((100, 100, 3), dtype=np.uint8),
+            ui_elements=[
+                SimpleNamespace(
+                    package_name="files",
+                    content_description="Show roots",
+                    is_visible=True,
+                    is_enabled=True,
+                    bbox=SimpleNamespace(
+                        x_min=0.03,
+                        x_max=0.10,
+                        y_min=0.05,
+                        y_max=0.11,
+                    ),
+                ),
+                SimpleNamespace(
+                    package_name="files",
+                    text="Downloads",
+                    is_visible=True,
+                    is_enabled=True,
+                ),
+                SimpleNamespace(
+                    package_name="files",
+                    text="No items",
+                    is_visible=True,
+                    is_enabled=True,
+                ),
+                SimpleNamespace(
+                    package_name="files",
+                    text="CANCEL",
+                    is_visible=True,
+                    is_enabled=True,
+                    bbox=SimpleNamespace(
+                        x_min=0.03,
+                        x_max=0.26,
+                        y_min=0.91,
+                        y_max=0.98,
+                    ),
+                ),
+                SimpleNamespace(
+                    package_name="files",
+                    text="MOVE",
+                    is_visible=True,
+                    is_enabled=True,
+                    bbox=SimpleNamespace(
+                        x_min=0.28,
+                        x_max=0.50,
+                        y_min=0.91,
+                        y_max=0.98,
+                    ),
+                ),
+            ],
+        )
+
+    def execute_action(self, action) -> None:
+        assert action.action_type == "click"
+        assert action.x == 6
+        assert action.y == 8
+        self.execute_count += 1
 
 
 class PostCommitEnv(DestinationPickerEnv):
@@ -1301,6 +1450,89 @@ def test_controller_repairs_empty_picker_wait_to_navigation(
     assert "visible current directory" in repair_prompt
     assert "visible top-left navigation drawer" in repair_prompt
     assert "Do not wait, swipe, press_back" in repair_prompt
+
+
+def test_controller_repairs_critic_rejected_picker_commit_to_roots(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = CriticRejectedDestinationPickerEnv()
+    client = CriticRejectedCommitThenDrawerClient()
+    controller = EpisodeController(
+        client=client,  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=1,
+        max_model_calls=2,
+        history_policy=RejectWrongDestinationCommitPolicy(),
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="critic-picker-renavigation-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="M0",
+    )
+    assert env.execute_count == 1
+    assert summary["model_call_count"] == 2
+    assert summary["steps"][0]["decision"]["action"] == {
+        "type": "tap",
+        "x": 0.065,
+        "y": 0.08,
+    }
+    parse = summary["steps"][0]["parse"]
+    assert parse["model_repair_used"]
+    assert "DESTINATION_PICKER_RENAVIGATION_REQUIRED" in parse[
+        "initial_validation_error"
+    ]
+    repair_prompt = client.requests[1]["user_prompt"]
+    assert "targeting only the visible enabled top-left Show roots" in (
+        repair_prompt
+    )
+    assert "Do not tap Copy/Move or Cancel" in repair_prompt
+    assert "do not press_back" in repair_prompt
+
+
+def test_controller_rejects_non_roots_picker_renavigation_repair(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = CriticRejectedDestinationPickerEnv()
+    controller = EpisodeController(
+        client=CriticRejectedCommitThenDrawerClient(
+            valid_repair=False
+        ),  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=1,
+        max_model_calls=2,
+        history_policy=RejectWrongDestinationCommitPolicy(),
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="critic-picker-invalid-renavigation-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="M0",
+    )
+    assert env.execute_count == 0
+    assert summary["failure_code"] == "MODEL_OUTPUT_INVALID_AFTER_REPAIR"
+    error = summary["model_output_error"]
+    assert "DESTINATION_PICKER_RENAVIGATION_REQUIRED" in error[
+        "initial_validation_error"
+    ]
+    assert "REPAIR_CONTRACT_GUARD" in error["repair_validation_error"]
+    assert "top-left Show roots" in error["repair_validation_error"]
 
 
 def test_controller_repairs_repeat_transfer_after_destination_commit(

@@ -206,6 +206,12 @@ memory authority, and Critic enforcement.
 - A same-turn Critic adjudicates consequential commits. Save/Send/Delete and
   final Move/Copy confirmation require the exact task target and
   destination/value to be visibly bound on the current screen.
+- If that Critic rejects a bottom Copy/Move commit while an Android
+  destination picker is visibly active, the sole repair must tap the visible,
+  enabled top-left `Show roots`/navigation-drawer element. A deterministic
+  accessibility hit test rejects `press_back`, Cancel, another commit, or an
+  unbound coordinate before execution. Destination selection and a later
+  Critic-adjudicated commit remain separate policy steps.
 - Planner completion evidence IDs may cite routed FACT only. HYPOTHESIS can
   guide verification but cannot satisfy completion.
 

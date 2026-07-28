@@ -10,6 +10,7 @@ from raven_m.controller.protocol_v2_guard import (
     destination_picker_active,
     destination_picker_commit_action,
     destination_picker_empty_stall_assessment,
+    destination_picker_navigation_drawer_action,
     exact_selection_long_press_assessment,
     focused_editable_input_assessment,
     post_destination_transfer_command_action,
@@ -1315,6 +1316,47 @@ def test_destination_picker_commit_action_requires_enabled_bottom_hit() -> None:
     assert not destination_picker_commit_action(
         controls,
         {"type": "tap", "x": 0.385, "y": 0.945},
+        screen_width=1080,
+        screen_height=2400,
+    )
+
+
+def test_destination_picker_navigation_requires_enabled_top_left_roots_hit() -> None:
+    controls = [
+        {
+            "content_description": "Show roots",
+            "is_visible": True,
+            "is_enabled": True,
+            "bbox": {
+                "x_min": 0.03,
+                "x_max": 0.10,
+                "y_min": 0.05,
+                "y_max": 0.11,
+            },
+        }
+    ]
+    assert destination_picker_navigation_drawer_action(
+        controls,
+        {"type": "tap", "x": 0.065, "y": 0.08},
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert not destination_picker_navigation_drawer_action(
+        controls,
+        {"type": "tap", "x": 0.385, "y": 0.945},
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert not destination_picker_navigation_drawer_action(
+        controls,
+        {"type": "press_back"},
+        screen_width=1080,
+        screen_height=2400,
+    )
+    controls[0]["is_enabled"] = False
+    assert not destination_picker_navigation_drawer_action(
+        controls,
+        {"type": "tap", "x": 0.065, "y": 0.08},
         screen_width=1080,
         screen_height=2400,
     )

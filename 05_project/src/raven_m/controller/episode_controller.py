@@ -23,6 +23,7 @@ from raven_m.controller.protocol_v2_guard import (
     destination_picker_active,
     destination_picker_commit_action,
     destination_picker_empty_stall_assessment,
+    destination_picker_navigation_drawer_action,
     exact_selection_long_press_assessment,
     focused_editable_input_assessment,
     post_destination_transfer_command_action,
@@ -521,6 +522,9 @@ class EpisodeController:
         empty_picker_stall_required = (
             "DESTINATION_PICKER_EMPTY_STALL_REQUIRED:" in error
         )
+        destination_picker_renavigation_required = (
+            "DESTINATION_PICKER_RENAVIGATION_REQUIRED:" in error
+        )
         visual_source_rejected = (
             "VISUAL_SOURCE_ADJUDICATION_REJECTED:" in error
         )
@@ -534,6 +538,18 @@ class EpisodeController:
                 "return an answer, do not repeat the candidate, do not change "
                 "text_origin, and do not commit any mutation. Use only a "
                 "control visibly supported by the current screenshot.\n"
+            )
+        elif destination_picker_renavigation_required:
+            repair_directive = (
+                "\n\nThe consequential-action critic rejected a Copy/Move "
+                "commit while the Android destination picker is still active "
+                "in the wrong or unverified directory. For this one repair, "
+                "return status=continue and action.type=tap, targeting only "
+                "the visible enabled top-left Show roots/navigation-drawer "
+                "control. Do not tap Copy/Move or Cancel, do not press_back, "
+                "wait, swipe, type, or guess a content-area coordinate. The "
+                "next policy step may choose the requested destination after "
+                "observing the roots drawer.\n"
             )
         elif empty_picker_stall_required:
             repair_directive = (
@@ -794,6 +810,23 @@ class EpisodeController:
                     "SOFT_KEYBOARD_DISMISS_REQUIRED permits only the exact "
                     '{"type":"press_back"} action in this bounded repair.'
                 )
+            if (
+                repair_contract_error
+                and "DESTINATION_PICKER_RENAVIGATION_REQUIRED:"
+                in repair_contract_error
+                and not destination_picker_navigation_drawer_action(
+                    ui_elements,
+                    parsed_candidate.decision.get("action"),
+                    screen_width=screen_width,
+                    screen_height=screen_height,
+                )
+            ):
+                raise ActionValidationError(
+                    "REPAIR_CONTRACT_GUARD: "
+                    "DESTINATION_PICKER_RENAVIGATION_REQUIRED permits only a "
+                    "tap that hits the visible enabled top-left Show roots/"
+                    "navigation-drawer control in this bounded repair."
+                )
             self.history_policy.validate_decision(parsed_candidate.decision)
             if self.decision_guard is not None:
                 picker_commit_is_action = destination_picker_commit_action(
@@ -1027,9 +1060,27 @@ class EpisodeController:
             if action_adjudication.record is not None:
                 action_adjudications.append(action_adjudication.record)
             if not action_adjudication.accepted:
-                raise ActionValidationError(
+                adjudication_error = (
                     action_adjudication.error
                     or "Same-turn action adjudication rejected the action."
+                )
+                if (
+                    self.protocol_v2_2
+                    and destination_picker_is_active
+                    and picker_commit_is_action
+                ):
+                    adjudication_error = (
+                        "DESTINATION_PICKER_GUARD: "
+                        "DESTINATION_PICKER_RENAVIGATION_REQUIRED: the "
+                        "consequential-action critic rejected the visible "
+                        "Copy/Move commit while the destination picker remains "
+                        "active. Keep the pending operation open and use its "
+                        "visible top-left Show roots/navigation-drawer control "
+                        "to choose another directory. Original critic result: "
+                        + adjudication_error
+                    )
+                raise ActionValidationError(
+                    adjudication_error
                 )
             adjudication = self.history_policy.adjudicate_completion(
                 parsed_candidate.decision,

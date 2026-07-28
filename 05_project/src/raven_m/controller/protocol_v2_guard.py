@@ -683,6 +683,61 @@ def destination_picker_commit_action(
     return False
 
 
+def destination_picker_navigation_drawer_action(
+    ui_elements: Any,
+    action: dict[str, Any] | None,
+    *,
+    screen_width: int,
+    screen_height: int,
+) -> bool:
+    """Return whether a tap hits the picker's visible top-left roots control."""
+    if not isinstance(action, dict) or action.get("type") != "tap":
+        return False
+    navigation_labels = {
+        "show roots",
+        "navigation drawer",
+        "open navigation drawer",
+        "navigation menu",
+    }
+    for element in ui_elements or ():
+        if _element_value(element, "is_visible") is False:
+            continue
+        if _element_value(element, "is_enabled") is False:
+            continue
+        labels = {
+            text.casefold()
+            for field in (
+                "text",
+                "content_description",
+                "hint_text",
+                "tooltip",
+            )
+            if (text := _normalized_text(_element_value(element, field)))
+        }
+        if not labels.intersection(navigation_labels):
+            continue
+        bbox = _normalized_element_bbox(
+            element,
+            screen_width=screen_width,
+            screen_height=screen_height,
+        )
+        if bbox is None:
+            continue
+        nx_min, nx_max, ny_min, ny_max = bbox
+        center_x = (nx_min + nx_max) / 2.0
+        center_y = (ny_min + ny_max) / 2.0
+        if center_x > 0.2 or center_y > 0.15:
+            continue
+        if _tap_hits_element(
+            action,
+            element,
+            screen_width=screen_width,
+            screen_height=screen_height,
+        ):
+            return True
+    return False
+
+
 def post_destination_transfer_command_action(
     ui_elements: Any,
     action: dict[str, Any] | None,
