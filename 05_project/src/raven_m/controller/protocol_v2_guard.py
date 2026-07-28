@@ -202,6 +202,78 @@ def _tap_hits_element(
     )
 
 
+def coordinate_type_text_target_assessment(
+    ui_elements: Any,
+    action: dict[str, Any] | None,
+    *,
+    screen_width: int,
+    screen_height: int,
+) -> dict[str, Any]:
+    """Check that an inactive-input text action targets an editable."""
+    action_is_type_text = (
+        isinstance(action, dict) and action.get("type") == "type_text"
+    )
+    coordinate_bearing = (
+        action_is_type_text
+        and isinstance(action.get("x"), (int, float))
+        and isinstance(action.get("y"), (int, float))
+    )
+    if not action_is_type_text:
+        return {
+            "schema_version": "coordinate_text_target_assessment.v1",
+            "adjudicable": False,
+            "coordinate_bearing": False,
+            "visible_editable_count": 0,
+            "boxed_editable_count": 0,
+            "matched": False,
+        }
+    elements = list(ui_elements or ())
+    visible_editable = []
+    boxed_editable_count = 0
+    matched = False
+    tap_action = (
+        {
+            "type": "tap",
+            "x": action["x"],
+            "y": action["y"],
+        }
+        if coordinate_bearing
+        else None
+    )
+    for element in elements:
+        if _element_value(element, "is_visible") is False:
+            continue
+        if _element_value(element, "is_enabled") is False:
+            continue
+        if _element_value(element, "is_editable") is not True:
+            continue
+        visible_editable.append(element)
+        if (
+            _normalized_element_bbox(
+                element,
+                screen_width=screen_width,
+                screen_height=screen_height,
+            )
+            is not None
+        ):
+            boxed_editable_count += 1
+        if _tap_hits_element(
+            tap_action,
+            element,
+            screen_width=screen_width,
+            screen_height=screen_height,
+        ):
+            matched = True
+    return {
+        "schema_version": "coordinate_text_target_assessment.v1",
+        "adjudicable": bool(elements),
+        "coordinate_bearing": coordinate_bearing,
+        "visible_editable_count": len(visible_editable),
+        "boxed_editable_count": boxed_editable_count,
+        "matched": matched,
+    }
+
+
 def destination_picker_active(
     ui_elements: Any,
     *,
@@ -568,6 +640,7 @@ class ProtocolV2DecisionGuard:
         self.post_destination_commit_active = False
         self.exact_target_long_press_block_count = 0
         self.focused_input_block_count = 0
+        self.coordinate_text_target_block_count = 0
 
     def _block_fingerprint(
         self,
@@ -628,6 +701,7 @@ class ProtocolV2DecisionGuard:
         post_destination_transfer_command_is_action: bool = False,
         exact_selection_assessment: dict[str, Any] | None = None,
         focused_input_assessment: dict[str, Any] | None = None,
+        coordinate_text_target_assessment: dict[str, Any] | None = None,
     ) -> None:
         self._validate_text_provenance(decision)
         action = decision.get("action")
@@ -674,6 +748,49 @@ class ProtocolV2DecisionGuard:
                 "target. Keep the same type_text text and provenance but "
                 "omit x and y."
                 + empty_directive
+            )
+        text_target_assessment = coordinate_text_target_assessment or {}
+        if (
+            action.get("type") == "type_text"
+            and input_ready is not True
+            and text_target_assessment.get("adjudicable") is True
+            and (
+                text_target_assessment.get("coordinate_bearing") is not True
+                or text_target_assessment.get("matched") is not True
+            )
+        ):
+            record = {
+                "semantic_state_sha256": page_sha256,
+                "action": action,
+                "reason": "coordinate_type_text_target_not_editable",
+                "coordinate_text_target_assessment": (
+                    text_target_assessment
+                ),
+                "required_recovery_classes": [
+                    "activate_visible_input",
+                    "inspect_different_visible_control",
+                ],
+            }
+            self.validation_blocks.append(record)
+            self.coordinate_text_target_block_count += 1
+            visible_count = int(
+                text_target_assessment.get(
+                    "visible_editable_count",
+                    0,
+                )
+            )
+            binding_failure = (
+                "no x,y was supplied"
+                if text_target_assessment.get("coordinate_bearing") is not True
+                else "the proposed x,y does not hit one"
+            )
+            raise ActionValidationError(
+                "TEXT_TARGET_GUARD: text input is not already active, and "
+                f"{binding_failure} of the visible enabled editable controls "
+                f"({visible_count} visible editable controls). Do "
+                "not type on this screen. First tap a visible input-opening "
+                "control or navigate to an editable field, then observe the "
+                "resulting screen before typing."
             )
         assessment = exact_selection_assessment or {}
         if (
@@ -929,6 +1046,9 @@ class ProtocolV2DecisionGuard:
                 self.exact_target_long_press_block_count
             ),
             "focused_input_block_count": self.focused_input_block_count,
+            "coordinate_text_target_block_count": (
+                self.coordinate_text_target_block_count
+            ),
             "ab_ab_cycle_trigger_count": self.cycle_trigger_count,
             "visible_failure_trigger_count": (
                 self.visible_failure_trigger_count

@@ -210,6 +210,55 @@ class FocusedInputThenSafeTextClient:
         )
 
 
+class UnboundTextThenActivateInputClient:
+    def __init__(self) -> None:
+        self.requests: list[dict] = []
+
+    def generate(self, **kwargs) -> ModelCall:
+        self.requests.append(kwargs)
+        label = kwargs["call_label"]
+        if label.endswith("_repair"):
+            action = {"type": "tap", "x": 0.82, "y": 0.075}
+            summary = "Tap Search to activate its input."
+        else:
+            action = {
+                "type": "type_text",
+                "text": "nature_sounds.mp3",
+                "text_origin": "task_literal",
+                "source_memory_ids": [],
+                "clear_text": True,
+                "x": 0.5,
+                "y": 0.075,
+            }
+            summary = "Type the exact filename into the inactive top bar."
+        decision = {
+            "status": "continue",
+            "action": action,
+            "expected_outcome": "A Search input becomes active.",
+            "decision_summary": summary,
+            "state_delta": [],
+            "memory_citations": [],
+            "completion_evidence": [],
+        }
+        return ModelCall(
+            call_id=label,
+            episode_id=kwargs["episode_id"],
+            idempotency_key=label,
+            image_sha256="0" * 64,
+            image_sha256s=("0" * 64,),
+            prompt_sha256=label,
+            request_sha256=label,
+            response_sha256=label,
+            content=json.dumps(decision),
+            usage={
+                "prompt_tokens": 1,
+                "completion_tokens": 1,
+                "total_tokens": 2,
+            },
+            raven_meta={},
+        )
+
+
 class DestinationPickerEnv:
     def __init__(self) -> None:
         self.execute_count = 0
@@ -388,6 +437,50 @@ class SoftKeyboardOnlyInputEnv(FocusedInputEnv):
                 ),
             ],
         )
+
+
+class UnboundTextTargetEnv(DestinationPickerEnv):
+    def get_state(self, wait_to_stabilize: bool):
+        assert wait_to_stabilize
+        return SimpleNamespace(
+            pixels=np.zeros((100, 100, 3), dtype=np.uint8),
+            ui_elements=[
+                SimpleNamespace(
+                    package_name="com.google.android.documentsui",
+                    text="Music",
+                    is_visible=True,
+                    is_enabled=True,
+                    is_editable=False,
+                    is_focused=False,
+                    bbox=SimpleNamespace(
+                        x_min=0.15,
+                        x_max=0.45,
+                        y_min=0.05,
+                        y_max=0.1,
+                    ),
+                ),
+                SimpleNamespace(
+                    package_name="com.google.android.documentsui",
+                    content_description="Search",
+                    is_visible=True,
+                    is_enabled=True,
+                    is_editable=False,
+                    is_focused=False,
+                    bbox=SimpleNamespace(
+                        x_min=0.78,
+                        x_max=0.86,
+                        y_min=0.05,
+                        y_max=0.1,
+                    ),
+                ),
+            ],
+        )
+
+    def execute_action(self, action) -> None:
+        assert action.action_type == "click"
+        assert action.x in {81, 82}
+        assert action.y in {7, 8}
+        self.execute_count += 1
 
 
 class FilesTask:
@@ -878,3 +971,47 @@ def test_controller_repairs_coordinate_type_with_keyboard_only(
     assert assessment["present"] is False
     assert assessment["soft_keyboard_present"] is True
     assert assessment["input_ready"] is True
+
+
+def test_controller_repairs_unbound_coordinate_type_to_input_activation(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = UnboundTextTargetEnv()
+    client = UnboundTextThenActivateInputClient()
+    controller = EpisodeController(
+        client=client,  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=1,
+        max_model_calls=2,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="unbound-text-target-repair-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="M0",
+    )
+    assert env.execute_count == 1
+    assert summary["model_call_count"] == 2
+    action = summary["steps"][0]["decision"]["action"]
+    assert action == {"type": "tap", "x": 0.82, "y": 0.075}
+    assert summary["steps"][0]["parse"]["model_repair_used"]
+    assert "TEXT_TARGET_GUARD" in summary["steps"][0]["parse"][
+        "initial_validation_error"
+    ]
+    audit = summary["protocol_v2_guard"]
+    assert audit["coordinate_text_target_block_count"] == 1
+    block = audit["validation_blocks"][0]
+    assessment = block["coordinate_text_target_assessment"]
+    assert assessment["visible_editable_count"] == 0
+    assert assessment["matched"] is False
+    repair_prompt = client.requests[1]["user_prompt"]
+    assert "action.type must not be type_text" in repair_prompt
+    assert "activate or reopen a visible input control" in repair_prompt

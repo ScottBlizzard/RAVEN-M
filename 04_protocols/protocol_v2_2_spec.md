@@ -84,6 +84,12 @@ memory authority, and Critic enforcement.
   away from that input. The bounded repair preserves the exact text and
   provenance while removing `x,y`; keyboard presence alone does not imply an
   empty field or disclose any input coordinate.
+- When neither focused-editable nor soft-keyboard evidence shows active text
+  input, a coordinate-bearing `type_text` must hit a visible, enabled,
+  editable accessibility element. A miss is rejected before execution. Its
+  bounded repair must first activate or reopen an input with a non-text
+  reversible action and observe the next screen; no editable bbox or target
+  coordinate is disclosed.
 
 ## Visible infrastructure failures
 

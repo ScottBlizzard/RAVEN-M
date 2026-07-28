@@ -18,6 +18,7 @@ from PIL import Image
 from raven_m.actions.schema import ActionValidationError, parse_action_response
 from raven_m.controller.protocol_v2_guard import (
     ProtocolV2DecisionGuard,
+    coordinate_type_text_target_assessment,
     destination_picker_active,
     destination_picker_commit_action,
     exact_selection_long_press_assessment,
@@ -464,6 +465,7 @@ class EpisodeController:
         semantic_action_error_prefixes = (
             "EXACT_TARGET_GUARD:",
             "FOCUSED_INPUT_GUARD:",
+            "TEXT_TARGET_GUARD:",
             "POST_DESTINATION_COMMIT_GUARD:",
             "DESTINATION_PICKER_GUARD:",
             "LOOP_GUARD:",
@@ -475,6 +477,7 @@ class EpisodeController:
         )
         exact_target_rejected = error.startswith("EXACT_TARGET_GUARD:")
         focused_input_rejected = error.startswith("FOCUSED_INPUT_GUARD:")
+        text_target_rejected = error.startswith("TEXT_TARGET_GUARD:")
         if focused_input_rejected:
             repair_directive = (
                 "\n\nYour previous JSON was structurally valid, but its "
@@ -483,6 +486,17 @@ class EpisodeController:
                 "and source_memory_ids. Remove x and y. If VALIDATION_ERROR "
                 "says the focused field is empty, set clear_text=false. Do not "
                 "tap, navigate, change the text, or add a coordinate.\n"
+            )
+        elif text_target_rejected:
+            repair_directive = (
+                "\n\nYour previous JSON was structurally valid, but its "
+                "type_text coordinate was not bound to a visible editable "
+                "control. For this one repair, action.type must not be "
+                "type_text. Use a reversible tap or navigation action to "
+                "activate or reopen a visible input control, then observe "
+                "the resulting screen on a later policy step before typing. "
+                "Do not guess another text coordinate or commit any task "
+                "mutation.\n"
             )
         elif semantic_action_rejected:
             repair_directive = (
@@ -669,6 +683,14 @@ class EpisodeController:
                 focused_input_assessment = (
                     focused_editable_input_assessment(ui_elements)
                 )
+                text_target_assessment = (
+                    coordinate_type_text_target_assessment(
+                        ui_elements,
+                        parsed_candidate.decision.get("action"),
+                        screen_width=screen_width,
+                        screen_height=screen_height,
+                    )
+                )
                 self.decision_guard.validate_decision(
                     parsed_candidate.decision,
                     page_sha256=page_semantic_sha256,
@@ -683,6 +705,9 @@ class EpisodeController:
                     ),
                     exact_selection_assessment=selection_assessment,
                     focused_input_assessment=focused_input_assessment,
+                    coordinate_text_target_assessment=(
+                        text_target_assessment
+                    ),
                 )
             action_adjudication = self.history_policy.adjudicate_action(
                 parsed_candidate.decision,

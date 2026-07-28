@@ -203,3 +203,19 @@ coordinate-bearing `type_text` is rejected before execution and repaired
 within the existing one-repair budget by preserving text and provenance while
 removing `x,y`. Keyboard presence alone does not infer that the field is empty,
 does not expose a coordinate, and does not authorize a silent action rewrite.
+
+## r17 coordinate-to-editable binding
+
+The r16 diagnostic validated the soft-keyboard fallback but exposed an earlier
+state: Search was tapped without a semantic transition, so neither a focused
+editable node nor the keyboard was present. The next coordinate-bearing
+`type_text` clicked a non-editable top-bar location and selected 14 items
+before the r16 signal could become active.
+
+r17 adds a pre-execution binding check for that inactive-input state. A
+coordinate-bearing `type_text` is allowed only when its point is inside a
+current visible, enabled, editable accessibility element. Otherwise the
+existing one bounded repair must return a non-`type_text` reversible action
+that activates or reopens an input and leaves typing to a later observed
+screen. The assessment records only counts and a matched boolean; it exposes
+no bbox, injects no coordinate, and uses no evaluator state.

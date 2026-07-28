@@ -5,6 +5,7 @@ import pytest
 from raven_m.actions.schema import ActionValidationError
 from raven_m.controller.protocol_v2_guard import (
     ProtocolV2DecisionGuard,
+    coordinate_type_text_target_assessment,
     destination_picker_active,
     destination_picker_commit_action,
     exact_selection_long_press_assessment,
@@ -201,6 +202,123 @@ def test_focused_input_guard_does_not_block_an_unfocused_target() -> None:
             "empty": False,
         },
     )
+
+
+def test_coordinate_text_target_assessment_matches_editable_only() -> None:
+    elements = [
+        {
+            "text": "Search",
+            "is_visible": True,
+            "is_enabled": True,
+            "is_editable": True,
+            "bbox": {
+                "x_min": 0.2,
+                "x_max": 0.9,
+                "y_min": 0.05,
+                "y_max": 0.1,
+            },
+        },
+        {
+            "text": "ordinary card",
+            "is_visible": True,
+            "is_enabled": True,
+            "is_editable": False,
+            "bbox": {
+                "x_min": 0.2,
+                "x_max": 0.9,
+                "y_min": 0.4,
+                "y_max": 0.6,
+            },
+        },
+    ]
+    matched = coordinate_type_text_target_assessment(
+        elements,
+        text_action(x=0.5, y=0.075),
+        screen_width=100,
+        screen_height=100,
+    )
+    missed = coordinate_type_text_target_assessment(
+        elements,
+        text_action(x=0.5, y=0.5),
+        screen_width=100,
+        screen_height=100,
+    )
+    assert matched["adjudicable"] is True
+    assert matched["coordinate_bearing"] is True
+    assert matched["visible_editable_count"] == 1
+    assert matched["boxed_editable_count"] == 1
+    assert matched["matched"] is True
+    assert missed["matched"] is False
+    assert "bbox" not in matched
+
+
+def test_guard_blocks_coordinate_text_not_bound_to_editable() -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(goal="Search for nature_sounds.mp3")
+    assessment = {
+        "schema_version": "coordinate_text_target_assessment.v1",
+        "adjudicable": True,
+        "coordinate_bearing": True,
+        "visible_editable_count": 0,
+        "boxed_editable_count": 0,
+        "matched": False,
+    }
+    with pytest.raises(ActionValidationError, match="TEXT_TARGET_GUARD"):
+        guard.validate_decision(
+            decision(text_action(x=0.5, y=0.075, clear_text=True)),
+            page_sha256="files-grid",
+            focused_input_assessment={
+                "input_ready": False,
+                "present": False,
+            },
+            coordinate_text_target_assessment=assessment,
+        )
+    assert guard.audit_record()["coordinate_text_target_block_count"] == 1
+
+
+def test_guard_blocks_coordinate_free_text_without_active_input() -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(goal="Search for nature_sounds.mp3")
+    with pytest.raises(ActionValidationError, match="TEXT_TARGET_GUARD"):
+        guard.validate_decision(
+            decision(text_action(clear_text=False)),
+            page_sha256="files-grid",
+            focused_input_assessment={
+                "input_ready": False,
+                "present": False,
+            },
+            coordinate_text_target_assessment={
+                "schema_version": "coordinate_text_target_assessment.v1",
+                "adjudicable": True,
+                "coordinate_bearing": False,
+                "visible_editable_count": 0,
+                "boxed_editable_count": 0,
+                "matched": False,
+            },
+        )
+
+
+def test_guard_allows_coordinate_text_bound_to_editable() -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(goal="Enter a contact name")
+    guard.validate_decision(
+        decision(text_action(x=0.5, y=0.2, clear_text=True)),
+        page_sha256="contact-form",
+        focused_input_assessment={
+            "input_ready": False,
+            "present": False,
+        },
+        coordinate_text_target_assessment={
+            "schema_version": "coordinate_text_target_assessment.v1",
+            "adjudicable": True,
+            "coordinate_bearing": True,
+            "visible_editable_count": 3,
+            "boxed_editable_count": 3,
+            "matched": True,
+        },
+    )
+
+
 def test_changed_page_does_not_block_same_action() -> None:
     guard = ProtocolV2DecisionGuard(max_no_effect_repeats=1)
     guard.reset(goal="Create a note")
