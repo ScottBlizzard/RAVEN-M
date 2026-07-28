@@ -36,10 +36,15 @@ memory authority, and Critic enforcement.
 - The controller deterministically rejects `press_back` on that state before
   execution. The bounded same-screen repair must choose the picker drawer or
   another non-exit action, and the rejection is recorded in the guard audit.
+- Before a Files long-press, the nearest full accessibility filename must
+  exactly equal the task-literal filename. A different same-extension name,
+  a same-prefix variant, or an off-screen exact target is rejected before
+  execution and must recover through Search, list, detail, or a corrected
+  exact coordinate.
 - An executed tap inside the enabled bottom `COPY`/`MOVE` control creates an
-  auditable post-destination-commit state. Later long-press selection or a
-  second bottom commit is rejected before execution; bounded waiting and
-  ordinary navigation remain available for visible destination verification.
+  auditable post-destination-commit state. Reversible inspection of the exact
+  item remains available, but a second `Move to`, `Copy to`, or bottom commit
+  is rejected before execution.
 
 ## Visible infrastructure failures
 

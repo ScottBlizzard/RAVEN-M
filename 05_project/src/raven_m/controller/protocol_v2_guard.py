@@ -5,6 +5,7 @@ from __future__ import annotations
 from collections import defaultdict
 from hashlib import sha256
 import json
+import math
 import re
 from typing import Any
 
@@ -96,6 +97,70 @@ def _box_value(box: Any, field: str) -> Any:
     return getattr(box, field, None)
 
 
+def _normalized_element_bbox(
+    element: Any,
+    *,
+    screen_width: int,
+    screen_height: int,
+) -> tuple[float, float, float, float] | None:
+    box = _element_value(element, "bbox")
+    if box is None:
+        box = _element_value(element, "bbox_pixels")
+    x_min = _box_value(box, "x_min") if box is not None else None
+    x_max = _box_value(box, "x_max") if box is not None else None
+    y_min = _box_value(box, "y_min") if box is not None else None
+    y_max = _box_value(box, "y_max") if box is not None else None
+    values = (x_min, x_max, y_min, y_max)
+    if not all(isinstance(value, (int, float)) for value in values):
+        return None
+    normalized = max(float(value) for value in values) <= 1.5
+    if normalized:
+        nx_min, nx_max = sorted((float(x_min), float(x_max)))
+        ny_min, ny_max = sorted((float(y_min), float(y_max)))
+    elif screen_width > 0 and screen_height > 0:
+        nx_min, nx_max = sorted(
+            (float(x_min) / screen_width, float(x_max) / screen_width)
+        )
+        ny_min, ny_max = sorted(
+            (
+                float(y_min) / screen_height,
+                float(y_max) / screen_height,
+            )
+        )
+    else:
+        return None
+    return nx_min, nx_max, ny_min, ny_max
+
+
+def _tap_hits_element(
+    action: dict[str, Any] | None,
+    element: Any,
+    *,
+    screen_width: int,
+    screen_height: int,
+) -> bool:
+    if not isinstance(action, dict) or action.get("type") != "tap":
+        return False
+    tap_x = action.get("x")
+    tap_y = action.get("y")
+    if not isinstance(tap_x, (int, float)) or not isinstance(
+        tap_y, (int, float)
+    ):
+        return False
+    bbox = _normalized_element_bbox(
+        element,
+        screen_width=screen_width,
+        screen_height=screen_height,
+    )
+    if bbox is None:
+        return False
+    x_min, x_max, y_min, y_max = bbox
+    return (
+        x_min <= float(tap_x) <= x_max
+        and y_min <= float(tap_y) <= y_max
+    )
+
+
 def destination_picker_active(
     ui_elements: Any,
     *,
@@ -169,39 +234,148 @@ def destination_picker_commit_action(
         }
         if not texts & {"copy", "move"}:
             continue
-        box = _element_value(element, "bbox")
-        if box is None:
-            box = _element_value(element, "bbox_pixels")
-        x_min = _box_value(box, "x_min") if box is not None else None
-        x_max = _box_value(box, "x_max") if box is not None else None
-        y_min = _box_value(box, "y_min") if box is not None else None
-        y_max = _box_value(box, "y_max") if box is not None else None
-        values = (x_min, x_max, y_min, y_max)
-        if not all(isinstance(value, (int, float)) for value in values):
+        bbox = _normalized_element_bbox(
+            element,
+            screen_width=screen_width,
+            screen_height=screen_height,
+        )
+        if bbox is None:
             continue
-        normalized = max(float(value) for value in values) <= 1.5
-        if normalized:
-            nx_min, nx_max = sorted((float(x_min), float(x_max)))
-            ny_min, ny_max = sorted((float(y_min), float(y_max)))
-        elif screen_width > 0 and screen_height > 0:
-            nx_min, nx_max = sorted(
-                (float(x_min) / screen_width, float(x_max) / screen_width)
-            )
-            ny_min, ny_max = sorted(
-                (
-                    float(y_min) / screen_height,
-                    float(y_max) / screen_height,
-                )
-            )
-        else:
-            continue
+        _, _, ny_min, _ = bbox
         if ny_min < 0.8:
             continue
-        if nx_min <= float(tap_x) <= nx_max and ny_min <= float(
-            tap_y
-        ) <= ny_max:
+        if _tap_hits_element(
+            action,
+            element,
+            screen_width=screen_width,
+            screen_height=screen_height,
+        ):
             return True
     return False
+
+
+def post_destination_transfer_command_action(
+    ui_elements: Any,
+    action: dict[str, Any] | None,
+    *,
+    screen_width: int,
+    screen_height: int,
+) -> bool:
+    """Detect a tap on a visible Move to/Copy to command."""
+    for element in ui_elements or []:
+        if _element_value(element, "is_visible") is False:
+            continue
+        if _element_value(element, "is_enabled") is False:
+            continue
+        texts = {
+            text.casefold().replace("…", "...").rstrip(".")
+            for field in ("text", "content_description")
+            if (text := _normalized_text(_element_value(element, field)))
+        }
+        if not texts & {"move to", "copy to"}:
+            continue
+        if _tap_hits_element(
+            action,
+            element,
+            screen_width=screen_width,
+            screen_height=screen_height,
+        ):
+            return True
+    return False
+
+
+def exact_selection_long_press_assessment(
+    ui_elements: Any,
+    action: dict[str, Any] | None,
+    *,
+    required_text: str | None,
+    screen_width: int,
+    screen_height: int,
+) -> dict[str, Any]:
+    """Adjudicate a long-press against full accessibility filename text."""
+    base = {
+        "schema_version": "exact_selection_assessment.v1",
+        "adjudicable": False,
+        "matched": None,
+        "required_text": required_text,
+        "exact_text_visible": False,
+        "candidate_count": 0,
+        "nearest_text": None,
+        "nearest_distance": None,
+    }
+    if (
+        not required_text
+        or not isinstance(action, dict)
+        or action.get("type") != "long_press"
+    ):
+        return base
+    press_x = action.get("x")
+    press_y = action.get("y")
+    if not isinstance(press_x, (int, float)) or not isinstance(
+        press_y, (int, float)
+    ):
+        return base
+    dot_index = required_text.rfind(".")
+    if dot_index <= 0:
+        return base
+    extension = required_text[dot_index:].casefold()
+    candidates: list[dict[str, Any]] = []
+    seen: set[tuple[str, tuple[float, float, float, float]]] = set()
+    for element in ui_elements or []:
+        if _element_value(element, "is_visible") is False:
+            continue
+        bbox = _normalized_element_bbox(
+            element,
+            screen_width=screen_width,
+            screen_height=screen_height,
+        )
+        if bbox is None:
+            continue
+        for field in ("text", "content_description"):
+            text = _normalized_text(_element_value(element, field))
+            if not text or not text.casefold().endswith(extension):
+                continue
+            key = (text, bbox)
+            if key in seen:
+                continue
+            seen.add(key)
+            x_min, x_max, y_min, y_max = bbox
+            dx = max(x_min - float(press_x), 0.0, float(press_x) - x_max)
+            dy = max(y_min - float(press_y), 0.0, float(press_y) - y_max)
+            candidates.append(
+                {
+                    "text": text,
+                    "distance": math.sqrt(dx * dx + dy * dy),
+                }
+            )
+    if not candidates:
+        return base
+    nearest = min(
+        candidates,
+        key=lambda item: (
+            float(item["distance"]),
+            str(item["text"]).casefold(),
+        ),
+    )
+    exact_visible = any(
+        str(item["text"]).casefold() == required_text.casefold()
+        for item in candidates
+    )
+    distance = float(nearest["distance"])
+    matched = (
+        exact_visible
+        and str(nearest["text"]).casefold() == required_text.casefold()
+        and distance <= 0.25
+    )
+    return {
+        **base,
+        "adjudicable": True,
+        "matched": matched,
+        "exact_text_visible": exact_visible,
+        "candidate_count": len(candidates),
+        "nearest_text": nearest["text"],
+        "nearest_distance": round(distance, 6),
+    }
 
 
 def semantic_ui_snapshot(
@@ -328,8 +502,14 @@ class ProtocolV2DecisionGuard:
         )
         self.reset(goal="")
 
-    def reset(self, *, goal: str) -> None:
+    def reset(
+        self,
+        *,
+        goal: str,
+        required_selection_text: str | None = None,
+    ) -> None:
         self.goal = goal
+        self.required_selection_text = required_selection_text
         self.no_effect_counts: dict[tuple[str, str], int] = defaultdict(int)
         self.blocked_fingerprints: set[tuple[str, str]] = set()
         self.transition_fingerprints: list[tuple[str, str, str]] = []
@@ -345,6 +525,7 @@ class ProtocolV2DecisionGuard:
         self.destination_picker_commit_count = 0
         self.post_destination_commit_block_count = 0
         self.post_destination_commit_active = False
+        self.exact_target_long_press_block_count = 0
 
     def _block_fingerprint(
         self,
@@ -402,14 +583,41 @@ class ProtocolV2DecisionGuard:
         page_sha256: str,
         destination_picker_is_active: bool = False,
         destination_picker_commit_is_action: bool = False,
+        post_destination_transfer_command_is_action: bool = False,
+        exact_selection_assessment: dict[str, Any] | None = None,
     ) -> None:
         self._validate_text_provenance(decision)
         action = decision.get("action")
         if not isinstance(action, dict):
             return
-        if self.post_destination_commit_active and (
+        assessment = exact_selection_assessment or {}
+        if (
             action.get("type") == "long_press"
-            or destination_picker_commit_is_action
+            and assessment.get("adjudicable") is True
+            and assessment.get("matched") is not True
+        ):
+            record = {
+                "semantic_state_sha256": page_sha256,
+                "action": action,
+                "reason": "exact_selection_target_mismatch",
+                "assessment": assessment,
+                "required_recovery_classes": [
+                    "change_target",
+                    "inspect_different_visible_control",
+                ],
+            }
+            self.validation_blocks.append(record)
+            self.exact_target_long_press_block_count += 1
+            raise ActionValidationError(
+                "EXACT_TARGET_GUARD: the proposed long-press is not nearest "
+                "to the full task-literal filename in current accessibility "
+                "evidence. Do not guess among truncated same-prefix labels. "
+                "Use Search or list/detail view, or choose only a coordinate "
+                "whose full filename exactly matches the task."
+            )
+        if self.post_destination_commit_active and (
+            destination_picker_commit_is_action
+            or post_destination_transfer_command_is_action
         ):
             record = {
                 "semantic_state_sha256": page_sha256,
@@ -424,11 +632,10 @@ class ProtocolV2DecisionGuard:
             self.post_destination_commit_block_count += 1
             raise ActionValidationError(
                 "POST_DESTINATION_COMMIT_GUARD: the bottom Copy/Move "
-                "control was already executed in this task. Do not select "
-                "another source item or submit a second copy/move "
-                "transaction. If verification is needed, wait once or use "
-                "ordinary navigation taps to inspect the destination; "
-                "otherwise return a terminal status."
+                "control was already executed in this task. Do not choose "
+                "Move to/Copy to again or submit a second transaction. "
+                "Reversible inspection of the exact task item is allowed; "
+                "otherwise navigate for evidence or return a terminal status."
             )
         if (
             destination_picker_is_active
@@ -584,6 +791,7 @@ class ProtocolV2DecisionGuard:
             "max_identical_coordinate_actions": (
                 self.max_identical_coordinate_actions
             ),
+            "required_selection_text": self.required_selection_text,
             "blocked_fingerprint_count": len(self.blocked_fingerprints),
             "validation_block_count": len(self.validation_blocks),
             "identical_coordinate_block_count": (
@@ -600,6 +808,9 @@ class ProtocolV2DecisionGuard:
             ),
             "post_destination_commit_active": (
                 self.post_destination_commit_active
+            ),
+            "exact_target_long_press_block_count": (
+                self.exact_target_long_press_block_count
             ),
             "ab_ab_cycle_trigger_count": self.cycle_trigger_count,
             "visible_failure_trigger_count": (

@@ -7,6 +7,8 @@ from raven_m.controller.protocol_v2_guard import (
     ProtocolV2DecisionGuard,
     destination_picker_active,
     destination_picker_commit_action,
+    exact_selection_long_press_assessment,
+    post_destination_transfer_command_action,
     semantic_ui_snapshot,
 )
 
@@ -442,6 +444,135 @@ def test_destination_picker_commit_action_requires_enabled_bottom_hit() -> None:
     )
 
 
+def test_exact_selection_assessment_uses_full_text_and_nearest_tile() -> None:
+    files = [
+        {
+            "text": "nature_sounds_backup.mp3",
+            "is_visible": True,
+            "bbox": {
+                "x_min": 0.62,
+                "x_max": 0.91,
+                "y_min": 0.55,
+                "y_max": 0.60,
+            },
+        },
+        {
+            "text": "nature_sounds.mp3",
+            "is_visible": True,
+            "bbox": {
+                "x_min": 0.62,
+                "x_max": 0.91,
+                "y_min": 0.80,
+                "y_max": 0.85,
+            },
+        },
+    ]
+    wrong = exact_selection_long_press_assessment(
+        files,
+        {
+            "type": "long_press",
+            "x": 0.75,
+            "y": 0.51,
+            "duration_ms": 800,
+        },
+        required_text="nature_sounds.mp3",
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert wrong["adjudicable"]
+    assert not wrong["matched"]
+    assert wrong["exact_text_visible"]
+    assert wrong["nearest_text"] == "nature_sounds_backup.mp3"
+    correct = exact_selection_long_press_assessment(
+        files,
+        {
+            "type": "long_press",
+            "x": 0.75,
+            "y": 0.76,
+            "duration_ms": 800,
+        },
+        required_text="nature_sounds.mp3",
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert correct["matched"]
+    assert correct["nearest_text"] == "nature_sounds.mp3"
+
+
+def test_exact_selection_guard_blocks_wrong_full_filename() -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(
+        goal="Move nature_sounds.mp3",
+        required_selection_text="nature_sounds.mp3",
+    )
+    assessment = {
+        "schema_version": "exact_selection_assessment.v1",
+        "adjudicable": True,
+        "matched": False,
+        "required_text": "nature_sounds.mp3",
+        "exact_text_visible": True,
+        "candidate_count": 3,
+        "nearest_text": "nature_sounds_backup.mp3",
+        "nearest_distance": 0.03,
+    }
+    with pytest.raises(ActionValidationError, match="EXACT_TARGET_GUARD"):
+        guard.validate_decision(
+            decision(
+                {
+                    "type": "long_press",
+                    "x": 0.75,
+                    "y": 0.51,
+                    "duration_ms": 800,
+                }
+            ),
+            page_sha256="music-grid",
+            exact_selection_assessment=assessment,
+        )
+    assessment["matched"] = True
+    assessment["nearest_text"] = "nature_sounds.mp3"
+    guard.validate_decision(
+        decision(
+            {
+                "type": "long_press",
+                "x": 0.75,
+                "y": 0.76,
+                "duration_ms": 800,
+            }
+        ),
+        page_sha256="music-grid",
+        exact_selection_assessment=assessment,
+    )
+    assert guard.audit_record()["exact_target_long_press_block_count"] == 1
+
+
+def test_post_destination_transfer_command_detects_text_control_hit() -> None:
+    controls = [
+        {
+            "text": "Move to…",
+            "is_visible": True,
+            "is_enabled": True,
+            "bbox": {
+                "x_min": 0.55,
+                "x_max": 0.95,
+                "y_min": 0.31,
+                "y_max": 0.37,
+            },
+        }
+    ]
+    assert post_destination_transfer_command_action(
+        controls,
+        {"type": "tap", "x": 0.67, "y": 0.344},
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert not post_destination_transfer_command_action(
+        controls,
+        {"type": "tap", "x": 0.08, "y": 0.08},
+        screen_width=1080,
+        screen_height=2400,
+    )
+
+
 def test_destination_picker_guard_blocks_back_but_allows_drawer() -> None:
     guard = ProtocolV2DecisionGuard()
     guard.reset(goal="Move a file")
@@ -471,7 +602,7 @@ def test_destination_picker_guard_blocks_back_but_allows_drawer() -> None:
     )
 
 
-def test_post_destination_commit_blocks_new_selection_not_navigation() -> None:
+def test_post_destination_commit_blocks_transfer_not_exact_inspection() -> None:
     guard = ProtocolV2DecisionGuard()
     guard.reset(goal="Move a file")
     guard.observe_transition(
@@ -488,20 +619,29 @@ def test_post_destination_commit_blocks_new_selection_not_navigation() -> None:
         decision({"type": "tap", "x": 0.07, "y": 0.08}),
         page_sha256="source",
     )
+    guard.validate_decision(
+        decision(
+            {
+                "duration_ms": 800,
+                "type": "long_press",
+                "x": 0.25,
+                "y": 0.625,
+            }
+        ),
+        page_sha256="destination",
+        exact_selection_assessment={
+            "adjudicable": True,
+            "matched": True,
+        },
+    )
     with pytest.raises(
         ActionValidationError,
         match="POST_DESTINATION_COMMIT_GUARD",
     ):
         guard.validate_decision(
-            decision(
-                {
-                    "duration_ms": 800,
-                    "type": "long_press",
-                    "x": 0.25,
-                    "y": 0.625,
-                }
-            ),
-            page_sha256="source",
+            decision({"type": "tap", "x": 0.67, "y": 0.344}),
+            page_sha256="selection-menu",
+            post_destination_transfer_command_is_action=True,
         )
     with pytest.raises(
         ActionValidationError,

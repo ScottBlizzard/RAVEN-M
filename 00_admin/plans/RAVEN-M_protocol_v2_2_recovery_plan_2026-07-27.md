@@ -92,6 +92,17 @@ bottom commit before execution. Ordinary taps and one bounded wait remain
 available so the destination can be inspected without forcing an unsupported
 completion claim.
 
+The focused r8 replay proved that the post-commit state prevents a second
+filesystem transaction, but the official evaluator remained zero. The Music
+grid contained multiple full accessibility filenames rendered as the same
+truncated `nature_sounds_...` prefix, and the executor long-pressed a tile
+without exact-name evidence. The destination likewise showed only a truncated
+label, so the completion critic rejected the claim. r9 therefore adjudicates
+each Files long-press against the task-literal filename and the nearest full
+accessibility filename before execution. It also narrows the post-commit rule:
+reversible exact-item inspection is permitted, while a second `Move to`,
+`Copy to`, or bottom commit is rejected.
+
 ## Qualification order
 
 1. Targeted unit and integration tests.

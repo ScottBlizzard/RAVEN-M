@@ -20,6 +20,8 @@ from raven_m.controller.protocol_v2_guard import (
     ProtocolV2DecisionGuard,
     destination_picker_active,
     destination_picker_commit_action,
+    exact_selection_long_press_assessment,
+    post_destination_transfer_command_action,
     semantic_ui_snapshot,
 )
 from raven_m.env.androidworld_adapter import AndroidWorldAdapter
@@ -571,6 +573,25 @@ class EpisodeController:
                     screen_width=screen_width,
                     screen_height=screen_height,
                 )
+                transfer_command_is_action = (
+                    post_destination_transfer_command_action(
+                        ui_elements,
+                        parsed_candidate.decision.get("action"),
+                        screen_width=screen_width,
+                        screen_height=screen_height,
+                    )
+                )
+                selection_assessment = (
+                    exact_selection_long_press_assessment(
+                        ui_elements,
+                        parsed_candidate.decision.get("action"),
+                        required_text=(
+                            self.decision_guard.required_selection_text
+                        ),
+                        screen_width=screen_width,
+                        screen_height=screen_height,
+                    )
+                )
                 self.decision_guard.validate_decision(
                     parsed_candidate.decision,
                     page_sha256=page_semantic_sha256,
@@ -580,6 +601,10 @@ class EpisodeController:
                     destination_picker_commit_is_action=(
                         picker_commit_is_action
                     ),
+                    post_destination_transfer_command_is_action=(
+                        transfer_command_is_action
+                    ),
+                    exact_selection_assessment=selection_assessment,
                 )
             action_adjudication = self.history_policy.adjudicate_action(
                 parsed_candidate.decision,
@@ -733,7 +758,15 @@ class EpisodeController:
             task_id=task.name,
         )
         if self.decision_guard is not None:
-            self.decision_guard.reset(goal=str(task.goal))
+            required_selection_text = None
+            if str(task.name) in {"FilesMoveFile", "FilesDeleteFile"}:
+                candidate = task_params.get("file_name")
+                if isinstance(candidate, str) and candidate:
+                    required_selection_text = candidate
+            self.decision_guard.reset(
+                goal=str(task.goal),
+                required_selection_text=required_selection_text,
+            )
 
         logger.append(
             {

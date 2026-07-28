@@ -90,17 +90,54 @@ class CommitThenRepeatClient:
             action = {"type": "tap", "x": 0.07, "y": 0.08}
             summary = "Open navigation to verify the destination."
         else:
-            action = {
-                "type": "long_press",
-                "x": 0.25,
-                "y": 0.625,
-                "duration_ms": 800,
-            }
-            summary = "Select another source item."
+            action = {"type": "tap", "x": 0.67, "y": 0.344}
+            summary = "Choose Move to again."
         decision = {
             "status": "continue",
             "action": action,
             "expected_outcome": "The file operation advances.",
+            "decision_summary": summary,
+            "state_delta": [],
+            "memory_citations": [],
+            "completion_evidence": [],
+        }
+        return ModelCall(
+            call_id=label,
+            episode_id=kwargs["episode_id"],
+            idempotency_key=label,
+            image_sha256="0" * 64,
+            image_sha256s=("0" * 64,),
+            prompt_sha256=label,
+            request_sha256=label,
+            response_sha256=label,
+            content=json.dumps(decision),
+            usage={
+                "prompt_tokens": 1,
+                "completion_tokens": 1,
+                "total_tokens": 2,
+            },
+            raven_meta={},
+        )
+
+
+class WrongFileThenSearchClient:
+    def generate(self, **kwargs) -> ModelCall:
+        label = kwargs["call_label"]
+        if label.endswith("_repair"):
+            action = {"type": "tap", "x": 0.83, "y": 0.08}
+            summary = "Open Search to isolate the exact filename."
+        else:
+            action = {
+                "type": "long_press",
+                "x": 0.75,
+                "y": 0.51,
+                "duration_ms": 800,
+            }
+            summary = "Long-press a truncated same-prefix file."
+        decision = {
+            "status": "continue",
+            "action": action,
+            "expected_outcome": "The exact target becomes verifiable.",
             "decision_summary": summary,
             "state_delta": [],
             "memory_citations": [],
@@ -196,10 +233,15 @@ class PostCommitEnv(DestinationPickerEnv):
             elements = [
                 SimpleNamespace(
                     package_name="files",
-                    text="Music",
+                    text="Move to…",
                     is_visible=True,
                     is_enabled=True,
-                    resource_id="toolbar_title",
+                    bbox=SimpleNamespace(
+                        x_min=0.55,
+                        x_max=0.95,
+                        y_min=0.31,
+                        y_max=0.37,
+                    ),
                 )
             ]
         return SimpleNamespace(
@@ -212,10 +254,44 @@ class PostCommitEnv(DestinationPickerEnv):
         )
 
 
+class ExactTargetGridEnv(DestinationPickerEnv):
+    def get_state(self, wait_to_stabilize: bool):
+        assert wait_to_stabilize
+        return SimpleNamespace(
+            pixels=np.zeros((100, 100, 3), dtype=np.uint8),
+            ui_elements=[
+                SimpleNamespace(
+                    package_name="files",
+                    text="nature_sounds_backup.mp3",
+                    is_visible=True,
+                    is_enabled=True,
+                    bbox=SimpleNamespace(
+                        x_min=0.62,
+                        x_max=0.91,
+                        y_min=0.55,
+                        y_max=0.60,
+                    ),
+                ),
+                SimpleNamespace(
+                    package_name="files",
+                    text="nature_sounds.mp3",
+                    is_visible=True,
+                    is_enabled=True,
+                    bbox=SimpleNamespace(
+                        x_min=0.62,
+                        x_max=0.91,
+                        y_min=0.80,
+                        y_max=0.85,
+                    ),
+                ),
+            ],
+        )
+
+
 class FilesTask:
     name = "FilesMoveFile"
     goal = "Move the requested file to the requested folder."
-    params = {}
+    params = {"file_name": "nature_sounds.mp3"}
 
     def initialize_task(self, env) -> None:
         del env
@@ -533,7 +609,7 @@ def test_controller_repairs_back_inside_destination_picker(
     ] == 1
 
 
-def test_controller_repairs_new_selection_after_destination_commit(
+def test_controller_repairs_repeat_transfer_after_destination_commit(
     tmp_path: Path,
 ) -> None:
     root = Path(__file__).resolve().parents[2]
@@ -569,4 +645,40 @@ def test_controller_repairs_new_selection_after_destination_commit(
     ]
     assert summary["protocol_v2_guard"][
         "post_destination_commit_block_count"
+    ] == 1
+
+
+def test_controller_repairs_wrong_exact_target_to_search(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = ExactTargetGridEnv()
+    controller = EpisodeController(
+        client=WrongFileThenSearchClient(),  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=1,
+        max_model_calls=2,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="exact-target-repair-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="M0",
+    )
+    assert env.execute_count == 1
+    assert summary["model_call_count"] == 2
+    assert summary["steps"][0]["decision"]["action"]["type"] == "tap"
+    assert summary["steps"][0]["parse"]["model_repair_used"]
+    assert "EXACT_TARGET_GUARD" in summary["steps"][0]["parse"][
+        "initial_validation_error"
+    ]
+    assert summary["protocol_v2_guard"][
+        "exact_target_long_press_block_count"
     ] == 1

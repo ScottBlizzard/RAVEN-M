@@ -106,7 +106,9 @@ control, do not repeat it: correct the y coordinate.
 For a single-item task, never proceed while the header says that multiple
 items are selected. If an exact filename is truncated among similarly named
 items, use the app's search control with the exact task literal instead of
-guessing by grid position.
+guessing by grid position. If `EXACT_TARGET_GUARD` rejects a long-press, do
+not guess another truncated tile blindly: change to Search, list, or detail
+view until the full task-literal filename is bound to the proposed target.
 
 Identify an Android copy/move destination picker by its persistent bottom
 `CANCEL` and `COPY`/`MOVE` controls. While those controls are visible, never
@@ -120,10 +122,11 @@ control only after the exact destination named by the task is visibly the
 current folder.
 
 After tapping the bottom `COPY`/`MOVE` control, do not select another source
-item or start a second copy/move transaction. Wait at most once if the
-operation is visibly in progress. Then either finish from visible completion
-evidence or use ordinary navigation taps to inspect the destination folder;
-never long-press another source item as a substitute for verification.
+item for a second copy/move transaction. Wait at most once if the operation is
+visibly in progress. Then either finish from visible completion evidence or
+navigate to inspect the destination. Reversible selection of the exact task
+filename for details is allowed, but never choose `Move to`/`Copy to` or
+tap a bottom `COPY`/`MOVE` commit again.
 
 When planner_state is present, its current_subgoal and required_variables are
 frozen anchors for the episode. Do not re-resolve a relative date, replace a
