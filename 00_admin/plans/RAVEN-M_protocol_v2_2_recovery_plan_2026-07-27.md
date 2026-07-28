@@ -142,6 +142,15 @@ pixel `y=192` is normalized `y=0.08`, while pixel `y=438` is content and must
 not be used for Search/menu icons. The exact-target repair repeats the same
 generic top-app-bar range without injecting a current accessibility bbox.
 
+The focused r12 replay confirmed the coordinate correction: the model used
+`(0.07, 0.078)` for the top menu, reached the Music folder, and did not repeat
+the r11 content-row Search tap. It then proposed `long_press` without the
+schema-required `duration_ms`. The single bounded repair was consumed adding
+that field; only then could the exact-target guard identify the wrong nearby
+file and reject it. r13 adds a generic required-action-field reminder to the
+normal observation prompt so schema completion does not hide semantic guard
+feedback. The schema, one-repair budget, and exact-target guard are unchanged.
+
 ## Qualification order
 
 1. Targeted unit and integration tests.

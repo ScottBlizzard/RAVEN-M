@@ -27,6 +27,9 @@ def test_b0_prompt_excludes_hidden_state_and_memory() -> None:
     assert "a typical top-app-bar icon center" in prompt
     assert "y=438 becomes y=0.1826 and is in content" in prompt
     assert "do not use it for Search/menu icons" in prompt
+    assert "ACTION_FIELD_CHECK" in prompt
+    assert "long_press requires x, y, and duration_ms from 300-3000" in prompt
+    assert "swipe requires x, y, x2, y2, and duration_ms" in prompt
     assert "visible Save/Move/Done button is not proof" in prompt
     assert "schema named in the system prompt" in prompt
     assert "SEMANTIC_PROGRESS_CHECK" not in prompt

@@ -24,6 +24,11 @@ memory authority, and Critic enforcement.
   standard 2400-pixel portrait screen, `y=192` maps to `0.08` and is a typical
   top-app-bar icon center, while `y=438` maps to about `0.1826` and is content.
   Search/menu actions must not copy the content-row example.
+- Every observation repeats the action fields whose omission would consume the
+  only bounded repair before semantic validation: `long_press` requires
+  `x`, `y`, and `duration_ms`; `swipe` requires both endpoints and
+  `duration_ms`; `wait` requires `duration_ms`. The strict schemas are not
+  weakened and no missing value is silently inserted.
 - After three consecutive mismatched or missing accessibility observations,
   the controller performs at most one audited AndroidWorld accessibility
   refresh, then continues within the original twelve-observation bound.

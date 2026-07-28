@@ -411,6 +411,9 @@ class EpisodeController:
                 f"center. Pixel y={content_pixel_y} becomes "
                 f"y={content_normalized_y:.4f} and is in content, not the "
                 "top app bar; do not use it for Search/menu icons.",
+                "ACTION_FIELD_CHECK: long_press requires x, y, and duration_ms "
+                "from 300-3000; swipe requires x, y, x2, y2, and duration_ms; "
+                "wait requires duration_ms. Do not omit required action fields.",
                 "COMPLETION_CHECK: a visible Save/Move/Done button is not proof "
                 "of completion; execute it and observe the result first.",
                 *(
