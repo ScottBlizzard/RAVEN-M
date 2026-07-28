@@ -1,0 +1,136 @@
+{
+  "schema_version": "protocol_v2_2_r28_formal_stop.v1",
+  "checked_at": "2026-07-28T19:52:37Z",
+  "source_tag": "protocol-v2-2-gate-e-r28-dev",
+  "source_commit": "5a5e1dc03dbc124ab9b2def8e91812206dfde374",
+  "suite": "runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r28",
+  "started_at": "2026-07-28T19:30:22.132862+00:00",
+  "stopped_at": "2026-07-28T19:50:13.015606+00:00",
+  "elapsed_seconds": 1190.8910000000033,
+  "stopped_early": true,
+  "stop_reason": "model_output_invalid_after_one_bounded_repair",
+  "result_count": 4,
+  "success_count": 3,
+  "formal_continuation_authorized": false,
+  "completed_cells": [
+    {
+      "sequence": 1,
+      "variant": "B3",
+      "task": "ContactsAddContact",
+      "evaluator_reward": 1.0,
+      "success": true,
+      "executed_steps": 10,
+      "model_calls": 15,
+      "semantic_progress_audit_passed": true
+    },
+    {
+      "sequence": 2,
+      "variant": "M0",
+      "task": "SimpleCalendarEventsOnDate",
+      "evaluator_reward": 1.0,
+      "success": true,
+      "executed_steps": 3,
+      "model_calls": 5,
+      "semantic_progress_audit_passed": true
+    },
+    {
+      "sequence": 3,
+      "variant": "B3",
+      "task": "ExpenseAddSingle",
+      "evaluator_reward": 1.0,
+      "success": true,
+      "executed_steps": 11,
+      "model_calls": 15,
+      "semantic_progress_audit_passed": true
+    }
+  ],
+  "stopped_cell": {
+    "sequence": 4,
+    "variant": "M0",
+    "task": "FilesMoveFile",
+    "goal": "Move the file nature_sounds.mp3 from Music within the sdk_gphone_x86_64 storage area to the Ringtones within the same sdk_gphone_x86_64 storage area in the Android filesystem.",
+    "evaluator_reward": 0.0,
+    "success": false,
+    "executed_steps": 11,
+    "model_calls": 20,
+    "failure_code": "MODEL_OUTPUT_INVALID_AFTER_REPAIR",
+    "termination_reason": "model_output_invalid_after_repair",
+    "semantic_progress_audit_passed": false,
+    "validation_block_count": 3,
+    "executed_blocked_action_steps": [],
+    "unresolved_guard_repair": true
+  },
+  "failure_evidence": {
+    "episode": "runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r28/episodes/04_M0_FilesMoveFile_seed20260729",
+    "screenshot": "step_011_before.png",
+    "screenshot_sha256": "62c6a1cb790eebc441f67be59ac66fc6324f003ff9f806a5965ad12ba723bd60",
+    "visible_state": {
+      "destination_picker_active": true,
+      "current_directory": "Downloads",
+      "requested_destination": "Ringtones",
+      "empty_directory_marker": "No items",
+      "bottom_controls": [
+        "CANCEL",
+        "MOVE"
+      ],
+      "top_left_navigation_drawer_visible": true
+    },
+    "initial_candidate": {
+      "action_type": "tap",
+      "target": "MOVE",
+      "blocked": true,
+      "error": "Action critic rejected commit",
+      "critic_verdict": "reobserve",
+      "critic_issue": "The current destination folder is not visibly confirmed as Ringtones; the screen shows Downloads with No items.",
+      "critic_recommended_constraint": "reobserve while confirming the destination folder is Ringtones and not Downloads"
+    },
+    "bounded_repair_candidate": {
+      "action_type": "press_back",
+      "blocked": true,
+      "error": "DESTINATION_PICKER_GUARD",
+      "risk": "Would exit the active destination picker and discard the pending move operation."
+    },
+    "wrong_similar_file_long_press_executed": false,
+    "incorrect_destination_commit_executed": false,
+    "blocked_action_executed": false,
+    "destination_picker_commit_count": 0
+  },
+  "audit": {
+    "infrastructure_failure_count": 0,
+    "startup_environment_clean": true,
+    "model_healthy": true,
+    "executed_blocked_action_count": 0,
+    "evaluator_data_exposed_to_model": false,
+    "result_dependent_tuning": false,
+    "automatic_gate_f_transition": false,
+    "formal_stop_enforced": true
+  },
+  "root_cause": {
+    "summary": "A critic-rejected destination commit was routed through the generic format-only bounded-repair prompt instead of a destination-picker renavigation contract.",
+    "details": [
+      "The exact-target guard correctly prevented long-pressing the similarly named nature_sounds_SvQQ.mp3 and the later search selected nature_sounds.mp3.",
+      "The consequential-action critic correctly rejected MOVE because the visible current directory was Downloads rather than the task destination Ringtones.",
+      "The rejection string did not carry a recognized semantic repair prefix or a destination-picker renavigation marker.",
+      "The sole repair therefore proposed press_back, and the destination-picker guard correctly rejected it without executing either unsafe action."
+    ],
+    "algorithm_or_model_failure": true,
+    "infrastructure_failure": false
+  },
+  "r29_required_change": {
+    "scope": "A consequential Copy/Move destination commit is rejected by the critic while an Android destination picker is visibly active.",
+    "mechanism": [
+      "Mark the initial validation error as a destination-picker renavigation requirement.",
+      "Constrain the one bounded repair to a tap on the visible top-left navigation drawer.",
+      "Validate that the repaired tap actually hits the enabled Show roots/navigation element before execution.",
+      "Preserve the later policy step for selecting Ringtones and a separate critic-adjudicated MOVE commit."
+    ],
+    "prohibited": [
+      "Committing to Downloads",
+      "Pressing back or canceling the pending operation",
+      "Injecting the Ringtones coordinate",
+      "Skipping the consequential-action critic",
+      "Adding a second repair call",
+      "Changing task instances, seed, budgets, evaluator, or acceptance thresholds"
+    ]
+  }
+}
