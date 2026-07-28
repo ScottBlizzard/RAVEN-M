@@ -1,0 +1,53 @@
+{
+  "schema_version": "protocol_v2_2_r17_gate_d_freeze.v1",
+  "checked_at": "2026-07-28T13:47:41Z",
+  "passed": true,
+  "protocol": "androidworld_protocol_v2_2_exploratory",
+  "source_tag": "protocol-v2-2-gate-e-r17-dev",
+  "source_commit": "378bdd736867e02839eb96b2bc3027621c2d5958",
+  "freeze_file_count": 27,
+  "verification": {
+    "full_pytest": {
+      "passed": true,
+      "test_count": 233
+    },
+    "protocol_v1_seal": {
+      "passed": true,
+      "file_count": 197,
+      "failure_count": 0
+    },
+    "r16_diagnostic_preserved": {
+      "passed": true,
+      "report": "reports/protocol_v2_2_r16_diagnostic.json",
+      "result_count": 1
+    },
+    "text_target_binding_guard": {
+      "passed": true,
+      "active_input_signals_preserved": true,
+      "editable_coordinate_binding_added": true,
+      "coordinate_free_inactive_text_blocked": true,
+      "bbox_exposed": false,
+      "coordinate_action_silently_rewritten": false,
+      "same_bounded_repair_budget": true
+    }
+  },
+  "r17_changes": [
+    "bind inactive-input coordinate type_text to a visible enabled editable accessibility element",
+    "validation-block coordinate-free type_text when no active-input evidence exists",
+    "repair an unbound text action with a non-type_text reversible input-activation action",
+    "record only editable counts and a matched boolean without exposing a bbox or coordinate"
+  ],
+  "preserved_controls": {
+    "same_task_schedule_as_r16": true,
+    "same_instance_and_order_seeds_as_r16": true,
+    "same_step_and_model_budgets_as_r16": true,
+    "same_prompt_files_and_schemas_as_r16": true,
+    "adapter_execution_unchanged": true,
+    "no_deterministic_action_rewrite": true,
+    "no_target_coordinate_injection": true,
+    "no_silent_action_retargeting": true,
+    "one_bounded_repair_unchanged": true,
+    "no_evaluator_state_in_model_inputs": true,
+    "r16_development_evidence_immutable": true
+  }
+}
