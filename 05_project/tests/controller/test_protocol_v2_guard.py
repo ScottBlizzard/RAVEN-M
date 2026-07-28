@@ -12,6 +12,7 @@ from raven_m.controller.protocol_v2_guard import (
     destination_picker_empty_stall_assessment,
     destination_picker_navigation_drawer_action,
     exact_selection_long_press_assessment,
+    files_roots_drawer_action_assessment,
     focused_editable_input_assessment,
     post_destination_transfer_command_action,
     semantic_ui_snapshot,
@@ -1545,6 +1546,108 @@ def test_destination_picker_guard_blocks_empty_unbound_tap() -> None:
     assert (
         guard.audit_record()["destination_picker_empty_stall_block_count"]
         == 1
+    )
+
+
+def files_roots_drawer_elements() -> list[dict]:
+    labels = [
+        "Recent",
+        "Images",
+        "Videos",
+        "Audio",
+        "Documents",
+        "Downloads",
+        "sdk_gphone64_x86_64",
+    ]
+    return [
+        {
+            "text": label,
+            "is_visible": True,
+            "is_enabled": True,
+            "bbox": {
+                "x_min": 0.02,
+                "x_max": 0.58,
+                "y_min": 0.12 + index * 0.10,
+                "y_max": 0.20 + index * 0.10,
+            },
+        }
+        for index, label in enumerate(labels)
+    ]
+
+
+def test_files_roots_drawer_assessment_requires_visible_row_hit() -> None:
+    elements = files_roots_drawer_elements()
+    unbound = files_roots_drawer_action_assessment(
+        elements,
+        {"type": "tap", "x": 0.08, "y": 0.08},
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert unbound == {
+        "schema_version": "files_roots_drawer_action_assessment.v1",
+        "adjudicable": True,
+        "action_type": "tap",
+        "drawer_active": True,
+        "matched_root_control_count": 0,
+        "standard_root_label_count": 6,
+        "usable_root_control_count": 7,
+        "usable_storage_row_visible": True,
+        "visible_storage_root_count": 1,
+        "progress_action_required": True,
+    }
+    assert not any(
+        key in unbound
+        for key in ("text", "label", "bbox", "coordinate", "target")
+    )
+
+    swipe = files_roots_drawer_action_assessment(
+        elements,
+        {
+            "type": "swipe",
+            "x": 0.5,
+            "y": 0.8,
+            "x2": 0.5,
+            "y2": 0.2,
+            "duration_ms": 500,
+        },
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert swipe["progress_action_required"]
+
+    root_tap = files_roots_drawer_action_assessment(
+        elements,
+        {"type": "tap", "x": 0.30, "y": 0.76},
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert root_tap["matched_root_control_count"] == 1
+    assert not root_tap["progress_action_required"]
+
+
+def test_files_roots_drawer_guard_blocks_unbound_navigation() -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(goal="Move a file")
+    action = {"type": "tap", "x": 0.08, "y": 0.08}
+    assessment = files_roots_drawer_action_assessment(
+        files_roots_drawer_elements(),
+        action,
+        screen_width=1080,
+        screen_height=2400,
+    )
+    with pytest.raises(
+        ActionValidationError,
+        match="FILES_ROOTS_DRAWER_SELECTION_REQUIRED",
+    ):
+        guard.validate_decision(
+            decision(action),
+            page_sha256="open-roots-drawer",
+            files_roots_drawer_action_assessment=assessment,
+        )
+    audit = guard.audit_record()
+    assert audit["files_roots_drawer_block_count"] == 1
+    assert audit["validation_blocks"][-1]["reason"] == (
+        "files_roots_drawer_progress_action_required"
     )
 
 

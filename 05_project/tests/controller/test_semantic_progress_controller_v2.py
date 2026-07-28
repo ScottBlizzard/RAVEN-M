@@ -153,6 +153,53 @@ class EmptyPickerUnboundTapThenDrawerClient(
         )
 
 
+class OpenRootsDrawerUnboundThenRowClient:
+    def __init__(self, *, valid_repair: bool = True) -> None:
+        self.valid_repair = valid_repair
+        self.requests: list[dict] = []
+
+    def generate(self, **kwargs) -> ModelCall:
+        self.requests.append(kwargs)
+        repair = kwargs["call_label"].endswith("_repair")
+        action = (
+            (
+                {"type": "tap", "x": 0.30, "y": 0.76}
+                if self.valid_repair
+                else {"type": "swipe", "x": 0.5, "y": 0.8,
+                      "x2": 0.5, "y2": 0.2, "duration_ms": 500}
+            )
+            if repair
+            else {"type": "tap", "x": 0.08, "y": 0.08}
+        )
+        decision = {
+            "status": "continue",
+            "action": action,
+            "expected_outcome": "The requested storage root opens.",
+            "decision_summary": "Navigate through the visible roots drawer.",
+            "state_delta": [],
+            "memory_citations": [],
+            "completion_evidence": [],
+        }
+        label = kwargs["call_label"]
+        return ModelCall(
+            call_id=label,
+            episode_id=kwargs["episode_id"],
+            idempotency_key=label,
+            image_sha256="0" * 64,
+            image_sha256s=("0" * 64,),
+            prompt_sha256=label,
+            request_sha256=label,
+            response_sha256=label,
+            content=json.dumps(decision),
+            usage={
+                "prompt_tokens": 1,
+                "completion_tokens": 1,
+                "total_tokens": 2,
+            },
+            raven_meta={},
+        )
+
+
 class CriticRejectedCommitThenDrawerClient:
     def __init__(self, *, valid_repair: bool = True) -> None:
         self.valid_repair = valid_repair
@@ -700,6 +747,38 @@ class EmptyDestinationPickerEnv(DestinationPickerEnv):
             ]
         )
         return state
+
+
+class OpenFilesRootsDrawerEnv(DestinationPickerEnv):
+    def get_state(self, wait_to_stabilize: bool):
+        assert wait_to_stabilize
+        labels = [
+            "Recent",
+            "Images",
+            "Videos",
+            "Audio",
+            "Documents",
+            "Downloads",
+            "sdk_gphone64_x86_64",
+        ]
+        return SimpleNamespace(
+            pixels=np.zeros((100, 100, 3), dtype=np.uint8),
+            ui_elements=[
+                SimpleNamespace(
+                    package_name="files",
+                    text=label,
+                    is_visible=True,
+                    is_enabled=True,
+                    bbox=SimpleNamespace(
+                        x_min=0.02,
+                        x_max=0.58,
+                        y_min=0.12 + index * 0.10,
+                        y_max=0.20 + index * 0.10,
+                    ),
+                )
+                for index, label in enumerate(labels)
+            ],
+        )
 
 
 class CriticRejectedDestinationPickerEnv(DestinationPickerEnv):
@@ -1550,6 +1629,86 @@ def test_controller_repairs_empty_picker_unbound_title_tap(
     ]
     assert assessment["control_bound_tap"] is False
     assert assessment["unsupported_tap"]
+
+
+def test_controller_repairs_open_roots_drawer_to_visible_row(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = OpenFilesRootsDrawerEnv()
+    client = OpenRootsDrawerUnboundThenRowClient()
+    controller = EpisodeController(
+        client=client,  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=1,
+        max_model_calls=2,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="open-roots-drawer-repair-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="B3",
+    )
+    assert env.execute_count == 1
+    assert summary["model_call_count"] == 2
+    assert summary["steps"][0]["decision"]["action"] == {
+        "type": "tap",
+        "x": 0.30,
+        "y": 0.76,
+    }
+    assert "FILES_ROOTS_DRAWER_SELECTION_REQUIRED" in summary[
+        "steps"
+    ][0]["parse"]["initial_validation_error"]
+    assert summary["protocol_v2_guard"][
+        "files_roots_drawer_block_count"
+    ] == 1
+    repair_prompt = client.requests[1]["user_prompt"]
+    assert "roots drawer is already open" in repair_prompt
+    assert "visible enabled drawer row" in repair_prompt
+    assert "No coordinate is supplied" in repair_prompt
+
+
+def test_controller_rejects_invalid_roots_drawer_repair(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = OpenFilesRootsDrawerEnv()
+    client = OpenRootsDrawerUnboundThenRowClient(valid_repair=False)
+    controller = EpisodeController(
+        client=client,  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=1,
+        max_model_calls=2,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="open-roots-drawer-invalid-repair-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="B3",
+    )
+    assert env.execute_count == 0
+    assert summary["termination_reason"] == (
+        "model_output_invalid_after_repair"
+    )
+    error = summary["model_output_error"]
+    assert "FILES_ROOTS_DRAWER_SELECTION_REQUIRED" in (
+        error["initial_validation_error"]
+    )
+    assert "REPAIR_CONTRACT_GUARD" in error["repair_validation_error"]
 
 
 def test_controller_repairs_critic_rejected_picker_commit_to_roots(

@@ -766,6 +766,105 @@ def destination_picker_navigation_drawer_action(
     return False
 
 
+def files_roots_drawer_action_assessment(
+    ui_elements: Any,
+    action: dict[str, Any] | None,
+    *,
+    screen_width: int,
+    screen_height: int,
+) -> dict[str, Any]:
+    """Detect whether an action uses a visible Android Files roots row."""
+    standard_labels = {
+        "recent",
+        "images",
+        "videos",
+        "audio",
+        "documents",
+        "downloads",
+    }
+    storage_label_re = re.compile(
+        r"(?:sdk[_\s-]*gphone|internal\s+storage|"
+        r"phone\s+storage|device\s+storage)",
+        flags=re.IGNORECASE,
+    )
+    observed_standard_labels: set[str] = set()
+    root_controls: list[Any] = []
+    storage_root_count = 0
+    for element in ui_elements or ():
+        if _element_value(element, "is_visible") is False:
+            continue
+        if _element_value(element, "is_enabled") is False:
+            continue
+        labels = {
+            text.casefold()
+            for field in (
+                "text",
+                "content_description",
+                "hint_text",
+                "tooltip",
+            )
+            if (text := _normalized_text(_element_value(element, field)))
+        }
+        standard_matches = labels.intersection(standard_labels)
+        storage_match = any(storage_label_re.search(text) for text in labels)
+        if not standard_matches and not storage_match:
+            continue
+        bbox = _normalized_element_bbox(
+            element,
+            screen_width=screen_width,
+            screen_height=screen_height,
+        )
+        if bbox is None:
+            continue
+        nx_min, nx_max, _, _ = bbox
+        if nx_min > 0.65 or nx_max > 0.75:
+            continue
+        observed_standard_labels.update(standard_matches)
+        root_controls.append(element)
+        if storage_match:
+            storage_root_count += 1
+    drawer_active = (
+        len(observed_standard_labels) >= 3
+        and len(root_controls) >= 4
+    )
+    action_type = (
+        action.get("type") if isinstance(action, dict) else None
+    )
+    matched_root_control_count = 0
+    if action_type == "tap":
+        matched_root_control_count = sum(
+            1
+            for element in root_controls
+            if _tap_hits_element(
+                action,
+                element,
+                screen_width=screen_width,
+                screen_height=screen_height,
+            )
+        )
+    usable_storage_row_visible = storage_root_count > 0
+    progress_action_required = bool(
+        drawer_active
+        and usable_storage_row_visible
+        and (
+            action_type != "tap"
+            or matched_root_control_count == 0
+        )
+    )
+    return {
+        "schema_version": "files_roots_drawer_action_assessment.v1",
+        "adjudicable": drawer_active,
+        "action_type": action_type,
+        "drawer_active": drawer_active,
+        "matched_root_control_count": matched_root_control_count,
+        "standard_root_label_count": len(observed_standard_labels),
+        "usable_root_control_count": len(root_controls),
+        "usable_storage_row_visible": usable_storage_row_visible,
+        "visible_storage_root_count": storage_root_count,
+        "progress_action_required": progress_action_required,
+    }
+
+
 def post_destination_transfer_command_action(
     ui_elements: Any,
     action: dict[str, Any] | None,
@@ -1035,6 +1134,7 @@ class ProtocolV2DecisionGuard:
         self.identical_coordinate_block_count = 0
         self.destination_picker_back_block_count = 0
         self.destination_picker_empty_stall_block_count = 0
+        self.files_roots_drawer_block_count = 0
         self.destination_picker_commit_count = 0
         self.post_destination_commit_block_count = 0
         self.post_destination_commit_active = False
@@ -1156,6 +1256,9 @@ class ProtocolV2DecisionGuard:
         destination_picker_empty_stall_assessment: (
             dict[str, Any] | None
         ) = None,
+        files_roots_drawer_action_assessment: (
+            dict[str, Any] | None
+        ) = None,
         post_destination_transfer_command_is_action: bool = False,
         exact_selection_assessment: dict[str, Any] | None = None,
         focused_input_assessment: dict[str, Any] | None = None,
@@ -1181,6 +1284,45 @@ class ProtocolV2DecisionGuard:
             soft_keyboard_swipe_assessment or {}
         )
         field_role_assessment = task_literal_field_role_assessment or {}
+        roots_drawer_assessment = (
+            files_roots_drawer_action_assessment or {}
+        )
+        if (
+            roots_drawer_assessment.get("adjudicable") is True
+            and roots_drawer_assessment.get("drawer_active") is True
+            and roots_drawer_assessment.get(
+                "usable_storage_row_visible"
+            )
+            is True
+            and roots_drawer_assessment.get(
+                "progress_action_required"
+            )
+            is True
+        ):
+            record = {
+                "semantic_state_sha256": page_sha256,
+                "action": action,
+                "reason": "files_roots_drawer_progress_action_required",
+                "files_roots_drawer_action_assessment": (
+                    roots_drawer_assessment
+                ),
+                "required_recovery_classes": [
+                    "change_target",
+                    "inspect_different_visible_control",
+                ],
+            }
+            self.validation_blocks.append(record)
+            self.files_roots_drawer_block_count += 1
+            raise ActionValidationError(
+                "FILES_ROOTS_DRAWER_GUARD: "
+                "FILES_ROOTS_DRAWER_SELECTION_REQUIRED: the Android Files "
+                "roots drawer is already open and a usable storage row is "
+                "visible. Waiting, swiping, pressing back, or tapping an "
+                "unbound title/menu area cannot select a root. Tap one "
+                "visible enabled drawer row that advances toward the TASK "
+                "storage or category. Do not reopen or scroll the drawer, "
+                "and do not guess outside a visible row."
+            )
         if (
             field_role_assessment.get("adjudicable") is True
             and field_role_assessment.get("matched") is not True
@@ -1687,6 +1829,9 @@ class ProtocolV2DecisionGuard:
             ),
             "destination_picker_empty_stall_block_count": (
                 self.destination_picker_empty_stall_block_count
+            ),
+            "files_roots_drawer_block_count": (
+                self.files_roots_drawer_block_count
             ),
             "destination_picker_commit_count": (
                 self.destination_picker_commit_count

@@ -508,3 +508,25 @@ current-destination binding, while `No items` and the empty-folder
 illustration are not loading evidence. The real commit still receives a fresh
 same-turn Critic verdict; no coordinate, target decision, evaluator state,
 extra repair, task, seed, budget, or acceptance change is introduced.
+
+## r32 open-roots-drawer progress binding
+
+The r31 Files diagnostic was protocol-valid: its exact-target, text-focus,
+destination-back, bounded-repair, and semantic-progress audits all passed.
+However, it exhausted all 20 steps with native reward 0. After the destination
+roots drawer opened, the screen already showed the usable
+`sdk_gphone64_x86_64` row. The model nevertheless tapped the drawer title area
+twice and swiped the already complete list twice. These actions produced no
+semantic progress and consumed the steps needed to enter storage, choose
+Ringtones, and commit Move. No blocked action or incorrect commit executed.
+
+r32 detects the open Android Files roots drawer from the co-occurrence of
+standard visible root/category rows and their accessibility bounds. When a
+usable storage row is already visible, wait, swipe, back, non-tap actions, and
+taps that hit no visible enabled drawer row are rejected before execution.
+The sole bounded repair must be a tap that passes an accessibility hit test
+against a visible enabled row selected by the model from the unchanged
+screenshot and task. The assessment exposes only booleans and counts, not row
+text, bounds, or coordinates. It does not inject the storage choice, increase
+the 20-step budget, add a repair, or change the task, seed, model, evaluator,
+schedule, or acceptance threshold.

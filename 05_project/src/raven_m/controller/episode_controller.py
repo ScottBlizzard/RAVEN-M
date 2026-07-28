@@ -25,6 +25,7 @@ from raven_m.controller.protocol_v2_guard import (
     destination_picker_empty_stall_assessment,
     destination_picker_navigation_drawer_action,
     exact_selection_long_press_assessment,
+    files_roots_drawer_action_assessment,
     focused_editable_input_assessment,
     post_destination_transfer_command_action,
     semantic_ui_snapshot,
@@ -510,6 +511,7 @@ class EpisodeController:
             "FIELD_VALUE_BINDING_GUARD:",
             "POST_DESTINATION_COMMIT_GUARD:",
             "DESTINATION_PICKER_GUARD:",
+            "FILES_ROOTS_DRAWER_GUARD:",
             "SOFT_KEYBOARD_SWIPE_GUARD:",
             "LOOP_GUARD:",
             "CRITIC_CONSTRAINT:",
@@ -541,6 +543,9 @@ class EpisodeController:
         )
         destination_picker_renavigation_required = (
             "DESTINATION_PICKER_RENAVIGATION_REQUIRED:" in error
+        )
+        files_roots_drawer_selection_required = (
+            "FILES_ROOTS_DRAWER_SELECTION_REQUIRED:" in error
         )
         post_destination_commit_rejected = error.startswith(
             "POST_DESTINATION_COMMIT_GUARD:"
@@ -582,6 +587,18 @@ class EpisodeController:
                 "wait, swipe, type, or guess a content-area coordinate. The "
                 "next policy step may choose the requested destination after "
                 "observing the roots drawer.\n"
+            )
+        elif files_roots_drawer_selection_required:
+            repair_directive = (
+                "\n\nThe Android Files roots drawer is already open and "
+                "contains visible enabled category/storage rows. For this "
+                "one repair, return status=continue and action.type=tap, "
+                "targeting one visible enabled drawer row that advances "
+                "toward the TASK storage or category. Do not tap the title "
+                "or menu area, wait, swipe, press_back, type, close/reopen "
+                "the drawer, or guess outside a visible row. No coordinate "
+                "is supplied; bind the tap only from this unchanged "
+                "screenshot.\n"
             )
         elif empty_picker_stall_required:
             repair_directive = (
@@ -861,6 +878,32 @@ class EpisodeController:
                 )
             if (
                 repair_contract_error
+                and "FILES_ROOTS_DRAWER_SELECTION_REQUIRED:"
+                in repair_contract_error
+            ):
+                roots_repair_assessment = (
+                    files_roots_drawer_action_assessment(
+                        ui_elements,
+                        parsed_candidate.decision.get("action"),
+                        screen_width=screen_width,
+                        screen_height=screen_height,
+                    )
+                )
+                if (
+                    roots_repair_assessment.get("adjudicable") is not True
+                    or roots_repair_assessment.get(
+                        "matched_root_control_count"
+                    )
+                    < 1
+                ):
+                    raise ActionValidationError(
+                        "REPAIR_CONTRACT_GUARD: "
+                        "FILES_ROOTS_DRAWER_SELECTION_REQUIRED permits only "
+                        "one tap that hits a visible enabled Android Files "
+                        "roots-drawer row on this unchanged screenshot."
+                    )
+            if (
+                repair_contract_error
                 and repair_contract_error.startswith(
                     "POST_DESTINATION_COMMIT_GUARD:"
                 )
@@ -883,6 +926,14 @@ class EpisodeController:
                 )
                 empty_picker_stall_assessment = (
                     destination_picker_empty_stall_assessment(
+                        ui_elements,
+                        parsed_candidate.decision.get("action"),
+                        screen_width=screen_width,
+                        screen_height=screen_height,
+                    )
+                )
+                roots_drawer_action_assessment = (
+                    files_roots_drawer_action_assessment(
                         ui_elements,
                         parsed_candidate.decision.get("action"),
                         screen_width=screen_width,
@@ -1068,6 +1119,9 @@ class EpisodeController:
                     ),
                     destination_picker_empty_stall_assessment=(
                         empty_picker_stall_assessment
+                    ),
+                    files_roots_drawer_action_assessment=(
+                        roots_drawer_action_assessment
                     ),
                     post_destination_transfer_command_is_action=(
                         transfer_command_is_action
