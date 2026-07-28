@@ -1,0 +1,81 @@
+{
+  "schema_version": "protocol_v2_2_r27_formal_stop.v1",
+  "checked_at": "2026-07-28T19:18:00Z",
+  "source_tag": "protocol-v2-2-gate-e-r27-dev",
+  "source_commit": "7ec5be76dabca520ffd849ff365c8f7687bbfc0e",
+  "suite": "runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r27",
+  "stopped_early": true,
+  "stop_reason": "model_output_invalid_after_one_bounded_repair",
+  "result_count": 1,
+  "success_count": 0,
+  "formal_continuation_authorized": false,
+  "cell": {
+    "sequence": 1,
+    "variant": "B3",
+    "task": "ContactsAddContact",
+    "evaluator_reward": 0.0,
+    "success": false,
+    "executed_steps": 5,
+    "model_calls": 9,
+    "failure_code": "MODEL_OUTPUT_INVALID_AFTER_REPAIR",
+    "semantic_progress_audit_passed": false,
+    "validation_block_count": 3,
+    "executed_blocked_action_steps": [],
+    "unresolved_guard_repair": true
+  },
+  "failure_evidence": {
+    "episode": "runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r27/episodes/01_B3_ContactsAddContact_seed20260729",
+    "screenshot": "step_005_before.png",
+    "screenshot_sha256": "8a9267fc29a645e5efd9152cbc3180fa0dd69b588a920199ee615a4a9fedf03f",
+    "task_values_already_entered": [
+      "Sofija",
+      "Martin"
+    ],
+    "soft_keyboard_visible": true,
+    "initial_candidate": {
+      "action_type": "type_text",
+      "text": "Tech Solutions",
+      "text_origin": "task_literal",
+      "target_role": "company",
+      "blocked": true,
+      "error": "DECLARED_TEXT_SOURCE_GUARD"
+    },
+    "bounded_repair_candidate": {
+      "action_type": "swipe",
+      "start": [
+        0.5,
+        0.75
+      ],
+      "end": [
+        0.5,
+        0.3
+      ],
+      "blocked": true,
+      "error": "SOFT_KEYBOARD_SWIPE_GUARD: SOFT_KEYBOARD_DISMISS_REQUIRED"
+    },
+    "blocked_action_executed": false,
+    "contact_commit_executed": false,
+    "contacts_provider_after_teardown": "No result found."
+  },
+  "audit": {
+    "infrastructure_failure_count": 0,
+    "executed_blocked_action_count": 0,
+    "evaluator_data_exposed_to_model": false,
+    "result_dependent_tuning": false,
+    "automatic_gate_f_transition": false,
+    "formal_stop_enforced": true
+  },
+  "root_cause": "declared_source_repair_did_not_inherit_visible_soft_keyboard_containment",
+  "interpretation": "The source guard correctly rejected an invented optional Company value, but its one-repair prompt did not carry the already observed soft-keyboard state. The model therefore chose a swipe whose start point lay inside the keyboard, and the later keyboard guard correctly rejected it without a second repair.",
+  "r28_required_change": {
+    "scope": "declared-source mismatch while a soft keyboard is visibly present",
+    "mechanism": "propagate a count-only keyboard-present marker into the existing source assessment and require the existing one-repair contract to press_back once",
+    "prohibited": [
+      "authorizing the invented text",
+      "rewriting the requested task value",
+      "injecting a field coordinate",
+      "adding a second repair call",
+      "changing evaluator, task, seed, or budgets"
+    ]
+  }
+}
