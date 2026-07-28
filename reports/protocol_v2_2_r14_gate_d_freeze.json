@@ -1,0 +1,49 @@
+{
+  "schema_version": "protocol_v2_2_r14_gate_d_freeze.v1",
+  "checked_at": "2026-07-28T12:36:02Z",
+  "passed": true,
+  "protocol": "androidworld_protocol_v2_2_exploratory",
+  "source_tag": "protocol-v2-2-gate-e-r14-dev",
+  "source_commit": "8edeea76316b9b5f3253ce00496568b4335b9e92",
+  "freeze_file_count": 27,
+  "verification": {
+    "full_pytest": {
+      "passed": true,
+      "test_count": 215
+    },
+    "protocol_v1_seal": {
+      "passed": true,
+      "file_count": 197,
+      "failure_count": 0
+    },
+    "r13_diagnostic_preserved": {
+      "passed": true,
+      "report": "reports/protocol_v2_2_r13_diagnostic.json",
+      "result_count": 1
+    },
+    "focused_text_input_contract": {
+      "passed": true,
+      "coordinate_click_semantics_documented": true,
+      "focused_empty_field_omits_coordinates": true,
+      "focused_empty_field_clear_text": false
+    }
+  },
+  "r14_changes": [
+    "state that AndroidWorld clicks supplied x,y before type_text",
+    "require coordinate-free type_text when an empty field visibly has a caret",
+    "require clear_text=false for that already-empty focused field"
+  ],
+  "preserved_controls": {
+    "same_task_schedule_as_r13": true,
+    "same_instance_and_order_seeds_as_r13": true,
+    "same_step_and_model_budgets_as_r13": true,
+    "same_prompt_files_and_schemas_as_r13": true,
+    "adapter_execution_unchanged": true,
+    "no_deterministic_action_rewrite": true,
+    "no_target_coordinate_injection": true,
+    "no_silent_action_retargeting": true,
+    "one_bounded_repair_unchanged": true,
+    "no_evaluator_state_in_model_inputs": true,
+    "r13_development_evidence_immutable": true
+  }
+}
