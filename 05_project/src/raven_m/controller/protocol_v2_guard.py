@@ -841,6 +841,7 @@ class ProtocolV2DecisionGuard:
         self.post_destination_commit_active = False
         self.exact_target_long_press_block_count = 0
         self.focused_input_block_count = 0
+        self.unfocused_clear_text_block_count = 0
         self.coordinate_text_target_block_count = 0
         self.declared_text_source_block_count = 0
         self.task_literal_field_role_block_count = 0
@@ -993,6 +994,35 @@ class ProtocolV2DecisionGuard:
             "input_ready",
             focused_assessment.get("present") is True,
         )
+        if (
+            coordinate_targets_editable
+            and input_ready is not True
+            and action.get("clear_text") is True
+        ):
+            record = {
+                "semantic_state_sha256": page_sha256,
+                "action": action,
+                "reason": "unfocused_clear_text_race_blocked",
+                "focused_input_assessment": focused_assessment,
+                "coordinate_text_target_assessment": (
+                    text_target_assessment
+                ),
+                "required_recovery_classes": [
+                    "activate_visible_input",
+                    "observe_input_ready",
+                ],
+            }
+            self.validation_blocks.append(record)
+            self.unfocused_clear_text_block_count += 1
+            raise ActionValidationError(
+                "UNFOCUSED_CLEAR_TEXT_GUARD: the proposed coordinate hits a "
+                "visible editable control, but text input is not yet active. "
+                "AndroidWorld clicks x,y immediately before sending Ctrl+A "
+                "for clear_text=true; focus activation can race and send "
+                "Ctrl+A to the surrounding UI. Do not type on this screen. "
+                "First tap the same visible input control, observe the next "
+                "screen, and type only after input is visibly active."
+            )
         if input_ready is True and (
             (
                 coordinate_bearing_type_text
@@ -1327,6 +1357,9 @@ class ProtocolV2DecisionGuard:
                 self.exact_target_long_press_block_count
             ),
             "focused_input_block_count": self.focused_input_block_count,
+            "unfocused_clear_text_block_count": (
+                self.unfocused_clear_text_block_count
+            ),
             "coordinate_text_target_block_count": (
                 self.coordinate_text_target_block_count
             ),

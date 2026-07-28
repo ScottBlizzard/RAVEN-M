@@ -296,3 +296,23 @@ requested value in its matching field now; otherwise choose one non-commit
 action and do not repeat navigation that produced no semantic progress. The
 controller does not inject a field coordinate, rewrite an action, add model
 calls, change the twelve-step budget, or use evaluator state.
+
+## r22 inactive-input clear race
+
+The r21 Contacts diagnostic passed natively and semantically: reward was 1.0,
+only the requested name and phone rows existed in the contacts provider, and
+there was no organization row. The focused Files diagnostic then exposed a
+different boundary condition. Search had opened asynchronously and exposed a
+visible editable control, but neither a focused editable nor the soft keyboard
+yet proved input readiness. A coordinate-bearing `type_text` correctly matched
+that control, yet `clear_text=true` made AndroidWorld click and immediately
+send Ctrl+A. Focus activation raced with that key chord, and DocumentsUI
+selected all fourteen surrounding items. The run was stopped before any file
+operation commit.
+
+r22 rejects this specific combination before execution: input is not visibly
+active, the coordinate matches an editable, and `clear_text=true`. Its single
+bounded repair must be a reversible tap on the same visibly supported input;
+typing occurs only on a later observed screen after a focused editable or soft
+keyboard proves readiness. Existing keyboard-active field switching remains
+valid, and no coordinate, focus state, or task action is injected.

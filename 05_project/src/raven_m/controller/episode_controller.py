@@ -473,6 +473,7 @@ class EpisodeController:
         semantic_action_error_prefixes = (
             "EXACT_TARGET_GUARD:",
             "FOCUSED_INPUT_GUARD:",
+            "UNFOCUSED_CLEAR_TEXT_GUARD:",
             "TEXT_TARGET_GUARD:",
             "DECLARED_TEXT_SOURCE_GUARD:",
             "FIELD_VALUE_BINDING_GUARD:",
@@ -487,6 +488,9 @@ class EpisodeController:
         )
         exact_target_rejected = error.startswith("EXACT_TARGET_GUARD:")
         focused_input_rejected = error.startswith("FOCUSED_INPUT_GUARD:")
+        unfocused_clear_text_rejected = error.startswith(
+            "UNFOCUSED_CLEAR_TEXT_GUARD:"
+        )
         text_target_rejected = error.startswith("TEXT_TARGET_GUARD:")
         declared_source_rejected = error.startswith(
             "DECLARED_TEXT_SOURCE_GUARD:"
@@ -525,6 +529,18 @@ class EpisodeController:
                 "and source_memory_ids. Remove x and y. If VALIDATION_ERROR "
                 "says the focused field is empty, set clear_text=false. Do not "
                 "tap, navigate, change the text, or add a coordinate.\n"
+            )
+        elif unfocused_clear_text_rejected:
+            repair_directive = (
+                "\n\nYour previous JSON was structurally valid and its "
+                "coordinate matched a visible editable control, but input "
+                "was not visibly active. For this one repair, action.type "
+                "must not be type_text. Tap that same visibly supported input "
+                "control without committing any task mutation, then observe "
+                "the resulting screen on a later policy step. Type only "
+                "after a focused editable or the soft keyboard is visible; "
+                "then omit x,y and use clear_text=false when the field is "
+                "empty. Do not send Ctrl+A to an unfocused screen.\n"
             )
         elif text_target_rejected:
             repair_directive = (

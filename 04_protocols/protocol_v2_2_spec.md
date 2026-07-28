@@ -94,6 +94,13 @@ memory authority, and Critic enforcement.
   bounded repair must first activate or reopen an input with a non-text
   reversible action and observe the next screen; no editable bbox or target
   coordinate is disclosed.
+- Even when that inactive-input coordinate matches a visible editable,
+  `clear_text=true` is rejected. AndroidWorld would click and immediately send
+  Ctrl+A, which can race focus activation and select surrounding UI content.
+  The bounded repair must first tap the same visibly supported input and
+  observe the next screen. After a focused editable or soft keyboard proves
+  readiness, a later empty-field edit omits coordinates and uses
+  `clear_text=false`. Keyboard-active explicit field switching is unchanged.
 - Text declared as `task_literal` must be a case-insensitive,
   whitespace-normalized substring of TASK. Text declared as `current_screen`
   must similarly match a visible accessibility text, content description,

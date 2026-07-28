@@ -627,11 +627,11 @@ def test_guard_blocks_coordinate_free_text_without_active_input() -> None:
         )
 
 
-def test_guard_allows_coordinate_text_bound_to_editable() -> None:
+def test_guard_allows_nonclearing_coordinate_text_bound_to_editable() -> None:
     guard = ProtocolV2DecisionGuard()
     guard.reset(goal="Enter a contact name")
     guard.validate_decision(
-        decision(text_action(x=0.5, y=0.2, clear_text=True)),
+        decision(text_action(x=0.5, y=0.2, clear_text=False)),
         page_sha256="contact-form",
         focused_input_assessment={
             "input_ready": False,
@@ -645,6 +645,38 @@ def test_guard_allows_coordinate_text_bound_to_editable() -> None:
             "boxed_editable_count": 3,
             "matched": True,
         },
+    )
+
+
+def test_guard_blocks_clearing_coordinate_text_until_input_is_active() -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(goal="Search for nature_sounds.mp3")
+    with pytest.raises(
+        ActionValidationError,
+        match="UNFOCUSED_CLEAR_TEXT_GUARD",
+    ) as caught:
+        guard.validate_decision(
+            decision(text_action(x=0.5, y=0.075, clear_text=True)),
+            page_sha256="search-open-without-keyboard",
+            focused_input_assessment={
+                "input_ready": False,
+                "present": False,
+                "soft_keyboard_present": False,
+            },
+            coordinate_text_target_assessment={
+                "schema_version": "coordinate_text_target_assessment.v1",
+                "adjudicable": True,
+                "coordinate_bearing": True,
+                "visible_editable_count": 1,
+                "boxed_editable_count": 1,
+                "matched": True,
+            },
+        )
+    assert "sending Ctrl+A" in str(caught.value)
+    audit = guard.audit_record()
+    assert audit["unfocused_clear_text_block_count"] == 1
+    assert audit["validation_blocks"][0]["reason"] == (
+        "unfocused_clear_text_race_blocked"
     )
 
 

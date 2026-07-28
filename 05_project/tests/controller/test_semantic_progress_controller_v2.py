@@ -578,6 +578,32 @@ class UnboundTextTargetEnv(DestinationPickerEnv):
         self.execute_count += 1
 
 
+class UnfocusedEditableSearchEnv(UnboundTextTargetEnv):
+    def get_state(self, wait_to_stabilize: bool):
+        assert wait_to_stabilize
+        return SimpleNamespace(
+            pixels=np.zeros((100, 100, 3), dtype=np.uint8),
+            ui_elements=[
+                SimpleNamespace(
+                    package_name="com.google.android.documentsui",
+                    text="",
+                    hint_text="Search",
+                    class_name="android.widget.EditText",
+                    is_visible=True,
+                    is_enabled=True,
+                    is_editable=True,
+                    is_focused=False,
+                    bbox=SimpleNamespace(
+                        x_min=0.20,
+                        x_max=0.90,
+                        y_min=0.05,
+                        y_max=0.10,
+                    ),
+                ),
+            ],
+        )
+
+
 class ContactFieldsEnv(DestinationPickerEnv):
     def get_state(self, wait_to_stabilize: bool):
         assert wait_to_stabilize
@@ -1189,6 +1215,51 @@ def test_controller_repairs_unbound_coordinate_type_to_input_activation(
     repair_prompt = client.requests[1]["user_prompt"]
     assert "action.type must not be type_text" in repair_prompt
     assert "activate or reopen a visible input control" in repair_prompt
+
+
+def test_controller_repairs_unfocused_clear_text_to_input_activation(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = UnfocusedEditableSearchEnv()
+    client = UnboundTextThenActivateInputClient()
+    controller = EpisodeController(
+        client=client,  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=1,
+        max_model_calls=2,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="unfocused-clear-text-repair-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="M0",
+    )
+    assert env.execute_count == 1
+    assert summary["model_call_count"] == 2
+    action = summary["steps"][0]["decision"]["action"]
+    assert action == {"type": "tap", "x": 0.82, "y": 0.075}
+    assert summary["steps"][0]["parse"]["model_repair_used"]
+    assert "UNFOCUSED_CLEAR_TEXT_GUARD" in summary["steps"][0]["parse"][
+        "initial_validation_error"
+    ]
+    audit = summary["protocol_v2_guard"]
+    assert audit["unfocused_clear_text_block_count"] == 1
+    block = audit["validation_blocks"][0]
+    assessment = block["coordinate_text_target_assessment"]
+    assert assessment["visible_editable_count"] == 1
+    assert assessment["matched"] is True
+    repair_prompt = client.requests[1]["user_prompt"]
+    assert "action.type must not be type_text" in repair_prompt
+    assert "Tap that same visibly supported input control" in repair_prompt
+    assert "Do not send Ctrl+A to an unfocused screen" in repair_prompt
 
 
 def test_controller_repairs_fabricated_task_literal_to_requested_value(
