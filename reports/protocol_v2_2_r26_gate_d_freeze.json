@@ -1,0 +1,56 @@
+{
+  "schema_version": "protocol_v2_2_r26_gate_d_freeze.v1",
+  "checked_at": "2026-07-28T19:05:00Z",
+  "passed": true,
+  "protocol": "androidworld_protocol_v2_2_exploratory",
+  "source_tag": "protocol-v2-2-gate-e-r26-dev",
+  "source_commit": "56270abc21a06a4eaf59102cd6b945af2fdc71fe",
+  "freeze_file_count": 27,
+  "verification": {
+    "full_pytest": {
+      "passed": true,
+      "test_count": 278
+    },
+    "protocol_v1_seal": {
+      "passed": true,
+      "file_count": 197,
+      "failure_count": 0
+    },
+    "r25_formal_stop_preserved": {
+      "passed": true,
+      "report": "reports/protocol_v2_2_r25_formal_stop.json",
+      "completed_cell_count": 2,
+      "wrong_answer_executed": false,
+      "formal_continuation_authorized": false
+    },
+    "visual_source_adjudication": {
+      "passed": true,
+      "terminal_answer_only": true,
+      "accessibility_miss_only": true,
+      "accept_path_tested": true,
+      "reject_and_repair_path_tested": true,
+      "candidate_rewrite_prohibited": true,
+      "type_text_authority_unchanged": true,
+      "evaluator_and_cross_episode_memory_unavailable": true
+    }
+  },
+  "r26_changes": [
+    "invoke one same-turn visual-source Critic only for an accessibility-missed current-screen terminal answer",
+    "accept only an unchanged exact candidate that is fully readable and visibly task-bound in the frozen screenshot",
+    "cache and audit the candidate verdict within the turn",
+    "on rejection require the existing bounded repair to open a detail or obtain a clearer view without answering"
+  ],
+  "preserved_controls": {
+    "same_task_schedule_as_r25": true,
+    "same_instance_and_order_seeds_as_r25": true,
+    "same_step_and_model_budgets_as_r25": true,
+    "same_prompt_file_paths_and_schemas_as_r25": true,
+    "adapter_execution_unchanged": true,
+    "no_deterministic_answer_rewrite": true,
+    "no_ocr_or_target_coordinate_injection": true,
+    "one_bounded_repair_unchanged": true,
+    "no_evaluator_state_in_model_inputs": true,
+    "no_cross_episode_memory_in_visual_source_critic": true,
+    "r25_formal_evidence_immutable": true
+  }
+}
