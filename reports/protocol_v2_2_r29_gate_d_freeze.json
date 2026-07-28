@@ -1,0 +1,47 @@
+{
+  "schema_version": "protocol_v2_2_gate_d_freeze.v1",
+  "checked_at": "2026-07-28T20:00:11Z",
+  "passed": true,
+  "source_tag": "protocol-v2-2-gate-e-r29-dev",
+  "source_commit": "60fa9f5f7147e8e54ac40e786baf729a7461d472",
+  "manifest": "05_project/configs/experiments/v2_2_capability_gate_r29.json",
+  "wrapper": "05_project/scripts/run_protocol_v2_2_gate_e_r29.py",
+  "source_tag_resolves_to_source_commit": true,
+  "tests": {
+    "protocol_v2_suite": {
+      "passed": true,
+      "test_count": 290
+    },
+    "protocol_v1_seal": {
+      "passed": true,
+      "file_count": 197,
+      "failure_count": 0,
+      "seal_sha256": "8b707052bbf3d22ff9643dc1fd4bc55d8f09461a00be9c13728e6eacdfa37ac9"
+    }
+  },
+  "freeze": {
+    "file_count": 27,
+    "failure_count": 0,
+    "source_files_changed_from_r28": [
+      {
+        "path": "05_project/src/raven_m/controller/episode_controller.py",
+        "sha256": "b7dddb67fb6dc7f8c28c8fb32a192b094c8dee6eff3a3bae44e4127211521b6a"
+      },
+      {
+        "path": "05_project/src/raven_m/controller/protocol_v2_guard.py",
+        "sha256": "46c534d416f73a6fa5f8c9b238d6101c3f1fff54771c2c5eb7480722416f861b"
+      }
+    ],
+    "all_other_frozen_file_hashes_preserved_from_r28": true
+  },
+  "scope": {
+    "task_seed_schedule_unchanged": true,
+    "step_and_model_call_budgets_unchanged": true,
+    "prompts_and_schemas_unchanged": true,
+    "evaluator_and_acceptance_unchanged": true,
+    "single_bounded_repair_preserved": true,
+    "new_behavior": "A Critic-rejected bottom Copy/Move commit in an active Android destination picker can repair only to a tap that accessibility binds to the enabled top-left Show roots/navigation-drawer control."
+  },
+  "automatic_gate_e_launch": false,
+  "automatic_gate_f_transition": false
+}
