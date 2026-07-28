@@ -1,0 +1,105 @@
+{
+  "schema_version": "protocol_v2_2_r30_diagnostic.v1",
+  "checked_at": "2026-07-28T20:36:56Z",
+  "passed": true,
+  "policy_behavior_validated": true,
+  "formal_gate_authorized": true,
+  "source_tag": "protocol-v2-2-gate-e-r30-dev",
+  "source_commit": "d7e79b63df742bbc5a038b31aacf2b5d86382185",
+  "preflight": {
+    "report": "reports/protocol_v2_2_gate_e_r30_preflight.json",
+    "passed": true,
+    "freeze_file_checks": 27,
+    "freeze_file_failures": 0,
+    "emulator_connected": true,
+    "model_healthy": true,
+    "model_calls": 0,
+    "fresh_formal_suite_directory_absent": true,
+    "hard_overlap": []
+  },
+  "tests": {
+    "protocol_v2_suite_passed": true,
+    "protocol_v2_tests": 294,
+    "protocol_v1_seal_passed": true,
+    "protocol_v1_files": 197,
+    "post_commit_boolean_prompt_unit_tested": true,
+    "post_commit_wait_and_long_press_blocked": true,
+    "post_commit_exact_back_repair_unit_tested": true,
+    "non_back_post_commit_repair_executes_zero_actions": true,
+    "post_commit_back_allowed_to_cancel_second_picker": true
+  },
+  "files_diagnostic": {
+    "run": "runs/protocol_v2_2_development/nonhard_capability_v2_2_seed20260729_r30_development_smoke_sequence_4",
+    "episode": "runs/protocol_v2_2_development/nonhard_capability_v2_2_seed20260729_r30_development_smoke_sequence_4/episodes/04_M0_FilesMoveFile_seed20260729",
+    "sequence": 4,
+    "variant": "M0",
+    "task": "FilesMoveFile",
+    "evaluator_reward": 1.0,
+    "success": true,
+    "termination_reason": "max_steps",
+    "failure_code": null,
+    "executed_steps": 20,
+    "model_calls": 33,
+    "executor_model_calls": 24,
+    "history_model_calls": 9,
+    "valid_after_one_repair": true,
+    "semantic_progress_audit_passed": true,
+    "validation_block_count": 4,
+    "executed_blocked_action_steps": [],
+    "unresolved_guard_repair": false,
+    "infrastructure_attempt_count": 0,
+    "elapsed_seconds": 731.8909999999887
+  },
+  "files_safety_evidence": {
+    "requested_file_selected": true,
+    "focused_search_repairs_preserved": true,
+    "destination_picker_back_blocked": true,
+    "empty_destination_wait_blocked": true,
+    "ringtones_visible_before_commit": true,
+    "final_commit_step": 19,
+    "final_commit_action": {
+      "type": "tap",
+      "x": 0.388,
+      "y": 0.944
+    },
+    "final_commit_initial_candidate": {
+      "type": "wait",
+      "duration_ms": 1000,
+      "blocked_by": "DESTINATION_PICKER_EMPTY_STALL_REQUIRED"
+    },
+    "consequential_move_critic_verdict": "proceed",
+    "destination_picker_commit_count": 1,
+    "post_destination_commit_active": true,
+    "post_destination_commit_block_count": 0,
+    "second_move_commit_executed": false,
+    "native_evaluator_reward": 1.0
+  },
+  "r30_boundary_coverage": {
+    "real_r29_predecessor_failure_preserved": "reports/protocol_v2_2_r29_diagnostic.json",
+    "r29_real_post_commit_repeat_transfer_observed": true,
+    "r30_real_run_had_policy_steps_after_commit": false,
+    "reason": "The sole audited Move commit occurred on the final allowed policy step, so the native task passed without a later post-commit turn.",
+    "deterministic_positive_and_negative_contract_tests_passed": true,
+    "evaluator_state_used_in_policy_loop": false
+  },
+  "preserved_prior_diagnostics": {
+    "r28_formal_contacts_reward": 1.0,
+    "r28_formal_calendar_reward": 1.0,
+    "r28_formal_expense_reward": 1.0,
+    "r26_visual_source_critic_passed": true,
+    "r29_destination_renavigation_contract_unit_tested": true,
+    "no_evaluator_or_cross_episode_memory_exposed": true
+  },
+  "authorization_basis": {
+    "r29_protocol_validity_root_cause_closed": true,
+    "native_files_success_observed": true,
+    "valid_output_observed": true,
+    "semantic_audit_observed": true,
+    "single_destination_commit_observed": true,
+    "post_commit_safety_contract_positive_and_negative_tested": true,
+    "frozen_controls_match_manifest": true,
+    "formal_run_must_use_fresh_suite_directory": true,
+    "result_dependent_tuning": false,
+    "automatic_gate_f_transition": false
+  }
+}
