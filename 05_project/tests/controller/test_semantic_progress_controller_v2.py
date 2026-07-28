@@ -379,6 +379,53 @@ class PhoneInCompanyThenPhoneClient:
         )
 
 
+class KeyboardSwipeThenBackClient:
+    def __init__(self) -> None:
+        self.requests: list[dict] = []
+
+    def generate(self, **kwargs) -> ModelCall:
+        self.requests.append(kwargs)
+        label = kwargs["call_label"]
+        action = (
+            {"type": "press_back"}
+            if label.endswith("_repair")
+            else {
+                "type": "swipe",
+                "x": 0.5,
+                "y": 0.75,
+                "x2": 0.5,
+                "y2": 0.3,
+                "duration_ms": 500,
+            }
+        )
+        decision = {
+            "status": "continue",
+            "action": action,
+            "expected_outcome": "The keyboard is dismissed safely.",
+            "decision_summary": "Dismiss the keyboard before navigating.",
+            "state_delta": [],
+            "memory_citations": [],
+            "completion_evidence": [],
+        }
+        return ModelCall(
+            call_id=label,
+            episode_id=kwargs["episode_id"],
+            idempotency_key=label,
+            image_sha256="0" * 64,
+            image_sha256s=("0" * 64,),
+            prompt_sha256=label,
+            request_sha256=label,
+            response_sha256=label,
+            content=json.dumps(decision),
+            usage={
+                "prompt_tokens": 1,
+                "completion_tokens": 1,
+                "total_tokens": 2,
+            },
+            raven_meta={},
+        )
+
+
 class DestinationPickerEnv:
     def __init__(self) -> None:
         self.execute_count = 0
@@ -706,6 +753,49 @@ class ContactFieldsEnv(DestinationPickerEnv):
         assert action.action_type == "input_text"
         assert action.text == "+17634322348"
         assert action.clear_text is True
+        self.execute_count += 1
+
+
+class KeyboardSwipeEnv(DestinationPickerEnv):
+    def get_state(self, wait_to_stabilize: bool):
+        assert wait_to_stabilize
+        return SimpleNamespace(
+            pixels=np.zeros((100, 100, 3), dtype=np.uint8),
+            ui_elements=[
+                SimpleNamespace(
+                    package_name="contacts",
+                    text="",
+                    hint_text="Company",
+                    is_visible=True,
+                    is_enabled=True,
+                    is_editable=True,
+                    is_focused=True,
+                    bbox=SimpleNamespace(
+                        x_min=0.10,
+                        x_max=0.80,
+                        y_min=0.50,
+                        y_max=0.57,
+                    ),
+                ),
+                SimpleNamespace(
+                    package_name="com.google.android.inputmethod.latin",
+                    text="",
+                    is_visible=True,
+                    is_enabled=True,
+                    is_editable=False,
+                    is_focused=False,
+                    bbox=SimpleNamespace(
+                        x_min=0.0,
+                        x_max=1.0,
+                        y_min=0.63,
+                        y_max=1.0,
+                    ),
+                ),
+            ],
+        )
+
+    def execute_action(self, action) -> None:
+        assert action.action_type == "navigate_back"
         self.execute_count += 1
 
 
@@ -1448,3 +1538,49 @@ def test_controller_repairs_phone_from_company_to_phone_field(
     assert "Keep action.type=type_text" in repair_prompt
     assert "exact same text, text_origin" in repair_prompt
     assert "Do not fill an unrelated optional field" in repair_prompt
+
+
+def test_controller_repairs_keyboard_swipe_to_keyboard_dismissal(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = KeyboardSwipeEnv()
+    client = KeyboardSwipeThenBackClient()
+    controller = EpisodeController(
+        client=client,  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=1,
+        max_model_calls=2,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=ContactTask(),
+        episode_id="keyboard-swipe-repair-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="M0",
+    )
+    assert env.execute_count == 1
+    assert summary["model_call_count"] == 2
+    assert summary["steps"][0]["decision"]["action"] == {
+        "type": "press_back"
+    }
+    assert summary["steps"][0]["parse"]["model_repair_used"]
+    assert "SOFT_KEYBOARD_SWIPE_GUARD" in summary["steps"][0]["parse"][
+        "initial_validation_error"
+    ]
+    audit = summary["protocol_v2_guard"]
+    assert audit["soft_keyboard_swipe_block_count"] == 1
+    block = audit["validation_blocks"][0]
+    assert block["reason"] == "soft_keyboard_swipe_start_blocked"
+    assessment = block["soft_keyboard_swipe_assessment"]
+    assert assessment["start_in_keyboard"] is True
+    assert "bbox" not in assessment
+    repair_prompt = client.requests[1]["user_prompt"]
+    assert 'action exactly {"type":"press_back"}' in repair_prompt
+    assert "Do not swipe, type, tap, save" in repair_prompt

@@ -1,0 +1,96 @@
+{
+  "schema_version": "protocol_v2_2_r23_diagnostic.v1",
+  "checked_at": "2026-07-28T17:15:36Z",
+  "passed": false,
+  "formal_gate_authorized": false,
+  "source_tag": "protocol-v2-2-gate-e-r23-dev",
+  "source_commit": "cabb6ebc6aa34e5c5a5e2a117b89048a0b2aff8e",
+  "files_run": {
+    "run": "runs/protocol_v2_2_development/nonhard_capability_v2_2_seed20260729_r23_development_smoke_sequence_4",
+    "sequence": 4,
+    "variant": "M0",
+    "evaluator_reward": 1.0,
+    "success": true,
+    "executed_steps": 20,
+    "model_calls": 31,
+    "termination_reason": "max_steps",
+    "semantic_progress_audit_passed": true,
+    "validation_block_count": 4,
+    "executed_blocked_action_steps": [],
+    "unresolved_guard_repair": false,
+    "maximum_semantic_no_progress_repeat_count": 1,
+    "screenshot_fallback_observation_count": 0
+  },
+  "contacts_run": {
+    "run": "runs/protocol_v2_2_development/nonhard_capability_v2_2_seed20260729_r23_contacts_retry01_development_smoke_sequence_1",
+    "sequence": 1,
+    "variant": "B3",
+    "evaluator_reward": 0.0,
+    "success": false,
+    "executed_steps": 12,
+    "model_calls": 17,
+    "executor_model_calls": 15,
+    "history_model_calls": 2,
+    "prompt_tokens": 80023,
+    "completion_tokens": 1585,
+    "termination_reason": "max_steps",
+    "semantic_progress_audit_passed": true,
+    "validation_block_count": 3,
+    "maximum_semantic_no_progress_repeat_count": 1,
+    "screenshot_fallback_observation_count": 1,
+    "first_name_written": true,
+    "last_name_written": true,
+    "phone_written": false,
+    "save_executed": false,
+    "valid_for_gate_authorization": false
+  },
+  "excluded_infrastructure_sessions": {
+    "scored_or_diagnostic_evidence": false,
+    "invalid_attempt_directory": "runs/protocol_v2_2_development/nonhard_capability_v2_2_seed20260729_r23_development_smoke_sequence_1/invalid_infrastructure_attempts",
+    "split_archive_directory": "runs/protocol_v2_2_development/invalid_infrastructure_sessions/nonhard_capability_v2_2_seed20260729_r23_development_smoke_sequence_1_infra_20260729T005603",
+    "attempts": [
+      {
+        "attempt": 1,
+        "classification": "INFRA_MODEL_UNAVAILABLE",
+        "model_calls": 0,
+        "executed_steps": 0
+      },
+      {
+        "attempt": 2,
+        "classification": "INFRA_EMULATOR_ANR",
+        "message": "Contacts isn't responding",
+        "executed_steps_before_detection": 4
+      }
+    ],
+    "cold_recovery_smoke_failed_once": true,
+    "manual_warm_smoke_passed": true
+  },
+  "validated_r23_behavior": {
+    "files_unique_active_input_coordinate_blocked": true,
+    "files_safe_coordinate_free_text_repair_executed": true,
+    "files_exact_target_and_destination_guards_preserved": true,
+    "contacts_phone_to_company_action_blocked_before_execution": true,
+    "contacts_company_not_filled_with_phone_number": true
+  },
+  "failure_chain": [
+    "after the requested first and last names were entered, Company remained focused and the soft keyboard remained visible",
+    "the model proposed the requested phone number at the Company coordinate and the field-role guard blocked it before execution",
+    "the bounded repair returned a downward swipe whose start point lay inside the visible Gboard region",
+    "Android interpreted the swipe as keyboard gesture typing and inserted unrelated text into Company instead of scrolling the form",
+    "subsequent keyboard-origin swipes continued changing Company text, so semantic hashes changed and no-progress checks did not identify the task-level stall",
+    "the episode exhausted all 12 steps without entering the phone number or saving the contact"
+  ],
+  "root_cause": {
+    "class": "soft_keyboard_swipe_interpreted_as_gesture_text",
+    "r23_field_role_guard_worked": true,
+    "r23_unique_input_guard_regressed": false,
+    "not_an_infrastructure_failure": true,
+    "semantic_controller_error": true
+  },
+  "r24_minimal_change": [
+    "derive a bounded assessment of whether a proposed swipe starts inside a visible soft-keyboard element",
+    "block that swipe before execution without exposing keyboard geometry or text",
+    "require the bounded repair to choose a visibly supported role-matched field or dismiss the keyboard with one press_back and observe the next screen",
+    "preserve the frozen task schedule, seeds, budgets, prompts, schemas, adapter, evaluator isolation, and one-repair limit"
+  ]
+}

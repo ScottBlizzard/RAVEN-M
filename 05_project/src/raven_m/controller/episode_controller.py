@@ -26,6 +26,7 @@ from raven_m.controller.protocol_v2_guard import (
     focused_editable_input_assessment,
     post_destination_transfer_command_action,
     semantic_ui_snapshot,
+    soft_keyboard_swipe_assessment,
     task_literal_field_role_assessment,
 )
 from raven_m.env.androidworld_adapter import AndroidWorldAdapter
@@ -479,6 +480,7 @@ class EpisodeController:
             "FIELD_VALUE_BINDING_GUARD:",
             "POST_DESTINATION_COMMIT_GUARD:",
             "DESTINATION_PICKER_GUARD:",
+            "SOFT_KEYBOARD_SWIPE_GUARD:",
             "LOOP_GUARD:",
             "CRITIC_CONSTRAINT:",
             "Same-turn action adjudication rejected",
@@ -498,7 +500,23 @@ class EpisodeController:
         field_value_rejected = error.startswith(
             "FIELD_VALUE_BINDING_GUARD:"
         )
-        if field_value_rejected:
+        keyboard_dismiss_required = (
+            "SOFT_KEYBOARD_DISMISS_REQUIRED:" in error
+        )
+        keyboard_swipe_forbidden = (
+            "SOFT_KEYBOARD_SWIPE_FORBIDDEN:" in error
+        )
+        if keyboard_dismiss_required:
+            repair_directive = (
+                "\n\nYour previous JSON was structurally valid, but the soft "
+                "keyboard is visible and the focused field must not be "
+                "modified. For this one repair, return status=continue with "
+                'action exactly {"type":"press_back"} to dismiss only the '
+                "soft keyboard. Do not swipe, type, tap, save, or change any "
+                "task value on this unchanged screenshot. Observe the next "
+                "screen before choosing the role-matched field.\n"
+            )
+        elif field_value_rejected:
             repair_directive = (
                 "\n\nYour previous JSON used a requested task value but "
                 "targeted an editable field with a conflicting role. Keep "
@@ -508,6 +526,16 @@ class EpisodeController:
                 "unrelated optional field and do not invent a coordinate "
                 "that is not visibly supported.\n"
             )
+            if keyboard_swipe_forbidden:
+                repair_directive += (
+                    "SOFT_KEYBOARD_FIELD_REPAIR_CONTRACT: The soft keyboard "
+                    "is visible, so action.type must not be swipe. If the "
+                    "role-matched editable field is visibly supported, enter "
+                    "the same requested value there directly. Otherwise "
+                    'return action exactly {"type":"press_back"} to dismiss '
+                    "only the keyboard and observe the next screen before "
+                    "typing.\n"
+                )
         elif declared_source_rejected:
             repair_directive = (
                 "\n\nYour previous JSON was structurally valid, but its "
@@ -739,6 +767,14 @@ class EpisodeController:
                 focused_input_assessment = (
                     focused_editable_input_assessment(ui_elements)
                 )
+                keyboard_swipe_assessment = (
+                    soft_keyboard_swipe_assessment(
+                        ui_elements,
+                        parsed_candidate.decision.get("action"),
+                        screen_width=screen_width,
+                        screen_height=screen_height,
+                    )
+                )
                 text_target_assessment = (
                     coordinate_type_text_target_assessment(
                         ui_elements,
@@ -775,6 +811,9 @@ class EpisodeController:
                     ),
                     exact_selection_assessment=selection_assessment,
                     focused_input_assessment=focused_input_assessment,
+                    soft_keyboard_swipe_assessment=(
+                        keyboard_swipe_assessment
+                    ),
                     coordinate_text_target_assessment=(
                         text_target_assessment
                     ),

@@ -335,3 +335,22 @@ that matched input is visibly empty, the bounded repair also requires
 `clear_text=false`. Multiple visible editables continue to allow explicit
 field switching. The assessment records only counts and an emptiness boolean,
 never text, labels, bboxes, coordinates, or evaluator state.
+
+## r24 soft-keyboard gesture containment
+
+The r23 Files diagnostic passed with native reward 1.0 and a clean semantic
+audit. The Contacts diagnostic also correctly blocked the task phone number
+from entering the Company field, but its bounded repair proposed a downward
+swipe whose start point lay inside the visible Gboard surface. Android
+interpreted that action as gesture typing instead of page navigation, inserted
+`By` into Company, and repeated navigation consumed the remaining step budget.
+No contact was saved, so the run ended at native reward 0.0.
+
+r24 treats a swipe that starts on a visible soft-keyboard accessibility element
+as unsafe while the keyboard is present. It is rejected before execution and
+the bounded repair must dismiss the keyboard with `press_back`, then observe a
+fresh screen before navigating. A field-role repair may still directly type
+the exact requested value into a visibly supported role-compatible field; if
+that is not possible, it must dismiss the keyboard rather than swipe. The
+assessment and audit expose only booleans, package names, and counts—never
+keyboard geometry, task text, field labels, or evaluator state.

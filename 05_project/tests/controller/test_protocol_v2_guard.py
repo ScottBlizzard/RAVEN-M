@@ -13,6 +13,7 @@ from raven_m.controller.protocol_v2_guard import (
     focused_editable_input_assessment,
     post_destination_transfer_command_action,
     semantic_ui_snapshot,
+    soft_keyboard_swipe_assessment,
     task_literal_field_role_assessment,
 )
 
@@ -135,6 +136,147 @@ def test_focused_input_assessment_uses_visible_soft_keyboard_fallback() -> None:
         ],
         "input_ready": True,
     }
+
+
+def test_soft_keyboard_swipe_assessment_checks_start_without_leaking_bbox() -> None:
+    elements = [
+        {
+            "package_name": "com.google.android.inputmethod.latin",
+            "is_visible": True,
+            "bbox": {
+                "x_min": 0.0,
+                "x_max": 1.0,
+                "y_min": 0.63,
+                "y_max": 1.0,
+            },
+        }
+    ]
+    inside = soft_keyboard_swipe_assessment(
+        elements,
+        {
+            "type": "swipe",
+            "x": 0.5,
+            "y": 0.75,
+            "x2": 0.5,
+            "y2": 0.3,
+            "duration_ms": 500,
+        },
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert inside == {
+        "schema_version": "soft_keyboard_swipe_assessment.v1",
+        "adjudicable": True,
+        "coordinate_bearing": True,
+        "soft_keyboard_present": True,
+        "soft_keyboard_packages": [
+            "com.google.android.inputmethod.latin"
+        ],
+        "visible_keyboard_element_count": 1,
+        "boxed_keyboard_element_count": 1,
+        "start_hit_count": 1,
+        "start_in_keyboard": True,
+    }
+    assert "bbox" not in inside
+    assert "x" not in inside
+    assert "y" not in inside
+
+    outside = soft_keyboard_swipe_assessment(
+        elements,
+        {
+            "type": "swipe",
+            "x": 0.5,
+            "y": 0.5,
+            "x2": 0.5,
+            "y2": 0.2,
+            "duration_ms": 500,
+        },
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert outside["adjudicable"] is True
+    assert outside["start_in_keyboard"] is False
+    assert outside["start_hit_count"] == 0
+
+
+def test_guard_blocks_swipe_that_begins_in_soft_keyboard() -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(goal="Create a contact")
+    action = {
+        "type": "swipe",
+        "x": 0.5,
+        "y": 0.75,
+        "x2": 0.5,
+        "y2": 0.3,
+        "duration_ms": 500,
+    }
+    assessment = {
+        "schema_version": "soft_keyboard_swipe_assessment.v1",
+        "adjudicable": True,
+        "coordinate_bearing": True,
+        "soft_keyboard_present": True,
+        "soft_keyboard_packages": [
+            "com.google.android.inputmethod.latin"
+        ],
+        "visible_keyboard_element_count": 1,
+        "boxed_keyboard_element_count": 1,
+        "start_hit_count": 1,
+        "start_in_keyboard": True,
+    }
+    with pytest.raises(
+        ActionValidationError,
+        match="SOFT_KEYBOARD_DISMISS_REQUIRED",
+    ):
+        guard.validate_decision(
+            decision(action),
+            page_sha256="keyboard",
+            soft_keyboard_swipe_assessment=assessment,
+        )
+    audit = guard.audit_record()
+    assert audit["soft_keyboard_swipe_block_count"] == 1
+    assert audit["validation_blocks"][-1]["reason"] == (
+        "soft_keyboard_swipe_start_blocked"
+    )
+    assert audit["validation_blocks"][-1][
+        "soft_keyboard_swipe_assessment"
+    ]["start_in_keyboard"] is True
+
+
+def test_field_role_mismatch_requires_keyboard_dismissal_before_repair() -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(goal="Create a contact for Sofija. Their number is +123.")
+    with pytest.raises(
+        ActionValidationError,
+        match="SOFT_KEYBOARD_SWIPE_FORBIDDEN",
+    ):
+        guard.validate_decision(
+            decision(
+                {
+                    "type": "type_text",
+                    "text": "+123",
+                    "text_origin": "task_literal",
+                    "source_memory_ids": [],
+                    "x": 0.5,
+                    "y": 0.55,
+                    "clear_text": True,
+                }
+            ),
+            page_sha256="company-focused",
+            soft_keyboard_swipe_assessment={
+                "schema_version": "soft_keyboard_swipe_assessment.v1",
+                "soft_keyboard_present": True,
+            },
+            task_literal_field_role_assessment={
+                "schema_version": "task_literal_field_role_assessment.v1",
+                "adjudicable": True,
+                "matched": False,
+                "source_role_groups": ["phone"],
+                "target_role_groups": ["company"],
+            },
+        )
+    assert guard.audit_record()[
+        "task_literal_field_role_block_count"
+    ] == 1
 
 
 def test_declared_text_source_assessment_binds_task_and_screen_text() -> None:

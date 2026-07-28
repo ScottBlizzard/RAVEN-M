@@ -403,6 +403,80 @@ def _tap_hits_element(
     )
 
 
+def soft_keyboard_swipe_assessment(
+    ui_elements: Any,
+    action: dict[str, Any] | None,
+    *,
+    screen_width: int,
+    screen_height: int,
+) -> dict[str, Any]:
+    """Check whether a swipe begins inside the visible soft keyboard."""
+    action_is_swipe = (
+        isinstance(action, dict) and action.get("type") == "swipe"
+    )
+    coordinate_bearing = bool(
+        action_is_swipe
+        and all(
+            isinstance(action.get(field), (int, float))
+            for field in ("x", "y", "x2", "y2")
+        )
+    )
+    keyboard_packages = set()
+    visible_keyboard_element_count = 0
+    boxed_keyboard_element_count = 0
+    start_hit_count = 0
+    start_action = (
+        {
+            "type": "tap",
+            "x": action["x"],
+            "y": action["y"],
+        }
+        if coordinate_bearing
+        else None
+    )
+    for element in ui_elements or ():
+        if _element_value(element, "is_visible") is False:
+            continue
+        package_name = _normalized_text(
+            _element_value(element, "package_name")
+        )
+        if package_name not in SOFT_KEYBOARD_PACKAGES:
+            continue
+        keyboard_packages.add(package_name)
+        visible_keyboard_element_count += 1
+        if (
+            _normalized_element_bbox(
+                element,
+                screen_width=screen_width,
+                screen_height=screen_height,
+            )
+            is None
+        ):
+            continue
+        boxed_keyboard_element_count += 1
+        if _tap_hits_element(
+            start_action,
+            element,
+            screen_width=screen_width,
+            screen_height=screen_height,
+        ):
+            start_hit_count += 1
+    adjudicable = bool(
+        coordinate_bearing and boxed_keyboard_element_count
+    )
+    return {
+        "schema_version": "soft_keyboard_swipe_assessment.v1",
+        "adjudicable": adjudicable,
+        "coordinate_bearing": coordinate_bearing,
+        "soft_keyboard_present": bool(keyboard_packages),
+        "soft_keyboard_packages": sorted(keyboard_packages),
+        "visible_keyboard_element_count": visible_keyboard_element_count,
+        "boxed_keyboard_element_count": boxed_keyboard_element_count,
+        "start_hit_count": start_hit_count,
+        "start_in_keyboard": bool(adjudicable and start_hit_count),
+    }
+
+
 def coordinate_type_text_target_assessment(
     ui_elements: Any,
     action: dict[str, Any] | None,
@@ -853,6 +927,7 @@ class ProtocolV2DecisionGuard:
         self.coordinate_text_target_block_count = 0
         self.declared_text_source_block_count = 0
         self.task_literal_field_role_block_count = 0
+        self.soft_keyboard_swipe_block_count = 0
 
     def _block_fingerprint(
         self,
@@ -943,6 +1018,7 @@ class ProtocolV2DecisionGuard:
         post_destination_transfer_command_is_action: bool = False,
         exact_selection_assessment: dict[str, Any] | None = None,
         focused_input_assessment: dict[str, Any] | None = None,
+        soft_keyboard_swipe_assessment: dict[str, Any] | None = None,
         coordinate_text_target_assessment: dict[str, Any] | None = None,
         declared_text_source_assessment: dict[str, Any] | None = None,
         task_literal_field_role_assessment: dict[str, Any] | None = None,
@@ -955,6 +1031,10 @@ class ProtocolV2DecisionGuard:
         action = decision.get("action")
         if not isinstance(action, dict):
             return
+        focused_assessment = focused_input_assessment or {}
+        keyboard_swipe_assessment = (
+            soft_keyboard_swipe_assessment or {}
+        )
         field_role_assessment = task_literal_field_role_assessment or {}
         if (
             field_role_assessment.get("adjudicable") is True
@@ -975,14 +1055,52 @@ class ProtocolV2DecisionGuard:
                 }
             )
             self.task_literal_field_role_block_count += 1
-            raise ActionValidationError(
+            message = (
                 "FIELD_VALUE_BINDING_GUARD: the task-literal value and the "
                 "target editable field have conflicting semantic roles. "
                 "Keep the same requested value and provenance, but choose a "
                 "visible editable field whose label matches that value's "
                 "role. Do not fill an unrelated optional field."
             )
-        focused_assessment = focused_input_assessment or {}
+            if keyboard_swipe_assessment.get(
+                "soft_keyboard_present"
+            ) is True:
+                message += (
+                    " SOFT_KEYBOARD_SWIPE_FORBIDDEN: the soft keyboard is "
+                    "visible while the unrelated field is focused. Do not "
+                    "swipe: a swipe beginning on the keyboard can be "
+                    "interpreted as gesture text and pollute that field. "
+                    "Choose a visibly supported role-matched field directly, "
+                    "or press back once to dismiss only the keyboard and "
+                    "observe the next screen."
+                )
+            raise ActionValidationError(message)
+        if (
+            keyboard_swipe_assessment.get("adjudicable") is True
+            and keyboard_swipe_assessment.get("start_in_keyboard") is True
+        ):
+            record = {
+                "semantic_state_sha256": page_sha256,
+                "action": action,
+                "reason": "soft_keyboard_swipe_start_blocked",
+                "soft_keyboard_swipe_assessment": (
+                    keyboard_swipe_assessment
+                ),
+                "required_recovery_classes": [
+                    "dismiss_soft_keyboard",
+                    "observe_next_screen",
+                ],
+            }
+            self.validation_blocks.append(record)
+            self.soft_keyboard_swipe_block_count += 1
+            raise ActionValidationError(
+                "SOFT_KEYBOARD_SWIPE_GUARD: "
+                "SOFT_KEYBOARD_DISMISS_REQUIRED: the proposed swipe begins "
+                "inside the visible soft keyboard and can be interpreted as "
+                "gesture typing into the focused field. Do not execute the "
+                "swipe. Press back once to dismiss only the keyboard, then "
+                "observe the next screen before navigating or typing."
+            )
         text_target_assessment = coordinate_text_target_assessment or {}
         coordinate_bearing_type_text = (
             action.get("type") == "type_text"
@@ -1401,6 +1519,9 @@ class ProtocolV2DecisionGuard:
             ),
             "task_literal_field_role_block_count": (
                 self.task_literal_field_role_block_count
+            ),
+            "soft_keyboard_swipe_block_count": (
+                self.soft_keyboard_swipe_block_count
             ),
             "ab_ab_cycle_trigger_count": self.cycle_trigger_count,
             "visible_failure_trigger_count": (

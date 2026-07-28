@@ -107,6 +107,14 @@ memory authority, and Critic enforcement.
   also sets `clear_text=false`. A coordinate may still switch fields when
   multiple visible editables support a genuine target change. This assessment
   exposes only editable counts, a matched boolean, and matched emptiness.
+- While a soft keyboard is visible, a swipe whose start point hits a visible
+  keyboard accessibility element is rejected before execution. Its bounded
+  repair must dismiss the keyboard with `press_back` and observe a later
+  screen before attempting navigation. A field-role repair may instead type
+  the exact requested value directly into a visibly supported compatible
+  field, but it may not swipe while the keyboard is active. The assessment and
+  audit expose only booleans, package names, and counts, never keyboard bboxes,
+  coordinates, text, field labels, or evaluator state.
 - Text declared as `task_literal` must be a case-insensitive,
   whitespace-normalized substring of TASK. Text declared as `current_screen`
   must similarly match a visible accessibility text, content description,
