@@ -8,9 +8,28 @@ from raven_m.controller.protocol_v2_guard import (
     destination_picker_active,
     destination_picker_commit_action,
     exact_selection_long_press_assessment,
+    focused_editable_input_assessment,
     post_destination_transfer_command_action,
     semantic_ui_snapshot,
 )
+
+
+def text_action(
+    *,
+    x: float | None = None,
+    y: float | None = None,
+    clear_text: bool = False,
+) -> dict:
+    action = {
+        "type": "type_text",
+        "text": "nature_sounds.mp3",
+        "text_origin": "task_literal",
+        "source_memory_ids": [],
+        "clear_text": clear_text,
+    }
+    if x is not None and y is not None:
+        action.update(x=x, y=y)
+    return action
 
 
 def decision(action: dict, *, citations: list[str] | None = None) -> dict:
@@ -47,6 +66,78 @@ def test_guard_allows_different_recovery_action() -> None:
     )
 
 
+def test_focused_editable_input_assessment_uses_visible_state_only() -> None:
+    assessment = focused_editable_input_assessment(
+        [
+            {
+                "text": "",
+                "hint_text": "Search",
+                "is_visible": True,
+                "is_editable": True,
+                "is_focused": True,
+                "bbox": {
+                    "x_min": 0.2,
+                    "x_max": 0.9,
+                    "y_min": 0.05,
+                    "y_max": 0.1,
+                },
+            },
+            {
+                "text": "hidden",
+                "is_visible": False,
+                "is_editable": True,
+                "is_focused": True,
+            },
+        ]
+    )
+    assert assessment == {
+        "schema_version": "focused_editable_input_assessment.v1",
+        "present": True,
+        "focused_count": 1,
+        "empty": True,
+    }
+    assert "bbox" not in assessment
+
+
+def test_focused_input_guard_blocks_click_before_type_and_allows_repair() -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(goal="Search for nature_sounds.mp3")
+    assessment = {
+        "schema_version": "focused_editable_input_assessment.v1",
+        "present": True,
+        "focused_count": 1,
+        "empty": True,
+    }
+    with pytest.raises(ActionValidationError, match="FOCUSED_INPUT_GUARD") as caught:
+        guard.validate_decision(
+            decision(text_action(x=0.5, y=0.5, clear_text=True)),
+            page_sha256="focused-search",
+            focused_input_assessment=assessment,
+        )
+    message = str(caught.value)
+    assert "omit x and y" in message
+    assert "clear_text=false" in message
+    guard.validate_decision(
+        decision(text_action(clear_text=False)),
+        page_sha256="focused-search",
+        focused_input_assessment=assessment,
+    )
+    assert guard.audit_record()["focused_input_block_count"] == 1
+
+
+def test_focused_input_guard_does_not_block_an_unfocused_target() -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(goal="Enter a contact name")
+    guard.validate_decision(
+        decision(text_action(x=0.5, y=0.5, clear_text=True)),
+        page_sha256="contact-form",
+        focused_input_assessment={
+            "schema_version": "focused_editable_input_assessment.v1",
+            "present": False,
+            "focused_count": 0,
+            "empty": False,
+        },
+    )
 def test_changed_page_does_not_block_same_action() -> None:
     guard = ProtocolV2DecisionGuard(max_no_effect_repeats=1)
     guard.reset(goal="Create a note")

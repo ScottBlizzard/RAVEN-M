@@ -21,6 +21,7 @@ from raven_m.controller.protocol_v2_guard import (
     destination_picker_active,
     destination_picker_commit_action,
     exact_selection_long_press_assessment,
+    focused_editable_input_assessment,
     post_destination_transfer_command_action,
     semantic_ui_snapshot,
 )
@@ -462,6 +463,7 @@ class EpisodeController:
     ) -> str:
         semantic_action_error_prefixes = (
             "EXACT_TARGET_GUARD:",
+            "FOCUSED_INPUT_GUARD:",
             "POST_DESTINATION_COMMIT_GUARD:",
             "DESTINATION_PICKER_GUARD:",
             "LOOP_GUARD:",
@@ -472,7 +474,17 @@ class EpisodeController:
             semantic_action_error_prefixes
         )
         exact_target_rejected = error.startswith("EXACT_TARGET_GUARD:")
-        if semantic_action_rejected:
+        focused_input_rejected = error.startswith("FOCUSED_INPUT_GUARD:")
+        if focused_input_rejected:
+            repair_directive = (
+                "\n\nYour previous JSON was structurally valid, but its "
+                "type_text action would destroy a visibly focused input. "
+                "Keep action.type=type_text, the exact same text, text_origin, "
+                "and source_memory_ids. Remove x and y. If VALIDATION_ERROR "
+                "says the focused field is empty, set clear_text=false. Do not "
+                "tap, navigate, change the text, or add a coordinate.\n"
+            )
+        elif semantic_action_rejected:
             repair_directive = (
                 "\n\nYour previous JSON was structurally valid, but its GUI "
                 "action was semantically rejected on this screenshot. Keep "
@@ -654,6 +666,9 @@ class EpisodeController:
                         screen_height=screen_height,
                     )
                 )
+                focused_input_assessment = (
+                    focused_editable_input_assessment(ui_elements)
+                )
                 self.decision_guard.validate_decision(
                     parsed_candidate.decision,
                     page_sha256=page_semantic_sha256,
@@ -667,6 +682,7 @@ class EpisodeController:
                         transfer_command_is_action
                     ),
                     exact_selection_assessment=selection_assessment,
+                    focused_input_assessment=focused_input_assessment,
                 )
             action_adjudication = self.history_policy.adjudicate_action(
                 parsed_candidate.decision,

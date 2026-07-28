@@ -91,6 +91,34 @@ def _normalized_text(value: Any) -> str | None:
     return normalized or None
 
 
+def focused_editable_input_assessment(
+    ui_elements: Any,
+) -> dict[str, Any]:
+    """Summarize visible focused editable state without exposing a bbox."""
+    focused = []
+    for element in ui_elements or ():
+        if _element_value(element, "is_visible") is False:
+            continue
+        if _element_value(element, "is_editable") is not True:
+            continue
+        if _element_value(element, "is_focused") is not True:
+            continue
+        focused.append(
+            {
+                "empty": _normalized_text(
+                    _element_value(element, "text")
+                )
+                is None,
+            }
+        )
+    return {
+        "schema_version": "focused_editable_input_assessment.v1",
+        "present": bool(focused),
+        "focused_count": len(focused),
+        "empty": bool(focused) and all(item["empty"] for item in focused),
+    }
+
+
 def _box_value(box: Any, field: str) -> Any:
     if isinstance(box, dict):
         return box.get(field)
@@ -526,6 +554,7 @@ class ProtocolV2DecisionGuard:
         self.post_destination_commit_block_count = 0
         self.post_destination_commit_active = False
         self.exact_target_long_press_block_count = 0
+        self.focused_input_block_count = 0
 
     def _block_fingerprint(
         self,
@@ -585,11 +614,48 @@ class ProtocolV2DecisionGuard:
         destination_picker_commit_is_action: bool = False,
         post_destination_transfer_command_is_action: bool = False,
         exact_selection_assessment: dict[str, Any] | None = None,
+        focused_input_assessment: dict[str, Any] | None = None,
     ) -> None:
         self._validate_text_provenance(decision)
         action = decision.get("action")
         if not isinstance(action, dict):
             return
+        focused_assessment = focused_input_assessment or {}
+        coordinate_bearing_type_text = (
+            action.get("type") == "type_text"
+            and ("x" in action or "y" in action)
+        )
+        clears_focused_empty_field = (
+            action.get("type") == "type_text"
+            and action.get("clear_text") is True
+            and focused_assessment.get("empty") is True
+        )
+        if focused_assessment.get("present") is True and (
+            coordinate_bearing_type_text or clears_focused_empty_field
+        ):
+            record = {
+                "semantic_state_sha256": page_sha256,
+                "action": action,
+                "reason": "focused_input_click_before_type_blocked",
+                "focused_input_assessment": focused_assessment,
+                "required_recovery_classes": [
+                    "preserve_focused_input",
+                ],
+            }
+            self.validation_blocks.append(record)
+            self.focused_input_block_count += 1
+            empty_directive = (
+                " The focused field is empty, so set clear_text=false."
+                if focused_assessment.get("empty") is True
+                else ""
+            )
+            raise ActionValidationError(
+                "FOCUSED_INPUT_GUARD: a visible editable field is already "
+                "focused. AndroidWorld clicks supplied x,y before input, "
+                "which can destroy that focus. Keep the same type_text text "
+                "and provenance but omit x and y."
+                + empty_directive
+            )
         assessment = exact_selection_assessment or {}
         if (
             action.get("type") == "long_press"
@@ -843,6 +909,7 @@ class ProtocolV2DecisionGuard:
             "exact_target_long_press_block_count": (
                 self.exact_target_long_press_block_count
             ),
+            "focused_input_block_count": self.focused_input_block_count,
             "ab_ab_cycle_trigger_count": self.cycle_trigger_count,
             "visible_failure_trigger_count": (
                 self.visible_failure_trigger_count

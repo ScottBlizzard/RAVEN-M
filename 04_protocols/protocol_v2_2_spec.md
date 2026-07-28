@@ -34,6 +34,12 @@ memory authority, and Critic enforcement.
   that focus by omitting `x,y` and setting `clear_text=false`. Coordinates are
   reserved for a visible text field that is not already focused; the controller
   does not silently strip or retarget them.
+- The focused-input guard derives only `present`, `focused_count`, and `empty`
+  from current visible `is_editable`/`is_focused` accessibility flags. When a
+  focused input exists, coordinate-bearing `type_text` is validation-blocked;
+  clearing a focused empty field is also blocked. The one bounded repair must
+  explicitly preserve text provenance, omit coordinates, and avoid clearing
+  the empty field. No accessibility bbox enters the model prompt.
 - After three consecutive mismatched or missing accessibility observations,
   the controller performs at most one audited AndroidWorld accessibility
   refresh, then continues within the original twelve-observation bound.

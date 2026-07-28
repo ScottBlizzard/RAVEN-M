@@ -160,6 +160,15 @@ selected 14 files. r14 makes this execution semantic explicit: when an empty
 field visibly has a caret, omit `x,y` and use `clear_text=false`. No controller
 rewrite or hidden UI coordinate is introduced.
 
+The focused r14 replay showed that prompt-only compliance was insufficient:
+the model described Search as active yet still emitted coordinate-bearing
+`type_text` with `clear_text=true`, then repeated the failure to the step
+limit. r15 therefore adds an audited focused-input validation. It derives only
+`present` and `empty` facts from visible editable/focused accessibility flags,
+without exposing an element bbox. A conflicting `type_text` is rejected before
+execution; the existing single repair must preserve its exact text and
+provenance while removing `x,y` and disabling clearing for an empty field.
+
 ## Qualification order
 
 1. Targeted unit and integration tests.

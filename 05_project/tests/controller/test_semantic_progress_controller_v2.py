@@ -166,6 +166,50 @@ class WrongFileThenSearchClient:
         )
 
 
+class FocusedInputThenSafeTextClient:
+    def __init__(self) -> None:
+        self.requests: list[dict] = []
+
+    def generate(self, **kwargs) -> ModelCall:
+        self.requests.append(kwargs)
+        label = kwargs["call_label"]
+        action = {
+            "type": "type_text",
+            "text": "nature_sounds.mp3",
+            "text_origin": "task_literal",
+            "source_memory_ids": [],
+            "clear_text": False,
+        }
+        if not label.endswith("_repair"):
+            action.update(x=0.5, y=0.5, clear_text=True)
+        decision = {
+            "status": "continue",
+            "action": action,
+            "expected_outcome": "The exact filename appears in Search.",
+            "decision_summary": "Type the exact filename into focused Search.",
+            "state_delta": [],
+            "memory_citations": [],
+            "completion_evidence": [],
+        }
+        return ModelCall(
+            call_id=label,
+            episode_id=kwargs["episode_id"],
+            idempotency_key=label,
+            image_sha256="0" * 64,
+            image_sha256s=("0" * 64,),
+            prompt_sha256=label,
+            request_sha256=label,
+            response_sha256=label,
+            content=json.dumps(decision),
+            usage={
+                "prompt_tokens": 1,
+                "completion_tokens": 1,
+                "total_tokens": 2,
+            },
+            raven_meta={},
+        )
+
+
 class DestinationPickerEnv:
     def __init__(self) -> None:
         self.execute_count = 0
@@ -290,6 +334,34 @@ class ExactTargetGridEnv(DestinationPickerEnv):
                 ),
             ],
         )
+
+
+class FocusedInputEnv(DestinationPickerEnv):
+    def get_state(self, wait_to_stabilize: bool):
+        assert wait_to_stabilize
+        return SimpleNamespace(
+            pixels=np.zeros((100, 100, 3), dtype=np.uint8),
+            ui_elements=[
+                SimpleNamespace(
+                    package_name="files",
+                    text="",
+                    hint_text="Search",
+                    class_name="android.widget.EditText",
+                    is_visible=True,
+                    is_enabled=True,
+                    is_editable=True,
+                    is_focused=True,
+                ),
+            ],
+        )
+
+    def execute_action(self, action) -> None:
+        assert action.action_type == "input_text"
+        assert action.x is None
+        assert action.y is None
+        assert action.clear_text is False
+        assert action.text == "nature_sounds.mp3"
+        self.execute_count += 1
 
 
 class FilesTask:
@@ -694,3 +766,47 @@ def test_controller_repairs_wrong_exact_target_to_search(
     assert 'action.type must not be "long_press"' in repair_prompt
     assert "only on a later policy step" in repair_prompt
     assert "Correct its format only" not in repair_prompt
+
+
+def test_controller_repairs_coordinate_type_into_focused_input(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = FocusedInputEnv()
+    client = FocusedInputThenSafeTextClient()
+    controller = EpisodeController(
+        client=client,  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=1,
+        max_model_calls=2,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="focused-input-repair-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="M0",
+    )
+    assert env.execute_count == 1
+    assert summary["model_call_count"] == 2
+    action = summary["steps"][0]["decision"]["action"]
+    assert action["type"] == "type_text"
+    assert "x" not in action
+    assert "y" not in action
+    assert action["clear_text"] is False
+    assert summary["steps"][0]["parse"]["model_repair_used"]
+    assert "FOCUSED_INPUT_GUARD" in summary["steps"][0]["parse"][
+        "initial_validation_error"
+    ]
+    assert summary["protocol_v2_guard"]["focused_input_block_count"] == 1
+    repair_prompt = client.requests[1]["user_prompt"]
+    assert "Keep action.type=type_text" in repair_prompt
+    assert "Remove x and y" in repair_prompt
+    assert "set clear_text=false" in repair_prompt
+    assert "Do not tap, navigate, change the text" in repair_prompt
