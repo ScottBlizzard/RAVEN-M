@@ -1,0 +1,54 @@
+{
+  "schema_version": "protocol_v2_2_r19_gate_d_freeze.v1",
+  "checked_at": "2026-07-28T14:39:21Z",
+  "passed": true,
+  "protocol": "androidworld_protocol_v2_2_exploratory",
+  "source_tag": "protocol-v2-2-gate-e-r19-dev",
+  "source_commit": "8b7a69708ee3c379176de95d2caebe33be30fb61",
+  "freeze_file_count": 27,
+  "verification": {
+    "full_pytest": {
+      "passed": true,
+      "test_count": 243
+    },
+    "protocol_v1_seal": {
+      "passed": true,
+      "file_count": 197,
+      "failure_count": 0
+    },
+    "r18_diagnostic_preserved": {
+      "passed": true,
+      "report": "reports/protocol_v2_2_r18_diagnostic.json",
+      "result_count": 1,
+      "valid_for_gate_authorization": false
+    },
+    "declared_text_source_binding": {
+      "passed": true,
+      "task_literal_binding_added": true,
+      "current_screen_binding_added": true,
+      "repair_relabeling_rechecked": true,
+      "source_strings_exposed": false,
+      "source_coordinates_exposed": false,
+      "same_bounded_repair_budget": true
+    }
+  },
+  "r19_changes": [
+    "bind task_literal text to the normalized task string before execution",
+    "bind current_screen text to visible current accessibility text fields before execution",
+    "validation-block invented or relabeled text and recheck the bounded repair",
+    "record only origin, source-value count, and matched status in the assessment"
+  ],
+  "preserved_controls": {
+    "same_task_schedule_as_r18": true,
+    "same_instance_and_order_seeds_as_r18": true,
+    "same_step_and_model_budgets_as_r18": true,
+    "same_prompt_files_and_schemas_as_r18": true,
+    "adapter_execution_unchanged": true,
+    "no_deterministic_action_rewrite": true,
+    "no_target_coordinate_injection": true,
+    "no_silent_action_retargeting": true,
+    "one_bounded_repair_unchanged": true,
+    "no_evaluator_state_in_model_inputs": true,
+    "r18_development_evidence_immutable": true
+  }
+}
