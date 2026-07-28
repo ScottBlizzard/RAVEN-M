@@ -103,6 +103,25 @@ accessibility filename before execution. It also narrows the post-commit rule:
 reversible exact-item inspection is permitted, while a second `Move to`,
 `Copy to`, or bottom commit is rejected.
 
+The focused r9 replay proved the exact-target invariant: both the initial and
+repaired long-press were blocked before execution. Current accessibility
+showed eight same-extension candidates, the exact `nature_sounds.mp3` target
+was off-screen, and the proposed coordinate was nearest to
+`nature_sounds_2023_02_11.mp3`. The generic repair prompt nevertheless opened
+with "correct its format only", so the executor repeated the same structurally
+valid but semantically rejected action and the run stopped safely. r10 makes
+the one-repair contract error-class-aware: semantic action rejection requires
+a materially different action, and the validation message exposes the
+task-literal visibility result plus the nearest full filename. It does not add
+a repair call, rewrite an action, or expose evaluator state.
+
+The first r9 invocation also found a Windows recovery defect before episode
+creation: a stale ADB descendant could retain captured PowerShell pipes after
+the stop command timed out. r10 redirects both emulator stop and start
+lifecycle output to recovery files, so the existing subprocess timeouts remain
+observable and bounded. This changes infrastructure handling only and does not
+alter model inputs, task instances, or scoring.
+
 ## Qualification order
 
 1. Targeted unit and integration tests.

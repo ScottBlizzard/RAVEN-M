@@ -608,12 +608,40 @@ class ProtocolV2DecisionGuard:
             }
             self.validation_blocks.append(record)
             self.exact_target_long_press_block_count += 1
+            required_text = str(
+                assessment.get("required_text")
+                or self.required_selection_text
+                or ""
+            )
+            nearest_text = assessment.get("nearest_text")
+            rendered_required = json.dumps(
+                required_text,
+                ensure_ascii=False,
+            )
+            rendered_nearest = json.dumps(
+                nearest_text,
+                ensure_ascii=False,
+            )
+            if assessment.get("exact_text_visible") is True:
+                recovery = (
+                    f"The exact task-literal filename {rendered_required} is "
+                    "visible, but the proposed coordinate is nearest to "
+                    f"{rendered_nearest}. Choose a materially different "
+                    "coordinate whose nearest full filename is exactly "
+                    f"{rendered_required}, or use Search/list/detail view."
+                )
+            else:
+                recovery = (
+                    f"The exact task-literal filename {rendered_required} is "
+                    "not visible in current accessibility evidence; the "
+                    "proposed coordinate is nearest to "
+                    f"{rendered_nearest}. Do not return any long_press on "
+                    "this screen. Choose a non-long-press navigation action "
+                    "such as tapping Search, changing view mode, or scrolling "
+                    "until the exact full filename is visible."
+                )
             raise ActionValidationError(
-                "EXACT_TARGET_GUARD: the proposed long-press is not nearest "
-                "to the full task-literal filename in current accessibility "
-                "evidence. Do not guess among truncated same-prefix labels. "
-                "Use Search or list/detail view, or choose only a coordinate "
-                "whose full filename exactly matches the task."
+                "EXACT_TARGET_GUARD: " + recovery
             )
         if self.post_destination_commit_active and (
             destination_picker_commit_is_action

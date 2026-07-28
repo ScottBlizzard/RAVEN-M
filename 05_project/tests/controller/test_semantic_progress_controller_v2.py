@@ -121,7 +121,11 @@ class CommitThenRepeatClient:
 
 
 class WrongFileThenSearchClient:
+    def __init__(self) -> None:
+        self.requests: list[dict] = []
+
     def generate(self, **kwargs) -> ModelCall:
+        self.requests.append(kwargs)
         label = kwargs["call_label"]
         if label.endswith("_repair"):
             action = {"type": "tap", "x": 0.83, "y": 0.08}
@@ -653,8 +657,9 @@ def test_controller_repairs_wrong_exact_target_to_search(
 ) -> None:
     root = Path(__file__).resolve().parents[2]
     env = ExactTargetGridEnv()
+    client = WrongFileThenSearchClient()
     controller = EpisodeController(
-        client=WrongFileThenSearchClient(),  # type: ignore[arg-type]
+        client=client,  # type: ignore[arg-type]
         system_prompt="v2.2",
         max_steps=1,
         max_model_calls=2,
@@ -682,3 +687,8 @@ def test_controller_repairs_wrong_exact_target_to_search(
     assert summary["protocol_v2_guard"][
         "exact_target_long_press_block_count"
     ] == 1
+    repair_prompt = client.requests[1]["user_prompt"]
+    assert "GUI action was semantically rejected" in repair_prompt
+    assert '"nature_sounds_backup.mp3"' in repair_prompt
+    assert "choose a materially different action" in repair_prompt
+    assert "Correct its format only" not in repair_prompt

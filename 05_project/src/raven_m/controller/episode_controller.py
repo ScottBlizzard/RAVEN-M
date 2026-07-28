@@ -441,6 +441,32 @@ class EpisodeController:
         error: str,
         protocol_v2: bool = False,
     ) -> str:
+        semantic_action_error_prefixes = (
+            "EXACT_TARGET_GUARD:",
+            "POST_DESTINATION_COMMIT_GUARD:",
+            "DESTINATION_PICKER_GUARD:",
+            "LOOP_GUARD:",
+            "CRITIC_CONSTRAINT:",
+            "Same-turn action adjudication rejected",
+        )
+        semantic_action_rejected = error.startswith(
+            semantic_action_error_prefixes
+        )
+        if semantic_action_rejected:
+            repair_directive = (
+                "\n\nYour previous JSON was structurally valid, but its GUI "
+                "action was semantically rejected on this screenshot. Keep "
+                "the required JSON schema and choose a materially different "
+                "action. Do not repeat the same action type with the same "
+                "coordinates. Follow VALIDATION_ERROR even when that means "
+                "using Search, scrolling, changing view, or another "
+                "non-commit navigation action.\n"
+            )
+        else:
+            repair_directive = (
+                "\n\nYour previous response was invalid. Correct its format "
+                "only while choosing the action from the same screenshot.\n"
+            )
         v2_contract = (
             "\nPROTOCOL_V2_ACTION_CONTRACT: The action field is the object "
             "itself. open_app is "
@@ -487,9 +513,8 @@ class EpisodeController:
         )
         return (
             original_prompt
-            + "\n\nYour previous response was invalid. Correct its format only "
-            "while choosing the action from the same screenshot.\n"
-            f"VALIDATION_ERROR: {error}\n"
+            + repair_directive
+            + f"VALIDATION_ERROR: {error}\n"
             f"INVALID_RESPONSE: {invalid_content}\n"
             "The action field must be an object such as "
             '{"type":"tap","x":0.5,"y":0.5}, never an action name plus '

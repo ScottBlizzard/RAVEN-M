@@ -41,6 +41,16 @@ memory authority, and Critic enforcement.
   a same-prefix variant, or an off-screen exact target is rejected before
   execution and must recover through Search, list, detail, or a corrected
   exact coordinate.
+- The one bounded repair distinguishes a structural response error from a
+  semantic action rejection. A structural error retains the format-repair
+  contract. A guard or binding-constraint rejection requires a materially
+  different GUI action on the same screenshot; repeating the rejected action
+  type and coordinates is invalid.
+- Exact-target rejection states whether the task-literal filename is visible
+  and names the full accessibility filename nearest to the proposed
+  coordinate. When the exact target is off-screen, the repair must be a
+  non-long-press navigation action such as Search, view change, or scrolling.
+  This evidence is derived from the current UI and never from evaluator state.
 - An executed tap inside the enabled bottom `COPY`/`MOVE` control creates an
   auditable post-destination-commit state. Reversible inspection of the exact
   item remains available, but a second `Move to`, `Copy to`, or bottom commit
@@ -54,6 +64,10 @@ memory authority, and Critic enforcement.
   `INFRA_EMULATOR_ANR`.
 - The attempt is archived and the emulator is cold recovered.
 - Two consecutive failures of the same class stop the gate.
+- On Windows, emulator stop/start subprocess output is redirected to
+  file-backed recovery logs. This prevents long-lived emulator or ADB
+  descendants from retaining captured pipes and preserves the existing
+  bounded recovery timeouts.
 
 ## Memory authority
 

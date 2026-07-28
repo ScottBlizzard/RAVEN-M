@@ -71,6 +71,37 @@ def test_v2_repair_prompt_spells_out_canonical_open_and_swipe() -> None:
     assert "Never use action_details, action_args, direction, or distance" in prompt
 
 
+def test_v2_semantic_action_repair_requires_a_different_action() -> None:
+    error = (
+        'EXACT_TARGET_GUARD: The exact task-literal filename '
+        '"nature_sounds.mp3" is not visible; the proposed coordinate is '
+        'nearest to "nature_sounds_2023_02_11.mp3".'
+    )
+    prompt = EpisodeController._repair_prompt(
+        "original",
+        '{"action":{"type":"long_press","x":0.75,"y":0.75}}',
+        error,
+        protocol_v2=True,
+    )
+    assert "GUI action was semantically rejected" in prompt
+    assert "choose a materially different action" in prompt
+    assert "Do not repeat the same action type with the same coordinates" in prompt
+    assert "using Search, scrolling, changing view" in prompt
+    assert "Correct its format only" not in prompt
+    assert error in prompt
+
+
+def test_v2_structural_repair_retains_format_only_directive() -> None:
+    prompt = EpisodeController._repair_prompt(
+        "original",
+        '{"action":"tap"}',
+        "$.action is not of type object",
+        protocol_v2=True,
+    )
+    assert "Correct its format only" in prompt
+    assert "GUI action was semantically rejected" not in prompt
+
+
 def test_v2_repair_prompt_spells_out_canonical_state_delta() -> None:
     prompt = EpisodeController._repair_prompt(
         "original",

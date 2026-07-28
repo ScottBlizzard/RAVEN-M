@@ -545,6 +545,43 @@ def test_exact_selection_guard_blocks_wrong_full_filename() -> None:
     assert guard.audit_record()["exact_target_long_press_block_count"] == 1
 
 
+def test_exact_selection_guard_names_offscreen_target_and_nearest_file() -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(
+        goal="Move nature_sounds.mp3",
+        required_selection_text="nature_sounds.mp3",
+    )
+    assessment = {
+        "schema_version": "exact_selection_assessment.v1",
+        "adjudicable": True,
+        "matched": False,
+        "required_text": "nature_sounds.mp3",
+        "exact_text_visible": False,
+        "candidate_count": 8,
+        "nearest_text": "nature_sounds_2023_02_11.mp3",
+        "nearest_distance": 0.11375,
+    }
+    with pytest.raises(ActionValidationError) as caught:
+        guard.validate_decision(
+            decision(
+                {
+                    "type": "long_press",
+                    "x": 0.75,
+                    "y": 0.75,
+                    "duration_ms": 800,
+                }
+            ),
+            page_sha256="music-grid",
+            exact_selection_assessment=assessment,
+        )
+    message = str(caught.value)
+    assert "EXACT_TARGET_GUARD" in message
+    assert '"nature_sounds.mp3" is not visible' in message
+    assert '"nature_sounds_2023_02_11.mp3"' in message
+    assert "Do not return any long_press on this screen" in message
+    assert "non-long-press navigation action" in message
+
+
 def test_post_destination_transfer_command_detects_text_control_hit() -> None:
     controls = [
         {

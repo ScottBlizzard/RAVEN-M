@@ -10,6 +10,7 @@ from run_frozen_hard_suite import (  # noqa: E402
     EXPECTED_REVISION,
     classify_infrastructure,
     load_formal_infrastructure_attempts,
+    recovery_stdio_paths,
     wait_for_model_service,
 )
 from run_method_dev_suite import task_instance_hash  # noqa: E402
@@ -27,6 +28,22 @@ def test_task_instance_hash_is_stable_and_sensitive() -> None:
     changed = task_instance_hash(DummyTask("goal", {"a": 1, "b": 3}))
     assert first == reordered
     assert first != changed
+
+
+def test_emulator_lifecycle_recovery_uses_file_backed_stdio(
+    tmp_path: Path,
+) -> None:
+    stop_paths = recovery_stdio_paths(tmp_path, 1)
+    start_paths = recovery_stdio_paths(tmp_path, 2)
+    assert stop_paths == (
+        tmp_path / "stop_emulator_stdout.log",
+        tmp_path / "stop_emulator_stderr.log",
+    )
+    assert start_paths == (
+        tmp_path / "start_emulator_stdout.log",
+        tmp_path / "start_emulator_stderr.log",
+    )
+    assert recovery_stdio_paths(tmp_path, 3) is None
 
 
 def test_only_classified_infrastructure_is_retriable() -> None:

@@ -153,6 +153,22 @@ def load_androidworld_env(
     )
 
 
+def recovery_stdio_paths(
+    recovery_dir: Path,
+    command_index: int,
+) -> tuple[Path, Path] | None:
+    """Return file-backed stdio paths for bounded emulator lifecycle calls."""
+    if command_index not in (1, 2):
+        return None
+    phase = (
+        "stop_emulator" if command_index == 1 else "start_emulator"
+    )
+    return (
+        recovery_dir / f"{phase}_stdout.log",
+        recovery_dir / f"{phase}_stderr.log",
+    )
+
+
 def recover_androidworld_env(
     *,
     adb_path: str,
@@ -202,14 +218,14 @@ def recover_androidworld_env(
     for index, command in enumerate(commands, start=1):
         timeout = 60 if index == 1 else 420
         try:
-            if index == 2:
+            stdio_paths = recovery_stdio_paths(recovery_dir, index)
+            if stdio_paths is not None:
                 # The emulator is intentionally long-lived. On Windows its
-                # descendants can inherit a captured PowerShell pipe even
-                # after start_emulator.ps1 exits, preventing communicate()
-                # from observing EOF. Direct the launcher output to files so
-                # recovery waits only for the PowerShell process.
-                stdout_path = recovery_dir / "start_emulator_stdout.log"
-                stderr_path = recovery_dir / "start_emulator_stderr.log"
+                # or ADB descendants can inherit a captured PowerShell pipe
+                # after the stop/start script exits or is killed on timeout,
+                # preventing communicate() from observing EOF. Direct both
+                # lifecycle scripts to files so the timeout remains bounded.
+                stdout_path, stderr_path = stdio_paths
                 with (
                     stdout_path.open("wb") as stdout_stream,
                     stderr_path.open("wb") as stderr_stream,
