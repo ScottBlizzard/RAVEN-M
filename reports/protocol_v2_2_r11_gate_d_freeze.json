@@ -1,0 +1,52 @@
+{
+  "schema_version": "protocol_v2_2_r11_gate_d_freeze.v1",
+  "checked_at": "2026-07-28T11:53:23Z",
+  "passed": true,
+  "protocol": "androidworld_protocol_v2_2_exploratory",
+  "source_tag": "protocol-v2-2-gate-e-r11-dev",
+  "source_commit": "3f419e2babcc08c770381bd6e44ee2c184198811",
+  "freeze_file_count": 27,
+  "verification": {
+    "full_pytest": {
+      "passed": true,
+      "test_count": 209
+    },
+    "protocol_v1_seal": {
+      "passed": true,
+      "file_count": 197,
+      "failure_count": 0
+    },
+    "r10_diagnostic_preserved": {
+      "passed": true,
+      "report": "reports/protocol_v2_2_r10_diagnostic.json",
+      "result_count": 1
+    },
+    "exact_target_repair_contract": {
+      "passed": true,
+      "same_screen_long_press_forbidden": true,
+      "non_long_press_information_gathering_required": true,
+      "selection_deferred_until_later_policy_step": true
+    },
+    "same_screen_search_integration": {
+      "passed": true,
+      "wrong_long_press_executed": false,
+      "repaired_search_tap_executed": true
+    }
+  },
+  "r11_changes": [
+    "forbid long_press in the one repair after any exact-target mismatch",
+    "require Search, view change, scrolling, or another information-gathering action",
+    "defer file selection until a later policy step observes the new screen"
+  ],
+  "preserved_controls": {
+    "same_task_schedule_as_r10": true,
+    "same_instance_and_order_seeds_as_r10": true,
+    "same_step_and_model_budgets_as_r10": true,
+    "same_prompts_and_schemas_as_r10": true,
+    "no_target_coordinate_injection": true,
+    "no_silent_action_retargeting": true,
+    "one_bounded_repair_unchanged": true,
+    "no_evaluator_state_in_model_inputs": true,
+    "r10_development_evidence_immutable": true
+  }
+}
