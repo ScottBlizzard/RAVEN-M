@@ -146,6 +146,11 @@ memory authority, and Critic enforcement.
   repair remains a single non-commit action and may not repeat navigation that
   already produced no semantic progress. No field coordinate is injected and
   no action is silently rewritten.
+- If a declared-source mismatch occurs while the current accessibility state
+  proves that a soft keyboard is visible, the same bounded repair must return
+  `press_back` exactly. It may not swipe within the keyboard, type a different
+  value, tap, or commit. Only the keyboard-present boolean is carried into the
+  validation audit; keyboard geometry and field coordinates remain hidden.
 - For a coordinate-bearing `task_literal` edit, the controller derives coarse
   semantic roles from the task sentence/line containing that literal and the
   visible label metadata of the editable hit by the coordinate. When both

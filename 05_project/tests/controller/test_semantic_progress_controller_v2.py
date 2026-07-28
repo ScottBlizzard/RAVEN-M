@@ -376,6 +376,54 @@ class FabricatedTaskLiteralThenPhoneClient:
         )
 
 
+class FabricatedTaskLiteralThenBackClient:
+    def __init__(self) -> None:
+        self.requests: list[dict] = []
+
+    def generate(self, **kwargs) -> ModelCall:
+        self.requests.append(kwargs)
+        label = kwargs["call_label"]
+        action = (
+            {"type": "press_back"}
+            if label.endswith("_repair")
+            else {
+                "type": "type_text",
+                "text": "Tech Solutions",
+                "text_origin": "task_literal",
+                "source_memory_ids": [],
+                "x": 0.45,
+                "y": 0.55,
+                "clear_text": True,
+            }
+        )
+        decision = {
+            "status": "continue",
+            "action": action,
+            "expected_outcome": "The contact form remains safe.",
+            "decision_summary": "Recover without filling an optional field.",
+            "state_delta": [],
+            "memory_citations": [],
+            "completion_evidence": [],
+        }
+        return ModelCall(
+            call_id=label,
+            episode_id=kwargs["episode_id"],
+            idempotency_key=label,
+            image_sha256="0" * 64,
+            image_sha256s=("0" * 64,),
+            prompt_sha256=label,
+            request_sha256=label,
+            response_sha256=label,
+            content=json.dumps(decision),
+            usage={
+                "prompt_tokens": 1,
+                "completion_tokens": 1,
+                "total_tokens": 2,
+            },
+            raven_meta={},
+        )
+
+
 class PhoneInCompanyThenPhoneClient:
     def __init__(self) -> None:
         self.requests: list[dict] = []
@@ -809,6 +857,18 @@ class ContactFieldsEnv(DestinationPickerEnv):
         assert action.text == "+17634322348"
         assert action.clear_text is True
         self.execute_count += 1
+
+
+class ContactFieldsNoKeyboardEnv(ContactFieldsEnv):
+    def get_state(self, wait_to_stabilize: bool):
+        state = super().get_state(wait_to_stabilize)
+        state.ui_elements = [
+            element
+            for element in state.ui_elements
+            if element.package_name
+            != "com.google.android.inputmethod.latin"
+        ]
+        return state
 
 
 class KeyboardSwipeEnv(DestinationPickerEnv):
@@ -1553,7 +1613,7 @@ def test_controller_repairs_fabricated_task_literal_to_requested_value(
     tmp_path: Path,
 ) -> None:
     root = Path(__file__).resolve().parents[2]
-    env = ContactFieldsEnv()
+    env = ContactFieldsNoKeyboardEnv()
     client = FabricatedTaskLiteralThenPhoneClient()
     controller = EpisodeController(
         client=client,  # type: ignore[arg-type]
@@ -1593,6 +1653,43 @@ def test_controller_repairs_fabricated_task_literal_to_requested_value(
     assert "visible empty editable field" in repair_prompt
     assert "fill that requested value in its matching field now" in repair_prompt
     assert "leaves the unspecified field untouched" in repair_prompt
+
+
+def test_controller_enforces_keyboard_dismissal_repair_contract(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = ContactFieldsEnv()
+    client = FabricatedTaskLiteralThenPhoneClient()
+    controller = EpisodeController(
+        client=client,  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=1,
+        max_model_calls=2,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=ContactTask(),
+        episode_id="keyboard-source-contract-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="M0",
+    )
+    assert env.execute_count == 0
+    assert summary["termination_reason"] == (
+        "model_output_invalid_after_repair"
+    )
+    assert "SOFT_KEYBOARD_DISMISS_REQUIRED" in summary[
+        "model_output_error"
+    ]["initial_validation_error"]
+    assert "REPAIR_CONTRACT_GUARD" in summary[
+        "model_output_error"
+    ]["repair_validation_error"]
 
 
 def test_controller_repairs_phone_from_company_to_phone_field(
@@ -1636,6 +1733,49 @@ def test_controller_repairs_phone_from_company_to_phone_field(
     assert "Keep action.type=type_text" in repair_prompt
     assert "exact same text, text_origin" in repair_prompt
     assert "Do not fill an unrelated optional field" in repair_prompt
+
+
+def test_controller_dismisses_keyboard_after_fabricated_source_value(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = KeyboardSwipeEnv()
+    client = FabricatedTaskLiteralThenBackClient()
+    controller = EpisodeController(
+        client=client,  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=1,
+        max_model_calls=2,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=ContactTask(),
+        episode_id="fabricated-source-keyboard-repair-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="M0",
+    )
+    assert env.execute_count == 1
+    assert summary["model_call_count"] == 2
+    assert summary["steps"][0]["decision"]["action"] == {
+        "type": "press_back"
+    }
+    error = summary["steps"][0]["parse"]["initial_validation_error"]
+    assert "DECLARED_TEXT_SOURCE_GUARD" in error
+    assert "SOFT_KEYBOARD_DISMISS_REQUIRED" in error
+    audit = summary["protocol_v2_guard"]
+    assert audit["declared_text_source_block_count"] == 1
+    assert audit["soft_keyboard_swipe_block_count"] == 0
+    block = audit["validation_blocks"][0]
+    assert block["soft_keyboard_present"] is True
+    repair_prompt = client.requests[1]["user_prompt"]
+    assert 'action exactly {"type":"press_back"}' in repair_prompt
+    assert "Do not swipe, type, tap, save" in repair_prompt
 
 
 def test_controller_repairs_keyboard_swipe_to_keyboard_dismissal(

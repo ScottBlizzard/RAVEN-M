@@ -978,6 +978,7 @@ class ProtocolV2DecisionGuard:
         *,
         page_sha256: str,
         declared_source_assessment: dict[str, Any] | None = None,
+        declared_source_soft_keyboard_present: bool = False,
     ) -> None:
         action = decision.get("action")
         if not isinstance(action, dict) or action.get("type") not in TEXT_ACTIONS:
@@ -1019,6 +1020,9 @@ class ProtocolV2DecisionGuard:
                     "action": action,
                     "reason": "declared_text_source_not_matched",
                     "declared_text_source_assessment": source_assessment,
+                    "soft_keyboard_present": (
+                        declared_source_soft_keyboard_present
+                    ),
                     "required_recovery_classes": [
                         "use_bound_declared_text_source",
                         "leave_unspecified_optional_field_untouched",
@@ -1033,11 +1037,19 @@ class ProtocolV2DecisionGuard:
                     "same-turn visual critic did not verify the exact answer "
                     "as fully readable and task-bound."
                 )
+            keyboard_recovery = ""
+            if declared_source_soft_keyboard_present:
+                keyboard_recovery = (
+                    " SOFT_KEYBOARD_DISMISS_REQUIRED: the soft keyboard is "
+                    "visible, so this bounded source repair must press back "
+                    "once instead of swiping, typing, or changing a field."
+                )
             raise ActionValidationError(
                 "DECLARED_TEXT_SOURCE_GUARD: the proposed text declares "
                 f"text_origin={origin}, but it is not present in that "
                 "declared source on this turn."
                 + visual_rejection
+                + keyboard_recovery
                 + " Do not relabel or invent the "
                 "text. Use only a value visibly present in TASK or the "
                 "current screen as declared, or leave an unspecified "
@@ -1067,12 +1079,16 @@ class ProtocolV2DecisionGuard:
         soft_keyboard_swipe_assessment: dict[str, Any] | None = None,
         coordinate_text_target_assessment: dict[str, Any] | None = None,
         declared_text_source_assessment: dict[str, Any] | None = None,
+        declared_source_soft_keyboard_present: bool = False,
         task_literal_field_role_assessment: dict[str, Any] | None = None,
     ) -> None:
         self._validate_text_provenance(
             decision,
             page_sha256=page_sha256,
             declared_source_assessment=declared_text_source_assessment,
+            declared_source_soft_keyboard_present=(
+                declared_source_soft_keyboard_present
+            ),
         )
         action = decision.get("action")
         if not isinstance(action, dict):

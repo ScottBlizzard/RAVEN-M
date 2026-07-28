@@ -775,9 +775,25 @@ class EpisodeController:
             else {}
         )
 
-        def parse_and_validate(content: str) -> Any:
+        def parse_and_validate(
+            content: str,
+            *,
+            repair_contract_error: str | None = None,
+        ) -> Any:
             nonlocal adjudication_model_call_count
             parsed_candidate = parse_action_response(content, **parse_kwargs)
+            if (
+                repair_contract_error
+                and "SOFT_KEYBOARD_DISMISS_REQUIRED:"
+                in repair_contract_error
+                and parsed_candidate.decision.get("action")
+                != {"type": "press_back"}
+            ):
+                raise ActionValidationError(
+                    "REPAIR_CONTRACT_GUARD: "
+                    "SOFT_KEYBOARD_DISMISS_REQUIRED permits only the exact "
+                    '{"type":"press_back"} action in this bounded repair.'
+                )
             self.history_policy.validate_decision(parsed_candidate.decision)
             if self.decision_guard is not None:
                 picker_commit_is_action = destination_picker_commit_action(
@@ -984,6 +1000,12 @@ class EpisodeController:
                         text_target_assessment
                     ),
                     declared_text_source_assessment=source_assessment,
+                    declared_source_soft_keyboard_present=bool(
+                        self.protocol_v2_2
+                        and focused_input_assessment.get(
+                            "soft_keyboard_present"
+                        )
+                    ),
                     task_literal_field_role_assessment=(
                         field_role_assessment
                     ),
@@ -1078,7 +1100,10 @@ class EpisodeController:
             )
             calls.append(repaired)
             try:
-                parsed = parse_and_validate(repaired.content)
+                parsed = parse_and_validate(
+                    repaired.content,
+                    repair_contract_error=str(initial_error),
+                )
             except ActionValidationError as repair_error:
                 raise ModelOutputInvalid(
                     calls=calls,

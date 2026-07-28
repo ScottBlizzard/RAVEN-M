@@ -413,3 +413,21 @@ adds one exact fallback mapping from that AndroidWorld error to
 two-consecutive-failure stop, and startup audit remain authoritative. No
 controller, prompt, schema, task, seed, step/model budget, evaluator, or
 acceptance threshold changes.
+
+## r28 declared-source keyboard-aware repair
+
+The first r27 formal cell entered the requested first and last names safely.
+It then proposed the unrequested Company value `Tech Solutions`, which the
+declared-source guard correctly rejected. Although the same frozen screenshot
+showed the soft keyboard, that state was not carried into the source-repair
+error. The bounded repair attempted to swipe from inside the keyboard and was
+correctly rejected by the later keyboard guard, leaving no second repair.
+No blocked action or contact commit executed.
+
+r28 passes only a boolean `soft_keyboard_present` from the already computed
+current-screen assessment into declared-source validation. On a source
+mismatch with that boolean true, the existing one-repair contract must return
+exactly `press_back`, dismissing the keyboard and deferring field navigation
+to a later observed step. It does not expose keyboard geometry, authorize the
+invalid text, select a field, inject a coordinate, rewrite a task value, or add
+a model call.
