@@ -219,6 +219,18 @@ memory authority, and Critic enforcement.
   select/long-press an item, start another Move/Copy, or wait on stale source
   state. Any such blocked action has one exact `press_back` repair to dismiss
   the menu, selection, or unintended second picker before re-observation.
+- Within an active Android Files destination picker, consequential-action
+  classification uses an accessibility hit on the enabled bottom Copy/Move
+  control rather than action-summary prose. In a rendered empty current
+  directory, wait, swipe, and taps that hit neither Copy/Move nor the enabled
+  top-left roots drawer are rejected before execution. The sole repair must
+  choose one of those visible controls without receiving a target coordinate.
+- For same-turn review of the actual Copy/Move commit, an exact task
+  destination visible as the current title or final breadcrumb component plus
+  the enabled bottom commit control is sufficient destination binding.
+  `No items` and the native empty-folder illustration indicate a valid empty
+  directory and are not, by themselves, evidence of loading or an unbound
+  destination.
 - Planner completion evidence IDs may cite routed FACT only. HYPOTHESIS can
   guide verification but cannot satisfy completion.
 

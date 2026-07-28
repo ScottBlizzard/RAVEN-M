@@ -1388,11 +1388,13 @@ def test_destination_picker_empty_stall_assessment_exposes_no_ui_text() -> None:
     )
     assert assessment == {
         "schema_version": (
-            "destination_picker_empty_stall_assessment.v1"
+            "destination_picker_empty_stall_assessment.v2"
         ),
         "adjudicable": True,
         "action_type": "swipe",
+        "control_bound_tap": None,
         "empty_destination_state": True,
+        "unsupported_tap": False,
         "visible_empty_marker_count": 1,
         "stalling_action": True,
     }
@@ -1406,6 +1408,67 @@ def test_destination_picker_empty_stall_assessment_exposes_no_ui_text() -> None:
     )
     assert not no_marker["adjudicable"]
     assert not no_marker["empty_destination_state"]
+
+
+def test_destination_picker_empty_stall_rejects_only_unbound_taps() -> None:
+    elements = [
+        {
+            "text": "No items",
+            "is_visible": True,
+            "is_enabled": True,
+        },
+        {
+            "content_description": "Show roots",
+            "is_visible": True,
+            "is_enabled": True,
+            "bbox": {
+                "x_min": 0.03,
+                "x_max": 0.10,
+                "y_min": 0.05,
+                "y_max": 0.11,
+            },
+        },
+        {
+            "text": "MOVE",
+            "is_visible": True,
+            "is_enabled": True,
+            "bbox": {
+                "x_min": 0.28,
+                "x_max": 0.50,
+                "y_min": 0.91,
+                "y_max": 0.98,
+            },
+        },
+    ]
+    unbound = destination_picker_empty_stall_assessment(
+        elements,
+        {"type": "tap", "x": 0.385, "y": 0.075},
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert unbound["control_bound_tap"] is False
+    assert unbound["unsupported_tap"]
+    assert unbound["stalling_action"]
+
+    drawer = destination_picker_empty_stall_assessment(
+        elements,
+        {"type": "tap", "x": 0.065, "y": 0.08},
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert drawer["control_bound_tap"] is True
+    assert not drawer["unsupported_tap"]
+    assert not drawer["stalling_action"]
+
+    commit = destination_picker_empty_stall_assessment(
+        elements,
+        {"type": "tap", "x": 0.385, "y": 0.945},
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert commit["control_bound_tap"] is True
+    assert not commit["unsupported_tap"]
+    assert not commit["stalling_action"]
 
 
 def test_destination_picker_guard_blocks_empty_wait_or_swipe() -> None:
@@ -1442,6 +1505,46 @@ def test_destination_picker_guard_blocks_empty_wait_or_swipe() -> None:
     assert audit["destination_picker_empty_stall_block_count"] == 1
     assert audit["validation_blocks"][-1]["reason"] == (
         "destination_picker_empty_stall_blocked"
+    )
+
+
+def test_destination_picker_guard_blocks_empty_unbound_tap() -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(goal="Move a file")
+    elements = [
+        {"text": "No items", "is_visible": True},
+        {
+            "content_description": "Show roots",
+            "is_visible": True,
+            "is_enabled": True,
+            "bbox": {
+                "x_min": 0.03,
+                "x_max": 0.10,
+                "y_min": 0.05,
+                "y_max": 0.11,
+            },
+        },
+    ]
+    action = {"type": "tap", "x": 0.385, "y": 0.075}
+    assessment = destination_picker_empty_stall_assessment(
+        elements,
+        action,
+        screen_width=1080,
+        screen_height=2400,
+    )
+    with pytest.raises(
+        ActionValidationError,
+        match="DESTINATION_PICKER_EMPTY_STALL_REQUIRED",
+    ):
+        guard.validate_decision(
+            decision(action),
+            page_sha256="empty-picker",
+            destination_picker_is_active=True,
+            destination_picker_empty_stall_assessment=assessment,
+        )
+    assert (
+        guard.audit_record()["destination_picker_empty_stall_block_count"]
+        == 1
     )
 
 

@@ -873,6 +873,7 @@ class EpisodeController:
                     '{"type":"press_back"} action in this bounded repair.'
                 )
             self.history_policy.validate_decision(parsed_candidate.decision)
+            picker_commit_is_action = False
             if self.decision_guard is not None:
                 picker_commit_is_action = destination_picker_commit_action(
                     ui_elements,
@@ -884,6 +885,8 @@ class EpisodeController:
                     destination_picker_empty_stall_assessment(
                         ui_elements,
                         parsed_candidate.decision.get("action"),
+                        screen_width=screen_width,
+                        screen_height=screen_height,
                     )
                 )
                 transfer_command_is_action = (
@@ -1096,6 +1099,12 @@ class EpisodeController:
                 remaining_model_calls=max(
                     0,
                     self.max_model_calls - model_call_count - len(calls),
+                ),
+                consequential_action_candidate=(
+                    picker_commit_is_action
+                    if self.protocol_v2_2
+                    and destination_picker_is_active
+                    else None
                 ),
             )
             calls.extend(action_adjudication.calls)

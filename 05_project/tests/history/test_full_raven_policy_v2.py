@@ -160,6 +160,47 @@ def test_v2_skips_action_critic_for_reversible_navigation(
     assert result.record is None
 
 
+def test_v2_destination_picker_override_uses_actual_control_semantics(
+    tmp_path: Path,
+) -> None:
+    value, image = policy(tmp_path, "reobserve")
+    misleading_prose = {
+        **consequential_candidate(),
+        "expected_outcome": "The navigation drawer opens.",
+        "decision_summary": (
+            "Open the menu to confirm the destination before moving."
+        ),
+    }
+    reversible = value.adjudicate_action(
+        misleading_prose,
+        image_path=image,
+        episode_id="e",
+        step=2,
+        remaining_model_calls=2,
+        consequential_action_candidate=False,
+    )
+    assert reversible.accepted
+    assert not reversible.calls
+    assert reversible.record is None
+
+    visually_bound_commit = {
+        **misleading_prose,
+        "expected_outcome": "The next view opens.",
+        "decision_summary": "Open the next view.",
+    }
+    commit = value.adjudicate_action(
+        visually_bound_commit,
+        image_path=image,
+        episode_id="e",
+        step=2,
+        remaining_model_calls=2,
+        consequential_action_candidate=True,
+    )
+    assert not commit.accepted
+    assert len(commit.calls) == 1
+    assert commit.record["trigger"] == "consequential_action_candidate"
+
+
 def test_m0_and_mrel_share_v2_completion_implementation() -> None:
     kwargs = {
         "client": CriticClient("proceed"),

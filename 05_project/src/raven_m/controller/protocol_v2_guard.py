@@ -605,8 +605,11 @@ def destination_picker_active(
 def destination_picker_empty_stall_assessment(
     ui_elements: Any,
     action: dict[str, Any] | None,
+    *,
+    screen_width: int | None = None,
+    screen_height: int | None = None,
 ) -> dict[str, Any]:
-    """Detect navigation-stalling actions in a rendered empty destination."""
+    """Detect actions that cannot progress a rendered empty destination."""
     action_type = (
         action.get("type") if isinstance(action, dict) else None
     )
@@ -622,14 +625,39 @@ def destination_picker_empty_stall_assessment(
         if texts & {"no items", "folder is empty", "empty folder"}:
             visible_empty_marker_count += 1
     empty_destination_state = visible_empty_marker_count > 0
-    stalling_action = action_type in {"wait", "swipe"}
+    control_bound_tap: bool | None = None
+    if (
+        action_type == "tap"
+        and isinstance(screen_width, int)
+        and screen_width > 0
+        and isinstance(screen_height, int)
+        and screen_height > 0
+    ):
+        control_bound_tap = bool(
+            destination_picker_commit_action(
+                ui_elements,
+                action,
+                screen_width=screen_width,
+                screen_height=screen_height,
+            )
+            or destination_picker_navigation_drawer_action(
+                ui_elements,
+                action,
+                screen_width=screen_width,
+                screen_height=screen_height,
+            )
+        )
+    unsupported_tap = control_bound_tap is False
+    stalling_action = action_type in {"wait", "swipe"} or unsupported_tap
     return {
         "schema_version": (
-            "destination_picker_empty_stall_assessment.v1"
+            "destination_picker_empty_stall_assessment.v2"
         ),
         "adjudicable": empty_destination_state,
         "action_type": action_type,
+        "control_bound_tap": control_bound_tap,
         "empty_destination_state": empty_destination_state,
+        "unsupported_tap": unsupported_tap,
         "visible_empty_marker_count": visible_empty_marker_count,
         "stalling_action": stalling_action,
     }
@@ -1508,11 +1536,12 @@ class ProtocolV2DecisionGuard:
                 "DESTINATION_PICKER_GUARD: "
                 "DESTINATION_PICKER_EMPTY_STALL_REQUIRED: the destination "
                 "picker has fully rendered an empty current directory. "
-                "Waiting or swiping cannot reveal sibling folders. If the "
-                "visible current directory is the TASK destination, tap the "
-                "visible bottom Copy/Move control; otherwise tap the visible "
-                "top-left navigation drawer. Do not wait, swipe, press back, "
-                "or guess a content-area coordinate."
+                "Waiting, swiping, or tapping an unbound title/content area "
+                "cannot reveal sibling folders. If the visible current "
+                "directory is the TASK destination, tap the visible bottom "
+                "Copy/Move control; otherwise tap the visible top-left "
+                "navigation drawer. Do not wait, swipe, press back, or guess "
+                "a title/content-area coordinate."
             )
         action_key = canonical_action_key(action)
         if (

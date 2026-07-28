@@ -480,3 +480,31 @@ If a repeat transfer, reselection, or wait is rejected, the sole bounded repair
 must be exactly `press_back`, dismissing the current menu, selection mode, or
 unintended second picker before a fresh observation. No automatic completion,
 extra repair, task, seed, budget, evaluator, or threshold change is allowed.
+
+## r31 empty-destination action semantics
+
+The r30 formal suite again completed Contacts, Calendar, and Expense with
+native reward 1.0. In Files, the requested file was selected safely and the
+destination picker visibly showed `Ringtones` both as its title and as the
+final breadcrumb component, with `No items` and an enabled bottom `MOVE`
+control. The executor proposed a tap in an unbound title-bar area while its
+summary used the word `confirm`. The prose-based consequential classifier
+therefore sent this reversible, non-control tap to the commit Critic. The
+Critic reasoned about a commit that had not been proposed and mistook the
+native empty-folder illustration for a loading spinner. Its repair proposed
+`wait`; the existing empty-picker guard correctly blocked the stall. No
+incorrect commit or blocked action executed.
+
+r31 makes the actual accessibility control hit authoritative inside an active
+Android Files destination picker. Only a tap that hits the enabled bottom
+Copy/Move control is a consequential commit; navigation and unbound taps are
+not classified from planner prose. In a fully rendered empty directory, the
+guard now rejects wait, swipe, and any tap that hits neither Copy/Move nor the
+visible top-left roots drawer. The single repair must choose one of those two
+visible controls according to whether the current directory matches the task
+destination. The Critic prompt also records the native UI semantics: an exact
+title or final breadcrumb plus the enabled commit control is sufficient
+current-destination binding, while `No items` and the empty-folder
+illustration are not loading evidence. The real commit still receives a fresh
+same-turn Critic verdict; no coordinate, target decision, evaluator state,
+extra repair, task, seed, budget, or acceptance change is introduced.

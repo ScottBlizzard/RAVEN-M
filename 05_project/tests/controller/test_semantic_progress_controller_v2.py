@@ -125,6 +125,34 @@ class EmptyPickerWaitThenDrawerClient:
         )
 
 
+class EmptyPickerUnboundTapThenDrawerClient(
+    EmptyPickerWaitThenDrawerClient
+):
+    def generate(self, **kwargs) -> ModelCall:
+        call = super().generate(**kwargs)
+        if kwargs["call_label"].endswith("_repair"):
+            return call
+        decision = json.loads(call.content)
+        decision["action"] = {"type": "tap", "x": 0.385, "y": 0.075}
+        decision["expected_outcome"] = "The destination is confirmed."
+        decision["decision_summary"] = (
+            "Tap the title area to confirm the destination before moving."
+        )
+        return ModelCall(
+            call_id=call.call_id,
+            episode_id=call.episode_id,
+            idempotency_key=call.idempotency_key,
+            image_sha256=call.image_sha256,
+            image_sha256s=call.image_sha256s,
+            prompt_sha256=call.prompt_sha256,
+            request_sha256=call.request_sha256,
+            response_sha256=call.response_sha256,
+            content=json.dumps(decision),
+            usage=call.usage,
+            raven_meta=call.raven_meta,
+        )
+
+
 class CriticRejectedCommitThenDrawerClient:
     def __init__(self, *, valid_repair: bool = True) -> None:
         self.valid_repair = valid_repair
@@ -649,13 +677,27 @@ class DestinationPickerEnv:
 class EmptyDestinationPickerEnv(DestinationPickerEnv):
     def get_state(self, wait_to_stabilize: bool):
         state = super().get_state(wait_to_stabilize)
-        state.ui_elements.append(
-            SimpleNamespace(
-                package_name="files",
-                text="No items",
-                is_visible=True,
-                is_enabled=True,
-            )
+        state.ui_elements.extend(
+            [
+                SimpleNamespace(
+                    package_name="files",
+                    content_description="Show roots",
+                    is_visible=True,
+                    is_enabled=True,
+                    bbox=SimpleNamespace(
+                        x_min=0.03,
+                        x_max=0.10,
+                        y_min=0.05,
+                        y_max=0.11,
+                    ),
+                ),
+                SimpleNamespace(
+                    package_name="files",
+                    text="No items",
+                    is_visible=True,
+                    is_enabled=True,
+                ),
+            ]
         )
         return state
 
@@ -1466,6 +1508,48 @@ def test_controller_repairs_empty_picker_wait_to_navigation(
     assert "visible current directory" in repair_prompt
     assert "visible top-left navigation drawer" in repair_prompt
     assert "Do not wait, swipe, press_back" in repair_prompt
+
+
+def test_controller_repairs_empty_picker_unbound_title_tap(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = EmptyDestinationPickerEnv()
+    client = EmptyPickerUnboundTapThenDrawerClient()
+    controller = EpisodeController(
+        client=client,  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=1,
+        max_model_calls=2,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="empty-picker-unbound-tap-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="B3",
+    )
+    assert env.execute_count == 1
+    assert summary["model_call_count"] == 2
+    assert summary["steps"][0]["decision"]["action"] == {
+        "type": "tap",
+        "x": 0.07,
+        "y": 0.08,
+    }
+    assert "DESTINATION_PICKER_EMPTY_STALL_REQUIRED" in summary[
+        "steps"
+    ][0]["parse"]["initial_validation_error"]
+    assessment = summary["protocol_v2_guard"]["validation_blocks"][0][
+        "destination_picker_empty_stall_assessment"
+    ]
+    assert assessment["control_bound_tap"] is False
+    assert assessment["unsupported_tap"]
 
 
 def test_controller_repairs_critic_rejected_picker_commit_to_roots(

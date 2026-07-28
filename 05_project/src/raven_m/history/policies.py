@@ -124,8 +124,16 @@ class HistoryPolicy:
         episode_id: str,
         step: int,
         remaining_model_calls: int,
+        consequential_action_candidate: bool | None = None,
     ) -> CompletionAdjudication:
-        del decision, image_path, episode_id, step, remaining_model_calls
+        del (
+            decision,
+            image_path,
+            episode_id,
+            step,
+            remaining_model_calls,
+            consequential_action_candidate,
+        )
         return CompletionAdjudication()
 
     def context(self) -> HistoryContext:
@@ -861,8 +869,14 @@ class FullRavenMemoryPolicyV2(FullRavenMemoryPolicy):
         episode_id: str,
         step: int,
         remaining_model_calls: int,
+        consequential_action_candidate: bool | None = None,
     ) -> CompletionAdjudication:
-        if not self._is_consequential_action(decision):
+        is_consequential = (
+            self._is_consequential_action(decision)
+            if consequential_action_candidate is None
+            else consequential_action_candidate
+        )
+        if not is_consequential:
             return CompletionAdjudication()
         bundle_text, routed = self.manager.context(step=len(self.entries))
         allowed_ids = {

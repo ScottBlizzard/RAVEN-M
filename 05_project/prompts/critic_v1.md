@@ -24,6 +24,13 @@ before it executes. Return `proceed` only when the exact task target and every
 commit-critical variable are visibly bound on the current screenshot. For a
 Move/Copy confirmation, the exact required destination must be visible as the
 selected/current destination and the commit control itself must be visible.
+In the Android Files destination picker, an exact destination shown as the
+current top title or final breadcrumb component, together with the enabled
+bottom Move/Copy control, is sufficient current-destination binding. `No
+items`, `Folder is empty`, or the native empty-folder illustration means the
+current directory is valid and empty; it is not by itself evidence of loading
+or an unbound selection. Do not require a separate selected highlight for the
+current directory and do not reject solely because it contains no files.
 Do not accept "current destination", intended outcomes, planner text, or
 HYPOTHESIS memory as proof. Use `reobserve` or `recover` with a concrete
 constraint when binding is absent or the named control is not visible.
