@@ -1,0 +1,123 @@
+{
+  "schema_version": "protocol_v2_2_r29_diagnostic.v1",
+  "checked_at": "2026-07-28T20:16:30Z",
+  "passed": false,
+  "native_task_success": true,
+  "policy_behavior_validated": false,
+  "formal_gate_authorized": false,
+  "source_tag": "protocol-v2-2-gate-e-r29-dev",
+  "source_commit": "60fa9f5f7147e8e54ac40e786baf729a7461d472",
+  "preflight": {
+    "report": "reports/protocol_v2_2_gate_e_r29_preflight.json",
+    "passed": true,
+    "freeze_file_checks": 27,
+    "freeze_file_failures": 0,
+    "emulator_connected": true,
+    "model_healthy": true,
+    "model_calls": 0,
+    "fresh_formal_suite_directory_absent": true,
+    "hard_overlap": []
+  },
+  "tests": {
+    "protocol_v2_suite_passed": true,
+    "protocol_v2_tests": 290,
+    "protocol_v1_seal_passed": true,
+    "protocol_v1_files": 197,
+    "r29_good_roots_repair_unit_tested": true,
+    "r29_non_roots_repair_rejected_before_execution": true
+  },
+  "files_diagnostic": {
+    "run": "runs/protocol_v2_2_development/nonhard_capability_v2_2_seed20260729_r29_development_smoke_sequence_4",
+    "episode": "runs/protocol_v2_2_development/nonhard_capability_v2_2_seed20260729_r29_development_smoke_sequence_4/episodes/04_M0_FilesMoveFile_seed20260729",
+    "sequence": 4,
+    "variant": "M0",
+    "task": "FilesMoveFile",
+    "evaluator_reward": 1.0,
+    "success": true,
+    "termination_reason": "model_output_invalid_after_repair",
+    "failure_code": null,
+    "executed_steps": 18,
+    "model_calls": 31,
+    "executor_model_calls": 24,
+    "history_model_calls": 7,
+    "valid_after_one_repair": false,
+    "semantic_progress_audit_passed": true,
+    "validation_block_count": 5,
+    "executed_blocked_action_steps": [],
+    "unresolved_guard_repair": false,
+    "infrastructure_attempt_count": 0,
+    "elapsed_seconds": 745.5160000000033
+  },
+  "successful_task_evidence": {
+    "wrong_similar_file_long_press_blocked": true,
+    "focused_search_repair_preserved": true,
+    "requested_file_selected": true,
+    "ringtones_selected_before_commit": true,
+    "consequential_move_critic_verdict": "proceed",
+    "destination_picker_commit_count": 1,
+    "post_commit_repeat_mutations_executed": 0,
+    "native_evaluator_reward": 1.0
+  },
+  "r29_boundary_coverage": {
+    "critic_rejected_wrong_destination_commit_observed": false,
+    "reason": "In this stochastic replay the executor opened Show roots before proposing the first bottom Move commit, so the r28 failure boundary did not recur.",
+    "real_environment_safe_path_observed": true,
+    "deterministic_contract_coverage": "Unit tests prove that only an accessibility-bound top-left Show roots tap can execute when the r29 marker is present; press_back and other targets execute zero actions."
+  },
+  "terminal_failure_evidence": {
+    "step": 18,
+    "screenshot": "step_018_before.png",
+    "screenshot_sha256": "624ece13eb91352bc2dfd0aa7e02c49b02c0852ab53d55b9b789f9ae550673b5",
+    "visible_state": {
+      "source_heading": "Files in Music",
+      "search_query": "nature_sounds.mp3",
+      "selection_count": 1,
+      "overflow_menu_open": true,
+      "move_to_command_visible": true
+    },
+    "initial_candidate": {
+      "action_type": "tap",
+      "target": "Move to...",
+      "blocked": true,
+      "error": "POST_DESTINATION_COMMIT_GUARD"
+    },
+    "bounded_repair_candidate": {
+      "action_type": "wait",
+      "duration_ms": 1000,
+      "blocked": true,
+      "error": "CRITIC_CONSTRAINT",
+      "reason": "The same wait had already been used twice without changing the semantic state."
+    },
+    "post_destination_commit_block_count": 3,
+    "blocked_action_executed": false,
+    "second_move_commit_executed": false
+  },
+  "root_cause": {
+    "summary": "After the single successful destination commit, later policy prompts did not carry the already-audited post-commit state, and the dedicated guard had only a generic repair directive.",
+    "details": [
+      "The first Move commit was correctly bound to Ringtones and accepted by the consequential-action Critic.",
+      "The next screenshot returned to a stale source/search view, which the model misread as an instruction to start another move.",
+      "The post-commit guard correctly blocked all three later Move to candidates.",
+      "Its generic one-repair prompt permitted wait; two waits made no semantic progress, and the third identical repair conflicted with the active Critic constraint."
+    ],
+    "native_task_failure": false,
+    "infrastructure_failure": false,
+    "protocol_validity_failure": true
+  },
+  "r30_required_change": {
+    "scope": "All policy steps after the first audited bottom Copy/Move commit, plus the bounded repair for a blocked repeat transfer.",
+    "mechanism": [
+      "Expose only the already-audited boolean post_destination_commit_active in the policy prompt.",
+      "Forbid selecting the task item, reopening overflow Move/Copy, or waiting on an unchanged stale source/search view.",
+      "Direct the policy to use reversible navigation to inspect the requested destination or return terminal status only with direct-screen completion evidence.",
+      "When a repeat transfer is blocked, constrain the sole repair to exactly press_back so the menu or second picker is dismissed without another mutation."
+    ],
+    "prohibited": [
+      "Using native evaluator reward inside the policy loop",
+      "Automatically declaring success after a commit",
+      "Allowing a second Move/Copy transaction",
+      "Adding a repair call",
+      "Changing task, seed, budgets, evaluator, or thresholds"
+    ]
+  }
+}
