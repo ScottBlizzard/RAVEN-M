@@ -20,6 +20,10 @@ memory authority, and Critic enforcement.
 - The same foreground/tree consistency check runs after every action, because
   chooser and resolver overlays can temporarily change the foreground
   activity even when the main app remains open.
+- Coordinate normalization examples distinguish layout regions: on the
+  standard 2400-pixel portrait screen, `y=192` maps to `0.08` and is a typical
+  top-app-bar icon center, while `y=438` maps to about `0.1826` and is content.
+  Search/menu actions must not copy the content-row example.
 - After three consecutive mismatched or missing accessibility observations,
   the controller performs at most one audited AndroidWorld accessibility
   refresh, then continues within the original twelve-observation bound.

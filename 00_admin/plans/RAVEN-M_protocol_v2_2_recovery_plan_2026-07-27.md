@@ -132,6 +132,16 @@ it must change the information state through Search, view change, or scrolling.
 Selection can be attempted only by a later policy step after observing the new
 screen. r11 does not expose a target coordinate or silently retarget an action.
 
+The focused r11 replay enforced the non-`long_press` contract, but its three
+Search attempts used `y` near 0.18, opened content rather than the top app bar,
+and were eventually stopped by the semantic loop guard. That value closely
+matches the bare coordinate-normalization example repeated in every prompt:
+pixel `y=438` becomes normalized `y=0.1826`. r12 replaces the ambiguous worked
+example with an explicit layout contrast: a typical top-app-bar center at
+pixel `y=192` is normalized `y=0.08`, while pixel `y=438` is content and must
+not be used for Search/menu icons. The exact-target repair repeats the same
+generic top-app-bar range without injecting a current accessibility bbox.
+
 ## Qualification order
 
 1. Targeted unit and integration tests.

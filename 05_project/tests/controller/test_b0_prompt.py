@@ -23,7 +23,10 @@ def test_b0_prompt_excludes_hidden_state_and_memory() -> None:
     assert "activity" not in prompt.lower()
     assert "type_text may contain only a value explicitly requested" in prompt
     assert "1080x2400" in prompt
-    assert "y=438 becomes y=0.1826" in prompt
+    assert "y=192 becomes y=0.0800" in prompt
+    assert "a typical top-app-bar icon center" in prompt
+    assert "y=438 becomes y=0.1826 and is in content" in prompt
+    assert "do not use it for Search/menu icons" in prompt
     assert "visible Save/Move/Done button is not proof" in prompt
     assert "schema named in the system prompt" in prompt
     assert "SEMANTIC_PROGRESS_CHECK" not in prompt
@@ -90,6 +93,8 @@ def test_v2_semantic_action_repair_requires_a_different_action() -> None:
     assert 'action.type must not be "long_press"' in prompt
     assert "Do not infer or try another file coordinate" in prompt
     assert "only on a later policy step" in prompt
+    assert "y in 0.06-0.10" in prompt
+    assert "y around 0.18 is content" in prompt
     assert "Correct its format only" not in prompt
     assert error in prompt
 

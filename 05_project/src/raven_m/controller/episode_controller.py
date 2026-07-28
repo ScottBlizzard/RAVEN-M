@@ -375,8 +375,16 @@ class EpisodeController:
         protocol_v2: bool = False,
         protocol_v2_2: bool = False,
     ) -> str:
-        example_pixel_y = min(438, screen_height - 1)
-        example_normalized_y = example_pixel_y / max(screen_height - 1, 1)
+        coordinate_denominator = max(screen_height - 1, 1)
+        app_bar_pixel_y = min(
+            round(0.08 * coordinate_denominator),
+            screen_height - 1,
+        )
+        app_bar_normalized_y = (
+            app_bar_pixel_y / coordinate_denominator
+        )
+        content_pixel_y = min(438, screen_height - 1)
+        content_normalized_y = content_pixel_y / coordinate_denominator
         return "\n".join(
             [
                 f"TASK: {goal}",
@@ -398,7 +406,11 @@ class EpisodeController:
                 f"{screen_width}x{screen_height} pixels.",
                 "COORDINATE_CHECK: JSON coordinates must be normalized decimals "
                 "in [0,1], never pixels. For this image, pixel "
-                f"y={example_pixel_y} becomes y={example_normalized_y:.4f}.",
+                f"y={app_bar_pixel_y} becomes "
+                f"y={app_bar_normalized_y:.4f}, a typical top-app-bar icon "
+                f"center. Pixel y={content_pixel_y} becomes "
+                f"y={content_normalized_y:.4f} and is in content, not the "
+                "top app bar; do not use it for Search/menu icons.",
                 "COMPLETION_CHECK: a visible Save/Move/Done button is not proof "
                 "of completion; execute it and observe the result first.",
                 *(
@@ -472,7 +484,10 @@ class EpisodeController:
                     "information-gathering action; prefer the visible Search "
                     "control, a view-mode change, or scrolling. Selection may "
                     "be attempted only on a later policy step after the new "
-                    "screen is observed.\n"
+                    "screen is observed. For a visible magnifying-glass Search "
+                    "icon in a portrait top app bar, target its icon center "
+                    "with y in 0.06-0.10; y around 0.18 is content and must "
+                    "not be used for that app-bar control.\n"
                 )
         else:
             repair_directive = (
