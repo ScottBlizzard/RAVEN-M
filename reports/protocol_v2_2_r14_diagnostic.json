@@ -1,0 +1,58 @@
+{
+  "schema_version": "protocol_v2_2_r14_diagnostic.v1",
+  "checked_at": "2026-07-28T12:51:04Z",
+  "passed": false,
+  "formal_gate_authorized": false,
+  "source_tag": "protocol-v2-2-gate-e-r14-dev",
+  "source_commit": "8edeea76316b9b5f3253ce00496568b4335b9e92",
+  "run": "runs/protocol_v2_2_development/nonhard_capability_v2_2_seed20260729_r14_development_smoke_sequence_4",
+  "cell": {
+    "sequence": 4,
+    "task": "FilesMoveFile",
+    "variant": "M0",
+    "seed": 20260729,
+    "evaluator_reward": 0.0,
+    "success": false,
+    "termination_reason": "max_steps",
+    "failure_code": "TASK_UNSUCCESSFUL_AT_BUDGET",
+    "executed_step_count": 20,
+    "model_call_count": 30,
+    "executor_model_call_count": 22,
+    "history_model_call_count": 8,
+    "validation_block_count": 1,
+    "unresolved_guard_repair": false,
+    "semantic_progress_audit_passed": true,
+    "valid_after_one_repair": true,
+    "filesystem_mutation_observed": false
+  },
+  "r14_hypothesis_result": {
+    "normal_prompt_contained_focused_text_input_rule": true,
+    "model_described_field_as_active": true,
+    "model_omitted_type_text_coordinates": false,
+    "model_used_clear_text_false": false,
+    "first_post_search_type_text": {
+      "x": 0.5,
+      "y": 0.5,
+      "clear_text": true
+    }
+  },
+  "failure_chain": [
+    "exact-target rejection again repaired to Search successfully",
+    "the next screenshot visibly showed an active Search field with a caret",
+    "despite the explicit r14 prompt rule, the model returned coordinate-bearing type_text with clear_text=true",
+    "the extra click moved focus and clear_text selected files instead of clearing text",
+    "coordinate-bearing type_text and Search retries continued until the 20-step budget ended"
+  ],
+  "root_cause": {
+    "class": "natural_language_focused_input_rule_not_followed",
+    "not_a_guard_repair_failure": true,
+    "not_an_infrastructure_failure": true,
+    "requires_audited_validation_instead_of_more_prompt_emphasis": true
+  },
+  "r15_minimal_change": [
+    "derive only a focused-editable boolean and empty-state boolean from current visible accessibility evidence",
+    "reject coordinate-bearing type_text when a visible editable field is already focused",
+    "use the same step's one bounded model repair to explicitly remove x,y and set clear_text=false for an empty field",
+    "do not strip coordinates, retarget, inject a bbox, or add a model call beyond the existing repair budget"
+  ]
+}
