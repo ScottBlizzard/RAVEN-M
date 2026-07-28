@@ -691,4 +691,6 @@ def test_controller_repairs_wrong_exact_target_to_search(
     assert "GUI action was semantically rejected" in repair_prompt
     assert '"nature_sounds_backup.mp3"' in repair_prompt
     assert "choose a materially different action" in repair_prompt
+    assert 'action.type must not be "long_press"' in repair_prompt
+    assert "only on a later policy step" in repair_prompt
     assert "Correct its format only" not in repair_prompt

@@ -48,9 +48,12 @@ memory authority, and Critic enforcement.
   type and coordinates is invalid.
 - Exact-target rejection states whether the task-literal filename is visible
   and names the full accessibility filename nearest to the proposed
-  coordinate. When the exact target is off-screen, the repair must be a
-  non-long-press navigation action such as Search, view change, or scrolling.
-  This evidence is derived from the current UI and never from evaluator state.
+  coordinate. The one same-screen repair may not use `long_press`, regardless
+  of whether the exact target is in the visible accessibility candidate set.
+  It must change the information state through Search, view change, or
+  scrolling. Selection may be attempted only on a later policy step after the
+  resulting screen is observed. No accessibility-derived target coordinate is
+  exposed, and this evidence never comes from evaluator state.
 - An executed tap inside the enabled bottom `COPY`/`MOVE` control creates an
   auditable post-destination-commit state. Reversible inspection of the exact
   item remains available, but a second `Move to`, `Copy to`, or bottom commit

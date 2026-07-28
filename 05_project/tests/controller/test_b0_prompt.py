@@ -87,6 +87,9 @@ def test_v2_semantic_action_repair_requires_a_different_action() -> None:
     assert "choose a materially different action" in prompt
     assert "Do not repeat the same action type with the same coordinates" in prompt
     assert "using Search, scrolling, changing view" in prompt
+    assert 'action.type must not be "long_press"' in prompt
+    assert "Do not infer or try another file coordinate" in prompt
+    assert "only on a later policy step" in prompt
     assert "Correct its format only" not in prompt
     assert error in prompt
 

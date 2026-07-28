@@ -516,18 +516,23 @@ def test_exact_selection_guard_blocks_wrong_full_filename() -> None:
         "nearest_distance": 0.03,
     }
     with pytest.raises(ActionValidationError, match="EXACT_TARGET_GUARD"):
-        guard.validate_decision(
-            decision(
-                {
-                    "type": "long_press",
-                    "x": 0.75,
-                    "y": 0.51,
-                    "duration_ms": 800,
-                }
-            ),
-            page_sha256="music-grid",
-            exact_selection_assessment=assessment,
-        )
+        try:
+            guard.validate_decision(
+                decision(
+                    {
+                        "type": "long_press",
+                        "x": 0.75,
+                        "y": 0.51,
+                        "duration_ms": 800,
+                    }
+                ),
+                page_sha256="music-grid",
+                exact_selection_assessment=assessment,
+            )
+        except ActionValidationError as error:
+            assert "Do not return any long_press in this repair" in str(error)
+            assert "non-long-press information-gathering action" in str(error)
+            raise
     assessment["matched"] = True
     assessment["nearest_text"] = "nature_sounds.mp3"
     guard.validate_decision(

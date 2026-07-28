@@ -626,9 +626,12 @@ class ProtocolV2DecisionGuard:
                 recovery = (
                     f"The exact task-literal filename {rendered_required} is "
                     "visible, but the proposed coordinate is nearest to "
-                    f"{rendered_nearest}. Choose a materially different "
-                    "coordinate whose nearest full filename is exactly "
-                    f"{rendered_required}, or use Search/list/detail view."
+                    f"{rendered_nearest}. Truncated grid labels make another "
+                    "coordinate guess unsafe. Do not return any long_press "
+                    "in this repair. Choose a non-long-press "
+                    "information-gathering action such as tapping Search, "
+                    "changing view mode, or scrolling; a later policy step "
+                    "may select the file after observing the new screen."
                 )
             else:
                 recovery = (

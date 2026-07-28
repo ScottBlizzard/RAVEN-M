@@ -452,6 +452,7 @@ class EpisodeController:
         semantic_action_rejected = error.startswith(
             semantic_action_error_prefixes
         )
+        exact_target_rejected = error.startswith("EXACT_TARGET_GUARD:")
         if semantic_action_rejected:
             repair_directive = (
                 "\n\nYour previous JSON was structurally valid, but its GUI "
@@ -462,6 +463,17 @@ class EpisodeController:
                 "using Search, scrolling, changing view, or another "
                 "non-commit navigation action.\n"
             )
+            if exact_target_rejected:
+                repair_directive += (
+                    "EXACT_TARGET_REPAIR_CONTRACT: For this one repair, "
+                    'action.type must not be "long_press". Do not infer or '
+                    "try another file coordinate on the unchanged screen. "
+                    "Return status=continue with a non-long-press "
+                    "information-gathering action; prefer the visible Search "
+                    "control, a view-mode change, or scrolling. Selection may "
+                    "be attempted only on a later policy step after the new "
+                    "screen is observed.\n"
+                )
         else:
             repair_directive = (
                 "\n\nYour previous response was invalid. Correct its format "

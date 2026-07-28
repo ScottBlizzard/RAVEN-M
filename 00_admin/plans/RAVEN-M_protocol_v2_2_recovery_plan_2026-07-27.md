@@ -122,6 +122,16 @@ lifecycle output to recovery files, so the existing subprocess timeouts remain
 observable and bounded. This changes infrastructure handling only and does not
 alter model inputs, task instances, or scoring.
 
+The focused r10 replay confirmed that the semantic-repair branch changed model
+behavior: the repair did not repeat the first coordinate. It still chose a
+second `long_press` on the unchanged truncated grid and targeted another
+same-prefix distractor. Both actions were blocked, so no filesystem mutation
+occurred. r11 removes the remaining ambiguity in the repair contract. After an
+exact-target rejection, the one same-screen repair may not use `long_press`;
+it must change the information state through Search, view change, or scrolling.
+Selection can be attempted only by a later policy step after observing the new
+screen. r11 does not expose a target coordinate or silently retarget an action.
+
 ## Qualification order
 
 1. Targeted unit and integration tests.
