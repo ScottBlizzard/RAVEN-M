@@ -100,6 +100,14 @@ memory authority, and Critic enforcement.
   execution, and the repaired action is checked again so changing only the
   provenance label cannot authorize invented text. The assessment exposes
   only the declared origin, source-value count, and a matched boolean.
+- For a coordinate-bearing `task_literal` edit, the controller derives coarse
+  semantic roles from the task sentence/line containing that literal and the
+  visible label metadata of the editable hit by the coordinate. When both
+  sides are adjudicable, their roles must intersect; Search, Filter, and Query
+  fields are generic query targets. A disjoint value/field pairing is rejected
+  before execution, and its repair must keep the exact value and provenance
+  while choosing a visibly supported role-compatible field. Only role groups
+  and counts enter the audit.
 
 ## Visible infrastructure failures
 

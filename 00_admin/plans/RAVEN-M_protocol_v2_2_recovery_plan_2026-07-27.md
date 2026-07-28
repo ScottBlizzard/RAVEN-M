@@ -257,3 +257,22 @@ cannot launder invented text by changing only its provenance label. Values
 from verified memory and deterministic calculations retain their existing
 separate authority checks. r19 must rerun focused Contacts and Files
 diagnostics before any fresh eight-cell formal attempt.
+
+## r20 task-value to field-role binding
+
+The r19 Contacts diagnostic eliminated the fabricated Company text, but the
+model next entered the valid task-literal phone number into Company and then
+repeated it in Phone. Source provenance and editable-target existence were
+both correct, yet the value and field had conflicting semantic roles. Native
+reward again remained 1.0.
+
+r20 derives coarse roles from the task sentence or line that contains the
+literal and from the visible metadata of the editable hit by its coordinate.
+The role vocabulary covers generic GUI concepts such as person name, phone,
+company, amount, category, note, title, date/time, file, and folder. Search,
+Filter, and Query fields remain generic query targets. A coordinate-bearing
+task-literal edit is rejected only when both sides are adjudicable and their
+roles are disjoint. The repair keeps the exact requested value and provenance
+but must select a visibly supported role-compatible field. The audit records
+role groups and counts, not task values, field labels, bboxes, coordinates, or
+evaluator state.

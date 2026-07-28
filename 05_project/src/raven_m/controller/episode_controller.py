@@ -26,6 +26,7 @@ from raven_m.controller.protocol_v2_guard import (
     focused_editable_input_assessment,
     post_destination_transfer_command_action,
     semantic_ui_snapshot,
+    task_literal_field_role_assessment,
 )
 from raven_m.env.androidworld_adapter import AndroidWorldAdapter
 from raven_m.history.policies import (
@@ -403,6 +404,9 @@ class EpisodeController:
                     "task_literal value must occur in TASK, and a "
                     "current_screen value must occur in the visible current "
                     "UI; do not invent optional field values or relabel them."
+                    " A coordinate-bearing task literal must target a visible "
+                    "editable field whose label matches the value's role; "
+                    "Search/Filter/Query fields may accept task queries."
                     if protocol_v2
                     else
                     "TEXT_SAFETY: type_text may contain only a value explicitly "
@@ -471,6 +475,7 @@ class EpisodeController:
             "FOCUSED_INPUT_GUARD:",
             "TEXT_TARGET_GUARD:",
             "DECLARED_TEXT_SOURCE_GUARD:",
+            "FIELD_VALUE_BINDING_GUARD:",
             "POST_DESTINATION_COMMIT_GUARD:",
             "DESTINATION_PICKER_GUARD:",
             "LOOP_GUARD:",
@@ -486,7 +491,20 @@ class EpisodeController:
         declared_source_rejected = error.startswith(
             "DECLARED_TEXT_SOURCE_GUARD:"
         )
-        if declared_source_rejected:
+        field_value_rejected = error.startswith(
+            "FIELD_VALUE_BINDING_GUARD:"
+        )
+        if field_value_rejected:
+            repair_directive = (
+                "\n\nYour previous JSON used a requested task value but "
+                "targeted an editable field with a conflicting role. Keep "
+                "action.type=type_text, the exact same text, text_origin, and "
+                "source_memory_ids. Choose the visible editable field whose "
+                "label matches the value's task role. Do not fill an "
+                "unrelated optional field and do not invent a coordinate "
+                "that is not visibly supported.\n"
+            )
+        elif declared_source_rejected:
             repair_directive = (
                 "\n\nYour previous JSON was structurally valid, but its "
                 "declared text source did not contain the proposed text. Do "
@@ -717,6 +735,15 @@ class EpisodeController:
                     ui_elements,
                     parsed_candidate.decision.get("action"),
                 )
+                field_role_assessment = (
+                    task_literal_field_role_assessment(
+                        task_goal,
+                        ui_elements,
+                        parsed_candidate.decision.get("action"),
+                        screen_width=screen_width,
+                        screen_height=screen_height,
+                    )
+                )
                 self.decision_guard.validate_decision(
                     parsed_candidate.decision,
                     page_sha256=page_semantic_sha256,
@@ -735,6 +762,9 @@ class EpisodeController:
                         text_target_assessment
                     ),
                     declared_text_source_assessment=source_assessment,
+                    task_literal_field_role_assessment=(
+                        field_role_assessment
+                    ),
                 )
             action_adjudication = self.history_policy.adjudicate_action(
                 parsed_candidate.decision,

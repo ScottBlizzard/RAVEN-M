@@ -25,6 +25,50 @@ TEXT_ORIGINS = {
     "verified_memory",
     "deterministic_calculation",
 }
+FIELD_ROLE_ALIASES = {
+    "search": {"search", "filter", "query", "find"},
+    "person_name": {
+        "contact",
+        "name",
+        "first",
+        "last",
+        "given",
+        "family",
+        "surname",
+    },
+    "phone": {"phone", "number", "mobile", "telephone", "tel"},
+    "company": {
+        "company",
+        "organization",
+        "organisation",
+        "employer",
+        "business",
+    },
+    "amount": {
+        "amount",
+        "dollar",
+        "dollars",
+        "price",
+        "cost",
+        "total",
+        "value",
+    },
+    "category": {"category", "type", "classification"},
+    "note": {
+        "note",
+        "memo",
+        "description",
+        "comment",
+        "details",
+        "body",
+        "content",
+    },
+    "title": {"title", "subject", "event", "expense", "name"},
+    "date": {"date", "day", "month", "year"},
+    "time": {"time", "hour", "minute", "duration"},
+    "file": {"file", "filename", "document"},
+    "folder": {"folder", "directory", "destination"},
+}
 RECOVERY_CLASSES = (
     "change_target",
     "reverse_scroll_direction",
@@ -179,6 +223,112 @@ def declared_text_source_assessment(
         "origin": origin,
         "adjudicable": adjudicable,
         "source_value_count": len(source_values),
+        "matched": matched,
+    }
+
+
+def _role_groups(value: str | None) -> set[str]:
+    if value is None:
+        return set()
+    tokens = set(re.findall(r"[a-z0-9]+", value.casefold()))
+    return {
+        role
+        for role, aliases in FIELD_ROLE_ALIASES.items()
+        if tokens.intersection(aliases)
+    }
+
+
+def task_literal_field_role_assessment(
+    goal: str,
+    ui_elements: Any,
+    action: dict[str, Any] | None,
+    *,
+    screen_width: int,
+    screen_height: int,
+) -> dict[str, Any]:
+    """Check a task literal against the semantic role of its target field."""
+    is_task_literal_type = (
+        isinstance(action, dict)
+        and action.get("type") == "type_text"
+        and action.get("text_origin") == "task_literal"
+    )
+    coordinate_bearing = (
+        is_task_literal_type
+        and isinstance(action.get("x"), (int, float))
+        and isinstance(action.get("y"), (int, float))
+    )
+    candidate = (
+        _normalized_text(action.get("text"))
+        if is_task_literal_type
+        else None
+    )
+    source_context = None
+    if candidate is not None:
+        for segment in re.split(
+            r"(?:\r?\n)+|(?<=[.!?])\s+",
+            goal,
+        ):
+            normalized_segment = _normalized_text(segment)
+            if (
+                normalized_segment is not None
+                and candidate.casefold() in normalized_segment.casefold()
+            ):
+                source_context = normalized_segment
+                break
+    source_roles = _role_groups(source_context)
+    target_roles: set[str] = set()
+    matched_editable_count = 0
+    tap_action = (
+        {"type": "tap", "x": action["x"], "y": action["y"]}
+        if coordinate_bearing
+        else None
+    )
+    for element in ui_elements or ():
+        if _element_value(element, "is_visible") is False:
+            continue
+        if _element_value(element, "is_enabled") is False:
+            continue
+        if _element_value(element, "is_editable") is not True:
+            continue
+        if not _tap_hits_element(
+            tap_action,
+            element,
+            screen_width=screen_width,
+            screen_height=screen_height,
+        ):
+            continue
+        matched_editable_count += 1
+        for field in (
+            "text",
+            "content_description",
+            "hint_text",
+            "tooltip",
+            "resource_name",
+            "resource_id",
+        ):
+            target_roles.update(
+                _role_groups(_normalized_text(_element_value(element, field)))
+            )
+    adjudicable = bool(
+        coordinate_bearing
+        and source_roles
+        and target_roles
+        and matched_editable_count
+    )
+    matched = bool(
+        adjudicable
+        and (
+            "search" in target_roles
+            or source_roles.intersection(target_roles)
+        )
+    )
+    return {
+        "schema_version": "task_literal_field_role_assessment.v1",
+        "adjudicable": adjudicable,
+        "coordinate_bearing": coordinate_bearing,
+        "matched_editable_count": matched_editable_count,
+        "source_role_groups": sorted(source_roles),
+        "target_role_groups": sorted(target_roles),
         "matched": matched,
     }
 
@@ -693,6 +843,7 @@ class ProtocolV2DecisionGuard:
         self.focused_input_block_count = 0
         self.coordinate_text_target_block_count = 0
         self.declared_text_source_block_count = 0
+        self.task_literal_field_role_block_count = 0
 
     def _block_fingerprint(
         self,
@@ -785,6 +936,7 @@ class ProtocolV2DecisionGuard:
         focused_input_assessment: dict[str, Any] | None = None,
         coordinate_text_target_assessment: dict[str, Any] | None = None,
         declared_text_source_assessment: dict[str, Any] | None = None,
+        task_literal_field_role_assessment: dict[str, Any] | None = None,
     ) -> None:
         self._validate_text_provenance(
             decision,
@@ -794,6 +946,33 @@ class ProtocolV2DecisionGuard:
         action = decision.get("action")
         if not isinstance(action, dict):
             return
+        field_role_assessment = task_literal_field_role_assessment or {}
+        if (
+            field_role_assessment.get("adjudicable") is True
+            and field_role_assessment.get("matched") is not True
+        ):
+            self.validation_blocks.append(
+                {
+                    "semantic_state_sha256": page_sha256,
+                    "action": action,
+                    "reason": "task_literal_target_field_role_mismatch",
+                    "task_literal_field_role_assessment": (
+                        field_role_assessment
+                    ),
+                    "required_recovery_classes": [
+                        "choose_role_matched_editable_field",
+                        "leave_unrelated_optional_field_untouched",
+                    ],
+                }
+            )
+            self.task_literal_field_role_block_count += 1
+            raise ActionValidationError(
+                "FIELD_VALUE_BINDING_GUARD: the task-literal value and the "
+                "target editable field have conflicting semantic roles. "
+                "Keep the same requested value and provenance, but choose a "
+                "visible editable field whose label matches that value's "
+                "role. Do not fill an unrelated optional field."
+            )
         focused_assessment = focused_input_assessment or {}
         text_target_assessment = coordinate_text_target_assessment or {}
         coordinate_bearing_type_text = (
@@ -1153,6 +1332,9 @@ class ProtocolV2DecisionGuard:
             ),
             "declared_text_source_block_count": (
                 self.declared_text_source_block_count
+            ),
+            "task_literal_field_role_block_count": (
+                self.task_literal_field_role_block_count
             ),
             "ab_ab_cycle_trigger_count": self.cycle_trigger_count,
             "visible_failure_trigger_count": (

@@ -13,6 +13,7 @@ from raven_m.controller.protocol_v2_guard import (
     focused_editable_input_assessment,
     post_destination_transfer_command_action,
     semantic_ui_snapshot,
+    task_literal_field_role_assessment,
 )
 
 
@@ -222,6 +223,193 @@ def test_guard_blocks_text_not_bound_to_declared_source(origin: str) -> None:
     assert audit["validation_blocks"][0][
         "declared_text_source_assessment"
     ]["matched"] is False
+
+
+def test_task_literal_field_role_assessment_rejects_phone_in_company() -> None:
+    elements = [
+        {
+            "hint_text": "Company",
+            "is_visible": True,
+            "is_enabled": True,
+            "is_editable": True,
+            "bbox": {
+                "x_min": 0.1,
+                "x_max": 0.8,
+                "y_min": 0.50,
+                "y_max": 0.57,
+            },
+        },
+        {
+            "hint_text": "Phone",
+            "is_visible": True,
+            "is_enabled": True,
+            "is_editable": True,
+            "bbox": {
+                "x_min": 0.1,
+                "x_max": 0.8,
+                "y_min": 0.58,
+                "y_max": 0.65,
+            },
+        },
+    ]
+    action = {
+        **text_action(x=0.45, y=0.55, clear_text=True),
+        "text": "+17634322348",
+    }
+    wrong = task_literal_field_role_assessment(
+        "Create a contact. Their number is +17634322348.",
+        elements,
+        action,
+        screen_width=100,
+        screen_height=100,
+    )
+    action.update(y=0.60)
+    right = task_literal_field_role_assessment(
+        "Create a contact. Their number is +17634322348.",
+        elements,
+        action,
+        screen_width=100,
+        screen_height=100,
+    )
+    assert wrong["adjudicable"] is True
+    assert wrong["source_role_groups"] == ["phone"]
+    assert wrong["target_role_groups"] == ["company"]
+    assert wrong["matched"] is False
+    assert right["target_role_groups"] == ["phone"]
+    assert right["matched"] is True
+
+
+def test_task_literal_field_role_allows_name_and_search_targets() -> None:
+    name = task_literal_field_role_assessment(
+        "Create a new contact for Sofija Martin.",
+        [
+            {
+                "hint_text": "First name",
+                "is_visible": True,
+                "is_enabled": True,
+                "is_editable": True,
+                "bbox": {
+                    "x_min": 0.1,
+                    "x_max": 0.8,
+                    "y_min": 0.30,
+                    "y_max": 0.40,
+                },
+            }
+        ],
+        {
+            **text_action(x=0.45, y=0.35, clear_text=True),
+            "text": "Sofija",
+        },
+        screen_width=100,
+        screen_height=100,
+    )
+    search = task_literal_field_role_assessment(
+        "Move the file nature_sounds.mp3 to Ringtones.",
+        [
+            {
+                "hint_text": "Search",
+                "is_visible": True,
+                "is_enabled": True,
+                "is_editable": True,
+                "bbox": {
+                    "x_min": 0.1,
+                    "x_max": 0.9,
+                    "y_min": 0.05,
+                    "y_max": 0.10,
+                },
+            }
+        ],
+        text_action(x=0.5, y=0.075, clear_text=True),
+        screen_width=100,
+        screen_height=100,
+    )
+    assert name["matched"] is True
+    assert search["matched"] is True
+
+
+def test_task_literal_field_role_uses_local_task_line_for_expense() -> None:
+    elements = [
+        {
+            "hint_text": "Amount",
+            "is_visible": True,
+            "is_enabled": True,
+            "is_editable": True,
+            "bbox": {
+                "x_min": 0.1,
+                "x_max": 0.8,
+                "y_min": 0.30,
+                "y_max": 0.40,
+            },
+        },
+        {
+            "hint_text": "Category",
+            "is_visible": True,
+            "is_enabled": True,
+            "is_editable": True,
+            "bbox": {
+                "x_min": 0.1,
+                "x_max": 0.8,
+                "y_min": 0.42,
+                "y_max": 0.52,
+            },
+        },
+    ]
+    action = {
+        **text_action(x=0.45, y=0.47, clear_text=True),
+        "text": "259.57",
+    }
+    wrong = task_literal_field_role_assessment(
+        "Expense: Educational\namount_dollars: $259.57\n"
+        "category_name: Donation",
+        elements,
+        action,
+        screen_width=100,
+        screen_height=100,
+    )
+    action.update(y=0.35)
+    right = task_literal_field_role_assessment(
+        "Expense: Educational\namount_dollars: $259.57\n"
+        "category_name: Donation",
+        elements,
+        action,
+        screen_width=100,
+        screen_height=100,
+    )
+    assert wrong["source_role_groups"] == ["amount"]
+    assert wrong["target_role_groups"] == ["category"]
+    assert wrong["matched"] is False
+    assert right["target_role_groups"] == ["amount"]
+    assert right["matched"] is True
+
+
+def test_guard_blocks_task_literal_target_field_role_mismatch() -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(goal="Create a contact")
+    with pytest.raises(
+        ActionValidationError,
+        match="FIELD_VALUE_BINDING_GUARD",
+    ):
+        guard.validate_decision(
+            decision(
+                {
+                    **text_action(x=0.45, y=0.55, clear_text=True),
+                    "text": "+17634322348",
+                }
+            ),
+            page_sha256="contact-form",
+            task_literal_field_role_assessment={
+                "schema_version": "task_literal_field_role_assessment.v1",
+                "adjudicable": True,
+                "coordinate_bearing": True,
+                "matched_editable_count": 1,
+                "source_role_groups": ["phone"],
+                "target_role_groups": ["company"],
+                "matched": False,
+            },
+        )
+    assert guard.audit_record()[
+        "task_literal_field_role_block_count"
+    ] == 1
 
 
 def test_focused_input_guard_blocks_click_before_type_and_allows_repair() -> None:

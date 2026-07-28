@@ -310,6 +310,50 @@ class FabricatedTaskLiteralThenPhoneClient:
         )
 
 
+class PhoneInCompanyThenPhoneClient:
+    def __init__(self) -> None:
+        self.requests: list[dict] = []
+
+    def generate(self, **kwargs) -> ModelCall:
+        self.requests.append(kwargs)
+        label = kwargs["call_label"]
+        y = 0.60 if label.endswith("_repair") else 0.55
+        decision = {
+            "status": "continue",
+            "action": {
+                "type": "type_text",
+                "text": "+17634322348",
+                "text_origin": "task_literal",
+                "source_memory_ids": [],
+                "x": 0.45,
+                "y": y,
+                "clear_text": True,
+            },
+            "expected_outcome": "The phone number is entered.",
+            "decision_summary": "Enter the requested phone number.",
+            "state_delta": [],
+            "memory_citations": [],
+            "completion_evidence": [],
+        }
+        return ModelCall(
+            call_id=label,
+            episode_id=kwargs["episode_id"],
+            idempotency_key=label,
+            image_sha256="0" * 64,
+            image_sha256s=("0" * 64,),
+            prompt_sha256=label,
+            request_sha256=label,
+            response_sha256=label,
+            content=json.dumps(decision),
+            usage={
+                "prompt_tokens": 1,
+                "completion_tokens": 1,
+                "total_tokens": 2,
+            },
+            raven_meta={},
+        )
+
+
 class DestinationPickerEnv:
     def __init__(self) -> None:
         self.execute_count = 0
@@ -1189,3 +1233,46 @@ def test_controller_repairs_fabricated_task_literal_to_requested_value(
     assert "Do not merely change text_origin" in repair_prompt
     assert "do not invent an optional field value" in repair_prompt
     assert "leaves the unspecified field untouched" in repair_prompt
+
+
+def test_controller_repairs_phone_from_company_to_phone_field(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = ContactFieldsEnv()
+    client = PhoneInCompanyThenPhoneClient()
+    controller = EpisodeController(
+        client=client,  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=1,
+        max_model_calls=2,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=ContactTask(),
+        episode_id="field-value-binding-repair-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="M0",
+    )
+    assert env.execute_count == 1
+    assert summary["model_call_count"] == 2
+    action = summary["steps"][0]["decision"]["action"]
+    assert action["text"] == "+17634322348"
+    assert action["x"] == 0.45
+    assert action["y"] == 0.60
+    assert summary["steps"][0]["parse"]["model_repair_used"]
+    assert "FIELD_VALUE_BINDING_GUARD" in summary["steps"][0]["parse"][
+        "initial_validation_error"
+    ]
+    audit = summary["protocol_v2_guard"]
+    assert audit["task_literal_field_role_block_count"] == 1
+    repair_prompt = client.requests[1]["user_prompt"]
+    assert "Keep action.type=type_text" in repair_prompt
+    assert "exact same text, text_origin" in repair_prompt
+    assert "Do not fill an unrelated optional field" in repair_prompt
