@@ -232,12 +232,14 @@ memory authority, and Critic enforcement.
   directory and are not, by themselves, evidence of loading or an unbound
   destination.
 - An open Android Files roots drawer is detected only from multiple standard
-  visible root/category rows with usable accessibility bounds. If a storage
-  row is already visible, the next action must tap a visible enabled drawer
-  row; wait, swipe, back, non-tap actions, and unbound title/menu taps are
-  rejected before execution. The bounded repair receives no row text, bounds,
-  target choice, or coordinate and must independently produce a tap that
-  passes the same visible-row hit test.
+  visible root/category rows with usable accessibility bounds, including at
+  least four distinct vertical row bands. This excludes horizontal category
+  chips, storage breadcrumbs, and two-column folder grids that reuse the same
+  labels. If a storage row is already visible, the next action must tap a
+  visible enabled drawer row; wait, swipe, back, non-tap actions, and unbound
+  title/menu taps are rejected before execution. The bounded repair receives
+  no row text, bounds, target choice, or coordinate and must independently
+  produce a tap that passes the same visible-row hit test.
 - Planner completion evidence IDs may cite routed FACT only. HYPOTHESIS can
   guide verification but cannot satisfy completion.
 

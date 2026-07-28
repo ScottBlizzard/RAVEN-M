@@ -788,6 +788,7 @@ def files_roots_drawer_action_assessment(
         flags=re.IGNORECASE,
     )
     observed_standard_labels: set[str] = set()
+    standard_root_center_ys: list[float] = []
     root_controls: list[Any] = []
     storage_root_count = 0
     for element in ui_elements or ():
@@ -816,16 +817,26 @@ def files_roots_drawer_action_assessment(
         )
         if bbox is None:
             continue
-        nx_min, nx_max, _, _ = bbox
+        nx_min, nx_max, ny_min, ny_max = bbox
         if nx_min > 0.65 or nx_max > 0.75:
             continue
         observed_standard_labels.update(standard_matches)
+        if standard_matches:
+            standard_root_center_ys.append((ny_min + ny_max) / 2.0)
         root_controls.append(element)
         if storage_match:
             storage_root_count += 1
+    vertical_bands: list[float] = []
+    for center_y in sorted(standard_root_center_ys):
+        if (
+            not vertical_bands
+            or center_y - vertical_bands[-1] > 0.045
+        ):
+            vertical_bands.append(center_y)
     drawer_active = (
         len(observed_standard_labels) >= 3
         and len(root_controls) >= 4
+        and len(vertical_bands) >= 4
     )
     action_type = (
         action.get("type") if isinstance(action, dict) else None
@@ -858,6 +869,7 @@ def files_roots_drawer_action_assessment(
         "drawer_active": drawer_active,
         "matched_root_control_count": matched_root_control_count,
         "standard_root_label_count": len(observed_standard_labels),
+        "standard_root_vertical_band_count": len(vertical_bands),
         "usable_root_control_count": len(root_controls),
         "usable_storage_row_visible": usable_storage_row_visible,
         "visible_storage_root_count": storage_root_count,

@@ -530,3 +530,26 @@ screenshot and task. The assessment exposes only booleans and counts, not row
 text, bounds, or coordinates. It does not inject the storage choice, increase
 the 20-step budget, add a repair, or change the task, seed, model, evaluator,
 schedule, or acceptance threshold.
+
+## r33 roots-drawer geometry discrimination
+
+The r32 real Files diagnostic confirmed that its positive drawer path could
+reject an unbound tap and repair to the visible storage row. Immediately
+after entering that storage, however, the ordinary Files content page was
+falsely classified as the roots drawer: horizontal category chips, a storage
+breadcrumb, and two-column folder tiles repeated enough labels to satisfy the
+coarse co-occurrence predicate. A bounded repair then hit the visible
+Notifications tile while describing it as the storage row. The development
+run was stopped after five actions, before evaluation or any destination
+commit.
+
+r33 keeps every r32 visibility, enabled-state, left-panel, storage-row, and
+hit-test requirement, and adds the missing geometric discriminator. Standard
+root/category controls must occupy at least four distinct vertical row bands
+before the drawer is considered open. Horizontal chips and two-column content
+grids therefore remain ordinary content even when their labels overlap with
+drawer labels. The assessment exports only the band count and other existing
+counts/booleans, never geometry, text, or coordinates. A matched negative
+regression fixture reproduces the storage breadcrumb, same-row chips, and
+folder grid. No task choice, coordinate, extra repair, budget, model, seed,
+evaluator, schedule, or threshold changes.

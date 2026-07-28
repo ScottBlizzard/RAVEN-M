@@ -1590,6 +1590,7 @@ def test_files_roots_drawer_assessment_requires_visible_row_hit() -> None:
         "drawer_active": True,
         "matched_root_control_count": 0,
         "standard_root_label_count": 6,
+        "standard_root_vertical_band_count": 6,
         "usable_root_control_count": 7,
         "usable_storage_row_visible": True,
         "visible_storage_root_count": 1,
@@ -1623,6 +1624,75 @@ def test_files_roots_drawer_assessment_requires_visible_row_hit() -> None:
     )
     assert root_tap["matched_root_control_count"] == 1
     assert not root_tap["progress_action_required"]
+
+
+def test_files_roots_drawer_rejects_main_storage_grid_false_positive() -> None:
+    elements = [
+        {
+            "text": "sdk_gphone64_x86_64",
+            "is_visible": True,
+            "is_enabled": True,
+            "bbox": {
+                "x_min": 0.05,
+                "x_max": 0.40,
+                "y_min": 0.08,
+                "y_max": 0.12,
+            },
+        },
+    ]
+    for index, label in enumerate(
+        ["Images", "Audio", "Videos", "Documents"]
+    ):
+        elements.append(
+            {
+                "text": label,
+                "is_visible": True,
+                "is_enabled": True,
+                "bbox": {
+                    "x_min": 0.02 + index * 0.18,
+                    "x_max": 0.16 + index * 0.18,
+                    "y_min": 0.14,
+                    "y_max": 0.19,
+                },
+            }
+        )
+    elements.extend(
+        [
+            {
+                "text": "Documents",
+                "is_visible": True,
+                "is_enabled": True,
+                "bbox": {
+                    "x_min": 0.06,
+                    "x_max": 0.48,
+                    "y_min": 0.35,
+                    "y_max": 0.43,
+                },
+            },
+            {
+                "text": "Downloads",
+                "is_visible": True,
+                "is_enabled": True,
+                "bbox": {
+                    "x_min": 0.51,
+                    "x_max": 0.73,
+                    "y_min": 0.35,
+                    "y_max": 0.43,
+                },
+            },
+        ]
+    )
+    assessment = files_roots_drawer_action_assessment(
+        elements,
+        {"type": "tap", "x": 0.75, "y": 0.52},
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert assessment["standard_root_label_count"] == 5
+    assert assessment["standard_root_vertical_band_count"] == 2
+    assert not assessment["drawer_active"]
+    assert not assessment["adjudicable"]
+    assert not assessment["progress_action_required"]
 
 
 def test_files_roots_drawer_guard_blocks_unbound_navigation() -> None:
