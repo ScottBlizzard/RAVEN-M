@@ -1,0 +1,48 @@
+{
+  "schema_version": "protocol_v2_2_gate_d_freeze.v1",
+  "checked_at": "2026-07-28T20:22:38Z",
+  "passed": true,
+  "source_tag": "protocol-v2-2-gate-e-r30-dev",
+  "source_commit": "d7e79b63df742bbc5a038b31aacf2b5d86382185",
+  "manifest": "05_project/configs/experiments/v2_2_capability_gate_r30.json",
+  "wrapper": "05_project/scripts/run_protocol_v2_2_gate_e_r30.py",
+  "source_tag_resolves_to_source_commit": true,
+  "tests": {
+    "protocol_v2_suite": {
+      "passed": true,
+      "test_count": 294
+    },
+    "protocol_v1_seal": {
+      "passed": true,
+      "file_count": 197,
+      "failure_count": 0,
+      "seal_sha256": "8b707052bbf3d22ff9643dc1fd4bc55d8f09461a00be9c13728e6eacdfa37ac9"
+    }
+  },
+  "freeze": {
+    "file_count": 27,
+    "failure_count": 0,
+    "source_files_changed_from_r29": [
+      {
+        "path": "05_project/src/raven_m/controller/episode_controller.py",
+        "sha256": "4225b66a582b4ed489aef7d08e46d85001a91724e98f7c078d4b245a9e28e8bc"
+      },
+      {
+        "path": "05_project/src/raven_m/controller/protocol_v2_guard.py",
+        "sha256": "2e702e45c95d73af70074296174af9f3e8206b34cf2f0e81670b0984b3c5c35b"
+      }
+    ],
+    "all_other_frozen_file_hashes_preserved_from_r29": true
+  },
+  "scope": {
+    "task_seed_schedule_unchanged": true,
+    "step_and_model_call_budgets_unchanged": true,
+    "prompts_and_schemas_unchanged": true,
+    "evaluator_and_acceptance_unchanged": true,
+    "single_bounded_repair_preserved": true,
+    "evaluator_state_exposed": false,
+    "new_behavior": "After one audited destination commit, the policy receives only a controller-owned boolean; repeat transfer, reselection, and wait are blocked, and their sole repair is exact press_back."
+  },
+  "automatic_gate_e_launch": false,
+  "automatic_gate_f_transition": false
+}
