@@ -80,10 +80,13 @@ memory authority, and Critic enforcement.
   is rejected before execution.
 - A visible focused editable node or a visible Android Latin input-method
   package is current-screen evidence that text input is already active.
-  Coordinate-bearing `type_text` is rejected before AndroidWorld can click
+  A coordinate-bearing `type_text` that does not match a visible, enabled,
+  editable accessibility element is rejected before AndroidWorld can click
   away from that input. The bounded repair preserves the exact text and
   provenance while removing `x,y`; keyboard presence alone does not imply an
-  empty field or disclose any input coordinate.
+  empty field or disclose any input coordinate. A coordinate that does match
+  a visible editable is an explicit field switch and remains executable even
+  while the soft keyboard is present.
 - When neither focused-editable nor soft-keyboard evidence shows active text
   input, a coordinate-bearing `type_text` must hit a visible, enabled,
   editable accessibility element. A miss is rejected before execution. Its

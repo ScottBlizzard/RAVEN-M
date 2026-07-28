@@ -209,7 +209,7 @@ def coordinate_type_text_target_assessment(
     screen_width: int,
     screen_height: int,
 ) -> dict[str, Any]:
-    """Check that an inactive-input text action targets an editable."""
+    """Check whether a coordinate-bearing text action targets an editable."""
     action_is_type_text = (
         isinstance(action, dict) and action.get("type") == "type_text"
     )
@@ -708,9 +708,15 @@ class ProtocolV2DecisionGuard:
         if not isinstance(action, dict):
             return
         focused_assessment = focused_input_assessment or {}
+        text_target_assessment = coordinate_text_target_assessment or {}
         coordinate_bearing_type_text = (
             action.get("type") == "type_text"
             and ("x" in action or "y" in action)
+        )
+        coordinate_targets_editable = (
+            coordinate_bearing_type_text
+            and text_target_assessment.get("adjudicable") is True
+            and text_target_assessment.get("matched") is True
         )
         clears_focused_empty_field = (
             action.get("type") == "type_text"
@@ -722,13 +728,23 @@ class ProtocolV2DecisionGuard:
             focused_assessment.get("present") is True,
         )
         if input_ready is True and (
-            coordinate_bearing_type_text or clears_focused_empty_field
+            (
+                coordinate_bearing_type_text
+                and not coordinate_targets_editable
+            )
+            or (
+                clears_focused_empty_field
+                and not coordinate_targets_editable
+            )
         ):
             record = {
                 "semantic_state_sha256": page_sha256,
                 "action": action,
                 "reason": "focused_input_click_before_type_blocked",
                 "focused_input_assessment": focused_assessment,
+                "coordinate_text_target_assessment": (
+                    text_target_assessment
+                ),
                 "required_recovery_classes": [
                     "preserve_focused_input",
                 ],
@@ -749,7 +765,6 @@ class ProtocolV2DecisionGuard:
                 "omit x and y."
                 + empty_directive
             )
-        text_target_assessment = coordinate_text_target_assessment or {}
         if (
             action.get("type") == "type_text"
             and input_ready is not True

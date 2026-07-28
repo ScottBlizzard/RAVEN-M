@@ -189,6 +189,58 @@ def test_focused_input_guard_blocks_coordinate_type_with_keyboard_only() -> None
     assert guard.audit_record()["focused_input_block_count"] == 1
 
 
+def test_focused_input_guard_allows_switch_to_visible_editable_target() -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(goal="Create a contact")
+    guard.validate_decision(
+        decision(text_action(x=0.45, y=0.465, clear_text=True)),
+        page_sha256="contact-form-with-keyboard",
+        focused_input_assessment={
+            "schema_version": "focused_editable_input_assessment.v2",
+            "present": False,
+            "focused_count": 0,
+            "empty": False,
+            "soft_keyboard_present": True,
+            "input_ready": True,
+        },
+        coordinate_text_target_assessment={
+            "schema_version": "coordinate_text_target_assessment.v1",
+            "adjudicable": True,
+            "coordinate_bearing": True,
+            "visible_editable_count": 4,
+            "boxed_editable_count": 4,
+            "matched": True,
+        },
+    )
+    assert guard.audit_record()["focused_input_block_count"] == 0
+
+
+def test_focused_empty_input_allows_explicit_editable_target_switch() -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(goal="Create a contact")
+    guard.validate_decision(
+        decision(text_action(x=0.45, y=0.465, clear_text=True)),
+        page_sha256="contact-form-focused-empty-field",
+        focused_input_assessment={
+            "schema_version": "focused_editable_input_assessment.v2",
+            "present": True,
+            "focused_count": 1,
+            "empty": True,
+            "soft_keyboard_present": True,
+            "input_ready": True,
+        },
+        coordinate_text_target_assessment={
+            "schema_version": "coordinate_text_target_assessment.v1",
+            "adjudicable": True,
+            "coordinate_bearing": True,
+            "visible_editable_count": 4,
+            "boxed_editable_count": 4,
+            "matched": True,
+        },
+    )
+    assert guard.audit_record()["focused_input_block_count"] == 0
+
+
 def test_focused_input_guard_does_not_block_an_unfocused_target() -> None:
     guard = ProtocolV2DecisionGuard()
     guard.reset(goal="Enter a contact name")

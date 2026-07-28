@@ -219,3 +219,21 @@ existing one bounded repair must return a non-`type_text` reversible action
 that activates or reopens an input and leaves typing to a later observed
 screen. The assessment records only counts and a matched boolean; it exposes
 no bbox, injects no coordinate, and uses no evaluator state.
+
+## r18 editable-target switch correction
+
+The first r17 formal cell received native reward 1.0, but its controller audit
+found a semantic error before the second cell began. With the soft keyboard
+visible, the model proposed explicit coordinates for other visible editable
+fields. The focused-input guard removed those coordinates without consulting
+the already-computed target binding, and the phone number was consequently
+entered into Company before it was also entered into Phone. Native task reward
+did not detect the redundant wrong-field edit.
+
+r18 treats current accessibility target binding as the deciding evidence. If
+a coordinate-bearing `type_text` point matches a visible, enabled, editable
+element, the explicit field switch is allowed even while an input method is
+active. If it does not match, the r17 focused-input rejection and bounded
+coordinate-removal repair remain in force. The failed r17 formal directory is
+diagnostic only; r18 must pass focused Contacts and Files diagnostics, receive
+a new source tag and freeze, and rerun all eight formal cells from scratch.
