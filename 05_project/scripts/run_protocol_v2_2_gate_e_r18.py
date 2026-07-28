@@ -8,7 +8,7 @@ from run_protocol_v2_gate_e import main
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-SOURCE_COMMIT = "PENDING_R18_SOURCE_COMMIT"
+SOURCE_COMMIT = "6ec0f8eac0b160c1013f12e777b4fcc9bca0a87d"
 
 
 if __name__ == "__main__":
