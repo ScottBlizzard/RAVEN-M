@@ -3,7 +3,7 @@
   "manifest_id": "protocol_v2_2_gate_e_seed20260729_r22",
   "protocol": "androidworld_protocol_v2_2_exploratory",
   "source_tag": "protocol-v2-2-gate-e-r22-dev",
-  "source_commit": "PENDING_SOURCE_COMMIT",
+  "source_commit": "c24d3e466c525e6073556113d6f962e6ffb8c4db",
   "suite_id": "nonhard_capability_v2_2_seed20260729_r22",
   "output_root": "runs/protocol_v2_2",
   "instance_seed": 20260729,
@@ -92,7 +92,116 @@
     "B3": "schemas/action.v2.schema.json",
     "M0": "schemas/action.raven.v2.schema.json"
   },
-  "freeze_files": [],
+  "freeze_files": [
+    {
+      "path": "05_project/scripts/run_protocol_v2_gate_e.py",
+      "sha256": "df8ca2b8ea6f6ff02fe4b621c839fdec4322935dab44eb39ea1dc9fd058339eb"
+    },
+    {
+      "path": "05_project/scripts/protocol_v2_runtime.py",
+      "sha256": "09bd30ed6556bd74c08bfee48a5f5d61837f21169aa19c805a9428df8fd9400c"
+    },
+    {
+      "path": "05_project/scripts/run_frozen_hard_suite.py",
+      "sha256": "0392f34331d045652a20533a4fc8894efd4f61e152559824880a44214c51f7f4"
+    },
+    {
+      "path": "05_project/src/raven_m/actions/schema.py",
+      "sha256": "1b9d0d415721bbcdb4a2c825dc681400df444831ad88f61688c5505d404bab2b"
+    },
+    {
+      "path": "05_project/src/raven_m/controller/episode_controller.py",
+      "sha256": "f866d370a912e3743638ec246af9b986db784bd17c1a76a115c09cf55010419d"
+    },
+    {
+      "path": "05_project/src/raven_m/controller/protocol_v2_guard.py",
+      "sha256": "4cf9b7927064e32dae8b77a140f667b050a397a6ac4553717bba0e8dbe99674c"
+    },
+    {
+      "path": "05_project/src/raven_m/env/androidworld_adapter.py",
+      "sha256": "e940e0d81bbc2b6f6856421262962fff410d23c6506df2f4281fa542f118a29c"
+    },
+    {
+      "path": "05_project/src/raven_m/history/policies.py",
+      "sha256": "6781340d7cc4dde59df8a26a55aca07ea365d00cefb4097e984ddbeeb13f7e05"
+    },
+    {
+      "path": "05_project/src/raven_m/history/summary_schema.py",
+      "sha256": "7f6572534c4c8798b0b44f77e49bd5695e843bc7a49b60e3bc19675e7b8fc97d"
+    },
+    {
+      "path": "05_project/src/raven_m/roles/orchestrator.py",
+      "sha256": "4959b11410f7874a6560260310a7a513cbab70f196539b262432ecc7afaa4c0b"
+    },
+    {
+      "path": "05_project/src/raven_m/memory/manager.py",
+      "sha256": "125bbe4697174552b69837b49094ef058c81dcd58f840c67c0824848cf12a57e"
+    },
+    {
+      "path": "05_project/src/raven_m/memory/models.py",
+      "sha256": "b124a5bd458019c312bed96885c11ff764c5dd5ad91b4bbacaf5ac8d19bcc989"
+    },
+    {
+      "path": "05_project/src/raven_m/memory/retrieval.py",
+      "sha256": "a73302868f6f341c8528095d0e2d1cf4a0bb9a0f1023985d6bebae9805b97ab2"
+    },
+    {
+      "path": "05_project/src/raven_m/memory/store.py",
+      "sha256": "2143a15073fcc7c8be97f556b74c31af38524523dee6d39d85d2bbfcf2379ee8"
+    },
+    {
+      "path": "05_project/src/raven_m/models/transformers_client.py",
+      "sha256": "15f82bfdde5c30d036e2872f9bf66be02a74e43815ea284ea7b09798b2c955ae"
+    },
+    {
+      "path": "05_project/prompts/executor_v2.md",
+      "sha256": "4482d51c257e260b93f72bee03ba703e1370d6b0ed8e5f04fd3dbe562b0c90b3"
+    },
+    {
+      "path": "05_project/prompts/executor_raven_v2.md",
+      "sha256": "1535e472797a12724de95615bf1afc6988cf0f92961a71f6c04f6989a29556f4"
+    },
+    {
+      "path": "05_project/prompts/summary_v1.md",
+      "sha256": "e9dbb03f28d07362bd2490f48d135be0b2833bbbb0224d1ef0ac7a215cd5cc29"
+    },
+    {
+      "path": "05_project/prompts/planner_v1.md",
+      "sha256": "5a50bb7d0d974ab975d59e7c88ccbb8a596d1af4a07478eb0acd8ef4ba37cda8"
+    },
+    {
+      "path": "05_project/prompts/critic_v1.md",
+      "sha256": "ba708104a1368088d582a569f7828a5b77fd4356a8e0c82dd7bff5b4111fa33d"
+    },
+    {
+      "path": "05_project/schemas/action.v2.schema.json",
+      "sha256": "6c82f2b8aca5362f395747715f54efa658be2c6c99f6a7ccd3e694547c6a1323"
+    },
+    {
+      "path": "05_project/schemas/action.raven.v2.schema.json",
+      "sha256": "84c6f6389052b594d834a9438e9df3978470ef7aa9cc0ac81a8c22ba80af8027"
+    },
+    {
+      "path": "05_project/configs/task_capabilities_v2.json",
+      "sha256": "9d488716df6dccfcb07e1c897c2e1cb3aab348a988bf853abf5deb26493c1951"
+    },
+    {
+      "path": "06_local_runtime/scripts/activate_local.ps1",
+      "sha256": "63e21f2662e6b2e8a0687644873d0719b7b5afbaabcfcd09b985ad3b9dd1dcc8"
+    },
+    {
+      "path": "06_local_runtime/scripts/start_emulator.ps1",
+      "sha256": "03a5aabe0a39cdb3c92f132dc5fbbf4545e2803a5e447307d604ff07b80cee4e"
+    },
+    {
+      "path": "06_local_runtime/scripts/stop_emulator.ps1",
+      "sha256": "a50f97baf1c311c17fe0f6c39aad85e2b26969142f8f3688a23ed87e54ad3d45"
+    },
+    {
+      "path": "06_local_runtime/scripts/androidworld_smoke.py",
+      "sha256": "ae5967c18be6b564159f2c0bf609423fabf6226f7bf09471367d2a0ff8511147"
+    }
+  ],
   "limits": {
     "max_valid_cells": 8,
     "max_infrastructure_attempts_per_cell": 2,

@@ -1,0 +1,51 @@
+{
+  "schema_version": "protocol_v2_2_r22_gate_d_freeze.v1",
+  "checked_at": "2026-07-28T15:49:01Z",
+  "passed": true,
+  "protocol": "androidworld_protocol_v2_2_exploratory",
+  "source_tag": "protocol-v2-2-gate-e-r22-dev",
+  "source_commit": "c24d3e466c525e6073556113d6f962e6ffb8c4db",
+  "freeze_file_count": 27,
+  "verification": {
+    "full_pytest": {
+      "passed": true,
+      "test_count": 257
+    },
+    "protocol_v1_seal": {
+      "passed": true,
+      "file_count": 197,
+      "failure_count": 0
+    },
+    "r21_diagnostic_preserved": {
+      "passed": true,
+      "report": "reports/protocol_v2_2_r21_diagnostic.json",
+      "result_count": 2,
+      "valid_for_gate_authorization": false
+    },
+    "inactive_input_clear_race": {
+      "passed": true,
+      "unfocused_matched_editable_clear_blocked": true,
+      "bounded_repair_requires_non_text_activation": true,
+      "later_observation_required_before_typing": true,
+      "keyboard_active_field_switch_preserved": true
+    }
+  },
+  "r22_changes": [
+    "reject clear_text=true when a coordinate matches an editable but input readiness is not visible",
+    "repair with one reversible activation tap and defer typing to a later observation",
+    "record a separate unfocused-clear-text validation counter and evidence"
+  ],
+  "preserved_controls": {
+    "same_task_schedule_as_r21": true,
+    "same_instance_and_order_seeds_as_r21": true,
+    "same_step_and_model_budgets_as_r21": true,
+    "same_prompt_files_and_schemas_as_r21": true,
+    "adapter_execution_unchanged": true,
+    "no_deterministic_action_rewrite": true,
+    "no_target_coordinate_injection": true,
+    "no_silent_action_retargeting": true,
+    "one_bounded_repair_unchanged": true,
+    "no_evaluator_state_in_model_inputs": true,
+    "r21_development_evidence_immutable": true
+  }
+}
