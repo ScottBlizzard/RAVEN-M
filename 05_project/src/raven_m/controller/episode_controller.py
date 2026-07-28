@@ -392,6 +392,7 @@ class EpisodeController:
         memory_context: str = "[]",
         protocol_v2: bool = False,
         protocol_v2_2: bool = False,
+        post_destination_commit_active: bool = False,
     ) -> str:
         coordinate_denominator = max(screen_height - 1, 1)
         app_bar_pixel_y = min(
@@ -470,6 +471,22 @@ class EpisodeController:
                     if protocol_v2_2
                     else []
                 ),
+                *(
+                    [
+                        "POST_DESTINATION_COMMIT_ACTIVE: exactly one bottom "
+                        "Copy/Move commit has already executed in this task. "
+                        "Do not select or long-press the task item, open an "
+                        "overflow menu for Move/Copy, initiate another transfer, "
+                        "or wait on an unchanged stale source/search view. Use "
+                        "only reversible navigation to inspect the requested "
+                        "destination, or return terminal status only when the "
+                        "current screen and allowed completion evidence support "
+                        "it. A stale source/search screen is unverified state, "
+                        "not authority to repeat the mutation."
+                    ]
+                    if protocol_v2_2 and post_destination_commit_active
+                    else []
+                ),
                 "LENGTH_CHECK: expected_outcome and decision_summary must each "
                 "be one short sentence under 160 characters.",
                 "Return one JSON object matching the action schema named in "
@@ -525,6 +542,9 @@ class EpisodeController:
         destination_picker_renavigation_required = (
             "DESTINATION_PICKER_RENAVIGATION_REQUIRED:" in error
         )
+        post_destination_commit_rejected = error.startswith(
+            "POST_DESTINATION_COMMIT_GUARD:"
+        )
         visual_source_rejected = (
             "VISUAL_SOURCE_ADJUDICATION_REJECTED:" in error
         )
@@ -538,6 +558,18 @@ class EpisodeController:
                 "return an answer, do not repeat the candidate, do not change "
                 "text_origin, and do not commit any mutation. Use only a "
                 "control visibly supported by the current screenshot.\n"
+            )
+        elif post_destination_commit_rejected:
+            repair_directive = (
+                "\n\nA bottom Copy/Move commit already executed once, so the "
+                "proposed action would start or submit a second transaction. "
+                "For this one repair, return status=continue with action "
+                'exactly {"type":"press_back"} to dismiss the current overflow '
+                "menu, selection mode, or unintended second destination "
+                "picker. Do not tap, wait, swipe, type, select an item, commit, "
+                "or declare success on this unchanged screenshot. Observe the "
+                "next screen before using reversible navigation to verify the "
+                "requested destination.\n"
             )
         elif destination_picker_renavigation_required:
             repair_directive = (
@@ -826,6 +858,19 @@ class EpisodeController:
                     "DESTINATION_PICKER_RENAVIGATION_REQUIRED permits only a "
                     "tap that hits the visible enabled top-left Show roots/"
                     "navigation-drawer control in this bounded repair."
+                )
+            if (
+                repair_contract_error
+                and repair_contract_error.startswith(
+                    "POST_DESTINATION_COMMIT_GUARD:"
+                )
+                and parsed_candidate.decision.get("action")
+                != {"type": "press_back"}
+            ):
+                raise ActionValidationError(
+                    "REPAIR_CONTRACT_GUARD: POST_DESTINATION_COMMIT_GUARD "
+                    "permits only the exact "
+                    '{"type":"press_back"} action in this bounded repair.'
                 )
             self.history_policy.validate_decision(parsed_candidate.decision)
             if self.decision_guard is not None:
@@ -1315,6 +1360,10 @@ class EpisodeController:
                     memory_context=history_context.rendered,
                     protocol_v2=self.protocol_v2,
                     protocol_v2_2=self.protocol_v2_2,
+                    post_destination_commit_active=bool(
+                        self.decision_guard is not None
+                        and self.decision_guard.post_destination_commit_active
+                    ),
                 )
                 try:
                     picker_active = destination_picker_active(

@@ -212,6 +212,13 @@ memory authority, and Critic enforcement.
   accessibility hit test rejects `press_back`, Cancel, another commit, or an
   unbound coordinate before execution. Destination selection and a later
   Critic-adjudicated commit remain separate policy steps.
+- After one audited bottom Copy/Move commit executes, later policy prompts
+  receive only a controller-owned `post_destination_commit_active` boolean,
+  never evaluator state. They may reversibly navigate to inspect the requested
+  destination or complete from current-screen evidence, but may not
+  select/long-press an item, start another Move/Copy, or wait on stale source
+  state. Any such blocked action has one exact `press_back` repair to dismiss
+  the menu, selection, or unintended second picker before re-observation.
 - Planner completion evidence IDs may cite routed FACT only. HYPOTHESIS can
   guide verification but cannot satisfy completion.
 

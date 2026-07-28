@@ -207,14 +207,23 @@ class RejectWrongDestinationCommitPolicy(HistoryPolicy):
 
 
 class CommitThenRepeatClient:
+    def __init__(self, *, valid_repair: bool = True) -> None:
+        self.valid_repair = valid_repair
+        self.requests: list[dict] = []
+
     def generate(self, **kwargs) -> ModelCall:
+        self.requests.append(kwargs)
         label = kwargs["call_label"]
         if label.startswith("step_000"):
             action = {"type": "tap", "x": 0.40, "y": 0.94}
             summary = "Commit the pending move."
         elif label.endswith("_repair"):
-            action = {"type": "tap", "x": 0.07, "y": 0.08}
-            summary = "Open navigation to verify the destination."
+            action = (
+                {"type": "press_back"}
+                if self.valid_repair
+                else {"type": "wait", "duration_ms": 1000}
+            )
+            summary = "Dismiss the repeated transfer UI safely."
         else:
             action = {"type": "tap", "x": 0.67, "y": 0.344}
             summary = "Choose Move to again."
@@ -768,6 +777,13 @@ class PostCommitEnv(DestinationPickerEnv):
             ),
             ui_elements=elements,
         )
+
+    def execute_action(self, action) -> None:
+        if self.execute_count == 0:
+            assert action.action_type == "click"
+        else:
+            assert action.action_type == "navigate_back"
+        self.execute_count += 1
 
 
 class ExactTargetGridEnv(DestinationPickerEnv):
@@ -1540,8 +1556,9 @@ def test_controller_repairs_repeat_transfer_after_destination_commit(
 ) -> None:
     root = Path(__file__).resolve().parents[2]
     env = PostCommitEnv()
+    client = CommitThenRepeatClient()
     controller = EpisodeController(
-        client=CommitThenRepeatClient(),  # type: ignore[arg-type]
+        client=client,  # type: ignore[arg-type]
         system_prompt="v2.2",
         max_steps=2,
         max_model_calls=3,
@@ -1564,7 +1581,9 @@ def test_controller_repairs_repeat_transfer_after_destination_commit(
     assert summary["steps"][0]["protocol_v2_guard"][
         "destination_picker_commit_executed"
     ]
-    assert summary["steps"][1]["decision"]["action"]["type"] == "tap"
+    assert summary["steps"][1]["decision"]["action"] == {
+        "type": "press_back"
+    }
     assert summary["steps"][1]["parse"]["model_repair_used"]
     assert "POST_DESTINATION_COMMIT_GUARD" in summary["steps"][1]["parse"][
         "initial_validation_error"
@@ -1572,6 +1591,47 @@ def test_controller_repairs_repeat_transfer_after_destination_commit(
     assert summary["protocol_v2_guard"][
         "post_destination_commit_block_count"
     ] == 1
+    assert "POST_DESTINATION_COMMIT_ACTIVE" in client.requests[1][
+        "user_prompt"
+    ]
+    repair_prompt = client.requests[2]["user_prompt"]
+    assert 'exactly {"type":"press_back"}' in repair_prompt
+    assert "Do not tap, wait, swipe, type" in repair_prompt
+
+
+def test_controller_rejects_non_back_post_commit_repair(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = PostCommitEnv()
+    controller = EpisodeController(
+        client=CommitThenRepeatClient(
+            valid_repair=False
+        ),  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=2,
+        max_model_calls=3,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="post-commit-invalid-repair-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="M0",
+    )
+    assert env.execute_count == 1
+    assert summary["failure_code"] == "MODEL_OUTPUT_INVALID_AFTER_REPAIR"
+    error = summary["model_output_error"]
+    assert error["initial_validation_error"].startswith(
+        "POST_DESTINATION_COMMIT_GUARD:"
+    )
+    assert "REPAIR_CONTRACT_GUARD" in error["repair_validation_error"]
 
 
 def test_controller_repairs_wrong_exact_target_to_search(

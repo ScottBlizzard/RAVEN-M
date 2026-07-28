@@ -1645,7 +1645,21 @@ def test_destination_picker_guard_blocks_back_but_allows_drawer() -> None:
     )
 
 
-def test_post_destination_commit_blocks_transfer_not_exact_inspection() -> None:
+def test_destination_picker_allows_back_to_cancel_post_commit_repeat() -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(goal="Move a file")
+    guard.post_destination_commit_active = True
+    guard.validate_decision(
+        decision({"type": "press_back"}),
+        page_sha256="second-picker",
+        destination_picker_is_active=True,
+    )
+    assert (
+        guard.audit_record()["destination_picker_back_block_count"] == 0
+    )
+
+
+def test_post_destination_commit_blocks_transfer_wait_and_reselection() -> None:
     guard = ProtocolV2DecisionGuard()
     guard.reset(goal="Move a file")
     guard.observe_transition(
@@ -1655,28 +1669,36 @@ def test_post_destination_commit_blocks_transfer_not_exact_inspection() -> None:
         destination_picker_commit_executed=True,
     )
     guard.validate_decision(
-        decision({"duration_ms": 1000, "type": "wait"}),
-        page_sha256="source",
-    )
-    guard.validate_decision(
         decision({"type": "tap", "x": 0.07, "y": 0.08}),
         page_sha256="source",
     )
-    guard.validate_decision(
-        decision(
-            {
-                "duration_ms": 800,
-                "type": "long_press",
-                "x": 0.25,
-                "y": 0.625,
-            }
-        ),
-        page_sha256="destination",
-        exact_selection_assessment={
-            "adjudicable": True,
-            "matched": True,
-        },
-    )
+    with pytest.raises(
+        ActionValidationError,
+        match="POST_DESTINATION_COMMIT_GUARD",
+    ):
+        guard.validate_decision(
+            decision({"duration_ms": 1000, "type": "wait"}),
+            page_sha256="source",
+        )
+    with pytest.raises(
+        ActionValidationError,
+        match="POST_DESTINATION_COMMIT_GUARD",
+    ):
+        guard.validate_decision(
+            decision(
+                {
+                    "duration_ms": 800,
+                    "type": "long_press",
+                    "x": 0.25,
+                    "y": 0.625,
+                }
+            ),
+            page_sha256="destination",
+            exact_selection_assessment={
+                "adjudicable": True,
+                "matched": True,
+            },
+        )
     with pytest.raises(
         ActionValidationError,
         match="POST_DESTINATION_COMMIT_GUARD",
@@ -1698,5 +1720,5 @@ def test_post_destination_commit_blocks_transfer_not_exact_inspection() -> None:
         )
     audit = guard.audit_record()
     assert audit["destination_picker_commit_count"] == 1
-    assert audit["post_destination_commit_block_count"] == 2
+    assert audit["post_destination_commit_block_count"] == 4
     assert audit["post_destination_commit_active"]

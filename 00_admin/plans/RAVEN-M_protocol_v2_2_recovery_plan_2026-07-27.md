@@ -456,3 +456,27 @@ Ringtones and submitting Move stay separate later policy steps, and the final
 commit still requires a fresh consequential-action Critic verdict. No target
 coordinate, evaluator state, extra repair, task, seed, budget, or threshold is
 introduced.
+
+## r30 post-destination-commit convergence
+
+The r29 Files diagnostic selected Ringtones, received a `proceed` verdict from
+the consequential-action Critic, executed Move exactly once, and obtained
+native reward 1.0. The next screen returned to a stale source/search view.
+Because later prompts did not carry the guard's already-audited commit state,
+the model selected a visually similar item and opened `Move to...` again. The
+post-commit guard blocked three repeat transfers. Two generic repairs waited
+without semantic progress; the third identical wait conflicted with the active
+Critic constraint and stopped the diagnostic as invalid even though the native
+task had succeeded. No second transaction executed.
+
+r30 carries only the controller-owned boolean
+`post_destination_commit_active` into later protocol-v2.2 policy prompts. It
+does not expose native evaluator state or infer success. While active, the
+policy may use reversible navigation to inspect the requested destination or
+return terminal status with current-screen completion evidence, but it may not
+select/long-press an item, open Move/Copy again, or wait on a stale source
+screen. The deterministic guard enforces the long-press and wait restrictions.
+If a repeat transfer, reselection, or wait is rejected, the sole bounded repair
+must be exactly `press_back`, dismissing the current menu, selection mode, or
+unintended second picker before a fresh observation. No automatic completion,
+extra repair, task, seed, budget, evaluator, or threshold change is allowed.

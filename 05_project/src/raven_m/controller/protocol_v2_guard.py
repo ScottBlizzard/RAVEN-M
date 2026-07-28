@@ -1430,11 +1430,17 @@ class ProtocolV2DecisionGuard:
         if self.post_destination_commit_active and (
             destination_picker_commit_is_action
             or post_destination_transfer_command_is_action
+            or action.get("type") in {"long_press", "wait"}
         ):
+            reason = (
+                "post_destination_commit_stall_or_reselection_blocked"
+                if action.get("type") in {"long_press", "wait"}
+                else "post_destination_commit_mutation_blocked"
+            )
             record = {
                 "semantic_state_sha256": page_sha256,
                 "action": action,
-                "reason": "post_destination_commit_mutation_blocked",
+                "reason": reason,
                 "required_recovery_classes": [
                     "inspect_different_visible_control",
                     "fail_safely",
@@ -1445,13 +1451,15 @@ class ProtocolV2DecisionGuard:
             raise ActionValidationError(
                 "POST_DESTINATION_COMMIT_GUARD: the bottom Copy/Move "
                 "control was already executed in this task. Do not choose "
-                "Move to/Copy to again or submit a second transaction. "
-                "Reversible inspection of the exact task item is allowed; "
-                "otherwise navigate for evidence or return a terminal status."
+                "Move to/Copy to again, submit a second transaction, select "
+                "or long-press an item, or wait on this stale screen. Use "
+                "reversible navigation to inspect the requested destination "
+                "or return a terminal status with current-screen evidence."
             )
         if (
             destination_picker_is_active
             and action.get("type") == "press_back"
+            and not self.post_destination_commit_active
         ):
             record = {
                 "semantic_state_sha256": page_sha256,
