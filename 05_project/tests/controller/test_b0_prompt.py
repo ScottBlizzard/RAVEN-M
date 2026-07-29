@@ -78,6 +78,9 @@ def test_v2_2_prompt_grounds_weekday_after_next_before_navigation() -> None:
     assert "selected date is closer to the computed target" in prompt
     assert "immediately reverse the swipe direction" in prompt
     assert "verify the visible absolute date" in prompt
+    assert "FILES_SOURCE_NAVIGATION" in prompt
+    assert "use the visible top-left roots/navigation-drawer" in prompt
+    assert "Do not press_back to the launcher" in prompt
 
 
 def test_v2_loop_guard_repair_requires_higher_level_selector() -> None:
@@ -98,6 +101,28 @@ def test_v2_loop_guard_repair_requires_higher_level_selector() -> None:
     assert "use_higher_level_visible_selector" in prompt
     assert error in prompt
     assert prompt.index("LOOP_GUARD_REPAIR_PRIORITY") < prompt.index("original")
+
+
+def test_v2_loop_guard_repair_breaks_blocked_open_app_cycle() -> None:
+    error = (
+        "LOOP_GUARD: this action is blocked on the current semantic UI "
+        "state after no progress."
+    )
+    prompt = EpisodeController._repair_prompt(
+        "original",
+        (
+            '{"status":"continue","action":'
+            '{"type":"open_app","app_name":"Files"}}'
+        ),
+        error,
+        protocol_v2=True,
+    )
+    assert "BLOCKED_OPEN_APP_CYCLE" in prompt
+    assert "action.type must not be open_app or press_back" in prompt
+    assert "swipe upward from lower launcher content" in prompt
+    assert "reveal the app drawer" in prompt
+    assert "Do not guess a hidden icon coordinate" in prompt
+    assert prompt.index("BLOCKED_OPEN_APP_CYCLE") < prompt.rindex("original")
 
 
 def test_repair_prompt_forbids_invented_working_memory_citations() -> None:

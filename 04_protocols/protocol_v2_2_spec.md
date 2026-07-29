@@ -217,6 +217,14 @@ memory authority, and Critic enforcement.
   target remains forbidden; the three-action cross-state cap is unchanged.
   The loop-specific repair contract precedes the original prompt so it remains
   the highest-salience instruction in the sole bounded repair.
+- For Android Files source navigation, an initial empty Downloads view is not
+  a reason to exit and reopen the app. The policy uses the visible top-left
+  roots drawer to reach the requested storage. If an `open_app` action is
+  nevertheless rejected as one half of an `open_app`/`press_back` loop, its
+  sole repair may neither reopen nor go back. On the launcher it must tap an
+  already visible target-app icon or swipe upward to reveal the app drawer,
+  then wait for a later observed step before selecting the app. No icon
+  coordinate is injected and the guard does not rewrite the action.
 - A Critic `reobserve` or `recover` verdict creates a binding constraint that
   blocks the same action until a materially different action changes semantic
   state.

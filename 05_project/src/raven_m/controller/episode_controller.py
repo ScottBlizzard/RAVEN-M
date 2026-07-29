@@ -498,6 +498,19 @@ class EpisodeController:
                 ),
                 *(
                     [
+                        "FILES_SOURCE_NAVIGATION: when an Android Files task "
+                        "opens in Downloads but the TASK source is elsewhere, "
+                        "use the visible top-left roots/navigation-drawer "
+                        "control to reach the requested storage and folder. "
+                        "Do not press_back to the launcher and then reopen "
+                        "Files; that is an alternating loop, not source-path "
+                        "progress."
+                    ]
+                    if protocol_v2_2
+                    else []
+                ),
+                *(
+                    [
                         "POST_DESTINATION_COMMIT_ACTIVE: exactly one bottom "
                         "Copy/Move commit has already executed in this task. "
                         "Do not select or long-press the task item, open an "
@@ -575,6 +588,19 @@ class EpisodeController:
             "POST_DESTINATION_COMMIT_GUARD:"
         )
         loop_guard_rejected = error.startswith("LOOP_GUARD:")
+        invalid_action_type: str | None = None
+        try:
+            invalid_payload = json.loads(invalid_content)
+            invalid_action = invalid_payload.get("action")
+            if isinstance(invalid_action, dict):
+                candidate_type = invalid_action.get("type")
+                if isinstance(candidate_type, str):
+                    invalid_action_type = candidate_type
+        except (json.JSONDecodeError, AttributeError, TypeError):
+            pass
+        loop_open_app_rejected = (
+            loop_guard_rejected and invalid_action_type == "open_app"
+        )
         visual_source_rejected = (
             "VISUAL_SOURCE_ADJUDICATION_REJECTED:" in error
         )
@@ -727,6 +753,18 @@ class EpisodeController:
                 "target. This priority contract appears before the original "
                 "prompt and is binding.\n"
             )
+            if loop_open_app_rejected:
+                repair_directive += (
+                    "BLOCKED_OPEN_APP_CYCLE: The rejected action.type is "
+                    "open_app. For this repair, action.type must not be "
+                    "open_app or press_back. If the requested app icon is "
+                    "visibly present on the launcher, tap that visible icon. "
+                    "If it is not visible, swipe upward from lower launcher "
+                    "content toward upper launcher content to reveal the app "
+                    "drawer, then select the app only on a later observed "
+                    "step. Do not guess a hidden icon coordinate and do not "
+                    "repeat either half of the open_app/press_back cycle.\n"
+                )
         elif semantic_action_rejected:
             repair_directive = (
                 "\n\nYour previous JSON was structurally valid, but its GUI "

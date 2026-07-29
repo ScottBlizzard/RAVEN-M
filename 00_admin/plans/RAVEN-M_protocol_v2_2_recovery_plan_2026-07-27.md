@@ -611,3 +611,28 @@ evaluator, schedule, or threshold changes.
   repeat only sequence 6 in a fresh non-scored development directory. A new
   eight-cell formal run is authorized only after native reward 1, valid output,
   answer-cache agreement, and a passing semantic audit.
+
+## r37 Files launcher-cycle recovery after the r36 formal stop
+
+- Preserve r36 as a stopped formal diagnostic. It produced all eight result
+  records and five native successes, including both Calendar variants, but
+  sequence 8 failed valid-output and semantic-audit criteria after its only
+  repair repeated a loop-blocked `open_app` action.
+- Treat the sequence-8 failure as a source-navigation and recovery-contract
+  defect. From empty Downloads the policy alternated `press_back` to the
+  launcher with `open_app Files`; at the launcher no Files icon was visible,
+  and the generic loop repair supplied no actionable non-repetition path.
+- Add one source-side Files rule: use the visible top-left roots drawer from
+  Downloads instead of leaving and reopening the app.
+- When the rejected loop candidate is `open_app`, the sole repair must not use
+  `open_app` or `press_back`. It taps an already visible target-app icon or,
+  when absent, swipes upward on the launcher to reveal the app drawer and
+  defers selection to a later observed step. It receives no icon coordinate.
+- Preserve the one-repair limit, loop thresholds, seed, instances, schedule,
+  step/model budgets, prompts/schemas outside the controller contract, model,
+  evaluator, and acceptance thresholds. Run only frozen sequence 8 in a fresh
+  development directory before authorizing a new formal suite.
+- Keep official native reward and manual semantic completion as separate
+  analyses. Do not retroactively alter the evaluator after observing that B3
+  Contacts can receive reward 1 with the phone typed in Company or that B3
+  Expense can receive reward 1 while the unsaved form remains open.
