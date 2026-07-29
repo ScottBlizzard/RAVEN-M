@@ -75,6 +75,7 @@ RECOVERY_CLASSES = (
     "navigate_back",
     "reopen_app",
     "inspect_different_visible_control",
+    "use_higher_level_visible_selector",
     "fail_safely",
 )
 VISIBLE_FAILURE_RE = re.compile(
@@ -1714,8 +1715,10 @@ class ProtocolV2DecisionGuard:
             self.identical_coordinate_block_count += 1
             raise ActionValidationError(
                 "LOOP_GUARD: the same coordinate action has already been "
-                "executed three consecutive times. Recalculate the target "
-                "coordinate or choose a different recovery action."
+                "executed three consecutive times. Use a different visible "
+                "control or a higher-level selector that can reach the target "
+                "without repeating stepwise navigation; do not perturb and "
+                "retry the same coordinate."
             )
         fingerprint = (page_sha256, action_key)
         if fingerprint in self.blocked_fingerprints:

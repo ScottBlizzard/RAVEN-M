@@ -56,6 +56,44 @@ def test_v2_prompt_adds_semantic_progress_contract() -> None:
     assert "visible failure" in prompt
 
 
+def test_v2_2_prompt_grounds_weekday_after_next_before_navigation() -> None:
+    prompt = EpisodeController._user_prompt(
+        goal="What events do I have the Wednesday after next?",
+        step=0,
+        max_steps=10,
+        model_calls=0,
+        max_model_calls=24,
+        screen_width=1080,
+        screen_height=2400,
+        previous_outcome="none",
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    assert "RELATIVE_DATE_GROUNDING" in prompt
+    assert "first strictly future occurrence" in prompt
+    assert "+7 and +14 days" in prompt
+    assert "month grid or date picker" in prompt
+    assert "verify the visible absolute date" in prompt
+
+
+def test_v2_loop_guard_repair_requires_higher_level_selector() -> None:
+    error = (
+        "LOOP_GUARD: the same coordinate action has already been executed "
+        "three consecutive times."
+    )
+    prompt = EpisodeController._repair_prompt(
+        "original",
+        '{"status":"continue","action":{"type":"tap","x":0.93,"y":0.168}}',
+        error,
+        protocol_v2=True,
+    )
+    assert "higher level" in prompt
+    assert "month grid, calendar control, or date picker" in prompt
+    assert "Do not evade the guard by perturbing the same coordinate" in prompt
+    assert "use_higher_level_visible_selector" in prompt
+    assert error in prompt
+
+
 def test_repair_prompt_forbids_invented_working_memory_citations() -> None:
     prompt = EpisodeController._repair_prompt(
         "original",

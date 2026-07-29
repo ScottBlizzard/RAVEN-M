@@ -553,3 +553,21 @@ counts/booleans, never geometry, text, or coordinates. A matched negative
 regression fixture reproduces the storage breadcrumb, same-row chips, and
 folder grid. No task choice, coordinate, extra repair, budget, model, seed,
 evaluator, schedule, or threshold changes.
+## r34 recovery after the r33 information-retrieval stop
+
+- Preserve the r33 scored suite as a failed diagnostic: five valid successes
+  followed by a protocol-valid stop in B3 `SimpleCalendarEventsOnDate`.
+- Treat the failure as semantic, not infrastructure. The policy selected the
+  first future Wednesday instead of the Wednesday after next; both proposed
+  answers were correctly rejected, and later repeated next-day navigation hit
+  the unchanged three-action identical-coordinate cap.
+- Add explicit relative-weekday grounding to protocol-v2.2 prompts. Prefer a
+  visible month grid/date picker and require the visible absolute date before
+  answering.
+- Keep the loop threshold unchanged. For a bounded repair after a repeated
+  coordinate block, require a materially different higher-level selector and
+  forbid coordinate perturbation or repetition.
+- Run unit and legacy-seal tests, freeze r34, then run only sequence 6 as a
+  non-scored development reproduction. A fresh eight-cell formal suite is
+  authorized only if that development cell is valid, semantically audited,
+  and evaluator-correct.

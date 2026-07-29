@@ -474,6 +474,22 @@ class EpisodeController:
                 ),
                 *(
                     [
+                        "RELATIVE_DATE_GROUNDING: resolve relative calendar "
+                        "language from the TASK and the visible reference date "
+                        "before selecting a day. The next named weekday is its "
+                        "first strictly future occurrence; that weekday after "
+                        "next is the following occurrence. When today already "
+                        "has that weekday, these are +7 and +14 days. Prefer a "
+                        "visible month grid or date picker that selects the "
+                        "computed date directly instead of repeated next-day "
+                        "arrows. Before answering, verify the visible absolute "
+                        "date; do not answer from the first matching weekday."
+                    ]
+                    if protocol_v2_2
+                    else []
+                ),
+                *(
+                    [
                         "POST_DESTINATION_COMMIT_ACTIVE: exactly one bottom "
                         "Copy/Move commit has already executed in this task. "
                         "Do not select or long-press the task item, open an "
@@ -550,6 +566,7 @@ class EpisodeController:
         post_destination_commit_rejected = error.startswith(
             "POST_DESTINATION_COMMIT_GUARD:"
         )
+        loop_guard_rejected = error.startswith("LOOP_GUARD:")
         visual_source_rejected = (
             "VISUAL_SOURCE_ADJUDICATION_REJECTED:" in error
         )
@@ -686,6 +703,17 @@ class EpisodeController:
                 "Do not guess another text coordinate or commit any task "
                 "mutation.\n"
             )
+        elif loop_guard_rejected:
+            repair_directive = (
+                "\n\nYour previous JSON repeated a blocked action on this "
+                "screenshot. For this one repair, use a materially different "
+                "visible control that can reach the target at a higher level "
+                "instead of continuing stepwise repetition. For calendar/date "
+                "navigation, prefer the visible month grid, calendar control, "
+                "or date picker and bind the exact computed date. Do not evade "
+                "the guard by perturbing the same coordinate, and do not repeat "
+                "the same arrow, swipe, or target.\n"
+            )
         elif semantic_action_rejected:
             repair_directive = (
                 "\n\nYour previous JSON was structurally valid, but its GUI "
@@ -791,10 +819,11 @@ class EpisodeController:
             "destination/value are visibly bound on the current screen.\n"
             "For protocol-v2 text actions, preserve valid text_origin and "
             "source_memory_ids provenance. An answer action is terminal and "
-            "only valid for information-return tasks. If LOOP_GUARD appears, "
-            "use one named recovery class: change_target, "
-            "reverse_scroll_direction, navigate_back, reopen_app, "
-            "inspect_different_visible_control, or fail_safely.\n"
+                "only valid for information-return tasks. If LOOP_GUARD appears, "
+                "use one named recovery class: change_target, "
+                "reverse_scroll_direction, navigate_back, reopen_app, "
+                "inspect_different_visible_control, "
+                "use_higher_level_visible_selector, or fail_safely.\n"
             + v2_contract
             + "If a coordinate is above 1, convert it from pixels using "
             "CURRENT_SCREENSHOT size. If text is too long, shorten it below "

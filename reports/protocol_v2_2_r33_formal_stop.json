@@ -1,0 +1,147 @@
+{
+  "schema_version": "protocol_v2_2_r33_formal_stop.v1",
+  "checked_at": "2026-07-29T18:25:05Z",
+  "source_tag": "protocol-v2-2-gate-e-r33-dev",
+  "source_commit": "395cf3c663aac842f0cffcec17838ec59835a43d",
+  "suite": "runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r33",
+  "stopped_at": "2026-07-29T18:15:08.824218+00:00",
+  "stopped_early": true,
+  "stop_reason": "model_output_invalid_after_one_bounded_repair",
+  "result_count": 6,
+  "success_count": 5,
+  "formal_continuation_authorized": false,
+  "completed_cells": [
+    {
+      "sequence": 1,
+      "variant": "B3",
+      "task": "ContactsAddContact",
+      "evaluator_reward": 1.0,
+      "success": true,
+      "executed_steps": 11,
+      "model_calls": 17,
+      "semantic_progress_audit_passed": true
+    },
+    {
+      "sequence": 2,
+      "variant": "M0",
+      "task": "SimpleCalendarEventsOnDate",
+      "evaluator_reward": 1.0,
+      "success": true,
+      "executed_steps": 5,
+      "model_calls": 8,
+      "semantic_progress_audit_passed": true
+    },
+    {
+      "sequence": 3,
+      "variant": "B3",
+      "task": "ExpenseAddSingle",
+      "evaluator_reward": 1.0,
+      "success": true,
+      "executed_steps": 12,
+      "model_calls": 16,
+      "semantic_progress_audit_passed": true
+    },
+    {
+      "sequence": 4,
+      "variant": "M0",
+      "task": "FilesMoveFile",
+      "evaluator_reward": 1.0,
+      "success": true,
+      "executed_steps": 20,
+      "model_calls": 32,
+      "semantic_progress_audit_passed": true
+    },
+    {
+      "sequence": 5,
+      "variant": "M0",
+      "task": "ContactsAddContact",
+      "evaluator_reward": 1.0,
+      "success": true,
+      "executed_steps": 10,
+      "model_calls": 18,
+      "semantic_progress_audit_passed": true
+    }
+  ],
+  "stopped_cell": {
+    "sequence": 6,
+    "variant": "B3",
+    "task": "SimpleCalendarEventsOnDate",
+    "goal": "What events do I have the Wednesday after next in Simple Calendar Pro? Answer with the titles only. If there are multiple titles, format your answer as a comma separated list.",
+    "evaluator_reward": 0.0,
+    "success": false,
+    "executed_steps": 7,
+    "model_calls": 14,
+    "failure_code": "MODEL_OUTPUT_INVALID_AFTER_REPAIR",
+    "termination_reason": "model_output_invalid_after_repair",
+    "valid_after_one_repair": false,
+    "semantic_progress_audit_passed": false,
+    "validation_block_count": 4,
+    "executed_blocked_action_steps": [],
+    "unresolved_guard_repair": true
+  },
+  "failure_evidence": {
+    "episode": "runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r33/episodes/06_B3_SimpleCalendarEventsOnDate_seed20260729",
+    "last_executed_screenshot": "step_006_after.png",
+    "last_executed_screenshot_sha256": "34718731c6d9756ef4a95058c9e30442d8d95ce1e8b1d76140ecf98d91ad6dc5",
+    "last_visible_date": "October 21 (Sat)",
+    "target_date": "October 25 2023",
+    "initial_wrong_selection": "October 18 (Wed)",
+    "answer_candidates_rejected_by_critic": 2,
+    "declared_source_rejection_count": 2,
+    "executed_next_day_taps": 3,
+    "blocked_fourth_next_day_action": {
+      "action": {
+        "type": "tap",
+        "x": 0.93,
+        "y": 0.168
+      },
+      "initial_error": "LOOP_GUARD: the same coordinate action has already been executed three consecutive times.",
+      "repair_repeated_same_action": true,
+      "repair_error": "LOOP_GUARD: the same coordinate action has already been executed three consecutive times."
+    },
+    "blocked_action_executed": false
+  },
+  "audit": {
+    "pairing_errors": [],
+    "startup_environment_last_status": "clean",
+    "model_backend": "qwen3_vl_32b_transformers_bf16_4x4090_v1",
+    "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+    "executed_blocked_action_count": 0,
+    "evaluator_data_exposed_to_model": false,
+    "automatic_gate_f_transition": false,
+    "formal_stop_enforced": true,
+    "prior_model_tunnel_failure_archived": true,
+    "manual_androidworld_smoke_after_cold_restart": "runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r33/recoveries/manual_startup_20260730T0201/androidworld_smoke.json",
+    "operator_interrupted_probe_preserved": "runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r33/episodes/06_B3_SimpleCalendarEventsOnDate_seed20260729_interrupted_20260730T020913"
+  },
+  "root_cause": {
+    "summary": "B3 resolved 'the Wednesday after next' as the first future Wednesday, then its stepwise recovery was rejected by the unchanged cross-state coordinate-streak guard and repeated unchanged in the sole repair.",
+    "details": [
+      "The target instance and paired hashes were unchanged; this was not task-instance drift.",
+      "The model first selected October 18 instead of October 25.",
+      "Both premature answers were correctly rejected by the same-turn critic and text-source guard.",
+      "The policy then advanced October 18 to October 21 with three semantically effective taps on the visible next-day arrow.",
+      "The fourth identical coordinate was correctly not executed under the frozen r33 guard.",
+      "The bounded repair repeated the same arrow and therefore failed validation without executing a blocked action."
+    ],
+    "algorithm_or_model_failure": true,
+    "infrastructure_failure": false
+  },
+  "r34_required_change": {
+    "scope": "Relative calendar-date grounding and bounded recovery from repeated stepwise navigation.",
+    "mechanism": [
+      "Define the next named weekday as the first strictly future occurrence and that weekday after next as the following occurrence; when today is that weekday, use +7 and +14 days.",
+      "Prefer direct target selection with a visible month grid or date picker and verify the visible absolute date before answering.",
+      "Keep the three-action identical-coordinate cap unchanged.",
+      "When LOOP_GUARD rejects repeated navigation, require a materially different higher-level visible selector and forbid coordinate perturbation or repetition.",
+      "Run the exact frozen sequence 6 as a separate non-scored development reproduction before any fresh eight-cell formal suite."
+    ],
+    "prohibited": [
+      "Changing the task seed, schedule, evaluator, budgets, or acceptance thresholds",
+      "Leaking task parameters or evaluator state to the policy",
+      "Increasing the repair-call allowance",
+      "Silently rewriting a model action",
+      "Weakening or removing the existing loop threshold"
+    ]
+  }
+}

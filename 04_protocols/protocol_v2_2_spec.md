@@ -193,6 +193,16 @@ memory authority, and Critic enforcement.
 
 - Planner required variables and current subgoal are frozen anchors.
 - Relative dates are not re-resolved after navigation.
+- Relative calendar language is grounded before day selection. The next named
+  weekday is its first strictly future occurrence and that weekday after next
+  is the following occurrence; when the visible reference date already has
+  that weekday, the offsets are +7 and +14 days. The policy should use a
+  visible month grid or date picker to select the computed date directly and
+  verify the absolute date before answering.
+- When the identical-coordinate guard rejects repeated stepwise navigation,
+  the bounded repair must use a materially different visible control or a
+  higher-level selector. Perturbing or repeating the same arrow, swipe, or
+  target remains forbidden; the three-action cross-state cap is unchanged.
 - A Critic `reobserve` or `recover` verdict creates a binding constraint that
   blocks the same action until a materially different action changes semantic
   state.

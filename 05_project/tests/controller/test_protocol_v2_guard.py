@@ -1229,6 +1229,10 @@ def test_guard_blocks_fourth_identical_coordinate_action_across_states() -> None
         guard.validate_decision(decision(action), page_sha256="state-3")
     audit = guard.audit_record()
     assert audit["identical_coordinate_block_count"] == 1
+    assert (
+        "use_higher_level_visible_selector"
+        in audit["validation_blocks"][-1]["required_recovery_classes"]
+    )
     guard.validate_decision(
         decision({"type": "tap", "x": 0.94, "y": 0.08}),
         page_sha256="state-3",
