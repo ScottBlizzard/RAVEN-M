@@ -588,3 +588,26 @@ evaluator, schedule, or threshold changes.
   evaluator unchanged.
 - Repeat only frozen sequence 6 in a new non-scored development directory
   before considering a new formal suite.
+
+## r36 canonical task-goal binding after the r35 date error
+
+- Preserve r35 as a failed development diagnostic; no formal r35 suite is
+  authorized. Its semantic controller, blocked-action audit, answer cache, and
+  infrastructure accounting passed, but it returned the October 18 event and
+  received native reward 0.
+- Treat the remaining error as a goal-lifecycle bug. AndroidWorld exposed the
+  concrete natural-language goal `October 25 2023` before `initialize_task`,
+  then mutated the same task object's goal to `the Wednesday after next`.
+  The controller logged the first form but prompted the model with the second.
+- Freeze the task object's existing user-facing goal before initialization.
+  For protocol-v2.2 only, use that exact frozen text consistently in live
+  prompts, declared-source/adjudication logic, summaries, and goal hashes.
+  Audit the pre/post forms when initialization changes them.
+- Do not derive the date from `task.params`, inspect evaluator state or
+  interaction cache, expose the answer, rewrite actions, or change task
+  instances, seed, schedule, budgets, model, evaluator, acceptance thresholds,
+  guard limits, or the single bounded-repair allowance.
+- Run targeted and full unit tests plus the protocol-v1 seal, freeze r36, and
+  repeat only sequence 6 in a fresh non-scored development directory. A new
+  eight-cell formal run is authorized only after native reward 1, valid output,
+  answer-cache agreement, and a passing semantic audit.

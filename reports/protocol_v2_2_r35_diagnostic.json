@@ -1,0 +1,98 @@
+{
+  "schema_version": "protocol_v2_2_r35_diagnostic.v1",
+  "checked_at": "2026-07-29T18:47:07Z",
+  "passed": false,
+  "policy_behavior_validated": false,
+  "formal_gate_authorized": false,
+  "source_tag": "protocol-v2-2-gate-e-r35-dev",
+  "source_commit": "a8a8230a599ee2db8c7126d16670f4c96605ae63",
+  "preflight": {
+    "report": "reports/protocol_v2_2_gate_e_r35_preflight.json",
+    "passed": true,
+    "freeze_file_checks": 27,
+    "freeze_file_failures": 0,
+    "emulator_connected": true,
+    "model_healthy": true,
+    "model_calls": 0,
+    "fresh_formal_suite_directory_absent": true,
+    "hard_overlap": []
+  },
+  "tests": {
+    "protocol_v2_suite_passed": true,
+    "protocol_v2_tests": 315,
+    "protocol_v1_seal_passed": true,
+    "protocol_v1_files": 197
+  },
+  "calendar_diagnostic": {
+    "run": "runs/protocol_v2_2_development/nonhard_capability_v2_2_seed20260729_r35_development_smoke_sequence_6",
+    "episode": "runs/protocol_v2_2_development/nonhard_capability_v2_2_seed20260729_r35_development_smoke_sequence_6/episodes/06_B3_SimpleCalendarEventsOnDate_seed20260729",
+    "sequence": 6,
+    "variant": "B3",
+    "task": "SimpleCalendarEventsOnDate",
+    "evaluator_reward": 0.0,
+    "success": false,
+    "termination_reason": "model_answer",
+    "failure_code": "INCORRECT_ANSWER",
+    "executed_steps": 8,
+    "model_calls": 15,
+    "executor_model_calls": 11,
+    "history_model_calls": 4,
+    "valid_after_one_repair": true,
+    "semantic_progress_audit_passed": true,
+    "validation_block_count": 3,
+    "executed_blocked_action_steps": [],
+    "unresolved_guard_repair": false,
+    "infrastructure_attempt_count": 0,
+    "elapsed_seconds": 390.563
+  },
+  "observed_improvement": {
+    "month_grid_rule_present_in_live_prompt": true,
+    "date_wheel_direction_rule_present_in_live_prompt": true,
+    "loop_guard_repair_directive_precedes_original_prompt": true,
+    "blocked_actions_executed": false,
+    "answer_cache_match_count": 1,
+    "task_seed_schedule_budget_changed": false
+  },
+  "remaining_failure": {
+    "pre_initialization_task_goal": "What events do I have October 25 2023 in Simple Calendar Pro? Answer with the titles only. If there are multiple titles, format your answer as a comma separated list.",
+    "post_initialization_live_task_goal": "What events do I have the Wednesday after next in Simple Calendar Pro? Answer with the titles only. If there are multiple titles, format your answer as a comma separated list.",
+    "first_date_selection_claim": "October 18, the Wednesday after next",
+    "first_date_selection_coordinate": {
+      "type": "tap",
+      "x": 0.49,
+      "y": 0.63
+    },
+    "selected_wrong_date": "October 18 2023",
+    "wrong_event_answer": "Workshop on Campaign",
+    "expected_date": "October 25 2023",
+    "expected_event_answer": "Board meeting"
+  },
+  "root_cause": {
+    "summary": "AndroidWorld rewrites the task goal from an absolute date to relative calendar language during initialize_task; the live controller prompt used the rewritten goal even though the original task-provided absolute goal had already been logged.",
+    "details": [
+      "The episode_start event records the task's natural-language absolute goal before initialize_task.",
+      "After initialize_task, the same task object's goal becomes 'the Wednesday after next'.",
+      "The controller generated every live model prompt from the post-initialization relative goal.",
+      "The model therefore solved an avoidable relative-date problem incorrectly and remained internally consistent on October 18.",
+      "Prompt-only arithmetic and coordinate rules cannot reliably correct a wrong target that has already entered the planner and compressed history."
+    ],
+    "algorithm_or_model_failure": true,
+    "infrastructure_failure": false
+  },
+  "r36_required_change": {
+    "mechanism": [
+      "Freeze the task object's own natural-language goal before initialize_task.",
+      "For protocol v2.2 only, use that frozen goal consistently in the live user prompt, provenance/adjudication path, episode summary, and goal hash.",
+      "Record both pre- and post-initialization goals in the task_initialized audit event when they differ.",
+      "Do not read task.params, evaluator state, interaction cache, or any hidden answer to construct the goal."
+    ],
+    "preserved_controls": [
+      "Same seed, schedule, task instances, step budgets, model-call budgets, evaluator, and acceptance thresholds",
+      "Three-action identical-coordinate threshold",
+      "One bounded repair",
+      "No hidden task parameters or evaluator state",
+      "No silent action rewrite",
+      "Protocol-v1 behavior remains sealed"
+    ]
+  }
+}

@@ -1362,9 +1362,11 @@ class EpisodeController:
         readiness_observation_count = 0
         readiness_retry_count = 0
         task_params = _json_safe(task.params)
+        initial_task_goal = str(task.goal)
+        effective_task_goal = initial_task_goal
         self.history_policy.reset(
             episode_dir=episode_dir,
-            goal=str(task.goal),
+            goal=initial_task_goal,
             episode_id=episode_id,
             task_id=task.name,
         )
@@ -1375,7 +1377,7 @@ class EpisodeController:
                 if isinstance(candidate, str) and candidate:
                     required_selection_text = candidate
             self.decision_guard.reset(
-                goal=str(task.goal),
+                goal=initial_task_goal,
                 required_selection_text=required_selection_text,
             )
 
@@ -1388,7 +1390,7 @@ class EpisodeController:
                 "history_variant": self.history_policy.variant,
                 "seed": seed,
                 "task_name": task.name,
-                "task_goal": str(task.goal),
+                "task_goal": initial_task_goal,
                 "task_params": task_params,
                 "max_steps": self.max_steps,
                 "max_model_calls": self.max_model_calls,
@@ -1400,7 +1402,25 @@ class EpisodeController:
             env.hide_automation_ui()
             task.initialize_task(env)
             task_initialized = True
-            logger.append({"event": "task_initialized"})
+            post_initialization_task_goal = str(task.goal)
+            effective_task_goal = (
+                initial_task_goal
+                if self.protocol_v2_2
+                else post_initialization_task_goal
+            )
+            logger.append(
+                {
+                    "event": "task_initialized",
+                    "task_goal_before_initialization": initial_task_goal,
+                    "task_goal_after_initialization": (
+                        post_initialization_task_goal
+                    ),
+                    "task_goal_changed": (
+                        initial_task_goal != post_initialization_task_goal
+                    ),
+                    "effective_task_goal": effective_task_goal,
+                }
+            )
 
             for step in range(self.max_steps):
                 if model_call_count >= self.max_model_calls:
@@ -1457,7 +1477,7 @@ class EpisodeController:
                 history_context = self.history_policy.context()
                 evidence_outcome = previous_outcome
                 user_prompt = self._user_prompt(
-                    goal=str(task.goal),
+                    goal=effective_task_goal,
                     step=step,
                     max_steps=self.max_steps,
                     model_calls=model_call_count,
@@ -1487,7 +1507,7 @@ class EpisodeController:
                         ),
                         screen_width=width,
                         screen_height=height,
-                        task_goal=task.goal,
+                        task_goal=effective_task_goal,
                         user_prompt=user_prompt,
                         episode_id=episode_id,
                         step=step,
@@ -1886,7 +1906,7 @@ class EpisodeController:
             "started_at": started,
             "finished_at": _utc_now(),
             "task_name": task.name,
-            "task_goal": str(task.goal),
+            "task_goal": effective_task_goal,
             "task_params": task_params,
             "seed": seed,
             "termination_reason": termination_reason,

@@ -213,6 +213,20 @@ class VisualSourceTask:
         del env
 
 
+class GoalMutatingVisualSourceTask(VisualSourceTask):
+    goal = (
+        "What events do I have October 25 2023? "
+        "Answer with titles only."
+    )
+
+    def initialize_task(self, env) -> None:
+        del env
+        self.goal = (
+            "What events do I have the Wednesday after next? "
+            "Answer with titles only."
+        )
+
+
 def test_controller_executes_answer_before_native_evaluator(
     tmp_path: Path,
 ) -> None:
@@ -259,6 +273,65 @@ def test_controller_executes_answer_before_native_evaluator(
     )
     assert answer_event < evaluator_event
     assert summary["failure_code"] is None
+
+
+def test_v22_freezes_task_goal_before_initialize_task(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    client = VisualSourceClient(verdict="proceed")
+    controller = EpisodeController(
+        client=client,  # type: ignore[arg-type]
+        system_prompt="v2",
+        max_steps=1,
+        max_model_calls=3,
+        history_policy=HistoryPolicy(),
+        action_schema_path=root / "schemas/action.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+        visual_source_critic_prompt="critic",
+    )
+    episode_dir = tmp_path / "canonical-goal"
+    summary = controller.run(
+        env=VisualSourceEnv(),
+        task=GoalMutatingVisualSourceTask(),
+        episode_id="canonical-goal-v22",
+        episode_dir=episode_dir,
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+    )
+
+    absolute_goal = (
+        "What events do I have October 25 2023? "
+        "Answer with titles only."
+    )
+    relative_goal = (
+        "What events do I have the Wednesday after next? "
+        "Answer with titles only."
+    )
+    executor_request = next(
+        request
+        for request in client.requests
+        if not request["call_label"].startswith("critic_step_")
+    )
+    assert f"TASK: {absolute_goal}" in executor_request["user_prompt"]
+    assert relative_goal not in executor_request["user_prompt"]
+    assert summary["task_goal"] == absolute_goal
+
+    events = [
+        json.loads(line)
+        for line in (episode_dir / "events.jsonl")
+        .read_text(encoding="utf-8")
+        .splitlines()
+    ]
+    initialized = next(
+        event for event in events if event["event"] == "task_initialized"
+    )
+    assert initialized["task_goal_before_initialization"] == absolute_goal
+    assert initialized["task_goal_after_initialization"] == relative_goal
+    assert initialized["task_goal_changed"] is True
+    assert initialized["effective_task_goal"] == absolute_goal
 
 
 def test_v22_visual_source_critic_accepts_pixel_visible_answer(

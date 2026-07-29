@@ -192,6 +192,13 @@ memory authority, and Critic enforcement.
 ## Planner and Critic
 
 - Planner required variables and current subgoal are frozen anchors.
+- Protocol-v2.2 freezes the task object's natural-language goal before
+  `initialize_task` and uses that same goal for live policy prompts,
+  provenance/adjudication, and the episode summary. This prevents environment
+  setup from silently replacing an already concrete absolute target with
+  relative calendar language. The audit records both forms when they differ.
+  The frozen goal comes only from the task's existing user-facing `goal`; it
+  is not reconstructed from task parameters, evaluator state, or answers.
 - Relative dates are not re-resolved after navigation.
 - Relative calendar language is grounded before day selection. The next named
   weekday is its first strictly future occurrence and that weekday after next
