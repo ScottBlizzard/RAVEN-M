@@ -571,3 +571,20 @@ evaluator, schedule, or threshold changes.
   non-scored development reproduction. A fresh eight-cell formal suite is
   authorized only if that development cell is valid, semantically audited,
   and evaluator-correct.
+
+## r35 recovery after the r34 sequence-6 development stop
+
+- Preserve r34 as a failed development diagnostic; no formal r34 suite is
+  authorized.
+- Retain r34's correct resolution of the target as October 25, but bind it to
+  the month grid: `weekday after next` is one row lower in the same weekday
+  column than the first future occurrence, and the day number is verified
+  before tapping.
+- Treat date-wheel movement as directional progress. When the selected date
+  visibly moves farther from the computed target, the next action reverses
+  direction instead of repeating the worsening swipe.
+- Put the LOOP-specific bounded-repair contract before the original prompt.
+  Keep the one-repair allowance, coordinate threshold, task controls, and
+  evaluator unchanged.
+- Repeat only frozen sequence 6 in a new non-scored development directory
+  before considering a new formal suite.

@@ -482,7 +482,15 @@ class EpisodeController:
                         "has that weekday, these are +7 and +14 days. Prefer a "
                         "visible month grid or date picker that selects the "
                         "computed date directly instead of repeated next-day "
-                        "arrows. Before answering, verify the visible absolute "
+                        "arrows. In a month grid, locate the first future named "
+                        "weekday, then move exactly one calendar row lower in "
+                        "the same weekday column for 'weekday after next'; "
+                        "verify the target day number before tapping. In a "
+                        "date wheel, a swipe is progress only if the next "
+                        "visible selected date is closer to the computed "
+                        "target. If it moved farther away, immediately reverse "
+                        "the swipe direction and never repeat the worsening "
+                        "motion. Before answering, verify the visible absolute "
                         "date; do not answer from the first matching weekday."
                     ]
                     if protocol_v2_2
@@ -705,14 +713,19 @@ class EpisodeController:
             )
         elif loop_guard_rejected:
             repair_directive = (
-                "\n\nYour previous JSON repeated a blocked action on this "
+                "\n\nLOOP_GUARD_REPAIR_PRIORITY: Your previous JSON repeated "
+                "a blocked action on this "
                 "screenshot. For this one repair, use a materially different "
                 "visible control that can reach the target at a higher level "
                 "instead of continuing stepwise repetition. For calendar/date "
                 "navigation, prefer the visible month grid, calendar control, "
-                "or date picker and bind the exact computed date. Do not evade "
-                "the guard by perturbing the same coordinate, and do not repeat "
-                "the same arrow, swipe, or target.\n"
+                "or date picker and bind the exact computed date. If the "
+                "blocked action is a swipe whose observed values moved away "
+                "from the target, swap its start and end points to reverse "
+                "direction. Do not evade the guard by perturbing the same "
+                "coordinate, and do not repeat the same arrow, swipe, or "
+                "target. This priority contract appears before the original "
+                "prompt and is binding.\n"
             )
         elif semantic_action_rejected:
             repair_directive = (
@@ -790,9 +803,12 @@ class EpisodeController:
             if protocol_v2
             else ""
         )
+        repair_prefix = repair_directive if loop_guard_rejected else ""
+        repair_suffix = "" if loop_guard_rejected else repair_directive
         return (
-            original_prompt
-            + repair_directive
+            repair_prefix
+            + original_prompt
+            + repair_suffix
             + f"VALIDATION_ERROR: {error}\n"
             f"INVALID_RESPONSE: {invalid_content}\n"
             "The action field must be an object such as "

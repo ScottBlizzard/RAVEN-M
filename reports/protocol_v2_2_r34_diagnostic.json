@@ -1,0 +1,109 @@
+{
+  "schema_version": "protocol_v2_2_r34_diagnostic.v1",
+  "checked_at": "2026-07-29T18:35:13Z",
+  "passed": false,
+  "policy_behavior_validated": false,
+  "formal_gate_authorized": false,
+  "source_tag": "protocol-v2-2-gate-e-r34-dev",
+  "source_commit": "7e4cbcbc8c1232f2d3b9d29322391b694bff8171",
+  "preflight": {
+    "report": "reports/protocol_v2_2_gate_e_r34_preflight.json",
+    "passed": true,
+    "freeze_file_checks": 27,
+    "freeze_file_failures": 0,
+    "emulator_connected": true,
+    "model_healthy": true,
+    "model_calls": 0,
+    "fresh_formal_suite_directory_absent": true,
+    "hard_overlap": []
+  },
+  "tests": {
+    "protocol_v2_suite_passed": true,
+    "protocol_v2_tests": 313,
+    "protocol_v1_seal_passed": true,
+    "protocol_v1_files": 197
+  },
+  "calendar_diagnostic": {
+    "run": "runs/protocol_v2_2_development/nonhard_capability_v2_2_seed20260729_r34_development_smoke_sequence_6",
+    "episode": "runs/protocol_v2_2_development/nonhard_capability_v2_2_seed20260729_r34_development_smoke_sequence_6/episodes/06_B3_SimpleCalendarEventsOnDate_seed20260729",
+    "sequence": 6,
+    "variant": "B3",
+    "task": "SimpleCalendarEventsOnDate",
+    "evaluator_reward": 0.0,
+    "success": false,
+    "termination_reason": "model_output_invalid_after_repair",
+    "failure_code": "MODEL_OUTPUT_INVALID_AFTER_REPAIR",
+    "executed_steps": 7,
+    "model_calls": 10,
+    "executor_model_calls": 9,
+    "history_model_calls": 1,
+    "valid_after_one_repair": false,
+    "semantic_progress_audit_passed": false,
+    "validation_block_count": 2,
+    "executed_blocked_action_steps": [],
+    "unresolved_guard_repair": true,
+    "infrastructure_attempt_count": 0,
+    "elapsed_seconds": 266.7030000000086
+  },
+  "observed_improvement": {
+    "relative_date_rule_present_in_live_prompt": true,
+    "model_resolved_target_as_october_25": true,
+    "model_recognized_october_18_as_wrong_after_observation": true,
+    "date_picker_opened_for_recovery": true,
+    "task_seed_schedule_budget_changed": false
+  },
+  "remaining_failure": {
+    "month_grid_candidate_text": "Tap on October 25, the Wednesday after next, to display its scheduled events.",
+    "month_grid_candidate_coordinate": {
+      "type": "tap",
+      "x": 0.49,
+      "y": 0.62
+    },
+    "coordinate_actually_selected": "October 18",
+    "date_picker_start": "October 18 2023",
+    "observed_wrong_direction_values": [
+      "October 10 2023",
+      "October 6 2023",
+      "October 2 2023"
+    ],
+    "repeated_swipe": {
+      "type": "swipe",
+      "x": 0.49,
+      "y": 0.45,
+      "x2": 0.49,
+      "y2": 0.75,
+      "duration_ms": 500
+    },
+    "initial_loop_block_executed": false,
+    "repair_repeated_same_swipe": true,
+    "repair_block_executed": false
+  },
+  "root_cause": {
+    "summary": "r34 fixed relative-date arithmetic but did not bind the computed date to the correct month-grid row or require reversal after the date wheel moved away from the target.",
+    "details": [
+      "The model named October 25 correctly while tapping the coordinate for October 18.",
+      "The model then used the date picker but interpreted a downward finger swipe as moving the selected day forward.",
+      "Successive screenshots visibly decreased the day value, but the policy continued to claim forward progress.",
+      "The appended LOOP_GUARD repair directive was ignored by deterministic decoding and the same swipe was proposed again.",
+      "The unchanged guard rejected both candidates without executing a blocked action."
+    ],
+    "algorithm_or_model_failure": true,
+    "infrastructure_failure": false
+  },
+  "r35_required_change": {
+    "mechanism": [
+      "In a month grid, locate the first future named weekday and then move one calendar row lower in the same weekday column for 'weekday after next'.",
+      "Require visual verification of the target day number before tapping the grid.",
+      "Treat date-wheel movement as directional progress only when the visible selected date moves closer to the computed target.",
+      "If a swipe moves away from the target, reverse its direction on the next step and never repeat the worsening motion.",
+      "Place the LOOP_GUARD repair directive before the original prompt so the bounded repair cannot treat it as a low-salience suffix."
+    ],
+    "preserved_controls": [
+      "Same seed, schedule, task instances, step budgets, model-call budgets, evaluator, and acceptance thresholds",
+      "Three-action identical-coordinate threshold",
+      "One bounded repair",
+      "No hidden task parameters or evaluator state",
+      "No silent action rewrite"
+    ]
+  }
+}

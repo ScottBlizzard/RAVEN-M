@@ -73,6 +73,10 @@ def test_v2_2_prompt_grounds_weekday_after_next_before_navigation() -> None:
     assert "first strictly future occurrence" in prompt
     assert "+7 and +14 days" in prompt
     assert "month grid or date picker" in prompt
+    assert "one calendar row lower in the same weekday column" in prompt
+    assert "verify the target day number before tapping" in prompt
+    assert "selected date is closer to the computed target" in prompt
+    assert "immediately reverse the swipe direction" in prompt
     assert "verify the visible absolute date" in prompt
 
 
@@ -89,9 +93,11 @@ def test_v2_loop_guard_repair_requires_higher_level_selector() -> None:
     )
     assert "higher level" in prompt
     assert "month grid, calendar control, or date picker" in prompt
+    assert "swap its start and end points to reverse direction" in prompt
     assert "Do not evade the guard by perturbing the same coordinate" in prompt
     assert "use_higher_level_visible_selector" in prompt
     assert error in prompt
+    assert prompt.index("LOOP_GUARD_REPAIR_PRIORITY") < prompt.index("original")
 
 
 def test_repair_prompt_forbids_invented_working_memory_citations() -> None:

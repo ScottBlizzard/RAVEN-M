@@ -198,11 +198,18 @@ memory authority, and Critic enforcement.
   is the following occurrence; when the visible reference date already has
   that weekday, the offsets are +7 and +14 days. The policy should use a
   visible month grid or date picker to select the computed date directly and
-  verify the absolute date before answering.
+  verify the absolute date before answering. In a month grid, `weekday after
+  next` is one row lower in the same weekday column than the first future
+  occurrence; the day number must be verified before the tap.
+- Date-wheel movement is directional progress only when the next visible
+  selected date is closer to the computed target. A swipe that moves the value
+  farther away must be reversed on the next step and may not be repeated.
 - When the identical-coordinate guard rejects repeated stepwise navigation,
   the bounded repair must use a materially different visible control or a
   higher-level selector. Perturbing or repeating the same arrow, swipe, or
   target remains forbidden; the three-action cross-state cap is unchanged.
+  The loop-specific repair contract precedes the original prompt so it remains
+  the highest-salience instruction in the sole bounded repair.
 - A Critic `reobserve` or `recover` verdict creates a binding constraint that
   blocks the same action until a materially different action changes semantic
   state.
