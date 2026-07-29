@@ -1,0 +1,49 @@
+{
+  "schema_version": "protocol_v2_2_gate_d_freeze.v1",
+  "checked_at": "2026-07-29T18:26:57Z",
+  "passed": true,
+  "source_tag": "protocol-v2-2-gate-e-r34-dev",
+  "source_commit": "7e4cbcbc8c1232f2d3b9d29322391b694bff8171",
+  "manifest": "05_project/configs/experiments/v2_2_capability_gate_r34.json",
+  "wrapper": "05_project/scripts/run_protocol_v2_2_gate_e_r34.py",
+  "source_tag_resolves_to_source_commit": true,
+  "tests": {
+    "protocol_v2_suite": {
+      "passed": true,
+      "test_count": 313
+    },
+    "protocol_v1_seal": {
+      "passed": true,
+      "file_count": 197,
+      "failure_count": 0,
+      "seal_sha256": "8b707052bbf3d22ff9643dc1fd4bc55d8f09461a00be9c13728e6eacdfa37ac9"
+    }
+  },
+  "freeze": {
+    "file_count": 27,
+    "failure_count": 0,
+    "source_files_changed_from_r33": [
+      {
+        "path": "05_project/src/raven_m/controller/episode_controller.py",
+        "sha256": "a9c04d9a196d6f53fc87f2028e57dffd6157a869c1333101537c675e210876d3"
+      },
+      {
+        "path": "05_project/src/raven_m/controller/protocol_v2_guard.py",
+        "sha256": "21c4e8674be83b5a9e43d5dc927cec927732592f9fd8719a77dc0927ec15f494"
+      }
+    ],
+    "all_other_frozen_file_hashes_preserved_from_r33": true
+  },
+  "scope": {
+    "task_seed_schedule_unchanged": true,
+    "step_and_model_call_budgets_unchanged": true,
+    "system_prompts_and_schemas_unchanged": true,
+    "evaluator_and_acceptance_unchanged": true,
+    "single_bounded_repair_preserved": true,
+    "identical_coordinate_threshold_unchanged": true,
+    "evaluator_state_exposed": false,
+    "new_behavior": "Protocol-v2.2 grounds relative weekdays before selection and directs a LOOP_GUARD repair to a materially different higher-level visible selector instead of repeated stepwise coordinates."
+  },
+  "automatic_gate_e_launch": false,
+  "automatic_gate_f_transition": false
+}
