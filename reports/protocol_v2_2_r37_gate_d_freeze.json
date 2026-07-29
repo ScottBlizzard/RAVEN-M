@@ -1,0 +1,46 @@
+{
+  "schema_version": "protocol_v2_2_gate_d_freeze.v1",
+  "checked_at": "2026-07-29T20:18:28Z",
+  "passed": true,
+  "source_tag": "protocol-v2-2-gate-e-r37-dev",
+  "source_commit": "dc99511d71168c3b6900ac42c92b10052730ecd4",
+  "manifest": "05_project/configs/experiments/v2_2_capability_gate_r37.json",
+  "wrapper": "05_project/scripts/run_protocol_v2_2_gate_e_r37.py",
+  "source_tag_resolves_to_source_commit": true,
+  "tests": {
+    "protocol_v2_suite": {
+      "passed": true,
+      "test_count": 321
+    },
+    "protocol_v1_seal": {
+      "passed": true,
+      "file_count": 197,
+      "failure_count": 0,
+      "seal_sha256": "8b707052bbf3d22ff9643dc1fd4bc55d8f09461a00be9c13728e6eacdfa37ac9"
+    }
+  },
+  "freeze": {
+    "file_count": 27,
+    "failure_count": 0,
+    "source_files_changed_from_r36": [
+      {
+        "path": "05_project/src/raven_m/controller/episode_controller.py",
+        "sha256": "77547e0892bd176de8e11ff4926c672f774af1cee3454006fa2958016e426c04"
+      }
+    ],
+    "all_other_frozen_file_hashes_preserved_from_r36": true
+  },
+  "scope": {
+    "task_seed_schedule_unchanged": true,
+    "step_and_model_call_budgets_unchanged": true,
+    "system_prompts_and_schemas_unchanged": true,
+    "evaluator_and_acceptance_unchanged": true,
+    "single_bounded_repair_preserved": true,
+    "loop_thresholds_unchanged": true,
+    "evaluator_state_exposed": false,
+    "hidden_task_parameters_exposed": false,
+    "new_behavior": "Protocol-v2.2 directs Files source navigation through the visible roots drawer and gives loop-rejected open_app actions a launcher-specific non-repetition repair via a visible icon or app-drawer swipe."
+  },
+  "automatic_gate_e_launch": false,
+  "automatic_gate_f_transition": false
+}
