@@ -106,6 +106,7 @@ SOFT_KEYBOARD_PACKAGES = {
     "com.android.inputmethod.latin",
     "com.google.android.inputmethod.latin",
 }
+ANDROID_FILES_PACKAGES = {"com.google.android.documentsui"}
 SEMANTIC_FIELDS = (
     "text",
     "content_description",
@@ -408,6 +409,118 @@ def visible_control_activation_retry_assessment(
         "permitted": bool(
             action_type == "tap"
             and matched_controls
+            and not commit_like
+        ),
+    }
+
+
+def post_destination_verification_navigation_assessment(
+    ui_elements: Any,
+    action: dict[str, Any] | None,
+    *,
+    required_destination_text: str | None,
+    screen_width: int,
+    screen_height: int,
+) -> dict[str, Any]:
+    """Bind post-transfer verification to the exact task destination row."""
+    action_type = (
+        action.get("type") if isinstance(action, dict) else None
+    )
+    required_label = _normalized_text(required_destination_text)
+    exact_label_hits: list[dict[str, Any]] = []
+    clickable_hits: list[dict[str, Any]] = []
+    for element in ui_elements or ():
+        package_name = _normalized_text(
+            _element_value(element, "package_name")
+        )
+        if package_name not in ANDROID_FILES_PACKAGES:
+            continue
+        if _element_value(element, "is_visible") is not True:
+            continue
+        if _element_value(element, "is_enabled") is not True:
+            continue
+        if not _tap_hits_element(
+            action,
+            element,
+            screen_width=screen_width,
+            screen_height=screen_height,
+        ):
+            continue
+        labels = [
+            label
+            for field in (
+                "text",
+                "content_description",
+                "hint_text",
+                "tooltip",
+            )
+            if (
+                label := _normalized_text(
+                    _element_value(element, field)
+                )
+            )
+            is not None
+        ]
+        if (
+            required_label is not None
+            and any(
+                label.casefold() == required_label.casefold()
+                for label in labels
+            )
+        ):
+            exact_label_hits.append(
+                {
+                    "package_name": package_name,
+                    "labels": labels,
+                }
+            )
+        if (
+            _element_value(element, "is_clickable") is True
+            and _element_value(element, "is_editable") is not True
+        ):
+            clickable_hits.append(
+                {
+                    "package_name": package_name,
+                    "labels": labels,
+                    "commit_like": any(
+                        COMMIT_LIKE_CONTROL_RE.search(label)
+                        for label in labels
+                    ),
+                }
+            )
+    matched_labels = sorted(
+        {
+            label
+            for hit in exact_label_hits
+            for label in hit["labels"]
+        }
+    )
+    commit_like = bool(
+        required_label
+        and COMMIT_LIKE_CONTROL_RE.search(required_label)
+    ) or any(hit["commit_like"] for hit in clickable_hits)
+    return {
+        "schema_version": (
+            "post_destination_verification_navigation_assessment.v1"
+        ),
+        "adjudicable": bool(ui_elements and required_label),
+        "action_type": action_type,
+        "required_destination_text": required_label,
+        "exact_label_hit_count": len(exact_label_hits),
+        "clickable_hit_count": len(clickable_hits),
+        "matched_labels": matched_labels,
+        "matched_packages": sorted(
+            {
+                hit["package_name"]
+                for hit in [*exact_label_hits, *clickable_hits]
+            }
+        ),
+        "commit_like": commit_like,
+        "permitted": bool(
+            action_type == "tap"
+            and required_label
+            and exact_label_hits
+            and clickable_hits
             and not commit_like
         ),
     }
@@ -1367,9 +1480,11 @@ class ProtocolV2DecisionGuard:
         *,
         goal: str,
         required_selection_text: str | None = None,
+        required_destination_text: str | None = None,
     ) -> None:
         self.goal = goal
         self.required_selection_text = required_selection_text
+        self.required_destination_text = required_destination_text
         self.no_effect_counts: dict[tuple[str, str], int] = defaultdict(int)
         self.blocked_fingerprints: set[tuple[str, str]] = set()
         self.transition_fingerprints: list[tuple[str, str, str]] = []
@@ -1388,6 +1503,10 @@ class ProtocolV2DecisionGuard:
         self.destination_picker_commit_count = 0
         self.post_destination_commit_block_count = 0
         self.post_destination_commit_active = False
+        self.post_destination_verification_navigation_count = 0
+        self.post_destination_verification_navigation_records: list[
+            dict[str, Any]
+        ] = []
         self.exact_target_long_press_block_count = 0
         self.focused_input_block_count = 0
         self.unfocused_clear_text_block_count = 0
@@ -2187,6 +2306,9 @@ class ProtocolV2DecisionGuard:
         before_visible_failures: list[str] | tuple[str, ...] = (),
         after_visible_failures: list[str] | tuple[str, ...] = (),
         destination_picker_commit_executed: bool = False,
+        post_destination_verification_navigation_assessment: (
+            dict[str, Any] | None
+        ) = None,
         claimed_unverified_progress: bool = False,
     ) -> dict[str, Any]:
         input_activation_proof_consumed = (
@@ -2211,6 +2333,22 @@ class ProtocolV2DecisionGuard:
         if destination_picker_commit_executed:
             self.destination_picker_commit_count += 1
             self.post_destination_commit_active = True
+        verification_navigation_assessment = (
+            post_destination_verification_navigation_assessment or {}
+        )
+        post_destination_verification_navigation = bool(
+            self.post_destination_commit_active
+            and verification_navigation_assessment.get("permitted") is True
+        )
+        if post_destination_verification_navigation:
+            self.post_destination_verification_navigation_count += 1
+            self.post_destination_verification_navigation_records.append(
+                {
+                    "before_semantic_state_sha256": before_sha256,
+                    "action": action,
+                    "assessment": verification_navigation_assessment,
+                }
+            )
         if action.get("type") in COORDINATE_STREAK_ACTIONS:
             if action_key == self.last_coordinate_action_key:
                 self.identical_coordinate_action_count += 1
@@ -2284,6 +2422,12 @@ class ProtocolV2DecisionGuard:
             "post_destination_commit_active": (
                 self.post_destination_commit_active
             ),
+            "post_destination_verification_navigation": (
+                post_destination_verification_navigation
+            ),
+            "post_destination_verification_navigation_count": (
+                self.post_destination_verification_navigation_count
+            ),
             "unverified_progress_repeat_armed": (
                 self.last_unverified_progress_no_effect_fingerprint
                 == fingerprint
@@ -2311,6 +2455,7 @@ class ProtocolV2DecisionGuard:
                 self.identical_coordinate_no_effect_count
             ),
             "required_selection_text": self.required_selection_text,
+            "required_destination_text": self.required_destination_text,
             "blocked_fingerprint_count": len(self.blocked_fingerprints),
             "validation_block_count": len(self.validation_blocks),
             "identical_coordinate_block_count": (
@@ -2333,6 +2478,12 @@ class ProtocolV2DecisionGuard:
             ),
             "post_destination_commit_active": (
                 self.post_destination_commit_active
+            ),
+            "post_destination_verification_navigation_count": (
+                self.post_destination_verification_navigation_count
+            ),
+            "post_destination_verification_navigation_records": list(
+                self.post_destination_verification_navigation_records
             ),
             "exact_target_long_press_block_count": (
                 self.exact_target_long_press_block_count

@@ -424,6 +424,87 @@ class RejectPrematurePostCommitCompletionPolicy(HistoryPolicy):
         )
 
 
+class PostCommitVerificationClient:
+    def __init__(self) -> None:
+        self.requests: list[dict] = []
+
+    def generate(self, **kwargs) -> ModelCall:
+        self.requests.append(kwargs)
+        label = kwargs["call_label"]
+        if label.startswith("step_000"):
+            action = {"type": "tap", "x": 0.38, "y": 0.945}
+            summary = "Tap the MOVE button to confirm the move."
+            outcome = "The file is moved to the selected destination."
+        else:
+            action = {"type": "tap", "x": 0.25, "y": 0.678}
+            summary = "Tap Ringtones to confirm the moved file is present."
+            outcome = "The Ringtones folder opens for verification."
+        decision = {
+            "status": "continue",
+            "action": action,
+            "expected_outcome": outcome,
+            "decision_summary": summary,
+            "state_delta": [],
+            "memory_citations": [],
+            "completion_evidence": [],
+        }
+        return ModelCall(
+            call_id=label,
+            episode_id=kwargs["episode_id"],
+            idempotency_key=label,
+            image_sha256="0" * 64,
+            image_sha256s=("0" * 64,),
+            prompt_sha256=label,
+            request_sha256=label,
+            response_sha256=label,
+            content=json.dumps(decision),
+            usage={
+                "prompt_tokens": 1,
+                "completion_tokens": 1,
+                "total_tokens": 2,
+            },
+            raven_meta={},
+        )
+
+
+class NavigationOverrideProbePolicy(HistoryPolicy):
+    variant = "M0"
+
+    def __init__(self) -> None:
+        self.candidates: list[bool | None] = []
+
+    def adjudicate_action(
+        self,
+        decision,
+        **kwargs,
+    ) -> CompletionAdjudication:
+        del decision
+        candidate = kwargs["consequential_action_candidate"]
+        self.candidates.append(candidate)
+        if candidate is not None:
+            return CompletionAdjudication()
+        return CompletionAdjudication(
+            accepted=False,
+            record={
+                "schema_version": "action_adjudication.v1",
+                "trigger": "consequential_action_candidate",
+                "output": {
+                    "schema_version": "critic.v1",
+                    "verdict": "reobserve",
+                    "recommended_constraint": (
+                        "confirm the Ringtones folder is selected"
+                    ),
+                },
+                "error": None,
+                "model_call_ids": [],
+            },
+            error=(
+                "Action critic rejected commit: confirm the Ringtones "
+                "folder is selected"
+            ),
+        )
+
+
 class WrongFileThenSearchClient:
     def __init__(self) -> None:
         self.requests: list[dict] = []
@@ -1125,6 +1206,106 @@ class PostCommitEnv(DestinationPickerEnv):
         self.execute_count += 1
 
 
+class PostCommitVerificationEnv(DestinationPickerEnv):
+    def __init__(
+        self,
+        *,
+        destination_package: str = "com.google.android.documentsui",
+    ) -> None:
+        super().__init__()
+        self.destination_package = destination_package
+
+    def get_state(self, wait_to_stabilize: bool):
+        assert wait_to_stabilize
+        if self.execute_count == 0:
+            elements = [
+                SimpleNamespace(
+                    package_name="com.google.android.documentsui",
+                    text="CANCEL",
+                    is_visible=True,
+                    is_enabled=True,
+                    bbox=SimpleNamespace(
+                        x_min=0.03,
+                        x_max=0.26,
+                        y_min=0.91,
+                        y_max=0.98,
+                    ),
+                ),
+                SimpleNamespace(
+                    package_name="com.google.android.documentsui",
+                    text="MOVE",
+                    is_visible=True,
+                    is_enabled=True,
+                    bbox=SimpleNamespace(
+                        x_min=0.28,
+                        x_max=0.50,
+                        y_min=0.91,
+                        y_max=0.98,
+                    ),
+                ),
+            ]
+        elif self.execute_count == 1:
+            elements = [
+                SimpleNamespace(
+                    package_name=self.destination_package,
+                    text="Ringtones",
+                    is_visible=True,
+                    is_enabled=True,
+                    is_clickable=False,
+                    is_editable=False,
+                    bbox=SimpleNamespace(
+                        x_min=0.06,
+                        x_max=0.49,
+                        y_min=0.63,
+                        y_max=0.72,
+                    ),
+                ),
+                SimpleNamespace(
+                    package_name=self.destination_package,
+                    text=None,
+                    is_visible=True,
+                    is_enabled=True,
+                    is_clickable=True,
+                    is_editable=False,
+                    bbox=SimpleNamespace(
+                        x_min=0.06,
+                        x_max=0.49,
+                        y_min=0.63,
+                        y_max=0.72,
+                    ),
+                ),
+            ]
+        else:
+            elements = [
+                SimpleNamespace(
+                    package_name="com.google.android.documentsui",
+                    text="nature_sounds.mp3",
+                    is_visible=True,
+                    is_enabled=True,
+                    is_clickable=True,
+                    is_editable=False,
+                    bbox=SimpleNamespace(
+                        x_min=0.06,
+                        x_max=0.49,
+                        y_min=0.20,
+                        y_max=0.30,
+                    ),
+                )
+            ]
+        return SimpleNamespace(
+            pixels=np.full(
+                (100, 100, 3),
+                min(self.execute_count, 2),
+                dtype=np.uint8,
+            ),
+            ui_elements=elements,
+        )
+
+    def execute_action(self, action) -> None:
+        assert action.action_type == "click"
+        self.execute_count += 1
+
+
 class ExactTargetGridEnv(DestinationPickerEnv):
     def get_state(self, wait_to_stabilize: bool):
         assert wait_to_stabilize
@@ -1581,7 +1762,10 @@ class FilesTask:
         "Move nature_sounds.mp3 from the requested source to the requested "
         "folder."
     )
-    params = {"file_name": "nature_sounds.mp3"}
+    params = {
+        "file_name": "nature_sounds.mp3",
+        "destination_folder": "Ringtones",
+    }
 
     def initialize_task(self, env) -> None:
         del env
@@ -2392,6 +2576,98 @@ def test_controller_rejects_wait_after_post_commit_completion_rejection(
     )
     assert "REPAIR_CONTRACT_GUARD" in error["repair_validation_error"]
     assert "post-destination repair" in error["repair_validation_error"]
+
+
+def test_controller_bypasses_false_positive_critic_only_for_exact_files_destination(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = PostCommitVerificationEnv()
+    client = PostCommitVerificationClient()
+    policy = NavigationOverrideProbePolicy()
+    controller = EpisodeController(
+        client=client,  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=2,
+        max_model_calls=3,
+        history_policy=policy,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="post-commit-destination-verification-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="M0",
+    )
+    assert env.execute_count == 2
+    assert summary["model_call_count"] == 2
+    assert policy.candidates == [True, False]
+    verification_step = summary["steps"][1]
+    assessment = verification_step["parse"][
+        "post_destination_verification_navigation_assessment"
+    ]
+    assert assessment["permitted"] is True
+    assert assessment["required_destination_text"] == "Ringtones"
+    assert assessment["matched_packages"] == [
+        "com.google.android.documentsui"
+    ]
+    assert verification_step["action_authority"]["risk_class"] == (
+        "observe_navigation"
+    )
+    assert "task_parameter_destination" in verification_step[
+        "action_authority"
+    ]["authority_sources"]
+    assert verification_step["protocol_v2_guard"][
+        "post_destination_verification_navigation"
+    ]
+    audit = summary["protocol_v2_guard"]
+    assert audit["post_destination_verification_navigation_count"] == 1
+    assert audit["post_destination_verification_navigation_records"][0][
+        "assessment"
+    ]["matched_labels"] == ["Ringtones"]
+
+
+def test_controller_keeps_critic_for_destination_outside_android_files(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = PostCommitVerificationEnv(destination_package="files")
+    policy = NavigationOverrideProbePolicy()
+    controller = EpisodeController(
+        client=PostCommitVerificationClient(),  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=2,
+        max_model_calls=3,
+        history_policy=policy,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="post-commit-non-files-destination-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="M0",
+    )
+    assert env.execute_count == 1
+    assert policy.candidates == [True, None, None]
+    assert summary["failure_code"] == "MODEL_OUTPUT_INVALID_AFTER_REPAIR"
+    assert summary["protocol_v2_guard"][
+        "post_destination_verification_navigation_count"
+    ] == 0
+    assert summary["model_output_error"]["initial_validation_error"].startswith(
+        "Action critic rejected commit:"
+    )
 
 
 def test_controller_repairs_wrong_exact_target_to_search(

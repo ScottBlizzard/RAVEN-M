@@ -15,6 +15,7 @@ from raven_m.controller.protocol_v2_guard import (
     files_roots_drawer_action_assessment,
     focused_empty_editable_tap_assessment,
     focused_editable_input_assessment,
+    post_destination_verification_navigation_assessment,
     post_destination_transfer_command_action,
     semantic_ui_snapshot,
     soft_keyboard_swipe_assessment,
@@ -2616,3 +2617,130 @@ def test_post_destination_commit_blocks_transfer_wait_and_reselection() -> None:
     assert audit["destination_picker_commit_count"] == 1
     assert audit["post_destination_commit_block_count"] == 4
     assert audit["post_destination_commit_active"]
+
+
+def destination_navigation_elements(
+    *,
+    label: str = "Ringtones",
+    package_name: str = "com.google.android.documentsui",
+) -> list[dict]:
+    return [
+        {
+            "package_name": package_name,
+            "text": label,
+            "is_visible": True,
+            "is_enabled": True,
+            "is_clickable": False,
+            "is_editable": False,
+            "bbox": {
+                "x_min": 0.06,
+                "x_max": 0.49,
+                "y_min": 0.63,
+                "y_max": 0.72,
+            },
+        },
+        {
+            "package_name": package_name,
+            "text": None,
+            "is_visible": True,
+            "is_enabled": True,
+            "is_clickable": True,
+            "is_editable": False,
+            "bbox": {
+                "x_min": 0.06,
+                "x_max": 0.49,
+                "y_min": 0.63,
+                "y_max": 0.72,
+            },
+        },
+    ]
+
+
+def test_post_destination_navigation_binds_exact_files_folder() -> None:
+    assessment = post_destination_verification_navigation_assessment(
+        destination_navigation_elements(),
+        {"type": "tap", "x": 0.25, "y": 0.678},
+        required_destination_text="Ringtones",
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert assessment["adjudicable"] is True
+    assert assessment["exact_label_hit_count"] == 1
+    assert assessment["clickable_hit_count"] == 1
+    assert assessment["matched_labels"] == ["Ringtones"]
+    assert assessment["matched_packages"] == [
+        "com.google.android.documentsui"
+    ]
+    assert assessment["commit_like"] is False
+    assert assessment["permitted"] is True
+
+
+@pytest.mark.parametrize(
+    ("elements", "required_destination"),
+    [
+        (destination_navigation_elements(label="Music"), "Ringtones"),
+        (
+            destination_navigation_elements(package_name="contacts"),
+            "Ringtones",
+        ),
+        (destination_navigation_elements(label="Move"), "Move"),
+        ([], "Ringtones"),
+    ],
+)
+def test_post_destination_navigation_denies_unbound_or_commit_targets(
+    elements: list[dict],
+    required_destination: str,
+) -> None:
+    assessment = post_destination_verification_navigation_assessment(
+        elements,
+        {"type": "tap", "x": 0.25, "y": 0.678},
+        required_destination_text=required_destination,
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert assessment["permitted"] is False
+
+
+def test_post_destination_navigation_is_counted_only_after_commit() -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(
+        goal="Move a file",
+        required_destination_text="Ringtones",
+    )
+    action = {"type": "tap", "x": 0.25, "y": 0.678}
+    assessment = post_destination_verification_navigation_assessment(
+        destination_navigation_elements(),
+        action,
+        required_destination_text="Ringtones",
+        screen_width=1080,
+        screen_height=2400,
+    )
+    before_commit = guard.observe_transition(
+        before_sha256="root-before",
+        action=action,
+        after_sha256="folder-before",
+        post_destination_verification_navigation_assessment=assessment,
+    )
+    assert not before_commit["post_destination_verification_navigation"]
+    guard.observe_transition(
+        before_sha256="picker",
+        action={"type": "tap", "x": 0.38, "y": 0.945},
+        after_sha256="root",
+        destination_picker_commit_executed=True,
+    )
+    after_commit = guard.observe_transition(
+        before_sha256="root",
+        action=action,
+        after_sha256="folder",
+        post_destination_verification_navigation_assessment=assessment,
+    )
+    assert after_commit["post_destination_verification_navigation"]
+    assert (
+        after_commit["post_destination_verification_navigation_count"] == 1
+    )
+    audit = guard.audit_record()
+    assert audit["required_destination_text"] == "Ringtones"
+    assert audit["post_destination_verification_navigation_count"] == 1
+    assert audit["post_destination_verification_navigation_records"][0][
+        "assessment"
+    ]["matched_labels"] == ["Ringtones"]

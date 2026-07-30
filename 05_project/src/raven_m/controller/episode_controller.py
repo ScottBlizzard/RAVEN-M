@@ -28,6 +28,7 @@ from raven_m.controller.protocol_v2_guard import (
     files_roots_drawer_action_assessment,
     focused_empty_editable_tap_assessment,
     focused_editable_input_assessment,
+    post_destination_verification_navigation_assessment,
     post_destination_transfer_command_action,
     semantic_ui_snapshot,
     soft_keyboard_swipe_assessment,
@@ -94,13 +95,26 @@ def action_authority_record(
     decision: dict[str, Any],
     *,
     completion_adjudications: list[dict[str, Any]] | None = None,
+    verification_navigation_assessment: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Derive a conservative, auditable action-risk/authority record."""
     action = decision.get("action")
     action_type = action.get("type") if isinstance(action, dict) else None
+    verification_navigation_permitted = bool(
+        (verification_navigation_assessment or {}).get("permitted") is True
+    )
     if decision.get("status") != "continue":
         risk_class = "terminal_answer_or_completion"
-    elif action_type in {"swipe", "press_back", "press_home", "open_app", "wait"}:
+    elif (
+        action_type in {
+            "swipe",
+            "press_back",
+            "press_home",
+            "open_app",
+            "wait",
+        }
+        or verification_navigation_permitted
+    ):
         risk_class = "observe_navigation"
     elif action_type == "type_text":
         risk_class = "reversible_edit"
@@ -110,6 +124,8 @@ def action_authority_record(
         risk_class = "irreversible_commit"
     citations = list(decision.get("memory_citations", []))
     sources = ["current_screen"]
+    if verification_navigation_permitted:
+        sources.append("task_parameter_destination")
     if citations:
         sources.append("routed_memory")
     adjudications = completion_adjudications or []
@@ -1074,6 +1090,9 @@ class EpisodeController:
         adjudication_model_call_count = 0
         action_adjudications: list[dict[str, Any]] = []
         completion_adjudications: list[dict[str, Any]] = []
+        latest_verification_navigation_assessment: (
+            dict[str, Any] | None
+        ) = None
         visual_source_cache: dict[str, dict[str, Any]] = {}
         parse_kwargs = (
             {"schema_path": self.action_schema_path}
@@ -1087,6 +1106,8 @@ class EpisodeController:
             repair_contract_error: str | None = None,
         ) -> Any:
             nonlocal adjudication_model_call_count
+            nonlocal latest_verification_navigation_assessment
+            latest_verification_navigation_assessment = None
             parsed_candidate = parse_action_response(content, **parse_kwargs)
             if self.protocol_v2:
                 swipe_assessment = (
@@ -1205,6 +1226,17 @@ class EpisodeController:
                     post_destination_transfer_command_action(
                         ui_elements,
                         parsed_candidate.decision.get("action"),
+                        screen_width=screen_width,
+                        screen_height=screen_height,
+                    )
+                )
+                latest_verification_navigation_assessment = (
+                    post_destination_verification_navigation_assessment(
+                        ui_elements,
+                        parsed_candidate.decision.get("action"),
+                        required_destination_text=(
+                            self.decision_guard.required_destination_text
+                        ),
                         screen_width=screen_width,
                         screen_height=screen_height,
                     )
@@ -1444,6 +1476,19 @@ class EpisodeController:
                         and candidate_action.get("type") == "tap"
                     ),
                 )
+            consequential_action_candidate = None
+            if self.protocol_v2_2 and destination_picker_is_active:
+                consequential_action_candidate = picker_commit_is_action
+            elif (
+                self.protocol_v2_2
+                and self.decision_guard is not None
+                and self.decision_guard.post_destination_commit_active
+                and (
+                    latest_verification_navigation_assessment or {}
+                ).get("permitted")
+                is True
+            ):
+                consequential_action_candidate = False
             action_adjudication = self.history_policy.adjudicate_action(
                 parsed_candidate.decision,
                 image_path=image_path,
@@ -1454,10 +1499,7 @@ class EpisodeController:
                     self.max_model_calls - model_call_count - len(calls),
                 ),
                 consequential_action_candidate=(
-                    picker_commit_is_action
-                    if self.protocol_v2_2
-                    and destination_picker_is_active
-                    else None
+                    consequential_action_candidate
                 ),
             )
             calls.extend(action_adjudication.calls)
@@ -1525,6 +1567,9 @@ class EpisodeController:
                     ),
                     "action_adjudications": action_adjudications,
                     "completion_adjudications": completion_adjudications,
+                    "post_destination_verification_navigation_assessment": (
+                        latest_verification_navigation_assessment
+                    ),
                 },
             )
         except ActionValidationError as initial_error:
@@ -1600,6 +1645,9 @@ class EpisodeController:
                     ),
                     "action_adjudications": action_adjudications,
                     "completion_adjudications": completion_adjudications,
+                    "post_destination_verification_navigation_assessment": (
+                        latest_verification_navigation_assessment
+                    ),
                 },
             )
 
@@ -1639,13 +1687,19 @@ class EpisodeController:
         )
         if self.decision_guard is not None:
             required_selection_text = None
+            required_destination_text = None
             if str(task.name) in {"FilesMoveFile", "FilesDeleteFile"}:
                 candidate = task_params.get("file_name")
                 if isinstance(candidate, str) and candidate:
                     required_selection_text = candidate
+            if str(task.name) == "FilesMoveFile":
+                candidate = task_params.get("destination_folder")
+                if isinstance(candidate, str) and candidate:
+                    required_destination_text = candidate
             self.decision_guard.reset(
                 goal=initial_task_goal,
                 required_selection_text=required_selection_text,
+                required_destination_text=required_destination_text,
             )
 
         logger.append(
@@ -1883,6 +1937,9 @@ class EpisodeController:
                                 [],
                             ),
                         ],
+                        verification_navigation_assessment=parse_meta.get(
+                            "post_destination_verification_navigation_assessment"
+                        ),
                     ),
                     "before_readiness_observations": before_readiness,
                 }
@@ -2000,6 +2057,11 @@ class EpisodeController:
                         ],
                         destination_picker_commit_executed=(
                             picker_commit_executed
+                        ),
+                        post_destination_verification_navigation_assessment=(
+                            parse_meta.get(
+                                "post_destination_verification_navigation_assessment"
+                            )
                         ),
                         claimed_unverified_progress=any(
                             isinstance(delta, dict)
