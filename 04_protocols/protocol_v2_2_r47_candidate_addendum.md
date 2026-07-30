@@ -1,6 +1,7 @@
 # Protocol-v2.2 r47 development-candidate addendum
 
-Status: locally qualified; fresh M0 Contacts smoke pending
+Status: locally qualified; fresh M0 Contacts smoke failed on a separate
+visible-control activation conflict
 
 This addendum follows the r46 M0 Contacts development failure. It preserves
 r46's live-qualified task-grounding change and every immutable r45/r46
@@ -57,4 +58,11 @@ The deterministic regression reproduces the full three-step chain:
 Ordinary repeated actions remain covered by the existing loop tests. The only
 authorized live action after source freeze and zero-call preflight is one
 fresh, isolated, non-scored M0 Contacts smoke on the same task instance.
-Gate D and formal Gate E remain unauthorized until that smoke is audited.
+The smoke was audited in
+`reports/protocol_v2_2_r47_m0_contacts_smoke.{md,json}`. It did not reach the
+r47 exception and is a valid failed development attempt: a visible,
+accessibility-backed `+` control did not respond to its first tap, while the
+ordinary policy and bounded repair both proposed the same still-visible
+control and were blocked. r47 is therefore rejected for live use. Gate D and
+formal Gate E remain unauthorized; only the bounded r48 development described
+in the smoke report may proceed.

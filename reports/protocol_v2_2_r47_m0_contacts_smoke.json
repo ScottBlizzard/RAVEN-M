@@ -1,0 +1,69 @@
+{
+  "schema_version": "protocol_v2_2_r47_m0_contacts_smoke.v1",
+  "date": "2026-07-30",
+  "source_commit": "32983e6767d7e47d2357bdbf87ee5f3863078cc7",
+  "source_tag": "protocol-v2-2-r47-local-candidate",
+  "suite_id": "nonhard_capability_v2_2_seed20260729_r47_candidate_development_smoke_sequence_5",
+  "development_only": true,
+  "task": "ContactsAddContact",
+  "variant": "M0",
+  "seed": 20260729,
+  "goal_sha256": "3d66a888a7bff0255e16b054ddbafcdf920e4960a187d5b14250f01c906d982c",
+  "params_sha256": "3006d174a67034fdea4959b63d0d78ad7b76582c91889e558a97f6bd83762b4f",
+  "success": false,
+  "evaluator_reward": 0.0,
+  "executed_steps": 3,
+  "model_calls": 6,
+  "termination_reason": "model_output_invalid_after_repair",
+  "failure_code": "MODEL_OUTPUT_INVALID_AFTER_REPAIR",
+  "elapsed_seconds": 1141.875,
+  "infrastructure_attempt_count": 0,
+  "readiness_observation_count": 22,
+  "readiness_retry_count": 15,
+  "task_scope_qualification": {
+    "planner_required_variables": [
+      "Sofija Martin",
+      "+17634322348"
+    ],
+    "invented_optional_variable": false,
+    "invented_optional_text_response": false,
+    "qualified": true
+  },
+  "r47_branch": {
+    "input_activation_proof_count": 0,
+    "input_activation_proof_consumed_count": 0,
+    "input_activation_repeat_override_count": 0,
+    "live_triggered": false
+  },
+  "contract_conflict": {
+    "prior_action": {
+      "type": "tap",
+      "x": 0.87,
+      "y": 0.835
+    },
+    "prior_semantic_changed": false,
+    "initial_validation_error": "LOOP_GUARD: UNVERIFIED_PROGRESS_REPEAT_REQUIRED",
+    "repair_action": {
+      "type": "tap",
+      "x": 0.87,
+      "y": 0.835
+    },
+    "repair_validation_error": "LOOP_GUARD: UNVERIFIED_PROGRESS_REPEAT_REQUIRED",
+    "unverified_progress_repeat_block_count": 2,
+    "contact_mutation_executed": false,
+    "text_action_executed": false
+  },
+  "decision": "candidate_rejected_bounded_r48_allowed",
+  "r48_scope": "permit only the bounded repair of an immediately preceding unverified-progress exact tap repeat when accessibility binds the unchanged coordinate to a visible enabled clickable labelled non-editable non-commit control; audit the single bypass and preserve the third-repeat block",
+  "hashes": {
+    "suite_summary_sha256": "e0e186f567d7c4a6fde4b41f54e624bcf502523886e77ddb892bd80063892496",
+    "manifest_snapshot_sha256": "a9e6e394031d60647d10d72fe661e461c987f10d8464340e5e68840d3c9c1a55",
+    "instances_snapshot_sha256": "13d6ab543008b94d38e789105210d7fc56eb2eec7f66ed498f7113c910ae79b5",
+    "startup_environment_audit_sha256": "ad3516cef5334a2a9a0fd94df40ea9215ee4432c8a094478eaf84081cf5a4a48",
+    "episode_sha256": "e9c2b46614490fc756784e7c124731aae73838e5c3a47ba04df7d6dcb076af39",
+    "events_sha256": "e74c8a84bbb3ab75f8a80b534db0cba6ea2a795be7f1da2d2a6c37e8bb581adb",
+    "pre_tap_screenshot_sha256": "01187e4fc1947395df5ab04fda8b52928dfcbcad23432b211f874e6cc6bdb572",
+    "post_tap_screenshot_sha256": "a70e12aad82cbdcb3de285a9cb798bcf8d5aaeb6ab32bf72f4b946ba9efaa506"
+  },
+  "evidence_boundary": "Non-scored development smoke; not pooled with r45 and not formal paired evidence."
+}

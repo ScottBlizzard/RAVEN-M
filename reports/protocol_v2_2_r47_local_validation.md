@@ -1,6 +1,6 @@
 # Protocol-v2.2 r47 local validation
 
-Status: **PASS locally; fresh M0 Contacts smoke pending**
+Status: **PASS locally; candidate rejected by fresh M0 Contacts smoke**
 
 Parent commit:
 `412d07d`
@@ -35,8 +35,10 @@ relaxing the loop guard.
 
 ## Evidence boundary
 
-No server/GPU result has been produced with r47 source. r46 remains a failed
-development smoke whose task-scope behavior was live-qualified but whose
-activation repair did not execute. The next admissible action is one fresh
-M0 Contacts smoke after candidate freeze and zero-call preflight. No formal
-Gate-E rerun is authorized yet.
+A fresh server/GPU M0 Contacts smoke was subsequently produced and audited in
+`reports/protocol_v2_2_r47_m0_contacts_smoke.{md,json}`. It preserved the
+task-scope behavior but failed before the r47 input-activation exception was
+reached: the visible add-contact control ignored one delivered tap, and the
+ordinary loop contract rejected the only direct retry. r47 is therefore not a
+formal Gate-E candidate. Only the bounded r48 development specified by that
+smoke report is admissible next.
