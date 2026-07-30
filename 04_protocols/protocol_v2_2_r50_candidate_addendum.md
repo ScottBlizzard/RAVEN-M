@@ -1,6 +1,7 @@
 # Protocol-v2.2 r50 development-candidate addendum
 
-Status: locally qualified; one fresh M0 Files smoke authorized
+Status: live source-exit qualified; destination-navigation boundary
+over-constrained; candidate frozen
 
 This addendum follows the immutable r49 development smoke. It preserves
 r49's exact post-transfer destination-navigation binding, its native task
@@ -65,8 +66,16 @@ The exact candidate passed 385/385 project tests, 135/135 focused tests,
 `compileall`, `git diff --check`, and the unchanged 197/197 Protocol-v1
 breadth seal.
 
-Only one new, isolated, non-scored M0 `FilesMoveFile` smoke is authorized
-after a fresh zero-call preflight. It must verify one mutation, live
-source-exit consumption, live r49 destination-navigation consumption, native
-reward, valid bounded repairs, and clean infrastructure accounting. It does
-not authorize formal Gate E or Gate F.
+The authorized fresh, isolated, non-scored M0 `FilesMoveFile` smoke completed
+with native reward 1.0, one MOVE, no second mutation, valid bounded repairs,
+clean recorded infrastructure accounting, and one live source-exit block.
+The repair pressed Back and reached the storage root.
+
+The real root-level `Ringtones` tap overlapped the exact Android Files label
+and entered the correct directory, but the label had no separately exposed
+clickable accessibility container. The r49 navigation assessment therefore
+remained false. r50 is frozen and may not be resumed. A future r51 is bounded
+to accepting an exact, visible, enabled, noneditable Android Files
+destination-label hit in the content region below the top 20%, while
+preserving all prior denial cases and safety guards. This does not authorize
+formal Gate E or Gate F.
