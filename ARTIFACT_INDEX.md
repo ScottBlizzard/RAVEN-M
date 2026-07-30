@@ -122,6 +122,16 @@ Raw trajectories are under `runs/excluded_protocol_dry_run/` and
 | `reports/protocol_v2_2_r48_local_validation.md` | human-readable r48 rationale, compatibility, and next live action | current |
 | `05_project/scripts/run_protocol_v2_2_r48_candidate_smoke.py` | isolated r48 M0 Contacts smoke entry point | ready |
 | `reports/protocol_v2_2_r48_candidate_preflight.json` | source, 27-file freeze, four instances, exact model, emulator, and fresh smoke directory | passed |
+| `reports/protocol_v2_2_r48_m0_contacts_smoke.json` | machine-readable successful task-scope smoke and branch-qualification boundary | passed |
+| `reports/protocol_v2_2_r48_m0_contacts_smoke.md` | human-readable native success and deterministic-only r48 branch evidence | current |
+| `reports/protocol_v2_2_r48_gate_d_freeze.json` | immutable r48 Gate-D review and one-launch authorization | passed |
+| `reports/protocol_v2_2_r48_gate_e_stopped.json` | machine-readable four-success stop and sequence-4 causal evidence | Gate E stopped/failed |
+| `reports/protocol_v2_2_r48_gate_e_stopped.md` | human-readable circular verification-navigation critic diagnosis | current |
+| `04_protocols/protocol_v2_2_r49_candidate_addendum.md` | exact Android Files post-transfer destination-navigation boundary | local candidate |
+| `reports/protocol_v2_2_r49_local_validation.json` | machine-readable 377-test, full-chain, denial-case, and v1-seal evidence | passed locally |
+| `reports/protocol_v2_2_r49_local_validation.md` | human-readable r49 rationale, safety boundary, and next live action | current |
+| `05_project/scripts/run_protocol_v2_2_r49_candidate_smoke.py` | isolated r49 M0 Files smoke entry point | ready |
+| `reports/protocol_v2_2_r49_candidate_preflight.json` | source, 27-file freeze, four instances, exact model, emulator, and fresh smoke directory | passed |
 
 The r39 raw trajectories are under
 `runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/` and remain
