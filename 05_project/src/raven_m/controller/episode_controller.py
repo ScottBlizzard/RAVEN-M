@@ -509,6 +509,20 @@ class EpisodeController:
                 ),
                 *(
                     [
+                        "HORIZONTAL_CLIPPED_ROW_NAVIGATION: when options are "
+                        "visibly side by side in a horizontally clipped row "
+                        "or carousel and the exact requested label is absent, "
+                        "swipe along that row toward hidden options. Keep the "
+                        "gesture wholly inside the row and above any soft "
+                        "keyboard. Do not tap another visible option or the "
+                        "row center to speculate that a menu will open. Tap "
+                        "only after the exact requested label is visible."
+                    ]
+                    if protocol_v2_2
+                    else []
+                ),
+                *(
+                    [
                         "RELATIVE_DATE_GROUNDING: resolve relative calendar "
                         "language from the TASK and the visible reference date "
                         "before selecting a day. The next named weekday is its "

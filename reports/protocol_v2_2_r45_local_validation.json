@@ -1,0 +1,64 @@
+{
+  "schema_version": "protocol_v2_2_r45_local_validation.v1",
+  "recorded_at": "2026-07-30T17:30:19+08:00",
+  "status": "local_validation_passed_m0_smoke_pending",
+  "branch": "protocol-v2-exploratory",
+  "parent_commit": "d323351b476e6c259851364cd7e12b89246b6be5",
+  "change": {
+    "task_agnostic_horizontal_clipped_row_guidance": true,
+    "b3_and_m0_executor_guidance_identical": true,
+    "shared_protocol_v2_2_turn_guidance": true,
+    "app_name_present": false,
+    "task_name_present": false,
+    "category_or_target_label_present": false,
+    "controller_forces_action": false,
+    "guard_threshold_changed": false,
+    "action_budget_changed": false
+  },
+  "validation": {
+    "pytest_collected": 357,
+    "pytest_passed": 357,
+    "pytest_exit_code": 0,
+    "focused_prompt_tests": 16,
+    "focused_prompt_tests_passed": 16,
+    "compileall_exit_code": 0,
+    "git_diff_check_exit_code": 0,
+    "executor_prompt_guidance_occurrences": {
+      "executor_v2.md": 1,
+      "executor_raven_v2.md": 1
+    },
+    "protocol_v1_seal": {
+      "file_count": 197,
+      "failure_count": 0,
+      "passed": true
+    },
+    "historical_expense_navigation_audit": {
+      "episodes_with_post_text_navigation": 37,
+      "successful_immediate_swipe": 14,
+      "failed_immediate_swipe": 2,
+      "successful_immediate_tap": 0,
+      "failed_immediate_tap": 20,
+      "failed_immediate_long_press": 1,
+      "donation_episodes": 21,
+      "donation_successful_immediate_swipe": 12,
+      "donation_failed_immediate_swipe": 2,
+      "donation_failed_immediate_tap": 6,
+      "donation_failed_immediate_long_press": 1,
+      "interpretation": "development association only; no causal or formal performance claim"
+    }
+  },
+  "current_file_sha256": {
+    "05_project/prompts/executor_v2.md": "ca1b74e992870afbb837f331755492e9a77c1d16340feed11a6445891dc660c8",
+    "05_project/prompts/executor_raven_v2.md": "adb9671ce327ed96de91a6f8f6ea68fd1c0d131c7b997237b7fca39ae6c15b46",
+    "05_project/src/raven_m/controller/episode_controller.py": "7c86976d091fa87c4584b42709405e4bf62444d59074a0c02068aab91d505df4",
+    "05_project/tests/controller/test_b0_prompt.py": "4eae9f62d0740f7d6acf5f2658ed2969f7624edf6bc7706c37bd5c46636f6dad"
+  },
+  "evidence_boundary": {
+    "server_or_gpu_run_after_source_change": false,
+    "r44_executor_qualified_live": true,
+    "r43_fourth_swipe_adjudicated_live": false,
+    "gate_d_authorized": false,
+    "formal_run_authorized": false,
+    "next_step": "freeze_preflight_then_fresh_non_scored_m0_expense_smoke"
+  }
+}

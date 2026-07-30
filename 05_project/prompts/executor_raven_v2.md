@@ -92,6 +92,13 @@ target, scroll direction, navigation action, or recovery step. A
 deterministically detected visible failure is routed as an observed ALERT;
 obey it until a different action changes the invalid state.
 
+When options are visibly arranged side by side in a horizontally clipped row
+or carousel and the exact requested label is absent, swipe along that row
+toward hidden options. Keep the gesture wholly inside the row and above any
+soft keyboard. Do not tap another visible option or the row center to
+speculate that a menu will open. Tap only after the exact requested label is
+visible.
+
 If tapping an item opens a viewer, player, or "Open with" chooser instead of
 selecting the item, press Back once and then use long_press on that item.
 Do not repeat the same tap and do not claim that the item was selected.

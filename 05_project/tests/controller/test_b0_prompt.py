@@ -81,6 +81,12 @@ def test_v2_2_prompt_grounds_weekday_after_next_before_navigation() -> None:
     assert "FILES_SOURCE_NAVIGATION" in prompt
     assert "use the visible top-left roots/navigation-drawer" in prompt
     assert "Do not press_back to the launcher" in prompt
+    assert "HORIZONTAL_CLIPPED_ROW_NAVIGATION" in prompt
+    assert "horizontally clipped row or carousel" in prompt
+    assert "swipe along that row toward hidden options" in prompt
+    assert "above any soft keyboard" in prompt
+    assert "Do not tap another visible option or the row center" in prompt
+    assert "only after the exact requested label is visible" in prompt
 
 
 def test_v2_loop_guard_repair_requires_higher_level_selector() -> None:
@@ -329,5 +335,9 @@ def test_v2_system_prompts_distinguish_ordinary_and_answer_completion() -> None:
         assert "Never use answer for such a task" in normalized
         assert "Never omit expected_outcome" in normalized
         assert '"memory_citations":[]' in normalized
+        assert "horizontally clipped row or carousel" in normalized
+        assert "swipe along that row toward hidden options" in normalized
+        assert "Do not tap another visible option or the row center" in normalized
+        assert "only after the exact requested label is visible" in normalized
         if filename == "executor_raven_v2.md":
             assert '"completion_evidence":[]' in normalized

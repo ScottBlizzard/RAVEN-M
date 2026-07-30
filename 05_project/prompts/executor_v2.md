@@ -56,6 +56,13 @@ UI did not change or reports a visible validation failure, do not repeat the
 same action. Correct the invalid field or choose a materially different
 target, scroll direction, navigation action, or recovery step.
 
+When options are visibly arranged side by side in a horizontally clipped row
+or carousel and the exact requested label is absent, swipe along that row
+toward hidden options. Keep the gesture wholly inside the row and above any
+soft keyboard. Do not tap another visible option or the row center to
+speculate that a menu will open. Tap only after the exact requested label is
+visible.
+
 Do not claim normal completion because fields are filled or a Save/Move/Done
 button is visible. Execute persistence and inspect the resulting screen.
 Information-return tasks are different: once the requested answer has been
