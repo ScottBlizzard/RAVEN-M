@@ -204,6 +204,43 @@ class OpenRootsDrawerUnboundThenRowClient:
         )
 
 
+class DrawerToFreshRootClient:
+    def generate(self, **kwargs) -> ModelCall:
+        label = kwargs["call_label"]
+        assert label in {"step_000_initial", "step_001_initial"}
+        action = (
+            {"type": "tap", "x": 0.30, "y": 0.76}
+            if label == "step_000_initial"
+            else {"type": "tap", "x": 0.68, "y": 0.50}
+        )
+        decision = {
+            "status": "continue",
+            "action": action,
+            "expected_outcome": "Navigation advances toward Music.",
+            "decision_summary": "Tap the visible task-relevant Files row.",
+            "state_delta": [],
+            "memory_citations": [],
+            "completion_evidence": [],
+        }
+        return ModelCall(
+            call_id=label,
+            episode_id=kwargs["episode_id"],
+            idempotency_key=label,
+            image_sha256="0" * 64,
+            image_sha256s=("0" * 64,),
+            prompt_sha256=label,
+            request_sha256=label,
+            response_sha256=label,
+            content=json.dumps(decision),
+            usage={
+                "prompt_tokens": 1,
+                "completion_tokens": 1,
+                "total_tokens": 2,
+            },
+            raven_meta={},
+        )
+
+
 class CriticRejectedCommitThenDrawerClient:
     def __init__(self, *, valid_repair: bool = True) -> None:
         self.valid_repair = valid_repair
@@ -1186,6 +1223,102 @@ class OpenFilesRootsDrawerEnv(DestinationPickerEnv):
                 for index, label in enumerate(labels)
             ],
         )
+
+
+class DrawerToStaleThenFreshRootEnv(DestinationPickerEnv):
+    foreground_activity_name = (
+        "com.google.android.documentsui/"
+        "com.android.documentsui.files.FilesActivity"
+    )
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.post_storage_observation_count = 0
+
+    @staticmethod
+    def _drawer_elements() -> list[SimpleNamespace]:
+        labels = [
+            "Recent",
+            "Images",
+            "Videos",
+            "Audio",
+            "Documents",
+            "Downloads",
+            "sdk_gphone64_x86_64",
+        ]
+        return [
+            SimpleNamespace(
+                package_name="com.google.android.documentsui",
+                text=label,
+                is_visible=True,
+                is_enabled=True,
+                bbox=SimpleNamespace(
+                    x_min=0.02,
+                    x_max=0.58,
+                    y_min=0.12 + index * 0.10,
+                    y_max=0.20 + index * 0.10,
+                ),
+            )
+            for index, label in enumerate(labels)
+        ]
+
+    @staticmethod
+    def _root_elements() -> list[SimpleNamespace]:
+        return [
+            SimpleNamespace(
+                package_name="com.google.android.documentsui",
+                text="Music",
+                is_visible=True,
+                is_enabled=True,
+                is_clickable=False,
+                is_editable=False,
+                bbox=SimpleNamespace(
+                    x_min=0.52,
+                    x_max=0.90,
+                    y_min=0.44,
+                    y_max=0.56,
+                ),
+            ),
+            SimpleNamespace(
+                package_name="com.google.android.documentsui",
+                text="Ringtones",
+                is_visible=True,
+                is_enabled=True,
+                is_clickable=False,
+                is_editable=False,
+                bbox=SimpleNamespace(
+                    x_min=0.05,
+                    x_max=0.45,
+                    y_min=0.72,
+                    y_max=0.84,
+                ),
+            ),
+        ]
+
+    def get_state(self, wait_to_stabilize: bool):
+        assert wait_to_stabilize
+        if self.execute_count == 0:
+            pixels = np.zeros((100, 100, 3), dtype=np.uint8)
+            elements = self._drawer_elements()
+        elif self.execute_count == 1:
+            self.post_storage_observation_count += 1
+            if self.post_storage_observation_count == 1:
+                pixels = np.zeros((100, 100, 3), dtype=np.uint8)
+                elements = self._drawer_elements()
+            elif self.post_storage_observation_count == 2:
+                pixels = np.full((100, 100, 3), 255, dtype=np.uint8)
+                elements = self._drawer_elements()
+            else:
+                pixels = np.full((100, 100, 3), 255, dtype=np.uint8)
+                elements = self._root_elements()
+        else:
+            pixels = np.full((100, 100, 3), 127, dtype=np.uint8)
+            elements = self._root_elements()
+        return SimpleNamespace(pixels=pixels, ui_elements=elements)
+
+    def execute_action(self, action) -> None:
+        assert action.action_type == "click"
+        self.execute_count += 1
 
 
 class CriticRejectedDestinationPickerEnv(DestinationPickerEnv):
@@ -2554,6 +2687,52 @@ def test_controller_repairs_open_roots_drawer_to_visible_row(
     assert "No coordinate is supplied" in repair_prompt
 
 
+def test_controller_rejects_stale_drawer_tree_before_next_decision(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = DrawerToStaleThenFreshRootEnv()
+    controller = EpisodeController(
+        client=DrawerToFreshRootClient(),  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=2,
+        max_model_calls=2,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+        readiness_max_observations=4,
+        readiness_retry_delay_seconds=0,
+        readiness_reconnect_after_observations=3,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="stale-drawer-before-decision-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="B3",
+    )
+    assert env.execute_count == 2
+    assert summary["model_output_error"] is None
+    observations = summary["steps"][1][
+        "before_readiness_observations"
+    ]
+    assert len(observations) == 2
+    assert observations[0]["material_pixel_change_from_prior"] is True
+    assert observations[0]["semantic_matches_prior"] is True
+    assert observations[0]["cross_modal_fresh"] is False
+    assert observations[1]["semantic_matches_prior"] is False
+    assert observations[1]["cross_modal_fresh"] is True
+    assert summary["steps"][1]["before_semantic_ui"]["sha256"] != (
+        summary["steps"][0]["after_semantic_ui"]["sha256"]
+    )
+    assert summary["protocol_v2_guard"][
+        "files_roots_drawer_block_count"
+    ] == 0
+
+
 def test_controller_rejects_invalid_roots_drawer_repair(
     tmp_path: Path,
 ) -> None:
@@ -2588,6 +2767,9 @@ def test_controller_rejects_invalid_roots_drawer_repair(
         error["initial_validation_error"]
     )
     assert "REPAIR_CONTRACT_GUARD" in error["repair_validation_error"]
+    assert len(
+        summary["steps"][0]["before_readiness_observations"]
+    ) == 1
 
 
 def test_controller_repairs_critic_rejected_picker_commit_to_roots(

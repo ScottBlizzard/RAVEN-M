@@ -1754,6 +1754,8 @@ class EpisodeController:
         model_output_error: dict[str, Any] | None = None
         readiness_observation_count = 0
         readiness_retry_count = 0
+        previous_after_pixels: Any | None = None
+        previous_after_semantic_sha256: str | None = None
         task_params = _json_safe(task.params)
         initial_task_goal = str(task.goal)
         effective_task_goal = initial_task_goal
@@ -1839,7 +1841,11 @@ class EpisodeController:
                     break
                 state_before, before_readiness = self._observe_state(
                     env,
-                    require_accessibility=False,
+                    require_accessibility=self.protocol_v2_2,
+                    prior_pixels=previous_after_pixels,
+                    prior_semantic_sha256=(
+                        previous_after_semantic_sha256
+                    ),
                 )
                 readiness_observation_count += len(before_readiness)
                 readiness_retry_count += max(0, len(before_readiness) - 1)
@@ -1943,6 +1949,7 @@ class EpisodeController:
                         "step": step,
                         "before_screenshot": before_path.name,
                         "before_screenshot_sha256": before_pixel_sha,
+                        "before_readiness_observations": before_readiness,
                         "screen_size": [width, height],
                         "user_prompt": user_prompt,
                         "history_context": {
@@ -2099,6 +2106,10 @@ class EpisodeController:
                         "visible_failure_texts": [],
                         "infrastructure_failure_texts": [],
                     }
+                )
+                previous_after_pixels = state_after.pixels.copy()
+                previous_after_semantic_sha256 = after_semantic.get(
+                    "sha256"
                 )
                 changed = before_sha != after_sha
                 step_record.update(
