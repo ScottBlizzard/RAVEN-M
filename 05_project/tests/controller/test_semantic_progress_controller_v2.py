@@ -1316,20 +1316,6 @@ class PostCommitVerificationEnv(DestinationPickerEnv):
                         y_max=0.72,
                     ),
                 ),
-                SimpleNamespace(
-                    package_name=self.destination_package,
-                    text=None,
-                    is_visible=True,
-                    is_enabled=True,
-                    is_clickable=True,
-                    is_editable=False,
-                    bbox=SimpleNamespace(
-                        x_min=0.06,
-                        x_max=0.49,
-                        y_min=0.63,
-                        y_max=0.72,
-                    ),
-                ),
             ]
         else:
             elements = [
@@ -2847,6 +2833,8 @@ def test_controller_bypasses_false_positive_critic_only_for_exact_files_destinat
         "post_destination_verification_navigation_assessment"
     ]
     assert assessment["permitted"] is True
+    assert assessment["content_exact_label_hit_count"] == 1
+    assert assessment["clickable_hit_count"] == 0
     assert assessment["required_destination_text"] == "Ringtones"
     assert assessment["matched_packages"] == [
         "com.google.android.documentsui"

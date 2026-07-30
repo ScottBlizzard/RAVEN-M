@@ -422,12 +422,13 @@ def post_destination_verification_navigation_assessment(
     screen_width: int,
     screen_height: int,
 ) -> dict[str, Any]:
-    """Bind post-transfer verification to the exact task destination row."""
+    """Bind post-transfer verification to an exact destination content label."""
     action_type = (
         action.get("type") if isinstance(action, dict) else None
     )
     required_label = _normalized_text(required_destination_text)
     exact_label_hits: list[dict[str, Any]] = []
+    content_exact_label_hits: list[dict[str, Any]] = []
     clickable_hits: list[dict[str, Any]] = []
     for element in ui_elements or ():
         package_name = _normalized_text(
@@ -468,12 +469,43 @@ def post_destination_verification_navigation_assessment(
                 for label in labels
             )
         ):
-            exact_label_hits.append(
-                {
+            bbox = _normalized_element_bbox(
+                element,
+                screen_width=screen_width,
+                screen_height=screen_height,
+            )
+            if bbox is not None:
+                x_min, x_max, y_min, y_max = bbox
+                center_y = (y_min + y_max) / 2.0
+                exact_hit = {
                     "package_name": package_name,
                     "labels": labels,
+                    "commit_like": any(
+                        COMMIT_LIKE_CONTROL_RE.search(label)
+                        for label in labels
+                    ),
+                    "is_editable": (
+                        _element_value(element, "is_editable") is True
+                    ),
+                    "normalized_bbox": {
+                        "x_min": round(x_min, 6),
+                        "x_max": round(x_max, 6),
+                        "y_min": round(y_min, 6),
+                        "y_max": round(y_max, 6),
+                    },
+                    "center_y": round(center_y, 6),
                 }
-            )
+                exact_label_hits.append(exact_hit)
+                # Android Files folder rows/cards are sometimes exposed as
+                # exact text nodes without a separately clickable ancestor.
+                # Require the hit to be in the content region so a current
+                # title or breadcrumb cannot qualify as destination
+                # navigation.
+                if (
+                    _element_value(element, "is_editable") is not True
+                    and center_y > 0.20
+                ):
+                    content_exact_label_hits.append(exact_hit)
         if (
             _element_value(element, "is_clickable") is True
             and _element_value(element, "is_editable") is not True
@@ -498,16 +530,22 @@ def post_destination_verification_navigation_assessment(
     commit_like = bool(
         required_label
         and COMMIT_LIKE_CONTROL_RE.search(required_label)
-    ) or any(hit["commit_like"] for hit in clickable_hits)
+    ) or any(
+        hit["commit_like"]
+        for hit in [*exact_label_hits, *clickable_hits]
+    )
     return {
         "schema_version": (
-            "post_destination_verification_navigation_assessment.v1"
+            "post_destination_verification_navigation_assessment.v2"
         ),
         "adjudicable": bool(ui_elements and required_label),
         "action_type": action_type,
         "required_destination_text": required_label,
         "exact_label_hit_count": len(exact_label_hits),
+        "content_exact_label_hit_count": len(content_exact_label_hits),
         "clickable_hit_count": len(clickable_hits),
+        "exact_label_hits": exact_label_hits,
+        "content_exact_label_hits": content_exact_label_hits,
         "matched_labels": matched_labels,
         "matched_packages": sorted(
             {
@@ -519,8 +557,7 @@ def post_destination_verification_navigation_assessment(
         "permitted": bool(
             action_type == "tap"
             and required_label
-            and exact_label_hits
-            and clickable_hits
+            and content_exact_label_hits
             and not commit_like
         ),
     }

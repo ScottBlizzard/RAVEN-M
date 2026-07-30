@@ -2624,37 +2624,44 @@ def destination_navigation_elements(
     *,
     label: str = "Ringtones",
     package_name: str = "com.google.android.documentsui",
+    center_y: float = 0.675,
+    exact_label_editable: bool = False,
+    include_clickable_container: bool = True,
 ) -> list[dict]:
-    return [
+    elements = [
         {
             "package_name": package_name,
             "text": label,
             "is_visible": True,
             "is_enabled": True,
             "is_clickable": False,
-            "is_editable": False,
+            "is_editable": exact_label_editable,
             "bbox": {
                 "x_min": 0.06,
                 "x_max": 0.49,
-                "y_min": 0.63,
-                "y_max": 0.72,
+                "y_min": center_y - 0.045,
+                "y_max": center_y + 0.045,
             },
-        },
-        {
-            "package_name": package_name,
-            "text": None,
-            "is_visible": True,
-            "is_enabled": True,
-            "is_clickable": True,
-            "is_editable": False,
-            "bbox": {
-                "x_min": 0.06,
-                "x_max": 0.49,
-                "y_min": 0.63,
-                "y_max": 0.72,
-            },
-        },
+        }
     ]
+    if include_clickable_container:
+        elements.append(
+            {
+                "package_name": package_name,
+                "text": None,
+                "is_visible": True,
+                "is_enabled": True,
+                "is_clickable": True,
+                "is_editable": False,
+                "bbox": {
+                    "x_min": 0.06,
+                    "x_max": 0.49,
+                    "y_min": 0.63,
+                    "y_max": 0.72,
+                },
+            }
+        )
+    return elements
 
 
 def source_context_elements(
@@ -2790,12 +2797,31 @@ def test_post_destination_navigation_binds_exact_files_folder() -> None:
     )
     assert assessment["adjudicable"] is True
     assert assessment["exact_label_hit_count"] == 1
+    assert assessment["content_exact_label_hit_count"] == 1
     assert assessment["clickable_hit_count"] == 1
     assert assessment["matched_labels"] == ["Ringtones"]
     assert assessment["matched_packages"] == [
         "com.google.android.documentsui"
     ]
     assert assessment["commit_like"] is False
+    assert assessment["permitted"] is True
+
+
+def test_post_destination_navigation_accepts_real_files_label_without_clickable_container(
+) -> None:
+    assessment = post_destination_verification_navigation_assessment(
+        destination_navigation_elements(include_clickable_container=False),
+        {"type": "tap", "x": 0.25, "y": 0.678},
+        required_destination_text="Ringtones",
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert assessment["schema_version"].endswith(".v2")
+    assert assessment["exact_label_hit_count"] == 1
+    assert assessment["content_exact_label_hit_count"] == 1
+    assert assessment["clickable_hit_count"] == 0
+    assert assessment["content_exact_label_hits"][0]["center_y"] == 0.675
+    assert assessment["content_exact_label_hits"][0]["is_editable"] is False
     assert assessment["permitted"] is True
 
 
@@ -2808,6 +2834,31 @@ def test_post_destination_navigation_binds_exact_files_folder() -> None:
             "Ringtones",
         ),
         (destination_navigation_elements(label="Move"), "Move"),
+        (
+            destination_navigation_elements(
+                center_y=0.10,
+                include_clickable_container=False,
+            ),
+            "Ringtones",
+        ),
+        (
+            destination_navigation_elements(
+                exact_label_editable=True,
+                include_clickable_container=False,
+            ),
+            "Ringtones",
+        ),
+        (
+            [
+                {
+                    **destination_navigation_elements(
+                        include_clickable_container=False
+                    )[0],
+                    "content_description": "Move",
+                }
+            ],
+            "Ringtones",
+        ),
         ([], "Ringtones"),
     ],
 )
