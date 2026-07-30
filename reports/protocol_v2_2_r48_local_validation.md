@@ -1,6 +1,6 @@
 # Protocol-v2.2 r48 local validation
 
-Status: **PASS locally; fresh M0 Contacts smoke passed**
+Status: **PASS; Gate-D frozen and one formal Gate E authorized**
 
 Parent commit:
 `1f5fadee94042326c58216eee0a846f40e0044f4`
@@ -65,6 +65,7 @@ reward 1.0.
 
 This result is development-only and is not pooled with r45 or any formal
 paired result. It qualifies end-to-end compatibility of the frozen candidate,
-not live firing of the r48 allowance. A formal Gate-D freeze may now be
-prepared, followed by a fresh zero-call preflight and the locked eight-cell
-Gate E. Gate F remains manual-only.
+not live firing of the r48 allowance. Gate D subsequently passed: 369/369
+tests, the 197/197 Protocol-v1 seal, 27/27 frozen files, the four locked task
+instances, and the zero-call formal preflight all matched. One fresh locked
+eight-cell Gate E is authorized. Gate F remains manual-only.

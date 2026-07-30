@@ -1,6 +1,6 @@
 # Protocol-v2.2 r48 development-candidate addendum
 
-Status: locally qualified; fresh M0 Contacts smoke passed; Gate-D freeze pending
+Status: Gate-D frozen; one fresh formal eight-cell Gate E authorized
 
 This addendum follows the valid r47 M0 Contacts development failure. It
 preserves r46's live-qualified task grounding, r47's locally qualified
@@ -93,7 +93,8 @@ not treated as evidence that the allowance fired.
 
 The smoke does establish end-to-end compatibility of the frozen r48 source,
 model identity, task grounding, input-activation repair, consequential-action
-adjudication, completion adjudication, and native evaluation. A formal Gate-D
-freeze may now be prepared. Formal Gate E must still use a fresh suite,
-unchanged frozen source, the locked four instances and eight paired cells,
-and a separate zero-call preflight. Gate F remains manual-only.
+adjudication, completion adjudication, and native evaluation. Gate D
+subsequently passed with 369/369 tests, the unchanged 197/197 Protocol-v1
+seal, 27/27 frozen-file hashes, four locked instances, eight paired cells, and
+a zero-call formal preflight. One fresh formal Gate-E launch is authorized.
+Gate F remains manual-only.

@@ -1,7 +1,7 @@
 {
   "schema_version": "protocol_v2_2_r48_local_validation.v1",
   "recorded_at": "2026-07-30T21:17:17+08:00",
-  "status": "local_validation_and_m0_contacts_smoke_passed",
+  "status": "gate_d_frozen_formal_gate_e_authorized",
   "branch": "protocol-v2-exploratory",
   "parent_commit": "1f5fadee94042326c58216eee0a846f40e0044f4",
   "trigger": {
@@ -98,8 +98,10 @@
   },
   "evidence_boundary": {
     "server_or_gpu_run_after_source_change": true,
-    "gate_d_authorized": false,
-    "formal_run_authorized": false,
-    "next_step": "prepare a formal Gate-D freeze, run a fresh zero-call Gate-E preflight, then launch the locked eight-cell Gate E"
+    "gate_d_authorized": true,
+    "formal_run_authorized": true,
+    "formal_gate_e_preflight_passed": true,
+    "automatic_gate_f_transition": false,
+    "next_step": "launch exactly one fresh locked eight-cell Gate E and audit it before any further decision"
   }
 }
