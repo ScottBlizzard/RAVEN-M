@@ -16,6 +16,13 @@ requirement. Use stable IDs such as sg_01 and cr_1. A completion requirement
 may cite only supplied memory IDs and may remain without evidence. Do not emit
 actions and do not include chain-of-thought.
 
+Ground every user-entered value and every task variable in an explicit
+requirement from `task`. The screenshot may tell you where to navigate, but a
+visible blank optional field is not a new requirement and is not authority for
+payload text. Never add a company, email, note, label, placeholder, example, or
+default value unless `task` explicitly asks for it. Do not preserve an
+invented optional variable from `previous_plan`; remove it on the next refresh.
+
 Use exactly these top-level keys and this shape:
 {"schema_version":"plan.v1","current_subgoal":{"subgoal_id":"sg_01","description":"next subgoal"},"open_requirements":["still-open requirement"],"required_variables":["explicit task variable"],"completion_requirements":[{"id":"cr_1","description":"visible completion condition","evidence_memory_ids":[]}],"plan_summary":"compact plan"}
 

@@ -596,24 +596,22 @@ class FabricatedTaskLiteralThenPhoneClient:
         self.requests.append(kwargs)
         label = kwargs["call_label"]
         if label.endswith("_repair"):
-            text = "+17634322348"
-            x, y = 0.45, 0.60
-            summary = "Enter the requested phone number in Phone."
+            action = {"type": "tap", "x": 0.45, "y": 0.60}
+            summary = "Activate Phone before entering the requested number."
         else:
-            text = "Tech Solutions"
-            x, y = 0.45, 0.55
+            action = {
+                "type": "type_text",
+                "text": "Tech Solutions",
+                "text_origin": "task_literal",
+                "source_memory_ids": [],
+                "x": 0.45,
+                "y": 0.55,
+                "clear_text": True,
+            }
             summary = "Invent a company value not present in the task."
         decision = {
             "status": "continue",
-            "action": {
-                "type": "type_text",
-                "text": text,
-                "text_origin": "task_literal",
-                "source_memory_ids": [],
-                "x": x,
-                "y": y,
-                "clear_text": True,
-            },
+            "action": action,
             "expected_outcome": "The selected contact field is updated.",
             "decision_summary": summary,
             "state_delta": [],
@@ -2450,13 +2448,12 @@ def test_controller_repairs_fabricated_task_literal_to_requested_value(
         protocol="androidworld_protocol_v2_2_exploratory",
         variant="M0",
     )
-    assert env.execute_count == 1
+    assert env.execute_count == 0
     assert env.focus_click_count == 1
-    assert len(env.atomic_clear_and_type_commands) == 1
+    assert len(env.atomic_clear_and_type_commands) == 0
     assert summary["model_call_count"] == 2
     action = summary["steps"][0]["decision"]["action"]
-    assert action["text"] == "+17634322348"
-    assert action["text_origin"] == "task_literal"
+    assert action["type"] == "tap"
     assert action["x"] == 0.45
     assert action["y"] == 0.60
     assert summary["steps"][0]["parse"]["model_repair_used"]
@@ -2469,7 +2466,9 @@ def test_controller_repairs_fabricated_task_literal_to_requested_value(
     assert "Do not merely change text_origin" in repair_prompt
     assert "do not invent an optional field value" in repair_prompt
     assert "visible empty editable field" in repair_prompt
-    assert "fill that requested value in its matching field now" in repair_prompt
+    assert "action.type must not be type_text or answer" in repair_prompt
+    assert "tap that role-matched field only to activate it" in repair_prompt
+    assert "later policy step before typing" in repair_prompt
     assert "leaves the unspecified field untouched" in repair_prompt
 
 

@@ -78,6 +78,10 @@ def test_v2_2_prompt_grounds_weekday_after_next_before_navigation() -> None:
     assert "selected date is closer to the computed target" in prompt
     assert "immediately reverse the swipe direction" in prompt
     assert "verify the visible absolute date" in prompt
+    assert "TASK_SCOPE_CHECK" in prompt
+    assert "visible blank optional field is not a task requirement" in prompt
+    assert "Leave Company, Email, Note" in prompt
+    assert "never create a placeholder, example, or default value" in prompt
     assert "FILES_SOURCE_NAVIGATION" in prompt
     assert "use the visible top-left roots/navigation-drawer" in prompt
     assert "Do not press_back to the launcher" in prompt
@@ -252,6 +256,30 @@ def test_v2_focused_empty_tap_repair_enters_task_value_directly() -> None:
     assert "action.type=type_text" in prompt
     assert "no x or y" in prompt
     assert "clear_text=false" in prompt
+
+
+def test_v2_declared_source_repair_activates_matching_field_before_text() -> None:
+    prompt = EpisodeController._repair_prompt(
+        "ORIGINAL",
+        (
+            '{"status":"continue","action":{"type":"type_text",'
+            '"text":"TechCorp","text_origin":"task_literal",'
+            '"source_memory_ids":[],"x":0.49,"y":0.55,'
+            '"clear_text":true},"expected_outcome":"Company is filled.",'
+            '"decision_summary":"Fill Company.","state_delta":[],'
+            '"memory_citations":[],"completion_evidence":[]}'
+        ),
+        (
+            "DECLARED_TEXT_SOURCE_GUARD: the proposed text declares "
+            "text_origin=task_literal, but it is not present in that "
+            "declared source on this turn."
+        ),
+        protocol_v2=True,
+    )
+    assert "action.type must not be type_text or answer" in prompt
+    assert "tap that role-matched field only to activate it" in prompt
+    assert "later policy step before typing" in prompt
+    assert "Do not fill any value during this repair" in prompt
 
 
 def test_v2_unverified_progress_repair_uses_visible_layout_axis() -> None:

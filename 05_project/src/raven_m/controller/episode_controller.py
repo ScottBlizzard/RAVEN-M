@@ -495,6 +495,18 @@ class EpisodeController:
                 ),
                 *(
                     [
+                        "TASK_SCOPE_CHECK: fill or mutate only fields and "
+                        "values explicitly required by TASK. A visible blank "
+                        "optional field is not a task requirement. Leave "
+                        "Company, Email, Note, and similar fields untouched "
+                        "unless TASK supplies their value; never create a "
+                        "placeholder, example, or default value."
+                    ]
+                    if protocol_v2_2
+                    else []
+                ),
+                *(
+                    [
                         "PLANNER_CONSISTENCY: when MEMORY_CONTEXT contains "
                         "planner_state, its current_subgoal and "
                         "required_variables are frozen anchors. Do not "
@@ -772,10 +784,13 @@ class EpisodeController:
                 "not merely change text_origin and do not invent an optional "
                 "field value. A task_literal value must occur in TASK; a "
                 "current_screen value must occur in the visible current UI. "
-                "If a visible empty editable field corresponds to a remaining "
-                "TASK value, fill that requested value in its matching field "
-                "now. Otherwise choose one non-commit action that leaves the "
-                "unspecified field untouched. Do not repeat a navigation "
+                "For this one repair, action.type must not be type_text or "
+                "answer. If a visible empty editable field corresponds to a "
+                "remaining TASK value, tap that role-matched field only to "
+                "activate it, then observe the resulting screen on a later "
+                "policy step before typing. Do not fill any value during this "
+                "repair. Otherwise choose one non-commit action that leaves "
+                "the unspecified field untouched. Do not repeat a navigation "
                 "action that has already produced no semantic progress.\n"
             )
         elif post_activation_input_rejected:
