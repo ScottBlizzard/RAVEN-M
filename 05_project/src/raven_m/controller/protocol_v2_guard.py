@@ -1296,6 +1296,21 @@ class ProtocolV2DecisionGuard:
             tuple[str, str] | None
         ) = None
         self.unverified_progress_repeat_block_count = 0
+        self.input_activation_repair_pending = False
+        self.input_activation_action_key: str | None = None
+        self.input_activation_proof_count = 0
+        self.input_activation_proof_consumed_count = 0
+
+    def mark_input_activation_repair(
+        self,
+        action: dict[str, Any],
+    ) -> None:
+        """Retain one-step proof that an editable activation tap executed."""
+        if action.get("type") != "tap":
+            raise ValueError("Input activation proof requires a tap.")
+        self.input_activation_repair_pending = True
+        self.input_activation_action_key = canonical_action_key(action)
+        self.input_activation_proof_count += 1
 
     def _block_fingerprint(
         self,
@@ -1431,6 +1446,31 @@ class ProtocolV2DecisionGuard:
         action = decision.get("action")
         if not isinstance(action, dict):
             return
+        action_key = canonical_action_key(action)
+        if (
+            self.input_activation_repair_pending
+            and action.get("type") == "tap"
+            and action_key == self.input_activation_action_key
+        ):
+            self.validation_blocks.append(
+                {
+                    "semantic_state_sha256": page_sha256,
+                    "action": action,
+                    "reason": "post_activation_exact_tap_repeat_blocked",
+                    "required_recovery_classes": [
+                        "enter_task_bound_value",
+                        "inspect_different_visible_control",
+                    ],
+                }
+            )
+            raise ActionValidationError(
+                "POST_ACTIVATION_INPUT_GUARD: the immediately preceding "
+                "bounded repair already executed this exact editable "
+                "activation tap. Do not tap it again. If the activated input "
+                "corresponds to a remaining TASK value, type that exact value "
+                "now without x or y; otherwise choose a different non-commit "
+                "action."
+            )
         focused_assessment = focused_input_assessment or {}
         keyboard_swipe_assessment = (
             soft_keyboard_swipe_assessment or {}
@@ -1584,7 +1624,7 @@ class ProtocolV2DecisionGuard:
         input_ready = focused_assessment.get(
             "input_ready",
             focused_assessment.get("present") is True,
-        )
+        ) or self.input_activation_repair_pending
         redundant_unique_input_coordinate = (
             input_ready is True
             and coordinate_targets_editable
@@ -1596,6 +1636,40 @@ class ProtocolV2DecisionGuard:
             )
             == 1
         )
+        if (
+            self.input_activation_repair_pending
+            and coordinate_bearing_type_text
+            and coordinate_targets_editable
+        ):
+            post_activation_empty_directive = (
+                " The visible target input was empty when activated, so set "
+                "clear_text=false."
+                if text_target_assessment.get("matched_empty") is True
+                else " Preserve the proposed clear_text value."
+            )
+            record = {
+                "semantic_state_sha256": page_sha256,
+                "action": action,
+                "reason": "post_activation_text_coordinate_blocked",
+                "focused_input_assessment": focused_assessment,
+                "coordinate_text_target_assessment": (
+                    text_target_assessment
+                ),
+                "required_recovery_classes": [
+                    "preserve_activated_input",
+                ],
+            }
+            self.validation_blocks.append(record)
+            self.focused_input_block_count += 1
+            raise ActionValidationError(
+                "FOCUSED_INPUT_GUARD: POST_ACTIVATION_INPUT_READY: the "
+                "immediately preceding bounded repair already executed the "
+                "visible editable activation tap. Keep the exact same "
+                "type_text value and provenance, but omit x and y so "
+                "AndroidWorld does not click away from that activated input."
+                + post_activation_empty_directive
+                + " No text or coordinate is supplied by the controller."
+            )
         if (
             coordinate_targets_editable
             and input_ready is not True
@@ -1863,7 +1937,6 @@ class ProtocolV2DecisionGuard:
                 "navigation drawer. Do not wait, swipe, press back, or guess "
                 "a title/content-area coordinate."
             )
-        action_key = canonical_action_key(action)
         if (
             action.get("type") in COORDINATE_STREAK_ACTIONS
             and action_key == self.last_coordinate_action_key
@@ -1901,7 +1974,8 @@ class ProtocolV2DecisionGuard:
             self.validation_blocks.append(record)
             self.unverified_progress_repeat_block_count += 1
             raise ActionValidationError(
-                "LOOP_GUARD: the immediately preceding identical action "
+                "LOOP_GUARD: UNVERIFIED_PROGRESS_REPEAT_REQUIRED: the "
+                "immediately preceding identical action "
                 "produced no semantic UI change while its state_delta only "
                 "asserted unverified progress or a page hypothesis. Do not "
                 "repeat that action. Choose a materially different recovery "
@@ -1936,6 +2010,13 @@ class ProtocolV2DecisionGuard:
         destination_picker_commit_executed: bool = False,
         claimed_unverified_progress: bool = False,
     ) -> dict[str, Any]:
+        input_activation_proof_consumed = (
+            self.input_activation_repair_pending
+        )
+        if input_activation_proof_consumed:
+            self.input_activation_repair_pending = False
+            self.input_activation_action_key = None
+            self.input_activation_proof_consumed_count += 1
         action_key = canonical_action_key(action)
         if destination_picker_commit_executed:
             self.destination_picker_commit_count += 1
@@ -2019,6 +2100,9 @@ class ProtocolV2DecisionGuard:
                 self.last_unverified_progress_no_effect_fingerprint
                 == fingerprint
             ),
+            "input_activation_proof_consumed": (
+                input_activation_proof_consumed
+            ),
             "new_visible_failures": new_visible_failures,
         }
 
@@ -2077,6 +2161,15 @@ class ProtocolV2DecisionGuard:
             ),
             "unverified_progress_repeat_block_count": (
                 self.unverified_progress_repeat_block_count
+            ),
+            "input_activation_repair_pending": (
+                self.input_activation_repair_pending
+            ),
+            "input_activation_proof_count": (
+                self.input_activation_proof_count
+            ),
+            "input_activation_proof_consumed_count": (
+                self.input_activation_proof_consumed_count
             ),
             "ab_ab_cycle_trigger_count": self.cycle_trigger_count,
             "visible_failure_trigger_count": (

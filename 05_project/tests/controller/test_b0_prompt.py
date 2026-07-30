@@ -248,6 +248,28 @@ def test_v2_focused_empty_tap_repair_enters_task_value_directly() -> None:
     assert "clear_text=false" in prompt
 
 
+def test_v2_unverified_progress_repair_uses_visible_layout_axis() -> None:
+    prompt = EpisodeController._repair_prompt(
+        "ORIGINAL",
+        (
+            '{"status":"continue","action":{"type":"tap","x":0.5,'
+            '"y":0.34},"expected_outcome":"Options open.",'
+            '"decision_summary":"Tap the same control.",'
+            '"state_delta":[],"memory_citations":[]}'
+        ),
+        (
+            "LOOP_GUARD: UNVERIFIED_PROGRESS_REPEAT_REQUIRED: the "
+            "immediately preceding identical action produced no semantic "
+            "UI change."
+        ),
+        protocol_v2=True,
+    )
+    assert "Discard the unconfirmed popup/page assumption" in prompt
+    assert "side by side in a horizontal row or carousel" in prompt
+    assert "change x while keeping y approximately fixed" in prompt
+    assert "stacked in a vertical list" in prompt
+
+
 def test_v2_repair_prompt_has_complete_status_action_matrix() -> None:
     prompt = EpisodeController._repair_prompt(
         "original",

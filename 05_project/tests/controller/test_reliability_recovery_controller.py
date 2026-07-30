@@ -177,3 +177,81 @@ def test_controller_repairs_exact_repeat_after_unverified_progress(
     assert "materially different visible control" in (
         client.requests[1]["user_prompt"]
     )
+    assert "side by side in a horizontal row or carousel" in (
+        client.requests[1]["user_prompt"]
+    )
+
+
+def test_controller_uses_one_step_activation_proof_for_text_repair(
+    tmp_path: Path,
+) -> None:
+    initial_action = {
+        "type": "type_text",
+        "text": "Educational",
+        "text_origin": "task_literal",
+        "source_memory_ids": [],
+        "x": 0.5,
+        "y": 0.18,
+        "clear_text": True,
+    }
+    repaired_action = {
+        **initial_action,
+        "clear_text": False,
+    }
+    repaired_action.pop("x")
+    repaired_action.pop("y")
+    initial = {
+        "status": "continue",
+        "action": initial_action,
+        "expected_outcome": "The Name field contains Educational.",
+        "decision_summary": "Type Educational into the Name field.",
+        "state_delta": [],
+        "memory_citations": [],
+    }
+    repair = {
+        **initial,
+        "action": repaired_action,
+        "decision_summary": (
+            "Type Educational into the previously activated Name field."
+        ),
+    }
+    client = RepairSequenceClient(initial, repair)
+    controller = controller_for(client)
+    assert controller.decision_guard is not None
+    controller.decision_guard.mark_input_activation_repair(
+        {"type": "tap", "x": 0.5, "y": 0.18}
+    )
+    decision, calls, meta = call_and_parse(
+        controller,
+        tmp_path=tmp_path,
+        task_goal="Enter Educational in the Name field.",
+        ui_elements=[
+            {
+                "text": "Name",
+                "is_visible": True,
+                "is_enabled": True,
+                "is_editable": True,
+                "is_focused": False,
+                "bbox": {
+                    "x_min": 0.1,
+                    "x_max": 0.9,
+                    "y_min": 0.1,
+                    "y_max": 0.25,
+                },
+            }
+        ],
+    )
+    assert len(calls) == 2
+    assert meta["model_repair_used"]
+    assert "POST_ACTIVATION_INPUT_READY" in (
+        meta["initial_validation_error"]
+    )
+    assert decision["action"] == repaired_action
+    repair_prompt = client.requests[1]["user_prompt"]
+    assert "Keep action.type=type_text" in repair_prompt
+    assert "Remove x and y" in repair_prompt
+    assert "set clear_text=false" in repair_prompt
+    assert "Educational" not in repair_prompt.split(
+        "VALIDATION_ERROR:",
+        maxsplit=1,
+    )[0]

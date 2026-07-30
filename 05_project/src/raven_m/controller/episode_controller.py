@@ -578,6 +578,7 @@ class EpisodeController:
             "EXACT_TARGET_GUARD:",
             "FOCUSED_INPUT_GUARD:",
             "FOCUSED_EMPTY_TAP_GUARD:",
+            "POST_ACTIVATION_INPUT_GUARD:",
             "UNFOCUSED_CLEAR_TEXT_GUARD:",
             "TEXT_TARGET_GUARD:",
             "DECLARED_TEXT_SOURCE_GUARD:",
@@ -599,6 +600,9 @@ class EpisodeController:
         focused_input_rejected = error.startswith("FOCUSED_INPUT_GUARD:")
         focused_empty_tap_rejected = error.startswith(
             "FOCUSED_EMPTY_TAP_GUARD:"
+        )
+        post_activation_input_rejected = error.startswith(
+            "POST_ACTIVATION_INPUT_GUARD:"
         )
         unfocused_clear_text_rejected = error.startswith(
             "UNFOCUSED_CLEAR_TEXT_GUARD:"
@@ -632,6 +636,9 @@ class EpisodeController:
             "POST_DESTINATION_COMPLETION_REOBSERVE_REQUIRED:"
         )
         loop_guard_rejected = error.startswith("LOOP_GUARD:")
+        unverified_progress_repeat_required = (
+            "UNVERIFIED_PROGRESS_REPEAT_REQUIRED:" in error
+        )
         swipe_direction_rejected = error.startswith(
             "SWIPE_DIRECTION_GUARD:"
         )
@@ -757,6 +764,19 @@ class EpisodeController:
                 "unspecified field untouched. Do not repeat a navigation "
                 "action that has already produced no semantic progress.\n"
             )
+        elif post_activation_input_rejected:
+            repair_directive = (
+                "\n\nThe preceding bounded repair already executed the "
+                "exact visible editable activation tap. For this one repair, "
+                "do not tap it again. If the activated field corresponds to "
+                "a remaining TASK value, return action.type=type_text with "
+                "that exact task-bound text and provenance, but no x or y. "
+                "If VALIDATION_ERROR says the visible target was empty, set "
+                "clear_text=false; otherwise preserve the proposed value. "
+                "Otherwise "
+                "choose one materially different non-commit action. No text "
+                "or coordinate is supplied by the controller.\n"
+            )
         elif focused_empty_tap_rejected:
             repair_directive = (
                 "\n\nYour previous tap targeted an editable field that is "
@@ -828,6 +848,20 @@ class EpisodeController:
                 "target. This priority contract appears before the original "
                 "prompt and is binding.\n"
             )
+            if unverified_progress_repeat_required:
+                repair_directive += (
+                    "UNVERIFIED_PROGRESS_LAYOUT_REPAIR: Discard the "
+                    "unconfirmed popup/page assumption and re-read the "
+                    "visible control layout. If candidate options are "
+                    "arranged side by side in a horizontal row or carousel, "
+                    "navigate along the horizontal axis: change x while "
+                    "keeping y approximately fixed, choosing left or right "
+                    "from the visible ordering. If options are stacked in a "
+                    "vertical list, navigate along the vertical axis. Do not "
+                    "choose or reverse an axis merely to differ from the "
+                    "blocked action, and tap the target directly if it is "
+                    "already visible.\n"
+                )
             if loop_open_app_rejected:
                 repair_directive += (
                     "BLOCKED_OPEN_APP_CYCLE: The rejected action.type is "
@@ -1899,6 +1933,21 @@ class EpisodeController:
                         ),
                     )
                     step_record["protocol_v2_guard"] = guard_transition
+                    if (
+                        str(
+                            parse_meta.get(
+                                "initial_validation_error",
+                                "",
+                            )
+                        ).startswith("UNFOCUSED_CLEAR_TEXT_GUARD:")
+                        and decision["action"].get("type") == "tap"
+                    ):
+                        self.decision_guard.mark_input_activation_repair(
+                            decision["action"]
+                        )
+                        step_record[
+                            "input_activation_repair_marked"
+                        ] = True
                 if answer_action:
                     answer_text = str(decision["action"]["text"])
                     interaction_cache = getattr(

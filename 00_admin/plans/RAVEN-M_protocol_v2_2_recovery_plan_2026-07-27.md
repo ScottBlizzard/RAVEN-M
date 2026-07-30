@@ -754,3 +754,9 @@ evaluator, schedule, or threshold changes.
   proof expiry, no-text injection, and horizontal-row recovery wording.
   Re-run the complete local suite, compatibility audit, and v1 seal before a
   fresh r42 M0-only smoke.
+
+Local disposition on 2026-07-30: 349/349 tests, compilation, and the 197-file
+Protocol-v1 seal passed. The compatibility audit parsed 6,468 executed steps
+across 402 trajectory files and found 40 applicable activation-repair
+transitions; the proof is bounded to their single next executed action. r42 is
+locally qualified for the one authorized M0-only development smoke.

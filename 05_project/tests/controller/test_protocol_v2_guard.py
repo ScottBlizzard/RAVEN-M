@@ -220,6 +220,88 @@ def test_no_effect_without_progress_claim_keeps_existing_threshold() -> None:
     guard.validate_decision(decision(action), page_sha256="same")
 
 
+def test_input_activation_proof_is_one_executed_action_only() -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(goal="Enter the requested value")
+    activation = {"type": "tap", "x": 0.5, "y": 0.18}
+    guard.mark_input_activation_repair(activation)
+    assert guard.input_activation_repair_pending
+    with pytest.raises(
+        ActionValidationError,
+        match="POST_ACTIVATION_INPUT_GUARD",
+    ):
+        guard.validate_decision(
+            decision(activation),
+            page_sha256="same",
+        )
+    outcome = guard.observe_transition(
+        before_sha256="same",
+        action={
+            "type": "type_text",
+            "text": "value",
+            "text_origin": "task_literal",
+            "source_memory_ids": [],
+            "clear_text": True,
+        },
+        after_sha256="changed",
+    )
+    assert outcome["input_activation_proof_consumed"]
+    assert not guard.input_activation_repair_pending
+    assert guard.input_activation_proof_consumed_count == 1
+
+
+def test_input_activation_proof_rejects_coordinate_text_only() -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(goal="Enter the requested value")
+    guard.mark_input_activation_repair(
+        {"type": "tap", "x": 0.5, "y": 0.18}
+    )
+    coordinate_action = {
+        "type": "type_text",
+        "text": "value",
+        "text_origin": "task_literal",
+        "source_memory_ids": [],
+        "x": 0.5,
+        "y": 0.18,
+        "clear_text": True,
+    }
+    target = {
+        "schema_version": "coordinate_text_target_assessment.v2",
+        "adjudicable": True,
+        "coordinate_bearing": True,
+        "matched": True,
+        "matched_editable_count": 1,
+        "matched_empty": True,
+        "visible_editable_count": 3,
+        "boxed_editable_count": 3,
+    }
+    with pytest.raises(
+        ActionValidationError,
+        match="POST_ACTIVATION_INPUT_READY",
+    ):
+        guard.validate_decision(
+            decision(coordinate_action),
+            page_sha256="same",
+            coordinate_text_target_assessment=target,
+        )
+    repaired = {
+        **coordinate_action,
+    }
+    repaired.pop("x")
+    repaired.pop("y")
+    repaired["clear_text"] = False
+    guard.validate_decision(
+        decision(repaired),
+        page_sha256="same",
+        coordinate_text_target_assessment={
+            **target,
+            "coordinate_bearing": False,
+            "matched": False,
+            "matched_editable_count": 0,
+        },
+    )
+
+
 def test_focused_editable_input_assessment_uses_visible_state_only() -> None:
     assessment = focused_editable_input_assessment(
         [

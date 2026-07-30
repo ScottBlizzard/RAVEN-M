@@ -69,6 +69,9 @@ Raw trajectories are under `runs/excluded_protocol_dry_run/` and
 | `05_project/scripts/run_protocol_v2_2_r41_candidate_smoke.py` | isolated r41 M0 smoke entry point | ready |
 | `reports/protocol_v2_2_r41_m0_expense_smoke.json` | machine-readable r41 M0 failure and guard audit | candidate rejected |
 | `reports/protocol_v2_2_r41_m0_expense_smoke.md` | input-proof and layout-axis boundary for r42 | current |
+| `04_protocols/protocol_v2_2_r42_candidate_addendum.md` | one-step activation proof and visible-layout recovery contract | local candidate |
+| `reports/protocol_v2_2_r42_local_validation.json` | machine-readable 349-test, v1-seal, and historical compatibility evidence | passed locally |
+| `reports/protocol_v2_2_r42_local_validation.md` | r42 rationale, bounded risk, and next live action | current |
 
 The r39 raw trajectories are under
 `runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/` and remain
