@@ -1,0 +1,293 @@
+{
+  "schema_version": "protocol_v2_2_r39_gate_e_final.v1",
+  "reviewed_at": "2026-07-30T14:55:00+08:00",
+  "decision": {
+    "gate_e": "pass",
+    "engineering_claim": "The frozen protocol-v2.2 runner completed all eight paired non-Hard cells with valid scored outputs and passed every preregistered Gate-E criterion.",
+    "method_claim": "not_established",
+    "boundary": "This is a one-seed, four-task protocol requalification gate. It is not a Hard benchmark result and is not evidence that M0 outperforms B3."
+  },
+  "suite": {
+    "suite_id": "nonhard_capability_v2_2_seed20260729_r39",
+    "protocol": "androidworld_protocol_v2_2_exploratory",
+    "instance_seed": 20260729,
+    "source_commit": "02f1028b5bcef12fa2cad3c35799a8588affbf66",
+    "source_tag": "protocol-v2-2-gate-e-r39-dev",
+    "model": "Qwen/Qwen3-VL-32B-Instruct",
+    "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+    "backend": "qwen3_vl_32b_transformers_bf16_4x4090_v1",
+    "elapsed_seconds": 4438.094000000001,
+    "result_count": 8,
+    "success_count": 7,
+    "native_task_success_rate": 0.875,
+    "valid_scored_cell_rate": 1.0,
+    "gate_passed": true,
+    "stopped_early": false,
+    "infrastructure_attempt_count": 1,
+    "suite_summary_sha256": "fcb3e9880448f0423ce8459a5d8e91e78b453c802e682d82ea1af317f5ff68b9",
+    "manifest_snapshot_sha256": "0ae96dd85e0eb9aa059ccb4627f1ee42ec843b99d91bf04dcb47b6ce9a7e86e0",
+    "instances_snapshot_sha256": "13d6ab543008b94d38e789105210d7fc56eb2eec7f66ed498f7113c910ae79b5"
+  },
+  "acceptance": {
+    "passed_count": 19,
+    "failed_count": 0,
+    "criteria": {
+      "b3_success": true,
+      "consequential_action_adjudication_accounting": true,
+      "evaluator_leakage": true,
+      "ir_cache_populated": true,
+      "ir_correct": true,
+      "loop_guard": true,
+      "m0_completion": true,
+      "m0_success": true,
+      "memory_isolation": true,
+      "minimum_total_success": true,
+      "model_identity": true,
+      "pairing": true,
+      "readiness_accounting": true,
+      "semantic_progress_audit": true,
+      "startup_environment_accounting": true,
+      "task_action_compatibility": true,
+      "valid_output": true,
+      "valid_scored_cells": true,
+      "visible_failure_enforcement": true
+    }
+  },
+  "variant_aggregates": {
+    "B3": {
+      "meaning": "simple-summary baseline",
+      "episodes": 4,
+      "successes": 4,
+      "task_success_rate": 1.0,
+      "executed_steps": 41,
+      "mean_executed_steps": 10.25,
+      "model_calls": 56,
+      "mean_model_calls": 14.0,
+      "prompt_tokens": 271681,
+      "mean_prompt_tokens": 67920.25,
+      "completion_tokens": 4900,
+      "mean_completion_tokens": 1225.0
+    },
+    "M0": {
+      "meaning": "full RAVEN-M method",
+      "episodes": 4,
+      "successes": 3,
+      "task_success_rate": 0.75,
+      "executed_steps": 47,
+      "mean_executed_steps": 11.75,
+      "model_calls": 80,
+      "mean_model_calls": 20.0,
+      "prompt_tokens": 480490,
+      "mean_prompt_tokens": 120122.5,
+      "completion_tokens": 9662,
+      "mean_completion_tokens": 2415.5
+    },
+    "m0_minus_b3": {
+      "absolute_task_success_rate": -0.25,
+      "model_call_relative_change": 0.4286,
+      "prompt_token_relative_change": 0.7686,
+      "completion_token_relative_change": 0.9718,
+      "interpretation": "Descriptive only. Four paired tasks at one seed are insufficient for a method-effect claim."
+    }
+  },
+  "cells": [
+    {
+      "sequence": 1,
+      "variant": "B3",
+      "task": "ContactsAddContact",
+      "native_reward": 1.0,
+      "success": true,
+      "termination": "model_done",
+      "executed_steps": 9,
+      "model_calls": 12,
+      "valid_after_one_repair": true,
+      "semantic_audit": true,
+      "manual_visible_review": "partial",
+      "manual_note": "The final action screenshot visibly contains the correct name and phone in the create-contact form. The save transition was not captured, while the native contacts evaluator independently confirmed persistence.",
+      "evidence_screenshot": "runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/episodes/01_B3_ContactsAddContact_seed20260729/step_008_after.png",
+      "evidence_sha256": "6863ff85dbad0a9a0d62cdafe51accf217c44c0ef0600b7b9d1adb3efa98971f"
+    },
+    {
+      "sequence": 2,
+      "variant": "M0",
+      "task": "SimpleCalendarEventsOnDate",
+      "native_reward": 1.0,
+      "success": true,
+      "termination": "model_answer",
+      "executed_steps": 3,
+      "model_calls": 6,
+      "valid_after_one_repair": true,
+      "semantic_audit": true,
+      "manual_visible_review": "pass",
+      "manual_note": "October 25 and the full title Board meeting are visible; the answer matches the interaction cache.",
+      "evidence_screenshot": "runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/episodes/02_M0_SimpleCalendarEventsOnDate_seed20260729/step_002_before.png",
+      "evidence_sha256": "2ed8023e4d33da002432754fcf9de3666b5d604deeba4cb78490ab03f6296921"
+    },
+    {
+      "sequence": 3,
+      "variant": "B3",
+      "task": "ExpenseAddSingle",
+      "native_reward": 1.0,
+      "success": true,
+      "termination": "max_steps",
+      "executed_steps": 12,
+      "model_calls": 16,
+      "valid_after_one_repair": true,
+      "semantic_audit": true,
+      "manual_visible_review": "partial",
+      "manual_note": "The final screenshot visibly shows Educational, 259.57 USD, Donation, and the exact note. The post-save screen transition was not captured, while the native expense evaluator confirmed the stored row.",
+      "evidence_screenshot": "runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/episodes/03_B3_ExpenseAddSingle_seed20260729/step_011_after.png",
+      "evidence_sha256": "a6aa05d7470cb414c88c9cb20f58590c891d75ce2ddd08f2f9680719dbc5ebd5"
+    },
+    {
+      "sequence": 4,
+      "variant": "M0",
+      "task": "FilesMoveFile",
+      "native_reward": 1.0,
+      "success": true,
+      "termination": "max_steps",
+      "executed_steps": 20,
+      "model_calls": 32,
+      "valid_after_one_repair": true,
+      "semantic_audit": true,
+      "manual_visible_review": "partial",
+      "manual_note": "The trace executes MOVE in Ringtones and the native filesystem evaluator confirms success. The final screenshot only revisits a Music search and does not provide positive visual proof in Ringtones.",
+      "evidence_screenshot": "runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/episodes/04_M0_FilesMoveFile_seed20260729/step_019_after.png",
+      "evidence_sha256": "2a99ac28f95495c030554d9d126f0dc1bbfb4dd04c944b5ab2985433da24b701"
+    },
+    {
+      "sequence": 5,
+      "variant": "M0",
+      "task": "ContactsAddContact",
+      "native_reward": 1.0,
+      "success": true,
+      "termination": "max_steps",
+      "executed_steps": 12,
+      "model_calls": 23,
+      "valid_after_one_repair": true,
+      "semantic_audit": true,
+      "manual_visible_review": "pass",
+      "manual_note": "The contact detail screen visibly shows Sofija Martin and +1 763-432-2348.",
+      "evidence_screenshot": "runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/episodes/05_M0_ContactsAddContact_seed20260729/step_011_after.png",
+      "evidence_sha256": "c9f89c07d79b05a62411236e2a33db42854545e07085e5a82a5cea2afe2facbb"
+    },
+    {
+      "sequence": 6,
+      "variant": "B3",
+      "task": "SimpleCalendarEventsOnDate",
+      "native_reward": 1.0,
+      "success": true,
+      "termination": "model_answer",
+      "executed_steps": 3,
+      "model_calls": 3,
+      "valid_after_one_repair": true,
+      "semantic_audit": true,
+      "manual_visible_review": "pass",
+      "manual_note": "October 25 (Wed), Board meeting, and 16:00-16:05 are visible; the returned title is exact.",
+      "evidence_screenshot": "runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/episodes/06_B3_SimpleCalendarEventsOnDate_seed20260729/step_002_before.png",
+      "evidence_sha256": "bec298dfc9330ac0ddc7d55da0144b25e872c5507241bbafa050105fe9efb8c3"
+    },
+    {
+      "sequence": 7,
+      "variant": "M0",
+      "task": "ExpenseAddSingle",
+      "native_reward": 0.0,
+      "success": false,
+      "failure_code": "TASK_UNSUCCESSFUL_AT_BUDGET",
+      "termination": "max_steps",
+      "executed_steps": 12,
+      "model_calls": 19,
+      "valid_after_one_repair": true,
+      "semantic_audit": true,
+      "manual_visible_review": "fail",
+      "manual_note": "The form contains the correct name, amount, and note, but Housing remains selected instead of Donation and the row is not saved. This agrees with the native evaluator.",
+      "evidence_screenshot": "runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/episodes/07_M0_ExpenseAddSingle_seed20260729/step_011_after.png",
+      "evidence_sha256": "a9896ff0941163392b461b35dd56cfe6d136dff99c7341a8f379bb4a5dc7062a"
+    },
+    {
+      "sequence": 8,
+      "variant": "B3",
+      "task": "FilesMoveFile",
+      "native_reward": 1.0,
+      "success": true,
+      "termination": "model_done",
+      "executed_steps": 17,
+      "model_calls": 25,
+      "valid_after_one_repair": true,
+      "semantic_audit": true,
+      "manual_visible_review": "pass",
+      "manual_note": "The breadcrumb is sdk_gphone64_x86_64 > Ringtones and nature_sounds.mp3 is visibly present.",
+      "evidence_screenshot": "runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/episodes/08_B3_FilesMoveFile_seed20260729/step_016_after.png",
+      "evidence_sha256": "b38a48cb9fe869e09c057c7a05920248952e562e446d669674814bbe0c063ae8"
+    }
+  ],
+  "paired_findings": [
+    {
+      "task": "ContactsAddContact",
+      "B3": {
+        "success": true,
+        "steps": 9,
+        "model_calls": 12
+      },
+      "M0": {
+        "success": true,
+        "steps": 12,
+        "model_calls": 23
+      },
+      "finding": "Both variants succeed. B3 is shorter and cheaper in this instance; M0 provides stronger final visible confirmation."
+    },
+    {
+      "task": "SimpleCalendarEventsOnDate",
+      "B3": {
+        "success": true,
+        "steps": 3,
+        "model_calls": 3
+      },
+      "M0": {
+        "success": true,
+        "steps": 3,
+        "model_calls": 6
+      },
+      "finding": "Both variants return the exact title. M0 spends two additional adjudication/history calls without changing the result."
+    },
+    {
+      "task": "ExpenseAddSingle",
+      "B3": {
+        "success": true,
+        "steps": 12,
+        "model_calls": 16
+      },
+      "M0": {
+        "success": false,
+        "steps": 12,
+        "model_calls": 19
+      },
+      "finding": "B3 recognizes the category strip as horizontally scrollable, reaches Donation, and saves. M0 repeats taps, then performs vertical swipes and exhausts the budget with Housing selected. This is a retained harmful-method case, not infrastructure failure."
+    },
+    {
+      "task": "FilesMoveFile",
+      "B3": {
+        "success": true,
+        "steps": 17,
+        "model_calls": 25
+      },
+      "M0": {
+        "success": true,
+        "steps": 20,
+        "model_calls": 32
+      },
+      "finding": "Both variants move the file. B3 reaches positive destination-folder verification; M0 succeeds natively but spends the remaining budget searching Music."
+    }
+  ],
+  "infrastructure": {
+    "invalid_attempt": "invalid_infrastructure_attempts/06_B3_SimpleCalendarEventsOnDate_seed20260729_attempt_01",
+    "failure": "Android accessibility tree unavailable before any task action",
+    "classification": "infrastructure_or_controller_error",
+    "effect_on_score": "excluded and retried under the frozen policy",
+    "retry_outcome": "native reward 1.0 with three valid actions"
+  },
+  "next_decision": {
+    "automatic_gate_f_transition": false,
+    "recommended_action": "Preserve r39 as the passed protocol-requalification artifact. Before any expensive Hard rerun, analyze the M0 Expense failure as a method limitation and decide whether a generic controller change is scientifically justified; any change requires a new frozen protocol version and cannot be mixed with r39 evidence."
+  }
+}

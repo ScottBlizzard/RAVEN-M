@@ -44,6 +44,21 @@ here is evidence of a scored Hard result unless explicitly marked as such.
 Raw trajectories are under `runs/excluded_protocol_dry_run/` and
 `runs/dev_nonhard_g3/`, excluded from Git, and excluded from scored results.
 
+## Protocol-v2.2 requalification
+
+| Artifact | Purpose | Status |
+|---|---|---|
+| `reports/protocol_v2_2_r39_gate_d_freeze.json` | r39 frozen source, model, schema, and runtime hashes | verified |
+| `reports/protocol_v2_2_gate_e_r39_preflight.json` | clean preflight before the formal run | passed |
+| `reports/protocol_v2_2_r39_sequence4_authorization.json` | live Files regression authorization | passed |
+| `reports/protocol_v2_2_r39_gate_e_final.json` | machine-readable eight-cell result and manual review | Gate E passed |
+| `reports/protocol_v2_2_r39_gate_e_final.md` | human-readable outcome, limitations, and paired analysis | current |
+
+The r39 raw trajectories are under
+`runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/` and remain
+excluded from Git. This is a non-Hard protocol requalification artifact, not a
+Hard benchmark result or evidence that M0 outperforms B3.
+
 ## Not yet complete
 
 - fresh v15 retrieval audit, component smoke and final G7 decision;
