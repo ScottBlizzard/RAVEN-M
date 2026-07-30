@@ -26,6 +26,7 @@ from raven_m.controller.protocol_v2_guard import (
     destination_picker_navigation_drawer_action,
     exact_selection_long_press_assessment,
     files_roots_drawer_action_assessment,
+    focused_empty_editable_tap_assessment,
     focused_editable_input_assessment,
     post_destination_transfer_command_action,
     semantic_ui_snapshot,
@@ -576,6 +577,7 @@ class EpisodeController:
         semantic_action_error_prefixes = (
             "EXACT_TARGET_GUARD:",
             "FOCUSED_INPUT_GUARD:",
+            "FOCUSED_EMPTY_TAP_GUARD:",
             "UNFOCUSED_CLEAR_TEXT_GUARD:",
             "TEXT_TARGET_GUARD:",
             "DECLARED_TEXT_SOURCE_GUARD:",
@@ -595,6 +597,9 @@ class EpisodeController:
         )
         exact_target_rejected = error.startswith("EXACT_TARGET_GUARD:")
         focused_input_rejected = error.startswith("FOCUSED_INPUT_GUARD:")
+        focused_empty_tap_rejected = error.startswith(
+            "FOCUSED_EMPTY_TAP_GUARD:"
+        )
         unfocused_clear_text_rejected = error.startswith(
             "UNFOCUSED_CLEAR_TEXT_GUARD:"
         )
@@ -751,6 +756,18 @@ class EpisodeController:
                 "now. Otherwise choose one non-commit action that leaves the "
                 "unspecified field untouched. Do not repeat a navigation "
                 "action that has already produced no semantic progress.\n"
+            )
+        elif focused_empty_tap_rejected:
+            repair_directive = (
+                "\n\nYour previous tap targeted an editable field that is "
+                "already visibly focused and empty, so another tap cannot "
+                "add cursor-position value. For this one repair, do not tap. "
+                "If that field corresponds to a remaining TASK value, enter "
+                "the exact task-bound value now with action.type=type_text, "
+                "no x or y, clear_text=false, and the required text "
+                "provenance. Otherwise choose one materially different "
+                "non-commit action supported by the current screen. Do not "
+                "invent or relabel text.\n"
             )
         elif focused_input_rejected:
             repair_directive = (
@@ -1123,6 +1140,14 @@ class EpisodeController:
                 focused_input_assessment = (
                     focused_editable_input_assessment(ui_elements)
                 )
+                focused_empty_tap_assessment = (
+                    focused_empty_editable_tap_assessment(
+                        ui_elements,
+                        parsed_candidate.decision.get("action"),
+                        screen_width=screen_width,
+                        screen_height=screen_height,
+                    )
+                )
                 keyboard_swipe_assessment = (
                     soft_keyboard_swipe_assessment(
                         ui_elements,
@@ -1289,6 +1314,9 @@ class EpisodeController:
                     ),
                     exact_selection_assessment=selection_assessment,
                     focused_input_assessment=focused_input_assessment,
+                    focused_empty_tap_assessment=(
+                        focused_empty_tap_assessment
+                    ),
                     soft_keyboard_swipe_assessment=(
                         keyboard_swipe_assessment
                     ),
@@ -1862,6 +1890,12 @@ class EpisodeController:
                         ],
                         destination_picker_commit_executed=(
                             picker_commit_executed
+                        ),
+                        claimed_unverified_progress=any(
+                            isinstance(delta, dict)
+                            and delta.get("kind")
+                            in {"progress", "page_hypothesis"}
+                            for delta in decision.get("state_delta", ())
                         ),
                     )
                     step_record["protocol_v2_guard"] = guard_transition

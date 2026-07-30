@@ -13,6 +13,7 @@ from raven_m.controller.protocol_v2_guard import (
     destination_picker_navigation_drawer_action,
     exact_selection_long_press_assessment,
     files_roots_drawer_action_assessment,
+    focused_empty_editable_tap_assessment,
     focused_editable_input_assessment,
     post_destination_transfer_command_action,
     semantic_ui_snapshot,
@@ -174,6 +175,51 @@ def test_guard_allows_different_recovery_action() -> None:
     )
 
 
+def test_unverified_progress_blocks_only_immediate_exact_repeat() -> None:
+    guard = ProtocolV2DecisionGuard(max_no_effect_repeats=2)
+    guard.reset(goal="Open a control")
+    action = {"type": "tap", "x": 0.5, "y": 0.34}
+    outcome = guard.observe_transition(
+        before_sha256="same",
+        action=action,
+        after_sha256="same",
+        claimed_unverified_progress=True,
+    )
+    assert outcome["unverified_progress_repeat_armed"]
+    with pytest.raises(
+        ActionValidationError,
+        match="asserted unverified progress",
+    ):
+        guard.validate_decision(decision(action), page_sha256="same")
+    guard.validate_decision(
+        decision(
+            {
+                "type": "swipe",
+                "x": 0.8,
+                "y": 0.34,
+                "x2": 0.2,
+                "y2": 0.34,
+                "duration_ms": 500,
+            }
+        ),
+        page_sha256="same",
+    )
+
+
+def test_no_effect_without_progress_claim_keeps_existing_threshold() -> None:
+    guard = ProtocolV2DecisionGuard(max_no_effect_repeats=2)
+    guard.reset(goal="Open a delayed control")
+    action = {"type": "tap", "x": 0.5, "y": 0.34}
+    outcome = guard.observe_transition(
+        before_sha256="same",
+        action=action,
+        after_sha256="same",
+        claimed_unverified_progress=False,
+    )
+    assert not outcome["unverified_progress_repeat_armed"]
+    guard.validate_decision(decision(action), page_sha256="same")
+
+
 def test_focused_editable_input_assessment_uses_visible_state_only() -> None:
     assessment = focused_editable_input_assessment(
         [
@@ -208,6 +254,66 @@ def test_focused_editable_input_assessment_uses_visible_state_only() -> None:
         "input_ready": True,
     }
     assert "bbox" not in assessment
+
+
+def test_focused_empty_editable_tap_assessment_hits_only_same_input() -> None:
+    elements = [
+        {
+            "text": "",
+            "is_visible": True,
+            "is_enabled": True,
+            "is_editable": True,
+            "is_focused": True,
+            "bbox": {
+                "x_min": 0.1,
+                "x_max": 0.9,
+                "y_min": 0.1,
+                "y_max": 0.25,
+            },
+        }
+    ]
+    hit = focused_empty_editable_tap_assessment(
+        elements,
+        {"type": "tap", "x": 0.5, "y": 0.18},
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert hit == {
+        "schema_version": "focused_empty_editable_tap_assessment.v1",
+        "adjudicable": True,
+        "action_type": "tap",
+        "focused_empty_count": 1,
+        "hits_focused_empty": True,
+    }
+    miss = focused_empty_editable_tap_assessment(
+        elements,
+        {"type": "tap", "x": 0.5, "y": 0.5},
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert miss["adjudicable"]
+    assert not miss["hits_focused_empty"]
+
+
+def test_guard_rejects_tap_on_focused_empty_editable() -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(goal="Fill the requested field")
+    assessment = {
+        "schema_version": "focused_empty_editable_tap_assessment.v1",
+        "adjudicable": True,
+        "action_type": "tap",
+        "focused_empty_count": 1,
+        "hits_focused_empty": True,
+    }
+    with pytest.raises(
+        ActionValidationError,
+        match="FOCUSED_EMPTY_TAP_GUARD",
+    ):
+        guard.validate_decision(
+            decision({"type": "tap", "x": 0.5, "y": 0.18}),
+            page_sha256="same",
+            focused_empty_tap_assessment=assessment,
+        )
 
 
 def test_focused_input_assessment_uses_visible_soft_keyboard_fallback() -> None:

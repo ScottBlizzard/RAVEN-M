@@ -265,6 +265,51 @@ def focused_editable_input_assessment(
     }
 
 
+def focused_empty_editable_tap_assessment(
+    ui_elements: Any,
+    action: dict[str, Any] | None,
+    *,
+    screen_width: int,
+    screen_height: int,
+) -> dict[str, Any]:
+    """Detect a redundant tap inside an already-focused empty input."""
+    action_type = (
+        action.get("type") if isinstance(action, dict) else None
+    )
+    focused_empty = []
+    for element in ui_elements or ():
+        if _element_value(element, "is_visible") is False:
+            continue
+        if _element_value(element, "is_enabled") is False:
+            continue
+        if _element_value(element, "is_editable") is not True:
+            continue
+        if _element_value(element, "is_focused") is not True:
+            continue
+        if _normalized_text(_element_value(element, "text")) is not None:
+            continue
+        focused_empty.append(element)
+    hit = bool(
+        action_type == "tap"
+        and any(
+            _tap_hits_element(
+                action,
+                element,
+                screen_width=screen_width,
+                screen_height=screen_height,
+            )
+            for element in focused_empty
+        )
+    )
+    return {
+        "schema_version": "focused_empty_editable_tap_assessment.v1",
+        "adjudicable": bool(focused_empty),
+        "action_type": action_type,
+        "focused_empty_count": len(focused_empty),
+        "hits_focused_empty": hit,
+    }
+
+
 def declared_text_source_assessment(
     goal: str,
     ui_elements: Any,
@@ -1246,6 +1291,11 @@ class ProtocolV2DecisionGuard:
         self.declared_text_source_block_count = 0
         self.task_literal_field_role_block_count = 0
         self.soft_keyboard_swipe_block_count = 0
+        self.focused_empty_tap_block_count = 0
+        self.last_unverified_progress_no_effect_fingerprint: (
+            tuple[str, str] | None
+        ) = None
+        self.unverified_progress_repeat_block_count = 0
 
     def _block_fingerprint(
         self,
@@ -1363,6 +1413,7 @@ class ProtocolV2DecisionGuard:
         post_destination_transfer_command_is_action: bool = False,
         exact_selection_assessment: dict[str, Any] | None = None,
         focused_input_assessment: dict[str, Any] | None = None,
+        focused_empty_tap_assessment: dict[str, Any] | None = None,
         soft_keyboard_swipe_assessment: dict[str, Any] | None = None,
         coordinate_text_target_assessment: dict[str, Any] | None = None,
         declared_text_source_assessment: dict[str, Any] | None = None,
@@ -1388,6 +1439,32 @@ class ProtocolV2DecisionGuard:
         roots_drawer_assessment = (
             files_roots_drawer_action_assessment or {}
         )
+        focused_tap_assessment = focused_empty_tap_assessment or {}
+        if (
+            focused_tap_assessment.get("adjudicable") is True
+            and focused_tap_assessment.get("hits_focused_empty") is True
+        ):
+            self.validation_blocks.append(
+                {
+                    "semantic_state_sha256": page_sha256,
+                    "action": action,
+                    "reason": "focused_empty_editable_redundant_tap",
+                    "focused_empty_tap_assessment": focused_tap_assessment,
+                    "required_recovery_classes": [
+                        "enter_task_bound_value",
+                        "inspect_different_visible_control",
+                    ],
+                }
+            )
+            self.focused_empty_tap_block_count += 1
+            raise ActionValidationError(
+                "FOCUSED_EMPTY_TAP_GUARD: the proposed tap hits an "
+                "already-focused empty editable control. Another tap cannot "
+                "add cursor-position value to an empty field. Enter the "
+                "remaining task-bound value without x,y and with "
+                "clear_text=false, or choose a materially different "
+                "non-commit action."
+            )
         if (
             roots_drawer_assessment.get("adjudicable") is True
             and roots_drawer_assessment.get("drawer_active") is True
@@ -1809,6 +1886,27 @@ class ProtocolV2DecisionGuard:
                 "retry the same coordinate."
             )
         fingerprint = (page_sha256, action_key)
+        if (
+            fingerprint
+            == self.last_unverified_progress_no_effect_fingerprint
+        ):
+            record = {
+                "semantic_state_sha256": page_sha256,
+                "action": action,
+                "reason": (
+                    "unverified_progress_exact_repeat_blocked"
+                ),
+                "required_recovery_classes": list(RECOVERY_CLASSES),
+            }
+            self.validation_blocks.append(record)
+            self.unverified_progress_repeat_block_count += 1
+            raise ActionValidationError(
+                "LOOP_GUARD: the immediately preceding identical action "
+                "produced no semantic UI change while its state_delta only "
+                "asserted unverified progress or a page hypothesis. Do not "
+                "repeat that action. Choose a materially different recovery "
+                "action based on the current screen."
+            )
         if fingerprint in self.blocked_fingerprints:
             record = {
                 "semantic_state_sha256": page_sha256,
@@ -1836,6 +1934,7 @@ class ProtocolV2DecisionGuard:
         before_visible_failures: list[str] | tuple[str, ...] = (),
         after_visible_failures: list[str] | tuple[str, ...] = (),
         destination_picker_commit_executed: bool = False,
+        claimed_unverified_progress: bool = False,
     ) -> dict[str, Any]:
         action_key = canonical_action_key(action)
         if destination_picker_commit_executed:
@@ -1870,6 +1969,11 @@ class ProtocolV2DecisionGuard:
                 >= self.max_no_effect_repeats
             ):
                 self._block_fingerprint(fingerprint)
+        self.last_unverified_progress_no_effect_fingerprint = (
+            fingerprint
+            if not semantic_changed and claimed_unverified_progress
+            else None
+        )
         if new_visible_failures:
             self._block_fingerprint(fingerprint)
             self.visible_failure_trigger_count += 1
@@ -1910,6 +2014,10 @@ class ProtocolV2DecisionGuard:
             ),
             "post_destination_commit_active": (
                 self.post_destination_commit_active
+            ),
+            "unverified_progress_repeat_armed": (
+                self.last_unverified_progress_no_effect_fingerprint
+                == fingerprint
             ),
             "new_visible_failures": new_visible_failures,
         }
@@ -1963,6 +2071,12 @@ class ProtocolV2DecisionGuard:
             ),
             "soft_keyboard_swipe_block_count": (
                 self.soft_keyboard_swipe_block_count
+            ),
+            "focused_empty_tap_block_count": (
+                self.focused_empty_tap_block_count
+            ),
+            "unverified_progress_repeat_block_count": (
+                self.unverified_progress_repeat_block_count
             ),
             "ab_ab_cycle_trigger_count": self.cycle_trigger_count,
             "visible_failure_trigger_count": (

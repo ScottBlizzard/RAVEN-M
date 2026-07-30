@@ -1,0 +1,55 @@
+{
+  "schema_version": "protocol_v2_2_r41_local_validation.v1",
+  "recorded_at": "2026-07-30T15:40:01+08:00",
+  "status": "local_validation_passed_m0_smoke_pending",
+  "branch": "protocol-v2-exploratory",
+  "parent_commit": "bcd75f88d948a05294e871a205453fc69aa1613f",
+  "repairs": {
+    "same_and_previous_transition_causal_supersession": true,
+    "unverified_progress_immediate_exact_repeat_guard": true,
+    "focused_empty_editable_tap_guard": true,
+    "global_no_effect_threshold_changed": false,
+    "coordinate_or_text_injection": false
+  },
+  "validation": {
+    "pytest_collected": 345,
+    "pytest_passed": 345,
+    "pytest_exit_code": 0,
+    "compileall_exit_code": 0,
+    "git_diff_check_exit_code": 0,
+    "protocol_v1_seal": {
+      "file_count": 197,
+      "failure_count": 0,
+      "passed": true
+    },
+    "historical_repeat_audit": {
+      "trajectory_files_scanned": 377,
+      "all_immediate_exact_repeats_after_no_semantic_effect": 78,
+      "r41_narrow_guard_would_block": 20,
+      "blocked_candidate_second_action_remained_no_effect": 13,
+      "blocked_candidate_second_action_later_changed_semantics": 7,
+      "interpretation": "bounded compatibility risk retained; same-turn materially different recovery remains available"
+    }
+  },
+  "current_file_sha256": {
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "47d7baefa9969e8f9a390a36bfc9e0a5b8cb6cc94e4b0cf83ef95d930a3c9d19",
+    "05_project/src/raven_m/controller/episode_controller.py": "40a7af2fe6baf2eba526a188696808c6fa3de9aead503e980a2457099cb059a1",
+    "05_project/src/raven_m/memory/manager.py": "845c07991fc88709674ba80f7255b1302a25563b4d3140e4a4bc4b9d825437cf",
+    "05_project/tests/controller/test_protocol_v2_guard.py": "a8a5be660f1b2d215f26ec0f83f32a756418ef5dab7026eae08a798843ba6c32",
+    "05_project/tests/controller/test_b0_prompt.py": "bce3ccb3f493b14b5037ccef95e90570503cfe80dc7da281189f5edfebdf8a60",
+    "05_project/tests/controller/test_reliability_recovery_controller.py": "2956b88d9d592844e58f63a24794eda1b4c260a87220666fdfc266db5782b2bf",
+    "05_project/tests/memory/test_manager.py": "e0cdc578005d63bc1db64c967119910e8a17c602460909b79bae77cffb38af49"
+  },
+  "r40_failure_evidence": {
+    "b3_suite_summary_sha256": "9c82a55ed49449f25491d02e41bfe2f25310d5005c876de787c0b34078c741ae",
+    "m0_suite_summary_sha256": "91217abb1f03b23d6417f45ee0325c24d942d12134c5a3c92907e0ccbceaea72",
+    "m0_memory_events_sha256": "c78817e2a29a7fee48d3230f299fe8557d3f911af4fbcb277ada2c40d394571d",
+    "retained": true
+  },
+  "evidence_boundary": {
+    "server_or_gpu_run_after_source_change": false,
+    "gate_d_authorized": false,
+    "formal_run_authorized": false,
+    "next_step": "fresh_non_scored_m0_expense_smoke"
+  }
+}

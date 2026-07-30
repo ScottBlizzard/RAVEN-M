@@ -480,7 +480,8 @@ class RavenMemoryManager:
                 if item.memory_id == failure.memory_id:
                     continue
                 action_linked_unverified_hypothesis = (
-                    item.created_step == transition.step - 1
+                    item.created_step
+                    in {transition.step - 1, transition.step}
                     and item.page_signature == after_page_signature
                     and item.memory_type in {"episodic_fact", "page_hint"}
                     and item.verification_status

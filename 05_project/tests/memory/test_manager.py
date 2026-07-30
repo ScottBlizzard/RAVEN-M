@@ -170,12 +170,35 @@ def test_repeated_no_effect_supersedes_action_linked_hypothesis(
             "after_screenshot_sha256": sha256(
                 b"pixel-after-1"
             ).hexdigest(),
-            "state_delta": (),
+            "state_delta": (
+                {
+                        "kind": "progress",
+                        "subject": "control",
+                        "predicate": "activation",
+                        "object": "initiated",
+                    "natural_language": (
+                        "The requested control has now opened."
+                    ),
+                    "evidence": "direct_screen",
+                    "confidence": 0.97,
+                },
+            ),
         }
     )
     second_result = manager.observe_transition(second)
     assert second_result["loop_detected"]
     assert hypothesis_id in second_result["invalidated_memory_ids"]
+    current_hypotheses = [
+        item
+        for item in manager.store.all_items()
+        if item.created_step == 1 and item.memory_type == "episodic_fact"
+    ]
+    assert len(current_hypotheses) == 1
+    current_hypothesis = current_hypotheses[0]
+    assert (
+        current_hypothesis.memory_id
+        in second_result["invalidated_memory_ids"]
+    )
     failures = [
         item
         for item in manager.store.all_items()
@@ -186,21 +209,38 @@ def test_repeated_no_effect_supersedes_action_linked_hypothesis(
     superseded = manager.store.get(hypothesis_id)
     assert superseded.verification_status == "superseded"
     assert superseded.relations["superseded_by"] == failure.memory_id
-    assert failure.relations["supersedes"] == hypothesis_id
-    assert any(
+    assert current_hypothesis.verification_status == "superseded"
+    assert (
+        current_hypothesis.relations["superseded_by"]
+        == failure.memory_id
+    )
+    supersession_events = [
+        event
+        for event in manager.store.events
+        if event["event"] == "supersede"
+        and event["newer_id"] == failure.memory_id
+    ]
+    assert {
+        event["older_id"] for event in supersession_events
+    } == {hypothesis_id, current_hypothesis.memory_id}
+    assert all(
         event["event"] == "supersede"
-        and event["older_id"] == hypothesis_id
         and event["newer_id"] == failure.memory_id
         and event["reason"]
         == (
             "repeated_action_no_effect_invalidates_"
             "unverified_action_hypothesis"
         )
-        for event in manager.store.events
+        for event in supersession_events
     )
     context, routed = manager.context(step=2)
     assert hypothesis_id not in context
+    assert current_hypothesis.memory_id not in context
     assert all(value.item.memory_id != hypothesis_id for value in routed)
+    assert all(
+        value.item.memory_id != current_hypothesis.memory_id
+        for value in routed
+    )
     assert failure.memory_id in context
     assert routed[0].route == "ALERT"
 

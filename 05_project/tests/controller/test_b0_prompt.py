@@ -227,6 +227,27 @@ def test_v2_swipe_direction_repair_is_geometry_specific() -> None:
     assert "down y2>y" in prompt
 
 
+def test_v2_focused_empty_tap_repair_enters_task_value_directly() -> None:
+    prompt = EpisodeController._repair_prompt(
+        "ORIGINAL",
+        (
+            '{"status":"continue","action":{"type":"tap","x":0.5,'
+            '"y":0.18},"expected_outcome":"The field is focused.",'
+            '"decision_summary":"Tap the field again.",'
+            '"state_delta":[],"memory_citations":[]}'
+        ),
+        (
+            "FOCUSED_EMPTY_TAP_GUARD: the proposed tap hits an "
+            "already-focused empty editable control."
+        ),
+        protocol_v2=True,
+    )
+    assert "already visibly focused and empty" in prompt
+    assert "action.type=type_text" in prompt
+    assert "no x or y" in prompt
+    assert "clear_text=false" in prompt
+
+
 def test_v2_repair_prompt_has_complete_status_action_matrix() -> None:
     prompt = EpisodeController._repair_prompt(
         "original",
