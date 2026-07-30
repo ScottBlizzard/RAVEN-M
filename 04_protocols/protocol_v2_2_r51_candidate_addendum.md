@@ -1,6 +1,7 @@
 # Protocol-v2.2 r51 development-candidate addendum
 
-Status: locally qualified; one fresh M0 Files smoke authorized
+Status: valid pre-commit smoke failure; destination branch unexercised;
+candidate frozen
 
 This addendum follows the immutable r50 development smoke. It preserves
 r50's native task success, live-qualified source-exit behavior, one-commit
@@ -64,9 +65,18 @@ The exact candidate passed 389/389 project tests, 139/139 focused guard,
 controller, and full-memory-policy tests, `compileall`, `git diff --check`,
 and the unchanged 197/197 Protocol-v1 breadth seal.
 
-Only one new, isolated, non-scored M0 `FilesMoveFile` smoke is authorized
-after a fresh zero-call preflight. It must verify one mutation, live
-source-exit consumption, live exact destination content-label consumption,
-native reward, valid bounded repairs, and clean infrastructure accounting.
-It does not authorize formal Gate E or Gate F.
+The authorized fresh, isolated, non-scored M0 `FilesMoveFile` smoke completed
+with clean infrastructure and valid safety accounting but exhausted 20 steps
+before opening the destination picker. A post-activation
+`type_text(clear_text=true)` executed while only the soft keyboard, not an
+actually focused editable node, was visible to accessibility. AndroidWorld's
+Ctrl+A clear operation selected all 14 root folders. Recovery consumed the
+budget before MOVE, so native reward was 0.0 and the r51 branch was not
+reached.
+
+r51 is frozen and may not be resumed. A future r52 is bounded to preventing
+post-activation `clear_text=true` unless current accessibility proves an
+actually focused editable. When only the soft keyboard and activation proof
+exist, a bounded repair may retain task-bound text and provenance, omit x/y,
+and set `clear_text=false`. This does not authorize formal Gate E or Gate F.
 
