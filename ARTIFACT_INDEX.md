@@ -120,6 +120,7 @@ Raw trajectories are under `runs/excluded_protocol_dry_run/` and
 | `04_protocols/protocol_v2_2_r48_candidate_addendum.md` | single-use named non-commit visible-control activation retry boundary | local candidate |
 | `reports/protocol_v2_2_r48_local_validation.json` | machine-readable 369-test, denial-case, audit-record, and v1-seal evidence | passed locally |
 | `reports/protocol_v2_2_r48_local_validation.md` | human-readable r48 rationale, compatibility, and next live action | current |
+| `05_project/scripts/run_protocol_v2_2_r48_candidate_smoke.py` | isolated r48 M0 Contacts smoke entry point | ready |
 
 The r39 raw trajectories are under
 `runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/` and remain
