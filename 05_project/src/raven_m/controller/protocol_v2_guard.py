@@ -93,6 +93,14 @@ INFRASTRUCTURE_FAILURE_RE = re.compile(
     r"\bsystem\s+ui\b.*\bresponding\b)",
     flags=re.IGNORECASE,
 )
+COMMIT_LIKE_CONTROL_RE = re.compile(
+    r"\b(save|delete|remove|erase|send|submit|confirm|done|ok|yes|"
+    r"purchase|buy|pay|install|uninstall|order|book|reserve|transfer|"
+    r"upload|download|call|dial|message|email|copy|move|paste|share|"
+    r"post|publish|apply|accept|agree|allow|authorize|sign\s*out|"
+    r"log\s*out|factory\s+reset)\b",
+    flags=re.IGNORECASE,
+)
 IGNORED_UI_PACKAGES = {"com.android.systemui"}
 SOFT_KEYBOARD_PACKAGES = {
     "com.android.inputmethod.latin",
@@ -307,6 +315,101 @@ def focused_empty_editable_tap_assessment(
         "action_type": action_type,
         "focused_empty_count": len(focused_empty),
         "hits_focused_empty": hit,
+    }
+
+
+def visible_control_activation_retry_assessment(
+    ui_elements: Any,
+    action: dict[str, Any] | None,
+    *,
+    screen_width: int,
+    screen_height: int,
+) -> dict[str, Any]:
+    """Bind one no-effect tap retry to a named, non-commit UI control."""
+    action_type = (
+        action.get("type") if isinstance(action, dict) else None
+    )
+    matched_controls: list[dict[str, Any]] = []
+    for element in ui_elements or ():
+        package_name = _normalized_text(
+            _element_value(element, "package_name")
+        )
+        if (
+            package_name is None
+            or package_name in IGNORED_UI_PACKAGES
+            or package_name in SOFT_KEYBOARD_PACKAGES
+        ):
+            continue
+        if _element_value(element, "is_visible") is not True:
+            continue
+        if _element_value(element, "is_enabled") is not True:
+            continue
+        if _element_value(element, "is_clickable") is not True:
+            continue
+        if _element_value(element, "is_editable") is True:
+            continue
+        if not _tap_hits_element(
+            action,
+            element,
+            screen_width=screen_width,
+            screen_height=screen_height,
+        ):
+            continue
+        labels = [
+            label
+            for field in (
+                "text",
+                "content_description",
+                "hint_text",
+                "tooltip",
+            )
+            if (
+                label := _normalized_text(
+                    _element_value(element, field)
+                )
+            )
+            is not None
+        ]
+        if not labels:
+            continue
+        matched_controls.append(
+            {
+                "package_name": package_name,
+                "labels": labels,
+                "commit_like": any(
+                    COMMIT_LIKE_CONTROL_RE.search(label)
+                    for label in labels
+                ),
+            }
+        )
+    matched_labels = sorted(
+        {
+            label
+            for control in matched_controls
+            for label in control["labels"]
+        }
+    )
+    commit_like = any(
+        control["commit_like"] for control in matched_controls
+    )
+    return {
+        "schema_version": "visible_control_activation_retry_assessment.v1",
+        "adjudicable": bool(ui_elements),
+        "action_type": action_type,
+        "matched_control_count": len(matched_controls),
+        "matched_packages": sorted(
+            {
+                control["package_name"]
+                for control in matched_controls
+            }
+        ),
+        "matched_labels": matched_labels,
+        "commit_like": commit_like,
+        "permitted": bool(
+            action_type == "tap"
+            and matched_controls
+            and not commit_like
+        ),
     }
 
 
@@ -1302,6 +1405,12 @@ class ProtocolV2DecisionGuard:
         self.input_activation_proof_count = 0
         self.input_activation_proof_consumed_count = 0
         self.input_activation_repeat_override_count = 0
+        self.visible_control_activation_repeat_override_fingerprints: set[
+            tuple[str, str]
+        ] = set()
+        self.visible_control_activation_repeat_override_records: list[
+            dict[str, Any]
+        ] = []
 
     def mark_input_activation_repair(
         self,
@@ -1437,6 +1546,10 @@ class ProtocolV2DecisionGuard:
         declared_source_soft_keyboard_present: bool = False,
         task_literal_field_role_assessment: dict[str, Any] | None = None,
         allow_unfocused_input_activation_repeat: bool = False,
+        visible_control_activation_retry_assessment: (
+            dict[str, Any] | None
+        ) = None,
+        allow_visible_control_activation_repeat: bool = False,
     ) -> None:
         self._validate_text_provenance(
             decision,
@@ -1941,14 +2054,41 @@ class ProtocolV2DecisionGuard:
                 "a title/content-area coordinate."
             )
         fingerprint = (page_sha256, action_key)
+        visible_control_retry = (
+            visible_control_activation_retry_assessment or {}
+        )
         bounded_input_activation_repeat = bool(
             allow_unfocused_input_activation_repeat
             and action.get("type") == "tap"
             and fingerprint
             == self.last_unverified_progress_no_effect_fingerprint
         )
+        bounded_visible_control_activation_repeat = bool(
+            allow_visible_control_activation_repeat
+            and action.get("type") == "tap"
+            and visible_control_retry.get("permitted") is True
+            and fingerprint
+            == self.last_unverified_progress_no_effect_fingerprint
+            and fingerprint
+            not in (
+                self.visible_control_activation_repeat_override_fingerprints
+            )
+        )
         if bounded_input_activation_repeat:
             self.input_activation_repeat_override_count += 1
+        elif bounded_visible_control_activation_repeat:
+            self.visible_control_activation_repeat_override_fingerprints.add(
+                fingerprint
+            )
+            self.visible_control_activation_repeat_override_records.append(
+                {
+                    "semantic_state_sha256": page_sha256,
+                    "action": action,
+                    "visible_control_activation_retry_assessment": (
+                        visible_control_retry
+                    ),
+                }
+            )
         elif (
             fingerprint
             == self.last_unverified_progress_no_effect_fingerprint
@@ -1960,6 +2100,9 @@ class ProtocolV2DecisionGuard:
                     "unverified_progress_exact_repeat_blocked"
                 ),
                 "required_recovery_classes": list(RECOVERY_CLASSES),
+                "visible_control_activation_retry_assessment": (
+                    visible_control_retry
+                ),
             }
             self.validation_blocks.append(record)
             self.unverified_progress_repeat_block_count += 1
@@ -2148,6 +2291,9 @@ class ProtocolV2DecisionGuard:
             "input_activation_proof_consumed": (
                 input_activation_proof_consumed
             ),
+            "visible_control_activation_repeat_override_count": len(
+                self.visible_control_activation_repeat_override_fingerprints
+            ),
             "new_visible_failures": new_visible_failures,
         }
 
@@ -2224,6 +2370,12 @@ class ProtocolV2DecisionGuard:
             ),
             "input_activation_repeat_override_count": (
                 self.input_activation_repeat_override_count
+            ),
+            "visible_control_activation_repeat_override_count": len(
+                self.visible_control_activation_repeat_override_fingerprints
+            ),
+            "visible_control_activation_repeat_override_records": list(
+                self.visible_control_activation_repeat_override_records
             ),
             "ab_ab_cycle_trigger_count": self.cycle_trigger_count,
             "visible_failure_trigger_count": (

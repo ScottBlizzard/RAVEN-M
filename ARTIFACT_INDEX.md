@@ -117,6 +117,9 @@ Raw trajectories are under `runs/excluded_protocol_dry_run/` and
 | `reports/protocol_v2_2_r47_candidate_preflight.json` | source, 27-file freeze, four instances, model, emulator, and fresh smoke directory | passed |
 | `reports/protocol_v2_2_r47_m0_contacts_smoke.json` | machine-readable task-scope qualification, readiness accounting, and visible-control retry conflict | candidate rejected |
 | `reports/protocol_v2_2_r47_m0_contacts_smoke.md` | live r47 failure analysis and bounded r48 repair scope | current |
+| `04_protocols/protocol_v2_2_r48_candidate_addendum.md` | single-use named non-commit visible-control activation retry boundary | local candidate |
+| `reports/protocol_v2_2_r48_local_validation.json` | machine-readable 369-test, denial-case, audit-record, and v1-seal evidence | passed locally |
+| `reports/protocol_v2_2_r48_local_validation.md` | human-readable r48 rationale, compatibility, and next live action | current |
 
 The r39 raw trajectories are under
 `runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/` and remain

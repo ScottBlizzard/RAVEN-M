@@ -20,6 +20,7 @@ from raven_m.controller.protocol_v2_guard import (
     soft_keyboard_swipe_assessment,
     swipe_direction_consistency_assessment,
     task_literal_field_role_assessment,
+    visible_control_activation_retry_assessment,
 )
 
 
@@ -375,6 +376,144 @@ def test_focused_empty_editable_tap_assessment_hits_only_same_input() -> None:
     )
     assert miss["adjudicable"]
     assert not miss["hits_focused_empty"]
+
+
+def test_visible_control_activation_retry_binds_named_safe_control() -> None:
+    assessment = visible_control_activation_retry_assessment(
+        [
+            {
+                "package_name": "com.google.android.contacts",
+                "content_description": "Create contact",
+                "is_visible": True,
+                "is_enabled": True,
+                "is_clickable": True,
+                "is_editable": False,
+                "bbox": {
+                    "x_min": 0.80,
+                    "x_max": 0.94,
+                    "y_min": 0.78,
+                    "y_max": 0.89,
+                },
+            }
+        ],
+        {"type": "tap", "x": 0.87, "y": 0.835},
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert assessment == {
+        "schema_version": (
+            "visible_control_activation_retry_assessment.v1"
+        ),
+        "adjudicable": True,
+        "action_type": "tap",
+        "matched_control_count": 1,
+        "matched_packages": ["com.google.android.contacts"],
+        "matched_labels": ["Create contact"],
+        "commit_like": False,
+        "permitted": True,
+    }
+
+
+@pytest.mark.parametrize(
+    ("element", "reason"),
+    [
+        (
+            {
+                "package_name": "com.google.android.calendar",
+                "text": "SAVE",
+                "is_visible": True,
+                "is_enabled": True,
+                "is_clickable": True,
+                "is_editable": False,
+                "bbox": {
+                    "x_min": 0.80,
+                    "x_max": 0.94,
+                    "y_min": 0.78,
+                    "y_max": 0.89,
+                },
+            },
+            "commit",
+        ),
+        (
+            {
+                "package_name": "com.google.android.contacts",
+                "is_visible": True,
+                "is_enabled": True,
+                "is_clickable": True,
+                "is_editable": False,
+                "bbox": {
+                    "x_min": 0.80,
+                    "x_max": 0.94,
+                    "y_min": 0.78,
+                    "y_max": 0.89,
+                },
+            },
+            "unlabelled",
+        ),
+        (
+            {
+                "package_name": "com.google.android.documentsui",
+                "hint_text": "Search",
+                "is_visible": True,
+                "is_enabled": True,
+                "is_clickable": True,
+                "is_editable": True,
+                "bbox": {
+                    "x_min": 0.80,
+                    "x_max": 0.94,
+                    "y_min": 0.78,
+                    "y_max": 0.89,
+                },
+            },
+            "editable",
+        ),
+        (
+            {
+                "package_name": "com.android.systemui",
+                "content_description": "Open panel",
+                "is_visible": True,
+                "is_enabled": True,
+                "is_clickable": True,
+                "is_editable": False,
+                "bbox": {
+                    "x_min": 0.80,
+                    "x_max": 0.94,
+                    "y_min": 0.78,
+                    "y_max": 0.89,
+                },
+            },
+            "system",
+        ),
+        (
+            {
+                "package_name": "com.google.android.inputmethod.latin",
+                "text": "Next",
+                "is_visible": True,
+                "is_enabled": True,
+                "is_clickable": True,
+                "is_editable": False,
+                "bbox": {
+                    "x_min": 0.80,
+                    "x_max": 0.94,
+                    "y_min": 0.78,
+                    "y_max": 0.89,
+                },
+            },
+            "keyboard",
+        ),
+    ],
+)
+def test_visible_control_activation_retry_rejects_unsafe_targets(
+    element: dict,
+    reason: str,
+) -> None:
+    assessment = visible_control_activation_retry_assessment(
+        [element],
+        {"type": "tap", "x": 0.87, "y": 0.835},
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert assessment["permitted"] is False, reason
 
 
 def test_guard_rejects_tap_on_focused_empty_editable() -> None:
@@ -1634,6 +1773,116 @@ def test_unverified_no_effect_precedes_coordinate_streak_guard() -> None:
     audit = guard.audit_record()
     assert audit["unverified_progress_repeat_block_count"] == 1
     assert audit["identical_coordinate_block_count"] == 0
+
+
+def test_visible_control_activation_repeat_is_bounded_to_one() -> None:
+    guard = ProtocolV2DecisionGuard(
+        max_no_effect_repeats=10,
+        max_identical_coordinate_actions=10,
+    )
+    guard.reset(goal="Create a new contact")
+    action = {"type": "tap", "x": 0.87, "y": 0.835}
+    assessment = {
+        "schema_version": (
+            "visible_control_activation_retry_assessment.v1"
+        ),
+        "adjudicable": True,
+        "action_type": "tap",
+        "matched_control_count": 1,
+        "matched_packages": ["com.google.android.contacts"],
+        "matched_labels": ["Create contact"],
+        "commit_like": False,
+        "permitted": True,
+    }
+    guard.validate_decision(decision(action), page_sha256="contacts")
+    guard.observe_transition(
+        before_sha256="contacts",
+        action=action,
+        after_sha256="contacts",
+        claimed_unverified_progress=True,
+    )
+    with pytest.raises(
+        ActionValidationError,
+        match="UNVERIFIED_PROGRESS_REPEAT_REQUIRED",
+    ):
+        guard.validate_decision(
+            decision(action),
+            page_sha256="contacts",
+            visible_control_activation_retry_assessment=assessment,
+        )
+    guard.validate_decision(
+        decision(action),
+        page_sha256="contacts",
+        visible_control_activation_retry_assessment=assessment,
+        allow_visible_control_activation_repeat=True,
+    )
+    guard.observe_transition(
+        before_sha256="contacts",
+        action=action,
+        after_sha256="contacts",
+        claimed_unverified_progress=True,
+    )
+    with pytest.raises(
+        ActionValidationError,
+        match="UNVERIFIED_PROGRESS_REPEAT_REQUIRED",
+    ):
+        guard.validate_decision(
+            decision(action),
+            page_sha256="contacts",
+            visible_control_activation_retry_assessment=assessment,
+            allow_visible_control_activation_repeat=True,
+        )
+    audit = guard.audit_record()
+    assert (
+        audit["visible_control_activation_repeat_override_count"] == 1
+    )
+    assert len(
+        audit["visible_control_activation_repeat_override_records"]
+    ) == 1
+    assert audit["unverified_progress_repeat_block_count"] == 2
+
+
+def test_visible_control_activation_repeat_never_allows_commit_label() -> None:
+    guard = ProtocolV2DecisionGuard(
+        max_no_effect_repeats=10,
+        max_identical_coordinate_actions=10,
+    )
+    guard.reset(goal="Save an event")
+    action = {"type": "tap", "x": 0.94, "y": 0.085}
+    guard.validate_decision(decision(action), page_sha256="event-form")
+    guard.observe_transition(
+        before_sha256="event-form",
+        action=action,
+        after_sha256="event-form",
+        claimed_unverified_progress=True,
+    )
+    with pytest.raises(
+        ActionValidationError,
+        match="UNVERIFIED_PROGRESS_REPEAT_REQUIRED",
+    ):
+        guard.validate_decision(
+            decision(action),
+            page_sha256="event-form",
+            visible_control_activation_retry_assessment={
+                "schema_version": (
+                    "visible_control_activation_retry_assessment.v1"
+                ),
+                "adjudicable": True,
+                "action_type": "tap",
+                "matched_control_count": 1,
+                "matched_packages": ["com.google.android.calendar"],
+                "matched_labels": ["Save"],
+                "commit_like": True,
+                "permitted": False,
+            },
+            allow_visible_control_activation_repeat=True,
+        )
+    assert (
+        guard.audit_record()[
+            "visible_control_activation_repeat_override_count"
+        ]
+        == 0
+    )
 
 
 def test_destination_picker_requires_bottom_cancel_and_commit_controls() -> None:

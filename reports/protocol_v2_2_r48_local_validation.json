@@ -1,0 +1,84 @@
+{
+  "schema_version": "protocol_v2_2_r48_local_validation.v1",
+  "recorded_at": "2026-07-30T21:17:17+08:00",
+  "status": "local_validation_passed_m0_contacts_smoke_pending",
+  "branch": "protocol-v2-exploratory",
+  "parent_commit": "1f5fadee94042326c58216eee0a846f40e0044f4",
+  "trigger": {
+    "source_suite": "nonhard_capability_v2_2_seed20260729_r47_candidate_development_smoke_sequence_5",
+    "first_action": {
+      "type": "tap",
+      "x": 0.87,
+      "y": 0.835
+    },
+    "first_action_semantic_changed": false,
+    "initial_validation_error": "LOOP_GUARD: UNVERIFIED_PROGRESS_REPEAT_REQUIRED",
+    "repair_validation_error": "LOOP_GUARD: UNVERIFIED_PROGRESS_REPEAT_REQUIRED",
+    "repair_action_executed": false
+  },
+  "change": {
+    "bounded_visible_control_activation_repeat": true,
+    "repair_only": true,
+    "tap_only": true,
+    "exact_prior_fingerprint_only": true,
+    "accessibility_required": true,
+    "explicit_visible_enabled_clickable_required": true,
+    "non_system_non_keyboard_package_required": true,
+    "non_editable_required": true,
+    "accessible_label_required": true,
+    "commit_like_label_denied": true,
+    "single_use_per_fingerprint": true,
+    "structured_audit_record": true,
+    "guard_threshold_changed": false,
+    "ordinary_loop_behavior_changed": false,
+    "text_safety_weakened": false,
+    "action_budget_changed": false
+  },
+  "validation": {
+    "pytest_collected": 369,
+    "pytest_passed": 369,
+    "pytest_exit_code": 0,
+    "focused_tests": 133,
+    "focused_tests_passed": 133,
+    "compileall_exit_code": 0,
+    "git_diff_check_exit_code": 0,
+    "protocol_v1_seal": {
+      "file_count": 197,
+      "failure_count": 0,
+      "passed": true
+    },
+    "full_chain_regression": {
+      "policy_activation_taps": 1,
+      "ordinary_repeat_validation_blocks": 1,
+      "bounded_repair_activation_taps": 1,
+      "semantic_form_open_after_repair": true,
+      "visible_control_activation_repeat_override_count": 1,
+      "unverified_progress_repeat_block_count": 1,
+      "matched_labels": [
+        "Create contact"
+      ],
+      "commit_like": false
+    },
+    "negative_regressions": {
+      "save_denied": true,
+      "unlabelled_denied": true,
+      "editable_denied": true,
+      "system_package_denied": true,
+      "keyboard_package_denied": true,
+      "third_identical_tap_denied": true
+    }
+  },
+  "current_file_sha256": {
+    "05_project/src/raven_m/controller/episode_controller.py": "2192d30aa0542d6f6de63f1a1b06cd268620e2a84dda04d92facfc4e1b0ae0c6",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "6125eef6976776143686d9b9a3eb127c5b0d52a8cd5525d72a005fda1bfa0b2a",
+    "05_project/tests/controller/test_protocol_v2_guard.py": "f66a71327f00049e636ef1444352a35bdbd30dbb04a4ed0489f5ec0d536bc2eb",
+    "05_project/tests/controller/test_semantic_progress_controller_v2.py": "cc44ad59135035b270fd3053226b9294af807449ac9eea690498ff626784d02b",
+    "05_project/prompts/planner_v1.md": "41539b48a656218f4c3f334ce88c5a51f568f550948c4b9ccafe782175949ea5"
+  },
+  "evidence_boundary": {
+    "server_or_gpu_run_after_source_change": false,
+    "gate_d_authorized": false,
+    "formal_run_authorized": false,
+    "next_step": "freeze candidate, zero-call preflight, then one fresh non-scored M0 Contacts smoke"
+  }
+}

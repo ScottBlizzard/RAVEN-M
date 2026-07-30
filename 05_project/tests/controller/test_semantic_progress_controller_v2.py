@@ -662,6 +662,58 @@ class RepeatedActivationRecoveryClient:
         )
 
 
+class VisibleControlActivationRetryClient:
+    def __init__(self) -> None:
+        self.requests: list[dict] = []
+
+    def generate(self, **kwargs) -> ModelCall:
+        self.requests.append(kwargs)
+        label = kwargs["call_label"]
+        assert label in {
+            "step_000_initial",
+            "step_001_initial",
+            "step_001_repair",
+        }
+        decision = {
+            "status": "continue",
+            "action": {"type": "tap", "x": 0.87, "y": 0.835},
+            "expected_outcome": "The contact creation form opens.",
+            "decision_summary": "Tap Create contact to open the form.",
+            "state_delta": [
+                {
+                    "kind": "progress",
+                    "subject": "contact_form",
+                    "predicate": "state",
+                    "object": "opening",
+                    "natural_language": (
+                        "The contact creation form is opening."
+                    ),
+                    "evidence": "direct_screen",
+                    "confidence": 0.9,
+                }
+            ],
+            "memory_citations": [],
+            "completion_evidence": [],
+        }
+        return ModelCall(
+            call_id=label,
+            episode_id=kwargs["episode_id"],
+            idempotency_key=label,
+            image_sha256="0" * 64,
+            image_sha256s=("0" * 64,),
+            prompt_sha256=label,
+            request_sha256=label,
+            response_sha256=label,
+            content=json.dumps(decision),
+            usage={
+                "prompt_tokens": 1,
+                "completion_tokens": 1,
+                "total_tokens": 2,
+            },
+            raven_meta={},
+        )
+
+
 class FabricatedTaskLiteralThenPhoneClient:
     def __init__(self) -> None:
         self.requests: list[dict] = []
@@ -1306,6 +1358,67 @@ class RepeatedActivationInputEnv(DestinationPickerEnv):
         assert action.text == "nature_sounds.mp3"
         self.input_count += 1
         self.value = action.text
+
+
+class VisibleControlActivationRetryEnv(DestinationPickerEnv):
+    def __init__(self) -> None:
+        super().__init__()
+        self.tap_count = 0
+        self.form_open = False
+
+    def get_state(self, wait_to_stabilize: bool):
+        assert wait_to_stabilize
+        if self.form_open:
+            elements = [
+                SimpleNamespace(
+                    package_name="contacts",
+                    hint_text="First name",
+                    class_name="android.widget.EditText",
+                    is_visible=True,
+                    is_enabled=True,
+                    is_clickable=True,
+                    is_editable=True,
+                    bbox=SimpleNamespace(
+                        x_min=0.20,
+                        x_max=0.80,
+                        y_min=0.20,
+                        y_max=0.30,
+                    ),
+                )
+            ]
+        else:
+            elements = [
+                SimpleNamespace(
+                    package_name="contacts",
+                    content_description="Create contact",
+                    class_name="android.widget.Button",
+                    is_visible=True,
+                    is_enabled=True,
+                    is_clickable=True,
+                    is_editable=False,
+                    bbox=SimpleNamespace(
+                        x_min=0.80,
+                        x_max=0.94,
+                        y_min=0.78,
+                        y_max=0.89,
+                    ),
+                )
+            ]
+        return SimpleNamespace(
+            pixels=np.full(
+                (100, 100, 3),
+                int(self.form_open),
+                dtype=np.uint8,
+            ),
+            ui_elements=elements,
+        )
+
+    def execute_action(self, action) -> None:
+        assert action.action_type == "click"
+        self.execute_count += 1
+        self.tap_count += 1
+        if self.tap_count == 2:
+            self.form_open = True
 
 
 class ContactFieldsEnv(DestinationPickerEnv):
@@ -2598,6 +2711,60 @@ def test_controller_allows_one_bounded_repeat_to_activate_input(
     assert audit["input_activation_proof_count"] == 1
     assert audit["input_activation_proof_consumed_count"] == 1
     assert audit["input_activation_repair_pending"] is False
+
+
+def test_controller_allows_one_named_visible_control_activation_retry(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = VisibleControlActivationRetryEnv()
+    client = VisibleControlActivationRetryClient()
+    controller = EpisodeController(
+        client=client,  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=2,
+        max_model_calls=3,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="bounded-visible-control-repeat-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="M0",
+    )
+    assert summary["termination_reason"] == "max_steps"
+    assert summary["model_output_error"] is None
+    assert summary["model_call_count"] == 3
+    assert env.execute_count == 2
+    assert env.tap_count == 2
+    assert env.form_open is True
+    assert summary["steps"][1]["parse"]["model_repair_used"] is True
+    assert "UNVERIFIED_PROGRESS_REPEAT_REQUIRED" in summary["steps"][1][
+        "parse"
+    ]["initial_validation_error"]
+    audit = summary["protocol_v2_guard"]
+    assert (
+        audit["visible_control_activation_repeat_override_count"] == 1
+    )
+    assert audit["unverified_progress_repeat_block_count"] == 1
+    record = audit[
+        "visible_control_activation_repeat_override_records"
+    ][0]
+    assessment = record[
+        "visible_control_activation_retry_assessment"
+    ]
+    assert assessment["matched_labels"] == ["Create contact"]
+    assert assessment["commit_like"] is False
+    repair_prompt = client.requests[2]["user_prompt"]
+    assert "VISIBLE_CONTROL_ACTIVATION_RETRY" in repair_prompt
+    assert "single bounded activation retry" in repair_prompt
+    assert "never authorizes a third identical tap" in repair_prompt
 
 
 def test_controller_repairs_fabricated_task_literal_to_requested_value(

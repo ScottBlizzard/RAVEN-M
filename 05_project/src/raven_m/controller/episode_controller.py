@@ -33,6 +33,7 @@ from raven_m.controller.protocol_v2_guard import (
     soft_keyboard_swipe_assessment,
     swipe_direction_consistency_assessment,
     task_literal_field_role_assessment,
+    visible_control_activation_retry_assessment,
 )
 from raven_m.env.androidworld_adapter import AndroidWorldAdapter
 from raven_m.history.policies import (
@@ -681,6 +682,10 @@ class EpisodeController:
         loop_open_app_rejected = (
             loop_guard_rejected and invalid_action_type == "open_app"
         )
+        unverified_tap_repeat_required = bool(
+            unverified_progress_repeat_required
+            and invalid_action_type == "tap"
+        )
         visual_source_rejected = (
             "VISUAL_SOURCE_ADJUDICATION_REJECTED:" in error
         )
@@ -862,21 +867,36 @@ class EpisodeController:
                 "target merely to pass validation.\n"
             )
         elif loop_guard_rejected:
-            repair_directive = (
-                "\n\nLOOP_GUARD_REPAIR_PRIORITY: Your previous JSON repeated "
-                "a blocked action on this "
-                "screenshot. For this one repair, use a materially different "
-                "visible control that can reach the target at a higher level "
-                "instead of continuing stepwise repetition. For calendar/date "
-                "navigation, prefer the visible month grid, calendar control, "
-                "or date picker and bind the exact computed date. If the "
-                "blocked action is a swipe whose observed values moved away "
-                "from the target, swap its start and end points to reverse "
-                "direction. Do not evade the guard by perturbing the same "
-                "coordinate, and do not repeat the same arrow, swipe, or "
-                "target. This priority contract appears before the original "
-                "prompt and is binding.\n"
-            )
+            if unverified_tap_repeat_required:
+                repair_directive = (
+                    "\n\nVISIBLE_CONTROL_ACTIVATION_RETRY: The immediately "
+                    "preceding tap was delivered but produced no semantic UI "
+                    "change. If and only if its unchanged coordinate still "
+                    "visibly targets the same enabled, clickable, non-editable "
+                    "named control, and that control is not Save, Delete, Send, "
+                    "Confirm, Copy, Move, Buy, Pay, Install, Submit, or another "
+                    "commit-like action, repeat the exact same tap once. Do not "
+                    "perturb its coordinate. Otherwise use a materially "
+                    "different visible control or fail safely. This is a "
+                    "single bounded activation retry; it never authorizes a "
+                    "third identical tap.\n"
+                )
+            else:
+                repair_directive = (
+                    "\n\nLOOP_GUARD_REPAIR_PRIORITY: Your previous JSON "
+                    "repeated a blocked action on this screenshot. For this "
+                    "one repair, use a materially different visible control "
+                    "that can reach the target at a higher level instead of "
+                    "continuing stepwise repetition. For calendar/date "
+                    "navigation, prefer the visible month grid, calendar "
+                    "control, or date picker and bind the exact computed date. "
+                    "If the blocked action is a swipe whose observed values "
+                    "moved away from the target, swap its start and end points "
+                    "to reverse direction. Do not evade the guard by "
+                    "perturbing the same coordinate, and do not repeat the "
+                    "same arrow, swipe, or target. This priority contract "
+                    "appears before the original prompt and is binding.\n"
+                )
             if unverified_progress_repeat_required:
                 repair_directive += (
                     "UNVERIFIED_PROGRESS_LAYOUT_REPAIR: Discard the "
@@ -1357,6 +1377,14 @@ class EpisodeController:
                         screen_height=screen_height,
                     )
                 )
+                visible_control_retry_assessment = (
+                    visible_control_activation_retry_assessment(
+                        ui_elements,
+                        parsed_candidate.decision.get("action"),
+                        screen_width=screen_width,
+                        screen_height=screen_height,
+                    )
+                )
                 self.decision_guard.validate_decision(
                     parsed_candidate.decision,
                     page_sha256=page_semantic_sha256,
@@ -1401,6 +1429,17 @@ class EpisodeController:
                         and repair_contract_error.startswith(
                             "UNFOCUSED_CLEAR_TEXT_GUARD:"
                         )
+                        and isinstance(candidate_action, dict)
+                        and candidate_action.get("type") == "tap"
+                    ),
+                    visible_control_activation_retry_assessment=(
+                        visible_control_retry_assessment
+                    ),
+                    allow_visible_control_activation_repeat=bool(
+                        repair_contract_error
+                        and repair_contract_error.startswith("LOOP_GUARD:")
+                        and "UNVERIFIED_PROGRESS_REPEAT_REQUIRED:"
+                        in repair_contract_error
                         and isinstance(candidate_action, dict)
                         and candidate_action.get("type") == "tap"
                     ),
