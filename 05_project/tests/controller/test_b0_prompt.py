@@ -204,6 +204,29 @@ def test_v2_repair_prompt_spells_out_canonical_state_delta() -> None:
     assert "If the system prompt requires an empty state_delta, use []" in prompt
 
 
+def test_v2_swipe_direction_repair_is_geometry_specific() -> None:
+    prompt = EpisodeController._repair_prompt(
+        "ORIGINAL",
+        (
+            '{"status":"continue","action":{"type":"swipe","x":0.5,'
+            '"y":0.34,"x2":0.5,"y2":0.15,"duration_ms":500},'
+            '"expected_outcome":"More categories appear.",'
+            '"decision_summary":"Swipe left to reveal more categories.",'
+            '"state_delta":[],"memory_citations":[]}'
+        ),
+        (
+            "SWIPE_DIRECTION_GUARD: decision_summary declares 'left', but "
+            "the canonical coordinate geometry is 'up' (vertical_dominant)."
+        ),
+        protocol_v2=True,
+    )
+    assert "sentence and numeric coordinates declared different directions" in prompt
+    assert "left requires x2<x" in prompt
+    assert "right x2>x" in prompt
+    assert "up y2<y" in prompt
+    assert "down y2>y" in prompt
+
+
 def test_v2_repair_prompt_has_complete_status_action_matrix() -> None:
     prompt = EpisodeController._repair_prompt(
         "original",

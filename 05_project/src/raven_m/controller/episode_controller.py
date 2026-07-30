@@ -30,6 +30,7 @@ from raven_m.controller.protocol_v2_guard import (
     post_destination_transfer_command_action,
     semantic_ui_snapshot,
     soft_keyboard_swipe_assessment,
+    swipe_direction_consistency_assessment,
     task_literal_field_role_assessment,
 )
 from raven_m.env.androidworld_adapter import AndroidWorldAdapter
@@ -583,6 +584,7 @@ class EpisodeController:
             "DESTINATION_PICKER_GUARD:",
             "FILES_ROOTS_DRAWER_GUARD:",
             "SOFT_KEYBOARD_SWIPE_GUARD:",
+            "SWIPE_DIRECTION_GUARD:",
             "LOOP_GUARD:",
             "CRITIC_CONSTRAINT:",
             "Same-turn action adjudication rejected",
@@ -625,6 +627,9 @@ class EpisodeController:
             "POST_DESTINATION_COMPLETION_REOBSERVE_REQUIRED:"
         )
         loop_guard_rejected = error.startswith("LOOP_GUARD:")
+        swipe_direction_rejected = error.startswith(
+            "SWIPE_DIRECTION_GUARD:"
+        )
         invalid_action_type: str | None = None
         try:
             invalid_payload = json.loads(invalid_content)
@@ -778,6 +783,17 @@ class EpisodeController:
                 "the resulting screen on a later policy step before typing. "
                 "Do not guess another text coordinate or commit any task "
                 "mutation.\n"
+            )
+        elif swipe_direction_rejected:
+            repair_directive = (
+                "\n\nYour previous swipe sentence and numeric coordinates "
+                "declared different directions. For this one repair, keep "
+                "the task target and use a swipe whose dominant coordinate "
+                "displacement matches the direction explicitly stated in "
+                "decision_summary: left requires x2<x, right x2>x, up y2<y, "
+                "and down y2>y. Do not relabel an unchanged action, use a "
+                "diagonal or negligible gesture, or change the requested "
+                "target merely to pass validation.\n"
             )
         elif loop_guard_rejected:
             repair_directive = (
@@ -972,6 +988,23 @@ class EpisodeController:
         ) -> Any:
             nonlocal adjudication_model_call_count
             parsed_candidate = parse_action_response(content, **parse_kwargs)
+            if self.protocol_v2:
+                swipe_assessment = (
+                    swipe_direction_consistency_assessment(
+                        parsed_candidate.decision
+                    )
+                )
+                if (
+                    swipe_assessment.get("adjudicable") is True
+                    and swipe_assessment.get("matched") is not True
+                ):
+                    raise ActionValidationError(
+                        "SWIPE_DIRECTION_GUARD: decision_summary declares "
+                        f"{swipe_assessment['declared_direction']!r}, but "
+                        "the canonical coordinate geometry is "
+                        f"{swipe_assessment['actual_direction']!r} "
+                        f"({swipe_assessment['reason']})."
+                    )
             if (
                 repair_contract_error
                 and "SOFT_KEYBOARD_DISMISS_REQUIRED:"

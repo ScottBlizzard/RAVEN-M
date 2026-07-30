@@ -55,6 +55,9 @@ Raw trajectories are under `runs/excluded_protocol_dry_run/` and
 | `reports/protocol_v2_2_r39_gate_e_final.md` | human-readable outcome, limitations, and paired analysis | current |
 | `reports/protocol_v2_2_r39_expense_m0_diagnostic.json` | machine-readable causal trace for the retained M0 failure | reviewed |
 | `reports/protocol_v2_2_r39_expense_m0_diagnostic.md` | generic lifecycle/action-consistency repair specification | current |
+| `04_protocols/protocol_v2_2_r40_candidate_addendum.md` | post-r39 candidate contract without rewriting the frozen r39 specification | local candidate |
+| `reports/protocol_v2_2_r40_local_validation.json` | machine-readable repair, test, compatibility, and integrity evidence | passed locally |
+| `reports/protocol_v2_2_r40_local_validation.md` | human-readable r40 candidate validation and evidence boundary | current |
 
 The r39 raw trajectories are under
 `runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/` and remain

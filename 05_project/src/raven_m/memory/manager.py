@@ -258,6 +258,10 @@ class RavenMemoryManager:
             source=current_source,
             evidence={
                 "origin": origin,
+                "delta_kind": kind,
+                "action_signature": self.action_signature(
+                    transition.action
+                ),
                 "action_outcome": (
                     transition.evidence_outcome
                     if evidence_label == "action_outcome"
@@ -471,6 +475,38 @@ class RavenMemoryManager:
             )
             self.store.write(failure)
             written.append(failure.memory_id)
+            causally_superseded = []
+            for item in self.store.active_items():
+                if item.memory_id == failure.memory_id:
+                    continue
+                action_linked_unverified_hypothesis = (
+                    item.created_step == transition.step - 1
+                    and item.page_signature == after_page_signature
+                    and item.memory_type in {"episodic_fact", "page_hint"}
+                    and item.verification_status
+                    in {"candidate", "observed"}
+                    and item.evidence.get("delta_kind")
+                    in {"progress", "page_hypothesis"}
+                    and item.evidence.get("action_signature")
+                    == action_signature
+                    and int(
+                        item.evidence.get("independent_confirmations", 0)
+                    )
+                    == 0
+                )
+                if not action_linked_unverified_hypothesis:
+                    continue
+                self.store.supersede(
+                    item.memory_id,
+                    failure.memory_id,
+                    step=transition.step,
+                    reason=(
+                        "repeated_action_no_effect_invalidates_"
+                        "unverified_action_hypothesis"
+                    ),
+                )
+                causally_superseded.append(item.memory_id)
+            invalidated.extend(causally_superseded)
         self.last_page_signature = after_page_signature
         contradiction_events_after = sum(
             event["event"] == "contradiction" for event in self.store.events

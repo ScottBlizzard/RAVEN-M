@@ -116,6 +116,17 @@ SEMANTIC_FIELDS = (
     "is_scrollable",
     "is_selected",
 )
+SWIPE_FROM_TO_RE = re.compile(
+    r"\bswip(?:e|es|ed|ing)\b[^.!?\n]{0,80}?"
+    r"\bfrom\s+(left|right|up|down)\s+to\s+"
+    r"(left|right|up|down)\b",
+    flags=re.IGNORECASE,
+)
+SWIPE_DIRECTION_RE = re.compile(
+    r"\bswip(?:e|es|ed|ing)\b[^.!?\n]{0,80}?"
+    r"\b(left|right|up|down)\b",
+    flags=re.IGNORECASE,
+)
 
 
 def canonical_action_key(action: dict[str, Any]) -> str:
@@ -125,6 +136,83 @@ def canonical_action_key(action: dict[str, Any]) -> str:
         sort_keys=True,
         separators=(",", ":"),
     )
+
+
+def swipe_direction_consistency_assessment(
+    decision: dict[str, Any],
+) -> dict[str, Any]:
+    """Compare an explicitly stated swipe direction with its coordinates."""
+    action = decision.get("action")
+    summary = decision.get("decision_summary")
+    if (
+        not isinstance(action, dict)
+        or action.get("type") != "swipe"
+        or not isinstance(summary, str)
+    ):
+        return {
+            "schema_version": "swipe_direction_consistency.v1",
+            "adjudicable": False,
+            "declared_direction": None,
+            "actual_direction": None,
+            "matched": None,
+            "reason": "not_an_explicitly_directed_swipe",
+        }
+    from_to = SWIPE_FROM_TO_RE.search(summary)
+    direct = SWIPE_DIRECTION_RE.search(summary)
+    declared = (
+        from_to.group(2).lower()
+        if from_to is not None
+        else direct.group(1).lower()
+        if direct is not None
+        else None
+    )
+    if declared is None:
+        return {
+            "schema_version": "swipe_direction_consistency.v1",
+            "adjudicable": False,
+            "declared_direction": None,
+            "actual_direction": None,
+            "matched": None,
+            "reason": "no_explicit_swipe_direction",
+        }
+    try:
+        dx = float(action["x2"]) - float(action["x"])
+        dy = float(action["y2"]) - float(action["y"])
+    except (KeyError, TypeError, ValueError):
+        return {
+            "schema_version": "swipe_direction_consistency.v1",
+            "adjudicable": True,
+            "declared_direction": declared,
+            "actual_direction": None,
+            "matched": False,
+            "reason": "missing_or_non_numeric_swipe_coordinates",
+        }
+    dominant_ratio = 1.2
+    minimum_displacement = 0.03
+    if max(abs(dx), abs(dy)) < minimum_displacement:
+        actual = None
+        reason = "swipe_displacement_too_small"
+    elif abs(dx) >= dominant_ratio * abs(dy):
+        actual = "right" if dx > 0 else "left"
+        reason = "horizontal_dominant"
+    elif abs(dy) >= dominant_ratio * abs(dx):
+        actual = "down" if dy > 0 else "up"
+        reason = "vertical_dominant"
+    else:
+        actual = "diagonal"
+        reason = "no_dominant_axis"
+    return {
+        "schema_version": "swipe_direction_consistency.v1",
+        "adjudicable": True,
+        "declared_direction": declared,
+        "actual_direction": actual,
+        "matched": actual == declared,
+        "reason": reason,
+        "delta": {
+            "x": round(dx, 6),
+            "y": round(dy, 6),
+        },
+    }
 
 
 def _element_value(element: Any, field: str) -> Any:

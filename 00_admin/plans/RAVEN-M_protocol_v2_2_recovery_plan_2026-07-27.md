@@ -683,3 +683,27 @@ evaluator, schedule, or threshold changes.
   repeat only frozen sequence 4 (Files-M0) in a fresh development directory.
   Formal r39 is authorized only if the replay has valid output, native success,
   a passing semantic audit, no executed blocked action, and no memory error.
+
+## r40 development remediation after the completed r39 Gate E
+
+- Preserve the completed r39 suite as immutable protocol-requalification
+  evidence. Its retained Expense-M0 failure is a valid method/agent failure,
+  not infrastructure, and no revised-source result may replace or pool with
+  that cell.
+- Persist `delta_kind` and canonical `action_signature` on executor state
+  deltas. When the repeated-action/no-effect detector writes a deterministic
+  failure, supersede only the immediately preceding same-page, same-action,
+  zero-confirmation `progress` or `page_hypothesis` record. Preserve both
+  records and the relation in the append-only log, while excluding the
+  superseded hypothesis from active retrieval.
+- For protocol v2 only, validate an explicitly stated left/right/up/down swipe
+  against the dominant canonical endpoint displacement before execution.
+  Reject a mismatch within the existing one-repair budget; never rewrite or
+  inject coordinates. Ambiguous summaries remain unaffected.
+- Require targeted fixtures, the complete local suite, compile validation,
+  diff validation, historical-trajectory compatibility audit, and the
+  protocol-v1 seal before live execution.
+- Commit the candidate and run exactly one fresh, non-scored paired Expense
+  smoke using the frozen task instance and seed. A passing smoke authorizes
+  preparation of a new Gate-D freeze only. Any later formal Gate E requires a
+  new tag, preflight, and suite ID and must restart all eight cells.

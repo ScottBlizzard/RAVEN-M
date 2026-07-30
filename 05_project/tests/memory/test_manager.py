@@ -114,6 +114,157 @@ def test_repeated_no_change_action_creates_failure_alert(tmp_path) -> None:
     assert failures[0].memory_id in context
 
 
+def test_repeated_no_effect_supersedes_action_linked_hypothesis(
+    tmp_path,
+) -> None:
+    manager = RavenMemoryManager()
+    manager.reset(
+        episode_id="episode-a",
+        task_id="GenericTask",
+        task_goal="Open the requested control",
+        episode_dir=tmp_path,
+    )
+    semantic = sha256(b"unchanged-semantic-page").hexdigest()
+    first = TransitionObservation(
+        step=0,
+        decision_summary="Tap the control.",
+        action={"type": "tap", "x": 0.5, "y": 0.34},
+        expected_outcome="The requested control opens.",
+        observed_outcome="No semantic change.",
+        evidence_outcome="The control remains closed.",
+        before_screenshot_path="step_000_before.png",
+        before_screenshot_sha256=sha256(b"pixel-before-0").hexdigest(),
+        after_screenshot_sha256=sha256(b"pixel-after-0").hexdigest(),
+        after_screenshot_path="step_000_after.png",
+        before_semantic_ui_sha256=semantic,
+        after_semantic_ui_sha256=semantic,
+        state_delta=(
+            {
+                "kind": "progress",
+                "subject": "control",
+                "predicate": "state",
+                "object": "opened",
+                "natural_language": "The requested control has opened.",
+                "evidence": "direct_screen",
+                "confidence": 0.95,
+            },
+        ),
+    )
+    first_result = manager.observe_transition(first)
+    hypothesis_id = first_result["written_memory_ids"][0]
+    hypothesis = manager.store.get(hypothesis_id)
+    assert hypothesis.evidence["delta_kind"] == "progress"
+    assert hypothesis.evidence["action_signature"] == (
+        manager.action_signature(first.action)
+    )
+
+    second = TransitionObservation(
+        **{
+            **first.__dict__,
+            "step": 1,
+            "before_screenshot_path": "step_001_before.png",
+            "after_screenshot_path": "step_001_after.png",
+            "before_screenshot_sha256": sha256(
+                b"pixel-before-1"
+            ).hexdigest(),
+            "after_screenshot_sha256": sha256(
+                b"pixel-after-1"
+            ).hexdigest(),
+            "state_delta": (),
+        }
+    )
+    second_result = manager.observe_transition(second)
+    assert second_result["loop_detected"]
+    assert hypothesis_id in second_result["invalidated_memory_ids"]
+    failures = [
+        item
+        for item in manager.store.all_items()
+        if item.memory_type == "failure"
+    ]
+    assert len(failures) == 1
+    failure = failures[0]
+    superseded = manager.store.get(hypothesis_id)
+    assert superseded.verification_status == "superseded"
+    assert superseded.relations["superseded_by"] == failure.memory_id
+    assert failure.relations["supersedes"] == hypothesis_id
+    assert any(
+        event["event"] == "supersede"
+        and event["older_id"] == hypothesis_id
+        and event["newer_id"] == failure.memory_id
+        and event["reason"]
+        == (
+            "repeated_action_no_effect_invalidates_"
+            "unverified_action_hypothesis"
+        )
+        for event in manager.store.events
+    )
+    context, routed = manager.context(step=2)
+    assert hypothesis_id not in context
+    assert all(value.item.memory_id != hypothesis_id for value in routed)
+    assert failure.memory_id in context
+    assert routed[0].route == "ALERT"
+
+
+def test_no_effect_does_not_supersede_independent_visible_fact(
+    tmp_path,
+) -> None:
+    manager = RavenMemoryManager()
+    manager.reset(
+        episode_id="episode-a",
+        task_id="GenericTask",
+        task_goal="Inspect the visible value",
+        episode_dir=tmp_path,
+    )
+    semantic = sha256(b"unchanged-semantic-page").hexdigest()
+    first = TransitionObservation(
+        step=0,
+        decision_summary="Tap the control.",
+        action={"type": "tap", "x": 0.5, "y": 0.34},
+        expected_outcome="The control reacts.",
+        observed_outcome="No semantic change.",
+        evidence_outcome="The value remains visible.",
+        before_screenshot_path="step_000_before.png",
+        before_screenshot_sha256=sha256(b"pixel-before-0").hexdigest(),
+        after_screenshot_sha256=sha256(b"pixel-after-0").hexdigest(),
+        after_screenshot_path="step_000_after.png",
+        before_semantic_ui_sha256=semantic,
+        after_semantic_ui_sha256=semantic,
+        state_delta=(
+            {
+                "kind": "fact",
+                "subject": "visible_value",
+                "predicate": "text",
+                "object": "alpha",
+                "natural_language": "The visible value is alpha.",
+                "evidence": "direct_screen",
+                "confidence": 0.95,
+            },
+        ),
+    )
+    fact_id = manager.observe_transition(first)["written_memory_ids"][0]
+    second = TransitionObservation(
+        **{
+            **first.__dict__,
+            "step": 1,
+            "before_screenshot_path": "step_001_before.png",
+            "after_screenshot_path": "step_001_after.png",
+            "before_screenshot_sha256": sha256(
+                b"pixel-before-1"
+            ).hexdigest(),
+            "after_screenshot_sha256": sha256(
+                b"pixel-after-1"
+            ).hexdigest(),
+            "state_delta": (),
+        }
+    )
+    result = manager.observe_transition(second)
+    assert result["loop_detected"]
+    assert fact_id not in result["invalidated_memory_ids"]
+    fact = manager.store.get(fact_id)
+    assert fact.verification_status == "observed"
+    assert fact.relations["superseded_by"] is None
+
+
 def test_decision_delta_uses_before_frame_and_previous_outcome(tmp_path) -> None:
     before_path = tmp_path / "step_000_before.png"
     after_path = tmp_path / "step_000_after.png"

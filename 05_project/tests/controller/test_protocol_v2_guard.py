@@ -17,6 +17,7 @@ from raven_m.controller.protocol_v2_guard import (
     post_destination_transfer_command_action,
     semantic_ui_snapshot,
     soft_keyboard_swipe_assessment,
+    swipe_direction_consistency_assessment,
     task_literal_field_role_assessment,
 )
 
@@ -45,6 +46,106 @@ def decision(action: dict, *, citations: list[str] | None = None) -> dict:
         "action": action,
         "memory_citations": citations or [],
     }
+
+
+@pytest.mark.parametrize(
+    ("summary", "action", "declared", "actual", "matched"),
+    [
+        (
+            "Swipe left to reveal more categories.",
+            {
+                "type": "swipe",
+                "x": 0.8,
+                "y": 0.35,
+                "x2": 0.2,
+                "y2": 0.35,
+                "duration_ms": 500,
+            },
+            "left",
+            "left",
+            True,
+        ),
+        (
+            "Swiping left may reveal the requested category.",
+            {
+                "type": "swipe",
+                "x": 0.5,
+                "y": 0.34,
+                "x2": 0.5,
+                "y2": 0.15,
+                "duration_ms": 500,
+            },
+            "left",
+            "up",
+            False,
+        ),
+        (
+            "Swipe from right to left across the row.",
+            {
+                "type": "swipe",
+                "x": 0.9,
+                "y": 0.5,
+                "x2": 0.1,
+                "y2": 0.5,
+                "duration_ms": 500,
+            },
+            "left",
+            "left",
+            True,
+        ),
+        (
+            "Swipe up to scroll down the list.",
+            {
+                "type": "swipe",
+                "x": 0.5,
+                "y": 0.8,
+                "x2": 0.5,
+                "y2": 0.2,
+                "duration_ms": 500,
+            },
+            "up",
+            "up",
+            True,
+        ),
+    ],
+)
+def test_swipe_direction_consistency_assessment(
+    summary: str,
+    action: dict,
+    declared: str,
+    actual: str,
+    matched: bool,
+) -> None:
+    assessment = swipe_direction_consistency_assessment(
+        {
+            "status": "continue",
+            "action": action,
+            "decision_summary": summary,
+        }
+    )
+    assert assessment["adjudicable"]
+    assert assessment["declared_direction"] == declared
+    assert assessment["actual_direction"] == actual
+    assert assessment["matched"] is matched
+
+
+def test_swipe_without_explicit_direction_is_not_adjudicable() -> None:
+    assessment = swipe_direction_consistency_assessment(
+        {
+            "status": "continue",
+            "action": {
+                "type": "swipe",
+                "x": 0.8,
+                "y": 0.35,
+                "x2": 0.2,
+                "y2": 0.35,
+                "duration_ms": 500,
+            },
+            "decision_summary": "Scroll the category row.",
+        }
+    )
+    assert not assessment["adjudicable"]
+    assert assessment["matched"] is None
 
 
 def test_guard_blocks_third_identical_no_effect_action() -> None:

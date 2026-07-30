@@ -1,0 +1,66 @@
+{
+  "schema_version": "protocol_v2_2_r40_local_validation.v1",
+  "recorded_at": "2026-07-30T15:00:37+08:00",
+  "status": "local_validation_passed_live_smoke_pending",
+  "branch": "protocol-v2-exploratory",
+  "parent_commit": "d28ac9a1ec6088a0a16f85d0c92c8c7b6d8b3623",
+  "source_scope": [
+    "05_project/src/raven_m/controller/protocol_v2_guard.py",
+    "05_project/src/raven_m/controller/episode_controller.py",
+    "05_project/src/raven_m/memory/manager.py"
+  ],
+  "repairs": {
+    "outcome_driven_hypothesis_supersession": {
+      "implemented": true,
+      "causal_scope": "immediately_previous_same_page_same_action_zero_confirmation_progress_or_page_hypothesis",
+      "append_only_evidence_preserved": true,
+      "independent_fact_negative_control_passed": true
+    },
+    "swipe_language_geometry_consistency": {
+      "implemented": true,
+      "protocol_v2_only": true,
+      "pre_execution_rejection": true,
+      "single_repair_budget_preserved": true,
+      "coordinate_rewrite": false
+    }
+  },
+  "validation": {
+    "pytest_collected": 338,
+    "pytest_passed": 338,
+    "pytest_exit_code": 0,
+    "compileall_exit_code": 0,
+    "git_diff_check_exit_code": 0,
+    "protocol_v1_seal": {
+      "file_count": 197,
+      "failure_count": 0,
+      "passed": true
+    },
+    "historical_swipe_audit": {
+      "trajectory_swipes_scanned": 1042,
+      "explicit_direction_adjudicable": 204,
+      "mismatches": 2,
+      "all_mismatches_are_r39_expense_m0_left_declared_up_executed": true
+    }
+  },
+  "current_file_sha256": {
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "19a57a0c97ed47019efbdc7cdd2c570663350259ead32561885e0e34e3fbe9a3",
+    "05_project/src/raven_m/controller/episode_controller.py": "977776dd203f62b06271323a74ac6dd483777ad3eda4da974f5eb72817ae4271",
+    "05_project/src/raven_m/memory/manager.py": "dbb7f5c8c0322c42035000e43896071f2a0e11195f66b3e040067b3e29c7f0b4",
+    "05_project/tests/controller/test_protocol_v2_guard.py": "02e5c9baadb15b7c2abbed66f4f3af5cda3114e0dd395466dab2ca6acaefd982",
+    "05_project/tests/controller/test_b0_prompt.py": "69e06e29808f815e1765ddedf7d897d22efe9ff0de4ec807b1ab7c845785232e",
+    "05_project/tests/controller/test_swipe_direction_controller.py": "cb6bf5b702cf487f5eb54c3d8dcc99c95cc67ea656298dee588d5862a8cb935f",
+    "05_project/tests/memory/test_manager.py": "3303aa956e8333e611023a6b82fcc3ed6b18a82d62966f40723f648d019e2c5e"
+  },
+  "r39_integrity_recheck": {
+    "suite_summary_sha256": "fcb3e9880448f0423ce8459a5d8e91e78b453c802e682d82ea1af317f5ff68b9",
+    "manifest_snapshot_sha256": "0ae96dd85e0eb9aa059ccb4627f1ee42ec843b99d91bf04dcb47b6ce9a7e86e0",
+    "instances_snapshot_sha256": "13d6ab543008b94d38e789105210d7fc56eb2eec7f66ed498f7113c910ae79b5",
+    "unchanged": true
+  },
+  "evidence_boundary": {
+    "server_or_gpu_run_performed": false,
+    "formal_gate_authorized": false,
+    "r39_results_reused": false,
+    "next_step": "fresh_non_scored_paired_expense_smoke"
+  }
+}
