@@ -707,3 +707,28 @@ evaluator, schedule, or threshold changes.
   smoke using the frozen task instance and seed. A passing smoke authorizes
   preparation of a new Gate-D freeze only. Any later formal Gate E requires a
   new tag, preflight, and suite ID and must restart all eight cells.
+
+## r41 bounded remediation after the r40 paired-smoke rejection
+
+- Preserve both r40 development directories. B3 succeeded; M0 failed at the
+  frozen action budget with Donation and Save visible. Do not relabel the M0
+  cell as infrastructure or overwrite it with a retry.
+- Extend causal supersession to zero-confirmation, action-linked
+  `progress`/`page_hypothesis` records created either in the current failure
+  transition or by the immediately preceding identical action. Preserve the
+  deterministic failure and every supersession edge.
+- Do not globally lower the semantic no-effect threshold. Historical replay
+  found 78 immediate repeats after a no-effect observation, including 46
+  whose second action later changed semantics.
+- Add a narrow pre-execution block for an exact repeat only when the preceding
+  unchanged action asserted unverified progress/page identity. Retain the
+  existing thresholds for all other delayed actions.
+- Add a current-screen guard for a tap that hits the same visible, focused,
+  empty editable control. Its bounded repair should type the remaining
+  task-bound value or choose a different action; it receives no injected
+  coordinate or text.
+- Run targeted tests, all local tests, historical compatibility checks, and
+  the protocol-v1 seal. Freeze a new r41 candidate and rerun only the retained
+  M0 Expense smoke. B3 is not rerun because its paired r40 cell passed and the
+  r41 rules are M0/current-screen validation paths, but no result is pooled
+  into a formal suite.

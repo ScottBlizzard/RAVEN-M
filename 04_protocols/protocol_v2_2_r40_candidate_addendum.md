@@ -1,6 +1,6 @@
 # Protocol-v2.2 r40 development-candidate addendum
 
-Status: local validation passed; live development smoke not yet run
+Status: rejected by paired live development smoke
 
 This addendum applies only to source revisions after the immutable r39 Gate-E
 run. It does not revise, reinterpret, or pool evidence with r39.
@@ -45,3 +45,12 @@ v1 does not apply this guard.
   suite ID. No r39 cell may be reused.
 - A development smoke can reject the candidate; it cannot establish a method
   claim or authorize pooling with r39.
+
+## Live disposition
+
+The paired Expense smoke rejected this candidate. B3 passed, while M0 reached
+the budget with Donation and Save visible but not executed. The loop failure
+superseded the immediately prior unverified progress record but missed a
+second unverified record written earlier in the same failure transition.
+See `reports/protocol_v2_2_r40_paired_expense_smoke.md`. No Gate-D or formal
+run is authorized from r40.

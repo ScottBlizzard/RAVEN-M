@@ -60,6 +60,8 @@ Raw trajectories are under `runs/excluded_protocol_dry_run/` and
 | `reports/protocol_v2_2_r40_local_validation.md` | human-readable r40 candidate validation and evidence boundary | current |
 | `reports/protocol_v2_2_r40_candidate_preflight.json` | candidate source, instance, model, and emulator freeze check | passed |
 | `05_project/scripts/run_protocol_v2_2_r40_candidate_smoke.py` | isolated r40 non-scored smoke entry point | ready |
+| `reports/protocol_v2_2_r40_paired_expense_smoke.json` | machine-readable paired smoke and causal boundary | candidate rejected |
+| `reports/protocol_v2_2_r40_paired_expense_smoke.md` | B3 pass, M0 budget failure, and r41 repair scope | current |
 
 The r39 raw trajectories are under
 `runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/` and remain
