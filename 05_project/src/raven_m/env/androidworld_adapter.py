@@ -7,6 +7,10 @@ import time
 from typing import Any
 
 
+_ATOMIC_CLEAR_AND_TYPE_TIMEOUT_SECONDS = 10.0
+_ATOMIC_CLEAR_AND_TYPE_MAX_TIMEOUT_SECONDS = 120.0
+
+
 @dataclass(frozen=True)
 class MappedAction:
     canonical: dict[str, Any]
@@ -25,6 +29,53 @@ class MappedAction:
 
 class AndroidWorldAdapter:
     """Maps normalized screenshot coordinates and rejects unsafe values."""
+
+    @staticmethod
+    def _atomic_clear_and_type_command(text: str, adb_utils: Any) -> list[str]:
+        """Build one retry-idempotent shell request for clear-and-type.
+
+        AndroidEnv retries a timed-out ADB command below this adapter. Keeping
+        select-all, delete, and every input token in the same shell request
+        ensures that each such retry clears any prefix left by its predecessor.
+        Tokenization preserves AndroidWorld's word-wise input behavior.
+        """
+        command = [
+            "shell",
+            "input",
+            "keycombination",
+            "113",
+            "29",
+            "&&",
+            "input",
+            "keyevent",
+            "67",
+            "&&",
+            "sleep",
+            "1",
+        ]
+        for token in adb_utils._split_words_and_newlines(text):
+            command.append("&&")
+            if token == "\n":
+                command.extend(["input", "keyevent", "66"])
+            else:
+                command.extend(
+                    ["input", "text", adb_utils._adb_text_format(token)]
+                )
+        return command
+
+    @staticmethod
+    def _atomic_clear_and_type_timeout(text: str, adb_utils: Any) -> float:
+        """Scale one compound request without allowing an unbounded stall."""
+        input_operation_count = sum(
+            1 for _ in adb_utils._split_words_and_newlines(text)
+        )
+        return min(
+            _ATOMIC_CLEAR_AND_TYPE_MAX_TIMEOUT_SECONDS,
+            max(
+                _ATOMIC_CLEAR_AND_TYPE_TIMEOUT_SECONDS,
+                float(input_operation_count + 2),
+            ),
+        )
 
     @staticmethod
     def _pixel(value: Any, extent: int, field: str) -> int:
@@ -99,6 +150,7 @@ class AndroidWorldAdapter:
 
     def execute(self, env: Any, mapped: MappedAction) -> None:
         """Execute one already-validated action against an AsyncEnv."""
+        from android_env.proto import adb_pb2
         from android_world.env import adb_utils, json_action
 
         action_type = mapped.canonical["type"]
@@ -109,6 +161,42 @@ class AndroidWorldAdapter:
             # even though the terminal answer is already available. Preserve
             # the benchmark semantics without coupling evaluation to the UI.
             env.interaction_cache = mapped.canonical["text"]
+            return
+        if (
+            action_type == "type_text"
+            and mapped.canonical.get("clear_text", False)
+            and mapped.canonical.get("text")
+        ):
+            pixels = mapped.actual_pixels
+            if "x" in pixels:
+                env.execute_action(
+                    json_action.JSONAction(
+                        action_type="click",
+                        x=pixels["x"],
+                        y=pixels["y"],
+                    )
+                )
+                time.sleep(1.0)
+
+            command = self._atomic_clear_and_type_command(
+                mapped.canonical["text"],
+                adb_utils,
+            )
+            response = adb_utils.issue_generic_request(
+                command,
+                env.controller,
+                timeout_sec=self._atomic_clear_and_type_timeout(
+                    mapped.canonical["text"],
+                    adb_utils,
+                ),
+            )
+            if response.status != adb_pb2.AdbResponse.Status.OK:
+                raise RuntimeError(
+                    "Atomic clear-and-type ADB request failed: "
+                    f"status={response.status}, "
+                    f"error={response.error_message!r}"
+                )
+            adb_utils.press_enter_button(env.controller)
             return
         if mapped.upstream_action is not None:
             env.execute_action(json_action.JSONAction(**mapped.upstream_action))

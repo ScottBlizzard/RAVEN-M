@@ -5,6 +5,7 @@ from pathlib import Path
 from types import SimpleNamespace
 
 import numpy as np
+from android_env.proto import adb_pb2
 
 from raven_m.controller.episode_controller import EpisodeController
 from raven_m.controller.protocol_v2_guard import (
@@ -1185,6 +1186,51 @@ class UnfocusedEditableSearchEnv(UnboundTextTargetEnv):
 
 
 class ContactFieldsEnv(DestinationPickerEnv):
+    def __init__(self) -> None:
+        super().__init__()
+        self.focus_click_count = 0
+        self.atomic_clear_and_type_commands: list[list[str]] = []
+        parent = self
+
+        class Controller:
+            def execute_adb_call(self, request):
+                command_type = request.WhichOneof("command")
+                if command_type == "generic":
+                    command = list(request.generic.args)
+                    assert command[:13] == [
+                        "shell",
+                        "input",
+                        "keycombination",
+                        "113",
+                        "29",
+                        "&&",
+                        "input",
+                        "keyevent",
+                        "67",
+                        "&&",
+                        "sleep",
+                        "1",
+                        "&&",
+                    ]
+                    assert command[13:] == [
+                        "input",
+                        "text",
+                        "+17634322348",
+                    ]
+                    parent.atomic_clear_and_type_commands.append(command)
+                    parent.execute_count += 1
+                else:
+                    assert command_type == "press_button"
+                    assert (
+                        request.press_button.button
+                        == adb_pb2.AdbRequest.PressButton.ENTER
+                    )
+                return adb_pb2.AdbResponse(
+                    status=adb_pb2.AdbResponse.Status.OK
+                )
+
+        self.controller = Controller()
+
     def get_state(self, wait_to_stabilize: bool):
         assert wait_to_stabilize
         return SimpleNamespace(
@@ -1232,10 +1278,10 @@ class ContactFieldsEnv(DestinationPickerEnv):
         )
 
     def execute_action(self, action) -> None:
-        assert action.action_type == "input_text"
-        assert action.text == "+17634322348"
-        assert action.clear_text is True
-        self.execute_count += 1
+        assert action.action_type == "click"
+        assert action.x == 45
+        assert action.y == 59
+        self.focus_click_count += 1
 
 
 class ContactFieldsNoKeyboardEnv(ContactFieldsEnv):
@@ -2405,6 +2451,8 @@ def test_controller_repairs_fabricated_task_literal_to_requested_value(
         variant="M0",
     )
     assert env.execute_count == 1
+    assert env.focus_click_count == 1
+    assert len(env.atomic_clear_and_type_commands) == 1
     assert summary["model_call_count"] == 2
     action = summary["steps"][0]["decision"]["action"]
     assert action["text"] == "+17634322348"
@@ -2488,6 +2536,8 @@ def test_controller_repairs_phone_from_company_to_phone_field(
         variant="M0",
     )
     assert env.execute_count == 1
+    assert env.focus_click_count == 1
+    assert len(env.atomic_clear_and_type_commands) == 1
     assert summary["model_call_count"] == 2
     action = summary["steps"][0]["decision"]["action"]
     assert action["text"] == "+17634322348"
