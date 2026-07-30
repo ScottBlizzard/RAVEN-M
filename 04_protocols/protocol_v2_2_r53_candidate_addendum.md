@@ -1,6 +1,6 @@
 # Protocol-v2.2 r53 development-candidate addendum
 
-Status: local candidate; live Files smoke not yet run
+Status: live Files smoke passed; eligible for Gate-D preparation
 
 This addendum follows the invalid r52 development smoke. It preserves r52's
 post-activation clear-text guard, r51's exact destination-label binding,
@@ -58,6 +58,18 @@ The exact candidate passed 393/393 project tests, 143/143 focused guard,
 controller, and full-memory-policy tests, compilation, diff validation, and
 the unchanged 197/197 Protocol-v1 breadth seal.
 
-Only one fresh isolated non-scored M0 `FilesMoveFile` smoke is authorized
-after a zero-model-call preflight. Gate D remains withheld, and formal Gate E
-or Gate F must not start automatically.
+## Live disposition
+
+The single authorized r53 M0 `FilesMoveFile` smoke returned native reward 1.0
+and `success=true`. The valid attempt persisted fresh, foreground-matching
+accessibility before all 20 decisions. The new before-decision rejection
+fired twice in a separately quarantined attempt before that attempt later
+encountered an unrelated ADB text-input timeout. The fresh retry then passed
+end to end.
+
+The preserved r50 source-exit, r51 exact `Ringtones` content-label
+navigation, and r52 post-activation clear-text branches all fired live in the
+valid attempt. Exactly one MOVE commit executed and no second mutation
+followed it. This evidence permits preparation of a new Gate-D freeze for the
+exact r53 source; it does not itself authorize or launch formal Gate E or
+Gate F.
