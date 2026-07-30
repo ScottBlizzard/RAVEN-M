@@ -93,6 +93,8 @@ Raw trajectories are under `runs/excluded_protocol_dry_run/` and
 | `04_protocols/protocol_v2_2_r45_candidate_addendum.md` | task-agnostic horizontal clipped-row navigation contract | local candidate |
 | `reports/protocol_v2_2_r45_local_validation.json` | machine-readable 357-test, prompt-parity, v1-seal, and historical audit | passed locally |
 | `reports/protocol_v2_2_r45_local_validation.md` | r45 rationale, compatibility boundary, and authorized next action | current |
+| `05_project/scripts/run_protocol_v2_2_r45_candidate_smoke.py` | isolated r45 M0 smoke entry point | ready |
+| `reports/protocol_v2_2_r45_candidate_preflight.json` | source, 27-file freeze, four instances, model, and emulator check | passed |
 
 The r39 raw trajectories are under
 `runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/` and remain
