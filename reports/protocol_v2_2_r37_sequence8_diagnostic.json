@@ -1,0 +1,35 @@
+{
+  "schema_version": "protocol_v2_2_development_diagnostic.v1",
+  "protocol": "androidworld_protocol_v2_2_exploratory",
+  "revision": "r37",
+  "suite_id": "nonhard_capability_v2_2_seed20260729_r37_development_smoke_sequence_8",
+  "formal_authorized": false,
+  "result": {
+    "sequence": 8,
+    "task": "FilesMoveFile",
+    "variant": "B3",
+    "native_reward": 0.0,
+    "failure_code": "MODEL_OUTPUT_INVALID_AFTER_REPAIR",
+    "model_call_count": 5,
+    "executed_step_count": 3,
+    "unresolved_guard_repair": true
+  },
+  "confirmed_improvement": [
+    "The policy opened the Files roots drawer from Downloads instead of returning to the launcher.",
+    "The policy tapped the visible sdk_gphone64_x86_64 storage row; the following screenshot showed that storage root."
+  ],
+  "root_cause": {
+    "class": "same_package_stale_accessibility_tree",
+    "evidence": [
+      "step_002_after.png visibly shows the sdk_gphone64_x86_64 storage root with the Audio category chip.",
+      "The step-2 semantic snapshot retained the preceding roots-drawer hash and reported semantic_changed=false.",
+      "At step 3, the Files roots-drawer guard therefore adjudicated the stale drawer tree against the new storage-root screenshot and rejected the visually valid Audio tap."
+    ],
+    "interpretation": "The r37 stop is a cross-modal observation freshness defect, not recurrence of the launcher cycle and not evidence that the storage-row tap failed."
+  },
+  "r38_policy": [
+    "When an executed action produces a material pixel transition but the same-package accessibility semantic hash remains identical, do not accept the first tree as ready.",
+    "Retry readiness without spending a policy step until the accessibility tree catches up or the bounded readiness budget is exhausted.",
+    "Keep the task instance, schedule, model, evaluator, action, repair, step, and model-call controls unchanged."
+  ]
+}

@@ -227,6 +227,7 @@ class EpisodeController:
         readiness_max_observations: int = 12,
         readiness_retry_delay_seconds: float = 0.75,
         readiness_reconnect_after_observations: int = 3,
+        readiness_material_pixel_change_ratio: float = 0.01,
     ) -> None:
         self.client = client
         self.system_prompt = system_prompt
@@ -254,12 +255,17 @@ class EpisodeController:
         self.readiness_reconnect_after_observations = max(
             1, readiness_reconnect_after_observations
         )
+        self.readiness_material_pixel_change_ratio = max(
+            0.0, min(1.0, readiness_material_pixel_change_ratio)
+        )
 
     def _observe_state(
         self,
         env: Any,
         *,
         require_accessibility: bool,
+        prior_pixels: Any | None = None,
+        prior_semantic_sha256: str | None = None,
     ) -> tuple[Any, list[dict[str, Any]]]:
         """Observe without spending a policy step until an opened app is ready."""
         maximum = (
@@ -286,6 +292,28 @@ class EpisodeController:
                     "infrastructure_failure_texts": [],
                 }
             )
+            pixel_change_ratio: float | None = None
+            material_pixel_change = False
+            if (
+                prior_pixels is not None
+                and getattr(prior_pixels, "shape", None)
+                == getattr(state.pixels, "shape", None)
+            ):
+                differing = state.pixels != prior_pixels
+                if getattr(differing, "ndim", 0) >= 3:
+                    differing = differing.any(axis=-1)
+                pixel_change_ratio = float(differing.mean())
+                material_pixel_change = (
+                    pixel_change_ratio
+                    >= self.readiness_material_pixel_change_ratio
+                )
+            semantic_matches_prior = bool(
+                prior_semantic_sha256
+                and semantic.get("sha256") == prior_semantic_sha256
+            )
+            cross_modal_fresh = not (
+                material_pixel_change and semantic_matches_prior
+            )
             observation = {
                 "attempt": attempt,
                 "source": semantic["source"],
@@ -299,6 +327,10 @@ class EpisodeController:
                         semantic,
                     )
                 ),
+                "pixel_change_ratio_from_prior": pixel_change_ratio,
+                "material_pixel_change_from_prior": material_pixel_change,
+                "semantic_matches_prior": semantic_matches_prior,
+                "cross_modal_fresh": cross_modal_fresh,
                 "infrastructure_failure_texts": list(
                     semantic.get("infrastructure_failure_texts", [])
                 ),
@@ -315,6 +347,7 @@ class EpisodeController:
                     state,
                     semantic,
                 )
+                and cross_modal_fresh
             ):
                 break
             if (
@@ -1706,6 +1739,8 @@ class EpisodeController:
                     # Do not pair a new screenshot with the previous
                     # activity's stale accessibility tree.
                     require_accessibility=self.protocol_v2_2,
+                    prior_pixels=state_before.pixels,
+                    prior_semantic_sha256=before_semantic.get("sha256"),
                 )
                 readiness_observation_count += len(after_readiness)
                 readiness_retry_count += max(0, len(after_readiness) - 1)

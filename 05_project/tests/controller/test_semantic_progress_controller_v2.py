@@ -7,7 +7,10 @@ from types import SimpleNamespace
 import numpy as np
 
 from raven_m.controller.episode_controller import EpisodeController
-from raven_m.controller.protocol_v2_guard import ProtocolV2DecisionGuard
+from raven_m.controller.protocol_v2_guard import (
+    ProtocolV2DecisionGuard,
+    semantic_ui_snapshot,
+)
 from raven_m.history.policies import (
     CompletionAdjudication,
     HistoryPolicy,
@@ -1393,6 +1396,41 @@ class RecoverableAccessibilityEnv:
         )
 
 
+class SamePackageStaleTransitionEnv:
+    foreground_activity_name = (
+        "com.google.android.documentsui/com.android.documentsui.files.FilesActivity"
+    )
+
+    def __init__(self) -> None:
+        self.calls = 0
+        self.stale_elements = [
+            SimpleNamespace(
+                package_name="com.google.android.documentsui",
+                text="Downloads",
+                resource_id="root",
+            )
+        ]
+
+    def get_state(self, wait_to_stabilize: bool):
+        assert wait_to_stabilize
+        self.calls += 1
+        elements = (
+            self.stale_elements
+            if self.calls == 1
+            else [
+                SimpleNamespace(
+                    package_name="com.google.android.documentsui",
+                    text="Files on sdk_gphone64_x86_64",
+                    resource_id="container_title",
+                )
+            ]
+        )
+        return SimpleNamespace(
+            pixels=np.full((16, 12, 3), 255, dtype=np.uint8),
+            ui_elements=elements,
+        )
+
+
 def test_v2_2_readiness_retries_do_not_consume_policy_steps() -> None:
     env = DelayedAccessibilityEnv()
     controller = EpisodeController(
@@ -1431,6 +1469,35 @@ def test_v2_2_readiness_rejects_stale_previous_app_tree() -> None:
     assert observations[0]["accessibility_packages"] == ["calendar"]
     assert observations[1]["matches_foreground"]
     assert observations[1]["accessibility_packages"] == ["expense"]
+
+
+def test_v2_2_readiness_rejects_stale_same_package_tree_after_visual_transition(
+) -> None:
+    env = SamePackageStaleTransitionEnv()
+    controller = EpisodeController(
+        client=RepeatingSaveClient(),  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        protocol_v2=True,
+        protocol_v2_2=True,
+        readiness_max_observations=3,
+        readiness_retry_delay_seconds=0,
+    )
+    prior_semantic = semantic_ui_snapshot(
+        env.stale_elements,
+        fallback_sha256="0" * 64,
+    )
+    _, observations = controller._observe_state(
+        env,
+        require_accessibility=True,
+        prior_pixels=np.zeros((16, 12, 3), dtype=np.uint8),
+        prior_semantic_sha256=prior_semantic["sha256"],
+    )
+    assert env.calls == 2
+    assert observations[0]["matches_foreground"]
+    assert observations[0]["material_pixel_change_from_prior"]
+    assert observations[0]["semantic_matches_prior"]
+    assert not observations[0]["cross_modal_fresh"]
+    assert observations[1]["cross_modal_fresh"]
 
 
 def test_v2_2_readiness_refreshes_accessibility_once_then_recovers() -> None:

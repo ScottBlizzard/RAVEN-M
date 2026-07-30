@@ -20,6 +20,13 @@ memory authority, and Critic enforcement.
 - The same foreground/tree consistency check runs after every action, because
   chooser and resolver overlays can temporarily change the foreground
   activity even when the main app remains open.
+- Same-package agreement is not sufficient when an action materially changes
+  the screenshot but the accessibility semantic hash remains exactly equal to
+  the preceding state. Such a cross-modal mismatch is treated as a stale tree
+  and retried inside the existing twelve-observation readiness bound without
+  consuming a policy step or model call. The threshold is a one-percent ratio
+  of pixels with at least one changed channel; no image content or coordinate
+  is inserted into the model prompt.
 - Coordinate normalization examples distinguish layout regions: on the
   standard 2400-pixel portrait screen, `y=192` maps to `0.08` and is a typical
   top-app-bar icon center, while `y=438` maps to about `0.1826` and is content.

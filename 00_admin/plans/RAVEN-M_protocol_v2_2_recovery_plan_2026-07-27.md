@@ -636,3 +636,26 @@ evaluator, schedule, or threshold changes.
   analyses. Do not retroactively alter the evaluator after observing that B3
   Contacts can receive reward 1 with the phone typed in Company or that B3
   Expense can receive reward 1 while the unsaved form remains open.
+
+## r38 cross-modal readiness after the r37 Files diagnostic
+
+- Preserve r37 as a failed development diagnostic and do not authorize its
+  formal suite. It eliminated the launcher cycle and visibly entered
+  `sdk_gphone64_x86_64`, but the following decision was checked against the
+  preceding roots-drawer accessibility tree.
+- Treat the failure as a same-package observation-freshness defect. Package
+  agreement alone is insufficient when the screenshot materially changes but
+  the accessibility semantic hash remains identical.
+- During protocol-v2.2 post-action readiness only, compare the candidate
+  observation with the immediately preceding pixels and semantic hash. A
+  material pixel transition paired with an unchanged semantic hash must be
+  retried without spending a policy step.
+- Do not infer a task action, rewrite model output, expose coordinates, inspect
+  evaluator state, or change the one-repair rule. Preserve the frozen task,
+  seed, schedule, budgets, model, evaluator, prompts, schemas, acceptance
+  thresholds, and loop/consequential-action guards.
+- Run targeted and complete tests plus the protocol-v1 seal, freeze r38, and
+  repeat only frozen sequence 8 in a fresh non-scored development directory.
+  A formal r38 suite is authorized only if this replay has valid output, no
+  unresolved guard repair, no executed blocked action, and a passing semantic
+  audit.
