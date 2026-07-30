@@ -1,0 +1,50 @@
+{
+  "schema_version": "protocol_v2_2_formal_authorization.v1",
+  "protocol": "androidworld_protocol_v2_2_exploratory",
+  "revision": "r38",
+  "source_tag": "protocol-v2-2-gate-e-r38-dev",
+  "source_commit": "f1aac1ddb16f5cc56e13d38d1ec9297af8eec172",
+  "development_suite": "nonhard_capability_v2_2_seed20260729_r38_development_smoke_sequence_8",
+  "formal_suite": "nonhard_capability_v2_2_seed20260729_r38",
+  "authorized": true,
+  "development_result": {
+    "sequence": 8,
+    "task": "FilesMoveFile",
+    "variant": "B3",
+    "native_reward": 1.0,
+    "success": true,
+    "termination_reason": "model_done",
+    "executed_step_count": 13,
+    "model_call_count": 19,
+    "valid_after_one_repair": true,
+    "unresolved_guard_repair": false,
+    "executed_blocked_action_steps": [],
+    "semantic_progress_audit_passed": true,
+    "evaluator_leakage_errors": 0,
+    "memory_audit_errors": []
+  },
+  "r38_runtime_evidence": {
+    "readiness_observation_count": 32,
+    "readiness_retry_count": 5,
+    "same_package_stale_tree_retry_observed": true,
+    "storage_transition_first_observation_cross_modal_fresh": false,
+    "storage_transition_final_observation_cross_modal_fresh": true
+  },
+  "authorization_basis": [
+    "The previously failing frozen sequence completed with native reward 1.0.",
+    "The r38 cross-modal readiness retry triggered on the real same-package stale Files tree and recovered without spending a policy step.",
+    "All proposed blocked actions remained unexecuted and every bounded repair resolved.",
+    "The semantic audit, task-action compatibility, loop guard, model identity, evaluator leakage, and memory isolation checks passed."
+  ],
+  "controls_unchanged": [
+    "task instance and seed",
+    "blocked schedule and B3/M0 pairing",
+    "step and model-call budgets",
+    "model revision and backend",
+    "evaluator",
+    "prompts and schemas",
+    "acceptance thresholds",
+    "single bounded-repair allowance"
+  ],
+  "automatic_gate_f_transition": false
+}
