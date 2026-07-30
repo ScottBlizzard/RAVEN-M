@@ -588,6 +588,80 @@ class UnboundTextThenActivateInputClient:
         )
 
 
+class RepeatedActivationRecoveryClient:
+    def __init__(self) -> None:
+        self.requests: list[dict] = []
+
+    def generate(self, **kwargs) -> ModelCall:
+        self.requests.append(kwargs)
+        label = kwargs["call_label"]
+        state_delta = []
+        if label == "step_000_initial":
+            action = {"type": "tap", "x": 0.5, "y": 0.5}
+            summary = "Tap Search to activate the empty input."
+            state_delta = [
+                {
+                    "kind": "progress",
+                    "subject": "search",
+                    "predicate": "activation",
+                    "object": "requested",
+                    "natural_language": "The Search input is activated.",
+                    "evidence": "direct_screen",
+                    "confidence": 0.9,
+                }
+            ]
+        elif label == "step_001_initial":
+            action = {
+                "type": "type_text",
+                "text": "nature_sounds.mp3",
+                "text_origin": "task_literal",
+                "source_memory_ids": [],
+                "x": 0.5,
+                "y": 0.5,
+                "clear_text": True,
+            }
+            summary = "Enter the exact filename into Search."
+        elif label == "step_001_repair":
+            action = {"type": "tap", "x": 0.5, "y": 0.5}
+            summary = "Repeat the bounded activation tap before typing."
+        else:
+            assert label == "step_002_initial"
+            action = {
+                "type": "type_text",
+                "text": "nature_sounds.mp3",
+                "text_origin": "task_literal",
+                "source_memory_ids": [],
+                "clear_text": False,
+            }
+            summary = "Enter the exact filename into the activated Search."
+        decision = {
+            "status": "continue",
+            "action": action,
+            "expected_outcome": "The exact filename appears in Search.",
+            "decision_summary": summary,
+            "state_delta": state_delta,
+            "memory_citations": [],
+            "completion_evidence": [],
+        }
+        return ModelCall(
+            call_id=label,
+            episode_id=kwargs["episode_id"],
+            idempotency_key=label,
+            image_sha256="0" * 64,
+            image_sha256s=("0" * 64,),
+            prompt_sha256=label,
+            request_sha256=label,
+            response_sha256=label,
+            content=json.dumps(decision),
+            usage={
+                "prompt_tokens": 1,
+                "completion_tokens": 1,
+                "total_tokens": 2,
+            },
+            raven_meta={},
+        )
+
+
 class FabricatedTaskLiteralThenPhoneClient:
     def __init__(self) -> None:
         self.requests: list[dict] = []
@@ -1181,6 +1255,57 @@ class UnfocusedEditableSearchEnv(UnboundTextTargetEnv):
                 ),
             ],
         )
+
+
+class RepeatedActivationInputEnv(DestinationPickerEnv):
+    def __init__(self) -> None:
+        super().__init__()
+        self.tap_count = 0
+        self.input_count = 0
+        self.value = ""
+
+    def get_state(self, wait_to_stabilize: bool):
+        assert wait_to_stabilize
+        return SimpleNamespace(
+            pixels=np.full(
+                (100, 100, 3),
+                int(bool(self.value)),
+                dtype=np.uint8,
+            ),
+            ui_elements=[
+                SimpleNamespace(
+                    package_name="files",
+                    text=self.value,
+                    hint_text="Search",
+                    class_name="android.widget.EditText",
+                    is_visible=True,
+                    is_enabled=True,
+                    is_editable=True,
+                    is_focused=False,
+                    bbox=SimpleNamespace(
+                        x_min=0.20,
+                        x_max=0.80,
+                        y_min=0.20,
+                        y_max=0.80,
+                    ),
+                ),
+            ],
+        )
+
+    def execute_action(self, action) -> None:
+        self.execute_count += 1
+        if action.action_type == "click":
+            assert action.x == 50
+            assert action.y == 50
+            self.tap_count += 1
+            return
+        assert action.action_type == "input_text"
+        assert action.x is None
+        assert action.y is None
+        assert action.clear_text is False
+        assert action.text == "nature_sounds.mp3"
+        self.input_count += 1
+        self.value = action.text
 
 
 class ContactFieldsEnv(DestinationPickerEnv):
@@ -2421,6 +2546,58 @@ def test_controller_repairs_unfocused_clear_text_to_input_activation(
     assert "action.type must not be type_text" in repair_prompt
     assert "Tap that same visibly supported input control" in repair_prompt
     assert "Do not send Ctrl+A to an unfocused screen" in repair_prompt
+
+
+def test_controller_allows_one_bounded_repeat_to_activate_input(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = RepeatedActivationInputEnv()
+    client = RepeatedActivationRecoveryClient()
+    controller = EpisodeController(
+        client=client,  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=3,
+        max_model_calls=4,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="bounded-input-repeat-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="M0",
+    )
+    assert summary["termination_reason"] == "max_steps"
+    assert summary["model_output_error"] is None
+    assert summary["model_call_count"] == 4
+    assert env.execute_count == 3
+    assert env.tap_count == 2
+    assert env.input_count == 1
+    assert summary["steps"][1]["decision"]["action"] == {
+        "type": "tap",
+        "x": 0.5,
+        "y": 0.5,
+    }
+    assert summary["steps"][1]["parse"]["model_repair_used"] is True
+    assert "UNFOCUSED_CLEAR_TEXT_GUARD" in summary["steps"][1]["parse"][
+        "initial_validation_error"
+    ]
+    assert summary["steps"][1]["input_activation_repair_marked"] is True
+    assert summary["steps"][2]["decision"]["action"]["type"] == "type_text"
+    assert "x" not in summary["steps"][2]["decision"]["action"]
+    assert "y" not in summary["steps"][2]["decision"]["action"]
+    audit = summary["protocol_v2_guard"]
+    assert audit["input_activation_repeat_override_count"] == 1
+    assert audit["unverified_progress_repeat_block_count"] == 0
+    assert audit["input_activation_proof_count"] == 1
+    assert audit["input_activation_proof_consumed_count"] == 1
+    assert audit["input_activation_repair_pending"] is False
 
 
 def test_controller_repairs_fabricated_task_literal_to_requested_value(

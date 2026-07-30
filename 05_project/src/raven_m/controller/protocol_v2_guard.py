@@ -1301,6 +1301,7 @@ class ProtocolV2DecisionGuard:
         self.input_activation_action_key: str | None = None
         self.input_activation_proof_count = 0
         self.input_activation_proof_consumed_count = 0
+        self.input_activation_repeat_override_count = 0
 
     def mark_input_activation_repair(
         self,
@@ -1435,6 +1436,7 @@ class ProtocolV2DecisionGuard:
         declared_text_source_assessment: dict[str, Any] | None = None,
         declared_source_soft_keyboard_present: bool = False,
         task_literal_field_role_assessment: dict[str, Any] | None = None,
+        allow_unfocused_input_activation_repeat: bool = False,
     ) -> None:
         self._validate_text_provenance(
             decision,
@@ -1939,7 +1941,15 @@ class ProtocolV2DecisionGuard:
                 "a title/content-area coordinate."
             )
         fingerprint = (page_sha256, action_key)
-        if (
+        bounded_input_activation_repeat = bool(
+            allow_unfocused_input_activation_repeat
+            and action.get("type") == "tap"
+            and fingerprint
+            == self.last_unverified_progress_no_effect_fingerprint
+        )
+        if bounded_input_activation_repeat:
+            self.input_activation_repeat_override_count += 1
+        elif (
             fingerprint
             == self.last_unverified_progress_no_effect_fingerprint
         ):
@@ -2211,6 +2221,9 @@ class ProtocolV2DecisionGuard:
             ),
             "input_activation_proof_consumed_count": (
                 self.input_activation_proof_consumed_count
+            ),
+            "input_activation_repeat_override_count": (
+                self.input_activation_repeat_override_count
             ),
             "ab_ab_cycle_trigger_count": self.cycle_trigger_count,
             "visible_failure_trigger_count": (

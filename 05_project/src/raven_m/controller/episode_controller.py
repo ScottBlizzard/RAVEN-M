@@ -1396,6 +1396,14 @@ class EpisodeController:
                     task_literal_field_role_assessment=(
                         field_role_assessment
                     ),
+                    allow_unfocused_input_activation_repeat=bool(
+                        repair_contract_error
+                        and repair_contract_error.startswith(
+                            "UNFOCUSED_CLEAR_TEXT_GUARD:"
+                        )
+                        and isinstance(candidate_action, dict)
+                        and candidate_action.get("type") == "tap"
+                    ),
                 )
             action_adjudication = self.history_policy.adjudicate_action(
                 parsed_candidate.decision,
