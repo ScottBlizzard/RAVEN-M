@@ -1,0 +1,88 @@
+{
+  "schema_version": "protocol_v2_2_r48_m0_contacts_smoke.v1",
+  "date": "2026-07-31",
+  "source_commit": "90916a46f678af38f3632d3d229e04bb5f23200d",
+  "source_tag": "protocol-v2-2-r48-local-candidate",
+  "suite_id": "nonhard_capability_v2_2_seed20260729_r48_candidate_development_smoke_sequence_5",
+  "development_only": true,
+  "task": "ContactsAddContact",
+  "variant": "M0",
+  "seed": 20260729,
+  "goal_sha256": "3d66a888a7bff0255e16b054ddbafcdf920e4960a187d5b14250f01c906d982c",
+  "params_sha256": "3006d174a67034fdea4959b63d0d78ad7b76582c91889e558a97f6bd83762b4f",
+  "success": true,
+  "evaluator_reward": 1.0,
+  "executed_steps": 8,
+  "model_calls": 15,
+  "executor_model_calls": 11,
+  "history_model_calls": 4,
+  "termination_reason": "model_done",
+  "failure_code": null,
+  "episode_elapsed_seconds": 326.488,
+  "invocation_elapsed_seconds": 792.908,
+  "infrastructure_attempt_count": 0,
+  "readiness_observation_count": 19,
+  "readiness_retry_count": 2,
+  "startup_environment": {
+    "failure_count": 1,
+    "recovery_success_count": 1,
+    "last_status": "recovered",
+    "failure_code": "INFRA_ENVIRONMENT_CONSTRUCTION"
+  },
+  "task_scope_qualification": {
+    "planner_required_variables": [
+      "Sofija Martin",
+      "+17634322348"
+    ],
+    "typed_task_literals": [
+      "Sofija",
+      "Martin",
+      "+17634322348"
+    ],
+    "invented_optional_variable": false,
+    "invented_optional_text_response": false,
+    "qualified": true
+  },
+  "guard_audit": {
+    "validation_block_count": 2,
+    "focused_input_block_count": 1,
+    "unfocused_clear_text_block_count": 1,
+    "input_activation_proof_count": 1,
+    "input_activation_proof_consumed_count": 1,
+    "input_activation_repeat_override_count": 0,
+    "unverified_progress_repeat_block_count": 0,
+    "visible_control_activation_repeat_override_count": 0,
+    "visible_failure_trigger_count": 0,
+    "action_adjudication_count": 1,
+    "completion_adjudication_count": 1,
+    "unresolved_guard_repair": false
+  },
+  "r48_branch": {
+    "first_add_contact_tap_semantic_changed": false,
+    "form_visible_before_next_policy_decision": true,
+    "repeat_requested": false,
+    "override_consumed": false,
+    "live_triggered": false,
+    "deterministic_full_chain_regression_passed": true,
+    "qualification": "deterministic_branch_only"
+  },
+  "runner_exit_interpretation": {
+    "process_exit_code": 3,
+    "episode_failure": false,
+    "reason": "single-cell development smoke intentionally cannot satisfy formal eight-cell Gate-E aggregate criteria"
+  },
+  "decision": "development_smoke_passed_gate_d_preparation_allowed",
+  "hashes": {
+    "suite_summary_sha256": "f14892eb90f67941d7dbff14b88e920d27553636bbb27856891cae9548503251",
+    "manifest_snapshot_sha256": "e9fc462c2305b014be57df827a18bfd6b8a656ba540465ed1532fc856c33d410",
+    "instances_snapshot_sha256": "13d6ab543008b94d38e789105210d7fc56eb2eec7f66ed498f7113c910ae79b5",
+    "startup_environment_audit_sha256": "b723299d539f1e22ec5d3831f306bd10bb0de997d61ea568e5bed6d463aa4f65",
+    "episode_sha256": "b78d9338bbed380ea7ec08d142430deba88ebd3bc81852956ca547002da5228d",
+    "events_sha256": "5d223b19876287490b639375c7c23fb254b71061a13f5a2fec6dcbf9f3911a44",
+    "pre_add_contact_screenshot_sha256": "df4ca77cce977c3374cf0eb93bbe0fb5ceaa76a1094afb236464cc5795c25af4",
+    "post_add_contact_screenshot_sha256": "bc0e01fc252037a90b2f3e1d6949c23e0eb0547d86e2a55da2bbfb6f7af831a4",
+    "delayed_form_screenshot_sha256": "d8bfe5fb47d916c6bbb0842b526f5159b1a3e2adee1420974a1e266dd6a4587d",
+    "saved_contact_screenshot_sha256": "b25546fdc245a7885c395b015ea77d1ce5761a5934f89b2f533611683c9c3c54"
+  },
+  "evidence_boundary": "Non-scored development smoke; not pooled with r45 or any formal paired evidence. The r48 allowance was not live-triggered."
+}

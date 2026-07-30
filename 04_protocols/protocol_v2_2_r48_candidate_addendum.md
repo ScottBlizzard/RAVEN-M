@@ -1,6 +1,6 @@
 # Protocol-v2.2 r48 development-candidate addendum
 
-Status: locally qualified; fresh M0 Contacts smoke pending
+Status: locally qualified; fresh M0 Contacts smoke passed; Gate-D freeze pending
 
 This addendum follows the valid r47 M0 Contacts development failure. It
 preserves r46's live-qualified task grounding, r47's locally qualified
@@ -79,7 +79,21 @@ Additional regressions deny Save, unnamed, and editable targets and prove
 that a third identical tap remains blocked even when the caller again
 requests the allowance.
 
-The only authorized live action after source freeze and zero-call preflight
-is one fresh, isolated, non-scored M0 Contacts smoke on the same task
-instance. Gate D and formal Gate E remain unauthorized until that smoke is
-audited.
+The one authorized fresh, isolated, non-scored M0 Contacts smoke passed with
+native AndroidWorld reward 1.0. It created exactly `Sofija Martin` with
+`+17634322348`, executed Save, observed the resulting contact page, and did
+not populate any optional field.
+
+The first add-contact tap initially produced an unchanged semantic snapshot,
+but the form became visible before the next policy decision. The model
+therefore progressed to First name rather than proposing the same add-contact
+tap. Consequently, the r48 visible-control allowance was not consumed in this
+live run and remains deterministically, not live, branch-qualified. This is
+not treated as evidence that the allowance fired.
+
+The smoke does establish end-to-end compatibility of the frozen r48 source,
+model identity, task grounding, input-activation repair, consequential-action
+adjudication, completion adjudication, and native evaluation. A formal Gate-D
+freeze may now be prepared. Formal Gate E must still use a fresh suite,
+unchanged frozen source, the locked four instances and eight paired cells,
+and a separate zero-call preflight. Gate F remains manual-only.
