@@ -86,6 +86,8 @@ Raw trajectories are under `runs/excluded_protocol_dry_run/` and
 | `04_protocols/protocol_v2_2_r44_candidate_addendum.md` | retry-idempotent clear-and-type executor boundary | local candidate |
 | `reports/protocol_v2_2_r44_local_validation.json` | machine-readable 357-test, v1-seal, and 404-trajectory compatibility audit | passed locally |
 | `reports/protocol_v2_2_r44_local_validation.md` | r44 rationale, bounded timeout, and authorized next action | current |
+| `05_project/scripts/run_protocol_v2_2_r44_candidate_smoke.py` | isolated r44 M0 smoke entry point | ready |
+| `reports/protocol_v2_2_r44_candidate_preflight.json` | source, 27-file freeze, four instances, model, and emulator check | passed |
 
 The r39 raw trajectories are under
 `runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/` and remain
