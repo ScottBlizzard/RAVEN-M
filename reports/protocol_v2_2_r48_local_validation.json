@@ -1,7 +1,7 @@
 {
   "schema_version": "protocol_v2_2_r48_local_validation.v1",
   "recorded_at": "2026-07-30T21:17:17+08:00",
-  "status": "gate_d_frozen_formal_gate_e_authorized",
+  "status": "formal_gate_e_stopped_after_four_results",
   "branch": "protocol-v2-exploratory",
   "parent_commit": "1f5fadee94042326c58216eee0a846f40e0044f4",
   "trigger": {
@@ -99,9 +99,14 @@
   "evidence_boundary": {
     "server_or_gpu_run_after_source_change": true,
     "gate_d_authorized": true,
-    "formal_run_authorized": true,
+    "formal_run_authorized": false,
     "formal_gate_e_preflight_passed": true,
+    "formal_gate_e_authorization_consumed": true,
+    "formal_gate_e_result_count": 4,
+    "formal_gate_e_native_success_count": 4,
+    "formal_gate_e_gate_passed": false,
+    "formal_gate_e_stop_reason": "model_output_invalid_after_one_bounded_repair",
     "automatic_gate_f_transition": false,
-    "next_step": "launch exactly one fresh locked eight-cell Gate E and audit it before any further decision"
+    "next_step": "freeze r48 evidence; any new run requires a separately validated version limited to post-transfer verification navigation"
   }
 }

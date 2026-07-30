@@ -1,6 +1,6 @@
 # Protocol-v2.2 r48 local validation
 
-Status: **PASS; Gate-D frozen and one formal Gate E authorized**
+Status: **local PASS; formal Gate E stopped after 4/8**
 
 Parent commit:
 `1f5fadee94042326c58216eee0a846f40e0044f4`
@@ -67,5 +67,11 @@ This result is development-only and is not pooled with r45 or any formal
 paired result. It qualifies end-to-end compatibility of the frozen candidate,
 not live firing of the r48 allowance. Gate D subsequently passed: 369/369
 tests, the 197/197 Protocol-v1 seal, 27/27 frozen files, the four locked task
-instances, and the zero-call formal preflight all matched. One fresh locked
-eight-cell Gate E is authorized. Gate F remains manual-only.
+instances, and the zero-call formal preflight all matched.
+
+The authorized Gate-E launch then stopped after four native successes because
+sequence 4 was invalid after one bounded repair. The file move itself passed
+the native evaluator. The remaining conflict was a circular action-critic
+rejection of the visible, task-named `Ringtones` folder tap used only to verify
+the completed transfer. This consumes the r48 formal authorization; r48 may
+not be resumed, and Gate F remains disabled.
