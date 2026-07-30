@@ -760,3 +760,27 @@ Protocol-v1 seal passed. The compatibility audit parsed 6,468 executed steps
 across 402 trajectory files and found 40 applicable activation-repair
 transitions; the proof is bounded to their single next executed action. r42 is
 locally qualified for the one authorized M0-only development smoke.
+
+## r43 progress-conditioned coordinate streak after r42 rejection
+
+- Preserve r42 as a valid development failure. Its input proof fired and
+  expired exactly once, and all category gestures used the horizontal axis.
+- Replace the unconditional fourth-coordinate-action rejection with an
+  evidence-conditioned rule. If all prior transitions in the current exact
+  action streak changed semantic state, another repetition is admissible. If
+  any transition did not change semantic state, the existing three-action
+  rejection remains.
+- Evaluate the immediate unverified-progress/no-effect repeat before the
+  generic streak rule. If a previously productive repeated gesture newly
+  stalls, its next proposal receives the current-layout repair contract and
+  must tap an already visible target rather than reverse arbitrarily.
+- Retain the two-no-effect threshold, A-B-A-B detector, visible-failure
+  blocks, one repair, 12-step/40-call budgets, model, task, seed, evaluator,
+  schemas, memory thresholds, and Protocol-v1 isolation.
+- Historical audit found only three streak-guard triggers across 403
+  trajectory files. Two followed three semantic-changing transitions and
+  both episodes failed; the one retained-block case is the successful r40 B3
+  Expense cell whose third swipe had no semantic change before its repair
+  tapped Donation.
+- Add progress-streak, no-progress-streak, and precedence tests; rerun all
+  local checks and the Protocol-v1 seal before any fresh r43 M0-only smoke.

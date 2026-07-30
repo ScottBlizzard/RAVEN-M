@@ -1,0 +1,86 @@
+{
+  "schema_version": "protocol_v2_2_r42_m0_expense_smoke.v1",
+  "recorded_at": "2026-07-30T16:25:47+08:00",
+  "status": "candidate_rejected",
+  "source_commit": "cb6cda50a6423c1e5292e9beb75958880f9e819e",
+  "source_tag": "protocol-v2-2-r42-local-candidate",
+  "suite_id": "nonhard_capability_v2_2_seed20260729_r42_candidate_development_smoke_sequence_7",
+  "outcome": {
+    "variant": "M0",
+    "task": "ExpenseAddSingle",
+    "sequence": 7,
+    "evaluator_reward": 0.0,
+    "success": false,
+    "failure_code": "TASK_UNSUCCESSFUL_AT_BUDGET",
+    "termination_reason": "max_steps",
+    "executed_steps": 12,
+    "model_calls": 18,
+    "executor_model_calls": 15,
+    "history_model_calls": 3,
+    "elapsed_seconds": 807.203,
+    "infrastructure_attempts": 0,
+    "valid_after_one_repair": true,
+    "semantic_progress_audit_passed": true,
+    "memory_audit_errors": []
+  },
+  "r42_guard_evidence": {
+    "input_activation_proof_count": 1,
+    "input_activation_proof_consumed_count": 1,
+    "input_activation_repair_pending_at_end": false,
+    "unfocused_clear_text_block_count": 1,
+    "post_activation_coordinate_block_count": 1,
+    "identical_coordinate_streak_block_count": 1,
+    "validation_block_count": 3,
+    "executed_blocked_action_steps": [],
+    "steps_6_to_8_horizontal_left_swipes": 3,
+    "steps_6_to_8_all_semantic_changed": true,
+    "step_9_blocked_proposal": {
+      "type": "swipe",
+      "x": 0.8,
+      "y": 0.34,
+      "x2": 0.2,
+      "y2": 0.34,
+      "duration_ms": 500
+    },
+    "step_9_executed_repair_reversed_axis_direction": true
+  },
+  "visual_causal_evidence": {
+    "r42_step_008_visible_categories": [
+      "Transportation",
+      "Clothes",
+      "Health Care",
+      "Education_partial"
+    ],
+    "r40_b3_step_009_visible_categories": [
+      "Clothes",
+      "Health Care",
+      "Education",
+      "Donation"
+    ],
+    "interpretation": "one additional productive left swipe was needed before target selection and save"
+  },
+  "historical_coordinate_streak_audit": {
+    "trajectory_files_scanned": 403,
+    "parse_failures": 0,
+    "streak_guard_triggered_proposals": 3,
+    "all_three_prior_transitions_semantic_changed": 2,
+    "streak_contained_no_semantic_change": 1,
+    "all_progress_cases_historical_episode_successes": 0,
+    "retained_block_case": "r40 B3 Expense success; third swipe had no semantic change and repair tapped Donation"
+  },
+  "raw_sha256": {
+    "suite_summary.json": "f5740e3fddac92af19c87617e99cf7dc5b5acffc365df27c41dc893ce2c5e7f2",
+    "events.jsonl": "2cc2c2965ed3ef037d2a484b1f1cadc5bae0658674dc987afdf03a1c776db0c3",
+    "memory_events.jsonl": "576c8a5d923be71411a94843218261f59b382cb12028d12596eae2a17938d9f6",
+    "episode.json": "a6339aab1851fab6ee78e10cb520d6e2f7b6334ca57cc77eb9379f62a49f42fb",
+    "r42_step_008_after.png": "f20f11968f43e3271c16a4152cd35adb6f4808da0c09d5a3c72ee68f0ecfa193",
+    "r42_step_009_after.png": "6a7583b58bacf041a9991bc16c1fcea5856477ba109ab677b9ec9691ec295651",
+    "r40_b3_step_009_after.png": "d4bd3dacf3da3c5ffe8e0de5bed61f3954195c1ce3500d6562fc7dd0b6f8c78e"
+  },
+  "evidence_boundary": {
+    "gate_d_authorized": false,
+    "formal_run_authorized": false,
+    "result_pooled_with_prior_smokes": false,
+    "next_step": "r43_progress_conditioned_coordinate_streak_guard"
+  }
+}

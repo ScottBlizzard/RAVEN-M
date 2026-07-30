@@ -51,3 +51,11 @@ The only authorized live action after local qualification is one fresh,
 non-scored M0 Expense smoke. A pass may close the retained paired development
 check with the earlier r40 B3 pass, but those cells are not pooled into a
 formal result. Gate D requires a separate decision and freeze.
+
+## Live disposition
+
+The M0 Expense smoke rejected r42 at the action budget. The one-step input
+proof worked and category navigation stayed horizontal, but the unconditional
+three-identical-coordinate-action guard blocked a fourth productive left
+swipe after three verified semantic changes. See
+`reports/protocol_v2_2_r42_m0_expense_smoke.md`. Gate D remains unauthorized.

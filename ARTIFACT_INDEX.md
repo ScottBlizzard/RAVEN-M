@@ -74,6 +74,8 @@ Raw trajectories are under `runs/excluded_protocol_dry_run/` and
 | `reports/protocol_v2_2_r42_local_validation.md` | r42 rationale, bounded risk, and next live action | current |
 | `05_project/scripts/run_protocol_v2_2_r42_candidate_smoke.py` | isolated r42 M0 smoke entry point | ready |
 | `reports/protocol_v2_2_r42_candidate_preflight.json` | source, 27-file freeze, four instances, model, and emulator check | passed |
+| `reports/protocol_v2_2_r42_m0_expense_smoke.json` | machine-readable r42 failure, guard audit, visual hashes, and r43 boundary | candidate rejected |
+| `reports/protocol_v2_2_r42_m0_expense_smoke.md` | verified-progress versus repeated-action causal analysis | current |
 
 The r39 raw trajectories are under
 `runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/` and remain
