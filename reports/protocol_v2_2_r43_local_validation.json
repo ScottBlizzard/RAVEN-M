@@ -1,0 +1,61 @@
+{
+  "schema_version": "protocol_v2_2_r43_local_validation.v1",
+  "recorded_at": "2026-07-30T16:31:41+08:00",
+  "status": "local_validation_passed_m0_smoke_pending",
+  "branch": "protocol-v2-exploratory",
+  "parent_commit": "8d63baf17a2d2fda031226fc361589af01d5e666",
+  "repairs": {
+    "productive_exact_swipe_streak_allowed": true,
+    "no_effect_swipe_streak_still_blocked": true,
+    "tap_and_long_press_hard_streak_limit_retained": true,
+    "unverified_progress_repeat_precedes_generic_streak": true,
+    "global_no_effect_threshold_changed": false,
+    "controller_authored_action_text_or_coordinate": false
+  },
+  "validation": {
+    "pytest_collected": 352,
+    "pytest_passed": 352,
+    "pytest_exit_code": 0,
+    "compileall_exit_code": 0,
+    "git_diff_check_exit_code": 0,
+    "protocol_v1_seal": {
+      "file_count": 197,
+      "failure_count": 0,
+      "passed": true
+    },
+    "historical_streak_guard_audit": {
+      "trajectory_files_scanned": 403,
+      "parse_failures": 0,
+      "guard_triggered_proposals": 3,
+      "all_three_prior_transitions_changed_swipe_proposals": 2,
+      "streak_contained_no_effect_swipe_proposals": 1,
+      "newly_admissible_source_episode_successes": 0,
+      "retained_block_source_episode_successes": 1
+    },
+    "broader_executed_fourth_action_audit": {
+      "fourth_coordinate_actions_after_three_changed_transitions": 10,
+      "tap_actions": 9,
+      "swipe_actions": 1,
+      "tap_fourth_semantic_changed": 8,
+      "tap_fourth_no_effect": 1,
+      "all_eight_changed_taps_from_one_failed_files_episode": true,
+      "swipe_fourth_no_effect": 1,
+      "interpretation": "exception restricted to swipes; a newly stalled swipe arms existing no-effect protection"
+    }
+  },
+  "current_file_sha256": {
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "66a5943aa9582b1a88c18060712824e4d890a3c211b9243985d16df765dea45c",
+    "05_project/src/raven_m/controller/episode_controller.py": "07b256dccbaf57bb26a530facde4a29f157d5feb32a73a75b06571367bf8f492",
+    "05_project/src/raven_m/memory/manager.py": "845c07991fc88709674ba80f7255b1302a25563b4d3140e4a4bc4b9d825437cf",
+    "05_project/tests/controller/test_protocol_v2_guard.py": "26b8482f19255b110b196b2c09543d5a57c6e9b7211eded3e8ba5615f268e435",
+    "05_project/tests/controller/test_b0_prompt.py": "2fb690d1f9a91f98f60273189d8a06564acabf781f8096cc15a301048895c538",
+    "05_project/tests/controller/test_reliability_recovery_controller.py": "b908898aada1025db0fa0341eab719ea768278c7883376e64ecbeb3b197e0166",
+    "05_project/tests/memory/test_manager.py": "e0cdc578005d63bc1db64c967119910e8a17c602460909b79bae77cffb38af49"
+  },
+  "evidence_boundary": {
+    "server_or_gpu_run_after_source_change": false,
+    "gate_d_authorized": false,
+    "formal_run_authorized": false,
+    "next_step": "fresh_non_scored_m0_expense_smoke"
+  }
+}

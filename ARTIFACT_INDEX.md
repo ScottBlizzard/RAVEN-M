@@ -76,6 +76,9 @@ Raw trajectories are under `runs/excluded_protocol_dry_run/` and
 | `reports/protocol_v2_2_r42_candidate_preflight.json` | source, 27-file freeze, four instances, model, and emulator check | passed |
 | `reports/protocol_v2_2_r42_m0_expense_smoke.json` | machine-readable r42 failure, guard audit, visual hashes, and r43 boundary | candidate rejected |
 | `reports/protocol_v2_2_r42_m0_expense_smoke.md` | verified-progress versus repeated-action causal analysis | current |
+| `04_protocols/protocol_v2_2_r43_candidate_addendum.md` | progress-conditioned swipe streak with tap-loop exclusion | local candidate |
+| `reports/protocol_v2_2_r43_local_validation.json` | machine-readable 352-test, v1-seal, and two-level compatibility audit | passed locally |
+| `reports/protocol_v2_2_r43_local_validation.md` | r43 evidence boundary and authorized next action | current |
 
 The r39 raw trajectories are under
 `runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/` and remain

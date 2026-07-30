@@ -784,3 +784,10 @@ locally qualified for the one authorized M0-only development smoke.
   tapped Donation.
 - Add progress-streak, no-progress-streak, and precedence tests; rerun all
   local checks and the Protocol-v1 seal before any fresh r43 M0-only smoke.
+
+Local disposition on 2026-07-30: the exception was narrowed to exact swipes
+after a second historical audit found a semantic-changing same-coordinate tap
+loop in a failed Files episode. Taps and long-presses retain the unconditional
+limit. The resulting 352/352 tests, compilation, diff check, and 197-file
+Protocol-v1 seal passed. r43 is locally qualified only for the retained
+M0-only Expense development smoke.

@@ -1277,6 +1277,7 @@ class ProtocolV2DecisionGuard:
         self.recovery_completions = 0
         self.last_coordinate_action_key: str | None = None
         self.identical_coordinate_action_count = 0
+        self.identical_coordinate_no_effect_count = 0
         self.identical_coordinate_block_count = 0
         self.destination_picker_back_block_count = 0
         self.destination_picker_empty_stall_block_count = 0
@@ -1937,27 +1938,6 @@ class ProtocolV2DecisionGuard:
                 "navigation drawer. Do not wait, swipe, press back, or guess "
                 "a title/content-area coordinate."
             )
-        if (
-            action.get("type") in COORDINATE_STREAK_ACTIONS
-            and action_key == self.last_coordinate_action_key
-            and self.identical_coordinate_action_count
-            >= self.max_identical_coordinate_actions
-        ):
-            record = {
-                "semantic_state_sha256": page_sha256,
-                "action": action,
-                "reason": "identical_coordinate_action_streak_blocked",
-                "required_recovery_classes": list(RECOVERY_CLASSES),
-            }
-            self.validation_blocks.append(record)
-            self.identical_coordinate_block_count += 1
-            raise ActionValidationError(
-                "LOOP_GUARD: the same coordinate action has already been "
-                "executed three consecutive times. Use a different visible "
-                "control or a higher-level selector that can reach the target "
-                "without repeating stepwise navigation; do not perturb and "
-                "retry the same coordinate."
-            )
         fingerprint = (page_sha256, action_key)
         if (
             fingerprint
@@ -1981,6 +1961,52 @@ class ProtocolV2DecisionGuard:
                 "repeat that action. Choose a materially different recovery "
                 "action based on the current screen."
             )
+        if (
+            action.get("type") in COORDINATE_STREAK_ACTIONS
+            and action_key == self.last_coordinate_action_key
+            and self.identical_coordinate_action_count
+            >= self.max_identical_coordinate_actions
+            and (
+                action.get("type") != "swipe"
+                or self.identical_coordinate_no_effect_count > 0
+            )
+        ):
+            progress_conditioned_swipe_block = (
+                action.get("type") == "swipe"
+                and self.identical_coordinate_no_effect_count > 0
+            )
+            record = {
+                "semantic_state_sha256": page_sha256,
+                "action": action,
+                "reason": (
+                    "identical_coordinate_no_progress_streak_blocked"
+                    if progress_conditioned_swipe_block
+                    else "identical_coordinate_action_streak_blocked"
+                ),
+                "identical_coordinate_action_count": (
+                    self.identical_coordinate_action_count
+                ),
+                "identical_coordinate_no_effect_count": (
+                    self.identical_coordinate_no_effect_count
+                ),
+                "required_recovery_classes": list(RECOVERY_CLASSES),
+            }
+            self.validation_blocks.append(record)
+            self.identical_coordinate_block_count += 1
+            message = (
+                "LOOP_GUARD: the current exact swipe streak already contains "
+                "a transition with no semantic UI change. Do not execute "
+                "another exact repeat. Re-read the current screen, tap the "
+                "target directly if it is now visible, or use a different "
+                "visible control or higher-level selector."
+                if progress_conditioned_swipe_block
+                else
+                "LOOP_GUARD: the same coordinate tap or long-press has "
+                "already been executed three consecutive times. Use a "
+                "different visible control or a higher-level selector; do "
+                "not perturb and retry the same coordinate."
+            )
+            raise ActionValidationError(message)
         if fingerprint in self.blocked_fingerprints:
             record = {
                 "semantic_state_sha256": page_sha256,
@@ -2018,18 +2044,6 @@ class ProtocolV2DecisionGuard:
             self.input_activation_action_key = None
             self.input_activation_proof_consumed_count += 1
         action_key = canonical_action_key(action)
-        if destination_picker_commit_executed:
-            self.destination_picker_commit_count += 1
-            self.post_destination_commit_active = True
-        if action.get("type") in COORDINATE_STREAK_ACTIONS:
-            if action_key == self.last_coordinate_action_key:
-                self.identical_coordinate_action_count += 1
-            else:
-                self.last_coordinate_action_key = action_key
-                self.identical_coordinate_action_count = 1
-        else:
-            self.last_coordinate_action_key = None
-            self.identical_coordinate_action_count = 0
         fingerprint = (before_sha256, action_key)
         semantic_changed = before_sha256 != after_sha256
         pixel_changed = (
@@ -2041,6 +2055,24 @@ class ProtocolV2DecisionGuard:
         new_visible_failures = sorted(
             set(after_visible_failures) - set(before_visible_failures)
         )
+        if destination_picker_commit_executed:
+            self.destination_picker_commit_count += 1
+            self.post_destination_commit_active = True
+        if action.get("type") in COORDINATE_STREAK_ACTIONS:
+            if action_key == self.last_coordinate_action_key:
+                self.identical_coordinate_action_count += 1
+                if not semantic_changed:
+                    self.identical_coordinate_no_effect_count += 1
+            else:
+                self.last_coordinate_action_key = action_key
+                self.identical_coordinate_action_count = 1
+                self.identical_coordinate_no_effect_count = int(
+                    not semantic_changed
+                )
+        else:
+            self.last_coordinate_action_key = None
+            self.identical_coordinate_action_count = 0
+            self.identical_coordinate_no_effect_count = 0
         if semantic_changed:
             self.no_effect_counts.pop(fingerprint, None)
         else:
@@ -2090,6 +2122,9 @@ class ProtocolV2DecisionGuard:
             "identical_coordinate_action_count": (
                 self.identical_coordinate_action_count
             ),
+            "identical_coordinate_no_effect_count": (
+                self.identical_coordinate_no_effect_count
+            ),
             "destination_picker_commit_executed": (
                 destination_picker_commit_executed
             ),
@@ -2112,6 +2147,12 @@ class ProtocolV2DecisionGuard:
             "max_no_effect_repeats": self.max_no_effect_repeats,
             "max_identical_coordinate_actions": (
                 self.max_identical_coordinate_actions
+            ),
+            "identical_coordinate_action_count": (
+                self.identical_coordinate_action_count
+            ),
+            "identical_coordinate_no_effect_count": (
+                self.identical_coordinate_no_effect_count
             ),
             "required_selection_text": self.required_selection_text,
             "blocked_fingerprint_count": len(self.blocked_fingerprints),

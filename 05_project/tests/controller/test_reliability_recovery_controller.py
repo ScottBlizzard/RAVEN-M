@@ -182,6 +182,52 @@ def test_controller_repairs_exact_repeat_after_unverified_progress(
     )
 
 
+def test_controller_allows_fourth_exact_swipe_after_verified_progress(
+    tmp_path: Path,
+) -> None:
+    swipe = {
+        "type": "swipe",
+        "x": 0.8,
+        "y": 0.34,
+        "x2": 0.2,
+        "y2": 0.34,
+        "duration_ms": 500,
+    }
+    initial = {
+        "status": "continue",
+        "action": swipe,
+        "expected_outcome": "More categories become visible.",
+        "decision_summary": "Continue left through the category row.",
+        "state_delta": [],
+        "memory_citations": [],
+    }
+    client = RepairSequenceClient(initial, initial)
+    controller = controller_for(client)
+    assert controller.decision_guard is not None
+    for before, after in (
+        ("state-0", "state-1"),
+        ("state-1", "state-2"),
+        ("state-2", "same"),
+    ):
+        controller.decision_guard.observe_transition(
+            before_sha256=before,
+            action=swipe,
+            after_sha256=after,
+        )
+    decision, calls, meta = call_and_parse(
+        controller,
+        tmp_path=tmp_path,
+        task_goal="Select Donation from the horizontal category row.",
+        ui_elements=[],
+    )
+    assert len(calls) == 1
+    assert not meta["model_repair_used"]
+    assert decision["action"] == swipe
+    audit = controller.decision_guard.audit_record()
+    assert audit["identical_coordinate_action_count"] == 3
+    assert audit["identical_coordinate_no_effect_count"] == 0
+
+
 def test_controller_uses_one_step_activation_proof_for_text_repair(
     tmp_path: Path,
 ) -> None:

@@ -1494,12 +1494,46 @@ def test_repeated_action_is_allowed_when_semantic_content_changes() -> None:
     guard.validate_decision(decision(action), page_sha256="value-2")
 
 
-def test_guard_blocks_fourth_identical_coordinate_action_across_states() -> None:
+def test_guard_allows_fourth_identical_coordinate_action_with_progress() -> None:
     guard = ProtocolV2DecisionGuard(
         max_no_effect_repeats=10,
         max_identical_coordinate_actions=3,
     )
     guard.reset(goal="Open the toolbar menu")
+    action = {
+        "type": "swipe",
+        "x": 0.8,
+        "y": 0.34,
+        "x2": 0.2,
+        "y2": 0.34,
+        "duration_ms": 500,
+    }
+    for index in range(3):
+        guard.validate_decision(
+            decision(action),
+            page_sha256=f"state-{index}",
+        )
+        guard.observe_transition(
+            before_sha256=f"state-{index}",
+            action=action,
+            after_sha256=f"state-{index + 1}",
+        )
+    guard.validate_decision(decision(action), page_sha256="state-3")
+    audit = guard.audit_record()
+    assert audit["identical_coordinate_block_count"] == 0
+    assert audit["identical_coordinate_no_effect_count"] == 0
+    guard.validate_decision(
+        decision({"type": "tap", "x": 0.94, "y": 0.08}),
+        page_sha256="state-3",
+    )
+
+
+def test_guard_still_blocks_fourth_semantic_changing_tap() -> None:
+    guard = ProtocolV2DecisionGuard(
+        max_no_effect_repeats=10,
+        max_identical_coordinate_actions=3,
+    )
+    guard.reset(goal="Open the requested item")
     action = {"type": "tap", "x": 0.94, "y": 0.155}
     for index in range(3):
         guard.validate_decision(
@@ -1513,22 +1547,13 @@ def test_guard_blocks_fourth_identical_coordinate_action_across_states() -> None
         )
     with pytest.raises(
         ActionValidationError,
-        match="same coordinate action",
+        match="same coordinate tap or long-press",
     ):
         guard.validate_decision(decision(action), page_sha256="state-3")
-    audit = guard.audit_record()
-    assert audit["identical_coordinate_block_count"] == 1
-    assert (
-        "use_higher_level_visible_selector"
-        in audit["validation_blocks"][-1]["required_recovery_classes"]
-    )
-    guard.validate_decision(
-        decision({"type": "tap", "x": 0.94, "y": 0.08}),
-        page_sha256="state-3",
-    )
+    assert guard.audit_record()["identical_coordinate_block_count"] == 1
 
 
-def test_guard_blocks_fourth_identical_swipe_across_states() -> None:
+def test_guard_blocks_fourth_identical_action_after_no_effect() -> None:
     guard = ProtocolV2DecisionGuard(
         max_no_effect_repeats=10,
         max_identical_coordinate_actions=3,
@@ -1550,14 +1575,65 @@ def test_guard_blocks_fourth_identical_swipe_across_states() -> None:
         guard.observe_transition(
             before_sha256=f"state-{index}",
             action=action,
-            after_sha256=f"state-{index + 1}",
+            after_sha256=(
+                f"state-{index}"
+                if index == 2
+                else f"state-{index + 1}"
+            ),
         )
     with pytest.raises(
         ActionValidationError,
-        match="same coordinate action",
+        match="contains a transition with no semantic UI change",
+    ):
+        guard.validate_decision(decision(action), page_sha256="state-2")
+    audit = guard.audit_record()
+    assert audit["identical_coordinate_block_count"] == 1
+    assert audit["identical_coordinate_no_effect_count"] == 1
+    assert (
+        "use_higher_level_visible_selector"
+        in audit["validation_blocks"][-1]["required_recovery_classes"]
+    )
+
+
+def test_unverified_no_effect_precedes_coordinate_streak_guard() -> None:
+    guard = ProtocolV2DecisionGuard(
+        max_no_effect_repeats=10,
+        max_identical_coordinate_actions=3,
+    )
+    guard.reset(goal="Find Donation in the horizontal category row")
+    action = {
+        "type": "swipe",
+        "x": 0.8,
+        "y": 0.34,
+        "x2": 0.2,
+        "y2": 0.34,
+        "duration_ms": 500,
+    }
+    for index in range(3):
+        guard.validate_decision(
+            decision(action),
+            page_sha256=f"state-{index}",
+        )
+        guard.observe_transition(
+            before_sha256=f"state-{index}",
+            action=action,
+            after_sha256=f"state-{index + 1}",
+        )
+    guard.validate_decision(decision(action), page_sha256="state-3")
+    guard.observe_transition(
+        before_sha256="state-3",
+        action=action,
+        after_sha256="state-3",
+        claimed_unverified_progress=True,
+    )
+    with pytest.raises(
+        ActionValidationError,
+        match="UNVERIFIED_PROGRESS_REPEAT_REQUIRED",
     ):
         guard.validate_decision(decision(action), page_sha256="state-3")
-    assert guard.audit_record()["identical_coordinate_block_count"] == 1
+    audit = guard.audit_record()
+    assert audit["unverified_progress_repeat_block_count"] == 1
+    assert audit["identical_coordinate_block_count"] == 0
 
 
 def test_destination_picker_requires_bottom_cancel_and_commit_controls() -> None:
