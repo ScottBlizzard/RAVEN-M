@@ -1,0 +1,125 @@
+{
+  "schema_version": "protocol_v2_2_gate_e_stopped_report.v1",
+  "date": "2026-07-30",
+  "protocol": "androidworld_protocol_v2_2_exploratory",
+  "source_commit": "3d0d719bfccac5934c62d3ab8be902a0ef66d7e9",
+  "source_tag": "protocol-v2-2-gate-e-r45",
+  "decision": "stopped_gate_failed",
+  "automatic_gate_f_transition": false,
+  "attempts": [
+    {
+      "kind": "infrastructure_invalid",
+      "suite_id": "nonhard_capability_v2_2_seed20260729_r45",
+      "archive": "runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r45_vpn_interrupted_20260730T184010",
+      "valid_result_count": 0,
+      "invalid_attempts": [
+        {
+          "sequence": 1,
+          "attempt": 1,
+          "failure": "INFRA_EMULATOR_ANR: Contacts isn't responding"
+        },
+        {
+          "sequence": 1,
+          "attempt": 2,
+          "failure": "model endpoint 127.0.0.1:18000 connection refused after VPN/tunnel loss"
+        }
+      ],
+      "model_recovery": {
+        "status": "timed_out",
+        "max_wait_seconds": 1800
+      },
+      "excluded_from_scored_results": true
+    },
+    {
+      "kind": "formal_clean_restart",
+      "suite_id": "nonhard_capability_v2_2_seed20260729_r45_restart1",
+      "result_count": 5,
+      "success_count": 4,
+      "infrastructure_attempt_count": 1,
+      "finished": false,
+      "stopped_early": true,
+      "stop_reason": "model_output_invalid_after_one_bounded_repair",
+      "gate_passed": false,
+      "elapsed_seconds": 2321.89,
+      "results": [
+        {
+          "sequence": 1,
+          "variant": "B3",
+          "task": "ContactsAddContact",
+          "reward": 1.0,
+          "steps": 9,
+          "model_calls": 16,
+          "termination_reason": "model_done"
+        },
+        {
+          "sequence": 2,
+          "variant": "M0",
+          "task": "SimpleCalendarEventsOnDate",
+          "reward": 1.0,
+          "steps": 3,
+          "model_calls": 5,
+          "termination_reason": "model_answer"
+        },
+        {
+          "sequence": 3,
+          "variant": "B3",
+          "task": "ExpenseAddSingle",
+          "reward": 1.0,
+          "steps": 11,
+          "model_calls": 15,
+          "termination_reason": "model_done"
+        },
+        {
+          "sequence": 4,
+          "variant": "M0",
+          "task": "FilesMoveFile",
+          "reward": 1.0,
+          "steps": 20,
+          "model_calls": 31,
+          "termination_reason": "max_steps"
+        },
+        {
+          "sequence": 5,
+          "variant": "M0",
+          "task": "ContactsAddContact",
+          "reward": 0.0,
+          "steps": 6,
+          "model_calls": 11,
+          "termination_reason": "model_output_invalid_after_repair",
+          "failure_code": "MODEL_OUTPUT_INVALID_AFTER_REPAIR",
+          "initial_validation_error": "DECLARED_TEXT_SOURCE_GUARD",
+          "repair_validation_error": "UNFOCUSED_CLEAR_TEXT_GUARD",
+          "invalid_initial_text": "TechCorp",
+          "correct_repair_text": "+17634322348",
+          "unresolved_guard_repair": true
+        }
+      ],
+      "unexecuted_sequences": [6, 7, 8]
+    }
+  ],
+  "acceptance_failures": [
+    "valid_scored_cells",
+    "task_action_compatibility",
+    "loop_guard",
+    "valid_output",
+    "semantic_progress_audit",
+    "visible_failure_enforcement"
+  ],
+  "root_cause": {
+    "planner": "introduced company_name and TechCorp although the task did not specify a company",
+    "repair_contract": "allowed immediate cross-field type_text without first activating the different visible input",
+    "safeguards": "both unsafe actions were correctly blocked and neither executed"
+  },
+  "proposed_r46_scope": [
+    "ground planner variables and subgoals in explicit task requirements or verified UI state",
+    "activate a different role-matched input before typing during declared-source repair",
+    "run deterministic, compatibility, and isolated live M0 Contacts validation before a new freeze"
+  ],
+  "hashes": {
+    "restart_suite_summary_sha256": "d74f3b4c5a346d79db81250298ab907bc39e53873bf7f877e7cadb4c1cd5ab38",
+    "restart_manifest_snapshot_sha256": "7fcefbea9718c159a303743a2559fb1324e441ab819949ba7ce6afebb7979c0c",
+    "restart_instances_snapshot_sha256": "13d6ab543008b94d38e789105210d7fc56eb2eec7f66ed498f7113c910ae79b5",
+    "failed_sequence_5_episode_sha256": "4ad9fd65d8c539b52ae014c54f9f11739afb13c83d256112a001090e74b974df"
+  },
+  "evidence_boundary": "Incomplete non-Hard protocol requalification; not a paired method comparison and not Hard benchmark evidence."
+}

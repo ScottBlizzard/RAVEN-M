@@ -101,6 +101,8 @@ Raw trajectories are under `runs/excluded_protocol_dry_run/` and
 | `05_project/scripts/run_protocol_v2_2_gate_e_r45.py` | exact-source r45 Gate-E entry point | ready |
 | `reports/protocol_v2_2_r45_gate_e_preflight.json` | zero-call source, instance, model, emulator, and fresh-directory preflight | passed |
 | `reports/protocol_v2_2_r45_gate_d_freeze.json` | Gate-D evidence review and one-launch authorization | passed |
+| `reports/protocol_v2_2_r45_gate_e_stopped.json` | machine-readable VPN-attempt separation, five-cell result, and sequence-5 causal trace | Gate E stopped/failed |
+| `reports/protocol_v2_2_r45_gate_e_stopped.md` | human-readable r45 stop decision and bounded r46 scope | current |
 
 The r39 raw trajectories are under
 `runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/` and remain
