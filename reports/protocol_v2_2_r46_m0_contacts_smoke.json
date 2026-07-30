@@ -1,0 +1,55 @@
+{
+  "schema_version": "protocol_v2_2_r46_m0_contacts_smoke.v1",
+  "date": "2026-07-30",
+  "source_commit": "c60997750e039be06e958aac614f52d4196fdf83",
+  "source_tag": "protocol-v2-2-r46-local-candidate",
+  "suite_id": "nonhard_capability_v2_2_seed20260729_r46_candidate_development_smoke_sequence_5",
+  "development_only": true,
+  "task": "ContactsAddContact",
+  "variant": "M0",
+  "seed": 20260729,
+  "goal_sha256": "3d66a888a7bff0255e16b054ddbafcdf920e4960a187d5b14250f01c906d982c",
+  "params_sha256": "3006d174a67034fdea4959b63d0d78ad7b76582c91889e558a97f6bd83762b4f",
+  "success": false,
+  "evaluator_reward": 0.0,
+  "executed_steps": 4,
+  "model_calls": 7,
+  "termination_reason": "model_output_invalid_after_repair",
+  "failure_code": "MODEL_OUTPUT_INVALID_AFTER_REPAIR",
+  "infrastructure_attempt_count": 0,
+  "task_scope_qualification": {
+    "planner_required_variables": [
+      "Sofija Martin",
+      "+17634322348"
+    ],
+    "invented_optional_variable": false,
+    "invented_optional_text_response": false,
+    "qualified": true
+  },
+  "contract_conflict": {
+    "prior_action": {
+      "type": "tap",
+      "x": 0.49,
+      "y": 0.387
+    },
+    "prior_semantic_changed": false,
+    "initial_validation_error": "UNFOCUSED_CLEAR_TEXT_GUARD",
+    "repair_action": {
+      "type": "tap",
+      "x": 0.49,
+      "y": 0.387
+    },
+    "repair_validation_error": "LOOP_GUARD: UNVERIFIED_PROGRESS_REPEAT_REQUIRED",
+    "unsafe_text_action_executed": false,
+    "repair_tap_executed": false
+  },
+  "decision": "candidate_rejected_bounded_r47_allowed",
+  "r47_scope": "permit only a repair tap under UNFOCUSED_CLEAR_TEXT_GUARD to bypass the immediately preceding exact unverified-progress repeat; preserve activation proof and all later repeat and text guards",
+  "hashes": {
+    "suite_summary_sha256": "f3bec32200e2a275a1bce5324eb368fa478019a003be92bca7e8938e9ffdc94d",
+    "manifest_snapshot_sha256": "ab205d18d851708b33b34cab8902a6f669bb1b404e8141f1d8f68efaf0d63fa5",
+    "instances_snapshot_sha256": "13d6ab543008b94d38e789105210d7fc56eb2eec7f66ed498f7113c910ae79b5",
+    "episode_sha256": "f62e4a5bcb1e9a6f3aca5b432d102c1ef26106e4fa0ba875074c0088e09fc55c"
+  },
+  "evidence_boundary": "Non-scored development smoke; not pooled with r45 and not formal paired evidence."
+}

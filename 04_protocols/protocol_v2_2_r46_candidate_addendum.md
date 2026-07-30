@@ -1,6 +1,7 @@
 # Protocol-v2.2 r46 development-candidate addendum
 
-Status: locally qualified; fresh M0 Contacts smoke pending
+Status: task-scope behavior live-qualified; candidate rejected on an
+independent input-activation/loop-contract conflict
 
 This addendum follows the stopped r45 Gate-E restart. It preserves every r45
 result and does not reinterpret the incomplete five-cell suite as a paired
@@ -62,3 +63,24 @@ instance that exposed the r45 failure. It must demonstrate:
 
 The smoke may qualify r46's behavior but is not pooled with r45, does not prove
 method superiority, and cannot by itself pass Gate E.
+
+## Live disposition
+
+The fresh M0 Contacts smoke produced no invented optional task variable or
+payload. Its Planner retained only `Sofija Martin` and `+17634322348`, so the
+r46 task-grounding change is live-qualified.
+
+The episode nevertheless ended invalid after four executed steps. A first tap
+on the empty First name field changed pixels and exposed the focus border but
+did not change the accessibility semantic digest or show the keyboard. The
+next coordinate-bearing `clear_text=true` proposal was correctly rejected by
+`UNFOCUSED_CLEAR_TEXT_GUARD`. Its mandated repair repeated the same input
+activation tap, which `UNVERIFIED_PROGRESS_REPEAT_REQUIRED` then rejected
+because the preceding tap had claimed progress without semantic change.
+
+r46 is therefore not authorized for Gate D. A bounded r47 may resolve only
+this contract conflict: one tap produced specifically by the unfocused-input
+repair may repeat the immediately preceding identical activation tap. That
+exception must not apply to ordinary policy actions, must retain the
+one-step input-activation proof, and must still block any third repeated tap
+or unsafe clear-and-type action.

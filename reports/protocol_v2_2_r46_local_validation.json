@@ -1,7 +1,7 @@
 {
   "schema_version": "protocol_v2_2_r46_local_validation.v1",
   "recorded_at": "2026-07-30T20:08:48+08:00",
-  "status": "local_validation_passed_m0_contacts_smoke_pending",
+  "status": "local_validation_passed_live_smoke_failed_candidate_rejected",
   "branch": "protocol-v2-exploratory",
   "parent_commit": "8bb7ed7",
   "trigger": {
@@ -61,10 +61,11 @@
     "05_project/tests/prompts/test_planner_prompt_scope.py": "6294f07d1488aa1e62b750457d753ea5b8b6ab6212d8b6870d78cb97111b6f36"
   },
   "evidence_boundary": {
-    "server_or_gpu_run_after_source_change": false,
+    "server_or_gpu_run_after_source_change": true,
     "r45_gate_e_passed": false,
     "gate_d_authorized": false,
     "formal_run_authorized": false,
-    "next_step": "freeze candidate, zero-call preflight, then one fresh non-scored M0 Contacts smoke"
+    "live_smoke_status": "failed_on_unfocused_input_activation_repeat_loop_conflict",
+    "next_step": "bounded r47 contract-conflict repair, local validation, then one fresh non-scored M0 Contacts smoke"
   }
 }

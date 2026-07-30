@@ -1,6 +1,6 @@
 # Protocol-v2.2 r46 local validation
 
-Status: **PASS locally; fresh M0 Contacts smoke pending**
+Status: **PASS locally; live smoke failed, candidate rejected**
 
 Parent commit:
 `8bb7ed7`
@@ -47,8 +47,9 @@ separate activation step.
 
 ## Evidence boundary
 
-No server/GPU result has been produced with r46 source. r45 remains a stopped
-Gate-E artifact with four successes, one formal protocol failure, and three
-unexecuted cells. The next admissible action is one fresh, isolated,
-non-scored M0 Contacts smoke after candidate source freeze and zero-call
-preflight. A new Gate-D freeze is unauthorized until that smoke is audited.
+The fresh server-backed smoke is recorded in
+`reports/protocol_v2_2_r46_m0_contacts_smoke.md`. It live-qualified task-scope
+grounding but failed the independent activation/loop repair contract. r45
+remains a stopped Gate-E artifact with four successes, one formal protocol
+failure, and three unexecuted cells. r46 is rejected and Gate D remains
+unauthorized.
