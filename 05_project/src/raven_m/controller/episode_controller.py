@@ -28,6 +28,7 @@ from raven_m.controller.protocol_v2_guard import (
     files_roots_drawer_action_assessment,
     focused_empty_editable_tap_assessment,
     focused_editable_input_assessment,
+    post_destination_source_context_assessment,
     post_destination_verification_navigation_assessment,
     post_destination_transfer_command_action,
     semantic_ui_snapshot,
@@ -627,6 +628,7 @@ class EpisodeController:
             "DECLARED_TEXT_SOURCE_GUARD:",
             "FIELD_VALUE_BINDING_GUARD:",
             "POST_DESTINATION_COMMIT_GUARD:",
+            "POST_DESTINATION_SOURCE_EXIT_GUARD:",
             "DESTINATION_PICKER_GUARD:",
             "FILES_ROOTS_DRAWER_GUARD:",
             "SOFT_KEYBOARD_SWIPE_GUARD:",
@@ -675,6 +677,9 @@ class EpisodeController:
         post_destination_commit_rejected = error.startswith(
             "POST_DESTINATION_COMMIT_GUARD:"
         )
+        post_destination_source_exit_required = error.startswith(
+            "POST_DESTINATION_SOURCE_EXIT_GUARD:"
+        )
         post_destination_completion_reobserve_required = error.startswith(
             "POST_DESTINATION_COMPLETION_REOBSERVE_REQUIRED:"
         )
@@ -718,6 +723,7 @@ class EpisodeController:
             )
         elif (
             post_destination_commit_rejected
+            or post_destination_source_exit_required
             or post_destination_completion_reobserve_required
         ):
             repair_directive = (
@@ -1093,6 +1099,7 @@ class EpisodeController:
         latest_verification_navigation_assessment: (
             dict[str, Any] | None
         ) = None
+        latest_source_context_assessment: dict[str, Any] | None = None
         visual_source_cache: dict[str, dict[str, Any]] = {}
         parse_kwargs = (
             {"schema_path": self.action_schema_path}
@@ -1107,7 +1114,9 @@ class EpisodeController:
         ) -> Any:
             nonlocal adjudication_model_call_count
             nonlocal latest_verification_navigation_assessment
+            nonlocal latest_source_context_assessment
             latest_verification_navigation_assessment = None
+            latest_source_context_assessment = None
             parsed_candidate = parse_action_response(content, **parse_kwargs)
             if self.protocol_v2:
                 swipe_assessment = (
@@ -1186,6 +1195,7 @@ class EpisodeController:
                 and repair_contract_error.startswith(
                     (
                         "POST_DESTINATION_COMMIT_GUARD:",
+                        "POST_DESTINATION_SOURCE_EXIT_GUARD:",
                         "POST_DESTINATION_COMPLETION_REOBSERVE_REQUIRED:",
                     )
                 )
@@ -1236,6 +1246,16 @@ class EpisodeController:
                         parsed_candidate.decision.get("action"),
                         required_destination_text=(
                             self.decision_guard.required_destination_text
+                        ),
+                        screen_width=screen_width,
+                        screen_height=screen_height,
+                    )
+                )
+                latest_source_context_assessment = (
+                    post_destination_source_context_assessment(
+                        ui_elements,
+                        required_source_text=(
+                            self.decision_guard.required_source_text
                         ),
                         screen_width=screen_width,
                         screen_height=screen_height,
@@ -1475,6 +1495,9 @@ class EpisodeController:
                         and isinstance(candidate_action, dict)
                         and candidate_action.get("type") == "tap"
                     ),
+                    post_destination_source_context_assessment=(
+                        latest_source_context_assessment
+                    ),
                 )
             consequential_action_candidate = None
             if self.protocol_v2_2 and destination_picker_is_active:
@@ -1570,6 +1593,9 @@ class EpisodeController:
                     "post_destination_verification_navigation_assessment": (
                         latest_verification_navigation_assessment
                     ),
+                    "post_destination_source_context_assessment": (
+                        latest_source_context_assessment
+                    ),
                 },
             )
         except ActionValidationError as initial_error:
@@ -1648,6 +1674,9 @@ class EpisodeController:
                     "post_destination_verification_navigation_assessment": (
                         latest_verification_navigation_assessment
                     ),
+                    "post_destination_source_context_assessment": (
+                        latest_source_context_assessment
+                    ),
                 },
             )
 
@@ -1688,6 +1717,7 @@ class EpisodeController:
         if self.decision_guard is not None:
             required_selection_text = None
             required_destination_text = None
+            required_source_text = None
             if str(task.name) in {"FilesMoveFile", "FilesDeleteFile"}:
                 candidate = task_params.get("file_name")
                 if isinstance(candidate, str) and candidate:
@@ -1696,10 +1726,14 @@ class EpisodeController:
                 candidate = task_params.get("destination_folder")
                 if isinstance(candidate, str) and candidate:
                     required_destination_text = candidate
+                candidate = task_params.get("source_folder")
+                if isinstance(candidate, str) and candidate:
+                    required_source_text = candidate
             self.decision_guard.reset(
                 goal=initial_task_goal,
                 required_selection_text=required_selection_text,
                 required_destination_text=required_destination_text,
+                required_source_text=required_source_text,
             )
 
         logger.append(

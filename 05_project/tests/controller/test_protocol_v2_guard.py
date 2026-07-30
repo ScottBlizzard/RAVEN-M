@@ -15,6 +15,7 @@ from raven_m.controller.protocol_v2_guard import (
     files_roots_drawer_action_assessment,
     focused_empty_editable_tap_assessment,
     focused_editable_input_assessment,
+    post_destination_source_context_assessment,
     post_destination_verification_navigation_assessment,
     post_destination_transfer_command_action,
     semantic_ui_snapshot,
@@ -2654,6 +2655,129 @@ def destination_navigation_elements(
             },
         },
     ]
+
+
+def source_context_elements(
+    *,
+    label: str = "Music",
+    package_name: str = "com.google.android.documentsui",
+    center_y: float = 0.08,
+) -> list[dict]:
+    return [
+        {
+            "package_name": package_name,
+            "text": label,
+            "is_visible": True,
+            "is_enabled": True,
+            "is_clickable": False,
+            "is_editable": False,
+            "bbox": {
+                "x_min": 0.15,
+                "x_max": 0.55,
+                "y_min": center_y - 0.03,
+                "y_max": center_y + 0.03,
+            },
+        }
+    ]
+
+
+def test_post_destination_source_context_binds_top_files_directory() -> None:
+    assessment = post_destination_source_context_assessment(
+        source_context_elements(),
+        required_source_text="Music",
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert assessment["adjudicable"] is True
+    assert assessment["current_source_visible"] is True
+    assert assessment["current_source_hit_count"] == 1
+    assert assessment["matched_labels"] == ["Music"]
+    assert assessment["matched_packages"] == [
+        "com.google.android.documentsui"
+    ]
+
+
+@pytest.mark.parametrize(
+    "elements",
+    [
+        source_context_elements(center_y=0.42),
+        source_context_elements(label="Ringtones"),
+        source_context_elements(package_name="files"),
+        [],
+    ],
+)
+def test_post_destination_source_context_denies_root_tile_or_unbound_state(
+    elements: list[dict],
+) -> None:
+    assessment = post_destination_source_context_assessment(
+        elements,
+        required_source_text="Music",
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert assessment["current_source_visible"] is False
+
+
+def test_post_destination_source_context_requires_back_only_after_commit() -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(
+        goal="Move a file",
+        required_source_text="Music",
+    )
+    assessment = post_destination_source_context_assessment(
+        source_context_elements(),
+        required_source_text="Music",
+        screen_width=1080,
+        screen_height=2400,
+    )
+    swipe = {
+        "type": "swipe",
+        "x": 0.5,
+        "y": 0.8,
+        "x2": 0.5,
+        "y2": 0.2,
+        "duration_ms": 500,
+    }
+    guard.validate_decision(
+        decision(swipe),
+        page_sha256="source-pre-commit",
+        post_destination_source_context_assessment=assessment,
+    )
+    guard.post_destination_commit_active = True
+    with pytest.raises(
+        ActionValidationError,
+        match="POST_DESTINATION_SOURCE_EXIT_GUARD",
+    ):
+        guard.validate_decision(
+            decision(swipe),
+            page_sha256="source-post-commit",
+            post_destination_source_context_assessment=assessment,
+        )
+    guard.validate_decision(
+        decision({"type": "press_back"}),
+        page_sha256="source-post-commit",
+        post_destination_source_context_assessment=assessment,
+    )
+    guard.validate_decision(
+        decision(swipe),
+        page_sha256="source-picker-active",
+        destination_picker_is_active=True,
+        post_destination_source_context_assessment=assessment,
+    )
+    root_assessment = post_destination_source_context_assessment(
+        source_context_elements(center_y=0.42),
+        required_source_text="Music",
+        screen_width=1080,
+        screen_height=2400,
+    )
+    guard.validate_decision(
+        decision(swipe),
+        page_sha256="storage-root",
+        post_destination_source_context_assessment=root_assessment,
+    )
+    audit = guard.audit_record()
+    assert audit["required_source_text"] == "Music"
+    assert audit["post_destination_source_exit_block_count"] == 1
 
 
 def test_post_destination_navigation_binds_exact_files_folder() -> None:

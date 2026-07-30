@@ -526,6 +526,99 @@ def post_destination_verification_navigation_assessment(
     }
 
 
+def post_destination_source_context_assessment(
+    ui_elements: Any,
+    *,
+    required_source_text: str | None,
+    screen_width: int,
+    screen_height: int,
+) -> dict[str, Any]:
+    """Detect the exact task source as the current Android Files directory."""
+    required_label = _normalized_text(required_source_text)
+    current_directory_hits: list[dict[str, Any]] = []
+    for element in ui_elements or ():
+        package_name = _normalized_text(
+            _element_value(element, "package_name")
+        )
+        if package_name not in ANDROID_FILES_PACKAGES:
+            continue
+        if _element_value(element, "is_visible") is not True:
+            continue
+        if _element_value(element, "is_enabled") is not True:
+            continue
+        labels = [
+            label
+            for field in (
+                "text",
+                "content_description",
+                "hint_text",
+                "tooltip",
+            )
+            if (
+                label := _normalized_text(
+                    _element_value(element, field)
+                )
+            )
+            is not None
+        ]
+        if (
+            required_label is None
+            or not any(
+                label.casefold() == required_label.casefold()
+                for label in labels
+            )
+        ):
+            continue
+        bbox = _normalized_element_bbox(
+            element,
+            screen_width=screen_width,
+            screen_height=screen_height,
+        )
+        if bbox is None:
+            continue
+        x_min, x_max, y_min, y_max = bbox
+        center_y = (y_min + y_max) / 2.0
+        # Android Files renders the current title and breadcrumb in its top
+        # navigation region. A same-named folder tile at storage-root level
+        # sits below this boundary and must remain navigable.
+        if center_y > 0.20:
+            continue
+        current_directory_hits.append(
+            {
+                "package_name": package_name,
+                "labels": labels,
+                "normalized_bbox": {
+                    "x_min": round(x_min, 6),
+                    "x_max": round(x_max, 6),
+                    "y_min": round(y_min, 6),
+                    "y_max": round(y_max, 6),
+                },
+                "center_y": round(center_y, 6),
+            }
+        )
+    return {
+        "schema_version": "post_destination_source_context_assessment.v1",
+        "adjudicable": bool(ui_elements and required_label),
+        "required_source_text": required_label,
+        "current_source_hit_count": len(current_directory_hits),
+        "matched_labels": sorted(
+            {
+                label
+                for hit in current_directory_hits
+                for label in hit["labels"]
+            }
+        ),
+        "matched_packages": sorted(
+            {
+                hit["package_name"]
+                for hit in current_directory_hits
+            }
+        ),
+        "current_directory_hits": current_directory_hits,
+        "current_source_visible": bool(current_directory_hits),
+    }
+
+
 def declared_text_source_assessment(
     goal: str,
     ui_elements: Any,
@@ -1481,10 +1574,12 @@ class ProtocolV2DecisionGuard:
         goal: str,
         required_selection_text: str | None = None,
         required_destination_text: str | None = None,
+        required_source_text: str | None = None,
     ) -> None:
         self.goal = goal
         self.required_selection_text = required_selection_text
         self.required_destination_text = required_destination_text
+        self.required_source_text = required_source_text
         self.no_effect_counts: dict[tuple[str, str], int] = defaultdict(int)
         self.blocked_fingerprints: set[tuple[str, str]] = set()
         self.transition_fingerprints: list[tuple[str, str, str]] = []
@@ -1503,6 +1598,7 @@ class ProtocolV2DecisionGuard:
         self.destination_picker_commit_count = 0
         self.post_destination_commit_block_count = 0
         self.post_destination_commit_active = False
+        self.post_destination_source_exit_block_count = 0
         self.post_destination_verification_navigation_count = 0
         self.post_destination_verification_navigation_records: list[
             dict[str, Any]
@@ -1669,6 +1765,9 @@ class ProtocolV2DecisionGuard:
             dict[str, Any] | None
         ) = None,
         allow_visible_control_activation_repeat: bool = False,
+        post_destination_source_context_assessment: (
+            dict[str, Any] | None
+        ) = None,
     ) -> None:
         self._validate_text_provenance(
             decision,
@@ -1682,6 +1781,36 @@ class ProtocolV2DecisionGuard:
         if not isinstance(action, dict):
             return
         action_key = canonical_action_key(action)
+        source_context_assessment = (
+            post_destination_source_context_assessment or {}
+        )
+        if (
+            self.post_destination_commit_active
+            and not destination_picker_is_active
+            and source_context_assessment.get("current_source_visible")
+            is True
+            and action.get("type") != "press_back"
+        ):
+            record = {
+                "semantic_state_sha256": page_sha256,
+                "action": action,
+                "reason": "post_destination_source_exit_required",
+                "post_destination_source_context_assessment": (
+                    source_context_assessment
+                ),
+                "required_recovery_classes": ["navigate_back"],
+            }
+            self.validation_blocks.append(record)
+            self.post_destination_source_exit_block_count += 1
+            raise ActionValidationError(
+                "POST_DESTINATION_SOURCE_EXIT_GUARD: one bottom Copy/Move "
+                "commit already executed, and current Android Files "
+                "accessibility still identifies the exact task source "
+                "folder as the current top-level directory. Do not scroll, "
+                "search, type, select, wait, or start another mutation here. "
+                "Press Back exactly once, then observe the parent directory "
+                "before navigating to the requested destination."
+            )
         if (
             self.input_activation_repair_pending
             and action.get("type") == "tap"
@@ -2456,6 +2585,7 @@ class ProtocolV2DecisionGuard:
             ),
             "required_selection_text": self.required_selection_text,
             "required_destination_text": self.required_destination_text,
+            "required_source_text": self.required_source_text,
             "blocked_fingerprint_count": len(self.blocked_fingerprints),
             "validation_block_count": len(self.validation_blocks),
             "identical_coordinate_block_count": (
@@ -2478,6 +2608,9 @@ class ProtocolV2DecisionGuard:
             ),
             "post_destination_commit_active": (
                 self.post_destination_commit_active
+            ),
+            "post_destination_source_exit_block_count": (
+                self.post_destination_source_exit_block_count
             ),
             "post_destination_verification_navigation_count": (
                 self.post_destination_verification_navigation_count

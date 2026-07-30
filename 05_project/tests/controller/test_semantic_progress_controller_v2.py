@@ -467,6 +467,62 @@ class PostCommitVerificationClient:
         )
 
 
+class CommitThenSourceBrowseClient:
+    def __init__(self, *, valid_repair: bool = True) -> None:
+        self.valid_repair = valid_repair
+        self.requests: list[dict] = []
+
+    def generate(self, **kwargs) -> ModelCall:
+        self.requests.append(kwargs)
+        label = kwargs["call_label"]
+        if label.startswith("step_000"):
+            action = {"type": "tap", "x": 0.38, "y": 0.945}
+            summary = "Tap the MOVE button to confirm the move."
+        elif label.endswith("_repair"):
+            action = (
+                {"type": "press_back"}
+                if self.valid_repair
+                else {"type": "tap", "x": 0.82, "y": 0.08}
+            )
+            summary = "Leave the exact source directory after the move."
+        else:
+            action = {
+                "type": "swipe",
+                "x": 0.5,
+                "y": 0.8,
+                "x2": 0.5,
+                "y2": 0.2,
+                "duration_ms": 500,
+            }
+            summary = "Swipe up in Music to search for the moved file."
+        decision = {
+            "status": "continue",
+            "action": action,
+            "expected_outcome": "The file workflow advances.",
+            "decision_summary": summary,
+            "state_delta": [],
+            "memory_citations": [],
+            "completion_evidence": [],
+        }
+        return ModelCall(
+            call_id=label,
+            episode_id=kwargs["episode_id"],
+            idempotency_key=label,
+            image_sha256="0" * 64,
+            image_sha256s=("0" * 64,),
+            prompt_sha256=label,
+            request_sha256=label,
+            response_sha256=label,
+            content=json.dumps(decision),
+            usage={
+                "prompt_tokens": 1,
+                "completion_tokens": 1,
+                "total_tokens": 2,
+            },
+            raven_meta={},
+        )
+
+
 class NavigationOverrideProbePolicy(HistoryPolicy):
     variant = "M0"
 
@@ -1306,6 +1362,101 @@ class PostCommitVerificationEnv(DestinationPickerEnv):
         self.execute_count += 1
 
 
+class PostCommitSourceExitEnv(DestinationPickerEnv):
+    def get_state(self, wait_to_stabilize: bool):
+        assert wait_to_stabilize
+        if self.execute_count == 0:
+            elements = [
+                SimpleNamespace(
+                    package_name="com.google.android.documentsui",
+                    text="CANCEL",
+                    is_visible=True,
+                    is_enabled=True,
+                    bbox=SimpleNamespace(
+                        x_min=0.03,
+                        x_max=0.26,
+                        y_min=0.91,
+                        y_max=0.98,
+                    ),
+                ),
+                SimpleNamespace(
+                    package_name="com.google.android.documentsui",
+                    text="MOVE",
+                    is_visible=True,
+                    is_enabled=True,
+                    bbox=SimpleNamespace(
+                        x_min=0.28,
+                        x_max=0.50,
+                        y_min=0.91,
+                        y_max=0.98,
+                    ),
+                ),
+            ]
+        elif self.execute_count == 1:
+            elements = [
+                SimpleNamespace(
+                    package_name="com.google.android.documentsui",
+                    text="Music",
+                    is_visible=True,
+                    is_enabled=True,
+                    is_clickable=False,
+                    is_editable=False,
+                    bbox=SimpleNamespace(
+                        x_min=0.15,
+                        x_max=0.55,
+                        y_min=0.05,
+                        y_max=0.11,
+                    ),
+                )
+            ]
+        else:
+            elements = [
+                SimpleNamespace(
+                    package_name="com.google.android.documentsui",
+                    text="Music",
+                    is_visible=True,
+                    is_enabled=True,
+                    is_clickable=True,
+                    is_editable=False,
+                    bbox=SimpleNamespace(
+                        x_min=0.55,
+                        x_max=0.90,
+                        y_min=0.38,
+                        y_max=0.46,
+                    ),
+                ),
+                SimpleNamespace(
+                    package_name="com.google.android.documentsui",
+                    text="Ringtones",
+                    is_visible=True,
+                    is_enabled=True,
+                    is_clickable=True,
+                    is_editable=False,
+                    bbox=SimpleNamespace(
+                        x_min=0.06,
+                        x_max=0.49,
+                        y_min=0.63,
+                        y_max=0.72,
+                    ),
+                ),
+            ]
+        return SimpleNamespace(
+            pixels=np.full(
+                (100, 100, 3),
+                min(self.execute_count, 2),
+                dtype=np.uint8,
+            ),
+            ui_elements=elements,
+        )
+
+    def execute_action(self, action) -> None:
+        if self.execute_count == 0:
+            assert action.action_type == "click"
+        else:
+            assert action.action_type == "navigate_back"
+        self.execute_count += 1
+
+
 class ExactTargetGridEnv(DestinationPickerEnv):
     def get_state(self, wait_to_stabilize: bool):
         assert wait_to_stabilize
@@ -1765,6 +1916,7 @@ class FilesTask:
     params = {
         "file_name": "nature_sounds.mp3",
         "destination_folder": "Ringtones",
+        "source_folder": "Music",
     }
 
     def initialize_task(self, env) -> None:
@@ -2573,6 +2725,88 @@ def test_controller_rejects_wait_after_post_commit_completion_rejection(
     error = summary["model_output_error"]
     assert error["initial_validation_error"].startswith(
         "Completion critic rejected completion:"
+    )
+    assert "REPAIR_CONTRACT_GUARD" in error["repair_validation_error"]
+    assert "post-destination repair" in error["repair_validation_error"]
+
+
+def test_controller_repairs_post_commit_source_browse_to_back(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = PostCommitSourceExitEnv()
+    client = CommitThenSourceBrowseClient()
+    controller = EpisodeController(
+        client=client,  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=2,
+        max_model_calls=3,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="post-commit-source-exit-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="M0",
+    )
+    assert env.execute_count == 2
+    assert summary["model_call_count"] == 3
+    source_exit_step = summary["steps"][1]
+    assert source_exit_step["decision"]["action"] == {"type": "press_back"}
+    assert source_exit_step["parse"]["model_repair_used"]
+    assert source_exit_step["parse"]["initial_validation_error"].startswith(
+        "POST_DESTINATION_SOURCE_EXIT_GUARD:"
+    )
+    assessment = source_exit_step["parse"][
+        "post_destination_source_context_assessment"
+    ]
+    assert assessment["current_source_visible"] is True
+    assert assessment["matched_labels"] == ["Music"]
+    assert summary["protocol_v2_guard"][
+        "post_destination_source_exit_block_count"
+    ] == 1
+    repair_prompt = client.requests[2]["user_prompt"]
+    assert 'exactly {"type":"press_back"}' in repair_prompt
+    assert "Do not tap, wait, swipe, type" in repair_prompt
+
+
+def test_controller_rejects_non_back_source_exit_repair(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = PostCommitSourceExitEnv()
+    controller = EpisodeController(
+        client=CommitThenSourceBrowseClient(
+            valid_repair=False
+        ),  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=2,
+        max_model_calls=3,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="post-commit-source-exit-invalid-repair-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="M0",
+    )
+    assert env.execute_count == 1
+    assert summary["failure_code"] == "MODEL_OUTPUT_INVALID_AFTER_REPAIR"
+    error = summary["model_output_error"]
+    assert error["initial_validation_error"].startswith(
+        "POST_DESTINATION_SOURCE_EXIT_GUARD:"
     )
     assert "REPAIR_CONTRACT_GUARD" in error["repair_validation_error"]
     assert "post-destination repair" in error["repair_validation_error"]
