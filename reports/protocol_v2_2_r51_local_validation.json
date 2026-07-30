@@ -1,0 +1,91 @@
+{
+  "schema_version": "protocol_v2_2_r51_local_validation.v1",
+  "recorded_at": "2026-07-31T03:04:44+08:00",
+  "status": "local_pass_live_files_smoke_required",
+  "branch": "protocol-v2-exploratory",
+  "parent_commit": "56c03b619b8280c1cc603222b1b37ea26b8f2478",
+  "candidate_commit": "ee6f04a4624e964266836354e1e35a289f52aef9",
+  "source_tag": "protocol-v2-2-r51-local-candidate",
+  "trigger": {
+    "source_suite": "nonhard_capability_v2_2_seed20260729_r50_candidate_development_smoke_sequence_4",
+    "task": "FilesMoveFile",
+    "variant": "M0",
+    "native_reward": 1.0,
+    "termination_reason": "max_steps",
+    "source_exit_live_triggered": true,
+    "destination_navigation_step": 18,
+    "exact_label_hit_count": 1,
+    "clickable_hit_count": 0,
+    "destination_entered": true,
+    "r49_branch_live_triggered": false,
+    "root_cause": "the real Android Files root row exposed the exact Ringtones text hit but no separately clickable accessibility ancestor"
+  },
+  "change": {
+    "assessment_schema": "post_destination_verification_navigation_assessment.v2",
+    "post_destination_commit_required": true,
+    "destination_picker_inactive_required": true,
+    "task_destination_parameter_required": true,
+    "exact_destination_label_required": true,
+    "android_files_package_required": true,
+    "visible_enabled_required": true,
+    "bounded_accessibility_required": true,
+    "noneditable_required": true,
+    "content_region_min_center_y_exclusive": 0.2,
+    "commit_like_denied": true,
+    "clickable_container_required": false,
+    "clickable_container_audited": true,
+    "source_exit_guard_preserved": true,
+    "second_mutation_allowed": false,
+    "prompt_changed": false,
+    "guard_threshold_changed": false,
+    "action_budget_changed": false
+  },
+  "validation": {
+    "pytest_collected": 389,
+    "pytest_passed": 389,
+    "pytest_exit_code": 0,
+    "focused_tests": 139,
+    "focused_tests_passed": 139,
+    "compileall_exit_code": 0,
+    "git_diff_check_exit_code": 0,
+    "protocol_v1_seal": {
+      "file_count": 197,
+      "failure_count": 0,
+      "passed": true
+    },
+    "full_chain_positive": {
+      "destination_picker_commit_executed": true,
+      "exact_destination_label": "Ringtones",
+      "clickable_container_present": false,
+      "content_exact_label_hit_count": 1,
+      "verification_action_executed": true,
+      "risk_class": "observe_navigation",
+      "post_destination_verification_navigation_count": 1
+    },
+    "negative_unit_regressions": {
+      "top_region_label_denied": true,
+      "editable_label_denied": true,
+      "compound_commit_label_denied": true,
+      "wrong_label_denied": true,
+      "non_files_package_denied": true,
+      "absent_accessibility_denied": true,
+      "pre_commit_not_counted": true
+    }
+  },
+  "current_file_sha256": {
+    "05_project/src/raven_m/controller/episode_controller.py": "10946b4511461cad0fde17ba8ba7de9634c53976076dd5c46fa5766ee29ba77b",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "be6039ea3de40dffa51376fc5132a536d4f0e79f669e46d5bb1c65cbecd9c4ff",
+    "05_project/tests/controller/test_protocol_v2_guard.py": "936feab58299cdcd3c2cf9c88cfa790311e5b0ba822ef9c6eb579bd69bc24e5a",
+    "05_project/tests/controller/test_semantic_progress_controller_v2.py": "3cfa02409159afba8b2b23c3715f2ca6e9f469356d7d87451cd5d8a51c33f9bd",
+    "05_project/prompts/planner_v1.md": "41539b48a656218f4c3f334ce88c5a51f568f550948c4b9ccafe782175949ea5"
+  },
+  "evidence_boundary": {
+    "server_or_gpu_run_after_source_change": false,
+    "development_smoke_authorized": true,
+    "gate_d_authorized": false,
+    "formal_gate_e_authorized": false,
+    "automatic_gate_f_transition": false,
+    "next_step": "run one fresh isolated non-scored M0 FilesMoveFile smoke under a new r51 development namespace after zero-call preflight"
+  }
+}
+

@@ -141,6 +141,10 @@ Raw trajectories are under `runs/excluded_protocol_dry_run/` and
 | `reports/protocol_v2_2_r50_candidate_preflight.json` | source, 27-file freeze, four instances, exact model, emulator, and fresh smoke directory | passed |
 | `reports/protocol_v2_2_r50_m0_files_smoke.json` | machine-readable native success, live source-exit qualification, and over-constrained destination-navigation evidence | Gate D withheld |
 | `reports/protocol_v2_2_r50_m0_files_smoke.md` | human-readable r50 trajectory audit and bounded r51 scope | current |
+| `04_protocols/protocol_v2_2_r51_candidate_addendum.md` | exact Android Files destination content-label binding with top-region and commit denials | local candidate |
+| `reports/protocol_v2_2_r51_local_validation.json` | machine-readable 389-test, real-shape full-chain, negative-case, and v1-seal evidence | passed locally |
+| `reports/protocol_v2_2_r51_local_validation.md` | human-readable r51 rationale, safety boundary, and next live action | current |
+| `05_project/scripts/run_protocol_v2_2_r51_candidate_smoke.py` | isolated r51 M0 Files smoke entry point | ready |
 
 The r39 raw trajectories are under
 `runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/` and remain

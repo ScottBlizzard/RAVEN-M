@@ -1,0 +1,72 @@
+# Protocol-v2.2 r51 development-candidate addendum
+
+Status: locally qualified; one fresh M0 Files smoke authorized
+
+This addendum follows the immutable r50 development smoke. It preserves
+r50's native task success, live-qualified source-exit behavior, one-commit
+boundary, and all prior protocol artifacts.
+
+## Exact destination content-label binding
+
+In the r50 smoke, the post-commit step-18 tap overlapped the exact visible
+`Ringtones` label in the Android Files storage root. The semantic UI changed
+and Android Files entered `Ringtones`, but the r49/r50 assessment returned
+`permitted=false`: the exact label hit count was one while the separately
+clickable hit count was zero. The real Files root row did not expose a
+clickable accessibility ancestor at that coordinate.
+
+r51 removes only that unsupported clickable-ancestor requirement. A
+post-commit tap is exact destination-verification navigation only when the
+task's exact `destination_folder` label:
+
+- belongs to `com.google.android.documentsui`;
+- is explicitly visible and enabled;
+- has a valid accessibility bounding box containing the tap;
+- is not editable;
+- is centered below the top 20% of the screen; and
+- is not itself, or paired at that coordinate with, a commit-like control.
+
+The content-region constraint distinguishes a root folder row/card from a
+same-named current-directory title or breadcrumb. A separately clickable
+ancestor remains recorded as optional audit evidence but is no longer
+required. Exact hit geometry, center position, editability, labels, package,
+and commit classification are persisted in the v2 assessment.
+
+## Preserved boundary
+
+The allowance still activates only after one destination-picker commit and
+while the picker is inactive. It does not apply to:
+
+- a wrong or absent destination label;
+- a non-Files package;
+- a top-region title or breadcrumb;
+- an editable target;
+- a commit-like target;
+- a non-tap action;
+- pre-commit navigation; or
+- any repeated transfer, file selection, text entry, or other mutation.
+
+r50's exact source-directory exit, completion critic, task-literal
+provenance, loop, readiness, action-budget, model-budget, schema, memory,
+evaluator, and Protocol-v1 behavior are unchanged.
+
+## Qualification boundary
+
+The deterministic real-shape regression contains the exact nonclickable
+`Ringtones` text node without any clickable parent. It is classified as
+observe-navigation, bypasses only the generic false-positive consequential
+critic, executes after one MOVE, and increments the post-destination
+verification-navigation counter. Negative tests retain the top-region,
+editable, compound commit-label, wrong-label, non-Files, empty-state, and
+pre-commit denials.
+
+The exact candidate passed 389/389 project tests, 139/139 focused guard,
+controller, and full-memory-policy tests, `compileall`, `git diff --check`,
+and the unchanged 197/197 Protocol-v1 breadth seal.
+
+Only one new, isolated, non-scored M0 `FilesMoveFile` smoke is authorized
+after a fresh zero-call preflight. It must verify one mutation, live
+source-exit consumption, live exact destination content-label consumption,
+native reward, valid bounded repairs, and clean infrastructure accounting.
+It does not authorize formal Gate E or Gate F.
+
