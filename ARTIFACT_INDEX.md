@@ -107,6 +107,7 @@ Raw trajectories are under `runs/excluded_protocol_dry_run/` and
 | `reports/protocol_v2_2_r46_local_validation.json` | machine-readable 359-test, exact failure-shape, and v1-seal evidence | passed locally |
 | `reports/protocol_v2_2_r46_local_validation.md` | human-readable r46 rationale, compatibility, and next live action | current |
 | `05_project/scripts/run_protocol_v2_2_r46_candidate_smoke.py` | isolated r46 M0 Contacts smoke entry point | ready |
+| `reports/protocol_v2_2_r46_candidate_preflight.json` | source, 27-file freeze, four instances, model, emulator, and fresh smoke directory | passed |
 
 The r39 raw trajectories are under
 `runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/` and remain
