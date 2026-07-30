@@ -1656,6 +1656,7 @@ class ProtocolV2DecisionGuard:
         self.input_activation_action_key: str | None = None
         self.input_activation_proof_count = 0
         self.input_activation_proof_consumed_count = 0
+        self.post_activation_clear_text_block_count = 0
         self.input_activation_repeat_override_count = 0
         self.visible_control_activation_repeat_override_fingerprints: set[
             tuple[str, str]
@@ -2008,6 +2009,35 @@ class ProtocolV2DecisionGuard:
                 "observe the next screen before navigating or typing."
             )
         text_target_assessment = coordinate_text_target_assessment or {}
+        if (
+            self.input_activation_repair_pending
+            and action.get("type") == "type_text"
+            and action.get("clear_text") is True
+            and focused_assessment.get("present") is not True
+        ):
+            record = {
+                "semantic_state_sha256": page_sha256,
+                "action": action,
+                "reason": "post_activation_clear_text_focus_unconfirmed",
+                "focused_input_assessment": focused_assessment,
+                "coordinate_text_target_assessment": (
+                    text_target_assessment
+                ),
+                "required_recovery_classes": [
+                    "preserve_activated_input_without_clear",
+                ],
+            }
+            self.validation_blocks.append(record)
+            self.post_activation_clear_text_block_count += 1
+            raise ActionValidationError(
+                "POST_ACTIVATION_CLEAR_TEXT_GUARD: the immediately "
+                "preceding bounded repair executed an input-activation tap, "
+                "but current accessibility does not expose an actually "
+                "focused editable node. A visible soft keyboard alone does "
+                "not prove that Ctrl+A will reach the input; it can select "
+                "the surrounding UI. Keep the exact same task-bound text "
+                "and provenance, omit x and y, and set clear_text=false."
+            )
         coordinate_bearing_type_text = (
             action.get("type") == "type_text"
             and ("x" in action or "y" in action)
@@ -2688,6 +2718,9 @@ class ProtocolV2DecisionGuard:
             ),
             "input_activation_proof_consumed_count": (
                 self.input_activation_proof_consumed_count
+            ),
+            "post_activation_clear_text_block_count": (
+                self.post_activation_clear_text_block_count
             ),
             "input_activation_repeat_override_count": (
                 self.input_activation_repeat_override_count

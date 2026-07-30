@@ -799,6 +799,58 @@ class RepeatedActivationRecoveryClient:
         )
 
 
+class PostActivationClearTextClient:
+    def __init__(self, *, valid_repair: bool = True) -> None:
+        self.requests: list[dict] = []
+        self.valid_repair = valid_repair
+
+    def generate(self, **kwargs) -> ModelCall:
+        self.requests.append(kwargs)
+        label = kwargs["call_label"]
+        if label == "step_000_repair":
+            action = {"type": "tap", "x": 0.5, "y": 0.075}
+            summary = "Activate the visible Search input."
+        else:
+            action = {
+                "type": "type_text",
+                "text": "nature_sounds.mp3",
+                "text_origin": "task_literal",
+                "source_memory_ids": [],
+                "clear_text": not (
+                    label == "step_001_repair" and self.valid_repair
+                ),
+            }
+            if label != "step_001_repair":
+                action.update(x=0.5, y=0.075)
+            summary = "Enter the exact filename into Search."
+        decision = {
+            "status": "continue",
+            "action": action,
+            "expected_outcome": "The exact filename appears in Search.",
+            "decision_summary": summary,
+            "state_delta": [],
+            "memory_citations": [],
+            "completion_evidence": [],
+        }
+        return ModelCall(
+            call_id=label,
+            episode_id=kwargs["episode_id"],
+            idempotency_key=label,
+            image_sha256="0" * 64,
+            image_sha256s=("0" * 64,),
+            prompt_sha256=label,
+            request_sha256=label,
+            response_sha256=label,
+            content=json.dumps(decision),
+            usage={
+                "prompt_tokens": 1,
+                "completion_tokens": 1,
+                "total_tokens": 2,
+            },
+            raven_meta={},
+        )
+
+
 class VisibleControlActivationRetryClient:
     def __init__(self) -> None:
         self.requests: list[dict] = []
@@ -1676,6 +1728,72 @@ class RepeatedActivationInputEnv(DestinationPickerEnv):
         assert action.text == "nature_sounds.mp3"
         self.input_count += 1
         self.value = action.text
+
+
+class PostActivationKeyboardOnlyEnv(DestinationPickerEnv):
+    def __init__(self) -> None:
+        super().__init__()
+        self.value = ""
+
+    def get_state(self, wait_to_stabilize: bool):
+        assert wait_to_stabilize
+        elements = [
+            SimpleNamespace(
+                package_name="com.google.android.documentsui",
+                text="",
+                hint_text="Search",
+                class_name="android.widget.EditText",
+                is_visible=True,
+                is_enabled=True,
+                is_editable=True,
+                is_focused=False,
+                bbox=SimpleNamespace(
+                    x_min=0.20,
+                    x_max=0.90,
+                    y_min=0.05,
+                    y_max=0.10,
+                ),
+            ),
+        ]
+        if self.execute_count:
+            elements.append(
+                SimpleNamespace(
+                    package_name="com.google.android.inputmethod.latin",
+                    text="q",
+                    is_visible=True,
+                    is_enabled=True,
+                    is_editable=False,
+                    is_focused=False,
+                    bbox=SimpleNamespace(
+                        x_min=0.0,
+                        x_max=1.0,
+                        y_min=0.55,
+                        y_max=1.0,
+                    ),
+                )
+            )
+        return SimpleNamespace(
+            pixels=np.full(
+                (100, 100, 3),
+                self.execute_count,
+                dtype=np.uint8,
+            ),
+            ui_elements=elements,
+        )
+
+    def execute_action(self, action) -> None:
+        if self.execute_count == 0:
+            assert action.action_type == "click"
+            assert action.x == 50
+            assert action.y in {7, 8}
+        else:
+            assert action.action_type == "input_text"
+            assert action.x is None
+            assert action.y is None
+            assert action.clear_text is False
+            assert action.text == "nature_sounds.mp3"
+            self.value = action.text
+        self.execute_count += 1
 
 
 class VisibleControlActivationRetryEnv(DestinationPickerEnv):
@@ -3157,6 +3275,93 @@ def test_controller_repairs_unfocused_clear_text_to_input_activation(
     assert "action.type must not be type_text" in repair_prompt
     assert "Tap that same visibly supported input control" in repair_prompt
     assert "Do not send Ctrl+A to an unfocused screen" in repair_prompt
+
+
+def test_controller_repairs_post_activation_clear_text_without_focused_editable(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = PostActivationKeyboardOnlyEnv()
+    client = PostActivationClearTextClient()
+    controller = EpisodeController(
+        client=client,  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=2,
+        max_model_calls=4,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="post-activation-clear-text-repair-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="M0",
+    )
+    assert env.execute_count == 2
+    assert env.value == "nature_sounds.mp3"
+    assert summary["model_call_count"] == 4
+    repaired = summary["steps"][1]
+    assert repaired["decision"]["action"] == {
+        "type": "type_text",
+        "text": "nature_sounds.mp3",
+        "text_origin": "task_literal",
+        "source_memory_ids": [],
+        "clear_text": False,
+    }
+    assert repaired["parse"]["model_repair_used"] is True
+    assert repaired["parse"]["initial_validation_error"].startswith(
+        "POST_ACTIVATION_CLEAR_TEXT_GUARD:"
+    )
+    audit = summary["protocol_v2_guard"]
+    assert audit["post_activation_clear_text_block_count"] == 1
+    assert audit["input_activation_proof_count"] == 1
+    assert audit["input_activation_proof_consumed_count"] == 1
+    assert audit["input_activation_repair_pending"] is False
+    repair_prompt = client.requests[3]["user_prompt"]
+    assert "exact same text" in repair_prompt
+    assert "clear_text=false" in repair_prompt
+    assert "send Ctrl+A" in repair_prompt
+
+
+def test_controller_rejects_unsafe_post_activation_clear_text_repair(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = PostActivationKeyboardOnlyEnv()
+    controller = EpisodeController(
+        client=PostActivationClearTextClient(
+            valid_repair=False
+        ),  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=2,
+        max_model_calls=4,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="post-activation-clear-text-invalid-repair-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="M0",
+    )
+    assert env.execute_count == 1
+    assert summary["failure_code"] == "MODEL_OUTPUT_INVALID_AFTER_REPAIR"
+    error = summary["model_output_error"]
+    assert error["initial_validation_error"].startswith(
+        "POST_ACTIVATION_CLEAR_TEXT_GUARD:"
+    )
+    assert "REPAIR_CONTRACT_GUARD" in error["repair_validation_error"]
+    assert "clear_text=false" in error["repair_validation_error"]
 
 
 def test_controller_allows_one_bounded_repeat_to_activate_input(

@@ -278,6 +278,17 @@ def test_input_activation_proof_rejects_coordinate_text_only() -> None:
         "visible_editable_count": 3,
         "boxed_editable_count": 3,
     }
+    focused = {
+        "schema_version": "focused_editable_input_assessment.v2",
+        "present": True,
+        "focused_count": 1,
+        "empty": True,
+        "soft_keyboard_present": True,
+        "soft_keyboard_packages": [
+            "com.google.android.inputmethod.latin"
+        ],
+        "input_ready": True,
+    }
     with pytest.raises(
         ActionValidationError,
         match="POST_ACTIVATION_INPUT_READY",
@@ -286,6 +297,7 @@ def test_input_activation_proof_rejects_coordinate_text_only() -> None:
             decision(coordinate_action),
             page_sha256="same",
             coordinate_text_target_assessment=target,
+            focused_input_assessment=focused,
         )
     repaired = {
         **coordinate_action,
@@ -302,7 +314,69 @@ def test_input_activation_proof_rejects_coordinate_text_only() -> None:
             "matched": False,
             "matched_editable_count": 0,
         },
+        focused_input_assessment=focused,
     )
+
+
+def test_post_activation_clear_text_requires_actual_focused_editable() -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(goal="Search for the exact file")
+    guard.mark_input_activation_repair(
+        {"type": "tap", "x": 0.5, "y": 0.08}
+    )
+    unsafe = {
+        "type": "type_text",
+        "text": "nature_sounds.mp3",
+        "text_origin": "task_literal",
+        "source_memory_ids": [],
+        "clear_text": True,
+    }
+    keyboard_only = {
+        "schema_version": "focused_editable_input_assessment.v2",
+        "present": False,
+        "focused_count": 0,
+        "empty": False,
+        "soft_keyboard_present": True,
+        "soft_keyboard_packages": [
+            "com.google.android.inputmethod.latin"
+        ],
+        "input_ready": True,
+    }
+    with pytest.raises(
+        ActionValidationError,
+        match="POST_ACTIVATION_CLEAR_TEXT_GUARD",
+    ):
+        guard.validate_decision(
+            decision(unsafe),
+            page_sha256="keyboard-only",
+            focused_input_assessment=keyboard_only,
+        )
+    guard.validate_decision(
+        decision({**unsafe, "clear_text": False}),
+        page_sha256="keyboard-only",
+        focused_input_assessment=keyboard_only,
+    )
+    assert guard.audit_record()[
+        "post_activation_clear_text_block_count"
+    ] == 1
+
+    focused_guard = ProtocolV2DecisionGuard()
+    focused_guard.reset(goal="Replace text in a focused field")
+    focused_guard.mark_input_activation_repair(
+        {"type": "tap", "x": 0.5, "y": 0.08}
+    )
+    focused_guard.validate_decision(
+        decision(unsafe),
+        page_sha256="focused-editable",
+        focused_input_assessment={
+            **keyboard_only,
+            "present": True,
+            "focused_count": 1,
+        },
+    )
+    assert focused_guard.audit_record()[
+        "post_activation_clear_text_block_count"
+    ] == 0
 
 
 def test_focused_editable_input_assessment_uses_visible_state_only() -> None:

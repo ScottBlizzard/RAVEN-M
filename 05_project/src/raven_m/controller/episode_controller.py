@@ -623,6 +623,7 @@ class EpisodeController:
             "FOCUSED_INPUT_GUARD:",
             "FOCUSED_EMPTY_TAP_GUARD:",
             "POST_ACTIVATION_INPUT_GUARD:",
+            "POST_ACTIVATION_CLEAR_TEXT_GUARD:",
             "UNFOCUSED_CLEAR_TEXT_GUARD:",
             "TEXT_TARGET_GUARD:",
             "DECLARED_TEXT_SOURCE_GUARD:",
@@ -648,6 +649,9 @@ class EpisodeController:
         )
         post_activation_input_rejected = error.startswith(
             "POST_ACTIVATION_INPUT_GUARD:"
+        )
+        post_activation_clear_text_rejected = error.startswith(
+            "POST_ACTIVATION_CLEAR_TEXT_GUARD:"
         )
         unfocused_clear_text_rejected = error.startswith(
             "UNFOCUSED_CLEAR_TEXT_GUARD:"
@@ -819,6 +823,16 @@ class EpisodeController:
                 "repair. Otherwise choose one non-commit action that leaves "
                 "the unspecified field untouched. Do not repeat a navigation "
                 "action that has already produced no semantic progress.\n"
+            )
+        elif post_activation_clear_text_rejected:
+            repair_directive = (
+                "\n\nThe preceding bounded repair executed an input-"
+                "activation tap, but current accessibility still does not "
+                "prove an actually focused editable node. For this one "
+                "repair, keep action.type=type_text and the exact same text, "
+                "text_origin, and source_memory_ids. Omit x and y and set "
+                "clear_text=false. Do not tap, navigate, change the text, "
+                "or send Ctrl+A on this unchanged screenshot.\n"
             )
         elif post_activation_input_rejected:
             repair_directive = (
@@ -1134,6 +1148,41 @@ class EpisodeController:
                         "the canonical coordinate geometry is "
                         f"{swipe_assessment['actual_direction']!r} "
                         f"({swipe_assessment['reason']})."
+                    )
+            if (
+                repair_contract_error
+                and repair_contract_error.startswith(
+                    "POST_ACTIVATION_CLEAR_TEXT_GUARD:"
+                )
+            ):
+                candidate_action = parsed_candidate.decision.get("action")
+                original_action = parse_action_response(
+                    initial.content,
+                    **parse_kwargs,
+                ).decision.get("action")
+                same_text_authority = bool(
+                    isinstance(candidate_action, dict)
+                    and isinstance(original_action, dict)
+                    and candidate_action.get("text")
+                    == original_action.get("text")
+                    and candidate_action.get("text_origin")
+                    == original_action.get("text_origin")
+                    and candidate_action.get("source_memory_ids")
+                    == original_action.get("source_memory_ids")
+                )
+                if (
+                    not isinstance(candidate_action, dict)
+                    or candidate_action.get("type") != "type_text"
+                    or candidate_action.get("clear_text") is not False
+                    or "x" in candidate_action
+                    or "y" in candidate_action
+                    or not same_text_authority
+                ):
+                    raise ActionValidationError(
+                        "REPAIR_CONTRACT_GUARD: "
+                        "POST_ACTIVATION_CLEAR_TEXT_GUARD permits only the "
+                        "same type_text text and provenance with no x/y and "
+                        "clear_text=false in this bounded repair."
                     )
             if (
                 repair_contract_error

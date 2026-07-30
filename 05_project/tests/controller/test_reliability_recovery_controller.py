@@ -289,13 +289,13 @@ def test_controller_uses_one_step_activation_proof_for_text_repair(
     )
     assert len(calls) == 2
     assert meta["model_repair_used"]
-    assert "POST_ACTIVATION_INPUT_READY" in (
+    assert "POST_ACTIVATION_CLEAR_TEXT_GUARD" in (
         meta["initial_validation_error"]
     )
     assert decision["action"] == repaired_action
     repair_prompt = client.requests[1]["user_prompt"]
-    assert "Keep action.type=type_text" in repair_prompt
-    assert "Remove x and y" in repair_prompt
+    assert "keep action.type=type_text" in repair_prompt
+    assert "Omit x and y" in repair_prompt
     assert "set clear_text=false" in repair_prompt
     assert "Educational" not in repair_prompt.split(
         "VALIDATION_ERROR:",
