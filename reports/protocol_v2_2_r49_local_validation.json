@@ -1,0 +1,98 @@
+{
+  "schema_version": "protocol_v2_2_r49_local_validation.v1",
+  "recorded_at": "2026-07-31T01:07:49+08:00",
+  "status": "local_pass_live_files_smoke_required",
+  "branch": "protocol-v2-exploratory",
+  "parent_commit": "b85984631b3ddd010273adf4fc224ebffb347caa",
+  "candidate_commit": "6ee10feb10786cdb710e5ea6a1710001b0cd24f5",
+  "source_tag": "protocol-v2-2-r49-local-candidate",
+  "trigger": {
+    "source_suite": "nonhard_capability_v2_2_seed20260729_r48",
+    "sequence": 4,
+    "variant": "M0",
+    "task": "FilesMoveFile",
+    "native_reward": 1.0,
+    "mutation_completed": true,
+    "blocked_action": {
+      "type": "tap",
+      "x": 0.25,
+      "y": 0.678
+    },
+    "blocked_visible_target": "Ringtones",
+    "root_cause": "summary-word heuristic sent a post-commit destination-navigation tap to the consequential-action critic, which circularly required the folder contents to be visible before permitting the tap that opens them"
+  },
+  "change": {
+    "post_destination_verification_navigation": true,
+    "post_destination_commit_required": true,
+    "destination_picker_inactive_required": true,
+    "tap_only": true,
+    "task_destination_parameter_required": true,
+    "exact_destination_label_required": true,
+    "android_files_package_required": true,
+    "visible_enabled_clickable_container_required": true,
+    "non_editable_required": true,
+    "commit_like_denied": true,
+    "action_risk_class": "observe_navigation",
+    "history_policy_consequential_override": false,
+    "structured_audit_record": true,
+    "second_mutation_allowed": false,
+    "guard_threshold_changed": false,
+    "prompt_changed": false,
+    "action_budget_changed": false
+  },
+  "validation": {
+    "pytest_collected": 377,
+    "pytest_passed": 377,
+    "pytest_exit_code": 0,
+    "focused_tests": 127,
+    "focused_tests_passed": 127,
+    "compileall_exit_code": 0,
+    "git_diff_check_exit_code": 0,
+    "protocol_v1_seal": {
+      "file_count": 197,
+      "failure_count": 0,
+      "passed": true
+    },
+    "full_chain_positive": {
+      "destination_picker_commit_executed": true,
+      "verification_navigation_executed": true,
+      "consequential_action_candidates": [
+        true,
+        false
+      ],
+      "risk_class": "observe_navigation",
+      "authority_source": "task_parameter_destination",
+      "matched_label": "Ringtones",
+      "matched_package": "com.google.android.documentsui",
+      "audit_record_count": 1
+    },
+    "full_chain_negative": {
+      "non_files_package_denied": true,
+      "second_action_executed": false,
+      "critic_retained": true,
+      "audit_record_count": 0
+    },
+    "negative_unit_regressions": {
+      "wrong_folder_denied": true,
+      "non_files_package_denied": true,
+      "commit_like_label_denied": true,
+      "absent_accessibility_denied": true,
+      "pre_commit_count_denied": true
+    }
+  },
+  "current_file_sha256": {
+    "05_project/src/raven_m/controller/episode_controller.py": "6c86dc5629edc92796d693bcb2d0fa1c9a0d2c95d37bec13ed3c2af7cf116811",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "78bfe9ea3123236b00785baf08a5c96d562a615d446b6f6f5dc6010ef56ec8c5",
+    "05_project/tests/controller/test_protocol_v2_guard.py": "29c802020feee14ee4f2e0542d7af2c36e3e65e70580e30a84ce93b1bfe14f2d",
+    "05_project/tests/controller/test_semantic_progress_controller_v2.py": "144892ff07a104fd25dada0a3e0b5f52792143a308494c809693c1a07014635c",
+    "05_project/prompts/planner_v1.md": "41539b48a656218f4c3f334ce88c5a51f568f550948c4b9ccafe782175949ea5"
+  },
+  "evidence_boundary": {
+    "server_or_gpu_run_after_source_change": false,
+    "development_smoke_authorized": true,
+    "gate_d_authorized": false,
+    "formal_gate_e_authorized": false,
+    "automatic_gate_f_transition": false,
+    "next_step": "run one fresh isolated non-scored M0 FilesMoveFile smoke under a new r49 development namespace"
+  }
+}
