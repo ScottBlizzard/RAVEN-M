@@ -97,6 +97,10 @@ Raw trajectories are under `runs/excluded_protocol_dry_run/` and
 | `reports/protocol_v2_2_r45_candidate_preflight.json` | source, 27-file freeze, four instances, model, and emulator check | passed |
 | `reports/protocol_v2_2_r45_m0_expense_smoke.json` | machine-readable r45 behavior, r43 fourth-swipe boundary, budget cause, and raw hashes | valid task failure |
 | `reports/protocol_v2_2_r45_m0_expense_smoke.md` | live qualification and no-r46 scientific disposition | current |
+| `05_project/configs/experiments/v2_2_capability_gate_r45.json` | persistent eight-cell r45 Gate-E manifest and 27-file freeze | frozen |
+| `05_project/scripts/run_protocol_v2_2_gate_e_r45.py` | exact-source r45 Gate-E entry point | ready |
+| `reports/protocol_v2_2_r45_gate_e_preflight.json` | zero-call source, instance, model, emulator, and fresh-directory preflight | passed |
+| `reports/protocol_v2_2_r45_gate_d_freeze.json` | Gate-D evidence review and one-launch authorization | passed |
 
 The r39 raw trajectories are under
 `runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/` and remain
