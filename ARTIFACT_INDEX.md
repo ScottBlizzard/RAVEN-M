@@ -132,6 +132,8 @@ Raw trajectories are under `runs/excluded_protocol_dry_run/` and
 | `reports/protocol_v2_2_r49_local_validation.md` | human-readable r49 rationale, safety boundary, and next live action | current |
 | `05_project/scripts/run_protocol_v2_2_r49_candidate_smoke.py` | isolated r49 M0 Files smoke entry point | ready |
 | `reports/protocol_v2_2_r49_candidate_preflight.json` | source, 27-file freeze, four instances, exact model, emulator, and fresh smoke directory | passed |
+| `reports/protocol_v2_2_r49_m0_files_smoke.json` | machine-readable native success, max-step stop, and absent live-branch evidence | Gate D withheld |
+| `reports/protocol_v2_2_r49_m0_files_smoke.md` | source-folder drift diagnosis and bounded r50 scope | current |
 
 The r39 raw trajectories are under
 `runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/` and remain

@@ -1,6 +1,6 @@
 # Protocol-v2.2 r49 development-candidate addendum
 
-Status: locally qualified; one fresh M0 Files smoke authorized
+Status: native smoke passed; r49 branch not live-triggered; r49 immutable
 
 This addendum follows the immutable r48 formal Gate-E stop. It preserves the
 four valid native successes, all r45-r48 guard behavior, and every frozen r48
@@ -67,8 +67,19 @@ Protocol-v1 breadth seal. A zero-model-call preflight verified the candidate
 tag, all 27 frozen files, the four deterministic task instances, the exact
 Qwen3-VL model identity, the emulator, and absence of the new suite directory.
 
-Only one fresh, isolated, non-scored M0 `FilesMoveFile` development smoke at
-sequence 4 is authorized. It must stop for diagnosis on invalid output,
-repeated mutation, infrastructure contamination, absent live branch
-consumption, or native task failure. Success may support a later, separate
-Gate-D freeze; it does not authorize formal Gate E or Gate F.
+The one authorized fresh, isolated, non-scored M0 `FilesMoveFile` development
+smoke at sequence 4 completed with native reward 1.0, exactly one MOVE commit,
+no second mutation, 20 semantically audited actions, valid output after at
+most one repair, and zero infrastructure attempts. It ended at `max_steps`.
+
+After the commit, one repair correctly pressed Back out of the stale search
+view. The next screen was still the exact `Music` source folder, but the
+policy spent its last three actions scrolling and reopening Search. It never
+returned to the storage root and therefore never proposed the exact
+`Ringtones` verification tap. The new r49 branch was not live-triggered, so
+Gate D is withheld.
+
+r49 is immutable and cannot be resumed. A separately frozen r50 may only
+require `press_back` when, after the single destination commit, current
+Android Files accessibility still exposes the exact task `source_folder`.
+Formal Gate E and Gate F remain unauthorized.

@@ -1,6 +1,6 @@
 # Protocol-v2.2 r49 local validation
 
-Status: **local PASS; one isolated live Files smoke required**
+Status: **local PASS; native smoke PASS; live branch not triggered**
 
 Candidate commit/tag:
 `6ee10feb10786cdb710e5ea6a1710001b0cd24f5` /
@@ -60,12 +60,23 @@ package, task destination, and before-state semantic hash.
 - `compileall`, `git diff --check`, and the Protocol-v1 197/197 breadth seal
   passed.
 
-## Evidence boundary and next action
+## Live smoke evidence and boundary
 
-No live AndroidWorld action has run from r49 yet. r48 remains immutable and
-must not be resumed. The next authorized action is one fresh, isolated,
-non-scored M0 `FilesMoveFile` smoke in a new r49 development namespace. It
-must verify native reward, single mutation, exact destination binding, live
-consumption of the new branch, and a valid terminal decision. A smoke failure
-stops r49 for diagnosis. A successful smoke permits a separate Gate-D freeze;
-it does not itself authorize formal Gate E or Gate F.
+The one authorized fresh, isolated, non-scored M0 `FilesMoveFile` smoke
+completed with native reward 1.0, exactly one MOVE commit, no second mutation,
+20 audited actions, valid output after at most one repair, and zero
+infrastructure attempts. It ended at `max_steps`, however, rather than an
+evidence-backed terminal decision.
+
+After the commit, the guard repaired one stale-view wait to `press_back`.
+The next screen was still the exact `Music` source folder, but the policy
+spent the remaining three actions scrolling and reopening Search instead of
+pressing Back again. It never returned to the storage root, so the exact
+`Ringtones` tap and r49 branch were never proposed. The branch remains
+deterministically, not live, qualified.
+
+r48 and r49 are immutable and may not be resumed. Gate D, formal Gate E, and
+Gate F remain unauthorized. Any r50 change is limited to requiring
+`press_back` while the post-commit Android Files screen still exposes the
+exact task `source_folder`; it must preserve r49's destination-navigation
+binding and all second-mutation blocks.

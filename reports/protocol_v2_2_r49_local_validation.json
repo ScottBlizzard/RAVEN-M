@@ -1,7 +1,7 @@
 {
   "schema_version": "protocol_v2_2_r49_local_validation.v1",
   "recorded_at": "2026-07-31T01:07:49+08:00",
-  "status": "local_pass_live_files_smoke_required",
+  "status": "local_pass_native_smoke_pass_branch_not_live_triggered",
   "branch": "protocol-v2-exploratory",
   "parent_commit": "b85984631b3ddd010273adf4fc224ebffb347caa",
   "candidate_commit": "6ee10feb10786cdb710e5ea6a1710001b0cd24f5",
@@ -87,12 +87,30 @@
     "05_project/tests/controller/test_semantic_progress_controller_v2.py": "144892ff07a104fd25dada0a3e0b5f52792143a308494c809693c1a07014635c",
     "05_project/prompts/planner_v1.md": "41539b48a656218f4c3f334ce88c5a51f568f550948c4b9ccafe782175949ea5"
   },
+  "development_smoke": {
+    "suite_id": "nonhard_capability_v2_2_seed20260729_r49_candidate_development_smoke_sequence_4",
+    "task": "FilesMoveFile",
+    "variant": "M0",
+    "success": true,
+    "evaluator_reward": 1.0,
+    "termination_reason": "max_steps",
+    "executed_steps": 20,
+    "model_calls": 34,
+    "destination_picker_commit_count": 1,
+    "second_mutation_executed": false,
+    "post_destination_verification_navigation_count": 0,
+    "r49_branch_live_triggered": false,
+    "valid_after_one_repair": true,
+    "semantic_progress_audit_passed": true,
+    "startup_environment_failure_count": 0,
+    "evidence_boundary": "native task and safety passed, but the r49 branch was not live-triggered and terminal status was not reached"
+  },
   "evidence_boundary": {
-    "server_or_gpu_run_after_source_change": false,
-    "development_smoke_authorized": true,
+    "server_or_gpu_run_after_source_change": true,
+    "development_smoke_authorized": false,
     "gate_d_authorized": false,
     "formal_gate_e_authorized": false,
     "automatic_gate_f_transition": false,
-    "next_step": "run one fresh isolated non-scored M0 FilesMoveFile smoke under a new r49 development namespace"
+    "next_step": "freeze r49; any r50 must be limited to post-commit exit from the exact task source folder before one new isolated Files smoke"
   }
 }
