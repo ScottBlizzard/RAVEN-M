@@ -834,3 +834,19 @@ M0-only Expense development smoke.
   compatibility audit, and the Protocol-v1 seal before freezing r45. Do not
   change the action budget, model, seed, task instance, evaluator, guard
   threshold, or memory behavior.
+
+Live disposition on 2026-07-30: the isolated M0 Expense smoke was a valid
+budget failure. The first post-amount category action was a first-pass
+horizontal swipe rather than a speculative row-center tap. Three exact
+swipes changed semantic state, so r43 correctly admitted the fourth; that
+fourth transition stalled after exposing Donation and would arm the retained
+no-progress block against another exact repeat. Donation and the exact Note
+were present at the final screenshot, but Save was not executed.
+
+r45 and r43 are therefore live-qualified for their intended behavior, while
+the task remains unsuccessful. Do not create r46 to optimize field ordering
+or this one task instance. Retain r45, preserve all prior evidence, and
+prepare a new Gate-D freeze for the exact r45 source. A fresh eight-cell Gate
+E may be launched only after the persistent manifest, source hashes, frozen
+instances, model/emulator checks, and zero-call preflight pass. Gate F remains
+manual and disabled regardless of the Gate-E launch outcome.

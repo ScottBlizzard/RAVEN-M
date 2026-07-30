@@ -95,6 +95,8 @@ Raw trajectories are under `runs/excluded_protocol_dry_run/` and
 | `reports/protocol_v2_2_r45_local_validation.md` | r45 rationale, compatibility boundary, and authorized next action | current |
 | `05_project/scripts/run_protocol_v2_2_r45_candidate_smoke.py` | isolated r45 M0 smoke entry point | ready |
 | `reports/protocol_v2_2_r45_candidate_preflight.json` | source, 27-file freeze, four instances, model, and emulator check | passed |
+| `reports/protocol_v2_2_r45_m0_expense_smoke.json` | machine-readable r45 behavior, r43 fourth-swipe boundary, budget cause, and raw hashes | valid task failure |
+| `reports/protocol_v2_2_r45_m0_expense_smoke.md` | live qualification and no-r46 scientific disposition | current |
 
 The r39 raw trajectories are under
 `runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/` and remain

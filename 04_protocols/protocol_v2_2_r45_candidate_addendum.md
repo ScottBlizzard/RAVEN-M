@@ -1,6 +1,7 @@
 # Protocol-v2.2 r45 development-candidate addendum
 
-Status: locally qualified; fresh M0 Expense smoke pending
+Status: live-qualified development candidate; new Gate-D freeze preparation
+authorized
 
 This addendum follows the valid r44 M0 budget failure. It preserves r44's
 live-qualified retry-idempotent executor and r43's locally qualified swipe
@@ -49,3 +50,23 @@ artifact. The instruction is identical across B3 and M0 executor prompts.
 The only authorized live action after source freeze and zero-call preflight
 is one fresh, non-scored M0 Expense smoke. It is not pooled with earlier
 development cells and cannot authorize Gate D or formal execution by itself.
+
+## Live disposition
+
+The fresh M0 smoke was valid but unsuccessful at the 12-action budget. r45
+changed the first category-navigation action from the previously observed
+speculative row-center tap to a first-pass horizontal swipe. Three exact
+swipes changed semantic state; r43 then admitted a fourth exact swipe, which
+stalled after making Donation visible. The model selected Donation and filled
+the exact Note, but had no remaining action for Save.
+
+This run live-qualifies both r45's task-agnostic guidance and r43's
+progress-conditioned fourth-swipe boundary. It does not qualify the task as a
+success or support a method-superiority claim. The candidate is retained
+without an r46 source change: another task-instance-specific efficiency patch
+would create disproportionate development overfitting risk.
+
+Together with the complete local validation, Protocol-v1 seal, and r44 live
+executor qualification, this disposition authorizes preparation of a new
+Gate-D freeze for the exact r45 source. Formal Gate E remains disabled until
+that manifest and a fresh zero-call preflight pass.
