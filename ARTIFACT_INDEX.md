@@ -65,6 +65,8 @@ Raw trajectories are under `runs/excluded_protocol_dry_run/` and
 | `04_protocols/protocol_v2_2_r41_candidate_addendum.md` | complete supersession and narrow repeat/focus guards | local candidate |
 | `reports/protocol_v2_2_r41_local_validation.json` | machine-readable 345-test, v1-seal, and compatibility evidence | passed locally |
 | `reports/protocol_v2_2_r41_local_validation.md` | r41 rationale, risk boundary, and next live action | current |
+| `reports/protocol_v2_2_r41_candidate_preflight.json` | r41 source, instance, model, and emulator freeze check | passed |
+| `05_project/scripts/run_protocol_v2_2_r41_candidate_smoke.py` | isolated r41 M0 smoke entry point | ready |
 
 The r39 raw trajectories are under
 `runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/` and remain
