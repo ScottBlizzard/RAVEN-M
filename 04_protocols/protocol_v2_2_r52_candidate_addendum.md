@@ -1,6 +1,7 @@
 # Protocol-v2.2 r52 development-candidate addendum
 
-Status: locally qualified; one fresh M0 Files smoke authorized
+Status: live attempt invalidated by stale before-decision accessibility;
+candidate frozen
 
 This addendum follows the immutable r51 development smoke. It preserves
 r51's exact destination content-label binding, r50's live-qualified
@@ -61,10 +62,16 @@ The exact candidate passed 392/392 project tests, 142/142 focused guard,
 controller, and full-memory-policy tests, `compileall`, `git diff --check`,
 and the unchanged 197/197 Protocol-v1 breadth seal.
 
-Only one new, isolated, non-scored M0 `FilesMoveFile` smoke is authorized
-after a fresh zero-call preflight. It must verify no global multi-selection
-from Search input, one mutation, live source-exit consumption, live exact
-destination content-label consumption, native reward, valid bounded repairs,
-and clean infrastructure accounting. It does not authorize formal Gate E or
-Gate F.
+The authorized fresh, isolated, non-scored M0 `FilesMoveFile` attempt stopped
+at step 3 before Search or MOVE. Cross-modal review invalidated the attempt:
+the drawer-closed storage-root screenshot changed across 35.875270% of
+pixels, while its accessibility hash and nine-element tree remained exactly
+the prior open-drawer state. The existing roots-drawer guard therefore
+rejected an action against UI evidence that was no longer current.
+
+r52 is frozen and may not be resumed. A future r53 is bounded to requiring
+Protocol-v2.2 before-decision accessibility freshness against the previous
+after-action pixels and semantic hash, plus retaining that readiness audit on
+invalid-output steps. No action rule, budget, or r52/r51/r50 branch may
+change. This does not authorize formal Gate E or Gate F.
 
