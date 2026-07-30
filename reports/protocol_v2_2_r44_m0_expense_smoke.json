@@ -1,0 +1,88 @@
+{
+  "schema_version": "protocol_v2_2_r44_m0_expense_smoke.v1",
+  "recorded_at": "2026-07-30T17:26:59+08:00",
+  "status": "valid_development_smoke_task_unsuccessful",
+  "source_commit": "e9f903b95320164930456bff598c99bfe7c458be",
+  "source_tag": "protocol-v2-2-r44-local-candidate",
+  "suite_id": "nonhard_capability_v2_2_seed20260729_r44_candidate_development_smoke_sequence_7",
+  "adjudication": {
+    "r44_executor_qualified_live": true,
+    "r43_fourth_swipe_adjudicated_live": false,
+    "gate_d_authorized": false,
+    "formal_run_authorized": false
+  },
+  "runner_outcome": {
+    "variant": "M0",
+    "task": "ExpenseAddSingle",
+    "sequence": 7,
+    "evaluator_reward": 0.0,
+    "success": false,
+    "failure_code": "TASK_UNSUCCESSFUL_AT_BUDGET",
+    "termination_reason": "max_steps",
+    "executed_steps": 12,
+    "model_calls": 19,
+    "executor_model_calls": 16,
+    "history_model_calls": 3,
+    "elapsed_seconds": 861.375,
+    "reported_infrastructure_attempts": 0,
+    "readiness_observations": 50,
+    "readiness_retries": 26,
+    "semantic_progress_audit_passed": true,
+    "screenshot_fallback_observations": 0,
+    "memory_audit_errors": []
+  },
+  "r44_retry_evidence": {
+    "first_compound_note_attempt_timed_out": true,
+    "first_attempt_timeout_seconds": 10.0,
+    "internal_retry_returned_success": true,
+    "final_name_exact": "Educational",
+    "final_amount_exact": "259.57",
+    "final_note_exact": "Remember to transfer funds",
+    "repeated_prefix_or_duplicate_observed": false,
+    "episode_continued_after_retry": true
+  },
+  "budget_cause": {
+    "post_text_action_7": "tap_horizontal_option_row",
+    "post_text_action_7_semantic_changed": false,
+    "executed_swipe_steps": [
+      8,
+      9,
+      10
+    ],
+    "executed_swipe_count": 3,
+    "donation_selected_step": 11,
+    "save_executed": false,
+    "r40_b3_post_text_action_7": "swipe_horizontal_option_row",
+    "r40_b3_donation_selected_step": 10,
+    "r40_b3_save_step": 11,
+    "r40_b3_reward": 1.0
+  },
+  "historical_expense_navigation_audit": {
+    "episodes_with_post_text_navigation": 37,
+    "successful_immediate_swipe": 14,
+    "failed_immediate_swipe": 2,
+    "failed_immediate_tap": 20,
+    "failed_immediate_long_press": 1,
+    "donation_episodes": 21,
+    "donation_successful_immediate_swipe": 12,
+    "donation_failed_immediate_swipe": 2,
+    "donation_failed_immediate_tap": 6,
+    "donation_failed_immediate_long_press": 1,
+    "interpretation": "development association only; supports task-agnostic clipped-row guidance, not a causal estimate"
+  },
+  "raw_sha256": {
+    "suite_summary.json": "bb82375ba68e1abcbf69b7a47b54234684868679093376b291024476bd15456e",
+    "events.jsonl": "a67da50f76b8e22920e46946929e30ad79317e5b4bff4634c210b4dd21f5ee39",
+    "memory_events.jsonl": "5e364c0c0059971e1b101a5c1f843ff4fce53b7bd398cae62863f07488253894",
+    "episode.json": "48887f9652b74b68d0f875ee9663b0c578629eb237030fdfabe4d22aa465f22c",
+    "step_004_after.png": "4c98949ab7b557730fe0b8c03720d8051481d0c35aca474cdee720893422e680",
+    "step_006_after.png": "92b24ae59e9ab81383bc9a762124da450248bc70cca5ff295556d3624009eb62",
+    "step_010_after.png": "364c7eb8908079ebd759c170f021ca202ffacb14715078559a931ff5a69416a7",
+    "step_011_after.png": "259df67aaac94c5b21fe5e91ec35c74e6f8522288de201e587f89c8f9be825e2",
+    "r44_m0_sequence7.stderr.log": "0612c4b2e919796951806e234e225277f9b938333fbf6e4be1c1d00a9863fc4e"
+  },
+  "evidence_boundary": {
+    "result_pooled_with_formal_cells": false,
+    "next_step": "r45_task_agnostic_horizontal_clipped_row_guidance"
+  }
+}

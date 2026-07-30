@@ -60,3 +60,14 @@ The only authorized live action is one fresh, non-scored M0 Expense smoke.
 That smoke must first demonstrate exact, uncorrupted entry of `Educational`
 and then reach the r43 swipe boundary. It cannot be pooled with prior
 development cells or authorize Gate D or formal execution by itself.
+
+## Live disposition
+
+The r44 M0 smoke was a valid task failure at the 12-action budget. A compound
+Note request timed out on its first internal attempt, and the retry produced
+the exact text once with no duplicated prefix, qualifying r44's executor
+repair under the target failure mode. The run executed only three swipes, so
+r43's fourth-swipe boundary was not reached. Donation was selected on the
+final action, leaving Save unexecuted after an earlier no-effect tap on a
+horizontally clipped option row. See
+`reports/protocol_v2_2_r44_m0_expense_smoke.md`.

@@ -814,3 +814,23 @@ M0-only Expense development smoke.
 - r44 inherits the locally qualified r43 swipe rule. Only after clean local
   validation may it run one fresh M0 Expense smoke; the invalid r43 attempt is
   never pooled or counted against the method.
+
+## r45 task-agnostic horizontal option navigation
+
+- Preserve the r44 smoke as a valid budget failure and positive executor
+  qualification. The first compound Note request timed out, its retry entered
+  the exact text once, and no field was corrupted.
+- Do not claim a live r43 result: the complete event log contains three
+  swipes, not four.
+- The direct budget loss was a tap on the middle of a horizontally clipped
+  option row while the requested label was absent. r40 B3 instead swiped at
+  that point and completed Save within the same 12-action limit.
+- Add one identical, task-agnostic instruction to both executor variants and
+  the shared Protocol-v2.2 turn prompt: when requested text is absent from a
+  visible side-by-side clipped row or carousel, swipe along the row toward
+  hidden options and tap only after the requested label is visible. Do not
+  name an app, task, category, or target.
+- Re-run prompt parity tests, all local tests, compilation, historical
+  compatibility audit, and the Protocol-v1 seal before freezing r45. Do not
+  change the action budget, model, seed, task instance, evaluator, guard
+  threshold, or memory behavior.

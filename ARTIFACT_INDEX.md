@@ -88,6 +88,8 @@ Raw trajectories are under `runs/excluded_protocol_dry_run/` and
 | `reports/protocol_v2_2_r44_local_validation.md` | r44 rationale, bounded timeout, and authorized next action | current |
 | `05_project/scripts/run_protocol_v2_2_r44_candidate_smoke.py` | isolated r44 M0 smoke entry point | ready |
 | `reports/protocol_v2_2_r44_candidate_preflight.json` | source, 27-file freeze, four instances, model, and emulator check | passed |
+| `reports/protocol_v2_2_r44_m0_expense_smoke.json` | machine-readable r44 retry qualification, budget cause, and r43 boundary | valid task failure |
+| `reports/protocol_v2_2_r44_m0_expense_smoke.md` | exact-text retry evidence and horizontal-row causal audit | current |
 
 The r39 raw trajectories are under
 `runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/` and remain
