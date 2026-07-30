@@ -53,6 +53,8 @@ Raw trajectories are under `runs/excluded_protocol_dry_run/` and
 | `reports/protocol_v2_2_r39_sequence4_authorization.json` | live Files regression authorization | passed |
 | `reports/protocol_v2_2_r39_gate_e_final.json` | machine-readable eight-cell result and manual review | Gate E passed |
 | `reports/protocol_v2_2_r39_gate_e_final.md` | human-readable outcome, limitations, and paired analysis | current |
+| `reports/protocol_v2_2_r39_expense_m0_diagnostic.json` | machine-readable causal trace for the retained M0 failure | reviewed |
+| `reports/protocol_v2_2_r39_expense_m0_diagnostic.md` | generic lifecycle/action-consistency repair specification | current |
 
 The r39 raw trajectories are under
 `runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/` and remain

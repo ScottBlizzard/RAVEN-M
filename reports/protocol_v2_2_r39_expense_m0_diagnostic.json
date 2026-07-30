@@ -1,0 +1,180 @@
+{
+  "schema_version": "protocol_v2_2_r39_expense_m0_diagnostic.v1",
+  "suite_id": "nonhard_capability_v2_2_seed20260729_r39",
+  "episode_id": "nonhard_capability_v2_2_seed20260729_r39_07_M0_ExpenseAddSingle_seed20260729_a1",
+  "classification": {
+    "primary": "method_or_controller_failure",
+    "infrastructure": false,
+    "protocol_valid": true,
+    "native_reward": 0.0,
+    "failure_code": "TASK_UNSUCCESSFUL_AT_BUDGET",
+    "termination_reason": "max_steps"
+  },
+  "expected": {
+    "name": "Educational",
+    "amount": "259.57",
+    "category": "Donation",
+    "note": "Remember to transfer funds"
+  },
+  "observed_final_state": {
+    "name_correct": true,
+    "amount_correct": true,
+    "note_correct": true,
+    "selected_category": "Housing",
+    "saved": false,
+    "screenshot": "runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/episodes/07_M0_ExpenseAddSingle_seed20260729/step_011_after.png",
+    "screenshot_sha256": "a9896ff0941163392b461b35dd56cfe6d136dff99c7341a8f379bb4a5dc7062a"
+  },
+  "causal_chain": [
+    {
+      "step": 7,
+      "event": "incorrect_affordance_model",
+      "action": {
+        "type": "tap",
+        "x": 0.5,
+        "y": 0.34
+      },
+      "decision_summary": "Tap on the category area to open the category selection menu and choose 'Donation'.",
+      "semantic_changed": false,
+      "memory_written": {
+        "memory_id": "m_0006",
+        "content": "The category selection menu has been initiated.",
+        "route_at_step_8": "HYPOTHESIS",
+        "reliability_at_step_8": 0.75262294,
+        "verification_status": "observed",
+        "independent_confirmations": 0,
+        "source_extractor": "executor_state_delta_v2",
+        "source_model_call_id": "08a5e7ac-67c1-4092-bcd3-25398e3b0d4d"
+      }
+    },
+    {
+      "step": 8,
+      "event": "repeated_no_effect_action",
+      "action": {
+        "type": "tap",
+        "x": 0.5,
+        "y": 0.34
+      },
+      "semantic_changed": false,
+      "failure_written": {
+        "memory_id": "f_0007",
+        "content": "Repeated action produced no semantic UI change; avoid the same action on this page and re-observe or recover.",
+        "route_at_step_9": "ALERT",
+        "reliability_at_step_9": 0.82950444,
+        "verification_status": "observed",
+        "independent_confirmations": 1,
+        "source_extractor": "deterministic_semantic_loop_detector_v2"
+      },
+      "lifecycle_gap": "m_0006 remains active and is routed again at step 9 with reliability 0.74798374; no contradiction or supersession relation is created between f_0007 and m_0006."
+    },
+    {
+      "step": 9,
+      "event": "wrong_recovery_preserves_wrong_ui_model",
+      "action": {
+        "type": "long_press",
+        "x": 0.5,
+        "y": 0.34,
+        "duration_ms": 800
+      },
+      "semantic_changed": false,
+      "planner_subgoal": "Select the 'Donation' category from the category menu",
+      "finding": "The planner refreshes the target but retains the nonexistent popup-menu affordance instead of recognizing the visible horizontal category strip."
+    },
+    {
+      "step": 10,
+      "event": "language_geometry_mismatch",
+      "decision_summary": "The current category selection shows 'Housing', but 'Donation' is not visible. Swiping left may reveal more categories, including the required 'Donation'.",
+      "action": {
+        "type": "swipe",
+        "x": 0.5,
+        "x2": 0.5,
+        "y": 0.34,
+        "y2": 0.15,
+        "duration_ms": 500
+      },
+      "derived_direction": "up",
+      "declared_direction": "left",
+      "semantic_changed": false
+    },
+    {
+      "step": 11,
+      "event": "repeated_language_geometry_mismatch",
+      "decision_summary": "The current category is 'Housing', but 'Donation' is not visible. Swiping left may reveal more categories, including the required 'Donation'.",
+      "action": {
+        "type": "swipe",
+        "x": 0.5,
+        "x2": 0.5,
+        "y": 0.34,
+        "y2": 0.15,
+        "duration_ms": 500
+      },
+      "derived_direction": "up",
+      "declared_direction": "left",
+      "semantic_changed": false,
+      "budget_exhausted": true
+    }
+  ],
+  "paired_control": {
+    "episode_id": "nonhard_capability_v2_2_seed20260729_r39_03_B3_ExpenseAddSingle_seed20260729_a1",
+    "native_reward": 1.0,
+    "steps_7_to_11": [
+      "horizontal swipe left",
+      "horizontal swipe left",
+      "horizontal swipe left",
+      "tap Donation",
+      "tap Save"
+    ],
+    "interpretation": "The task is solvable with the same model, instance, and action budget. The failure is specific to this M0 trajectory, not to missing UI support or insufficient frozen budget in principle."
+  },
+  "root_causes": [
+    {
+      "id": "RC1",
+      "severity": "primary",
+      "finding": "A zero-confirmation action-linked hypothesis retained high HYPOTHESIS authority after deterministic no-effect evidence became available."
+    },
+    {
+      "id": "RC2",
+      "severity": "primary",
+      "finding": "The failure record and the hypothesis it falsifies are stored independently; the lifecycle has no causal contradiction or supersession edge."
+    },
+    {
+      "id": "RC3",
+      "severity": "contributing",
+      "finding": "The executor's natural-language direction and numeric swipe geometry are inconsistent, but the current schema/guard validates them independently."
+    },
+    {
+      "id": "RC4",
+      "severity": "contributing",
+      "finding": "The planner updates the target category but preserves an incorrect popup-menu model despite the unchanged screen and visible horizontal siblings."
+    }
+  ],
+  "proposed_generic_repairs": [
+    {
+      "id": "R1",
+      "name": "action-outcome causal supersession",
+      "scope": "memory lifecycle",
+      "rule": "Persist delta_kind and action_signature provenance. When a repeated identical action on the same semantic page deterministically has no effect, supersede zero-confirmation progress/page hypotheses created by the immediately preceding identical action. Keep the failure as ALERT and suppress the superseded hypothesis from later authority.",
+      "not_task_specific": true
+    },
+    {
+      "id": "R2",
+      "name": "swipe language-geometry consistency",
+      "scope": "bounded output validation",
+      "rule": "If decision_summary explicitly declares swipe left/right/up/down, require the dominant normalized coordinate displacement to match. Reject a mismatch before execution and permit only the existing single bounded repair.",
+      "not_task_specific": true
+    }
+  ],
+  "rejected_shortcuts": [
+    "Do not add a Pro Expense or Donation-specific prompt.",
+    "Do not increase the Expense action budget only because M0 failed.",
+    "Do not relabel the valid M0 failure as infrastructure.",
+    "Do not merge any revised-source rerun with the frozen r39 result."
+  ],
+  "required_regressions_before_new_formal_run": [
+    "A unit fixture reproducing m_0006 plus f_0007 must show the hypothesis superseded, the failure routed as ALERT, and the hypothesis absent as HYPOTHESIS.",
+    "Direction validation must reject declared-left/actual-up and accept canonical left, right, up, and down swipes.",
+    "Existing memory replay, contradiction, semantic-loop, protocol-v1 seal, and full local test suites must remain green.",
+    "A development-only paired Expense smoke may be run only after the generic fixtures pass.",
+    "Any revised formal evidence requires a new source commit/tag, Gate-D freeze, clean preflight, and fresh suite ID."
+  ]
+}
