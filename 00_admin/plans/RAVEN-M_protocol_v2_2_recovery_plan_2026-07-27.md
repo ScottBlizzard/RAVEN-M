@@ -732,3 +732,25 @@ evaluator, schedule, or threshold changes.
   M0 Expense smoke. B3 is not rerun because its paired r40 cell passed and the
   r41 rules are M0/current-screen validation paths, but no result is pooled
   into a formal suite.
+
+## r42 bounded remediation after the r41 M0-smoke rejection
+
+- Preserve r41 as a valid development failure. The category repeat guard
+  blocked the second tap, but the repair spent the remaining budget
+  alternating vertical swipes on a horizontal option row.
+- When the bounded repair for `UNFOCUSED_CLEAR_TEXT_GUARD` executes the exact
+  visible editable activation tap, retain a controller-owned proof for one
+  subsequent policy action. That proof may treat input as ready only long
+  enough to validate task-bound `type_text` without coordinates and with
+  `clear_text=false`. It must clear after the next executed action and must
+  never supply text or coordinates.
+- Give the unverified-progress repeat repair an explicit layout-axis
+  contract. Side-by-side options/carousels use a horizontal gesture; stacked
+  lists use a vertical gesture. A repair may not reverse an axis unsupported
+  by the visible layout merely to differ from the blocked action.
+- Preserve one repair, all budgets, schemas, task instance, seed, model,
+  evaluator, memory thresholds, readiness bounds, and protocol-v1 isolation.
+- Add unit and controller integration fixtures for one-step activation proof,
+  proof expiry, no-text injection, and horizontal-row recovery wording.
+  Re-run the complete local suite, compatibility audit, and v1 seal before a
+  fresh r42 M0-only smoke.

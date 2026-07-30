@@ -1,6 +1,6 @@
 # Protocol-v2.2 r41 development-candidate addendum
 
-Status: local validation passed; M0 Expense smoke pending
+Status: rejected by M0 Expense development smoke
 
 This addendum follows the rejected r40 paired smoke. It does not modify r39
 or r40 evidence.
@@ -53,3 +53,11 @@ coordinates.
   pooled into a formal result.
 - Any formal Gate E still requires a new freeze, preflight, and all eight
   fresh cells.
+
+## Live disposition
+
+The M0 Expense smoke rejected r41. The exact category tap repeat was blocked,
+but its repair stayed on an unsupported vertical axis. Accessibility also
+failed to expose the visibly focused empty input soon enough for the
+focused-empty tap guard. See
+`reports/protocol_v2_2_r41_m0_expense_smoke.md`. Gate D remains unauthorized.

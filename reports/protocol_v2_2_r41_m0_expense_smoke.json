@@ -1,0 +1,51 @@
+{
+  "schema_version": "protocol_v2_2_r41_m0_expense_smoke.v1",
+  "status": "candidate_rejected",
+  "candidate_source_commit": "84a587917dfd090d3d3c8dc92eef8c0e4dddd580",
+  "candidate_tag": "protocol-v2-2-r41-local-candidate",
+  "instance_seed": 20260729,
+  "task": "ExpenseAddSingle",
+  "variant": "M0",
+  "sequence": 7,
+  "scored": false,
+  "success": false,
+  "evaluator_reward": 0.0,
+  "failure_code": "TASK_UNSUCCESSFUL_AT_BUDGET",
+  "executed_steps": 12,
+  "model_calls": 22,
+  "prompt_tokens": 136647,
+  "completion_tokens": 2823,
+  "elapsed_seconds": 760.015999999996,
+  "suite_summary_sha256": "4090047e3c8a564e5ba52ed48e7e4a707de4e6ba86aeb379447ea2de3a1731f9",
+  "final_screenshot_sha256": "3a0b44a76d5df1e2579da6211754028062e19dcccedcf5aac7b1e0c478d34c19",
+  "memory_events_sha256": "28ec1be2ee53dc3b371e6afe0d46877b43cb4da08880e96756091077b37f0786",
+  "suite_path": "runs/protocol_v2_2_development/nonhard_capability_v2_2_seed20260729_r41_candidate_development_smoke_sequence_7",
+  "guard_audit": {
+    "unfocused_clear_text_block_count": 2,
+    "focused_empty_tap_block_count": 0,
+    "unverified_progress_repeat_block_count": 2,
+    "validation_block_count": 4,
+    "executed_blocked_action_steps": [],
+    "memory_audit_errors": []
+  },
+  "causal_audit": {
+    "input_focus_visual_but_not_accessibility_confirmed_after_step_2": true,
+    "second_input_activation_tap_executed_at_step_3": true,
+    "category_repeat_tap_blocked_before_execution_at_step_8": true,
+    "step_8_repair_axis": "vertical_down",
+    "step_9_repair_axis": "vertical_up",
+    "steps_8_through_11_semantic_progress": false,
+    "horizontal_category_navigation_reached": false
+  },
+  "decision": {
+    "gate_d_authorized": false,
+    "formal_run_authorized": false,
+    "retain_raw_failure": true,
+    "next_candidate": "r42",
+    "required_changes": [
+      "carry one-step controller evidence after an executed unfocused-input activation repair",
+      "treat that proof as input-ready only for the next action and require text without coordinates and clear_text=false",
+      "make unverified-progress recovery select the navigation axis from the visible layout instead of reversing an unsupported axis"
+    ]
+  }
+}
