@@ -81,6 +81,8 @@ Raw trajectories are under `runs/excluded_protocol_dry_run/` and
 | `reports/protocol_v2_2_r43_local_validation.md` | r43 evidence boundary and authorized next action | current |
 | `05_project/scripts/run_protocol_v2_2_r43_candidate_smoke.py` | isolated r43 M0 smoke entry point | ready |
 | `reports/protocol_v2_2_r43_candidate_preflight.json` | source, 27-file freeze, four instances, model, and emulator check | passed |
+| `reports/protocol_v2_2_r43_m0_expense_smoke.json` | machine-readable hidden ADB retry evidence and invalidation boundary | invalid infrastructure-contaminated attempt |
+| `reports/protocol_v2_2_r43_m0_expense_smoke.md` | non-idempotent partial-text retry causal analysis | current |
 
 The r39 raw trajectories are under
 `runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/` and remain

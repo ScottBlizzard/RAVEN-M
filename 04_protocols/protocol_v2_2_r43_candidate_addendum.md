@@ -53,3 +53,12 @@ or Protocol-v1 artifact. The one-repair limit remains unchanged.
 The only authorized live action after local qualification is one fresh,
 non-scored M0 Expense smoke. It cannot be pooled with prior development cells
 or authorize a formal result by itself.
+
+## Live disposition
+
+The attempted M0 smoke did not adjudicate r43. AndroidWorld internally retried
+a timed-out, non-idempotent `adb shell input text Educational` command after
+the first attempt had entered `Educ`, producing `EducEducational`. The runner
+reported no infrastructure attempt because the retry returned success. See
+`reports/protocol_v2_2_r43_m0_expense_smoke.md`. r43's swipe boundary was not
+reached and Gate D remains unauthorized.

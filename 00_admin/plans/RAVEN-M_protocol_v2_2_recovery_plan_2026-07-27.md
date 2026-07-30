@@ -791,3 +791,26 @@ loop in a failed Files episode. Taps and long-presses retain the unconditional
 limit. The resulting 352/352 tests, compilation, diff check, and 197-file
 Protocol-v1 seal passed. r43 is locally qualified only for the retained
 M0-only Expense development smoke.
+
+## r44 idempotent text execution after the invalid r43 attempt
+
+- Preserve the r43 raw attempt as infrastructure-contaminated, not a method
+  failure. The stderr log records a 10-second timeout for
+  `adb shell input text Educational`; AndroidWorld retried after the first
+  command had partially entered `Educ`, producing `EducEducational`.
+- For model actions with `clear_text=true`, retain any model-supplied focus
+  click, then issue select-all, delete, and the model-authored text in one
+  compound ADB request. AndroidWorld may retry that compound request, but each
+  retry must clear partial text before typing.
+- Preserve `clear_text=false` execution semantics. Do not add a task value,
+  coordinate, policy action, model call, or evaluator signal.
+- A final compound-command failure must propagate through the existing
+  episode error path so the runner records an infrastructure attempt instead
+  of presenting partial executor state to the policy.
+- Add adapter fixtures for coordinate focus ordering, whole-value ADB
+  escaping, single compound request, retry idempotence, and failure
+  propagation. Re-run all tests, the compatibility audit, and Protocol-v1
+  seal before freezing r44.
+- r44 inherits the locally qualified r43 swipe rule. Only after clean local
+  validation may it run one fresh M0 Expense smoke; the invalid r43 attempt is
+  never pooled or counted against the method.
