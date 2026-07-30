@@ -333,6 +333,96 @@ class CommitThenRepeatClient:
         )
 
 
+class CommitThenPrematureDoneClient:
+    def __init__(self, *, valid_repair: bool = True) -> None:
+        self.valid_repair = valid_repair
+        self.requests: list[dict] = []
+
+    def generate(self, **kwargs) -> ModelCall:
+        self.requests.append(kwargs)
+        label = kwargs["call_label"]
+        if label.startswith("step_000"):
+            status = "continue"
+            action = {"type": "tap", "x": 0.40, "y": 0.94}
+            summary = "Commit the pending move."
+            evidence = []
+        elif label.endswith("_repair"):
+            status = "continue"
+            action = (
+                {"type": "press_back"}
+                if self.valid_repair
+                else {"type": "wait", "duration_ms": 1000}
+            )
+            summary = "Leave the stale source search view safely."
+            evidence = []
+        else:
+            status = "done"
+            action = None
+            summary = "Declare the move complete before destination verification."
+            evidence = [
+                {
+                    "claim": "The file was moved to Ringtones.",
+                    "evidence": "direct_screen",
+                    "memory_ids": [],
+                }
+            ]
+        decision = {
+            "status": status,
+            "action": action,
+            "expected_outcome": "The file operation advances.",
+            "decision_summary": summary,
+            "state_delta": [],
+            "memory_citations": [],
+            "completion_evidence": evidence,
+        }
+        return ModelCall(
+            call_id=label,
+            episode_id=kwargs["episode_id"],
+            idempotency_key=label,
+            image_sha256="0" * 64,
+            image_sha256s=("0" * 64,),
+            prompt_sha256=label,
+            request_sha256=label,
+            response_sha256=label,
+            content=json.dumps(decision),
+            usage={
+                "prompt_tokens": 1,
+                "completion_tokens": 1,
+                "total_tokens": 2,
+            },
+            raven_meta={},
+        )
+
+
+class RejectPrematurePostCommitCompletionPolicy(HistoryPolicy):
+    variant = "M0"
+
+    def adjudicate_completion(self, decision, **kwargs) -> CompletionAdjudication:
+        del kwargs
+        if decision.get("status") != "done":
+            return CompletionAdjudication()
+        return CompletionAdjudication(
+            accepted=False,
+            record={
+                "schema_version": "completion_adjudication.v2",
+                "trigger": "completion_candidate",
+                "output": {
+                    "schema_version": "critic.v1",
+                    "verdict": "reject_completion",
+                    "recommended_constraint": (
+                        "reobserve while checking the Ringtones folder"
+                    ),
+                },
+                "error": None,
+                "model_call_ids": [],
+            },
+            error=(
+                "Completion critic rejected completion: reobserve while "
+                "checking the Ringtones folder"
+            ),
+        )
+
+
 class WrongFileThenSearchClient:
     def __init__(self) -> None:
         self.requests: list[dict] = []
@@ -1942,6 +2032,84 @@ def test_controller_rejects_non_back_post_commit_repair(
         "POST_DESTINATION_COMMIT_GUARD:"
     )
     assert "REPAIR_CONTRACT_GUARD" in error["repair_validation_error"]
+
+
+def test_controller_repairs_rejected_post_commit_completion_with_back(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = PostCommitEnv()
+    client = CommitThenPrematureDoneClient()
+    controller = EpisodeController(
+        client=client,  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=2,
+        max_model_calls=3,
+        history_policy=RejectPrematurePostCommitCompletionPolicy(),
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="post-commit-completion-repair-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="M0",
+    )
+    assert env.execute_count == 2
+    assert summary["model_call_count"] == 3
+    assert summary["steps"][1]["decision"]["action"] == {
+        "type": "press_back"
+    }
+    assert summary["steps"][1]["parse"]["model_repair_used"]
+    assert summary["steps"][1]["parse"]["initial_validation_error"].startswith(
+        "Completion critic rejected completion:"
+    )
+    repair_prompt = client.requests[2]["user_prompt"]
+    assert "current source/search view" in repair_prompt
+    assert 'exactly {"type":"press_back"}' in repair_prompt
+    assert "Do not tap, wait, swipe, type" in repair_prompt
+
+
+def test_controller_rejects_wait_after_post_commit_completion_rejection(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = PostCommitEnv()
+    controller = EpisodeController(
+        client=CommitThenPrematureDoneClient(
+            valid_repair=False
+        ),  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=2,
+        max_model_calls=3,
+        history_policy=RejectPrematurePostCommitCompletionPolicy(),
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="post-commit-completion-invalid-repair-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="M0",
+    )
+    assert env.execute_count == 1
+    assert summary["failure_code"] == "MODEL_OUTPUT_INVALID_AFTER_REPAIR"
+    error = summary["model_output_error"]
+    assert error["initial_validation_error"].startswith(
+        "Completion critic rejected completion:"
+    )
+    assert "REPAIR_CONTRACT_GUARD" in error["repair_validation_error"]
+    assert "post-destination repair" in error["repair_validation_error"]
 
 
 def test_controller_repairs_wrong_exact_target_to_search(

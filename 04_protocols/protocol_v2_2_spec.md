@@ -258,6 +258,11 @@ memory authority, and Critic enforcement.
   select/long-press an item, start another Move/Copy, or wait on stale source
   state. Any such blocked action has one exact `press_back` repair to dismiss
   the menu, selection, or unintended second picker before re-observation.
+- If the M0 completion Critic rejects a terminal response while that
+  post-commit state is active, the same single repair is exact `press_back`.
+  It leaves the stale search/menu/picker state for later reversible
+  destination verification; wait, mutation, selection, a second transfer, and
+  immediate completion are not valid repairs.
 - Within an active Android Files destination picker, consequential-action
   classification uses an accessibility hit on the enabled bottom Copy/Move
   control rather than action-summary prose. In a rendered empty current

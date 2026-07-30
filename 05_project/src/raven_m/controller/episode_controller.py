@@ -586,6 +586,7 @@ class EpisodeController:
             "LOOP_GUARD:",
             "CRITIC_CONSTRAINT:",
             "Same-turn action adjudication rejected",
+            "POST_DESTINATION_COMPLETION_REOBSERVE_REQUIRED:",
         )
         semantic_action_rejected = error.startswith(
             semantic_action_error_prefixes
@@ -620,6 +621,9 @@ class EpisodeController:
         post_destination_commit_rejected = error.startswith(
             "POST_DESTINATION_COMMIT_GUARD:"
         )
+        post_destination_completion_reobserve_required = error.startswith(
+            "POST_DESTINATION_COMPLETION_REOBSERVE_REQUIRED:"
+        )
         loop_guard_rejected = error.startswith("LOOP_GUARD:")
         invalid_action_type: str | None = None
         try:
@@ -648,17 +652,22 @@ class EpisodeController:
                 "text_origin, and do not commit any mutation. Use only a "
                 "control visibly supported by the current screenshot.\n"
             )
-        elif post_destination_commit_rejected:
+        elif (
+            post_destination_commit_rejected
+            or post_destination_completion_reobserve_required
+        ):
             repair_directive = (
-                "\n\nA bottom Copy/Move commit already executed once, so the "
-                "proposed action would start or submit a second transaction. "
+                "\n\nA bottom Copy/Move commit already executed once. The "
+                "current source/search view does not yet prove destination "
+                "persistence, and the proposed response cannot safely finish "
+                "or remain on this stale view. "
                 "For this one repair, return status=continue with action "
-                'exactly {"type":"press_back"} to dismiss the current overflow '
-                "menu, selection mode, or unintended second destination "
-                "picker. Do not tap, wait, swipe, type, select an item, commit, "
-                "or declare success on this unchanged screenshot. Observe the "
-                "next screen before using reversible navigation to verify the "
-                "requested destination.\n"
+                'exactly {"type":"press_back"} to leave the current search, '
+                "overflow menu, selection mode, or unintended second "
+                "destination picker. Do not tap, wait, swipe, type, select an "
+                "item, commit, or declare success on this unchanged screenshot. "
+                "Observe the next screen before using reversible navigation to "
+                "verify the requested destination.\n"
             )
         elif destination_picker_renavigation_required:
             repair_directive = (
@@ -1021,13 +1030,16 @@ class EpisodeController:
             if (
                 repair_contract_error
                 and repair_contract_error.startswith(
-                    "POST_DESTINATION_COMMIT_GUARD:"
+                    (
+                        "POST_DESTINATION_COMMIT_GUARD:",
+                        "POST_DESTINATION_COMPLETION_REOBSERVE_REQUIRED:",
+                    )
                 )
                 and parsed_candidate.decision.get("action")
                 != {"type": "press_back"}
             ):
                 raise ActionValidationError(
-                    "REPAIR_CONTRACT_GUARD: POST_DESTINATION_COMMIT_GUARD "
+                    "REPAIR_CONTRACT_GUARD: post-destination repair "
                     "permits only the exact "
                     '{"type":"press_back"} action in this bounded repair.'
                 )
@@ -1359,10 +1371,23 @@ class EpisodeController:
                     action_adjudications=action_adjudications,
                     completion_adjudications=completion_adjudications,
                 ) from initial_error
+            repair_contract_error = str(initial_error)
+            if (
+                self.protocol_v2_2
+                and self.decision_guard is not None
+                and self.decision_guard.post_destination_commit_active
+                and repair_contract_error.startswith(
+                    "Completion critic rejected completion:"
+                )
+            ):
+                repair_contract_error = (
+                    "POST_DESTINATION_COMPLETION_REOBSERVE_REQUIRED: "
+                    + repair_contract_error
+                )
             repair_prompt = self._repair_prompt(
                 user_prompt,
                 initial.content,
-                str(initial_error),
+                repair_contract_error,
                 protocol_v2=self.protocol_v2,
             )
             repaired = self.client.generate(
@@ -1377,7 +1402,7 @@ class EpisodeController:
             try:
                 parsed = parse_and_validate(
                     repaired.content,
-                    repair_contract_error=str(initial_error),
+                    repair_contract_error=repair_contract_error,
                 )
             except ActionValidationError as repair_error:
                 raise ModelOutputInvalid(

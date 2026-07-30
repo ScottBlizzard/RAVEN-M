@@ -659,3 +659,27 @@ evaluator, schedule, or threshold changes.
   A formal r38 suite is authorized only if this replay has valid output, no
   unresolved guard repair, no executed blocked action, and a passing semantic
   audit.
+
+## r39 post-commit completion recovery after the r38 formal stop
+
+- Preserve r38 as a stopped formal diagnostic. Its first four cells all
+  received native reward 1.0, including Files-M0 after the exact file was
+  committed to Ringtones, but the suite stopped on valid-output accounting.
+- Treat the failure as a composition gap between the M0 completion Critic and
+  the post-destination guard. The Critic correctly rejected completion before
+  visible destination verification; the generic repair proposed waiting on a
+  stale source/search view, which the post-commit guard correctly rejected.
+- When a completion rejection occurs while one bottom Copy/Move commit is
+  already active, mark the bounded repair as
+  `POST_DESTINATION_COMPLETION_REOBSERVE_REQUIRED`. The repair must be exactly
+  `status=continue` with `{"type":"press_back"}` so it leaves the stale
+  search/menu/picker state and enables later reversible destination
+  verification.
+- Do not rewrite an action, inject a coordinate, expose evaluator output,
+  promote a hypothesis to fact, repeat the mutation, add another repair, or
+  change task instances, seed, schedule, budgets, model, evaluator, prompts,
+  schemas, thresholds, or memory policy.
+- Run targeted and complete tests plus the protocol-v1 seal, freeze r39, then
+  repeat only frozen sequence 4 (Files-M0) in a fresh development directory.
+  Formal r39 is authorized only if the replay has valid output, native success,
+  a passing semantic audit, no executed blocked action, and no memory error.
