@@ -1,0 +1,128 @@
+{
+  "schema_version": "protocol_v2_2_r63_local_validation.v1",
+  "decision": "local_candidate_passed_exact_package_preflight_pending",
+  "checked_at": "2026-07-31T19:55:01.1057872Z",
+  "source_commit": "fe16e7dac9c383b400ca7ab7e4e760e29166ed5a",
+  "source_tag": "protocol-v2-2-r63-local-candidate",
+  "source_tag_resolves_exactly": true,
+  "formal_gate_f_authorized": false,
+  "live_development_smoke_authorized": false,
+  "parent_r62_stop": {
+    "report": "reports/protocol_v2_2_r62_h17_candidate_stopped.json",
+    "report_sha256": "2b0700dd933cf358ed77e66cd26e1df18dd036f4832546672a6194d409d7c95f",
+    "execution_stop_commit": "fe9c1b68cb7247acd60245f571c4204cb4056ea6",
+    "execution_stop_tag": "protocol-v2-2-r62-h17-stopped",
+    "decision": "r62_navigation_validated_but_answer_role_binding_failed",
+    "immutable": true
+  },
+  "candidate_contract": {
+    "target_date_visibility_authority": "explicit_task_date_matched_to_visible_absolute_date_anchors_in_a_chronological_list",
+    "row_identity_authority": "distinct_clustered_vertical_centers_of_visible_target_date_anchors",
+    "answer_association_authority": "each_answer_item_must_match_visible_text_on_a_target_date_row",
+    "requested_field_authority": "the_explicit_answer_with_role_in_the_task",
+    "detail_required_roles": [
+      "type",
+      "category",
+      "kind",
+      "duration",
+      "distance",
+      "time",
+      "status",
+      "amount",
+      "location",
+      "description",
+      "note",
+      "value"
+    ],
+    "target_visible_policy": "block_further_swipes_and_direct_wrong_row_or_wrong_field_answers",
+    "bounded_first_repair": "one_pure_tap_on_a_visible_enabled_target_date_content_row",
+    "enumeration_policy": "open_each_distinct_target_date_row_and_return_one_answer_item_per_observed_row",
+    "bounded_enumeration_repair": "one_exact_press_back_to_the_dated_list",
+    "deterministic_guard_precedes_visual_critic": true,
+    "hidden_evaluator_or_answer_data_used": false,
+    "task_app_target_date_or_answer_special_case_used": false
+  },
+  "validation": {
+    "complete_project_tests": {
+      "passed": true,
+      "passed_count": 535,
+      "failed_count": 0,
+      "duration_seconds": 141.5
+    },
+    "focused_tests": {
+      "passed": true,
+      "passed_count": 172,
+      "coverage": [
+        "the exact r62 combined answer is rejected before any visual critic call",
+        "a visible target date stops further chronological scrolling",
+        "answer text is associated only with the date on its horizontal row",
+        "row titles are rejected when the task asks for a different field",
+        "singular and plural requested field roles are recognized",
+        "matching target-row names remain allowed when names are requested",
+        "only a pure tap on an enabled target-date content row is accepted as the first repair",
+        "repeatedly opening the same row does not satisfy distinct-row enumeration",
+        "a complete answer is allowed after every distinct target row is opened"
+      ]
+    },
+    "historical_r62_package_tests": {
+      "passed": true,
+      "passed_count": 22,
+      "freeze_validation_mode": "git_show_from_protocol_v2_2_r62_local_candidate_tag",
+      "stopped_development_suite_immutable": true
+    },
+    "compileall": {
+      "passed": true,
+      "paths": [
+        "05_project/src",
+        "05_project/scripts",
+        "05_project/tests"
+      ]
+    },
+    "git_diff_check": {
+      "passed": true
+    },
+    "protocol_v1_seal": {
+      "passed": true,
+      "file_count": 197,
+      "failure_count": 0,
+      "rewritten": false
+    }
+  },
+  "r62_replay": {
+    "source_episode": "runs/protocol_v2_2_development/hard_micro_v2_2_seed20260730_r62_candidate_development_smoke_sequence_2/episodes/02_H17_M0_SportsTrackerActivitiesOnDate_seed20260730/episode.json",
+    "source_episode_sha256": "47da077244a8506cc0e726d4426f1d29e3f9563ebbee1c74a036855da09a8786",
+    "source_screenshot": "runs/protocol_v2_2_development/hard_micro_v2_2_seed20260730_r62_candidate_development_smoke_sequence_2/episodes/02_H17_M0_SportsTrackerActivitiesOnDate_seed20260730/step_003_after.png",
+    "source_screenshot_sha256": "4b700426cac85362c16c3064fe502b8db4bbe68fc55b3c8136aa97b8ea54dd66",
+    "source_answer": "Bicycle Adventure, Recovery day",
+    "visible_target_row_centers": [
+      0.747292,
+      0.834375
+    ],
+    "wrong_date_item_row_center": 0.608958,
+    "observed_target_row_count": 2,
+    "requested_answer_role": "activity type",
+    "rejected_before_execution": true,
+    "visual_critic_calls_before_rejection": 0,
+    "repair_action_type": "tap",
+    "repair_target": "visible_enabled_target_date_content_row"
+  },
+  "resource_use": {
+    "real_model_calls": 0,
+    "gpu_experiment_cells": 0,
+    "online_route_checked": false
+  },
+  "next_action_boundary": {
+    "allowed": [
+      "prepare a fresh r63 H17-only development wrapper and namespace",
+      "add exact-source freeze and invocation-boundary tests",
+      "run a zero-model-call online preflight against the exact r63 package",
+      "run at most one non-scored H17 M0 smoke only after that preflight passes"
+    ],
+    "forbidden": [
+      "resume or overwrite the r62 development suite",
+      "launch any formal r63 Gate-F batch",
+      "run any r63 development sequence other than its single frozen H17 M0 cell",
+      "use hidden task parameters or the offline expected answer"
+    ]
+  }
+}
