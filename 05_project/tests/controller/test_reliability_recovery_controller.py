@@ -386,7 +386,7 @@ def test_controller_repairs_sixth_tap_to_post_repeat_action(
         "Open the task with Chrome, then click the button 5 times, "
         "remember the numbers displayed, and enter their product."
     )
-    values = ["2", "3", "9", "10", "10"]
+    values = ["6", "2", "3", "9", "10"]
     button = {
         "package_name": "com.android.chrome",
         "class_name": "android.widget.Button",
@@ -405,7 +405,16 @@ def test_controller_repairs_sixth_tap_to_post_repeat_action(
     for ordinal, value in enumerate(values, start=1):
         assessment = bounded_task_repeated_tap_assessment(
             goal,
-            [button],
+            [
+                button,
+                {
+                    "package_name": "com.android.chrome",
+                    "text": value,
+                    "is_visible": True,
+                    "is_clickable": False,
+                    "is_editable": False,
+                },
+            ],
             tap,
             prior_identical_coordinate_action_count=(
                 guard.identical_coordinate_action_count
@@ -437,16 +446,7 @@ def test_controller_repairs_sixth_tap_to_post_repeat_action(
         )
         guard.refresh_verified_task_repeat_progress(
             goal=goal,
-            ui_elements=[
-                button,
-                {
-                    "package_name": "com.android.chrome",
-                    "text": value,
-                    "is_visible": True,
-                    "is_clickable": False,
-                    "is_editable": False,
-                },
-            ],
+            ui_elements=[],
             page_sha256=f"result-{ordinal}",
         )
 
@@ -454,7 +454,7 @@ def test_controller_repairs_sixth_tap_to_post_repeat_action(
         controller,
         tmp_path=tmp_path,
         task_goal=goal,
-        ui_elements=[button],
+        ui_elements=[],
     )
     assert len(calls) == 2
     assert meta["model_repair_used"]
@@ -464,7 +464,7 @@ def test_controller_repairs_sixth_tap_to_post_repeat_action(
     assert decision_value["action"] == repair["action"]
     repair_prompt = client.requests[1]["user_prompt"]
     assert "VERIFIED_REPEAT_COMPLETION_REPAIR" in repair_prompt
-    assert '"result":"5400"' in repair_prompt
+    assert '"result":"3240"' in repair_prompt
     assert guard.audit_record()[
         "task_repeat_count_complete_block_count"
     ] == 1
@@ -475,11 +475,11 @@ def test_user_prompt_marks_verified_repeat_progress_authoritative() -> None:
         "executed_count": 5,
         "requested_repetitions": 5,
         "complete": True,
-        "verified_operands": ["2", "3", "9", "10", "10"],
+        "verified_operands": ["6", "2", "3", "9", "10"],
         "operands_complete": True,
         "deterministic_calculation": {
             "operation": "product",
-            "result": "5400",
+            "result": "3240",
         },
     }
     prompt = EpisodeController._user_prompt(
@@ -501,7 +501,7 @@ def test_user_prompt_marks_verified_repeat_progress_authoritative() -> None:
     assert "VERIFIED_TASK_REPEAT_PROGRESS" in prompt
     assert "newer and more authoritative" in prompt
     assert '"executed_count":5' in prompt
-    assert '"result":"5400"' in prompt
+    assert '"result":"3240"' in prompt
     assert "Never repeat" in prompt
 
 

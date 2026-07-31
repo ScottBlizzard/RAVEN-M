@@ -1982,10 +1982,12 @@ def test_verified_repeat_ledger_overrides_stale_summary_and_calculates() -> None
     )
     action = {"type": "tap", "x": 0.5, "y": 0.208}
     guard.reset(goal=goal)
-    displayed_results = ["2", "3", "9", "10", "10"]
+    pre_action_results = ["6", "2", "3", "9", "10"]
 
-    for ordinal in range(1, 6):
-        current_value = "6" if ordinal == 1 else displayed_results[ordinal - 2]
+    for ordinal, current_value in enumerate(
+        pre_action_results,
+        start=1,
+    ):
         page = f"before-{ordinal}"
         assessment = bounded_task_repeated_tap_assessment(
             goal,
@@ -2007,6 +2009,7 @@ def test_verified_repeat_ledger_overrides_stale_summary_and_calculates() -> None
         assert assessment["proposed_ordinal"] == ordinal
         assert assessment["task_target_bound"]
         assert assessment["numeric_result_collection_bound"]
+        assert assessment["pre_action_numeric_operand_bound"]
         guard.validate_decision(
             decision(action),
             page_sha256=page,
@@ -2020,15 +2023,12 @@ def test_verified_repeat_ledger_overrides_stale_summary_and_calculates() -> None
         )
         progress = guard.refresh_verified_task_repeat_progress(
             goal=goal,
-            ui_elements=[
-                repeated_button(),
-                numeric_result(displayed_results[ordinal - 1]),
-            ],
+            ui_elements=[],
             page_sha256=f"fresh-result-{ordinal}",
         )
         assert progress is not None
         assert progress["executed_count"] == ordinal
-        assert progress["verified_operands"] == displayed_results[:ordinal]
+        assert progress["verified_operands"] == pre_action_results[:ordinal]
 
     progress = guard.verified_task_repeat_progress_record()
     assert progress is not None
@@ -2036,14 +2036,15 @@ def test_verified_repeat_ledger_overrides_stale_summary_and_calculates() -> None
     assert progress["operands_complete"]
     assert progress["deterministic_calculation"] == {
         "operation": "product",
-        "operands": ["2", "3", "9", "10", "10"],
-        "result": "5400",
+        "operands": ["6", "2", "3", "9", "10"],
+        "result": "3240",
         "text_origin": "deterministic_calculation",
     }
+    assert progress["ready_for_post_repeat"]
 
     sixth = bounded_task_repeated_tap_assessment(
         goal,
-        [repeated_button(), numeric_result("10")],
+        [],
         action,
         prior_identical_coordinate_action_count=5,
         identical_coordinate_no_effect_count=0,
@@ -2091,20 +2092,114 @@ def test_verified_repeat_ledger_does_not_guess_ambiguous_result() -> None:
         after_sha256="after",
         bounded_task_repeated_tap_assessment=first,
     )
-    progress = guard.refresh_verified_task_repeat_progress(
-        goal=goal,
-        ui_elements=[
+    second = bounded_task_repeated_tap_assessment(
+        goal,
+        [
             repeated_button(),
             numeric_result("2"),
             numeric_result("3"),
         ],
+        action,
+        prior_identical_coordinate_action_count=1,
+        identical_coordinate_no_effect_count=0,
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert not second["pre_action_numeric_operand_bound"]
+    guard.observe_transition(
+        before_sha256="after",
+        action=action,
+        after_sha256="form",
+        bounded_task_repeated_tap_assessment=second,
+    )
+    progress = guard.refresh_verified_task_repeat_progress(
+        goal=goal,
+        ui_elements=[],
         page_sha256="ambiguous",
     )
     assert progress is not None
-    assert progress["executed_count"] == 1
-    assert progress["verified_operands"] == []
+    assert progress["executed_count"] == 2
+    assert progress["complete"]
+    assert progress["verified_operands"] == ["6"]
     assert not progress["operands_complete"]
     assert progress["deterministic_calculation"] is None
+    assert not progress["ready_for_post_repeat"]
+
+
+def test_verified_repeat_ledger_rejects_chrome_setup_button_bootstrap() -> None:
+    guard = ProtocolV2DecisionGuard()
+    goal = (
+        "Open the task with Chrome, click the button 5 times, remember "
+        "the numbers displayed, and enter their product."
+    )
+    setup_action = {"type": "tap", "x": 0.5, "y": 0.915}
+    setup_button = {
+        **repeated_button(),
+        "text": "Accept & continue",
+        "bbox": {
+            "x_min": 0.2,
+            "x_max": 0.8,
+            "y_min": 0.88,
+            "y_max": 0.95,
+        },
+    }
+    assessment = bounded_task_repeated_tap_assessment(
+        goal,
+        [setup_button],
+        setup_action,
+        prior_identical_coordinate_action_count=0,
+        identical_coordinate_no_effect_count=0,
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert assessment["task_target_bound"]
+    assert not assessment["pre_action_numeric_operand_bound"]
+    guard.observe_transition(
+        before_sha256="chrome-setup",
+        action=setup_action,
+        after_sha256="chrome-setup-after",
+        bounded_task_repeated_tap_assessment=assessment,
+    )
+    assert guard.verified_task_repeat_progress_record() is None
+
+
+def test_verified_repeat_ledger_retains_equal_pre_action_ordinals() -> None:
+    guard = ProtocolV2DecisionGuard()
+    goal = (
+        "Open with Chrome, click the button 2 times, remember the numbers "
+        "displayed, and enter their product."
+    )
+    action = {"type": "tap", "x": 0.5, "y": 0.208}
+    guard.reset(goal=goal)
+    for ordinal in (1, 2):
+        assessment = bounded_task_repeated_tap_assessment(
+            goal,
+            [repeated_button(), numeric_result("4")],
+            action,
+            prior_identical_coordinate_action_count=ordinal - 1,
+            identical_coordinate_no_effect_count=0,
+            screen_width=1080,
+            screen_height=2400,
+        )
+        guard.observe_transition(
+            before_sha256=f"same-value-before-{ordinal}",
+            action=action,
+            after_sha256=f"same-value-after-{ordinal}",
+            bounded_task_repeated_tap_assessment=assessment,
+        )
+    progress = guard.refresh_verified_task_repeat_progress(
+        goal=goal,
+        ui_elements=[],
+        page_sha256="answer-form",
+    )
+    assert progress is not None
+    assert progress["verified_operands"] == ["4", "4"]
+    assert [
+        record["result_ordinal"]
+        for record in progress["operand_records"]
+    ] == [1, 2]
+    assert progress["deterministic_calculation"]["result"] == "16"
+    assert progress["ready_for_post_repeat"]
 
 
 def test_numeric_repeat_result_excludes_clickable_and_wrong_package() -> None:
