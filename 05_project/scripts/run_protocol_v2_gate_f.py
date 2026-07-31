@@ -4,10 +4,12 @@ from __future__ import annotations
 
 import argparse
 from datetime import datetime
+from hashlib import sha256
 import json
 import math
 from pathlib import Path
 import shutil
+import subprocess
 import sys
 import time
 from typing import Any
@@ -44,7 +46,11 @@ from run_frozen_hard_suite import (  # noqa: E402
     wait_for_model_service,
 )
 from run_method_dev_suite import audit_memory_episode  # noqa: E402
+from seal_protocol_v1_breadth import verify_existing_seal  # noqa: E402
 from run_protocol_v2_gate_e import (  # noqa: E402
+    PROTOCOL_V2_2,
+    VERSIONED_PROTOCOLS,
+    classify_gate_e_infrastructure,
     episode_result,
     generate_task,
     instance_hash,
@@ -52,9 +58,17 @@ from run_protocol_v2_gate_e import (  # noqa: E402
     utc_now,
     write_json,
 )
+from protocol_v2_runtime import (  # noqa: E402
+    initialize_androidworld_environment,
+    load_startup_audit,
+)
 
 
 EXPECTED_SOURCE_COMMIT = "0ddf83cad60647409b16a0c60c16b528a9cb19e6"
+EXPECTED_SOURCE_TAG = "protocol-v2-gate-e-pass"
+DEFAULT_MANIFEST = (
+    PROJECT_ROOT / "configs/experiments/v2_hard_micro_gate.json"
+)
 DIAGNOSTIC_PAUSE = (
     PROJECT_ROOT
     / "metadata/protocol_v2_gate_f_batch1_checkpoint.json"
@@ -62,6 +76,18 @@ DIAGNOSTIC_PAUSE = (
 HARD_MANIFEST = (
     PROJECT_ROOT / "configs/task_manifests/androidworld_hard_v1.json"
 )
+
+
+def _git_output(*args: str) -> str:
+    completed = subprocess.run(
+        ["git", *args],
+        cwd=REPOSITORY_ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+        timeout=30,
+    )
+    return completed.stdout.strip()
 
 
 def wall_seconds(summary: dict[str, Any]) -> float:
@@ -171,6 +197,7 @@ def aggregate(
     current_batch: int,
     stopped_early: bool,
     stop_reason: str | None,
+    startup_audit: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     pairing_errors = []
     for task in {item["task"] for item in manifest["schedule"]}:
@@ -218,6 +245,11 @@ def aggregate(
         for item in results
     )
     reset_errors = sum(not item["reset_audit"]["passed"] for item in results)
+    versioned_protocol = manifest["protocol"] in VERSIONED_PROTOCOLS
+    protocol_v2_2 = manifest["protocol"] == PROTOCOL_V2_2
+    semantic_audits = [
+        item.get("semantic_progress_audit", {}) for item in results
+    ]
     criteria = {
         "valid_scored_cells": len(results) == 12,
         "pairing": not pairing_errors,
@@ -243,13 +275,25 @@ def aggregate(
             for item in m0
         ),
         "loop_guard": not any(
-            item["unhandled_third_identical_no_effect_action"]
+            (
+                not item.get("semantic_progress_audit", {}).get(
+                    "passed", False
+                )
+                if versioned_protocol
+                else item["unhandled_third_identical_no_effect_action"]
+            )
             for item in results
         ),
         "loop_recovery": all(
-            item["loop_recovery_obligation_count"] == 0
-            and item["loop_recovery_completion_count"]
-            >= item["loop_recovery_validation_block_count"]
+            (
+                item.get("semantic_progress_audit", {}).get("passed", False)
+                if versioned_protocol
+                else (
+                    item["loop_recovery_obligation_count"] == 0
+                    and item["loop_recovery_completion_count"]
+                    >= item["loop_recovery_validation_block_count"]
+                )
+            )
             for item in results
         ),
         "delayed_fact_completion": delayed_fact_deadlocks == 0,
@@ -284,6 +328,36 @@ def aggregate(
             and health.get("revision") == EXPECTED_REVISION
         ),
     }
+    if versioned_protocol:
+        criteria.update(
+            {
+                "semantic_progress_audit": all(
+                    audit.get("passed", False)
+                    for audit in semantic_audits
+                ),
+                "visible_failure_enforcement": not any(
+                    audit.get("executed_blocked_action_steps")
+                    or audit.get("unresolved_guard_repair")
+                    for audit in semantic_audits
+                ),
+                "startup_environment_accounting": bool(
+                    startup_audit
+                    and startup_audit.get("last_status")
+                    in {"clean", "recovered"}
+                ),
+            }
+        )
+    if protocol_v2_2:
+        criteria["readiness_accounting"] = all(
+            item.get("readiness_observation_count", 0) >= 1
+            for item in results
+        )
+        if manifest["acceptance"].get(
+            "consequential_action_adjudication_accounting"
+        ):
+            criteria["consequential_action_adjudication_accounting"] = all(
+                "action_adjudication_count" in item for item in results
+            )
     batch_sequences = {
         item["sequence"]
         for item in manifest["schedule"]
@@ -294,8 +368,16 @@ def aggregate(
     finished = len(results) == len(manifest["schedule"]) and not stopped_early
     projected = projected_active_seconds(manifest, results, active_seconds)
     gate_passed = finished and all(criteria.values())
-    return {
-        "schema_version": "protocol_v2_gate_f_summary.v1",
+    result = {
+        "schema_version": (
+            "protocol_v2_2_gate_f_summary.v1"
+            if protocol_v2_2
+            else (
+                "protocol_v2_1_gate_f_summary.v1"
+                if versioned_protocol
+                else "protocol_v2_gate_f_summary.v1"
+            )
+        ),
         "suite_id": manifest["suite_id"],
         "protocol": manifest["protocol"],
         "source_tag": manifest["source_tag"],
@@ -335,12 +417,20 @@ def aggregate(
         "criteria": criteria,
         "results": results,
     }
+    if versioned_protocol:
+        result["startup_environment_audit"] = startup_audit
+    return result
 
 
-def validate_manifest(manifest: dict[str, Any]) -> None:
-    if manifest["source_tag"] != "protocol-v2-gate-e-pass":
+def validate_manifest(
+    manifest: dict[str, Any],
+    *,
+    expected_source_tag: str = EXPECTED_SOURCE_TAG,
+    expected_source_commit: str = EXPECTED_SOURCE_COMMIT,
+) -> dict[str, Any]:
+    if manifest["source_tag"] != expected_source_tag:
         raise RuntimeError("Gate-F source tag is not the Gate-E pass.")
-    if manifest["source_commit"] != EXPECTED_SOURCE_COMMIT:
+    if manifest["source_commit"] != expected_source_commit:
         raise RuntimeError("Gate-F source commit is not the Gate-E pass.")
     if manifest["instance_seed"] != 20260730:
         raise RuntimeError("Gate-F instance seed drifted.")
@@ -400,25 +490,237 @@ def validate_manifest(manifest: dict[str, Any]) -> None:
             or any(item["max_steps"] != max_steps for item in rows)
         ):
             raise RuntimeError(f"Gate-F pair mismatch for {task_id}.")
+    freeze_checks = []
+    prerequisite_checks = []
+    if manifest["protocol"] in VERSIONED_PROTOCOLS:
+        if _git_output("rev-list", "-n", "1", manifest["source_tag"]) != (
+            expected_source_commit
+        ):
+            raise RuntimeError("Gate-F source tag does not resolve to source.")
+        ancestor = subprocess.run(
+            [
+                "git",
+                "merge-base",
+                "--is-ancestor",
+                expected_source_commit,
+                "HEAD",
+            ],
+            cwd=REPOSITORY_ROOT,
+            check=False,
+            capture_output=True,
+            timeout=30,
+        )
+        if ancestor.returncode != 0:
+            raise RuntimeError("Gate-F source is not an ancestor of HEAD.")
+        records = manifest.get("freeze_files", [])
+        if not records:
+            raise RuntimeError("Versioned Gate-F freeze file list is empty.")
+        for record in records:
+            path = REPOSITORY_ROOT / record["path"]
+            actual = (
+                sha256(path.read_bytes()).hexdigest()
+                if path.is_file()
+                else None
+            )
+            passed = actual == record["sha256"]
+            freeze_checks.append(
+                {
+                    "path": record["path"],
+                    "expected_sha256": record["sha256"],
+                    "actual_sha256": actual,
+                    "passed": passed,
+                }
+            )
+        if not all(item["passed"] for item in freeze_checks):
+            raise RuntimeError("Versioned Gate-F freeze file hash mismatch.")
+        prerequisite = manifest.get("prerequisite_gate_e_report")
+        if not prerequisite:
+            raise RuntimeError("Versioned Gate-F prerequisite is missing.")
+        path = REPOSITORY_ROOT / prerequisite["path"]
+        actual = (
+            sha256(path.read_bytes()).hexdigest() if path.is_file() else None
+        )
+        report = (
+            json.loads(path.read_text(encoding="utf-8"))
+            if path.is_file()
+            else {}
+        )
+        report_gate_passed = report.get("suite", {}).get("gate_passed")
+        report_source_commit = report.get("suite", {}).get("source_commit")
+        passed = (
+            actual == prerequisite["sha256"]
+            and report.get("decision", {}).get("gate_e") == "pass"
+            and report_gate_passed is True
+            and report_source_commit == expected_source_commit
+        )
+        prerequisite_checks.append(
+            {
+                "path": prerequisite["path"],
+                "expected_sha256": prerequisite["sha256"],
+                "actual_sha256": actual,
+                "decision": report.get("decision", {}).get("gate_e"),
+                "gate_passed": report_gate_passed,
+                "source_commit": report_source_commit,
+                "passed": passed,
+            }
+        )
+        if not passed:
+            raise RuntimeError("Versioned Gate-F prerequisite mismatch.")
+    return {
+        "schedule_cell_count": len(manifest["schedule"]),
+        "task_pair_count": len(expected),
+        "batch_count": len(batches),
+        "freeze_file_checks": freeze_checks,
+        "prerequisite_checks": prerequisite_checks,
+    }
 
 
-def main() -> int:
+def run_preflight(
+    *,
+    manifest: dict[str, Any],
+    manifest_audit: dict[str, Any],
+    url: str,
+    adb_path: str,
+    output: Path,
+) -> int:
+    suite_dir = (
+        REPOSITORY_ROOT / manifest["output_root"] / manifest["suite_id"]
+    )
+    if suite_dir.exists():
+        raise RuntimeError(
+            "Fresh Gate-F suite directory already exists; refusing reuse."
+        )
+    adb = subprocess.run(
+        [adb_path, "devices"],
+        check=True,
+        capture_output=True,
+        text=True,
+        timeout=30,
+    )
+    emulator_connected = any(
+        line.startswith("emulator-5554") and line.rstrip().endswith("device")
+        for line in adb.stdout.splitlines()
+    )
+    if not emulator_connected:
+        raise RuntimeError("Gate-F emulator is not connected.")
+    health = TransformersClient(url).health()
+    if (
+        health.get("backend") != EXPECTED_BACKEND
+        or health.get("revision") != EXPECTED_REVISION
+    ):
+        raise RuntimeError("Gate-F model identity mismatch.")
+    task_registry = registry.TaskRegistry()
+    registered = task_registry.get_registry(
+        task_registry.ANDROID_WORLD_FAMILY
+    )
+    seed = int(manifest["instance_seed"])
+    instance_records = []
+    by_task: dict[str, tuple[str, str]] = {}
+    for task_name in sorted({item["task"] for item in manifest["schedule"]}):
+        if task_name not in registered:
+            raise RuntimeError(f"Unknown Gate-F task: {task_name}")
+        first = generate_task(registered, task_name, seed)
+        second = generate_task(registered, task_name, seed)
+        first_hash = instance_hash(first)
+        if first_hash != instance_hash(second):
+            raise RuntimeError("Gate-F instance generation is not stable.")
+        by_task[task_name] = first_hash
+        instance_records.append(
+            {
+                "task": task_name,
+                "seed": seed,
+                "goal_sha256": first_hash[0],
+                "params_sha256": first_hash[1],
+                "restart_stable": True,
+            }
+        )
+    pair_hash_checks = []
+    for task_id in sorted({item["task_id"] for item in manifest["schedule"]}):
+        rows = [
+            item for item in manifest["schedule"]
+            if item["task_id"] == task_id
+        ]
+        hashes = {by_task[item["task"]] for item in rows}
+        pair_hash_checks.append(
+            {
+                "task_id": task_id,
+                "variants": sorted(item["variant"] for item in rows),
+                "goal_params_pair_count": len(hashes),
+                "passed": (
+                    len(rows) == 2
+                    and {item["variant"] for item in rows} == {"B3", "M0"}
+                    and len(hashes) == 1
+                ),
+            }
+        )
+    if not all(item["passed"] for item in pair_hash_checks):
+        raise RuntimeError("Gate-F paired instance preflight failed.")
+    protocol_v1_seal = verify_existing_seal()
+    if (
+        not protocol_v1_seal["passed"]
+        or protocol_v1_seal["file_count"] != 197
+    ):
+        raise RuntimeError("Protocol-v1 breadth seal verification failed.")
+    result = {
+        "schema_version": (
+            "protocol_v2_2_gate_f_preflight.v1"
+            if manifest["protocol"] == PROTOCOL_V2_2
+            else "protocol_v2_gate_f_preflight.v1"
+        ),
+        "checked_at": utc_now(),
+        "passed": True,
+        "protocol": manifest["protocol"],
+        "suite_id": manifest["suite_id"],
+        "source_tag": manifest["source_tag"],
+        "source_commit": manifest["source_commit"],
+        "execution_commit": _git_output("rev-parse", "HEAD"),
+        "manifest_audit": manifest_audit,
+        "protocol_v1_seal": protocol_v1_seal,
+        "instance_records": instance_records,
+        "pair_hash_checks": pair_hash_checks,
+        "model_health": health,
+        "emulator_connected": emulator_connected,
+        "fresh_suite_directory_absent": True,
+        "batch_isolation": {
+            "batch_size": 4,
+            "automatic_next_batch": False,
+            "automatic_gate_g_transition": False,
+        },
+        "model_calls": 0,
+        "gpu_experiment_cells": 0,
+        "automatic_batch_1_launch": False,
+        "automatic_next_batch": False,
+        "automatic_gate_g_transition": False,
+    }
+    write_json(output, result)
+    print(json.dumps(result, indent=2, ensure_ascii=False))
+    return 0
+
+
+def main(
+    *,
+    default_manifest: Path = DEFAULT_MANIFEST,
+    expected_source_tag: str = EXPECTED_SOURCE_TAG,
+    expected_source_commit: str = EXPECTED_SOURCE_COMMIT,
+    diagnostic_pause: Path | None = DIAGNOSTIC_PAUSE,
+) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--url", default="http://127.0.0.1:18000")
     parser.add_argument("--adb-path", required=True)
     parser.add_argument("--console-port", type=int, default=5554)
     parser.add_argument("--grpc-port", type=int, default=8554)
-    parser.add_argument("--batch", type=int, choices=(1, 2, 3), required=True)
+    parser.add_argument("--batch", type=int, choices=(1, 2, 3))
     parser.add_argument(
         "--manifest",
         type=Path,
-        default=PROJECT_ROOT
-        / "configs/experiments/v2_hard_micro_gate.json",
+        default=default_manifest,
     )
+    parser.add_argument("--preflight-only", action="store_true")
+    parser.add_argument("--preflight-output", type=Path, default=None)
     args = parser.parse_args()
 
-    if DIAGNOSTIC_PAUSE.exists():
-        pause = json.loads(DIAGNOSTIC_PAUSE.read_text(encoding="utf-8"))
+    if diagnostic_pause is not None and diagnostic_pause.exists():
+        pause = json.loads(diagnostic_pause.read_text(encoding="utf-8"))
         if (
             pause.get("status") == "diagnostic_pause"
             and not pause.get("batch_2_authorized", False)
@@ -429,10 +731,32 @@ def main() -> int:
                 "enforcement with revised cells."
             )
     manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
-    validate_manifest(manifest)
+    manifest_audit = validate_manifest(
+        manifest,
+        expected_source_tag=expected_source_tag,
+        expected_source_commit=expected_source_commit,
+    )
     coverage = capability_audit(REPOSITORY_ROOT)
     if not coverage["passed"]:
         raise RuntimeError("Protocol-v2 capability audit failed.")
+    if args.preflight_only:
+        output = args.preflight_output or (
+            REPOSITORY_ROOT
+            / (
+                "reports/protocol_v2_2_gate_f_preflight.json"
+                if manifest["protocol"] == PROTOCOL_V2_2
+                else "reports/protocol_v2_gate_f_preflight.json"
+            )
+        )
+        return run_preflight(
+            manifest=manifest,
+            manifest_audit=manifest_audit,
+            url=args.url,
+            adb_path=args.adb_path,
+            output=output,
+        )
+    if args.batch is None:
+        raise RuntimeError("--batch is required unless --preflight-only is set.")
 
     suite_dir = (
         REPOSITORY_ROOT / manifest["output_root"] / manifest["suite_id"]
@@ -452,6 +776,8 @@ def main() -> int:
     batch_runs: list[dict[str, Any]] = []
     prior_active_seconds = 0.0
     gate_started_at = utc_now()
+    startup_audit_path = suite_dir / "startup_environment_audit.json"
+    startup_audit: dict[str, Any] | None = None
     if progress_path.exists():
         prior = json.loads(progress_path.read_text(encoding="utf-8"))
         if prior.get("stopped_early"):
@@ -467,6 +793,8 @@ def main() -> int:
             prior.get("cumulative_active_seconds", 0.0)
         )
         gate_started_at = prior.get("gate_started_at", gate_started_at)
+    if startup_audit_path.is_file():
+        startup_audit = load_startup_audit(startup_audit_path)
 
     completed_sequences = {item["sequence"] for item in results}
     required_prior = {
@@ -535,13 +863,57 @@ def main() -> int:
     stopped_early = False
     stop_reason = None
     consecutive_infra_codes: list[str] = []
-    env = env_launcher.load_and_setup_env(
-        console_port=args.console_port,
-        emulator_setup=False,
-        freeze_datetime=True,
-        adb_path=args.adb_path,
-        grpc_port=args.grpc_port,
-    )
+    if manifest["protocol"] in VERSIONED_PROTOCOLS:
+        try:
+            env, startup_audit = initialize_androidworld_environment(
+                audit_path=startup_audit_path,
+                load_fn=lambda: env_launcher.load_and_setup_env(
+                    console_port=args.console_port,
+                    emulator_setup=False,
+                    freeze_datetime=True,
+                    adb_path=args.adb_path,
+                    grpc_port=args.grpc_port,
+                ),
+                recover_fn=lambda: recover_androidworld_env(
+                    adb_path=args.adb_path,
+                    console_port=args.console_port,
+                    grpc_port=args.grpc_port,
+                    recovery_dir=(
+                        suite_dir / "recoveries/startup_environment"
+                    ),
+                ),
+            )
+        except Exception as exc:
+            startup_audit = load_startup_audit(startup_audit_path)
+            batch_elapsed = time.monotonic() - batch_clock
+            final = aggregate(
+                manifest=manifest,
+                health=health,
+                results=results,
+                infrastructure_attempts=infrastructure_attempts,
+                gate_started_at=gate_started_at,
+                active_seconds=prior_active_seconds + batch_elapsed,
+                batch_runs=batch_runs,
+                current_batch=args.batch,
+                stopped_early=True,
+                stop_reason=(
+                    "startup_environment_failed_twice:"
+                    f"{type(exc).__name__}"
+                ),
+                startup_audit=startup_audit,
+            )
+            write_json(progress_path, final)
+            write_json(suite_dir / "gate_summary.json", final)
+            print(json.dumps(final, indent=2, ensure_ascii=False), flush=True)
+            return 3
+    else:
+        env = env_launcher.load_and_setup_env(
+            console_port=args.console_port,
+            emulator_setup=False,
+            freeze_datetime=True,
+            adb_path=args.adb_path,
+            grpc_port=args.grpc_port,
+        )
     try:
         for frozen in selected:
             if frozen["sequence"] in completed_sequences:
@@ -611,6 +983,10 @@ def main() -> int:
                     action_schema_path=schemas[item["variant"]],
                     decision_guard=ProtocolV2DecisionGuard(),
                     protocol_v2=True,
+                    protocol_v2_2=(
+                        manifest["protocol"] == PROTOCOL_V2_2
+                    ),
+                    visual_source_critic_prompt=prompts["critic"],
                 )
                 summary = controller.run(
                     env=env,
@@ -627,7 +1003,11 @@ def main() -> int:
                 if not summary.get("error"):
                     consecutive_infra_codes.clear()
                     break
-                infra_code = classify_infrastructure(summary)
+                infra_code = (
+                    classify_gate_e_infrastructure(summary)
+                    if manifest["protocol"] in VERSIONED_PROTOCOLS
+                    else classify_infrastructure(summary)
+                )
                 if infra_code is None:
                     stopped_early = True
                     stop_reason = "semantic_or_unclassified_controller_error"
@@ -667,7 +1047,10 @@ def main() -> int:
                         + infra_code
                     )
                     break
-                if infra_code == "INFRA_EMULATOR_LOST":
+                if infra_code in {
+                    "INFRA_EMULATOR_LOST",
+                    "INFRA_EMULATOR_ANR",
+                }:
                     env.close()
                     env = recover_androidworld_env(
                         adb_path=args.adb_path,
@@ -723,6 +1106,7 @@ def main() -> int:
                 current_batch=args.batch,
                 stopped_early=False,
                 stop_reason=None,
+                startup_audit=startup_audit,
             )
             write_json(progress_path, progress)
             print(
@@ -742,7 +1126,18 @@ def main() -> int:
             if not result["valid_after_one_repair"]:
                 stopped_early = True
                 stop_reason = "model_output_invalid_after_one_bounded_repair"
-            elif result["unhandled_third_identical_no_effect_action"]:
+            elif (
+                manifest["protocol"] in VERSIONED_PROTOCOLS
+                and not result.get("semantic_progress_audit", {}).get(
+                    "passed", False
+                )
+            ):
+                stopped_early = True
+                stop_reason = "semantic_progress_audit_failed"
+            elif (
+                manifest["protocol"] not in VERSIONED_PROTOCOLS
+                and result["unhandled_third_identical_no_effect_action"]
+            ):
                 stopped_early = True
                 stop_reason = "unhandled_third_identical_no_effect_action"
             elif (
@@ -803,6 +1198,7 @@ def main() -> int:
         current_batch=args.batch,
         stopped_early=stopped_early,
         stop_reason=stop_reason,
+        startup_audit=startup_audit,
     )
     write_json(progress_path, final)
     write_json(suite_dir / "gate_summary.json", final)
