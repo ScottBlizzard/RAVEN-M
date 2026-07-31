@@ -23,6 +23,12 @@ R58_STOPPED_CHECKPOINT = (
     "hard_micro_v2_2_seed20260730_r58_candidate_"
     "development_smoke_sequence_1/batch_01_checkpoint.json"
 )
+R59_STOPPED_CHECKPOINT = (
+    ROOT
+    / "runs/protocol_v2_2_development/"
+    "hard_micro_v2_2_seed20260730_r59_candidate_"
+    "development_smoke_sequence_1/batch_01_checkpoint.json"
+)
 
 
 def load_module(path: Path, name: str):
@@ -101,6 +107,12 @@ def test_r59_candidate_preserves_historical_controls_and_freeze() -> None:
 def test_r58_development_stop_remains_byte_frozen() -> None:
     assert sha256(R58_STOPPED_CHECKPOINT.read_bytes()).hexdigest() == (
         "1e94814cc3addba8949d96699395988c9bcd9406de6028525dce0a8d1cb0a473"
+    )
+
+
+def test_r59_development_stop_remains_byte_frozen() -> None:
+    assert sha256(R59_STOPPED_CHECKPOINT.read_bytes()).hexdigest() == (
+        "7f6c9a3fe8386490d9667cf215bb8625e6ea56b96fa67962fc62cc5927d1acb0"
     )
 
 
