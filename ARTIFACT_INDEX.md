@@ -199,6 +199,8 @@ Raw trajectories are under `runs/excluded_protocol_dry_run/` and
 | `05_project/scripts/run_protocol_v2_2_gate_e_r56.py` | exact-source r56 formal preflight and one-launch entry point | prepared |
 | `reports/protocol_v2_2_r56_gate_e_preflight.json` | zero-call audit of source, freeze, instances, exact model, emulator, and fresh formal namespace | passed |
 | `reports/protocol_v2_2_r56_gate_d_freeze.json` | machine-readable r56 Gate-D freeze and bounded formal-launch authorization | passed; one fresh Gate-E launch authorized |
+| `reports/protocol_v2_2_r56_gate_e_final.json` | machine-readable eight-cell result, 19-criterion audit, retained M0 Contacts failure, Files guard trace, and immutable hashes | Gate E passed at 7/8 |
+| `reports/protocol_v2_2_r56_gate_e_final.md` | human-readable r56 Gate-E result, planner-reliability finding, descriptive pairing, and Gate-F boundary | current |
 
 The r39 raw trajectories are under
 `runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/` and remain
