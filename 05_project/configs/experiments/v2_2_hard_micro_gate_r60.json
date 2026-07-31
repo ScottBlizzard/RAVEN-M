@@ -1,0 +1,18 @@
+{
+  "schema_version": "protocol_v2_2_gate_f_r60_overlay.v1",
+  "manifest_id": "protocol_v2_2_gate_f_seed20260730_r60",
+  "base_manifest": "05_project/configs/experiments/v2_2_hard_micro_gate_r56.json",
+  "source_tag": "protocol-v2-2-r60-local-candidate",
+  "source_commit": "5ef66de358423f9940191d8dfde0e74002ccdcec",
+  "suite_id": "hard_micro_v2_2_seed20260730_r60",
+  "output_root": "runs/protocol_v2_2",
+  "prerequisite_candidate_report": {
+    "path": "reports/protocol_v2_2_r60_h01_candidate_smoke.json",
+    "sha256": "ca49654a9367d4240f7e5431c0a93d246a352074f8c977a344d5d8114b1d63b6"
+  },
+  "updated_freeze_hashes": {
+    "05_project/scripts/run_protocol_v2_gate_f.py": "1a836b2ca63cee1a5298610ae65cb7141203b6a3c6ebfa0ae5ae76bd6ba338a4",
+    "05_project/src/raven_m/controller/episode_controller.py": "cb5e0fb0323665e7887522d95de469cba60b2c1b942017c14096a6f0042ef18c",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "e156470e6ce9c6fcdf1b5a2f13f5f0191f00b73cd2913abe042cd3cb1b87abf2"
+  }
+}

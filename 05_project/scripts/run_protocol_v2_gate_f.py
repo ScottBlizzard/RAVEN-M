@@ -497,6 +497,7 @@ def validate_manifest(
             raise RuntimeError(f"Gate-F pair mismatch for {task_id}.")
     freeze_checks = []
     prerequisite_checks = []
+    candidate_prerequisite_checks = []
     if manifest["protocol"] in VERSIONED_PROTOCOLS:
         if _git_output("rev-list", "-n", "1", manifest["source_tag"]) != (
             expected_source_commit
@@ -574,12 +575,107 @@ def validate_manifest(
         )
         if not passed:
             raise RuntimeError("Versioned Gate-F prerequisite mismatch.")
+        candidate = manifest.get("prerequisite_candidate_report")
+        if candidate:
+            candidate_path = REPOSITORY_ROOT / candidate["path"]
+            candidate_actual = (
+                sha256(candidate_path.read_bytes()).hexdigest()
+                if candidate_path.is_file()
+                else None
+            )
+            candidate_report = (
+                json.loads(candidate_path.read_text(encoding="utf-8"))
+                if candidate_path.is_file()
+                else {}
+            )
+            episode = candidate_report.get("episode", {})
+            mechanism = candidate_report.get("r60_mechanism_result", {})
+            suite_path_value = candidate_report.get("suite_path", "")
+            suite_path = REPOSITORY_ROOT / suite_path_value
+            artifact_checks = []
+            for name, expected_digest in candidate_report.get(
+                "artifact_sha256", {}
+            ).items():
+                matches = (
+                    list(suite_path.rglob(name))
+                    if suite_path.is_dir()
+                    else []
+                )
+                actual_digest = (
+                    sha256(matches[0].read_bytes()).hexdigest()
+                    if len(matches) == 1 and matches[0].is_file()
+                    else None
+                )
+                artifact_checks.append(
+                    {
+                        "name": name,
+                        "expected_sha256": expected_digest,
+                        "actual_sha256": actual_digest,
+                        "match_count": len(matches),
+                        "passed": actual_digest == expected_digest,
+                    }
+                )
+            artifact_checks_passed = bool(artifact_checks) and all(
+                item["passed"] for item in artifact_checks
+            )
+            candidate_passed = (
+                candidate_actual == candidate["sha256"]
+                and candidate_report.get("decision")
+                == "end_to_end_candidate_smoke_passed"
+                and candidate_report.get("candidate_disposition")
+                == (
+                    "gate_f_preparation_allowed_"
+                    "formal_execution_not_yet_authorized"
+                )
+                and candidate_report.get("development_smoke") is True
+                and candidate_report.get("formal_scoring") is False
+                and candidate_report.get("formal_gate_f_authorized") is False
+                and candidate_report.get("source_commit")
+                == expected_source_commit
+                and candidate_report.get("source_tag") == expected_source_tag
+                and candidate_report.get("result_count") == 1
+                and candidate_report.get("success_count") == 1
+                and candidate_report.get("stopped_early") is False
+                and candidate_report.get("formal_r60_suite_created") is False
+                and episode.get("task_id") == "H01"
+                and episode.get("task") == "BrowserMultiply"
+                and episode.get("variant") == "B3"
+                and episode.get("success") is True
+                and episode.get("evaluator_reward") == 1.0
+                and mechanism.get("setup_button_pollution") is False
+                and mechanism.get("executed_target_count") == 5
+                and mechanism.get("verified_operands")
+                == ["6", "2", "3", "9", "10"]
+                and mechanism.get("deterministic_result") == "3240"
+                and mechanism.get("complete") is True
+                and mechanism.get("operands_complete") is True
+                and mechanism.get("ready_for_post_repeat") is True
+                and mechanism.get("sixth_tap_proposed") is False
+                and mechanism.get("sixth_tap_executed") is False
+                and artifact_checks_passed
+            )
+            candidate_prerequisite_checks.append(
+                {
+                    "path": candidate["path"],
+                    "expected_sha256": candidate["sha256"],
+                    "actual_sha256": candidate_actual,
+                    "decision": candidate_report.get("decision"),
+                    "source_commit": candidate_report.get("source_commit"),
+                    "artifact_checks": artifact_checks,
+                    "passed": candidate_passed,
+                }
+            )
+            if not candidate_passed:
+                raise RuntimeError(
+                    "Versioned Gate-F candidate prerequisite mismatch."
+                )
     return {
         "schedule_cell_count": len(manifest["schedule"]),
         "task_pair_count": len(expected),
         "batch_count": len(batches),
         "freeze_file_checks": freeze_checks,
         "prerequisite_checks": prerequisite_checks,
+        "candidate_prerequisite_checks": candidate_prerequisite_checks,
     }
 
 
@@ -712,6 +808,7 @@ def main(
     expected_source_commit: str = EXPECTED_SOURCE_COMMIT,
     expected_prerequisite_commit: str | None = None,
     diagnostic_pause: Path | None = DIAGNOSTIC_PAUSE,
+    allow_development_smoke: bool = True,
 ) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--url", default="http://127.0.0.1:18000")
@@ -736,6 +833,11 @@ def main(
         ),
     )
     args = parser.parse_args()
+
+    if args.development_smoke_sequence and not allow_development_smoke:
+        raise RuntimeError(
+            "This formal Gate-F wrapper forbids development-smoke mode."
+        )
 
     if diagnostic_pause is not None and diagnostic_pause.exists():
         pause = json.loads(diagnostic_pause.read_text(encoding="utf-8"))
