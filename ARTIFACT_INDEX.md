@@ -206,6 +206,8 @@ Raw trajectories are under `runs/excluded_protocol_dry_run/` and
 | `05_project/scripts/run_protocol_v2_2_gate_f_r56.py` | r56 Gate-F zero-call or one-explicit-batch entry point | prepared |
 | `reports/protocol_v2_2_r56_gate_f_preflight.json` | machine-readable 28-file freeze, Gate-E prerequisite, six paired Hard instances, model, emulator, and v1-seal audit | passed; zero calls/cells |
 | `reports/protocol_v2_2_r56_gate_f_preflight.md` | compatibility decision, 411-test validation, frozen Batch-1 schedule, and manual-launch boundary | current |
+| `reports/protocol_v2_2_r56_gate_f_batch1_stopped.json` | immutable one-cell checkpoint, infrastructure isolation, verified repeated-tap trace, and raw artifact hashes | Gate F stopped/failed at 1/12 |
+| `reports/protocol_v2_2_r56_gate_f_batch1_stopped.md` | task-grounded repetition incompatibility analysis and bounded next-candidate scope | current |
 
 The r39 raw trajectories are under
 `runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/` and remain
