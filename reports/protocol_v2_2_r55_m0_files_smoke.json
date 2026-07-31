@@ -1,0 +1,123 @@
+{
+  "schema_version": "protocol_v2_2_r55_m0_files_smoke.v1",
+  "date": "2026-07-31",
+  "source_commit": "66370821e2fd7577d8c7a508f80297ae1a4b1513",
+  "source_tag": "protocol-v2-2-r55-local-candidate",
+  "suite_id": "nonhard_capability_v2_2_seed20260729_r55_candidate_development_smoke_sequence_4",
+  "development_only": true,
+  "task": "FilesMoveFile",
+  "variant": "M0",
+  "seed": 20260729,
+  "goal_sha256": "e3e7956d17fe5c489b4394185a2480f4aac2039eac04572205446212bd20a98b",
+  "params_sha256": "7c77ba8718a0315722ba71d3276e5753c15513d8ef88c46998e2fad78f272097",
+  "status": "valid_development_smoke_task_unsuccessful",
+  "success": false,
+  "evaluator_reward": 0.0,
+  "termination_reason": "model_output_invalid_after_repair",
+  "failure_code": "MODEL_OUTPUT_INVALID_AFTER_REPAIR",
+  "invocation_elapsed_seconds": 935.86,
+  "attempt_count": 1,
+  "infrastructure_attempt_count": 0,
+  "decision_attempt_count": 12,
+  "executed_action_count": 11,
+  "model_call_count": 21,
+  "executor_model_call_count": 17,
+  "history_model_call_count": 4,
+  "first_pass_parse_count": 7,
+  "readiness_observation_count": 37,
+  "readiness_retry_count": 14,
+  "semantic_progress_audit": {
+    "passed": false,
+    "executed_step_count": 11,
+    "validation_block_count": 6,
+    "visible_failure_count": 0,
+    "executed_blocked_action_count": 0,
+    "unresolved_guard_repair": true,
+    "screenshot_fallback_observation_count": 0
+  },
+  "r55_branch": {
+    "post_destination_back_repair_reached": false,
+    "repair_rationale_normalization_applied": false,
+    "interpretation": "The smoke failed before destination selection, so it neither confirms nor contradicts the locally replayed r55 normalization branch."
+  },
+  "files_guard_audit": {
+    "exact_target_long_press_block_count": 4,
+    "blocked_fingerprint_count": 2,
+    "ab_ab_cycle_trigger_count": 1,
+    "validation_block_count": 6,
+    "destination_picker_commit_count": 0,
+    "post_destination_source_exit_block_count": 0,
+    "post_destination_verification_navigation_count": 0,
+    "recovery_obligation_count": 2,
+    "second_mutation_executed": false
+  },
+  "failure_trace": {
+    "source_folder_entered": true,
+    "search_query_typed": "nature_sounds.mp3",
+    "search_text_origin": "task_literal",
+    "exact_target_accessibility_visible": true,
+    "visual_grid_labels_truncated": true,
+    "neighbor_filename": "nature_sounds_2023_02_11.mp3",
+    "initial_step_11_action": {
+      "type": "long_press",
+      "x": 0.3,
+      "y": 0.35,
+      "duration_ms": 800
+    },
+    "initial_step_11_guard": "EXACT_TARGET_GUARD",
+    "initial_action_executed": false,
+    "repair_step_11_action": {
+      "type": "tap",
+      "x": 0.82,
+      "y": 0.075
+    },
+    "repair_intent": "toggle Search again",
+    "repair_step_11_guard": "LOOP_GUARD",
+    "repair_action_executed": false,
+    "root_cause": "The accessibility tree exposed the exact target among several visually truncated grid results, but the model could not bind that exact label to a safe coordinate. The generic information-gathering repair allowed Search, view-mode change, or scrolling; the model chose an already-used Search toggle and the loop guard correctly stopped it.",
+    "safety_result": "No wrong-neighbor long press, file selection, move commit, or other task mutation executed."
+  },
+  "memory_reliability": {
+    "unsupported_selection_statement": "The file nature_sounds.mp3 is selected.",
+    "route": "HYPOTHESIS",
+    "promoted_to_fact": false,
+    "used_as_native_success_evidence": false,
+    "interpretation": "The reliability-aware memory path retained the model's mistaken selection claim as an unverified hypothesis rather than verified fact."
+  },
+  "proposed_r56_scope": [
+    "recognize only an Android DocumentsUI exact-target mismatch where the exact task-literal filename is accessibility-visible among multiple candidates and a visible enabled view-mode toggle is available",
+    "make the sole bounded repair a pure tap on that accessibility-grounded view-mode control, followed by a fresh observation",
+    "forbid Search, type_text, swipe, long_press, file selection, destination commit, and completion in that repair",
+    "leave the existing exact-target, loop, text provenance, memory, destination, and post-destination guards unchanged",
+    "if no unambiguous view-mode control exists, retain the current conservative failure instead of guessing coordinates",
+    "prove the exact r55 failure shape and negative boundaries in deterministic tests before any further live model call"
+  ],
+  "decision": "development_smoke_failed_gate_d_withheld_bounded_r56_local_work_allowed",
+  "hashes": {
+    "suite_summary_sha256": "bd645c66b7130b47bc5438bfe65d6bd475095fbc780cc11a8ce85de2f84ae889",
+    "manifest_snapshot_sha256": "56a3f409762441a40330c8cdae761b2089d2f9d6b3023cdd8f3b42e3709a355a",
+    "instances_snapshot_sha256": "13d6ab543008b94d38e789105210d7fc56eb2eec7f66ed498f7113c910ae79b5",
+    "startup_environment_audit_sha256": "680598dc5b9ae8ea1c71866f1823e7667aa885196ea204902092cf1baf7ba12d",
+    "episode_sha256": "1d4f093411060045551de29426b3f4a44dc18fedc4933d37a6cf586ff0cf9667",
+    "events_sha256": "9de551924ed8febf7c863469ce4b62063fa80c214339654929fd1853c0cb561f",
+    "step_11_before_screenshot_sha256": "97c81d7f0e7b8c89b59c1961f02f6222c0341ee3e41e7cef6eddd0a98a6c8f0a"
+  },
+  "model_service_followup": {
+    "smoke_finished_before_restart": true,
+    "restart_loaded_at": "2026-07-31T06:24:29.698484+00:00",
+    "remote_health_port": 8000,
+    "local_forward_port": 18000,
+    "remote_and_local_health_verified_after_restart": true,
+    "concurrent_generations_semantics": "hard-coded single-generation capacity, not an active-request counter",
+    "restart_stdout_sha256": "6ac80cce6c1f49c059ed7fa11dc7d3d36ac1c62521829e9f79cb6fe8e641f161",
+    "restart_stderr_sha256": "465b35491acd806ff6e27ddd91997e6ab7d18c0b6a66ee4ba982d9865d24fb2a"
+  },
+  "evidence_boundary": {
+    "formal_gate_e_launched": false,
+    "automatic_gate_f_transition": false,
+    "development_smoke_pooled_with_formal_evidence": false,
+    "gate_d_preparation_allowed": false,
+    "formal_gate_e_authorized_by_this_artifact": false,
+    "r55_smoke_must_not_be_rerun": true
+  }
+}
