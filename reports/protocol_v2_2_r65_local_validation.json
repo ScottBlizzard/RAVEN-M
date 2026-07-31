@@ -1,0 +1,129 @@
+{
+  "schema_version": "protocol_v2_2_r65_local_validation.v1",
+  "decision": "local_candidate_passed_exact_package_preflight_pending",
+  "checked_at": "2026-07-31T21:23:32.4070376Z",
+  "source_commit": "0eaf8ae0e157392ac33907a3cd06a57d18e00e07",
+  "source_tag": "protocol-v2-2-r65-local-candidate",
+  "source_tag_resolves_exactly": true,
+  "formal_gate_f_authorized": false,
+  "live_development_smoke_authorized": false,
+  "parent_r64_stop": {
+    "report": "reports/protocol_v2_2_r64_h17_candidate_stopped.json",
+    "report_sha256": "bf3a984acb02f7e84f9bed4e65b3e76f5e74d0068621359bbeef9a968353da66",
+    "execution_stop_commit": "52beb2f9f64101d03d82ed634e485a9962bb7713",
+    "execution_stop_tag": "protocol-v2-2-r64-h17-stopped",
+    "decision": "r64_visual_row_tap_validated_but_unvisited_row_routing_and_icon_field_grounding_failed",
+    "immutable": true
+  },
+  "candidate_contract": {
+    "row_identity": "target-date row y-center clustered from visible date anchors and rounded into an episode-local visit key",
+    "unvisited_row_policy": "when an unvisited target-date row is visible, any tap on an already visited row is rejected before execution and the allowed unvisited y-centers are exposed",
+    "detail_frame_binding": "the current detail screenshot is bound to the active row key only when a validated press_back action is accepted",
+    "detail_frame_integrity": "every routed detail frame is rehashed and must match its controller-captured SHA-256 before reuse",
+    "transactional_state_policy": "row visits and detail-frame captures are committed only after all later action and loop guards pass",
+    "multi_row_answer_location": "a multi-row requested-field answer is forbidden from an individual detail page and may be submitted only from the restored target-date list",
+    "visual_field_scope": "only an explicitly requested category or type may use a semantically unambiguous conventional icon when text is absent",
+    "visual_adjudication": "one same-turn critic jointly inspects the current target-date list and one controller-bound detail frame per distinct row",
+    "row_order_policy": "the critic must verify exactly one answer item per target row in top-to-bottom row order",
+    "title_substitution_allowed": false,
+    "ambiguous_icon_policy": "fail_closed",
+    "hidden_evaluator_or_answer_data_used": false,
+    "task_app_target_date_row_title_icon_label_or_answer_special_case_used": false
+  },
+  "validation": {
+    "complete_project_tests": {
+      "passed": true,
+      "passed_count": 590,
+      "failed_count": 0,
+      "duration_seconds": 168.9
+    },
+    "focused_controller_prompt_and_role_tests": {
+      "passed": true,
+      "passed_count": 187,
+      "coverage": [
+        "a repeated tap on the first visited target-date row is rejected before execution",
+        "the bounded repair accepts only a visible unvisited target-date row",
+        "a detail-page answer is repaired to one exact press_back action",
+        "the pre-back detail screenshot is bound to the active target row",
+        "two bound detail frames are supplied to the dated-row visual critic",
+        "the final answer requires one item per row and a proceed verdict",
+        "guard state is not committed when a later loop guard rejects the action"
+      ]
+    },
+    "r61_through_r64_candidate_preflight_stop_tests": {
+      "passed": true,
+      "passed_count": 87,
+      "historical_freezes_remain_immutable": true
+    },
+    "compileall": {
+      "passed": true,
+      "paths": [
+        "05_project/src",
+        "05_project/scripts",
+        "05_project/tests"
+      ]
+    },
+    "git_diff_check": {
+      "passed": true
+    },
+    "protocol_v1_seal": {
+      "passed": true,
+      "file_count": 197,
+      "failure_count": 0,
+      "rewritten": false
+    }
+  },
+  "r64_trace_replay": {
+    "source_episode": "runs/protocol_v2_2_development/hard_micro_v2_2_seed20260730_r64_candidate_development_smoke_sequence_2/episodes/02_H17_M0_SportsTrackerActivitiesOnDate_seed20260730/episode.json",
+    "source_list_screenshot_sha256": "ec50b7ee39ab1b44c79ed20f54590e95811f7720abee2a93ec757404eae0f757",
+    "target_row_centers": [
+      0.747292,
+      0.834375
+    ],
+    "r64_repeated_action": {
+      "type": "tap",
+      "x": 0.5,
+      "y": 0.775
+    },
+    "r64_repeated_action_visit_key": "target-row-y:0.747",
+    "r65_result_for_r64_repeated_action": "rejected_as_already_visited_before_execution",
+    "r65_remaining_row_center": 0.834375,
+    "r65_remaining_row_visit_key": "target-row-y:0.834",
+    "r65_remaining_row_tap_contract": "permitted_when_the_tap_is_on_the_visible_content_side_and_the_row_key_is_unvisited",
+    "r64_unexecuted_repair_would_mutate_r65_visit_state": false
+  },
+  "source_sha256": {
+    "05_project/src/raven_m/controller/episode_controller.py": "1b02d8d7806e2758df85fc384954d9140307d5b1ee5404f44f847eedd0326c73",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "22af5ee1dd1841773e48b4996b00e10b3dcdf3028d063953be58634451b11ebb",
+    "05_project/src/raven_m/roles/orchestrator.py": "bb812660f1ba438f3f491b3582bf5094224585f963c13a56cddaba5cefeb3521",
+    "05_project/prompts/executor_raven_v2.md": "6657c5c94170c0d1425c0f7c9264d22d94bb32f06ef04e996ef5e7e64b41e478",
+    "05_project/prompts/planner_v1.md": "c45dfa6a1d79a6764e47baa0ada08c80ca3a1c5be9dbad7eb70bba5d0c1583c1",
+    "05_project/prompts/critic_v1.md": "ee93a8781be5d1a69444f657b808efd918efa77a5f0eb3d5503cbea88392ddfc"
+  },
+  "online_boundary_at_validation": {
+    "emulator": "emulator-5554 device",
+    "model_endpoint": "healthy",
+    "model": "Qwen/Qwen3-VL-32B-Instruct",
+    "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+    "backend": "qwen3_vl_32b_transformers_bf16_4x4090_v1",
+    "model_calls": 0,
+    "gpu_experiment_cells": 0,
+    "interpretation": "local validation passed and the route is healthy, but no r65 live smoke is authorized before an exact-package zero-call preflight"
+  },
+  "next_action_boundary": {
+    "allowed": [
+      "prepare a fresh r65 H17-only development wrapper and namespace",
+      "add exact-source freeze and invocation-boundary tests",
+      "run a zero-model-call online preflight against the exact r65 package",
+      "run at most one non-scored H17 M0 smoke only after that preflight passes"
+    ],
+    "forbidden": [
+      "resume or overwrite the r64 development suite",
+      "launch any formal r65 Gate-F batch",
+      "run any r65 development sequence other than its single frozen H17 M0 cell",
+      "accept a row title as a different requested field",
+      "accept an ambiguous icon",
+      "use hidden task parameters or the offline expected answer"
+    ]
+  }
+}
