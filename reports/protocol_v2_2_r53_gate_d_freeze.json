@@ -1,0 +1,92 @@
+{
+  "schema_version": "protocol_v2_2_gate_d_freeze.v1",
+  "checked_at": "2026-07-31T04:02:55.164150+00:00",
+  "passed": true,
+  "decision": "authorize_one_fresh_eight_cell_gate_e_launch",
+  "source_tag": "protocol-v2-2-gate-e-r53",
+  "source_commit": "f3d7c9d3c33e54245138fc56336027f533b67f17",
+  "manifest": "05_project/configs/experiments/v2_2_capability_gate_r53.json",
+  "wrapper": "05_project/scripts/run_protocol_v2_2_gate_e_r53.py",
+  "preflight": "reports/protocol_v2_2_r53_gate_e_preflight.json",
+  "source_tag_resolves_to_source_commit": true,
+  "source_commit_is_ancestor_of_head": true,
+  "tests": {
+    "protocol_v2_suite": {
+      "passed": true,
+      "test_count": 393
+    },
+    "focused_r53_validation": {
+      "passed": true,
+      "test_count": 143
+    },
+    "compileall": {
+      "passed": true
+    },
+    "git_diff_check": {
+      "passed": true
+    },
+    "protocol_v1_seal": {
+      "passed": true,
+      "file_count": 197,
+      "failure_count": 0,
+      "seal_sha256": "8b707052bbf3d22ff9643dc1fd4bc55d8f09461a00be9c13728e6eacdfa37ac9"
+    }
+  },
+  "development_evidence": {
+    "r50_post_destination_source_exit_qualified_live": true,
+    "r51_destination_verification_navigation_qualified_live": true,
+    "r52_post_activation_clear_text_qualified_live": true,
+    "r53_before_decision_freshness_qualified_in_valid_attempt": true,
+    "r53_before_decision_stale_branch_triggered_in_quarantined_attempt": true,
+    "r53_quarantined_attempt_used_for_task_success": false,
+    "r53_valid_smoke_all_before_observations_accessibility": true,
+    "r53_valid_smoke_all_before_observations_cross_modal_fresh": true,
+    "r53_smoke_valid": true,
+    "r53_smoke_task_success": true,
+    "r53_smoke_native_reward": 1.0,
+    "r53_smoke_destination_commit_count": 1,
+    "r53_smoke_second_mutation_executed": false,
+    "r53_smoke_used_for_formal_task_success": false,
+    "adb_timeout_attempt_audited_and_quarantined": true,
+    "emulator_cold_recovery_audited": true,
+    "fresh_second_attempt_required": true,
+    "termination_reason_max_steps_retained_as_caveat": true,
+    "critic_completion_rejection_retained_as_caveat": true,
+    "reason": "The fresh second development attempt completed FilesMoveFile with native reward 1.0 and exactly one destination commit. The valid trace supplies live r50-r52 chain evidence and fresh before-decision observations at every executed step. The r53 stale-accessibility retry branch triggered twice only in the separately archived ADB-timeout attempt, so it is live branch evidence but is not counted as task-success evidence. Development results remain excluded from formal Gate-E scoring."
+  },
+  "freeze": {
+    "file_count": 27,
+    "failure_count": 0,
+    "selected_task_count": 4,
+    "schedule_cell_count": 8,
+    "paired": true,
+    "hard_overlap": [],
+    "task_seed_schedule_unchanged_from_r45": true,
+    "step_and_model_call_budgets_unchanged": true,
+    "prompts_and_schemas_unchanged": true,
+    "evaluator_and_acceptance_unchanged": true,
+    "single_bounded_repair_preserved": true,
+    "protocol_v1_isolated": true
+  },
+  "preflight_result": {
+    "passed": true,
+    "model_calls": 0,
+    "gpu_experiment_cells": 0,
+    "model": "Qwen/Qwen3-VL-32B-Instruct",
+    "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+    "backend": "qwen3_vl_32b_transformers_bf16_4x4090_v1",
+    "emulator_connected": true,
+    "fresh_suite_directory_absent": true
+  },
+  "artifact_sha256": {
+    "manifest": "d357cb39dfb8fd6e4975b782a6bfb2b52b951c93eb9836c85680f1e2e6759128",
+    "wrapper": "0f37ecfc73399f1211786908733174cca659911f542de1aa5266f9b9ee8598a4",
+    "preflight": "51613ade8de784eb4139200ac806cc6cb52f258677a4f3a6f375a3142780926a",
+    "local_validation": "e695433eb0b1eb6832ba5d36eaf197b878291a9b574a7ee2988044f1885acfbc",
+    "development_smoke": "a65185957bab8c32a26d2ae952fffeed16dead21f7ff406cdaea89a009fdc181"
+  },
+  "formal_gate_e_launch_authorized": true,
+  "automatic_gate_e_launch": false,
+  "automatic_gate_f_transition": false,
+  "claim_boundary": "Gate D authorizes one fresh formal eight-cell engineering run only. It does not predict Gate-E success, pool development smoke evidence into formal scoring, convert quarantined task execution into task-success evidence, or support a method-superiority claim."
+}
