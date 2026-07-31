@@ -1,0 +1,107 @@
+{
+  "schema_version": "protocol_v2_2_r55_local_validation.v1",
+  "recorded_at": "2026-07-31T13:52:08+08:00",
+  "status": "local_pass_live_m0_files_smoke_required",
+  "branch": "protocol-v2-exploratory",
+  "parent_commit": "45a8e5507f77f4e492a2ddbcb650d6b4e526f190",
+  "candidate_commit": "66370821e2fd7577d8c7a508f80297ae1a4b1513",
+  "source_tag": "protocol-v2-2-r55-local-candidate",
+  "trigger": {
+    "source_suite": "nonhard_capability_v2_2_seed20260729_r54",
+    "source_commit": "54adaf031abd87dc5c420bd1d8d07acc8c0a4b94",
+    "task": "FilesMoveFile",
+    "variant": "M0",
+    "sequence": 4,
+    "native_reward": 1.0,
+    "termination_reason": "model_output_invalid_after_repair",
+    "initial_validation_error": "POST_DESTINATION_SOURCE_EXIT_GUARD",
+    "required_repair_action": {
+      "type": "press_back"
+    },
+    "returned_repair_action": {
+      "type": "press_back"
+    },
+    "repair_decision_summary_length": 242,
+    "schema_decision_summary_max_length": 240,
+    "repair_action_executed": false
+  },
+  "change": {
+    "scope": "post_destination_exact_press_back_repair",
+    "normalization_limit": 159,
+    "normalized_fields": [
+      "decision_summary",
+      "expected_outcome"
+    ],
+    "strict_json_required": true,
+    "initial_response_normalized": false,
+    "non_back_repair_normalized": false,
+    "protected_payload_hash_audited": true,
+    "action_changed": false,
+    "repair_count_changed": false,
+    "model_call_budget_changed": false,
+    "action_schema_changed": false,
+    "prompt_changed": false,
+    "memory_policy_changed": false,
+    "readiness_contract_changed": false,
+    "task_success_definition_changed": false
+  },
+  "validation": {
+    "pytest_collected": 399,
+    "pytest_passed": 399,
+    "pytest_exit_code": 0,
+    "focused_tests": 149,
+    "focused_tests_passed": 149,
+    "compileall_exit_code": 0,
+    "git_diff_check_exit_code": 0,
+    "protocol_v1_seal": {
+      "file_count": 197,
+      "failure_count": 0,
+      "passed": true,
+      "seal_sha256": "8b707052bbf3d22ff9643dc1fd4bc55d8f09461a00be9c13728e6eacdfa37ac9"
+    },
+    "exact_r54_positive_regression": {
+      "repair_decision_summary_before_length": 242,
+      "repair_decision_summary_after_length": 159,
+      "repair_action": {
+        "type": "press_back"
+      },
+      "protected_payload_unchanged": true,
+      "executed": true,
+      "passed": true
+    },
+    "non_back_negative_regression": {
+      "repair_action": {
+        "type": "tap",
+        "x": 0.82,
+        "y": 0.08
+      },
+      "normalized": false,
+      "executed": false,
+      "passed": true
+    },
+    "unrelated_schema_negative_regression": {
+      "repair_action": {
+        "type": "press_back"
+      },
+      "rationale_normalized": true,
+      "invalid_completion_evidence_preserved": true,
+      "executed": false,
+      "passed": true
+    }
+  },
+  "current_file_sha256": {
+    "05_project/src/raven_m/controller/episode_controller.py": "178f5a2f36a24fff6c3e2ffa33274c0d7fe1d7005b86144dee0b73babc603ef8",
+    "05_project/tests/controller/test_semantic_progress_controller_v2.py": "a360f0fd8e66e83c57bdad5075d66cd02ef0cd2825860b32b527e39b0a1889a3"
+  },
+  "evidence_boundary": {
+    "server_or_gpu_run_after_source_change": false,
+    "development_smoke_authorized": true,
+    "authorized_smoke_task": "FilesMoveFile",
+    "authorized_smoke_variant": "M0",
+    "authorized_smoke_count": 1,
+    "gate_d_authorized": false,
+    "formal_gate_e_authorized": false,
+    "automatic_gate_f_transition": false,
+    "next_step": "run one fresh isolated non-scored M0 FilesMoveFile smoke under a new r55 development namespace after zero-call preflight"
+  }
+}

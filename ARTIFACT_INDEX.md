@@ -179,6 +179,11 @@ Raw trajectories are under `runs/excluded_protocol_dry_run/` and
 | `05_project/scripts/run_protocol_v2_2_gate_e_r54.py` | exact-source r54 formal preflight and one-launch entry point | prepared |
 | `reports/protocol_v2_2_r54_gate_e_preflight.json` | zero-call audit of source, freeze, instances, exact model, emulator, and fresh formal namespace | passed |
 | `reports/protocol_v2_2_r54_gate_d_freeze.json` | machine-readable r54 Gate-D freeze and bounded formal-launch authorization | passed; one fresh Gate-E launch authorized |
+| `reports/protocol_v2_2_r54_gate_e_stopped.json` | machine-readable four-success formal stop, overlong repair rationale, and immutable hashes | Gate E stopped/failed at 4/8 |
+| `reports/protocol_v2_2_r54_gate_e_stopped.md` | human-readable r54 formal result and bounded r55 direction | current |
+| `04_protocols/protocol_v2_2_r55_candidate_addendum.md` | exact post-destination Back-repair rationale normalization and preserved boundaries | local candidate |
+| `reports/protocol_v2_2_r55_local_validation.json` | machine-readable 399-test, exact r54 replay, negative boundaries, and v1-seal evidence | passed locally |
+| `reports/protocol_v2_2_r55_local_validation.md` | human-readable r55 rationale, evidence boundary, and next live action | current |
 
 The r39 raw trajectories are under
 `runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/` and remain
