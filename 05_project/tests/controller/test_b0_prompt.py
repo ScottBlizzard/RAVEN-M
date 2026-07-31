@@ -165,6 +165,42 @@ def test_v2_target_row_enumeration_repair_requires_back() -> None:
     )
 
 
+def test_v2_prompt_exposes_dated_row_progress_without_answer_values() -> None:
+    progress = {
+        "schema_version": "dated_target_row_progress.v1",
+        "target_row_count": 2,
+        "requested_answer_role": "activity type",
+        "detail_required": True,
+        "visited_row_keys": ["target-row-y:0.747"],
+        "active_detail_row_key": None,
+        "unvisited_rows": [
+            {"visit_key": "target-row-y:0.834", "y_center": 0.834375}
+        ],
+        "captured_detail_frame_keys": ["target-row-y:0.747"],
+        "all_rows_visited": False,
+        "all_detail_frames_captured": False,
+    }
+    prompt = EpisodeController._user_prompt(
+        goal="Return the requested types for the target date.",
+        step=5,
+        max_steps=20,
+        model_calls=8,
+        max_model_calls=64,
+        screen_width=1080,
+        screen_height=2400,
+        previous_outcome="The target-date list returned.",
+        protocol_v2=True,
+        protocol_v2_2=True,
+        target_row_progress=progress,
+    )
+
+    assert "DATED_TARGET_ROW_PROGRESS" in prompt
+    assert '"y_center":0.834375' in prompt
+    assert "never supplies an answer" in prompt
+    assert "never reopen a key in visited_row_keys" in prompt
+    assert "all_detail_frames_captured" in prompt
+
+
 def test_v2_loop_guard_repair_requires_higher_level_selector() -> None:
     error = (
         "LOOP_GUARD: the same coordinate action has already been executed "

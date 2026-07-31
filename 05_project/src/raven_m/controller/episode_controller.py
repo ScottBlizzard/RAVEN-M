@@ -576,6 +576,7 @@ class EpisodeController:
         protocol_v2_2: bool = False,
         post_destination_commit_active: bool = False,
         verified_task_repeat_progress: dict[str, Any] | None = None,
+        target_row_progress: dict[str, Any] | None = None,
     ) -> str:
         coordinate_denominator = max(screen_height - 1, 1)
         app_bar_pixel_y = min(
@@ -594,6 +595,29 @@ class EpisodeController:
                 f"model calls {model_calls}/{max_model_calls}",
                 f"PREVIOUS_ACTION_AND_OBSERVED_OUTCOME: {previous_outcome}",
                 f"MEMORY_CONTEXT: {memory_context}",
+                *(
+                    [
+                        "DATED_TARGET_ROW_PROGRESS: "
+                        + json.dumps(
+                            target_row_progress,
+                            ensure_ascii=False,
+                            sort_keys=True,
+                            separators=(",", ":"),
+                        ),
+                        "DATED_TARGET_ROW_PROGRESS_AUTHORITY: This ledger "
+                        "contains only controller-observed row geometry and "
+                        "executed visit/detail-frame state; it never supplies "
+                        "an answer. If unvisited_rows is non-empty, tap one "
+                        "listed unvisited row center and never reopen a key "
+                        "in visited_row_keys. If active_detail_row_key is set, "
+                        "inspect that detail's requested field, not its title, "
+                        "then press Back. Answer only when all_rows_visited "
+                        "and all_detail_frames_captured are true and the "
+                        "target-date list is again visible."
+                    ]
+                    if target_row_progress is not None
+                    else []
+                ),
                 *(
                     [
                         "VERIFIED_TASK_REPEAT_PROGRESS: "
@@ -735,9 +759,17 @@ class EpisodeController:
                         "duration, distance, time, status, or another field "
                         "but the list shows only row titles/names, do not "
                         "answer with those titles. Open each row carrying the "
-                        "target date, read the explicitly labeled requested "
-                        "field in detail, preserve each verified value, and "
-                        "inspect every target-date row before answering."
+                        "target date and inspect the requested field in "
+                        "detail. A category/type may be represented by a "
+                        "semantically unambiguous conventional icon rather "
+                        "than text; use it only for that requested role and "
+                        "never reinterpret the row/detail title as the field. "
+                        "Return to the dated list after each detail and "
+                        "inspect every target-date row before answering. A "
+                        "multi-row "
+                        "answer is allowed only after the controller has "
+                        "routed every bound detail frame and a same-turn "
+                        "visual critic can bind one answer item per row."
                     ]
                     if protocol_v2_2
                     else []
@@ -874,6 +906,7 @@ class EpisodeController:
             "TOOLBAR_AFFORDANCE_GUARD:",
             "TARGET_DATE_VISIBLE_GUARD:",
             "ANSWER_ASSOCIATION_GUARD:",
+            "TARGET_ROW_UNVISITED_GUARD:",
             "TARGET_ROW_ENUMERATION_GUARD:",
             "SWIPE_DIRECTION_GUARD:",
             "LOOP_GUARD:",
@@ -948,8 +981,14 @@ class EpisodeController:
         target_date_row_tap_required = (
             "TARGET_DATE_ROW_TAP_REQUIRED:" in error
         )
+        target_date_unvisited_row_tap_required = (
+            "TARGET_DATE_UNVISITED_ROW_TAP_REQUIRED:" in error
+        )
         target_row_enumeration_back_required = (
             "TARGET_ROW_ENUMERATION_BACK_REQUIRED:" in error
+        )
+        target_row_aggregation_back_required = (
+            "TARGET_ROW_AGGREGATION_BACK_REQUIRED:" in error
         )
         task_repeat_complete_rejected = error.startswith(
             "TASK_REPEAT_COUNT_COMPLETE:"
@@ -980,7 +1019,20 @@ class EpisodeController:
         visual_source_rejected = (
             "VISUAL_SOURCE_ADJUDICATION_REJECTED:" in error
         )
-        if target_date_row_tap_required:
+        if target_date_unvisited_row_tap_required:
+            repair_directive = (
+                "\n\nTARGET_DATE_UNVISITED_ROW_REPAIR: The controller "
+                "ledger identifies one or more target-date rows that have "
+                "not yet been opened. For this one repair, return "
+                "status=continue with exactly one pure tap on a visible "
+                "unvisited target-date content row whose normalized "
+                "y-center is listed in VALIDATION_ERROR. Do not reopen a "
+                "visited row, perturb its coordinate, tap date text, swipe, "
+                "wait, answer, or infer the requested field from a title. "
+                "Use empty state_delta, memory_citations, and "
+                "completion_evidence.\n"
+            )
+        elif target_date_row_tap_required:
             repair_directive = (
                 "\n\nTARGET_DATE_ROW_DETAIL_REPAIR: The explicit target "
                 "date is already visible in the chronological list. For "
@@ -992,11 +1044,14 @@ class EpisodeController:
                 "memory_citations, and completion_evidence. Observe the "
                 "opened detail on the next policy step.\n"
             )
-        elif target_row_enumeration_back_required:
+        elif (
+            target_row_enumeration_back_required
+            or target_row_aggregation_back_required
+        ):
             repair_directive = (
-                "\n\nTARGET_ROW_ENUMERATION_REPAIR: More than one row was "
-                "visible for the target date, but the proposed answer did "
-                "not contain one grounded requested-field value per row. "
+                "\n\nTARGET_ROW_ENUMERATION_REPAIR: A detail page represents "
+                "only one target-date row and cannot support the complete "
+                "multi-row answer. "
                 "For this one repair, return status=continue with action "
                 'exactly {"type":"press_back"} and empty state_delta, '
                 "memory_citations, and completion_evidence. Return to the "
@@ -1394,8 +1449,10 @@ class EpisodeController:
             else ""
         )
         priority_repair = bool(
-            target_date_row_tap_required
+            target_date_unvisited_row_tap_required
+            or target_date_row_tap_required
             or target_row_enumeration_back_required
+            or target_row_aggregation_back_required
             or toolbar_affordance_rejected
             or loop_guard_rejected
             or task_repeat_complete_rejected
@@ -1493,6 +1550,9 @@ class EpisodeController:
             dict[str, Any] | None
         ) = None
         latest_dated_list_answer_assessment: dict[str, Any] | None = None
+        latest_dated_visual_answer_assessment: (
+            dict[str, Any] | None
+        ) = None
         visual_source_cache: dict[str, dict[str, Any]] = {}
         parse_kwargs = (
             {"schema_path": self.action_schema_path}
@@ -1513,11 +1573,13 @@ class EpisodeController:
             nonlocal latest_bounded_task_repeated_tap_assessment
             nonlocal latest_toolbar_affordance_claim_assessment
             nonlocal latest_dated_list_answer_assessment
+            nonlocal latest_dated_visual_answer_assessment
             latest_verification_navigation_assessment = None
             latest_source_context_assessment = None
             latest_bounded_task_repeated_tap_assessment = None
             latest_toolbar_affordance_claim_assessment = None
             latest_dated_list_answer_assessment = None
+            latest_dated_visual_answer_assessment = None
             candidate_content = content
             if repair_contract_error is not None:
                 (
@@ -1801,6 +1863,52 @@ class EpisodeController:
                     )
             if (
                 repair_contract_error
+                and "TARGET_DATE_UNVISITED_ROW_TAP_REQUIRED:"
+                in repair_contract_error
+            ):
+                candidate = parsed_candidate.decision
+                candidate_action = candidate.get("action")
+                repair_assessment = dated_list_answer_assessment(
+                    task_goal,
+                    ui_elements,
+                    candidate,
+                    screen_width=screen_width,
+                    screen_height=screen_height,
+                )
+                tap_center = repair_assessment.get(
+                    "target_row_tap_center"
+                )
+                visit_key = (
+                    f"target-row-y:{float(tap_center):.3f}"
+                    if isinstance(tap_center, (int, float))
+                    else None
+                )
+                visited_keys = set(
+                    self.decision_guard.target_row_visit_keys
+                    if self.decision_guard is not None
+                    else []
+                )
+                if (
+                    candidate.get("status") != "continue"
+                    or not isinstance(candidate_action, dict)
+                    or set(candidate_action) != {"type", "x", "y"}
+                    or repair_assessment.get("target_row_tap_permitted")
+                    is not True
+                    or visit_key is None
+                    or visit_key in visited_keys
+                    or candidate.get("state_delta") != []
+                    or candidate.get("memory_citations") != []
+                    or candidate.get("completion_evidence", []) != []
+                ):
+                    raise ActionValidationError(
+                        "REPAIR_CONTRACT_GUARD: "
+                        "TARGET_DATE_UNVISITED_ROW_TAP_REQUIRED permits "
+                        "only one pure tap on a visible unvisited "
+                        "target-date content row, with empty state_delta, "
+                        "memory_citations, and completion_evidence."
+                    )
+            if (
+                repair_contract_error
                 and "TARGET_DATE_ROW_TAP_REQUIRED:"
                 in repair_contract_error
             ):
@@ -1832,8 +1940,12 @@ class EpisodeController:
                     )
             if (
                 repair_contract_error
-                and "TARGET_ROW_ENUMERATION_BACK_REQUIRED:"
-                in repair_contract_error
+                and (
+                    "TARGET_ROW_ENUMERATION_BACK_REQUIRED:"
+                    in repair_contract_error
+                    or "TARGET_ROW_AGGREGATION_BACK_REQUIRED:"
+                    in repair_contract_error
+                )
             ):
                 candidate = parsed_candidate.decision
                 if (
@@ -1961,24 +2073,65 @@ class EpisodeController:
                 dated_assessment = (
                     latest_dated_list_answer_assessment or {}
                 )
-                dated_answer_will_be_rejected = bool(
+                target_row_progress = (
+                    self.decision_guard.target_row_progress_record()
+                    if self.decision_guard is not None
+                    else None
+                ) or {}
+                dated_visual_answer_eligible = bool(
                     isinstance(candidate_action, dict)
                     and candidate_action.get("type") == "answer"
                     and dated_assessment.get("target_date_list_visible")
                     is True
+                    and dated_assessment.get(
+                        "requested_field_detail_required"
+                    )
+                    is True
+                    and dated_assessment.get(
+                        "answer_item_count_matches_target_rows"
+                    )
+                    is True
+                    and target_row_progress.get("all_rows_visited") is True
+                    and target_row_progress.get(
+                        "all_detail_frames_captured"
+                    )
+                    is True
+                )
+                dated_answer_will_be_rejected = bool(
+                    isinstance(candidate_action, dict)
+                    and candidate_action.get("type") == "answer"
                     and (
-                        dated_assessment.get(
-                            "answer_item_count_matches_target_rows"
+                        (
+                            dated_assessment.get(
+                                "target_date_list_visible"
+                            )
+                            is True
+                            and not dated_visual_answer_eligible
+                            and (
+                                dated_assessment.get(
+                                    "answer_item_count_matches_target_rows"
+                                )
+                                is not True
+                                or dated_assessment.get(
+                                    "all_answer_items_target_row_bound"
+                                )
+                                is not True
+                                or dated_assessment.get(
+                                    "requested_field_detail_required"
+                                )
+                                is True
+                            )
                         )
-                        is not True
-                        or dated_assessment.get(
-                            "all_answer_items_target_row_bound"
+                        or (
+                            dated_assessment.get(
+                                "target_date_list_visible"
+                            )
+                            is not True
+                            and self.decision_guard is not None
+                            and self.decision_guard
+                            .target_row_detail_required
+                            and self.decision_guard.target_date_row_count > 0
                         )
-                        is not True
-                        or dated_assessment.get(
-                            "requested_field_detail_required"
-                        )
-                        is True
                     )
                 )
                 visual_source_required = bool(
@@ -1989,12 +2142,22 @@ class EpisodeController:
                     and candidate_action.get("type") == "answer"
                     and candidate_action.get("text_origin")
                     == "current_screen"
-                    and source_assessment.get("matched") is not True
+                    and (
+                        dated_visual_answer_eligible
+                        or source_assessment.get("matched") is not True
+                    )
                 )
                 if visual_source_required:
                     candidate_text = str(candidate_action.get("text", ""))
+                    visual_trigger = (
+                        "dated_row_visual_answer_candidate"
+                        if dated_visual_answer_eligible
+                        else "current_screen_text_source_candidate"
+                    )
                     candidate_sha256 = sha256(
-                        candidate_text.encode("utf-8")
+                        (visual_trigger + "\0" + candidate_text).encode(
+                            "utf-8"
+                        )
                     ).hexdigest()
                     cached = visual_source_cache.get(candidate_sha256)
                     if cached is None:
@@ -2004,7 +2167,7 @@ class EpisodeController:
                                     "visual_text_source_adjudication.v1"
                                 ),
                                 "trigger": (
-                                    "current_screen_text_source_candidate"
+                                    visual_trigger
                                 ),
                                 "candidate_sha256": candidate_sha256,
                                 "candidate_length": len(candidate_text),
@@ -2031,9 +2194,7 @@ class EpisodeController:
                                 payload={
                                     "task": task_goal,
                                     "step": step,
-                                    "trigger": (
-                                        "current_screen_text_source_candidate"
-                                    ),
+                                    "trigger": visual_trigger,
                                     "answer_candidate": candidate_action,
                                     "completion_evidence": (
                                         parsed_candidate.decision.get(
@@ -2043,6 +2204,40 @@ class EpisodeController:
                                     ),
                                     "accessibility_source_assessment": (
                                         source_assessment
+                                    ),
+                                    **(
+                                        {
+                                            "dated_target_row_progress": (
+                                                target_row_progress
+                                            ),
+                                            "dated_list_evidence": {
+                                                "target_row_centers": (
+                                                    dated_assessment.get(
+                                                        "target_row_centers",
+                                                        [],
+                                                    )
+                                                ),
+                                                "target_row_content_labels": (
+                                                    dated_assessment.get(
+                                                        "target_row_content_labels",
+                                                        [],
+                                                    )
+                                                ),
+                                                "requested_answer_role": (
+                                                    dated_assessment.get(
+                                                        "requested_answer_role"
+                                                    )
+                                                ),
+                                                "answer_items": (
+                                                    dated_assessment.get(
+                                                        "answer_items",
+                                                        [],
+                                                    )
+                                                ),
+                                            },
+                                        }
+                                        if dated_visual_answer_eligible
+                                        else {}
                                     ),
                                 },
                                 episode_id=episode_id,
@@ -2054,6 +2249,19 @@ class EpisodeController:
                                     - len(calls),
                                 ),
                                 allowed_memory_ids=set(),
+                                context_images=(
+                                    [
+                                        (label, Path(path))
+                                        for label, path in (
+                                            self.decision_guard
+                                            .target_row_detail_context_images()
+                                            if self.decision_guard is not None
+                                            else []
+                                        )
+                                    ]
+                                    if dated_visual_answer_eligible
+                                    else None
+                                ),
                             )
                             calls.extend(visual_source.calls)
                             adjudication_model_call_count += len(
@@ -2070,7 +2278,7 @@ class EpisodeController:
                                     "visual_text_source_adjudication.v1"
                                 ),
                                 "trigger": (
-                                    "current_screen_text_source_candidate"
+                                    visual_trigger
                                 ),
                                 "candidate_sha256": candidate_sha256,
                                 "candidate_length": len(candidate_text),
@@ -2097,6 +2305,28 @@ class EpisodeController:
                         "visual_adjudication_accepted": cached["accepted"],
                         "matched": cached["accepted"],
                     }
+                    if dated_visual_answer_eligible:
+                        latest_dated_visual_answer_assessment = {
+                            "schema_version": (
+                                "dated_row_visual_answer_assessment.v1"
+                            ),
+                            "eligible": True,
+                            "accepted": cached["accepted"],
+                            "adjudicated": cached["adjudicated"],
+                            "target_row_count": dated_assessment.get(
+                                "target_row_count",
+                                0,
+                            ),
+                            "detail_frame_count": len(
+                                self.decision_guard.target_row_detail_frames
+                                if self.decision_guard is not None
+                                else []
+                            ),
+                            "model_call_ids": cached["record"].get(
+                                "model_call_ids",
+                                [],
+                            ),
+                        }
                 field_role_assessment = (
                     task_literal_field_role_assessment(
                         task_goal,
@@ -2236,6 +2466,26 @@ class EpisodeController:
                     dated_list_answer_assessment=(
                         latest_dated_list_answer_assessment
                     ),
+                    dated_visual_answer_assessment=(
+                        latest_dated_visual_answer_assessment
+                    ),
+                    dated_row_detail_frame=(
+                        {
+                            "visit_key": (
+                                self.decision_guard
+                                .active_target_row_visit_key
+                            ),
+                            "path": str(image_path.resolve()),
+                            "sha256": _sha256_file(image_path),
+                        }
+                        if (
+                            self.protocol_v2_2
+                            and self.decision_guard
+                            .active_target_row_visit_key
+                            is not None
+                        )
+                        else None
+                    ),
                 )
             consequential_action_candidate = None
             if self.protocol_v2_2 and destination_picker_is_active:
@@ -2292,25 +2542,31 @@ class EpisodeController:
                 raise ActionValidationError(
                     adjudication_error
                 )
-            adjudication = self.history_policy.adjudicate_completion(
-                parsed_candidate.decision,
-                image_path=image_path,
-                episode_id=episode_id,
-                step=step,
-                remaining_model_calls=max(
-                    0,
-                    self.max_model_calls - model_call_count - len(calls),
-                ),
-            )
-            calls.extend(adjudication.calls)
-            adjudication_model_call_count += len(adjudication.calls)
-            if adjudication.record is not None:
-                completion_adjudications.append(adjudication.record)
-            if not adjudication.accepted:
-                raise ActionValidationError(
-                    adjudication.error
-                    or "Same-turn completion adjudication rejected completion."
+            if not (
+                latest_dated_visual_answer_assessment
+                and latest_dated_visual_answer_assessment.get("accepted")
+                is True
+            ):
+                adjudication = self.history_policy.adjudicate_completion(
+                    parsed_candidate.decision,
+                    image_path=image_path,
+                    episode_id=episode_id,
+                    step=step,
+                    remaining_model_calls=max(
+                        0,
+                        self.max_model_calls - model_call_count - len(calls),
+                    ),
                 )
+                calls.extend(adjudication.calls)
+                adjudication_model_call_count += len(adjudication.calls)
+                if adjudication.record is not None:
+                    completion_adjudications.append(adjudication.record)
+                if not adjudication.accepted:
+                    raise ActionValidationError(
+                        adjudication.error
+                        or "Same-turn completion adjudication rejected "
+                        "completion."
+                    )
             return parsed_candidate
 
         try:
@@ -2342,6 +2598,9 @@ class EpisodeController:
                     ),
                     "dated_list_answer_assessment": (
                         latest_dated_list_answer_assessment
+                    ),
+                    "dated_visual_answer_assessment": (
+                        latest_dated_visual_answer_assessment
                     ),
                 },
             )
@@ -2524,6 +2783,9 @@ class EpisodeController:
                     ),
                     "dated_list_answer_assessment": (
                         latest_dated_list_answer_assessment
+                    ),
+                    "dated_visual_answer_assessment": (
+                        latest_dated_visual_answer_assessment
                     ),
                 },
             )
@@ -2750,6 +3012,27 @@ class EpisodeController:
                     else None
                 )
                 history_context = self.history_policy.context()
+                target_row_progress = (
+                    self.decision_guard.target_row_progress_record()
+                    if self.protocol_v2_2
+                    and self.decision_guard is not None
+                    else None
+                )
+                routed_context_images = list(history_context.images)
+                if self.protocol_v2_2 and self.decision_guard is not None:
+                    seen_context_paths = {
+                        str(path.resolve())
+                        for _, path in routed_context_images
+                    }
+                    for label, raw_path in (
+                        self.decision_guard
+                        .target_row_detail_context_images()
+                    ):
+                        path = Path(raw_path)
+                        resolved = str(path.resolve())
+                        if resolved not in seen_context_paths:
+                            routed_context_images.append((label, path))
+                            seen_context_paths.add(resolved)
                 evidence_outcome = previous_outcome
                 user_prompt = self._user_prompt(
                     goal=effective_task_goal,
@@ -2770,6 +3053,7 @@ class EpisodeController:
                     verified_task_repeat_progress=(
                         verified_repeat_progress
                     ),
+                    target_row_progress=target_row_progress,
                 )
                 try:
                     picker_active = destination_picker_active(
@@ -2790,7 +3074,7 @@ class EpisodeController:
                         episode_id=episode_id,
                         step=step,
                         model_call_count=model_call_count,
-                        context_images=history_context.images,
+                        context_images=routed_context_images,
                         page_visible_failures=before_semantic[
                             "visible_failure_texts"
                         ],

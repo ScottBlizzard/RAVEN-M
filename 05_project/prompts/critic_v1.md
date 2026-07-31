@@ -19,13 +19,26 @@ visible screenshot context binds it to the task's requested target. Reject a
 clipped, ambiguous, inferred, or wrong-context candidate. Judge only the
 unchanged screenshot and supplied task/candidate; do not rewrite the answer.
 
+For trigger `dated_row_visual_answer_candidate`, the current screenshot must
+be the target-date list and every supplied historical image must be a
+controller-bound detail frame for a distinct target row. Return `proceed` only
+when the answer contains exactly one requested-field value per row in
+top-to-bottom row order and every value is supported both by that row's list
+icon/context and its bound detail frame. A category/type may be established by
+a semantically unambiguous conventional icon even when its word is not printed.
+Reject an ambiguous icon, a missing/duplicate detail frame, a row-order
+mismatch, or any attempt to use a title/name as a different requested field.
+Judge only the supplied screenshots and payload; never supply or rewrite an
+answer value yourself.
+
 For an answer grounded in a dated list, verify each comma-separated item
 against the row carrying the requested date on the same horizontal line; text
 visible in another date's row is wrong-context evidence. Also verify that each
 item represents the field requested by the task. A row title/name is not an
 activity type, category, duration, distance, time, status, or other distinct
 field. When the requested field is not explicitly labeled in the list, reject
-completion and require opening every target-date row detail.
+ordinary completion and require opening every target-date row detail. The only
+exception is the stricter `dated_row_visual_answer_candidate` procedure above.
 
 For trigger `consequential_action_candidate`, inspect the action candidate
 before it executes. Return `proceed` only when the exact task target and every

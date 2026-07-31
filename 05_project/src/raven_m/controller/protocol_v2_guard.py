@@ -7,6 +7,7 @@ from decimal import Decimal, InvalidOperation
 from hashlib import sha256
 import json
 import math
+from pathlib import Path
 import re
 from typing import Any
 
@@ -2873,9 +2874,14 @@ class ProtocolV2DecisionGuard:
         self.answer_association_block_count = 0
         self.target_row_enumeration_block_count = 0
         self.target_row_tap_validation_count = 0
+        self.target_row_revisit_block_count = 0
+        self.target_row_aggregation_block_count = 0
+        self.target_row_visual_answer_accept_count = 0
         self.target_date_row_count = 0
         self.target_row_detail_required = False
         self.target_row_visit_keys: list[str] = []
+        self.active_target_row_visit_key: str | None = None
+        self.target_row_detail_frames: list[dict[str, Any]] = []
         self.requested_answer_role: str | None = None
         self.target_date_row_observations: list[dict[str, Any]] = []
         self.last_unverified_progress_no_effect_fingerprint: (
@@ -2907,6 +2913,84 @@ class ProtocolV2DecisionGuard:
             dict[str, Any]
         ] = []
         self.task_repeat_count_complete_block_count = 0
+
+    def target_row_progress_record(self) -> dict[str, Any] | None:
+        """Expose only controller-observed dated-row progress, never answers."""
+        if self.target_date_row_count <= 0:
+            return None
+        latest_centers = (
+            list(
+                self.target_date_row_observations[-1].get(
+                    "target_row_centers",
+                    [],
+                )
+            )
+            if self.target_date_row_observations
+            else []
+        )
+        keyed_centers = [
+            {
+                "visit_key": f"target-row-y:{float(center):.3f}",
+                "y_center": float(center),
+            }
+            for center in latest_centers
+        ]
+        visited = set(self.target_row_visit_keys)
+        return {
+            "schema_version": "dated_target_row_progress.v1",
+            "target_row_count": self.target_date_row_count,
+            "requested_answer_role": self.requested_answer_role,
+            "detail_required": self.target_row_detail_required,
+            "visited_row_keys": list(self.target_row_visit_keys),
+            "active_detail_row_key": self.active_target_row_visit_key,
+            "unvisited_rows": [
+                item for item in keyed_centers
+                if item["visit_key"] not in visited
+            ],
+            "captured_detail_frame_keys": [
+                frame["visit_key"]
+                for frame in sorted(
+                    self.target_row_detail_frames,
+                    key=lambda item: str(item["visit_key"]),
+                )
+            ],
+            "all_rows_visited": bool(
+                self.target_date_row_count > 0
+                and len(visited) >= self.target_date_row_count
+            ),
+            "all_detail_frames_captured": bool(
+                self.target_date_row_count > 0
+                and len(self.target_row_detail_frames)
+                >= self.target_date_row_count
+            ),
+        }
+
+    def target_row_detail_context_images(self) -> list[tuple[str, str]]:
+        """Return controller-bound detail frames in target-row order."""
+        context_images: list[tuple[str, str]] = []
+        for frame in sorted(
+            self.target_row_detail_frames,
+            key=lambda item: str(item["visit_key"]),
+        ):
+            path = Path(str(frame["path"]))
+            if not path.is_file():
+                raise RuntimeError(
+                    "Controller-bound target-row detail frame is missing: "
+                    + str(path)
+                )
+            actual_sha256 = sha256(path.read_bytes()).hexdigest()
+            if actual_sha256 != frame["sha256"]:
+                raise RuntimeError(
+                    "Controller-bound target-row detail frame hash mismatch: "
+                    + str(path)
+                )
+            context_images.append(
+                (
+                    f"DATED_TARGET_DETAIL {frame['visit_key']}",
+                    str(path),
+                )
+            )
+        return context_images
 
     def mark_input_activation_repair(
         self,
@@ -3311,11 +3395,16 @@ class ProtocolV2DecisionGuard:
             dict[str, Any] | None
         ) = None,
         dated_list_answer_assessment: dict[str, Any] | None = None,
+        dated_visual_answer_assessment: dict[str, Any] | None = None,
+        dated_row_detail_frame: dict[str, Any] | None = None,
     ) -> None:
         action = decision.get("action")
         if not isinstance(action, dict):
             return
         action_key = canonical_action_key(action)
+        pending_target_visit_key: str | None = None
+        pending_target_detail_frame: dict[str, Any] | None = None
+        pending_visual_answer_accept = False
         toolbar_assessment = toolbar_affordance_claim_assessment or {}
         if (
             toolbar_assessment.get("adjudicable") is True
@@ -3429,12 +3518,48 @@ class ProtocolV2DecisionGuard:
                 detail_required = dated_assessment.get(
                     "requested_field_detail_required"
                 ) is True
-                if wrong_row_items or not count_matches or detail_required:
+                visited_row_count = len(self.target_row_visit_keys)
+                captured_frame_count = len(self.target_row_detail_frames)
+                visual_answer = dated_visual_answer_assessment or {}
+                visual_detail_bound = bool(
+                    detail_required
+                    and visual_answer.get("accepted") is True
+                    and visited_row_count >= observed_row_count
+                    and captured_frame_count >= observed_row_count
+                )
+                if (
+                    not count_matches
+                    or (
+                        detail_required
+                        and not visual_detail_bound
+                    )
+                    or (
+                        not detail_required
+                        and wrong_row_items
+                    )
+                ):
+                    current_centers = list(
+                        dated_assessment.get("target_row_centers") or []
+                    )
+                    unvisited = [
+                        round(float(center), 6)
+                        for center in current_centers
+                        if (
+                            f"target-row-y:{float(center):.3f}"
+                            not in self.target_row_visit_keys
+                        )
+                    ]
                     record = {
                         "semantic_state_sha256": page_sha256,
                         "action": action,
                         "reason": "dated_list_answer_association_blocked",
                         "dated_list_answer_assessment": dated_assessment,
+                        "dated_visual_answer_assessment": visual_answer,
+                        "visited_row_count": visited_row_count,
+                        "captured_detail_frame_count": (
+                            captured_frame_count
+                        ),
+                        "unvisited_target_row_centers": unvisited,
                         "required_recovery_classes": [
                             "open_visible_target_date_row",
                             "inspect_requested_field_in_detail",
@@ -3446,6 +3571,27 @@ class ProtocolV2DecisionGuard:
                         wrong_row_items,
                         ensure_ascii=False,
                     )
+                    remaining_directive = (
+                        " TARGET_DATE_UNVISITED_ROW_TAP_REQUIRED: tap one "
+                        "unvisited visible target-date content row. Allowed "
+                        "unvisited normalized y-centers: "
+                        + json.dumps(unvisited)
+                        + "."
+                        if unvisited and visited_row_count > 0
+                        else
+                        (
+                            " TARGET_DATE_ROW_TAP_REQUIRED: tap one visible "
+                            "enabled target-date content row and inspect its "
+                            "details."
+                            if unvisited
+                            else
+                            " TARGET_ROW_VISUAL_ANSWER_REQUIRED: all target "
+                            "rows were opened, but the answer still requires "
+                            "a same-turn visual critic to bind every requested "
+                            "field value to its row's current icon or explicit "
+                            "field evidence. Do not substitute row titles."
+                        )
+                    )
                     raise ActionValidationError(
                         "ANSWER_ASSOCIATION_GUARD: terminal answer items must "
                         "each belong to a visible row carrying the explicit "
@@ -3454,17 +3600,51 @@ class ProtocolV2DecisionGuard:
                         f"row: {rendered_wrong}. The requested answer field "
                         f"is {self.requested_answer_role!r}; a visible row "
                         "title or name is not evidence for a different field. "
-                        "TARGET_DATE_ROW_TAP_REQUIRED: tap one visible enabled "
-                        "target-date content row and inspect its details. Do "
-                        "not answer, swipe, wait, or use a non-target row."
+                        "Do not answer, swipe, wait, or use a non-target row."
+                        + remaining_directive
                     )
+                pending_visual_answer_accept = detail_required
             if dated_assessment.get("target_row_tap_permitted") is True:
-                self.target_row_tap_validation_count += 1
                 tap_center = dated_assessment.get("target_row_tap_center")
                 if isinstance(tap_center, (int, float)):
                     visit_key = f"target-row-y:{float(tap_center):.3f}"
-                    if visit_key not in self.target_row_visit_keys:
-                        self.target_row_visit_keys.append(visit_key)
+                    current_centers = list(
+                        dated_assessment.get("target_row_centers") or []
+                    )
+                    unvisited = [
+                        round(float(center), 6)
+                        for center in current_centers
+                        if (
+                            f"target-row-y:{float(center):.3f}"
+                            not in self.target_row_visit_keys
+                        )
+                    ]
+                    if visit_key in self.target_row_visit_keys:
+                        record = {
+                            "semantic_state_sha256": page_sha256,
+                            "action": action,
+                            "reason": "visited_target_row_reopen_blocked",
+                            "visited_row_keys": list(
+                                self.target_row_visit_keys
+                            ),
+                            "unvisited_target_row_centers": unvisited,
+                            "required_recovery_classes": [
+                                "inspect_remaining_target_date_row",
+                            ],
+                        }
+                        self.validation_blocks.append(record)
+                        self.target_row_revisit_block_count += 1
+                        raise ActionValidationError(
+                            "TARGET_ROW_UNVISITED_GUARD: this target-date "
+                            f"row ({visit_key}) was already opened. "
+                            "TARGET_DATE_UNVISITED_ROW_TAP_REQUIRED: choose "
+                            "one unvisited target-date content row. Allowed "
+                            "unvisited normalized y-centers: "
+                            + json.dumps(unvisited)
+                            + ". Do not reopen a visited row or perturb its "
+                            "coordinate."
+                        )
+                    pending_target_visit_key = visit_key
         elif (
             action.get("type") == "answer"
             and self.target_row_detail_required
@@ -3474,32 +3654,47 @@ class ProtocolV2DecisionGuard:
                 dated_assessment.get("answer_item_count") or 0
             )
             visited_row_count = len(self.target_row_visit_keys)
+            record = {
+                "semantic_state_sha256": page_sha256,
+                "action": action,
+                "reason": "target_row_answer_requires_list_aggregation",
+                "dated_list_answer_assessment": dated_assessment,
+                "visited_row_count": visited_row_count,
+                "answer_item_count": answer_item_count,
+                "required_recovery_classes": [
+                    "navigate_back",
+                    "inspect_remaining_target_date_row",
+                    "aggregate_on_target_date_list",
+                ],
+            }
+            self.validation_blocks.append(record)
+            self.target_row_enumeration_block_count += 1
+            self.target_row_aggregation_block_count += 1
+            raise ActionValidationError(
+                "TARGET_ROW_ENUMERATION_GUARD: the earlier target-date list "
+                f"exposed {self.target_date_row_count} distinct rows, "
+                f"{visited_row_count} distinct target rows were opened, and "
+                f"this detail-page answer contains {answer_item_count} "
+                "item(s). A single detail page cannot visually bind the "
+                "complete multi-row answer. "
+                "TARGET_ROW_AGGREGATION_BACK_REQUIRED: press Back once, "
+                "inspect every remaining unvisited target row, and submit "
+                "the complete answer only from the target-date list after "
+                "all detail frames are controller-bound."
+            )
+        elif (
+            action.get("type") == "press_back"
+            and self.target_row_detail_required
+            and self.active_target_row_visit_key is not None
+        ):
+            frame = dated_row_detail_frame or {}
             if (
-                visited_row_count < self.target_date_row_count
-                or answer_item_count != self.target_date_row_count
+                frame.get("visit_key") == self.active_target_row_visit_key
+                and isinstance(frame.get("path"), str)
+                and isinstance(frame.get("sha256"), str)
+                and len(frame["sha256"]) == 64
             ):
-                record = {
-                    "semantic_state_sha256": page_sha256,
-                    "action": action,
-                    "reason": "target_row_enumeration_incomplete",
-                    "dated_list_answer_assessment": dated_assessment,
-                    "required_recovery_classes": [
-                        "navigate_back",
-                        "inspect_remaining_target_date_row",
-                    ],
-                }
-                self.validation_blocks.append(record)
-                self.target_row_enumeration_block_count += 1
-                raise ActionValidationError(
-                    "TARGET_ROW_ENUMERATION_GUARD: the earlier target-date "
-                    f"list exposed {self.target_date_row_count} distinct rows, "
-                    f"{visited_row_count} distinct target rows were opened, "
-                    f"and this answer contains {answer_item_count} item(s). "
-                    "TARGET_ROW_ENUMERATION_BACK_REQUIRED: press Back once to "
-                    "return to the dated list, inspect every remaining target "
-                    "row, and answer only after all requested field values are "
-                    "grounded."
-                )
+                pending_target_detail_frame = dict(frame)
         self._validate_text_provenance(
             decision,
             page_sha256=page_sha256,
@@ -4317,6 +4512,22 @@ class ProtocolV2DecisionGuard:
                 + ", ".join(RECOVERY_CLASSES)
                 + "."
             )
+        if pending_target_visit_key is not None:
+            self.target_row_tap_validation_count += 1
+            self.target_row_visit_keys.append(pending_target_visit_key)
+            self.active_target_row_visit_key = pending_target_visit_key
+        if pending_target_detail_frame is not None:
+            self.target_row_detail_frames = [
+                frame for frame in self.target_row_detail_frames
+                if frame.get("visit_key")
+                != pending_target_detail_frame["visit_key"]
+            ]
+            self.target_row_detail_frames.append(
+                pending_target_detail_frame
+            )
+            self.active_target_row_visit_key = None
+        if pending_visual_answer_accept:
+            self.target_row_visual_answer_accept_count += 1
 
     def reconcile_late_semantic_transition(
         self,
@@ -4629,12 +4840,28 @@ class ProtocolV2DecisionGuard:
             "target_row_tap_validation_count": (
                 self.target_row_tap_validation_count
             ),
+            "target_row_revisit_block_count": (
+                self.target_row_revisit_block_count
+            ),
+            "target_row_aggregation_block_count": (
+                self.target_row_aggregation_block_count
+            ),
+            "target_row_visual_answer_accept_count": (
+                self.target_row_visual_answer_accept_count
+            ),
             "target_date_row_count": self.target_date_row_count,
             "target_row_detail_required": self.target_row_detail_required,
             "target_row_distinct_visit_count": len(
                 self.target_row_visit_keys
             ),
             "target_row_visit_keys": list(self.target_row_visit_keys),
+            "active_target_row_visit_key": (
+                self.active_target_row_visit_key
+            ),
+            "target_row_detail_frames": list(
+                self.target_row_detail_frames
+            ),
+            "target_row_progress": self.target_row_progress_record(),
             "requested_answer_role": self.requested_answer_role,
             "target_date_row_observations": list(
                 self.target_date_row_observations

@@ -1,7 +1,10 @@
 from __future__ import annotations
 
+from hashlib import sha256
 import json
 from pathlib import Path
+
+from PIL import Image
 
 from raven_m.controller.episode_controller import EpisodeController
 from raven_m.controller.protocol_v2_guard import (
@@ -39,6 +42,41 @@ class RepairSequenceClient:
             },
             raven_meta={},
         )
+
+
+class DatedVisualAnswerClient(RepairSequenceClient):
+    def generate(self, **kwargs) -> ModelCall:
+        if kwargs["call_label"].startswith("critic_step_"):
+            self.requests.append(kwargs)
+            label = kwargs["call_label"]
+            return ModelCall(
+                call_id=label,
+                episode_id=kwargs["episode_id"],
+                idempotency_key=label,
+                image_sha256="0" * 64,
+                image_sha256s=("0" * 64,),
+                prompt_sha256=label,
+                request_sha256=label,
+                response_sha256=label,
+                content=json.dumps(
+                    {
+                        "schema_version": "critic.v1",
+                        "verdict": "proceed",
+                        "issue": "",
+                        "recommended_constraint": (
+                            "The row icons and detail frames agree."
+                        ),
+                        "memory_ids": [],
+                    }
+                ),
+                usage={
+                    "prompt_tokens": 1,
+                    "completion_tokens": 1,
+                    "total_tokens": 2,
+                },
+                raven_meta={},
+            )
+        return super().generate(**kwargs)
 
 
 def controller_for(
@@ -240,6 +278,248 @@ def test_controller_replays_r63_row_repair_without_clickable_node(
     assert assessment["target_row_tap_authority"] == (
         "visible_content_row_geometry"
     )
+
+
+def test_controller_repairs_revisited_target_row_to_unvisited_row(
+    tmp_path: Path,
+) -> None:
+    goal = (
+        "What activities did I do September 24 2023? "
+        "Answer with the activity type only."
+    )
+    initial = {
+        "status": "continue",
+        "action": {"type": "tap", "x": 0.5, "y": 0.75},
+        "expected_outcome": "The target-date detail opens.",
+        "decision_summary": "Open the first visible target-date row.",
+        "state_delta": [],
+        "memory_citations": [],
+    }
+    repair = {
+        "status": "continue",
+        "action": {"type": "tap", "x": 0.5, "y": 0.84},
+        "expected_outcome": "The unvisited target-date detail opens.",
+        "decision_summary": "Open the remaining target-date row.",
+        "state_delta": [],
+        "memory_citations": [],
+    }
+    elements: list[dict] = []
+    for name, date, center in (
+        ("Recent item", "2 Oct", 0.60),
+        ("First target", "24 Sep", 0.75),
+        ("Second target", "24 Sep", 0.84),
+    ):
+        elements.extend(
+            [
+                {
+                    "text": name,
+                    "is_visible": True,
+                    "bbox": {"x_min": 0.08, "x_max": 0.70,
+                             "y_min": center - 0.035,
+                             "y_max": center + 0.035},
+                },
+                {
+                    "text": date,
+                    "is_visible": True,
+                    "bbox": {"x_min": 0.88, "x_max": 0.98,
+                             "y_min": center - 0.035,
+                             "y_max": center + 0.035},
+                },
+            ]
+        )
+    client = RepairSequenceClient(initial, repair)
+    controller = controller_for(client, protocol_v2_2=True)
+    guard = controller.decision_guard
+    assert guard is not None
+    guard.reset(goal=goal)
+    guard.target_date_row_count = 2
+    guard.target_row_detail_required = True
+    guard.target_row_visit_keys = ["target-row-y:0.750"]
+    guard.requested_answer_role = "activity type"
+
+    parsed, calls, meta = call_and_parse(
+        controller,
+        tmp_path=tmp_path,
+        task_goal=goal,
+        ui_elements=elements,
+    )
+
+    assert len(calls) == 2
+    assert parsed["action"] == repair["action"]
+    assert meta["initial_validation_error"].startswith(
+        "TARGET_ROW_UNVISITED_GUARD:"
+    )
+    assert "TARGET_DATE_UNVISITED_ROW_REPAIR" in (
+        client.requests[1]["user_prompt"]
+    )
+    assert guard.target_row_visit_keys == [
+        "target-row-y:0.750",
+        "target-row-y:0.840",
+    ]
+
+
+def test_controller_detail_answer_repairs_to_bound_back_frame(
+    tmp_path: Path,
+) -> None:
+    goal = (
+        "What activities did I do September 24 2023? "
+        "Answer with the activity type only."
+    )
+    initial = {
+        "status": "done",
+        "action": {
+            "type": "answer",
+            "text": "Visible row title",
+            "text_origin": "current_screen",
+            "source_memory_ids": [],
+        },
+        "expected_outcome": "The activity type is returned.",
+        "decision_summary": "Return the visible detail title.",
+        "state_delta": [],
+        "memory_citations": [],
+    }
+    repair = {
+        "status": "continue",
+        "action": {"type": "press_back"},
+        "expected_outcome": "The target-date list returns.",
+        "decision_summary": "Return to enumerate the remaining row.",
+        "state_delta": [],
+        "memory_citations": [],
+    }
+    Image.new("RGB", (24, 32)).save(tmp_path / "screen.png")
+    client = RepairSequenceClient(initial, repair)
+    controller = controller_for(client, protocol_v2_2=True)
+    guard = controller.decision_guard
+    assert guard is not None
+    guard.reset(goal=goal)
+    guard.target_date_row_count = 2
+    guard.target_row_detail_required = True
+    guard.target_row_visit_keys = ["target-row-y:0.750"]
+    guard.active_target_row_visit_key = "target-row-y:0.750"
+    guard.requested_answer_role = "activity type"
+
+    parsed, calls, meta = call_and_parse(
+        controller,
+        tmp_path=tmp_path,
+        task_goal=goal,
+        ui_elements=[
+            {"text": "Visible row title", "is_visible": True},
+            {"text": "Sep 24", "is_visible": True},
+        ],
+    )
+
+    assert len(calls) == 2
+    assert parsed["action"] == {"type": "press_back"}
+    assert "TARGET_ROW_AGGREGATION_BACK_REQUIRED" in (
+        meta["initial_validation_error"]
+    )
+    assert len(guard.target_row_detail_frames) == 1
+    assert guard.target_row_detail_frames[0]["visit_key"] == (
+        "target-row-y:0.750"
+    )
+    assert guard.active_target_row_visit_key is None
+
+
+def test_controller_adjudicates_dated_icon_answer_with_bound_frames(
+    tmp_path: Path,
+) -> None:
+    goal = (
+        "What activities did I do September 24 2023? "
+        "Answer with the activity types only."
+    )
+    answer = {
+        "status": "done",
+        "action": {
+            "type": "answer",
+            "text": "Cycling, Walking",
+            "text_origin": "current_screen",
+            "source_memory_ids": [],
+        },
+        "expected_outcome": "The two activity types are returned.",
+        "decision_summary": "Return one icon-grounded type per target row.",
+        "state_delta": [],
+        "memory_citations": [],
+    }
+    client = DatedVisualAnswerClient(answer, answer)
+    root = Path(__file__).resolve().parents[2]
+    controller = EpisodeController(
+        client=client,  # type: ignore[arg-type]
+        system_prompt="v2",
+        max_model_calls=3,
+        action_schema_path=root / "schemas/action.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+        visual_source_critic_prompt="critic",
+    )
+    guard = controller.decision_guard
+    assert guard is not None
+    guard.reset(goal=goal)
+    guard.target_date_row_count = 2
+    guard.target_row_detail_required = True
+    guard.target_row_visit_keys = [
+        "target-row-y:0.750",
+        "target-row-y:0.840",
+    ]
+    guard.requested_answer_role = "activity types"
+    for index, key in enumerate(guard.target_row_visit_keys):
+        path = tmp_path / f"detail-{index}.png"
+        Image.new("RGB", (24, 32), color=(index * 40, 0, 0)).save(path)
+        guard.target_row_detail_frames.append(
+            {
+                "visit_key": key,
+                "path": str(path),
+                "sha256": sha256(path.read_bytes()).hexdigest(),
+            }
+        )
+    Image.new("RGB", (24, 32)).save(tmp_path / "screen.png")
+    elements: list[dict] = []
+    for name, date, center in (
+        ("Recent item", "2 Oct", 0.60),
+        ("First target", "24 Sep", 0.75),
+        ("Second target", "24 Sep", 0.84),
+    ):
+        elements.extend(
+            [
+                {
+                    "text": name,
+                    "is_visible": True,
+                    "bbox": {"x_min": 0.08, "x_max": 0.70,
+                             "y_min": center - 0.035,
+                             "y_max": center + 0.035},
+                },
+                {
+                    "text": date,
+                    "is_visible": True,
+                    "bbox": {"x_min": 0.88, "x_max": 0.98,
+                             "y_min": center - 0.035,
+                             "y_max": center + 0.035},
+                },
+            ]
+        )
+
+    parsed, calls, meta = call_and_parse(
+        controller,
+        tmp_path=tmp_path,
+        task_goal=goal,
+        ui_elements=elements,
+    )
+
+    assert len(calls) == 2
+    assert parsed["action"] == answer["action"]
+    visual = meta["dated_visual_answer_assessment"]
+    assert visual["eligible"] is True
+    assert visual["accepted"] is True
+    critic_request = next(
+        request for request in client.requests
+        if request["call_label"].startswith("critic_step_")
+    )
+    payload = json.loads(critic_request["user_prompt"])
+    assert payload["trigger"] == "dated_row_visual_answer_candidate"
+    assert len(critic_request["context_images"]) == 2
+    assert guard.audit_record()[
+        "target_row_visual_answer_accept_count"
+    ] == 1
 
 
 def test_controller_repairs_redundant_focused_empty_tap_to_type(

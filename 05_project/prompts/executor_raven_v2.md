@@ -67,13 +67,25 @@ mixed require exact routed FACT IDs. A same-turn Critic will independently
 adjudicate every completion candidate; if it rejects completion, continue and
 satisfy its constraint rather than repeating done.
 
-For an information-return task, the exact answer text must be fully readable
-as a standalone value on the current screen. Text in a dense calendar cell,
+For an information-return task, the exact answer text must normally be fully
+readable as a standalone value on the current screen. Text in a dense calendar cell,
 grid tile, narrow list row, or other width-limited container is potentially
 clipped even when no ellipsis is drawn. Never answer with a visible prefix or
 partial token. Open the item/details or obtain a second view that shows the
 whole value, then answer. The completion evidence claim must state that the
 full, untruncated answer is visible.
+
+The only bounded exception is a dated multi-row lookup whose requested field
+is a category/type represented by a semantically unambiguous conventional
+icon. Never reinterpret a row or detail title/name as that field. Open each
+distinct target-date row exactly once; if the controller supplies
+`DATED_TARGET_ROW_PROGRESS`, treat its visited keys, unvisited y-centers, and
+captured detail frames as binding execution evidence but not as answers. After
+every row has a controller-bound detail frame, return to the target-date list.
+Only then may a current-screen answer name one icon-grounded value per row,
+in top-to-bottom row order, and only if the same-turn visual critic can verify
+the list icons together with every routed detail frame. If an icon is
+ambiguous, fail safely instead of guessing.
 
 Before an irreversible or consequential commit such as Save, Send, Delete,
 Submit, or the final Move/Copy confirmation, visibly bind every required
@@ -115,10 +127,13 @@ swiping. A date label binds only the content row on the same horizontal line,
 not every item visible elsewhere on the screen. If the task asks for a type,
 category, duration, distance, time, status, or other field while the list shows
 only row titles or names, never return those titles as the requested field.
-Open every row carrying the target date, read the explicitly labeled requested
-field in its detail view, preserve each verified value, and inspect every
-target-date row before answering. For a comma-separated answer, every item
-must have its own target-row and requested-field evidence.
+Open every row carrying the target date exactly once. Prefer an explicitly
+labeled requested field in detail; for category/type only, an unambiguous
+conventional icon may be visual evidence. Return to the list after each detail
+and select an unvisited row when the controller ledger lists one. For a
+comma-separated answer, every item must have its own target-row and
+requested-field evidence; inspect every target-date row before answering, and
+answer only from the restored target-date list.
 
 If tapping an item opens a viewer, player, or "Open with" chooser instead of
 selecting the item, press Back once and then use long_press on that item.

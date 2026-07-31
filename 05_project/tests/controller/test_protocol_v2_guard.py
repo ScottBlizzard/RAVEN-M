@@ -6,6 +6,7 @@ from raven_m.actions.schema import ActionValidationError
 from raven_m.controller.protocol_v2_guard import (
     ProtocolV2DecisionGuard,
     bounded_task_repeated_tap_assessment,
+    canonical_action_key,
     coordinate_type_text_target_assessment,
     dated_list_answer_assessment,
     declared_text_source_assessment,
@@ -559,37 +560,24 @@ def test_guard_requires_distinct_target_rows_not_repeated_same_row() -> None:
         page_sha256="dated-list",
         dated_list_answer_assessment=first_assessment,
     )
-    guard.validate_decision(
-        first_tap,
-        page_sha256="dated-list-returned",
-        dated_list_answer_assessment=first_assessment,
-    )
-    two_items = answer_decision("Cycling, Inline skating")
-    detail_assessment = dated_list_answer_assessment(
-        goal,
-        [
-            {"text": "Activity type", "is_visible": True},
-            {"text": "Cycling", "is_visible": True},
-        ],
-        two_items,
-        screen_width=1080,
-        screen_height=2400,
-    )
     with pytest.raises(
         ActionValidationError,
-        match="TARGET_ROW_ENUMERATION_GUARD",
+        match="TARGET_ROW_UNVISITED_GUARD",
     ):
         guard.validate_decision(
-            two_items,
-            page_sha256="detail",
-            dated_list_answer_assessment=detail_assessment,
+            first_tap,
+            page_sha256="dated-list-returned",
+            dated_list_answer_assessment=first_assessment,
         )
     audit = guard.audit_record()
-    assert audit["target_row_tap_validation_count"] == 2
+    assert audit["target_row_tap_validation_count"] == 1
     assert audit["target_row_distinct_visit_count"] == 1
+    assert audit["target_row_revisit_block_count"] == 1
+    block = audit["validation_blocks"][-1]
+    assert block["unvisited_target_row_centers"] == [0.84]
 
 
-def test_guard_allows_complete_answer_after_each_distinct_row_opened() -> None:
+def test_guard_allows_visual_answer_after_distinct_rows_and_frames() -> None:
     goal = (
         "What activities did I do September 24 2023? "
         "Answer with the activity types only."
@@ -610,25 +598,104 @@ def test_guard_allows_complete_answer_after_each_distinct_row_opened() -> None:
             page_sha256=page,
             dated_list_answer_assessment=assessment,
         )
+        back = decision({"type": "press_back"})
+        guard.validate_decision(
+            back,
+            page_sha256=f"detail-{y}",
+            dated_list_answer_assessment={},
+            dated_row_detail_frame={
+                "visit_key": guard.active_target_row_visit_key,
+                "path": f"C:/evidence/detail-{y}.png",
+                "sha256": ("a" if y == 0.75 else "b") * 64,
+            },
+        )
     two_items = answer_decision("Cycling, Inline skating")
-    detail_assessment = dated_list_answer_assessment(
+    list_assessment = dated_list_answer_assessment(
         goal,
-        [
-            {"text": "Activity type", "is_visible": True},
-            {"text": "Inline skating", "is_visible": True},
-        ],
+        dated_activity_list_fixture(),
         two_items,
         screen_width=1080,
         screen_height=2400,
     )
     guard.validate_decision(
         two_items,
-        page_sha256="second-detail",
-        dated_list_answer_assessment=detail_assessment,
+        page_sha256="dated-list-final",
+        dated_list_answer_assessment=list_assessment,
+        dated_visual_answer_assessment={
+            "eligible": True,
+            "accepted": True,
+            "adjudicated": True,
+        },
     )
     audit = guard.audit_record()
     assert audit["target_row_distinct_visit_count"] == 2
+    assert len(audit["target_row_detail_frames"]) == 2
+    assert audit["target_row_visual_answer_accept_count"] == 1
     assert audit["target_row_enumeration_block_count"] == 0
+
+
+def test_target_row_visit_is_not_committed_when_later_loop_guard_blocks() -> None:
+    goal = (
+        "What activities did I do September 24 2023? "
+        "Answer with the activity types only."
+    )
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(goal=goal)
+    tap = decision({"type": "tap", "x": 0.45, "y": 0.75})
+    assessment = dated_list_answer_assessment(
+        goal,
+        dated_activity_list_fixture(),
+        tap,
+        screen_width=1080,
+        screen_height=2400,
+    )
+    guard.blocked_fingerprints.add(
+        ("dated-list", canonical_action_key(tap["action"]))
+    )
+
+    with pytest.raises(ActionValidationError, match="LOOP_GUARD"):
+        guard.validate_decision(
+            tap,
+            page_sha256="dated-list",
+            dated_list_answer_assessment=assessment,
+        )
+
+    audit = guard.audit_record()
+    assert audit["target_row_distinct_visit_count"] == 0
+    assert audit["target_row_tap_validation_count"] == 0
+    assert audit["active_target_row_visit_key"] is None
+
+
+def test_detail_frame_is_not_committed_when_later_loop_guard_blocks() -> None:
+    goal = (
+        "What activities did I do September 24 2023? "
+        "Answer with the activity types only."
+    )
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(goal=goal)
+    guard.target_date_row_count = 2
+    guard.target_row_detail_required = True
+    guard.target_row_visit_keys = ["target-row-y:0.750"]
+    guard.active_target_row_visit_key = "target-row-y:0.750"
+    back = decision({"type": "press_back"})
+    guard.blocked_fingerprints.add(
+        ("detail", canonical_action_key(back["action"]))
+    )
+
+    with pytest.raises(ActionValidationError, match="LOOP_GUARD"):
+        guard.validate_decision(
+            back,
+            page_sha256="detail",
+            dated_row_detail_frame={
+                "visit_key": "target-row-y:0.750",
+                "path": "C:/evidence/detail.png",
+                "sha256": "a" * 64,
+            },
+        )
+
+    audit = guard.audit_record()
+    assert audit["target_row_detail_frames"] == []
+    assert audit["active_target_row_visit_key"] == "target-row-y:0.750"
 
 
 @pytest.mark.parametrize("label", ["Markers", "Search"])

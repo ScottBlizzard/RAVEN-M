@@ -134,6 +134,7 @@ class RoleOrchestrator:
         step: int,
         remaining_model_calls: int,
         allowed_memory_ids: set[str] | None = None,
+        context_images: list[tuple[str, Path]] | None = None,
     ) -> RoleResult:
         if role not in self.prompts:
             raise ValueError(f"Unknown role: {role}")
@@ -160,6 +161,7 @@ class RoleOrchestrator:
             episode_id=episode_id,
             call_label=f"{role}_step_{step:03d}_initial",
             max_tokens=256,
+            context_images=context_images,
         )
         calls = [initial]
         try:
@@ -192,6 +194,7 @@ class RoleOrchestrator:
                 episode_id=episode_id,
                 call_label=f"{role}_step_{step:03d}_repair",
                 max_tokens=256,
+                context_images=context_images,
             )
             calls.append(repaired)
             try:
