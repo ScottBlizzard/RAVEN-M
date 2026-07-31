@@ -234,3 +234,44 @@ def test_v2_critic_constraint_blocks_same_action(tmp_path: Path) -> None:
     }
     with pytest.raises(ActionValidationError, match="CRITIC_CONSTRAINT"):
         value.validate_decision(decision)
+
+
+def test_v2_late_transition_expires_stale_critic_constraint(
+    tmp_path: Path,
+) -> None:
+    value, _ = policy(tmp_path, "proceed")
+    value.critic_alert = {
+        "schema_version": "critic.v1",
+        "verdict": "reobserve",
+        "issue": "Search did not change the UI.",
+    }
+    value.critic_constraint = {
+        "schema_version": "critic_constraint.v1",
+        "verdict": "reobserve",
+        "blocked_action": {"type": "tap", "x": 0.72, "y": 0.085},
+        "recommended_constraint": "Tap the location pin icon.",
+        "created_step": 9,
+    }
+    value.manager.working = [
+        {
+            "step": 9,
+            "decision_summary": "Open Search.",
+            "action": {"type": "tap", "x": 0.72, "y": 0.085},
+            "observed_outcome": (
+                "Executed Search; the semantic UI did not change."
+            ),
+            "page_signature": "ui:old",
+        }
+    ]
+    result = value.reconcile_late_semantic_transition(
+        completed_step=9,
+        previous_after_semantic_sha256="a" * 64,
+        current_before_semantic_sha256="b" * 64,
+    )
+    assert result["reconciled"] is True
+    assert result["critic_constraint_cleared"]["created_step"] == 9
+    assert value.critic_constraint is None
+    assert value.critic_alert is None
+    assert "changed after delayed readiness" in (
+        value.manager.working[-1]["observed_outcome"]
+    )

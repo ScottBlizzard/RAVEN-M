@@ -75,25 +75,41 @@ def test_r60_formal_overlay_preserves_all_experiment_controls() -> None:
 
 def test_r60_formal_freeze_and_candidate_prerequisite_are_exact() -> None:
     wrapper = load_module(WRAPPER, "r60_formal_freeze_wrapper")
-    runner = load_module(RUNNER, "r60_formal_runner")
     manifest = json.loads(
         wrapper.build_formal_manifest().read_text(encoding="utf-8")
     )
-    audit = runner.validate_manifest(
-        manifest,
-        expected_source_tag=wrapper.SOURCE_TAG,
-        expected_source_commit=wrapper.SOURCE_COMMIT,
-        expected_prerequisite_commit=wrapper.PARENT_GATE_E_COMMIT,
+    execution_commit = subprocess.check_output(
+        [
+            "git",
+            "rev-list",
+            "-n",
+            "1",
+            "protocol-v2-2-gate-f-r60-preflight",
+        ],
+        cwd=ROOT,
+        text=True,
+    ).strip()
+    assert execution_commit == (
+        "b63b76aa2969fc97c0696642d9c7114ee5d6ab43"
     )
-    assert len(audit["freeze_file_checks"]) == 28
-    assert all(item["passed"] for item in audit["freeze_file_checks"])
-    candidate_checks = audit["candidate_prerequisite_checks"]
-    assert len(candidate_checks) == 1
-    assert candidate_checks[0]["passed"]
-    assert len(candidate_checks[0]["artifact_checks"]) == 13
-    assert all(
-        item["passed"] for item in candidate_checks[0]["artifact_checks"]
+    for record in manifest["freeze_files"]:
+        frozen = subprocess.check_output(
+            ["git", "show", f"{execution_commit}:{record['path']}"],
+            cwd=ROOT,
+        )
+        assert sha256(frozen).hexdigest() == record["sha256"]
+    candidate = manifest["prerequisite_candidate_report"]
+    frozen_report = subprocess.check_output(
+        ["git", "show", f"{execution_commit}:{candidate['path']}"],
+        cwd=ROOT,
     )
+    assert sha256(frozen_report).hexdigest() == candidate["sha256"]
+    report = json.loads(frozen_report.decode("utf-8"))
+    assert report["decision"] == "end_to_end_candidate_smoke_passed"
+    assert report["source_commit"] == wrapper.SOURCE_COMMIT
+    assert report["episode"]["success"] is True
+    assert report["r60_mechanism_result"]["executed_target_count"] == 5
+    assert len(report["artifact_sha256"]) == 13
 
 
 def test_r60_candidate_report_and_raw_checkpoint_remain_byte_frozen() -> None:

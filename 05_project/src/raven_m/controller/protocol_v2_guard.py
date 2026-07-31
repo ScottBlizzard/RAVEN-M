@@ -3353,6 +3353,71 @@ class ProtocolV2DecisionGuard:
                 + "."
             )
 
+    def reconcile_late_semantic_transition(
+        self,
+        *,
+        completed_step: int,
+        previous_after_sha256: str,
+        current_before_sha256: str,
+    ) -> dict[str, Any]:
+        """Correct only the latest no-effect record when progress lands late."""
+        if (
+            not self.transition_fingerprints
+            or not previous_after_sha256
+            or not current_before_sha256
+            or previous_after_sha256 == current_before_sha256
+        ):
+            return {
+                "reconciled": False,
+                "completed_step": completed_step,
+            }
+        before_sha256, action_key, recorded_after = (
+            self.transition_fingerprints[-1]
+        )
+        if recorded_after != previous_after_sha256:
+            return {
+                "reconciled": False,
+                "completed_step": completed_step,
+                "reason": "latest_transition_does_not_match_previous_after",
+            }
+        fingerprint = (before_sha256, action_key)
+        recorded_no_effect = before_sha256 == recorded_after
+        if recorded_no_effect:
+            if self.no_effect_counts.get(fingerprint, 0) > 1:
+                self.no_effect_counts[fingerprint] -= 1
+            else:
+                self.no_effect_counts.pop(fingerprint, None)
+            if (
+                self.last_unverified_progress_no_effect_fingerprint
+                == fingerprint
+            ):
+                self.last_unverified_progress_no_effect_fingerprint = None
+            if (
+                action_key == self.last_coordinate_action_key
+                and self.identical_coordinate_no_effect_count > 0
+            ):
+                self.identical_coordinate_no_effect_count -= 1
+        self.transition_fingerprints[-1] = (
+            before_sha256,
+            action_key,
+            current_before_sha256,
+        )
+        record = {
+            "source": "inter_step_readiness_reconciliation",
+            "completed_step": completed_step,
+            "before_semantic_sha256": before_sha256,
+            "recorded_after_semantic_sha256": recorded_after,
+            "current_before_semantic_sha256": current_before_sha256,
+            "action_key": action_key,
+            "recorded_no_effect": recorded_no_effect,
+            "blocked_fingerprint_preserved": (
+                fingerprint in self.blocked_fingerprints
+            ),
+        }
+        self.deferred_semantic_progress_reconciliation_count += 1
+        self.deferred_semantic_progress_reconciliation_records.append(record)
+        return {"reconciled": True, **record}
+
     def observe_transition(
         self,
         *,

@@ -1971,6 +1971,30 @@ def test_guard_reconciles_one_delayed_semantic_repeat_then_bounds_count() -> Non
     assert audit["bounded_task_repeated_tap_override_count"] == 2
 
 
+def test_guard_reconciles_inter_step_progress_without_unblocking() -> None:
+    guard = ProtocolV2DecisionGuard(max_no_effect_repeats=1)
+    action = {"type": "tap", "x": 0.72, "y": 0.085}
+    transition = guard.observe_transition(
+        before_sha256="a" * 64,
+        action=action,
+        after_sha256="a" * 64,
+    )
+    assert transition["fingerprint_blocked"] is True
+    result = guard.reconcile_late_semantic_transition(
+        completed_step=9,
+        previous_after_sha256="a" * 64,
+        current_before_sha256="b" * 64,
+    )
+    assert result["reconciled"] is True
+    assert result["recorded_no_effect"] is True
+    assert result["blocked_fingerprint_preserved"] is True
+    assert guard.no_effect_counts == {}
+    assert guard.transition_fingerprints[-1][2] == "b" * 64
+    audit = guard.audit_record()
+    assert audit["blocked_fingerprint_count"] == 1
+    assert audit["deferred_semantic_progress_reconciliation_count"] == 1
+
+
 def test_verified_repeat_ledger_overrides_stale_summary_and_calculates() -> None:
     guard = ProtocolV2DecisionGuard(
         max_no_effect_repeats=10,

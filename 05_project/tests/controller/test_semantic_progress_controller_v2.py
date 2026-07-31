@@ -1482,6 +1482,28 @@ class DrawerToStaleThenFreshRootEnv(DestinationPickerEnv):
         self.execute_count += 1
 
 
+class DrawerTransitionAfterSettleWindowEnv(
+    DrawerToStaleThenFreshRootEnv
+):
+    def get_state(self, wait_to_stabilize: bool):
+        assert wait_to_stabilize
+        if self.execute_count == 0:
+            pixels = np.zeros((100, 100, 3), dtype=np.uint8)
+            elements = self._drawer_elements()
+        elif self.execute_count == 1:
+            self.post_storage_observation_count += 1
+            if self.post_storage_observation_count <= 3:
+                pixels = np.zeros((100, 100, 3), dtype=np.uint8)
+                elements = self._drawer_elements()
+            else:
+                pixels = np.full((100, 100, 3), 255, dtype=np.uint8)
+                elements = self._root_elements()
+        else:
+            pixels = np.full((100, 100, 3), 127, dtype=np.uint8)
+            elements = self._root_elements()
+        return SimpleNamespace(pixels=pixels, ui_elements=elements)
+
+
 class CriticRejectedDestinationPickerEnv(DestinationPickerEnv):
     def get_state(self, wait_to_stabilize: bool):
         assert wait_to_stabilize
@@ -2615,6 +2637,40 @@ class SamePackageStaleTransitionEnv:
         )
 
 
+class DelayedSubthresholdSemanticTransitionEnv:
+    foreground_activity_name = (
+        "de.dennisguse.opentracks/.TrackListActivity"
+    )
+
+    def __init__(self) -> None:
+        self.calls = 0
+        self.before_elements = [
+            SimpleNamespace(
+                package_name="de.dennisguse.opentracks",
+                text="OpenTracks",
+                resource_id="title",
+            )
+        ]
+
+    def get_state(self, wait_to_stabilize: bool):
+        assert wait_to_stabilize
+        self.calls += 1
+        pixels = np.zeros((16, 12, 3), dtype=np.uint8)
+        pixels[0, 0] = 1
+        elements = (
+            self.before_elements
+            if self.calls < 3
+            else [
+                SimpleNamespace(
+                    package_name="de.dennisguse.opentracks",
+                    text="Search",
+                    resource_id="search_src_text",
+                )
+            ]
+        )
+        return SimpleNamespace(pixels=pixels, ui_elements=elements)
+
+
 def test_v2_2_readiness_retries_do_not_consume_policy_steps() -> None:
     env = DelayedAccessibilityEnv()
     controller = EpisodeController(
@@ -2682,6 +2738,37 @@ def test_v2_2_readiness_rejects_stale_same_package_tree_after_visual_transition(
     assert observations[0]["semantic_matches_prior"]
     assert not observations[0]["cross_modal_fresh"]
     assert observations[1]["cross_modal_fresh"]
+
+
+def test_v2_2_readiness_settles_subthreshold_delayed_transition() -> None:
+    env = DelayedSubthresholdSemanticTransitionEnv()
+    controller = EpisodeController(
+        client=RepeatingSaveClient(),  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        protocol_v2=True,
+        protocol_v2_2=True,
+        readiness_max_observations=4,
+        readiness_retry_delay_seconds=0,
+        readiness_transition_settle_observations=3,
+    )
+    prior_semantic = semantic_ui_snapshot(
+        env.before_elements,
+        fallback_sha256="0" * 64,
+    )
+    _, observations = controller._observe_state(
+        env,
+        require_accessibility=True,
+        prior_pixels=np.zeros((16, 12, 3), dtype=np.uint8),
+        prior_semantic_sha256=prior_semantic["sha256"],
+        settle_transition=True,
+    )
+    assert env.calls == 3
+    assert len(observations) == 3
+    assert observations[0]["pixel_change_ratio_from_prior"] < 0.01
+    assert observations[0]["transition_settle_pending"] is True
+    assert observations[1]["transition_settle_pending"] is True
+    assert observations[2]["transition_settle_pending"] is False
+    assert observations[2]["semantic_matches_prior"] is False
 
 
 def test_v2_2_readiness_refreshes_accessibility_once_then_recovers() -> None:
@@ -2955,21 +3042,62 @@ def test_controller_rejects_stale_drawer_tree_before_next_decision(
     )
     assert env.execute_count == 2
     assert summary["model_output_error"] is None
-    observations = summary["steps"][1][
-        "before_readiness_observations"
-    ]
-    assert len(observations) == 2
-    assert observations[0]["material_pixel_change_from_prior"] is True
+    observations = summary["steps"][0]["after_readiness_observations"]
+    assert len(observations) == 3
     assert observations[0]["semantic_matches_prior"] is True
-    assert observations[0]["cross_modal_fresh"] is False
-    assert observations[1]["semantic_matches_prior"] is False
-    assert observations[1]["cross_modal_fresh"] is True
-    assert summary["steps"][1]["before_semantic_ui"]["sha256"] != (
+    assert observations[0]["transition_settle_pending"] is True
+    assert observations[1]["material_pixel_change_from_prior"] is True
+    assert observations[1]["semantic_matches_prior"] is True
+    assert observations[1]["cross_modal_fresh"] is False
+    assert observations[2]["semantic_matches_prior"] is False
+    assert observations[2]["cross_modal_fresh"] is True
+    assert len(
+        summary["steps"][1]["before_readiness_observations"]
+    ) == 1
+    assert summary["steps"][1]["before_semantic_ui"]["sha256"] == (
         summary["steps"][0]["after_semantic_ui"]["sha256"]
     )
     assert summary["protocol_v2_guard"][
         "files_roots_drawer_block_count"
     ] == 0
+
+
+def test_controller_reconciles_transition_after_settle_window(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = DrawerTransitionAfterSettleWindowEnv()
+    controller = EpisodeController(
+        client=DrawerToFreshRootClient(),  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=2,
+        max_model_calls=2,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+        readiness_max_observations=3,
+        readiness_retry_delay_seconds=0,
+        readiness_transition_settle_observations=3,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="late-drawer-transition-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="B3",
+    )
+    first, second = summary["steps"]
+    assert first["protocol_v2_guard"]["semantic_changed"] is False
+    reconciliation = second["late_transition_reconciliation"]
+    assert reconciliation["completed_step"] == 0
+    assert reconciliation["history"]["reconciled"] is True
+    assert reconciliation["history"]["entry_corrected"] is True
+    assert reconciliation["guard"]["reconciled"] is True
+    assert "changed after delayed readiness" in second["user_prompt"]
+    assert summary["late_semantic_transition_reconciliation_count"] == 1
 
 
 def test_controller_rejects_invalid_roots_drawer_repair(

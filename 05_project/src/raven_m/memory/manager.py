@@ -535,6 +535,62 @@ class RavenMemoryManager:
             "page_signature": after_page_signature,
         }
 
+    def reconcile_late_semantic_transition(
+        self,
+        *,
+        completed_step: int,
+        previous_after_semantic_sha256: str,
+        current_before_semantic_sha256: str,
+    ) -> dict[str, Any]:
+        """Expire page-local memory when progress lands between steps."""
+        changed = bool(
+            previous_after_semantic_sha256
+            and current_before_semantic_sha256
+            and previous_after_semantic_sha256
+            != current_before_semantic_sha256
+        )
+        if not changed:
+            return {
+                "reconciled": False,
+                "completed_step": completed_step,
+                "invalidated_memory_ids": [],
+            }
+        current_page_signature = self.page_signature(
+            current_before_semantic_sha256,
+            semantic=True,
+        )
+        invalidated = self.store.invalidate_page_local(
+            current_page_signature=current_page_signature,
+            step=completed_step + 1,
+        )
+        working_entry_corrected = False
+        if (
+            self.working
+            and self.working[-1].get("step") == completed_step
+        ):
+            outcome = str(self.working[-1].get("observed_outcome", ""))
+            if "semantic UI did not change" in outcome:
+                self.working[-1]["observed_outcome"] = outcome.replace(
+                    "semantic UI did not change",
+                    "semantic UI changed after delayed readiness",
+                )
+                working_entry_corrected = True
+            self.working[-1]["page_signature"] = current_page_signature
+        self.last_page_signature = current_page_signature
+        return {
+            "reconciled": True,
+            "completed_step": completed_step,
+            "previous_after_semantic_sha256": (
+                previous_after_semantic_sha256
+            ),
+            "current_before_semantic_sha256": (
+                current_before_semantic_sha256
+            ),
+            "current_page_signature": current_page_signature,
+            "invalidated_memory_ids": invalidated,
+            "working_entry_corrected": working_entry_corrected,
+        }
+
     def context(
         self,
         *,

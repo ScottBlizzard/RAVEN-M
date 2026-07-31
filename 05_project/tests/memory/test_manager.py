@@ -114,6 +114,70 @@ def test_repeated_no_change_action_creates_failure_alert(tmp_path) -> None:
     assert failures[0].memory_id in context
 
 
+def test_late_semantic_transition_invalidates_page_local_memory(
+    tmp_path,
+) -> None:
+    manager = RavenMemoryManager()
+    manager.reset(
+        episode_id="episode-late-transition",
+        task_id="GenericTask",
+        task_goal="Open Search",
+        episode_dir=tmp_path,
+    )
+    old_semantic = sha256(b"old-semantic-page").hexdigest()
+    new_semantic = sha256(b"new-semantic-page").hexdigest()
+    observation = TransitionObservation(
+        step=0,
+        decision_summary="Open Search.",
+        action={"type": "tap", "x": 0.72, "y": 0.085},
+        expected_outcome="Search opens.",
+        observed_outcome=(
+            "Executed Search; the semantic UI did not change."
+        ),
+        evidence_outcome="Search was initially unchanged.",
+        before_screenshot_path="step_000_before.png",
+        before_screenshot_sha256=sha256(b"before").hexdigest(),
+        after_screenshot_sha256=sha256(b"after").hexdigest(),
+        after_screenshot_path="step_000_after.png",
+        before_semantic_ui_sha256=old_semantic,
+        after_semantic_ui_sha256=old_semantic,
+        state_delta=(
+            {
+                "kind": "fact",
+                "subject": "search_button",
+                "predicate": "state",
+                "object": "closed",
+                "natural_language": "Search is still closed.",
+                "evidence": "direct_screen",
+                "preconditions": ["same_task", "same_page"],
+                "expires_on": ["semantic_page_changed"],
+            },
+        ),
+    )
+    written = manager.observe_transition(observation)[
+        "written_memory_ids"
+    ]
+    assert len(written) == 1
+    assert manager.store.get(written[0]).verification_status == "observed"
+
+    result = manager.reconcile_late_semantic_transition(
+        completed_step=0,
+        previous_after_semantic_sha256=old_semantic,
+        current_before_semantic_sha256=new_semantic,
+    )
+
+    assert result["reconciled"] is True
+    assert result["invalidated_memory_ids"] == written
+    assert manager.store.get(written[0]).verification_status == "stale"
+    assert manager.last_page_signature == manager.page_signature(
+        new_semantic,
+        semantic=True,
+    )
+    assert "changed after delayed readiness" in (
+        manager.working[-1]["observed_outcome"]
+    )
+
+
 def test_repeated_no_effect_supersedes_action_linked_hypothesis(
     tmp_path,
 ) -> None:

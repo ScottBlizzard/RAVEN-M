@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 import json
 from pathlib import Path
 import re
@@ -138,6 +138,51 @@ class HistoryPolicy:
 
     def context(self) -> HistoryContext:
         return HistoryContext(rendered="[]")
+
+    def reconcile_late_semantic_transition(
+        self,
+        *,
+        completed_step: int,
+        previous_after_semantic_sha256: str,
+        current_before_semantic_sha256: str,
+    ) -> dict[str, Any]:
+        """Correct the last rendered outcome when UI progress lands late."""
+        changed = bool(
+            previous_after_semantic_sha256
+            and current_before_semantic_sha256
+            and previous_after_semantic_sha256
+            != current_before_semantic_sha256
+        )
+        entry_corrected = False
+        if (
+            changed
+            and self.entries
+            and self.entries[-1].step == completed_step
+        ):
+            entry = self.entries[-1]
+            outcome = entry.observed_outcome
+            if "semantic UI did not change" in outcome:
+                outcome = outcome.replace(
+                    "semantic UI did not change",
+                    "semantic UI changed after delayed readiness",
+                )
+                entry_corrected = True
+            self.entries[-1] = replace(
+                entry,
+                observed_outcome=outcome,
+                semantic_ui_sha256=current_before_semantic_sha256,
+            )
+        return {
+            "reconciled": changed,
+            "completed_step": completed_step,
+            "entry_corrected": entry_corrected,
+            "previous_after_semantic_sha256": (
+                previous_after_semantic_sha256
+            ),
+            "current_before_semantic_sha256": (
+                current_before_semantic_sha256
+            ),
+        }
 
     def observe(
         self,
@@ -517,6 +562,33 @@ class RavenMemoryPolicy(HistoryPolicy):
         }
         return HistoryContext(rendered=rendered)
 
+    def reconcile_late_semantic_transition(
+        self,
+        *,
+        completed_step: int,
+        previous_after_semantic_sha256: str,
+        current_before_semantic_sha256: str,
+    ) -> dict[str, Any]:
+        policy = super().reconcile_late_semantic_transition(
+            completed_step=completed_step,
+            previous_after_semantic_sha256=(
+                previous_after_semantic_sha256
+            ),
+            current_before_semantic_sha256=(
+                current_before_semantic_sha256
+            ),
+        )
+        manager = self.manager.reconcile_late_semantic_transition(
+            completed_step=completed_step,
+            previous_after_semantic_sha256=(
+                previous_after_semantic_sha256
+            ),
+            current_before_semantic_sha256=(
+                current_before_semantic_sha256
+            ),
+        )
+        return {**policy, "manager": manager}
+
     def validate_decision(self, decision: dict[str, Any]) -> None:
         cited = set(decision.get("memory_citations", []))
         action = decision.get("action")
@@ -623,6 +695,36 @@ class FullRavenMemoryPolicy(RavenMemoryPolicy):
                 separators=(",", ":"),
             )
         )
+
+    def reconcile_late_semantic_transition(
+        self,
+        *,
+        completed_step: int,
+        previous_after_semantic_sha256: str,
+        current_before_semantic_sha256: str,
+    ) -> dict[str, Any]:
+        result = super().reconcile_late_semantic_transition(
+            completed_step=completed_step,
+            previous_after_semantic_sha256=(
+                previous_after_semantic_sha256
+            ),
+            current_before_semantic_sha256=(
+                current_before_semantic_sha256
+            ),
+        )
+        cleared = None
+        if (
+            result["reconciled"]
+            and self.critic_constraint
+            and self.critic_constraint.get("created_step") == completed_step
+        ):
+            cleared = self.critic_constraint
+            self.critic_constraint = None
+            self.critic_alert = None
+        return {
+            **result,
+            "critic_constraint_cleared": cleared,
+        }
 
     def _validate_critic_constraint(
         self, decision: dict[str, Any]

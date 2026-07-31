@@ -357,6 +357,7 @@ class EpisodeController:
         readiness_retry_delay_seconds: float = 0.75,
         readiness_reconnect_after_observations: int = 3,
         readiness_material_pixel_change_ratio: float = 0.01,
+        readiness_transition_settle_observations: int = 3,
     ) -> None:
         self.client = client
         self.system_prompt = system_prompt
@@ -387,6 +388,9 @@ class EpisodeController:
         self.readiness_material_pixel_change_ratio = max(
             0.0, min(1.0, readiness_material_pixel_change_ratio)
         )
+        self.readiness_transition_settle_observations = max(
+            1, readiness_transition_settle_observations
+        )
 
     def _observe_state(
         self,
@@ -395,6 +399,7 @@ class EpisodeController:
         require_accessibility: bool,
         prior_pixels: Any | None = None,
         prior_semantic_sha256: str | None = None,
+        settle_transition: bool = False,
     ) -> tuple[Any, list[dict[str, Any]]]:
         """Observe without spending a policy step until an opened app is ready."""
         maximum = (
@@ -443,6 +448,16 @@ class EpisodeController:
             cross_modal_fresh = not (
                 material_pixel_change and semantic_matches_prior
             )
+            minimum_settle_observations = min(
+                maximum,
+                self.readiness_transition_settle_observations,
+            )
+            transition_settle_pending = bool(
+                settle_transition
+                and prior_semantic_sha256
+                and semantic_matches_prior
+                and attempt < minimum_settle_observations
+            )
             observation = {
                 "attempt": attempt,
                 "source": semantic["source"],
@@ -460,6 +475,7 @@ class EpisodeController:
                 "material_pixel_change_from_prior": material_pixel_change,
                 "semantic_matches_prior": semantic_matches_prior,
                 "cross_modal_fresh": cross_modal_fresh,
+                "transition_settle_pending": transition_settle_pending,
                 "infrastructure_failure_texts": list(
                     semantic.get("infrastructure_failure_texts", [])
                 ),
@@ -477,6 +493,7 @@ class EpisodeController:
                     semantic,
                 )
                 and cross_modal_fresh
+                and not transition_settle_pending
             ):
                 break
             if (
@@ -2393,6 +2410,59 @@ class EpisodeController:
                         }
                     )
                     raise VisibleInfrastructureFailure(messages)
+                late_transition_reconciliation = None
+                if (
+                    self.protocol_v2_2
+                    and step > 0
+                    and previous_after_semantic_sha256
+                    and before_semantic["sha256"]
+                    != previous_after_semantic_sha256
+                ):
+                    history_reconciliation = (
+                        self.history_policy
+                        .reconcile_late_semantic_transition(
+                            completed_step=step - 1,
+                            previous_after_semantic_sha256=(
+                                previous_after_semantic_sha256
+                            ),
+                            current_before_semantic_sha256=(
+                                before_semantic["sha256"]
+                            ),
+                        )
+                    )
+                    guard_reconciliation = (
+                        self.decision_guard
+                        .reconcile_late_semantic_transition(
+                            completed_step=step - 1,
+                            previous_after_sha256=(
+                                previous_after_semantic_sha256
+                            ),
+                            current_before_sha256=(
+                                before_semantic["sha256"]
+                            ),
+                        )
+                        if self.decision_guard is not None
+                        else None
+                    )
+                    late_transition_reconciliation = {
+                        "schema_version": (
+                            "late_semantic_transition_reconciliation.v1"
+                        ),
+                        "completed_step": step - 1,
+                        "previous_after_semantic_sha256": (
+                            previous_after_semantic_sha256
+                        ),
+                        "current_before_semantic_sha256": (
+                            before_semantic["sha256"]
+                        ),
+                        "history": history_reconciliation,
+                        "guard": guard_reconciliation,
+                    }
+                    if "semantic UI did not change" in previous_outcome:
+                        previous_outcome = previous_outcome.replace(
+                            "semantic UI did not change",
+                            "semantic UI changed after delayed readiness",
+                        )
                 verified_repeat_progress = (
                     self.decision_guard
                     .refresh_verified_task_repeat_progress(
@@ -2527,6 +2597,10 @@ class EpisodeController:
                     }
                     if self.protocol_v2:
                         step_record["before_semantic_ui"] = before_semantic
+                    if late_transition_reconciliation is not None:
+                        step_record[
+                            "late_transition_reconciliation"
+                        ] = late_transition_reconciliation
                     steps.append(step_record)
                     logger.append(step_record)
                     logger.append(
@@ -2584,6 +2658,10 @@ class EpisodeController:
                 }
                 if self.protocol_v2:
                     step_record["before_semantic_ui"] = before_semantic
+                if late_transition_reconciliation is not None:
+                    step_record["late_transition_reconciliation"] = (
+                        late_transition_reconciliation
+                    )
 
                 picker_commit_executed = destination_picker_commit_action(
                     getattr(state_before, "ui_elements", ()),
@@ -2633,6 +2711,7 @@ class EpisodeController:
                     require_accessibility=self.protocol_v2_2,
                     prior_pixels=state_before.pixels,
                     prior_semantic_sha256=before_semantic.get("sha256"),
+                    settle_transition=self.protocol_v2_2,
                 )
                 readiness_observation_count += len(after_readiness)
                 readiness_retry_count += max(0, len(after_readiness) - 1)
@@ -2899,6 +2978,9 @@ class EpisodeController:
             if "parse" in step
         )
         executed_count = sum(int(step.get("executed", False)) for step in steps)
+        late_transition_reconciliation_count = sum(
+            "late_transition_reconciliation" in step for step in steps
+        )
         failure_code = classify_failure_code(
             error_record=error_record,
             model_output_error=model_output_error,
@@ -2930,6 +3012,9 @@ class EpisodeController:
             "history_model_call_count": history_model_call_count,
             "readiness_observation_count": readiness_observation_count,
             "readiness_retry_count": readiness_retry_count,
+            "late_semantic_transition_reconciliation_count": (
+                late_transition_reconciliation_count
+            ),
             "first_pass_parse_count": first_pass_count,
             "first_pass_parse_rate": (
                 first_pass_count / decision_attempt_count
