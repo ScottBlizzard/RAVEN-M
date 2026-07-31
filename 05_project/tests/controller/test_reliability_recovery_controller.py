@@ -154,7 +154,7 @@ def test_controller_replays_r61_markers_claim_as_older_history_swipe(
     assert block["action"]["type"] == "tap"
 
 
-def test_controller_replays_r62_answer_as_target_row_detail_tap(
+def test_controller_replays_r63_row_repair_without_clickable_node(
     tmp_path: Path,
 ) -> None:
     goal = (
@@ -178,7 +178,7 @@ def test_controller_replays_r62_answer_as_target_row_detail_tap(
     }
     repair = {
         "status": "continue",
-        "action": {"type": "tap", "x": 0.45, "y": 0.75},
+        "action": {"type": "tap", "x": 0.5, "y": 0.775},
         "expected_outcome": "The target-date row detail opens.",
         "decision_summary": (
             "Tap the visible target-date row to inspect its activity type."
@@ -210,15 +210,6 @@ def test_controller_replays_r62_answer_as_target_row_detail_tap(
                              "y_min": center - 0.035,
                              "y_max": center + 0.035},
                 },
-                {
-                    "package_name": "org.example.history",
-                    "is_visible": True,
-                    "is_enabled": True,
-                    "is_clickable": True,
-                    "bbox": {"x_min": 0.02, "x_max": 0.98,
-                             "y_min": center - 0.04,
-                             "y_max": center + 0.04},
-                },
             ]
         )
     client = RepairSequenceClient(initial, repair)
@@ -231,7 +222,7 @@ def test_controller_replays_r62_answer_as_target_row_detail_tap(
         ui_elements=elements,
     )
     assert len(calls) == 2
-    assert parsed["action"] == {"type": "tap", "x": 0.45, "y": 0.75}
+    assert parsed["action"] == {"type": "tap", "x": 0.5, "y": 0.775}
     assert "ANSWER_ASSOCIATION_GUARD" in meta["initial_validation_error"]
     repair_prompt = client.requests[1]["user_prompt"]
     assert "TARGET_DATE_ROW_DETAIL_REPAIR" in repair_prompt
@@ -243,6 +234,12 @@ def test_controller_replays_r62_answer_as_target_row_detail_tap(
     assert audit["target_date_row_count"] == 2
     assert audit["target_row_tap_validation_count"] == 1
     assert meta["adjudication_model_call_count"] == 0
+    assessment = meta["dated_list_answer_assessment"]
+    assert assessment["clickable_target_hit"] is False
+    assert assessment["visible_content_target_hit"] is True
+    assert assessment["target_row_tap_authority"] == (
+        "visible_content_row_geometry"
+    )
 
 
 def test_controller_repairs_redundant_focused_empty_tap_to_type(

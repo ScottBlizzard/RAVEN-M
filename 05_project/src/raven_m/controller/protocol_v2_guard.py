@@ -1638,6 +1638,7 @@ def dated_list_answer_assessment(
         for item in chronology["target_dates"]
     }
     target_anchor_centers: list[float] = []
+    target_anchor_positions: list[tuple[float, float]] = []
     for anchor in chronology["date_anchors"]:
         anchor_dates = {
             (item["year"], item["month"], item["day"])
@@ -1649,7 +1650,29 @@ def dated_list_answer_assessment(
             for visible in anchor_dates
         ):
             target_anchor_centers.append(anchor["y_center"])
+            target_anchor_positions.append(
+                (anchor["x_center"], anchor["y_center"])
+            )
     target_row_centers = _cluster_row_centers(target_anchor_centers)
+    target_row_date_x_centers = [
+        round(
+            sum(
+                x_center
+                for x_center, y_center in target_anchor_positions
+                if abs(y_center - row_center) <= 0.025
+            )
+            / max(
+                1,
+                sum(
+                    1
+                    for _, y_center in target_anchor_positions
+                    if abs(y_center - row_center) <= 0.025
+                ),
+            ),
+            6,
+        )
+        for row_center in target_row_centers
+    ]
 
     label_records: list[dict[str, Any]] = []
     explicit_labels: list[str] = []
@@ -1678,14 +1701,54 @@ def dated_list_answer_assessment(
         if bbox is None:
             continue
         y_center = round((bbox[2] + bbox[3]) / 2, 6)
+        x_center = round((bbox[0] + bbox[1]) / 2, 6)
         for label in labels:
             label_records.append(
                 {
                     "label": label,
                     "normalized": " ".join(label.casefold().split()),
+                    "x_center": x_center,
                     "y_center": y_center,
+                    "is_date_label": bool(
+                        CHRONOLOGICAL_LABEL_RE.fullmatch(label.strip())
+                    ),
                 }
             )
+
+    target_row_content_labels: list[list[str]] = []
+    target_row_date_sides: list[str] = []
+    for row_center, date_x_center in zip(
+        target_row_centers,
+        target_row_date_x_centers,
+        strict=True,
+    ):
+        date_side = (
+            "right"
+            if date_x_center >= 0.65
+            else "left"
+            if date_x_center <= 0.35
+            else "ambiguous"
+        )
+        target_row_date_sides.append(date_side)
+        content_labels = sorted(
+            {
+                record["label"]
+                for record in label_records
+                if not record["is_date_label"]
+                and abs(record["y_center"] - row_center) <= 0.055
+                and (
+                    (
+                        date_side == "right"
+                        and record["x_center"] < date_x_center - 0.03
+                    )
+                    or (
+                        date_side == "left"
+                        and record["x_center"] > date_x_center + 0.03
+                    )
+                )
+            }
+        )
+        target_row_content_labels.append(content_labels)
 
     action = decision.get("action") if isinstance(decision, dict) else None
     action_type = action.get("type") if isinstance(action, dict) else None
@@ -1774,22 +1837,52 @@ def dated_list_answer_assessment(
 
     tap_x = action.get("x") if isinstance(action, dict) else None
     tap_y = action.get("y") if isinstance(action, dict) else None
-    row_aligned_tap = bool(
-        action_type == "tap"
-        and isinstance(tap_x, (int, float))
-        and isinstance(tap_y, (int, float))
-        and 0.05 <= tap_x <= 0.88
-        and any(abs(tap_y - center) <= 0.055 for center in target_row_centers)
-    )
-    clickable_target_hit = False
     target_row_tap_center: float | None = None
     target_row_tap_index: int | None = None
-    if row_aligned_tap and isinstance(tap_y, (int, float)):
-        target_row_tap_index = min(
+    if (
+        action_type == "tap"
+        and isinstance(tap_y, (int, float))
+        and target_row_centers
+    ):
+        nearest_index = min(
             range(len(target_row_centers)),
             key=lambda index: abs(tap_y - target_row_centers[index]),
         )
-        target_row_tap_center = target_row_centers[target_row_tap_index]
+        if abs(tap_y - target_row_centers[nearest_index]) <= 0.055:
+            target_row_tap_index = nearest_index
+            target_row_tap_center = target_row_centers[nearest_index]
+    target_row_tap_date_side = (
+        target_row_date_sides[target_row_tap_index]
+        if target_row_tap_index is not None
+        else None
+    )
+    target_row_tap_date_x_center = (
+        target_row_date_x_centers[target_row_tap_index]
+        if target_row_tap_index is not None
+        else None
+    )
+    tap_on_content_side = bool(
+        action_type == "tap"
+        and isinstance(tap_x, (int, float))
+        and isinstance(tap_y, (int, float))
+        and 0.03 <= tap_x <= 0.97
+        and target_row_tap_index is not None
+        and target_row_tap_date_x_center is not None
+        and (
+            (
+                target_row_tap_date_side == "right"
+                and tap_x < target_row_tap_date_x_center - 0.03
+            )
+            or (
+                target_row_tap_date_side == "left"
+                and tap_x > target_row_tap_date_x_center + 0.03
+            )
+        )
+    )
+    row_aligned_tap = bool(
+        target_row_tap_index is not None and tap_on_content_side
+    )
+    clickable_target_hit = False
     if row_aligned_tap:
         for element in ui_elements or ():
             if _element_value(element, "is_visible") is not True:
@@ -1817,6 +1910,19 @@ def dated_list_answer_assessment(
                 clickable_target_hit = True
                 break
 
+    visible_content_target_hit = bool(
+        row_aligned_tap
+        and target_row_tap_index is not None
+        and target_row_content_labels[target_row_tap_index]
+    )
+    target_row_tap_authority = (
+        "accessibility_clickable"
+        if clickable_target_hit
+        else "visible_content_row_geometry"
+        if visible_content_target_hit
+        else None
+    )
+
     target_date_list_visible = bool(
         chronology["chronological_history_detected"]
         and chronology["target_visible"]
@@ -1831,6 +1937,9 @@ def dated_list_answer_assessment(
         "target_visible": chronology["target_visible"],
         "target_date_list_visible": target_date_list_visible,
         "target_row_centers": target_row_centers,
+        "target_row_date_x_centers": target_row_date_x_centers,
+        "target_row_date_sides": target_row_date_sides,
+        "target_row_content_labels": target_row_content_labels,
         "target_row_count": len(target_row_centers),
         "requested_answer_role": requested_role,
         "role_detail_required": role_detail_required,
@@ -1853,12 +1962,15 @@ def dated_list_answer_assessment(
             and not field_role_explicitly_visible
         ),
         "row_aligned_tap": row_aligned_tap,
+        "tap_on_content_side": tap_on_content_side,
         "clickable_target_hit": clickable_target_hit,
+        "visible_content_target_hit": visible_content_target_hit,
         "target_row_tap_permitted": bool(
             target_date_list_visible
             and row_aligned_tap
-            and clickable_target_hit
+            and (clickable_target_hit or visible_content_target_hit)
         ),
+        "target_row_tap_authority": target_row_tap_authority,
         "target_row_tap_index": target_row_tap_index,
         "target_row_tap_center": target_row_tap_center,
         "chronological_list_navigation_assessment": chronology,

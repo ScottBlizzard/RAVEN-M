@@ -102,7 +102,11 @@ def toolbar_decision(label: str) -> dict:
     }
 
 
-def dated_activity_list_fixture(*, explicit_type: bool = False) -> list[dict]:
+def dated_activity_list_fixture(
+    *,
+    explicit_type: bool = False,
+    clickable_rows: bool = True,
+) -> list[dict]:
     rows = [
         ("Bicycle Adventure", "2 Oct", 0.60),
         ("Skill work", "24 Sep", 0.75),
@@ -134,6 +138,10 @@ def dated_activity_list_fixture(*, explicit_type: bool = False) -> list[dict]:
                         "y_max": center + 0.035,
                     },
                 },
+            ]
+        )
+        if clickable_rows:
+            elements.append(
                 {
                     "package_name": "org.example.history",
                     "is_visible": True,
@@ -145,9 +153,8 @@ def dated_activity_list_fixture(*, explicit_type: bool = False) -> list[dict]:
                         "y_min": center - 0.04,
                         "y_max": center + 0.04,
                     },
-                },
-            ]
-        )
+                }
+            )
     if explicit_type:
         elements.extend(
             [
@@ -284,7 +291,157 @@ def test_dated_list_target_row_tap_is_coordinate_and_control_bound() -> None:
         screen_height=2400,
     )
     assert target["target_row_tap_permitted"]
+    assert target["target_row_tap_authority"] == "accessibility_clickable"
     assert not other["target_row_tap_permitted"]
+
+
+def test_dated_list_replays_r63_visual_row_tap_without_clickable_node() -> None:
+    goal = (
+        "What activities did I do September 24 2023? "
+        "Answer with the activity type only."
+    )
+    assessment = dated_list_answer_assessment(
+        goal,
+        dated_activity_list_fixture(clickable_rows=False),
+        {"action": {"type": "tap", "x": 0.5, "y": 0.775}},
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert assessment["row_aligned_tap"]
+    assert assessment["tap_on_content_side"]
+    assert not assessment["clickable_target_hit"]
+    assert assessment["visible_content_target_hit"]
+    assert assessment["target_row_tap_index"] == 0
+    assert assessment["target_row_tap_permitted"]
+    assert assessment["target_row_tap_authority"] == (
+        "visible_content_row_geometry"
+    )
+
+
+def test_dated_list_visual_fallback_rejects_date_column_and_non_target() -> None:
+    goal = (
+        "What activities did I do September 24 2023? "
+        "Answer with the activity type only."
+    )
+    elements = dated_activity_list_fixture(clickable_rows=False)
+    date_column = dated_list_answer_assessment(
+        goal,
+        elements,
+        {"action": {"type": "tap", "x": 0.93, "y": 0.75}},
+        screen_width=1080,
+        screen_height=2400,
+    )
+    non_target = dated_list_answer_assessment(
+        goal,
+        elements,
+        {"action": {"type": "tap", "x": 0.5, "y": 0.60}},
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert not date_column["tap_on_content_side"]
+    assert not date_column["target_row_tap_permitted"]
+    assert not non_target["row_aligned_tap"]
+    assert not non_target["target_row_tap_permitted"]
+
+
+def test_dated_list_visual_fallback_requires_same_row_content() -> None:
+    elements = [
+        element
+        for element in dated_activity_list_fixture(clickable_rows=False)
+        if element.get("text")
+        in {"Bicycle Adventure", "2 Oct", "24 Sep"}
+    ]
+    assessment = dated_list_answer_assessment(
+        (
+            "What activities did I do September 24 2023? "
+            "Answer with the activity type only."
+        ),
+        elements,
+        {"action": {"type": "tap", "x": 0.5, "y": 0.775}},
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert assessment["target_date_list_visible"]
+    assert assessment["target_row_content_labels"] == [[], []]
+    assert not assessment["visible_content_target_hit"]
+    assert not assessment["target_row_tap_permitted"]
+
+
+def test_dated_list_visual_fallback_supports_left_date_column() -> None:
+    elements: list[dict] = []
+    for name, date, center in (
+        ("Recent item", "2 Oct", 0.60),
+        ("First target", "24 Sep", 0.75),
+        ("Second target", "24 Sep", 0.84),
+    ):
+        elements.extend(
+            [
+                {
+                    "text": date,
+                    "is_visible": True,
+                    "bbox": {"x_min": 0.05, "x_max": 0.15,
+                             "y_min": center - 0.03,
+                             "y_max": center + 0.03},
+                },
+                {
+                    "text": name,
+                    "is_visible": True,
+                    "bbox": {"x_min": 0.30, "x_max": 0.85,
+                             "y_min": center - 0.03,
+                             "y_max": center + 0.03},
+                },
+            ]
+        )
+    assessment = dated_list_answer_assessment(
+        "Find September 24 2023. Answer with the item name only.",
+        elements,
+        {"action": {"type": "tap", "x": 0.5, "y": 0.775}},
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert assessment["target_row_date_sides"] == ["left", "left"]
+    assert assessment["visible_content_target_hit"]
+    assert assessment["target_row_tap_permitted"]
+
+
+def test_dated_list_visual_fallback_fails_closed_for_center_date_column() -> None:
+    elements: list[dict] = []
+    for name, date, center in (
+        ("Recent item", "2 Oct", 0.60),
+        ("First target", "24 Sep", 0.75),
+        ("Second target", "24 Sep", 0.84),
+    ):
+        elements.extend(
+            [
+                {
+                    "text": date,
+                    "is_visible": True,
+                    "bbox": {"x_min": 0.45, "x_max": 0.55,
+                             "y_min": center - 0.03,
+                             "y_max": center + 0.03},
+                },
+                {
+                    "text": name,
+                    "is_visible": True,
+                    "bbox": {"x_min": 0.65, "x_max": 0.90,
+                             "y_min": center - 0.03,
+                             "y_max": center + 0.03},
+                },
+            ]
+        )
+    assessment = dated_list_answer_assessment(
+        "Find September 24 2023. Answer with the item name only.",
+        elements,
+        {"action": {"type": "tap", "x": 0.75, "y": 0.775}},
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert assessment["target_row_date_sides"] == [
+        "ambiguous",
+        "ambiguous",
+    ]
+    assert not assessment["visible_content_target_hit"]
+    assert not assessment["target_row_tap_permitted"]
 
 
 def test_guard_blocks_swipe_after_target_date_is_visible() -> None:

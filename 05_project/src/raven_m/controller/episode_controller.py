@@ -985,7 +985,7 @@ class EpisodeController:
                 "\n\nTARGET_DATE_ROW_DETAIL_REPAIR: The explicit target "
                 "date is already visible in the chronological list. For "
                 "this one repair, return status=continue with exactly one "
-                "pure tap on a visible enabled content row horizontally "
+                "pure tap on a visible content row horizontally "
                 "aligned with that target date. Do not tap the date text or "
                 "a toolbar icon, swipe, wait, answer, or infer the requested "
                 "field from a row title/name. Use empty state_delta, "
@@ -1826,7 +1826,7 @@ class EpisodeController:
                     raise ActionValidationError(
                         "REPAIR_CONTRACT_GUARD: "
                         "TARGET_DATE_ROW_TAP_REQUIRED permits only one pure "
-                        "tap on a visible enabled content row aligned with "
+                        "tap on a visible content row aligned with "
                         "the explicit target date, with empty state_delta, "
                         "memory_citations, and completion_evidence."
                     )
