@@ -38,7 +38,11 @@ class RepairSequenceClient:
         )
 
 
-def controller_for(client: RepairSequenceClient) -> EpisodeController:
+def controller_for(
+    client: RepairSequenceClient,
+    *,
+    protocol_v2_2: bool = False,
+) -> EpisodeController:
     root = Path(__file__).resolve().parents[2]
     return EpisodeController(
         client=client,  # type: ignore[arg-type]
@@ -47,6 +51,7 @@ def controller_for(client: RepairSequenceClient) -> EpisodeController:
         action_schema_path=root / "schemas/action.v2.schema.json",
         decision_guard=ProtocolV2DecisionGuard(),
         protocol_v2=True,
+        protocol_v2_2=protocol_v2_2,
     )
 
 
@@ -226,6 +231,65 @@ def test_controller_allows_fourth_exact_swipe_after_verified_progress(
     audit = controller.decision_guard.audit_record()
     assert audit["identical_coordinate_action_count"] == 3
     assert audit["identical_coordinate_no_effect_count"] == 0
+
+
+def test_controller_allows_fourth_task_bounded_progress_tap(
+    tmp_path: Path,
+) -> None:
+    tap = {"type": "tap", "x": 0.5, "y": 0.208}
+    response = {
+        "status": "continue",
+        "action": tap,
+        "expected_outcome": "The next number appears.",
+        "decision_summary": "Tap Click Me for the fourth requested value.",
+        "state_delta": [],
+        "memory_citations": [],
+    }
+    client = RepairSequenceClient(response, response)
+    controller = controller_for(client, protocol_v2_2=True)
+    assert controller.decision_guard is not None
+    for index in range(3):
+        controller.decision_guard.observe_transition(
+            before_sha256=f"value-{index}",
+            action=tap,
+            after_sha256=f"value-{index + 1}",
+        )
+    decision, calls, meta = call_and_parse(
+        controller,
+        tmp_path=tmp_path,
+        task_goal=(
+            "Click the button 5 times, remember the numbers displayed, "
+            "and enter their product."
+        ),
+        ui_elements=[
+            {
+                "package_name": "com.android.chrome",
+                "text": "Click Me",
+                "is_visible": True,
+                "is_enabled": True,
+                "is_clickable": True,
+                "is_editable": False,
+                "bbox": {
+                    "x_min": 0.43,
+                    "x_max": 0.57,
+                    "y_min": 0.18,
+                    "y_max": 0.23,
+                },
+            }
+        ],
+    )
+    assert len(calls) == 1
+    assert not meta["model_repair_used"]
+    assert decision["action"] == tap
+    assessment = meta["bounded_task_repeated_tap_assessment"]
+    assert assessment["permitted"]
+    assert assessment["proposed_ordinal"] == 4
+    assert (
+        controller.decision_guard.audit_record()[
+            "bounded_task_repeated_tap_override_count"
+        ]
+        == 1
+    )
 
 
 def test_controller_uses_one_step_activation_proof_for_text_repair(

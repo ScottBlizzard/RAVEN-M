@@ -396,6 +396,10 @@ def aggregate(
         "stopped_early": stopped_early,
         "stop_reason": stop_reason,
         "gate_passed": gate_passed,
+        "development_smoke": bool(
+            manifest.get("development_smoke", False)
+        ),
+        "formal_scoring": bool(manifest.get("formal_scoring", True)),
         "automatic_next_batch": False,
         "automatic_gate_g_transition": False,
         "model_health": health,
@@ -427,6 +431,7 @@ def validate_manifest(
     *,
     expected_source_tag: str = EXPECTED_SOURCE_TAG,
     expected_source_commit: str = EXPECTED_SOURCE_COMMIT,
+    expected_prerequisite_commit: str | None = None,
 ) -> dict[str, Any]:
     if manifest["source_tag"] != expected_source_tag:
         raise RuntimeError("Gate-F source tag is not the Gate-E pass.")
@@ -547,11 +552,14 @@ def validate_manifest(
         )
         report_gate_passed = report.get("suite", {}).get("gate_passed")
         report_source_commit = report.get("suite", {}).get("source_commit")
+        prerequisite_source_commit = (
+            expected_prerequisite_commit or expected_source_commit
+        )
         passed = (
             actual == prerequisite["sha256"]
             and report.get("decision", {}).get("gate_e") == "pass"
             and report_gate_passed is True
-            and report_source_commit == expected_source_commit
+            and report_source_commit == prerequisite_source_commit
         )
         prerequisite_checks.append(
             {
@@ -702,6 +710,7 @@ def main(
     default_manifest: Path = DEFAULT_MANIFEST,
     expected_source_tag: str = EXPECTED_SOURCE_TAG,
     expected_source_commit: str = EXPECTED_SOURCE_COMMIT,
+    expected_prerequisite_commit: str | None = None,
     diagnostic_pause: Path | None = DIAGNOSTIC_PAUSE,
 ) -> int:
     parser = argparse.ArgumentParser()
@@ -717,6 +726,15 @@ def main(
     )
     parser.add_argument("--preflight-only", action="store_true")
     parser.add_argument("--preflight-output", type=Path, default=None)
+    parser.add_argument(
+        "--development-smoke-sequence",
+        type=int,
+        default=0,
+        help=(
+            "Run one frozen sequence in a separate non-scored development "
+            "namespace; valid values are 1-12."
+        ),
+    )
     args = parser.parse_args()
 
     if diagnostic_pause is not None and diagnostic_pause.exists():
@@ -735,11 +753,17 @@ def main(
         manifest,
         expected_source_tag=expected_source_tag,
         expected_source_commit=expected_source_commit,
+        expected_prerequisite_commit=expected_prerequisite_commit,
     )
     coverage = capability_audit(REPOSITORY_ROOT)
     if not coverage["passed"]:
         raise RuntimeError("Protocol-v2 capability audit failed.")
     if args.preflight_only:
+        if args.development_smoke_sequence:
+            raise RuntimeError(
+                "--preflight-only cannot be combined with a live "
+                "development smoke."
+            )
         output = args.preflight_output or (
             REPOSITORY_ROOT
             / (
@@ -755,6 +779,33 @@ def main(
             adb_path=args.adb_path,
             output=output,
         )
+    if args.development_smoke_sequence:
+        if args.batch is not None:
+            raise RuntimeError(
+                "--batch cannot be combined with a development smoke."
+            )
+        if not 1 <= args.development_smoke_sequence <= 12:
+            raise RuntimeError(
+                "--development-smoke-sequence must be between 1 and 12."
+            )
+        selected_smoke = [
+            item
+            for item in manifest["schedule"]
+            if item["sequence"] == args.development_smoke_sequence
+        ]
+        if len(selected_smoke) != 1:
+            raise RuntimeError("Requested development sequence is absent.")
+        manifest = json.loads(json.dumps(manifest))
+        manifest["schedule"] = selected_smoke
+        manifest["suite_id"] = (
+            manifest["suite_id"]
+            + "_development_smoke_sequence_"
+            + str(args.development_smoke_sequence)
+        )
+        manifest["output_root"] = "runs/protocol_v2_2_development"
+        manifest["development_smoke"] = True
+        manifest["formal_scoring"] = False
+        args.batch = int(selected_smoke[0]["batch"])
     if args.batch is None:
         raise RuntimeError("--batch is required unless --preflight-only is set.")
 

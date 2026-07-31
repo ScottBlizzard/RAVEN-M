@@ -117,6 +117,34 @@ FILES_VIEW_MODE_RESOURCE_RE = re.compile(
     r"(?:$|[/.:_-])",
     flags=re.IGNORECASE,
 )
+REPEATED_TAP_GOAL_RE = re.compile(
+    r"\b(?:click|tap|press)\b[^.;\n]{0,120}?"
+    r"\b(?P<count>[2-9]|1\d|20|two|three|four|five|six|seven|eight|"
+    r"nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|"
+    r"seventeen|eighteen|nineteen|twenty)\s+times\b",
+    flags=re.IGNORECASE,
+)
+NUMBER_WORD_VALUES = {
+    "two": 2,
+    "three": 3,
+    "four": 4,
+    "five": 5,
+    "six": 6,
+    "seven": 7,
+    "eight": 8,
+    "nine": 9,
+    "ten": 10,
+    "eleven": 11,
+    "twelve": 12,
+    "thirteen": 13,
+    "fourteen": 14,
+    "fifteen": 15,
+    "sixteen": 16,
+    "seventeen": 17,
+    "eighteen": 18,
+    "nineteen": 19,
+    "twenty": 20,
+}
 SEMANTIC_FIELDS = (
     "text",
     "content_description",
@@ -421,6 +449,62 @@ def visible_control_activation_retry_assessment(
             and matched_controls
             and not commit_like
         ),
+    }
+
+
+def bounded_task_repeated_tap_assessment(
+    goal: str,
+    ui_elements: Any,
+    action: dict[str, Any] | None,
+    *,
+    prior_identical_coordinate_action_count: int,
+    identical_coordinate_no_effect_count: int,
+    screen_width: int,
+    screen_height: int,
+) -> dict[str, Any]:
+    """Authorize only finite task-literal repeats on a safe visible control."""
+    match = REPEATED_TAP_GOAL_RE.search(goal or "")
+    token = match.group("count").casefold() if match else None
+    requested_repetitions = (
+        int(token)
+        if token is not None and token.isdigit()
+        else NUMBER_WORD_VALUES.get(token or "")
+    )
+    control = visible_control_activation_retry_assessment(
+        ui_elements,
+        action,
+        screen_width=screen_width,
+        screen_height=screen_height,
+    )
+    proposed_ordinal = prior_identical_coordinate_action_count + 1
+    permitted = bool(
+        isinstance(action, dict)
+        and action.get("type") == "tap"
+        and requested_repetitions is not None
+        and 2 <= proposed_ordinal <= requested_repetitions
+        and identical_coordinate_no_effect_count == 0
+        and control.get("permitted") is True
+        and control.get("matched_control_count") == 1
+    )
+    return {
+        "schema_version": "bounded_task_repeated_tap_assessment.v1",
+        "adjudicable": bool(match and control.get("adjudicable")),
+        "action_type": (
+            action.get("type") if isinstance(action, dict) else None
+        ),
+        "requested_repetitions": requested_repetitions,
+        "prior_identical_coordinate_action_count": (
+            prior_identical_coordinate_action_count
+        ),
+        "proposed_ordinal": proposed_ordinal,
+        "identical_coordinate_no_effect_count": (
+            identical_coordinate_no_effect_count
+        ),
+        "matched_control_count": control["matched_control_count"],
+        "matched_packages": control["matched_packages"],
+        "matched_labels": control["matched_labels"],
+        "commit_like": control["commit_like"],
+        "permitted": permitted,
     }
 
 
@@ -1800,6 +1884,10 @@ class ProtocolV2DecisionGuard:
         self.visible_control_activation_repeat_override_records: list[
             dict[str, Any]
         ] = []
+        self.bounded_task_repeated_tap_override_count = 0
+        self.bounded_task_repeated_tap_override_records: list[
+            dict[str, Any]
+        ] = []
 
     def mark_input_activation_repair(
         self,
@@ -1940,6 +2028,9 @@ class ProtocolV2DecisionGuard:
         ) = None,
         allow_visible_control_activation_repeat: bool = False,
         post_destination_source_context_assessment: (
+            dict[str, Any] | None
+        ) = None,
+        bounded_task_repeated_tap_assessment: (
             dict[str, Any] | None
         ) = None,
     ) -> None:
@@ -2565,7 +2656,22 @@ class ProtocolV2DecisionGuard:
                 "repeat that action. Choose a materially different recovery "
                 "action based on the current screen."
             )
-        if (
+        task_repeat = bounded_task_repeated_tap_assessment or {}
+        bounded_task_repeat = bool(
+            action.get("type") == "tap"
+            and task_repeat.get("permitted") is True
+            and task_repeat.get(
+                "prior_identical_coordinate_action_count"
+            )
+            == self.identical_coordinate_action_count
+            and task_repeat.get("proposed_ordinal")
+            == self.identical_coordinate_action_count + 1
+            and task_repeat.get(
+                "identical_coordinate_no_effect_count"
+            )
+            == self.identical_coordinate_no_effect_count
+        )
+        coordinate_streak_at_limit = bool(
             action.get("type") in COORDINATE_STREAK_ACTIONS
             and action_key == self.last_coordinate_action_key
             and self.identical_coordinate_action_count
@@ -2574,7 +2680,17 @@ class ProtocolV2DecisionGuard:
                 action.get("type") != "swipe"
                 or self.identical_coordinate_no_effect_count > 0
             )
-        ):
+        )
+        if coordinate_streak_at_limit and bounded_task_repeat:
+            self.bounded_task_repeated_tap_override_count += 1
+            self.bounded_task_repeated_tap_override_records.append(
+                {
+                    "semantic_state_sha256": page_sha256,
+                    "action": action,
+                    "assessment": task_repeat,
+                }
+            )
+        elif coordinate_streak_at_limit:
             progress_conditioned_swipe_block = (
                 action.get("type") == "swipe"
                 and self.identical_coordinate_no_effect_count > 0
@@ -2770,6 +2886,9 @@ class ProtocolV2DecisionGuard:
             "visible_control_activation_repeat_override_count": len(
                 self.visible_control_activation_repeat_override_fingerprints
             ),
+            "bounded_task_repeated_tap_override_count": (
+                self.bounded_task_repeated_tap_override_count
+            ),
             "new_visible_failures": new_visible_failures,
         }
 
@@ -2866,6 +2985,12 @@ class ProtocolV2DecisionGuard:
             ),
             "visible_control_activation_repeat_override_records": list(
                 self.visible_control_activation_repeat_override_records
+            ),
+            "bounded_task_repeated_tap_override_count": (
+                self.bounded_task_repeated_tap_override_count
+            ),
+            "bounded_task_repeated_tap_override_records": list(
+                self.bounded_task_repeated_tap_override_records
             ),
             "ab_ab_cycle_trigger_count": self.cycle_trigger_count,
             "visible_failure_trigger_count": (

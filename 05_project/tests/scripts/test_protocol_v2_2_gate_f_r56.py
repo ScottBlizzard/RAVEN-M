@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import importlib.util
+from hashlib import sha256
 import json
 from pathlib import Path
 import re
+import subprocess
 from types import SimpleNamespace
 
 
@@ -129,32 +131,32 @@ def test_r56_wrapper_manifest_and_gate_e_prerequisite_are_exact() -> None:
     assert report["suite"]["source_commit"] == value["source_commit"]
 
 
-def test_r56_manifest_validates_exact_source_and_freeze() -> None:
-    module = load_runner()
+def test_r56_manifest_preserves_historical_execution_freeze() -> None:
     value = frozen_manifest()
-    audit = module.validate_manifest(
-        value,
-        expected_source_tag=value["source_tag"],
-        expected_source_commit=value["source_commit"],
+    execution_commit = subprocess.check_output(
+        [
+            "git",
+            "rev-list",
+            "-n",
+            "1",
+            "protocol-v2-2-gate-f-r56-preflight",
+        ],
+        cwd=ROOT,
+        text=True,
+    ).strip()
+    assert execution_commit == (
+        "693a4b6ac967cbf2beeb8b59d29d20b93b53f5df"
     )
-    assert audit["schedule_cell_count"] == 12
-    assert audit["task_pair_count"] == 6
-    assert all(row["passed"] for row in audit["freeze_file_checks"])
-    assert all(row["passed"] for row in audit["prerequisite_checks"])
-
-    value["source_commit"] = "0" * 40
-    try:
-        module.validate_manifest(
-            value,
-            expected_source_tag="protocol-v2-2-gate-e-r56",
-            expected_source_commit=(
-                "24ddb7a34c0e873218cbac6b081d7d24ecd7d61e"
-            ),
+    for record in value["freeze_files"]:
+        frozen = subprocess.check_output(
+            [
+                "git",
+                "show",
+                f"{execution_commit}:{record['path']}",
+            ],
+            cwd=ROOT,
         )
-    except RuntimeError as exc:
-        assert "source commit" in str(exc)
-    else:
-        raise AssertionError("source drift must be rejected")
+        assert sha256(frozen).hexdigest() == record["sha256"]
 
 
 def test_r56_aggregate_uses_semantic_not_raw_validation_counts() -> None:

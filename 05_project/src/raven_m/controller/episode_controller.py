@@ -18,6 +18,7 @@ from PIL import Image
 from raven_m.actions.schema import ActionValidationError, parse_action_response
 from raven_m.controller.protocol_v2_guard import (
     ProtocolV2DecisionGuard,
+    bounded_task_repeated_tap_assessment,
     coordinate_type_text_target_assessment,
     declared_text_source_assessment,
     destination_picker_active,
@@ -1311,6 +1312,9 @@ class EpisodeController:
         latest_files_view_mode_repair_assessment: (
             dict[str, Any] | None
         ) = None
+        latest_bounded_task_repeated_tap_assessment: (
+            dict[str, Any] | None
+        ) = None
         visual_source_cache: dict[str, dict[str, Any]] = {}
         parse_kwargs = (
             {"schema_path": self.action_schema_path}
@@ -1328,8 +1332,10 @@ class EpisodeController:
             nonlocal latest_source_context_assessment
             nonlocal latest_repair_rationale_normalization
             nonlocal latest_files_view_mode_repair_assessment
+            nonlocal latest_bounded_task_repeated_tap_assessment
             latest_verification_navigation_assessment = None
             latest_source_context_assessment = None
+            latest_bounded_task_repeated_tap_assessment = None
             candidate_content = content
             if repair_contract_error is not None:
                 (
@@ -1797,6 +1803,25 @@ class EpisodeController:
                         screen_height=screen_height,
                     )
                 )
+                latest_bounded_task_repeated_tap_assessment = (
+                    bounded_task_repeated_tap_assessment(
+                        task_goal,
+                        ui_elements,
+                        parsed_candidate.decision.get("action"),
+                        prior_identical_coordinate_action_count=(
+                            self.decision_guard
+                            .identical_coordinate_action_count
+                        ),
+                        identical_coordinate_no_effect_count=(
+                            self.decision_guard
+                            .identical_coordinate_no_effect_count
+                        ),
+                        screen_width=screen_width,
+                        screen_height=screen_height,
+                    )
+                    if self.protocol_v2_2
+                    else None
+                )
                 self.decision_guard.validate_decision(
                     parsed_candidate.decision,
                     page_sha256=page_semantic_sha256,
@@ -1857,6 +1882,9 @@ class EpisodeController:
                     ),
                     post_destination_source_context_assessment=(
                         latest_source_context_assessment
+                    ),
+                    bounded_task_repeated_tap_assessment=(
+                        latest_bounded_task_repeated_tap_assessment
                     ),
                 )
             consequential_action_candidate = None
@@ -1955,6 +1983,9 @@ class EpisodeController:
                     ),
                     "post_destination_source_context_assessment": (
                         latest_source_context_assessment
+                    ),
+                    "bounded_task_repeated_tap_assessment": (
+                        latest_bounded_task_repeated_tap_assessment
                     ),
                 },
             )
@@ -2128,6 +2159,9 @@ class EpisodeController:
                     ),
                     "post_destination_source_context_assessment": (
                         latest_source_context_assessment
+                    ),
+                    "bounded_task_repeated_tap_assessment": (
+                        latest_bounded_task_repeated_tap_assessment
                     ),
                 },
             )

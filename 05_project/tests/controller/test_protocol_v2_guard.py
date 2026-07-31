@@ -5,6 +5,7 @@ import pytest
 from raven_m.actions.schema import ActionValidationError
 from raven_m.controller.protocol_v2_guard import (
     ProtocolV2DecisionGuard,
+    bounded_task_repeated_tap_assessment,
     coordinate_type_text_target_assessment,
     declared_text_source_assessment,
     destination_picker_active,
@@ -1742,6 +1743,194 @@ def test_guard_allows_fourth_identical_coordinate_action_with_progress() -> None
         decision({"type": "tap", "x": 0.94, "y": 0.08}),
         page_sha256="state-3",
     )
+
+
+def repeated_button() -> dict:
+    return {
+        "package_name": "com.android.chrome",
+        "text": "Click Me",
+        "is_visible": True,
+        "is_enabled": True,
+        "is_clickable": True,
+        "is_editable": False,
+        "bbox": {
+            "x_min": 0.43,
+            "x_max": 0.57,
+            "y_min": 0.18,
+            "y_max": 0.23,
+        },
+    }
+
+
+def task_repeat_assessment(
+    *,
+    goal: str = "Click the button 5 times and enter their product.",
+    prior: int,
+    no_effect: int = 0,
+    element: dict | None = None,
+) -> dict:
+    return bounded_task_repeated_tap_assessment(
+        goal,
+        [element or repeated_button()],
+        {"type": "tap", "x": 0.5, "y": 0.208},
+        prior_identical_coordinate_action_count=prior,
+        identical_coordinate_no_effect_count=no_effect,
+        screen_width=1080,
+        screen_height=2400,
+    )
+
+
+def test_guard_allows_only_fourth_and_fifth_task_bounded_taps() -> None:
+    guard = ProtocolV2DecisionGuard(
+        max_no_effect_repeats=10,
+        max_identical_coordinate_actions=3,
+    )
+    guard.reset(goal="Click the button 5 times and enter their product.")
+    action = {"type": "tap", "x": 0.5, "y": 0.208}
+    for index in range(3):
+        guard.validate_decision(
+            decision(action),
+            page_sha256=f"value-{index}",
+        )
+        guard.observe_transition(
+            before_sha256=f"value-{index}",
+            action=action,
+            after_sha256=f"value-{index + 1}",
+        )
+    fourth = task_repeat_assessment(prior=3)
+    assert fourth["permitted"]
+    assert fourth["requested_repetitions"] == 5
+    assert fourth["proposed_ordinal"] == 4
+    guard.validate_decision(
+        decision(action),
+        page_sha256="value-3",
+        bounded_task_repeated_tap_assessment=fourth,
+    )
+    guard.observe_transition(
+        before_sha256="value-3",
+        action=action,
+        after_sha256="value-4",
+    )
+    fifth = task_repeat_assessment(prior=4)
+    assert fifth["permitted"]
+    guard.validate_decision(
+        decision(action),
+        page_sha256="value-4",
+        bounded_task_repeated_tap_assessment=fifth,
+    )
+    guard.observe_transition(
+        before_sha256="value-4",
+        action=action,
+        after_sha256="value-5",
+    )
+    sixth = task_repeat_assessment(prior=5)
+    assert not sixth["permitted"]
+    with pytest.raises(
+        ActionValidationError,
+        match="same coordinate tap or long-press",
+    ):
+        guard.validate_decision(
+            decision(action),
+            page_sha256="value-5",
+            bounded_task_repeated_tap_assessment=sixth,
+        )
+    audit = guard.audit_record()
+    assert audit["bounded_task_repeated_tap_override_count"] == 2
+    assert [
+        row["assessment"]["proposed_ordinal"]
+        for row in audit["bounded_task_repeated_tap_override_records"]
+    ] == [4, 5]
+
+
+@pytest.mark.parametrize(
+    ("assessment", "reason"),
+    [
+        (
+            task_repeat_assessment(
+                goal="Click the visible button and continue.",
+                prior=3,
+            ),
+            "no finite task count",
+        ),
+        (
+            task_repeat_assessment(prior=3, no_effect=1),
+            "prior no-effect transition",
+        ),
+        (
+            task_repeat_assessment(
+                prior=3,
+                element={**repeated_button(), "text": "Save"},
+            ),
+            "commit-like control",
+        ),
+        (
+            task_repeat_assessment(prior=5),
+            "requested count exceeded",
+        ),
+    ],
+)
+def test_task_bounded_repeat_assessment_denies_unsafe_shapes(
+    assessment: dict,
+    reason: str,
+) -> None:
+    assert not assessment["permitted"], reason
+
+
+def test_task_bounded_repeat_rejects_ambiguous_control_hits() -> None:
+    assessment = bounded_task_repeated_tap_assessment(
+        "Click the button five times.",
+        [
+            repeated_button(),
+            {
+                **repeated_button(),
+                "text": "Overlapping control",
+            },
+        ],
+        {"type": "tap", "x": 0.5, "y": 0.208},
+        prior_identical_coordinate_action_count=3,
+        identical_coordinate_no_effect_count=0,
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert assessment["matched_control_count"] == 2
+    assert not assessment["permitted"]
+
+
+def test_task_bounded_repeat_cannot_bypass_ab_cycle_block() -> None:
+    guard = ProtocolV2DecisionGuard(
+        max_no_effect_repeats=10,
+        max_identical_coordinate_actions=3,
+    )
+    guard.reset(goal="Click the button 5 times.")
+    action = {"type": "tap", "x": 0.5, "y": 0.208}
+    states = (("a", "b"), ("b", "a"), ("a", "b"), ("b", "a"))
+    for before, after in states:
+        guard.validate_decision(
+            decision(action),
+            page_sha256=before,
+            bounded_task_repeated_tap_assessment=(
+                task_repeat_assessment(
+                    prior=guard.identical_coordinate_action_count
+                )
+            ),
+        )
+        guard.observe_transition(
+            before_sha256=before,
+            action=action,
+            after_sha256=after,
+        )
+    with pytest.raises(
+        ActionValidationError,
+        match="blocked on the current semantic UI state",
+    ):
+        guard.validate_decision(
+            decision(action),
+            page_sha256="a",
+            bounded_task_repeated_tap_assessment=(
+                task_repeat_assessment(prior=4)
+            ),
+        )
+    assert guard.audit_record()["ab_ab_cycle_trigger_count"] == 1
 
 
 def test_guard_still_blocks_fourth_semantic_changing_tap() -> None:
