@@ -177,6 +177,8 @@ Raw trajectories are under `runs/excluded_protocol_dry_run/` and
 | `reports/protocol_v2_2_r54_b3_contacts_smoke.md` | human-readable r54 Contacts success audit and formal-execution boundary | current |
 | `05_project/configs/experiments/v2_2_capability_gate_r54.json` | frozen eight-cell r54 Gate-E manifest with unchanged schedule and acceptance | prepared |
 | `05_project/scripts/run_protocol_v2_2_gate_e_r54.py` | exact-source r54 formal preflight and one-launch entry point | prepared |
+| `reports/protocol_v2_2_r54_gate_e_preflight.json` | zero-call audit of source, freeze, instances, exact model, emulator, and fresh formal namespace | passed |
+| `reports/protocol_v2_2_r54_gate_d_freeze.json` | machine-readable r54 Gate-D freeze and bounded formal-launch authorization | passed; one fresh Gate-E launch authorized |
 
 The r39 raw trajectories are under
 `runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/` and remain
