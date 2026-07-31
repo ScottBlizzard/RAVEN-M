@@ -1,0 +1,138 @@
+{
+  "schema_version": "protocol_v2_2_r57_h01_candidate_smoke_audit.v1",
+  "decision": "candidate_smoke_failed_and_stopped",
+  "candidate_disposition": "r57_result_immutable_no_formal_gate_authorized",
+  "development_smoke": true,
+  "formal_scoring": false,
+  "source_commit": "4667166b60710f32348ace47243e41bcc041cd13",
+  "source_tag": "protocol-v2-2-r57-local-candidate",
+  "preflight_execution_commit": "56f3db94fd6fde2ef0ade7a1c0278cc2eb594276",
+  "launch_execution_commit": "ec9c781c130fad54cdad760230fe315c4ea38d9b",
+  "suite_id": "hard_micro_v2_2_seed20260730_r57_candidate_development_smoke_sequence_1",
+  "suite_path": "runs/protocol_v2_2_development/hard_micro_v2_2_seed20260730_r57_candidate_development_smoke_sequence_1",
+  "started_at": "2026-07-31T09:50:12.962016+00:00",
+  "updated_at": "2026-07-31T10:01:08.917925+00:00",
+  "exit_code": 3,
+  "result_count": 1,
+  "success_count": 0,
+  "batch_completed": true,
+  "stopped_early": true,
+  "stop_reason": "model_output_invalid_after_one_bounded_repair",
+  "automatic_next_batch": false,
+  "automatic_gate_g_transition": false,
+  "formal_r57_suite_created": false,
+  "episode": {
+    "sequence": 1,
+    "task_id": "H01",
+    "task": "BrowserMultiply",
+    "variant": "B3",
+    "seed": 20260730,
+    "goal_sha256": "3a848f7058fc4f68d01926f5cb8eb5dae66cb17f63579b88f28a53a974c3d383",
+    "params_sha256": "953249fe0c4f735bf0fa0b8d823458fd3adf621de9a555b2514e5356210e9e7f",
+    "attempt_count": 1,
+    "success": false,
+    "evaluator_reward": 0.0,
+    "failure_code": "MODEL_OUTPUT_INVALID_AFTER_REPAIR",
+    "termination_reason": "model_output_invalid_after_repair",
+    "executed_step_count": 12,
+    "model_call_count": 16,
+    "executor_model_call_count": 14,
+    "history_model_call_count": 2,
+    "prompt_tokens": 78276,
+    "completion_tokens": 1226,
+    "max_prompt_tokens": 6235,
+    "wall_time_seconds": 628.589059,
+    "reset_passed": true
+  },
+  "guard_result": {
+    "bounded_task_repeated_tap_override_count": 0,
+    "identical_coordinate_action_count": 3,
+    "identical_coordinate_no_effect_count": 1,
+    "identical_coordinate_block_count": 2,
+    "validation_block_count": 2,
+    "executed_blocked_action_steps": [],
+    "unresolved_guard_repair": true,
+    "ab_ab_cycle_trigger_count": 0,
+    "visible_failure_trigger_count": 0
+  },
+  "causal_audit": {
+    "finding": "a real first button activation was temporarily recorded as semantic no-effect because the dynamic DOM value converged between the immediate after-action observation and the next before-action observation",
+    "observed_values": [
+      "6",
+      "temporary_blank",
+      "2",
+      "3",
+      "9"
+    ],
+    "step_9": {
+      "action": {
+        "type": "tap",
+        "x": 0.5,
+        "y": 0.208
+      },
+      "executed": true,
+      "pixel_changed": true,
+      "semantic_changed": false,
+      "before_semantic_sha256": "c8f5d683a51362775e93e7879ab559ec1803bbd4128c3e22333dd6d703da65f6",
+      "after_semantic_sha256": "c8f5d683a51362775e93e7879ab559ec1803bbd4128c3e22333dd6d703da65f6",
+      "before_visible_value": "6",
+      "after_visible_value": "temporary_blank"
+    },
+    "step_10_before": {
+      "semantic_sha256": "4c6dbc7440e716a4a44aaebc64fdbd892f918d61814df2483465feb7e87e03c6",
+      "visible_value": "2",
+      "differs_from_step_9_immediate_after": true
+    },
+    "later_executed_values": [
+      {
+        "step": 10,
+        "visible_value_after": "3",
+        "semantic_changed": true
+      },
+      {
+        "step": 11,
+        "visible_value_after": "9",
+        "semantic_changed": true
+      }
+    ],
+    "blocked_step": 12,
+    "initial_and_repair_action_identical": true,
+    "initial_and_repair_error": "LOOP_GUARD: the same coordinate tap or long-press has already been executed three consecutive times. Use a different visible control or a higher-level selector; do not perturb and retry the same coordinate.",
+    "interpretation": "r57 preserved the safety boundary but failed to reconcile delayed semantic progress; it did not test the intended fourth/fifth-tap override"
+  },
+  "environment_audit": {
+    "startup_status": "clean",
+    "startup_failure_count": 0,
+    "infrastructure_attempt_count": 0,
+    "model_status": "ok",
+    "emulator_connected_after_stop": true,
+    "chrome_first_run_crash_dialog_observed": true,
+    "chrome_first_run_recovered_within_episode": true,
+    "residual_experiment_process": false
+  },
+  "next_candidate_constraints": [
+    "do not relabel or resume the immutable r57 smoke",
+    "reconcile only an immediately prior semantic no-effect transition whose recorded after-state differs from the next fresh before-action semantic state",
+    "require the proposed action to repeat the same exact coordinate and hit one uniquely labelled visible enabled clickable non-editable non-commit control",
+    "bind the repeated control to the task's repeated-action target rather than allowing any unrelated safe control",
+    "do not accept pixel-only, clock-only, status-bar-only, visible-failure, fingerprint-blocked, or A-B-cycle changes",
+    "run local positive and denial tests before any new live smoke",
+    "no formal Gate F rerun is authorized"
+  ],
+  "artifact_sha256": {
+    "gate_summary.json": "37f588cbf1c8ea21dab234f32b446f4fb63383fe6986492c1821a1e928d7c6df",
+    "gate_progress.json": "37f588cbf1c8ea21dab234f32b446f4fb63383fe6986492c1821a1e928d7c6df",
+    "batch_01_checkpoint.json": "37f588cbf1c8ea21dab234f32b446f4fb63383fe6986492c1821a1e928d7c6df",
+    "episode.json": "5ae89bd603f5b13c06a544424900ee3ed2372f502bab820da57fa28050d56258",
+    "events.jsonl": "0032a076a7f059e57ce09d01a0362d5ad4f5a78bda6878d2940ff96a54801b26",
+    "manifest.snapshot.json": "2e721620a0009a1dd36d9ddebc138ee23688500e80a48bdf04eb224af7ae6329",
+    "instances.snapshot.json": "bdfbbee155155ce38a2e6b1755d4e2025b4885ae8935c7e1edd2771877fc15fe",
+    "startup_environment_audit.json": "50834574a2b6e95f3b08584d165fb3fad9ab8980d9e8c6091fa677ff24e3547a",
+    "step_009_before.png": "45a4003d4dfa5d5ec80e4e05de1be54307f89379f3ed6322d5e5e12f2467826d",
+    "step_009_after.png": "05914bd1dd9acb0d221860544098d8c77ead4d95d4f3cfaac824dcc9293b3057",
+    "step_010_before.png": "e844e5775ea310a5e6e9ddd176bc3516219de5e901560f2086e77df97e5eb13f",
+    "step_010_after.png": "686cf2ef351d0e8c44d286c877c72aca528d9c32f294831d0a3e22bb1c4bc24a",
+    "step_011_before.png": "686cf2ef351d0e8c44d286c877c72aca528d9c32f294831d0a3e22bb1c4bc24a",
+    "step_011_after.png": "70501abc104a6f850c578091f81357d704da36c65a506de9f55731ac0b0d7a3e"
+  }
+}

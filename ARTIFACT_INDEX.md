@@ -214,6 +214,8 @@ Raw trajectories are under `runs/excluded_protocol_dry_run/` and
 | `05_project/scripts/run_protocol_v2_2_r57_h01_candidate_smoke.py` | exact-source candidate preflight and isolated non-scored H01 B3 entry point | prepared |
 | `reports/protocol_v2_2_r57_candidate_preflight.json` | machine-readable 28-file freeze, inherited Gate-E prerequisite, six paired Hard instances, exact model, emulator, and v1-seal audit | passed; zero calls/cells |
 | `reports/protocol_v2_2_r57_candidate_preflight.md` | human-readable zero-call result and one-cell non-scored H01 authorization boundary | current |
+| `reports/protocol_v2_2_r57_h01_candidate_smoke_stopped.json` | immutable non-scored H01 failure, delayed-DOM causal audit, denial counters, and raw hashes | r57 stopped; formal Gate F withheld |
+| `reports/protocol_v2_2_r57_h01_candidate_smoke_stopped.md` | human-readable r57 failure analysis and bounded delayed-progress reconciliation direction | current |
 
 The r39 raw trajectories are under
 `runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/` and remain
