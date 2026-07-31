@@ -1,0 +1,162 @@
+{
+  "schema_version": "protocol_v2_2_r60_h01_candidate_smoke_audit.v1",
+  "decision": "end_to_end_candidate_smoke_passed",
+  "candidate_disposition": "gate_f_preparation_allowed_formal_execution_not_yet_authorized",
+  "development_smoke": true,
+  "formal_scoring": false,
+  "formal_gate_f_authorized": false,
+  "source_commit": "5ef66de358423f9940191d8dfde0e74002ccdcec",
+  "source_tag": "protocol-v2-2-r60-local-candidate",
+  "launch_execution_commit": "a675f7a2e6d4291ab6d7bf797250242e6050a32f",
+  "suite_id": "hard_micro_v2_2_seed20260730_r60_candidate_development_smoke_sequence_1",
+  "suite_path": "runs/protocol_v2_2_development/hard_micro_v2_2_seed20260730_r60_candidate_development_smoke_sequence_1",
+  "updated_at": "2026-07-31T11:58:35.951498+00:00",
+  "runner_exit_code": 0,
+  "result_count": 1,
+  "success_count": 1,
+  "stopped_early": false,
+  "stop_reason": null,
+  "formal_r60_suite_created": false,
+  "automatic_next_batch": false,
+  "automatic_gate_g_transition": false,
+  "episode": {
+    "task_id": "H01",
+    "task": "BrowserMultiply",
+    "variant": "B3",
+    "seed": 20260730,
+    "goal_sha256": "3a848f7058fc4f68d01926f5cb8eb5dae66cb17f63579b88f28a53a974c3d383",
+    "params_sha256": "953249fe0c4f735bf0fa0b8d823458fd3adf621de9a555b2514e5356210e9e7f",
+    "success": true,
+    "evaluator_reward": 1.0,
+    "failure_code": null,
+    "termination_reason": "model_done",
+    "executed_step_count": 15,
+    "model_call_count": 21,
+    "executor_model_call_count": 18,
+    "history_model_call_count": 3,
+    "prompt_tokens": 113781,
+    "completion_tokens": 1892,
+    "max_prompt_tokens": 7419,
+    "wall_time_seconds": 686.93246,
+    "valid_after_one_repair": true,
+    "reset_passed": true
+  },
+  "r60_mechanism_result": {
+    "setup_steps_without_ledger": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "setup_button_pollution": false,
+    "first_target_step": 7,
+    "target_action": {
+      "type": "tap",
+      "x": 0.5,
+      "y": 0.208
+    },
+    "target_label": "Click Me",
+    "target_package": "com.android.chrome",
+    "executed_target_count": 5,
+    "operand_sampling": "pre_action_at_executed_target",
+    "verified_operands": [
+      "6",
+      "2",
+      "3",
+      "9",
+      "10"
+    ],
+    "operand_ordinals": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "deterministic_operation": "product",
+    "deterministic_result": "3240",
+    "complete": true,
+    "operands_complete": true,
+    "ready_for_post_repeat": true,
+    "fourth_tap_override_total": 1,
+    "fifth_tap_override_total": 2,
+    "sixth_tap_proposed": false,
+    "sixth_tap_executed": false,
+    "task_repeat_count_complete_block_count": 0,
+    "blocked_action_executed": false
+  },
+  "memory_precedence_evidence": {
+    "step": 12,
+    "stale_summary_claim": "clicked Click Me three times; two more clicks remain",
+    "verified_ledger_claim": "executed_count=5, operands=6,2,3,9,10, result=3240",
+    "initial_model_action": {
+      "type": "type_text",
+      "text": "3240",
+      "text_origin": "deterministic_calculation",
+      "source_memory_ids": []
+    },
+    "model_followed_verified_ledger_over_stale_summary": true,
+    "interpretation": "the authoritative execution ledger changed the planner branch from another click to the correct deterministic post-repeat input"
+  },
+  "input_and_completion_trace": {
+    "step_12": "unfocused coordinate type_text was safely repaired to an input-activation tap",
+    "step_13": {
+      "action": "type_text",
+      "text": "3240",
+      "text_origin": "deterministic_calculation",
+      "source_memory_ids": [],
+      "clear_text": false,
+      "post_activation_repair_resolved": true
+    },
+    "step_14": "Submit tap executed",
+    "step_14_visible_result": "Success!",
+    "step_15": "status=done after observing Success!",
+    "validation_block_count": 2,
+    "unresolved_guard_repair": false,
+    "semantic_progress_audit_passed": true,
+    "native_evaluator_success": true
+  },
+  "environment": {
+    "startup_failure_count": 0,
+    "infrastructure_attempt_count": 0,
+    "readiness_observation_count": 54,
+    "readiness_retry_count": 23,
+    "accessibility_recovery_attempt_count": 4,
+    "accessibility_recovery_error_count": 0,
+    "emulator_connected_after_completion": true,
+    "model_healthy_after_completion": true,
+    "residual_experiment_process": false,
+    "reset_error_count": 0
+  },
+  "next_action_boundary": {
+    "allowed": [
+      "freeze this successful non-scored checkpoint",
+      "prepare an r60 formal Gate-F addendum, exact-source wrapper, and zero-call preflight"
+    ],
+    "not_allowed": [
+      "relabel this development smoke as a formal scored cell",
+      "resume or overwrite the r60 development directory",
+      "launch formal Gate F without a fresh formal preflight and explicit batch boundary",
+      "launch a second development cell",
+      "transition automatically to Gate G"
+    ]
+  },
+  "artifact_sha256": {
+    "gate_summary.json": "379f46a3754fd5b2928088f4ff24edf11fefb6e9e9ffab79bd319c494e1aeeae",
+    "gate_progress.json": "379f46a3754fd5b2928088f4ff24edf11fefb6e9e9ffab79bd319c494e1aeeae",
+    "batch_01_checkpoint.json": "379f46a3754fd5b2928088f4ff24edf11fefb6e9e9ffab79bd319c494e1aeeae",
+    "episode.json": "f4e672482da0ebec0da1e806eb4f50f27ee3eecb5a6914fd55dd7ac50f6eb977",
+    "events.jsonl": "68fedd68544986c2580b410af37f8f3fa9d00798f0e2d3c4f12f98de3a1b2055",
+    "manifest.snapshot.json": "de49bada33b84175cad8773b51c74cfbb8a39c3bb12ca5417d3417f8a0ef3af7",
+    "instances.snapshot.json": "bdfbbee155155ce38a2e6b1755d4e2025b4885ae8935c7e1edd2771877fc15fe",
+    "startup_environment_audit.json": "4b48a22fcb7fda38f30dbfd9027e9157d37a3f7b65385258408124d16c611f50",
+    "step_007_before.png": "bd7d82d24721860b83567b994bb097e6dc01ce529f50b4542c92f68a26f014dd",
+    "step_011_before.png": "78bbc87b0ba96ba4958a374a9d56dedd384d1acc9b1a81a69c94005ee3be5eee",
+    "step_012_before.png": "742dabf0a0fb8f5d2302a6b83dcbaf41d1ea10a8cddfdedd20bd0f5d95b8fc98",
+    "step_013_after.png": "cc8881547e6082d260845c5c2001adcc21798d2a6b238b5b006c17454658552a",
+    "step_014_after.png": "03574c2e29266f5ea557f5d57be3cbd9bf4eeb3331e7851f233f587a9619dd07"
+  }
+}
