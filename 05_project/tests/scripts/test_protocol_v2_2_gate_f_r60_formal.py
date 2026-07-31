@@ -108,7 +108,7 @@ def test_r60_candidate_report_and_raw_checkpoint_remain_byte_frozen() -> None:
         assert sha256(matches[0].read_bytes()).hexdigest() == expected
 
 
-def test_r60_formal_source_tag_and_namespace_are_fresh() -> None:
+def test_r60_formal_source_tag_and_namespace_are_frozen_after_run() -> None:
     overlay = json.loads(OVERLAY.read_text(encoding="utf-8"))
     resolved = subprocess.check_output(
         ["git", "rev-list", "-n", "1", overlay["source_tag"]],
@@ -116,7 +116,14 @@ def test_r60_formal_source_tag_and_namespace_are_fresh() -> None:
         text=True,
     ).strip()
     assert resolved == overlay["source_commit"]
-    assert not FORMAL_SUITE.exists()
+    assert FORMAL_SUITE.is_dir()
+    summary = json.loads(
+        (FORMAL_SUITE / "gate_summary.json").read_text(encoding="utf-8")
+    )
+    assert summary["formal_scoring"] is True
+    assert summary["stopped_early"] is True
+    assert summary["batch_completed"] is False
+    assert summary["automatic_next_batch"] is False
 
 
 def test_r60_formal_wrapper_forbids_development_smoke(
