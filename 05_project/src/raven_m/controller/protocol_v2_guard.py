@@ -118,12 +118,36 @@ FILES_VIEW_MODE_RESOURCE_RE = re.compile(
     flags=re.IGNORECASE,
 )
 REPEATED_TAP_GOAL_RE = re.compile(
-    r"\b(?:click|tap|press)\b[^.;\n]{0,120}?"
+    r"\b(?P<verb>click|tap|press)\b"
+    r"(?P<target>[^.;\n]{0,120}?)"
     r"\b(?P<count>[2-9]|1\d|20|two|three|four|five|six|seven|eight|"
     r"nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|"
     r"seventeen|eighteen|nineteen|twenty)\s+times\b",
     flags=re.IGNORECASE,
 )
+PACKAGE_GOAL_BINDING_STOPWORDS = {
+    "android",
+    "app",
+    "apps",
+    "com",
+    "google",
+    "org",
+    "provider",
+    "providers",
+    "system",
+    "ui",
+}
+REPEATED_TARGET_STOPWORDS = {
+    "a",
+    "an",
+    "button",
+    "control",
+    "icon",
+    "item",
+    "once",
+    "the",
+    "this",
+}
 NUMBER_WORD_VALUES = {
     "two": 2,
     "three": 3,
@@ -461,6 +485,8 @@ def bounded_task_repeated_tap_assessment(
     identical_coordinate_no_effect_count: int,
     screen_width: int,
     screen_height: int,
+    transition_context: dict[str, Any] | None = None,
+    current_visible_failures: tuple[str, ...] | list[str] = (),
 ) -> dict[str, Any]:
     """Authorize only finite task-literal repeats on a safe visible control."""
     match = REPEATED_TAP_GOAL_RE.search(goal or "")
@@ -476,23 +502,139 @@ def bounded_task_repeated_tap_assessment(
         screen_width=screen_width,
         screen_height=screen_height,
     )
+    matched_class_names: set[str] = set()
+    matched_resource_ids: set[str] = set()
+    matched_button_like_count = 0
+    for element in ui_elements or ():
+        if _element_value(element, "is_visible") is not True:
+            continue
+        if _element_value(element, "is_enabled") is not True:
+            continue
+        if _element_value(element, "is_clickable") is not True:
+            continue
+        if _element_value(element, "is_editable") is True:
+            continue
+        if not _tap_hits_element(
+            action,
+            element,
+            screen_width=screen_width,
+            screen_height=screen_height,
+        ):
+            continue
+        class_name = _normalized_text(
+            _element_value(element, "class_name")
+        )
+        resource_id = _normalized_text(
+            _element_value(element, "resource_id")
+        )
+        if class_name is not None:
+            matched_class_names.add(class_name)
+        if resource_id is not None:
+            matched_resource_ids.add(resource_id)
+        matched_button_like_count += int(
+            bool(
+                (
+                    class_name
+                    and class_name.casefold().endswith("button")
+                )
+                or (
+                    resource_id
+                    and re.search(
+                        r"(?:^|[/.:_-])button(?:$|[/.:_-])",
+                        resource_id,
+                        flags=re.IGNORECASE,
+                    )
+                )
+            )
+        )
+    target_fragment = (
+        _normalized_text(match.group("target")) if match else None
+    )
+    target_tokens = {
+        token
+        for token in re.findall(
+            r"[a-z0-9]+",
+            (target_fragment or "").casefold(),
+        )
+        if token not in REPEATED_TARGET_STOPWORDS
+    }
+    label_tokens = {
+        token
+        for label in control["matched_labels"]
+        for token in re.findall(r"[a-z0-9]+", label.casefold())
+    }
+    explicit_label_bound = bool(target_tokens & label_tokens)
+    package_goal_tokens = {
+        token
+        for package_name in control["matched_packages"]
+        for token in re.findall(r"[a-z0-9]+", package_name.casefold())
+        if token not in PACKAGE_GOAL_BINDING_STOPWORDS
+        and len(token) >= 3
+    }
+    goal_tokens = set(
+        re.findall(r"[a-z0-9]+", (goal or "").casefold())
+    )
+    package_goal_bound = bool(package_goal_tokens & goal_tokens)
+    generic_button_target = bool(
+        target_fragment
+        and re.search(
+            r"\bbutton\b",
+            target_fragment,
+            flags=re.IGNORECASE,
+        )
+    )
+    target_role_bound = bool(
+        generic_button_target
+        and matched_button_like_count == 1
+    )
+    task_target_bound = bool(
+        control.get("matched_control_count") == 1
+        and (
+            explicit_label_bound
+            or (target_role_bound and package_goal_bound)
+        )
+    )
+    transition = transition_context or {}
+    deferred_semantic_progress_observed = bool(
+        task_target_bound
+        and identical_coordinate_no_effect_count > 0
+        and transition.get("proposed_action_matches_last_coordinate")
+        is True
+        and transition.get("last_transition_action_matches") is True
+        and transition.get("last_transition_semantic_no_effect") is True
+        and transition.get(
+            "current_semantic_differs_from_last_recorded_after"
+        )
+        is True
+        and transition.get("last_transition_fingerprint_blocked")
+        is False
+        and not current_visible_failures
+    )
+    effective_no_effect_count = max(
+        0,
+        identical_coordinate_no_effect_count
+        - int(deferred_semantic_progress_observed),
+    )
     proposed_ordinal = prior_identical_coordinate_action_count + 1
     permitted = bool(
         isinstance(action, dict)
         and action.get("type") == "tap"
         and requested_repetitions is not None
         and 2 <= proposed_ordinal <= requested_repetitions
-        and identical_coordinate_no_effect_count == 0
+        and effective_no_effect_count == 0
         and control.get("permitted") is True
         and control.get("matched_control_count") == 1
+        and task_target_bound
     )
     return {
-        "schema_version": "bounded_task_repeated_tap_assessment.v1",
+        "schema_version": "bounded_task_repeated_tap_assessment.v2",
         "adjudicable": bool(match and control.get("adjudicable")),
         "action_type": (
             action.get("type") if isinstance(action, dict) else None
         ),
         "requested_repetitions": requested_repetitions,
+        "target_fragment": target_fragment,
+        "target_tokens": sorted(target_tokens),
         "prior_identical_coordinate_action_count": (
             prior_identical_coordinate_action_count
         ),
@@ -500,9 +642,22 @@ def bounded_task_repeated_tap_assessment(
         "identical_coordinate_no_effect_count": (
             identical_coordinate_no_effect_count
         ),
+        "effective_identical_coordinate_no_effect_count": (
+            effective_no_effect_count
+        ),
+        "deferred_semantic_progress_observed": (
+            deferred_semantic_progress_observed
+        ),
         "matched_control_count": control["matched_control_count"],
         "matched_packages": control["matched_packages"],
         "matched_labels": control["matched_labels"],
+        "matched_class_names": sorted(matched_class_names),
+        "matched_resource_ids": sorted(matched_resource_ids),
+        "matched_button_like_count": matched_button_like_count,
+        "explicit_label_bound": explicit_label_bound,
+        "package_goal_bound": package_goal_bound,
+        "task_target_bound": task_target_bound,
+        "current_visible_failures": sorted(current_visible_failures),
         "commit_like": control["commit_like"],
         "permitted": permitted,
     }
@@ -1888,6 +2043,10 @@ class ProtocolV2DecisionGuard:
         self.bounded_task_repeated_tap_override_records: list[
             dict[str, Any]
         ] = []
+        self.deferred_semantic_progress_reconciliation_count = 0
+        self.deferred_semantic_progress_reconciliation_records: list[
+            dict[str, Any]
+        ] = []
 
     def mark_input_activation_repair(
         self,
@@ -1899,6 +2058,60 @@ class ProtocolV2DecisionGuard:
         self.input_activation_repair_pending = True
         self.input_activation_action_key = canonical_action_key(action)
         self.input_activation_proof_count += 1
+
+    def repeated_tap_transition_context(
+        self,
+        *,
+        page_sha256: str,
+        action: dict[str, Any] | None,
+    ) -> dict[str, Any]:
+        """Describe delayed semantic convergence without mutating the guard."""
+        action_key = (
+            canonical_action_key(action)
+            if isinstance(action, dict)
+            else None
+        )
+        last_transition = (
+            self.transition_fingerprints[-1]
+            if self.transition_fingerprints
+            else None
+        )
+        last_before = (
+            last_transition[0] if last_transition is not None else None
+        )
+        last_action_key = (
+            last_transition[1] if last_transition is not None else None
+        )
+        last_after = (
+            last_transition[2] if last_transition is not None else None
+        )
+        return {
+            "schema_version": "repeated_tap_transition_context.v1",
+            "proposed_action_matches_last_coordinate": bool(
+                action_key is not None
+                and action_key == self.last_coordinate_action_key
+            ),
+            "last_transition_action_matches": bool(
+                action_key is not None
+                and action_key == last_action_key
+            ),
+            "last_transition_semantic_no_effect": bool(
+                last_transition is not None
+                and last_before == last_after
+            ),
+            "current_semantic_differs_from_last_recorded_after": bool(
+                last_after is not None and page_sha256 != last_after
+            ),
+            "last_transition_fingerprint_blocked": bool(
+                last_before is not None
+                and last_action_key is not None
+                and (last_before, last_action_key)
+                in self.blocked_fingerprints
+            ),
+            "last_before_semantic_sha256": last_before,
+            "last_after_semantic_sha256": last_after,
+            "current_semantic_sha256": page_sha256,
+        }
 
     def _block_fingerprint(
         self,
@@ -2657,6 +2870,75 @@ class ProtocolV2DecisionGuard:
                 "action based on the current screen."
             )
         task_repeat = bounded_task_repeated_tap_assessment or {}
+        transition_context = self.repeated_tap_transition_context(
+            page_sha256=page_sha256,
+            action=action,
+        )
+        repeat_assessment_matches_raw_state = bool(
+            task_repeat.get(
+                "prior_identical_coordinate_action_count"
+            )
+            == self.identical_coordinate_action_count
+            and task_repeat.get(
+                "identical_coordinate_no_effect_count"
+            )
+            == self.identical_coordinate_no_effect_count
+        )
+        deferred_semantic_progress = bool(
+            action.get("type") == "tap"
+            and task_repeat.get("permitted") is True
+            and task_repeat.get("task_target_bound") is True
+            and task_repeat.get(
+                "deferred_semantic_progress_observed"
+            )
+            is True
+            and repeat_assessment_matches_raw_state
+            and task_repeat.get(
+                "effective_identical_coordinate_no_effect_count"
+            )
+            == self.identical_coordinate_no_effect_count - 1
+            and transition_context[
+                "proposed_action_matches_last_coordinate"
+            ]
+            is True
+            and transition_context["last_transition_action_matches"]
+            is True
+            and transition_context[
+                "last_transition_semantic_no_effect"
+            ]
+            is True
+            and transition_context[
+                "current_semantic_differs_from_last_recorded_after"
+            ]
+            is True
+            and transition_context[
+                "last_transition_fingerprint_blocked"
+            ]
+            is False
+        )
+        if deferred_semantic_progress:
+            last_fingerprint = (
+                transition_context["last_before_semantic_sha256"],
+                action_key,
+            )
+            self.identical_coordinate_no_effect_count -= 1
+            if self.no_effect_counts.get(last_fingerprint, 0) > 1:
+                self.no_effect_counts[last_fingerprint] -= 1
+            else:
+                self.no_effect_counts.pop(last_fingerprint, None)
+            if (
+                self.last_unverified_progress_no_effect_fingerprint
+                == last_fingerprint
+            ):
+                self.last_unverified_progress_no_effect_fingerprint = None
+            self.deferred_semantic_progress_reconciliation_count += 1
+            self.deferred_semantic_progress_reconciliation_records.append(
+                {
+                    "action": action,
+                    "assessment": task_repeat,
+                    "transition_context": transition_context,
+                }
+            )
         bounded_task_repeat = bool(
             action.get("type") == "tap"
             and task_repeat.get("permitted") is True
@@ -2667,7 +2949,7 @@ class ProtocolV2DecisionGuard:
             and task_repeat.get("proposed_ordinal")
             == self.identical_coordinate_action_count + 1
             and task_repeat.get(
-                "identical_coordinate_no_effect_count"
+                "effective_identical_coordinate_no_effect_count"
             )
             == self.identical_coordinate_no_effect_count
         )
@@ -2991,6 +3273,12 @@ class ProtocolV2DecisionGuard:
             ),
             "bounded_task_repeated_tap_override_records": list(
                 self.bounded_task_repeated_tap_override_records
+            ),
+            "deferred_semantic_progress_reconciliation_count": (
+                self.deferred_semantic_progress_reconciliation_count
+            ),
+            "deferred_semantic_progress_reconciliation_records": list(
+                self.deferred_semantic_progress_reconciliation_records
             ),
             "ab_ab_cycle_trigger_count": self.cycle_trigger_count,
             "visible_failure_trigger_count": (

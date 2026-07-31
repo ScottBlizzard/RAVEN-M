@@ -1748,6 +1748,7 @@ def test_guard_allows_fourth_identical_coordinate_action_with_progress() -> None
 def repeated_button() -> dict:
     return {
         "package_name": "com.android.chrome",
+        "class_name": "android.widget.Button",
         "text": "Click Me",
         "is_visible": True,
         "is_enabled": True,
@@ -1764,7 +1765,10 @@ def repeated_button() -> dict:
 
 def task_repeat_assessment(
     *,
-    goal: str = "Click the button 5 times and enter their product.",
+    goal: str = (
+        "Open the task with Chrome, then click the button 5 times and "
+        "enter their product."
+    ),
     prior: int,
     no_effect: int = 0,
     element: dict | None = None,
@@ -1840,6 +1844,199 @@ def test_guard_allows_only_fourth_and_fifth_task_bounded_taps() -> None:
         row["assessment"]["proposed_ordinal"]
         for row in audit["bounded_task_repeated_tap_override_records"]
     ] == [4, 5]
+
+
+def test_guard_reconciles_one_delayed_semantic_repeat_then_bounds_count() -> None:
+    guard = ProtocolV2DecisionGuard(
+        max_no_effect_repeats=10,
+        max_identical_coordinate_actions=3,
+    )
+    goal = (
+        "Open the task with Chrome, then click the button 5 times and "
+        "enter their product."
+    )
+    guard.reset(goal=goal)
+    action = {"type": "tap", "x": 0.5, "y": 0.208}
+
+    guard.validate_decision(decision(action), page_sha256="value-0")
+    guard.observe_transition(
+        before_sha256="value-0",
+        action=action,
+        after_sha256="value-0",
+    )
+    context = guard.repeated_tap_transition_context(
+        page_sha256="value-1-delayed",
+        action=action,
+    )
+    second = bounded_task_repeated_tap_assessment(
+        goal,
+        [repeated_button()],
+        action,
+        prior_identical_coordinate_action_count=1,
+        identical_coordinate_no_effect_count=1,
+        screen_width=1080,
+        screen_height=2400,
+        transition_context=context,
+    )
+    assert second["permitted"]
+    assert second["deferred_semantic_progress_observed"]
+    assert second["effective_identical_coordinate_no_effect_count"] == 0
+    guard.validate_decision(
+        decision(action),
+        page_sha256="value-1-delayed",
+        bounded_task_repeated_tap_assessment=second,
+    )
+    guard.observe_transition(
+        before_sha256="value-1-delayed",
+        action=action,
+        after_sha256="value-2",
+    )
+
+    for ordinal in (3, 4, 5):
+        before = f"value-{ordinal - 1}"
+        assessment = bounded_task_repeated_tap_assessment(
+            goal,
+            [repeated_button()],
+            action,
+            prior_identical_coordinate_action_count=(
+                guard.identical_coordinate_action_count
+            ),
+            identical_coordinate_no_effect_count=(
+                guard.identical_coordinate_no_effect_count
+            ),
+            screen_width=1080,
+            screen_height=2400,
+            transition_context=guard.repeated_tap_transition_context(
+                page_sha256=before,
+                action=action,
+            ),
+        )
+        assert assessment["permitted"]
+        assert assessment["proposed_ordinal"] == ordinal
+        guard.validate_decision(
+            decision(action),
+            page_sha256=before,
+            bounded_task_repeated_tap_assessment=assessment,
+        )
+        guard.observe_transition(
+            before_sha256=before,
+            action=action,
+            after_sha256=f"value-{ordinal}",
+        )
+
+    sixth = bounded_task_repeated_tap_assessment(
+        goal,
+        [repeated_button()],
+        action,
+        prior_identical_coordinate_action_count=5,
+        identical_coordinate_no_effect_count=0,
+        screen_width=1080,
+        screen_height=2400,
+        transition_context=guard.repeated_tap_transition_context(
+            page_sha256="value-5",
+            action=action,
+        ),
+    )
+    assert not sixth["permitted"]
+    with pytest.raises(
+        ActionValidationError,
+        match="same coordinate tap or long-press",
+    ):
+        guard.validate_decision(
+            decision(action),
+            page_sha256="value-5",
+            bounded_task_repeated_tap_assessment=sixth,
+        )
+    audit = guard.audit_record()
+    assert audit["deferred_semantic_progress_reconciliation_count"] == 1
+    assert audit["identical_coordinate_no_effect_count"] == 0
+    assert audit["bounded_task_repeated_tap_override_count"] == 2
+
+
+@pytest.mark.parametrize(
+    ("current_state", "visible_failures", "max_no_effect", "expected_reason"),
+    [
+        ("same", (), 10, "no fresh semantic change"),
+        ("delayed", ("Chrome has stopped",), 10, "visible failure"),
+        ("delayed", (), 1, "blocked prior fingerprint"),
+    ],
+)
+def test_delayed_semantic_reconciliation_denies_unsafe_evidence(
+    current_state: str,
+    visible_failures: tuple[str, ...],
+    max_no_effect: int,
+    expected_reason: str,
+) -> None:
+    guard = ProtocolV2DecisionGuard(
+        max_no_effect_repeats=max_no_effect,
+        max_identical_coordinate_actions=3,
+    )
+    goal = "Open with Chrome, then click the button 5 times."
+    action = {"type": "tap", "x": 0.5, "y": 0.208}
+    guard.reset(goal=goal)
+    guard.observe_transition(
+        before_sha256="same",
+        action=action,
+        after_sha256="same",
+    )
+    assessment = bounded_task_repeated_tap_assessment(
+        goal,
+        [repeated_button()],
+        action,
+        prior_identical_coordinate_action_count=1,
+        identical_coordinate_no_effect_count=1,
+        screen_width=1080,
+        screen_height=2400,
+        transition_context=guard.repeated_tap_transition_context(
+            page_sha256=current_state,
+            action=action,
+        ),
+        current_visible_failures=visible_failures,
+    )
+    assert not assessment["permitted"], expected_reason
+    assert not assessment["deferred_semantic_progress_observed"]
+    assert assessment["effective_identical_coordinate_no_effect_count"] == 1
+
+
+def test_task_repeat_target_binding_rejects_unrelated_android_button() -> None:
+    assessment = bounded_task_repeated_tap_assessment(
+        (
+            "Open the file with Chrome, then click the button 5 times and "
+            "enter the product."
+        ),
+        [
+            {
+                **repeated_button(),
+                "package_name": "android",
+                "text": "Just once",
+            }
+        ],
+        {"type": "tap", "x": 0.5, "y": 0.208},
+        prior_identical_coordinate_action_count=3,
+        identical_coordinate_no_effect_count=0,
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert assessment["matched_labels"] == ["Just once"]
+    assert not assessment["package_goal_bound"]
+    assert not assessment["task_target_bound"]
+    assert not assessment["permitted"]
+
+
+def test_generic_repeat_without_label_or_app_anchor_is_denied() -> None:
+    assessment = bounded_task_repeated_tap_assessment(
+        "Click the button 5 times.",
+        [repeated_button()],
+        {"type": "tap", "x": 0.5, "y": 0.208},
+        prior_identical_coordinate_action_count=3,
+        identical_coordinate_no_effect_count=0,
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert not assessment["explicit_label_bound"]
+    assert not assessment["package_goal_bound"]
+    assert not assessment["task_target_bound"]
+    assert not assessment["permitted"]
 
 
 @pytest.mark.parametrize(

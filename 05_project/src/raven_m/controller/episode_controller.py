@@ -1287,6 +1287,7 @@ class EpisodeController:
         step: int,
         model_call_count: int,
         context_images: list[tuple[str, Path]] | None = None,
+        page_visible_failures: tuple[str, ...] | list[str] = (),
     ) -> tuple[dict[str, Any], list[ModelCall], dict[str, Any]]:
         if model_call_count >= self.max_model_calls:
             raise RuntimeError("Model-call budget exhausted.")
@@ -1803,6 +1804,20 @@ class EpisodeController:
                         screen_height=screen_height,
                     )
                 )
+                repeated_tap_transition_context = (
+                    self.decision_guard.repeated_tap_transition_context(
+                        page_sha256=page_semantic_sha256,
+                        action=parsed_candidate.decision.get("action"),
+                    )
+                    if self.protocol_v2_2
+                    else None
+                )
+                repeated_tap_same_coordinate = bool(
+                    repeated_tap_transition_context
+                    and repeated_tap_transition_context[
+                        "proposed_action_matches_last_coordinate"
+                    ]
+                )
                 latest_bounded_task_repeated_tap_assessment = (
                     bounded_task_repeated_tap_assessment(
                         task_goal,
@@ -1811,13 +1826,21 @@ class EpisodeController:
                         prior_identical_coordinate_action_count=(
                             self.decision_guard
                             .identical_coordinate_action_count
+                            if repeated_tap_same_coordinate
+                            else 0
                         ),
                         identical_coordinate_no_effect_count=(
                             self.decision_guard
                             .identical_coordinate_no_effect_count
+                            if repeated_tap_same_coordinate
+                            else 0
                         ),
                         screen_width=screen_width,
                         screen_height=screen_height,
+                        transition_context=(
+                            repeated_tap_transition_context
+                        ),
+                        current_visible_failures=page_visible_failures,
                     )
                     if self.protocol_v2_2
                     else None
@@ -2360,6 +2383,9 @@ class EpisodeController:
                         step=step,
                         model_call_count=model_call_count,
                         context_images=history_context.images,
+                        page_visible_failures=before_semantic[
+                            "visible_failure_texts"
+                        ],
                     )
                 except ModelOutputInvalid as exc:
                     model_call_count += len(exc.calls)
