@@ -220,6 +220,8 @@ Raw trajectories are under `runs/excluded_protocol_dry_run/` and
 | `reports/protocol_v2_2_r58_local_validation.json` | machine-readable 430-test, denial-matrix, v1-seal, exact-source, model, and emulator evidence | passed locally; preflight preparation allowed |
 | `reports/protocol_v2_2_r58_local_validation.md` | human-readable r58 rationale, validation result, and zero-call boundary | current |
 | `05_project/scripts/run_protocol_v2_2_r58_h01_candidate_smoke.py` | exact-source r58 preflight and isolated non-scored H01 B3 entry point | prepared |
+| `reports/protocol_v2_2_r58_candidate_preflight.json` | machine-readable 28-file freeze, paired instances, inherited prerequisite, exact model, emulator, and v1-seal audit | passed; zero calls/cells |
+| `reports/protocol_v2_2_r58_candidate_preflight.md` | human-readable zero-call result and one-cell non-scored r58 authorization boundary | current |
 
 The r39 raw trajectories are under
 `runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/` and remain
