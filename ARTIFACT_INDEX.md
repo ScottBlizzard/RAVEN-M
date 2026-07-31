@@ -188,6 +188,9 @@ Raw trajectories are under `runs/excluded_protocol_dry_run/` and
 | `reports/protocol_v2_2_r55_candidate_preflight.json` | source, 27-file freeze, four instances, exact model, emulator, and fresh Files smoke directory | passed |
 | `reports/protocol_v2_2_r55_m0_files_smoke.json` | machine-readable valid failure, exact-target/Search-loop trace, memory boundary, and immutable hashes | Gate D withheld |
 | `reports/protocol_v2_2_r55_m0_files_smoke.md` | human-readable r55 failure analysis, server-health clarification, and bounded r56 direction | current |
+| `04_protocols/protocol_v2_2_r56_candidate_addendum.md` | exact-target ambiguity trigger, sole DocumentsUI view-toggle repair, and preserved boundaries | local candidate |
+| `reports/protocol_v2_2_r56_local_validation.json` | machine-readable 405-test validation, real AVD accessibility probe, and v1-seal evidence | passed locally |
+| `reports/protocol_v2_2_r56_local_validation.md` | human-readable r56 rationale, live zero-call evidence, and next-action boundary | current |
 
 The r39 raw trajectories are under
 `runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/` and remain

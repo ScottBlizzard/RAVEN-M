@@ -1,0 +1,120 @@
+{
+  "schema_version": "protocol_v2_2_r56_local_validation.v1",
+  "date": "2026-07-31",
+  "source_commit": "24ddb7a34c0e873218cbac6b081d7d24ecd7d61e",
+  "source_tag": "protocol-v2-2-r56-local-candidate",
+  "parent_commit": "41e2ce3c351b33163a863cf533880310f93133ae",
+  "motivation": {
+    "source_suite": "nonhard_capability_v2_2_seed20260729_r55_candidate_development_smoke_sequence_4",
+    "source_step": 11,
+    "initial_guard": "EXACT_TARGET_GUARD",
+    "repair_guard": "LOOP_GUARD",
+    "exact_target_accessibility_visible": true,
+    "visual_grid_labels_truncated": true,
+    "wrong_neighbor": "nature_sounds_2023_02_11.mp3",
+    "repair_action": "repeated Search toggle",
+    "unsafe_actions_executed": 0
+  },
+  "implementation": {
+    "assessment_schema": "files_view_mode_toggle_assessment.v1",
+    "repair_contract": "FILES_EXACT_TARGET_VIEW_MODE_REPAIR_REQUIRED",
+    "trigger": [
+      "protocol_v2_2",
+      "EXACT_TARGET_GUARD initial long-press rejection",
+      "exact task-literal filename accessibility-visible",
+      "candidate_count_at_least_2",
+      "one unambiguous visible enabled clickable noneditable Android DocumentsUI list/grid view-mode control"
+    ],
+    "only_allowed_repair": "status=continue and a pure tap on the sole qualified view-mode control",
+    "required_empty_fields": [
+      "state_delta",
+      "memory_citations",
+      "completion_evidence"
+    ],
+    "controller_supplies_coordinate": false,
+    "model_repair_count_changed": false,
+    "loop_guard_bypassed": false
+  },
+  "deterministic_regressions": {
+    "exact_r55_shape_view_mode_repair_passed": true,
+    "search_repair_rejected": true,
+    "unobserved_progress_claim_rejected": true,
+    "no_control_fallback_preserved": true,
+    "non_documentsui_control_rejected": true,
+    "multiple_control_ambiguity_rejected": true,
+    "wrong_neighbor_long_press_executed": false
+  },
+  "test_validation": {
+    "full_suite": {
+      "passed": 405,
+      "failed": 0
+    },
+    "focused_suite": {
+      "files": [
+        "05_project/tests/controller/test_protocol_v2_guard.py",
+        "05_project/tests/controller/test_semantic_progress_controller_v2.py",
+        "05_project/tests/history/test_full_raven_policy_v2.py"
+      ],
+      "passed": 155,
+      "failed": 0
+    },
+    "compileall": {
+      "passed": true
+    },
+    "git_diff_check": {
+      "passed": true
+    }
+  },
+  "protocol_v1_seal": {
+    "path": "checksums/protocol_v1_breadth_seal_20260726.json",
+    "file_count": 197,
+    "failure_count": 0,
+    "passed": true,
+    "seal_sha256": "8b707052bbf3d22ff9643dc1fd4bc55d8f09461a00be9c13728e6eacdfa37ac9"
+  },
+  "zero_model_call_live_probe": {
+    "model_call_count": 0,
+    "task_mutation_count": 0,
+    "androidworld_post_recovery_smoke_passed": true,
+    "emulator": "emulator-5554",
+    "foreground_package": "com.google.android.documentsui",
+    "foreground_activity": "com.android.documentsui.files.FilesActivity",
+    "screen_width": 1080,
+    "screen_height": 2400,
+    "view_mode_assessment": {
+      "adjudicable": true,
+      "control_count": 1,
+      "unambiguous": true,
+      "matched_labels": [
+        "List view"
+      ],
+      "matched_resource_ids": [
+        "com.google.android.documentsui:id/sub_menu_list"
+      ],
+      "control_bbox_pixels": {
+        "x_min": 890,
+        "x_max": 1017,
+        "y_min": 525,
+        "y_max": 651
+      }
+    },
+    "search_control_separate": true
+  },
+  "hashes": {
+    "episode_controller_sha256": "9ac6351db7656b22b5a01d8b8c98645707c261a8d719f4ddf00e757e18962a18",
+    "protocol_v2_guard_sha256": "ff13e6ef0fb3d11545bdbc80efcc370891e512e70e2fbbf8447eba31f55a54ab",
+    "semantic_progress_tests_sha256": "85c441de2b4d53d73c9dfc10e95efdc612990ab7d341be85c85f4b0be049c363",
+    "protocol_v2_guard_tests_sha256": "5fa58e0537fd073c31cc84ea78b8530a1d6744c9aa02bf5aa0d0dc49be4108df",
+    "androidworld_recovery_smoke_json_sha256": "bbaf1547e534c15cb2fd8e03ef1431550138597a1313af27bd9590f6a49c1692",
+    "androidworld_recovery_smoke_png_sha256": "37ffc0540dbe3c8a68e63eebb829abc089967f3709ef079bcae2fee0637da80d"
+  },
+  "decision": {
+    "local_candidate_passed": true,
+    "gate_d_preparation_allowed": false,
+    "formal_gate_e_authorized": false,
+    "automatic_gate_f_transition": false,
+    "development_smoke_authorized": true,
+    "authorized_live_action": "one fresh isolated non-scored M0 FilesMoveFile smoke under a new r56 development namespace after zero-model-call exact-source preflight",
+    "r55_rerun_authorized": false
+  }
+}
