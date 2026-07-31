@@ -1,0 +1,84 @@
+{
+  "schema_version": "protocol_v2_2_r57_local_validation.v1",
+  "validated_at": "2026-07-31T09:45:43.7174728Z",
+  "candidate": {
+    "source_commit": "4667166b60710f32348ace47243e41bcc041cd13",
+    "source_tag": "protocol-v2-2-r57-local-candidate",
+    "parent_formal_result": "reports/protocol_v2_2_r56_gate_f_batch1_stopped.json",
+    "parent_formal_result_sha256": "5ae63c1a7d0cbecf5cf1d678945aa21fde70392510d1361d0a49db451bbaccbe",
+    "r56_checkpoint_sha256": "c095b69e550c66c01fa5e75c5cc1aa29cce1d26868001716590868611297cda6"
+  },
+  "decision": {
+    "local_validation": "pass",
+    "zero_call_preflight_authorized": true,
+    "isolated_non_scored_h01_smoke_authorized": false,
+    "formal_gate_e_authorized": false,
+    "formal_gate_f_authorized": false,
+    "boundary": "Local validation permits only a fresh zero-model-call candidate preflight. A live H01 development smoke remains separately gated on that preflight."
+  },
+  "implementation": {
+    "contract": "bounded_task_repeated_tap_assessment.v1",
+    "protocol_v2_2_only": true,
+    "maximum_task_literal_repeat_count": 20,
+    "requires_finite_task_count": true,
+    "requires_exactly_one_safe_visible_control": true,
+    "requires_all_prior_semantic_progress": true,
+    "requires_proposed_ordinal_within_task_count": true,
+    "preserves_blocked_fingerprint_enforcement": true,
+    "preserves_ab_cycle_enforcement": true,
+    "preserves_visible_failure_enforcement": true,
+    "preserves_consequential_action_enforcement": true
+  },
+  "tests": {
+    "full_suite": {
+      "passed": 423,
+      "failed": 0
+    },
+    "positive_cases": [
+      "fourth exact tap with task count five",
+      "fifth exact tap with task count five",
+      "integrated controller replay of the r56 H01 fourth-tap shape"
+    ],
+    "denial_cases": [
+      "sixth tap when task count is five",
+      "task without a finite repetition count",
+      "streak containing a no-effect transition",
+      "commit-like target",
+      "ambiguous overlapping target controls",
+      "proposed ordinal beyond requested count",
+      "A-B semantic cycle",
+      "generic semantic-changing fourth tap without the assessment"
+    ],
+    "candidate_manifest_and_runner": {
+      "preserved_r56_hard_schedule": true,
+      "preserved_budgets_prompts_acceptance": true,
+      "freeze_hashes_passed": true,
+      "parent_gate_e_prerequisite_passed": true,
+      "development_smoke_marked_non_scored": true
+    },
+    "compileall": "passed",
+    "git_diff_check": "passed"
+  },
+  "protocol_v1_seal": {
+    "file_count": 197,
+    "failure_count": 0,
+    "passed": true
+  },
+  "file_sha256": {
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "b1edd9dc7762d92ff14c4d6074f686aa8fc58871e3c345effbb9e73a2d399dfc",
+    "05_project/src/raven_m/controller/episode_controller.py": "d252243f5e9a2f697ce2edb99896728ba1ff308075146570c04be3f92bb7b67c",
+    "05_project/scripts/run_protocol_v2_gate_f.py": "c48d04d8892820771e81c0c65b451e7f09a5b074ec40c833f8ac74e99857ee7e",
+    "05_project/scripts/run_protocol_v2_2_r57_h01_candidate_smoke.py": "fd45ac98bde225310c122d979fd6d287d0f29535bbaf4ddcc0e9d0c8922bcd0d",
+    "05_project/tests/controller/test_protocol_v2_guard.py": "41a23000421592c310ca25129f48dae83a4c94f70dc25f07d5e49f8908a38e93",
+    "05_project/tests/controller/test_reliability_recovery_controller.py": "66c2b1810c5c91f282d4c9cf2fcd298c801a4336b960553215d2bdf45cf67d42",
+    "05_project/tests/scripts/test_protocol_v2_2_gate_f_r57.py": "cf892319342e47c5859e5b9ba262ba3ce81a6e347e6f9337d9506a68ccd211ac",
+    "04_protocols/protocol_v2_2_r57_candidate_addendum.md": "ee1e38e6bd8d531daa112ea10c54b83b6e5ade0ef9922d61dc8cd62413289c6a"
+  },
+  "next_action": {
+    "action": "zero_model_call_candidate_preflight",
+    "model_calls": 0,
+    "gpu_experiment_cells": 0,
+    "automatic_smoke_launch": false,
+    "automatic_formal_transition": false
+  }
+}

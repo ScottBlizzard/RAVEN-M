@@ -208,6 +208,10 @@ Raw trajectories are under `runs/excluded_protocol_dry_run/` and
 | `reports/protocol_v2_2_r56_gate_f_preflight.md` | compatibility decision, 411-test validation, frozen Batch-1 schedule, and manual-launch boundary | current |
 | `reports/protocol_v2_2_r56_gate_f_batch1_stopped.json` | immutable one-cell checkpoint, infrastructure isolation, verified repeated-tap trace, and raw artifact hashes | Gate F stopped/failed at 1/12 |
 | `reports/protocol_v2_2_r56_gate_f_batch1_stopped.md` | task-grounded repetition incompatibility analysis and bounded next-candidate scope | current |
+| `04_protocols/protocol_v2_2_r57_candidate_addendum.md` | finite task-count repeated-tap trigger, denial boundaries, and preserved r56 result | local candidate |
+| `reports/protocol_v2_2_r57_local_validation.json` | machine-readable 423-test, exact H01 replay, denial matrix, and v1-seal evidence | passed locally |
+| `reports/protocol_v2_2_r57_local_validation.md` | human-readable r57 contract, validation result, and zero-call boundary | current |
+| `05_project/scripts/run_protocol_v2_2_r57_h01_candidate_smoke.py` | exact-source candidate preflight and isolated non-scored H01 B3 entry point | prepared |
 
 The r39 raw trajectories are under
 `runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/` and remain
