@@ -20,6 +20,7 @@ from raven_m.controller.protocol_v2_guard import (
     ProtocolV2DecisionGuard,
     bounded_task_repeated_tap_assessment,
     coordinate_type_text_target_assessment,
+    dated_list_answer_assessment,
     declared_text_source_assessment,
     destination_picker_active,
     destination_picker_commit_action,
@@ -726,6 +727,23 @@ class EpisodeController:
                 ),
                 *(
                     [
+                        "DATED_LIST_ANSWER_BINDING: once the explicit target "
+                        "date is visible in a chronological list, stop "
+                        "swiping. A date label binds only to the content row "
+                        "on the same horizontal line; it does not bind every "
+                        "visible item. If TASK asks for type, category, "
+                        "duration, distance, time, status, or another field "
+                        "but the list shows only row titles/names, do not "
+                        "answer with those titles. Open each row carrying the "
+                        "target date, read the explicitly labeled requested "
+                        "field in detail, preserve each verified value, and "
+                        "inspect every target-date row before answering."
+                    ]
+                    if protocol_v2_2
+                    else []
+                ),
+                *(
+                    [
                         "RELATIVE_DATE_GROUNDING: resolve relative calendar "
                         "language from the TASK and the visible reference date "
                         "before selecting a day. The next named weekday is its "
@@ -854,6 +872,9 @@ class EpisodeController:
             "FILES_ROOTS_DRAWER_GUARD:",
             "SOFT_KEYBOARD_SWIPE_GUARD:",
             "TOOLBAR_AFFORDANCE_GUARD:",
+            "TARGET_DATE_VISIBLE_GUARD:",
+            "ANSWER_ASSOCIATION_GUARD:",
+            "TARGET_ROW_ENUMERATION_GUARD:",
             "SWIPE_DIRECTION_GUARD:",
             "LOOP_GUARD:",
             "CRITIC_CONSTRAINT:",
@@ -924,6 +945,12 @@ class EpisodeController:
         chronological_list_scroll_required = (
             "CHRONOLOGICAL_LIST_SCROLL_REQUIRED:" in error
         )
+        target_date_row_tap_required = (
+            "TARGET_DATE_ROW_TAP_REQUIRED:" in error
+        )
+        target_row_enumeration_back_required = (
+            "TARGET_ROW_ENUMERATION_BACK_REQUIRED:" in error
+        )
         task_repeat_complete_rejected = error.startswith(
             "TASK_REPEAT_COUNT_COMPLETE:"
         )
@@ -953,7 +980,30 @@ class EpisodeController:
         visual_source_rejected = (
             "VISUAL_SOURCE_ADJUDICATION_REJECTED:" in error
         )
-        if toolbar_affordance_rejected:
+        if target_date_row_tap_required:
+            repair_directive = (
+                "\n\nTARGET_DATE_ROW_DETAIL_REPAIR: The explicit target "
+                "date is already visible in the chronological list. For "
+                "this one repair, return status=continue with exactly one "
+                "pure tap on a visible enabled content row horizontally "
+                "aligned with that target date. Do not tap the date text or "
+                "a toolbar icon, swipe, wait, answer, or infer the requested "
+                "field from a row title/name. Use empty state_delta, "
+                "memory_citations, and completion_evidence. Observe the "
+                "opened detail on the next policy step.\n"
+            )
+        elif target_row_enumeration_back_required:
+            repair_directive = (
+                "\n\nTARGET_ROW_ENUMERATION_REPAIR: More than one row was "
+                "visible for the target date, but the proposed answer did "
+                "not contain one grounded requested-field value per row. "
+                "For this one repair, return status=continue with action "
+                'exactly {"type":"press_back"} and empty state_delta, '
+                "memory_citations, and completion_evidence. Return to the "
+                "dated list and inspect an unvisited target row on a later "
+                "step; do not answer or invent the missing value.\n"
+            )
+        elif toolbar_affordance_rejected:
             if chronological_list_scroll_required:
                 repair_directive = (
                     "\n\nCHRONOLOGICAL_LIST_SCROLL_REPAIR: The proposed "
@@ -1344,7 +1394,9 @@ class EpisodeController:
             else ""
         )
         priority_repair = bool(
-            toolbar_affordance_rejected
+            target_date_row_tap_required
+            or target_row_enumeration_back_required
+            or toolbar_affordance_rejected
             or loop_guard_rejected
             or task_repeat_complete_rejected
         )
@@ -1440,6 +1492,7 @@ class EpisodeController:
         latest_toolbar_affordance_claim_assessment: (
             dict[str, Any] | None
         ) = None
+        latest_dated_list_answer_assessment: dict[str, Any] | None = None
         visual_source_cache: dict[str, dict[str, Any]] = {}
         parse_kwargs = (
             {"schema_path": self.action_schema_path}
@@ -1459,10 +1512,12 @@ class EpisodeController:
             nonlocal latest_files_view_mode_repair_assessment
             nonlocal latest_bounded_task_repeated_tap_assessment
             nonlocal latest_toolbar_affordance_claim_assessment
+            nonlocal latest_dated_list_answer_assessment
             latest_verification_navigation_assessment = None
             latest_source_context_assessment = None
             latest_bounded_task_repeated_tap_assessment = None
             latest_toolbar_affordance_claim_assessment = None
+            latest_dated_list_answer_assessment = None
             candidate_content = content
             if repair_contract_error is not None:
                 (
@@ -1744,6 +1799,56 @@ class EpisodeController:
                         "with empty state_delta, memory_citations, and "
                         "completion_evidence."
                     )
+            if (
+                repair_contract_error
+                and "TARGET_DATE_ROW_TAP_REQUIRED:"
+                in repair_contract_error
+            ):
+                candidate = parsed_candidate.decision
+                candidate_action = candidate.get("action")
+                repair_assessment = dated_list_answer_assessment(
+                    task_goal,
+                    ui_elements,
+                    candidate,
+                    screen_width=screen_width,
+                    screen_height=screen_height,
+                )
+                if (
+                    candidate.get("status") != "continue"
+                    or not isinstance(candidate_action, dict)
+                    or set(candidate_action) != {"type", "x", "y"}
+                    or repair_assessment.get("target_row_tap_permitted")
+                    is not True
+                    or candidate.get("state_delta") != []
+                    or candidate.get("memory_citations") != []
+                    or candidate.get("completion_evidence", []) != []
+                ):
+                    raise ActionValidationError(
+                        "REPAIR_CONTRACT_GUARD: "
+                        "TARGET_DATE_ROW_TAP_REQUIRED permits only one pure "
+                        "tap on a visible enabled content row aligned with "
+                        "the explicit target date, with empty state_delta, "
+                        "memory_citations, and completion_evidence."
+                    )
+            if (
+                repair_contract_error
+                and "TARGET_ROW_ENUMERATION_BACK_REQUIRED:"
+                in repair_contract_error
+            ):
+                candidate = parsed_candidate.decision
+                if (
+                    candidate.get("status") != "continue"
+                    or candidate.get("action") != {"type": "press_back"}
+                    or candidate.get("state_delta") != []
+                    or candidate.get("memory_citations") != []
+                    or candidate.get("completion_evidence", []) != []
+                ):
+                    raise ActionValidationError(
+                        "REPAIR_CONTRACT_GUARD: "
+                        "TARGET_ROW_ENUMERATION_BACK_REQUIRED permits only "
+                        "the exact press_back action with empty state_delta, "
+                        "memory_citations, and completion_evidence."
+                    )
             self.history_policy.validate_decision(parsed_candidate.decision)
             picker_commit_is_action = False
             if self.decision_guard is not None:
@@ -1842,8 +1947,43 @@ class EpisodeController:
                     parsed_candidate.decision.get("action"),
                 )
                 candidate_action = parsed_candidate.decision.get("action")
+                latest_dated_list_answer_assessment = (
+                    dated_list_answer_assessment(
+                        task_goal,
+                        ui_elements,
+                        parsed_candidate.decision,
+                        screen_width=screen_width,
+                        screen_height=screen_height,
+                    )
+                    if self.protocol_v2_2
+                    else None
+                )
+                dated_assessment = (
+                    latest_dated_list_answer_assessment or {}
+                )
+                dated_answer_will_be_rejected = bool(
+                    isinstance(candidate_action, dict)
+                    and candidate_action.get("type") == "answer"
+                    and dated_assessment.get("target_date_list_visible")
+                    is True
+                    and (
+                        dated_assessment.get(
+                            "answer_item_count_matches_target_rows"
+                        )
+                        is not True
+                        or dated_assessment.get(
+                            "all_answer_items_target_row_bound"
+                        )
+                        is not True
+                        or dated_assessment.get(
+                            "requested_field_detail_required"
+                        )
+                        is True
+                    )
+                )
                 visual_source_required = bool(
                     self.protocol_v2_2
+                    and not dated_answer_will_be_rejected
                     and parsed_candidate.decision.get("status") == "done"
                     and isinstance(candidate_action, dict)
                     and candidate_action.get("type") == "answer"
@@ -2093,6 +2233,9 @@ class EpisodeController:
                     toolbar_affordance_claim_assessment=(
                         latest_toolbar_affordance_claim_assessment
                     ),
+                    dated_list_answer_assessment=(
+                        latest_dated_list_answer_assessment
+                    ),
                 )
             consequential_action_candidate = None
             if self.protocol_v2_2 and destination_picker_is_active:
@@ -2196,6 +2339,9 @@ class EpisodeController:
                     ),
                     "toolbar_affordance_claim_assessment": (
                         latest_toolbar_affordance_claim_assessment
+                    ),
+                    "dated_list_answer_assessment": (
+                        latest_dated_list_answer_assessment
                     ),
                 },
             )
@@ -2375,6 +2521,9 @@ class EpisodeController:
                     ),
                     "toolbar_affordance_claim_assessment": (
                         latest_toolbar_affordance_claim_assessment
+                    ),
+                    "dated_list_answer_assessment": (
+                        latest_dated_list_answer_assessment
                     ),
                 },
             )

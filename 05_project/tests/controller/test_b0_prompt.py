@@ -96,6 +96,11 @@ def test_v2_2_prompt_grounds_weekday_after_next_before_navigation() -> None:
     assert "map-pin/Markers control is a calendar" in prompt
     assert "text Search is a date picker" in prompt
     assert "empty text-search result proves only that no text matched" in prompt
+    assert "DATED_LIST_ANSWER_BINDING" in prompt
+    assert "date label binds only to the content row" in prompt
+    assert "stop swiping" in prompt
+    assert "Open each row carrying the target date" in prompt
+    assert "inspect every target-date row before answering" in prompt
 
 
 def test_v2_toolbar_mismatch_repair_forces_content_swipe() -> None:
@@ -115,6 +120,47 @@ def test_v2_toolbar_mismatch_repair_forces_content_swipe() -> None:
     assert "Do not tap any toolbar control" in prompt
     assert "Use empty state_delta" in prompt
     assert prompt.index("CHRONOLOGICAL_LIST_SCROLL_REPAIR") < (
+        prompt.index("original")
+    )
+
+
+def test_v2_target_date_visible_repair_forces_row_detail_tap() -> None:
+    error = (
+        "ANSWER_ASSOCIATION_GUARD: row or field mismatch. "
+        "TARGET_DATE_ROW_TAP_REQUIRED: inspect a target row."
+    )
+    prompt = EpisodeController._repair_prompt(
+        "original",
+        '{"action":{"type":"answer","text":"visible title"}}',
+        error,
+        protocol_v2=True,
+    )
+    assert "TARGET_DATE_ROW_DETAIL_REPAIR" in prompt
+    assert "exactly one pure tap" in prompt
+    assert "horizontally aligned with that target date" in prompt
+    assert "Do not tap the date text or a toolbar icon" in prompt
+    assert "Use empty state_delta" in prompt
+    assert prompt.index("TARGET_DATE_ROW_DETAIL_REPAIR") < (
+        prompt.index("original")
+    )
+
+
+def test_v2_target_row_enumeration_repair_requires_back() -> None:
+    error = (
+        "TARGET_ROW_ENUMERATION_GUARD: one of two rows inspected. "
+        "TARGET_ROW_ENUMERATION_BACK_REQUIRED: return to list."
+    )
+    prompt = EpisodeController._repair_prompt(
+        "original",
+        '{"action":{"type":"answer","text":"one value"}}',
+        error,
+        protocol_v2=True,
+    )
+    assert "TARGET_ROW_ENUMERATION_REPAIR" in prompt
+    assert 'exactly {"type":"press_back"}' in prompt
+    assert "inspect an unvisited target row" in prompt
+    assert "do not answer or invent the missing value" in prompt
+    assert prompt.index("TARGET_ROW_ENUMERATION_REPAIR") < (
         prompt.index("original")
     )
 
@@ -398,4 +444,8 @@ def test_v2_system_prompts_distinguish_ordinary_and_answer_completion() -> None:
             assert "map-pin/`Markers` control is spatial" in normalized
             assert "magnifying-glass" in normalized
             assert "empty text-search result proves only" in normalized
+            assert "Once the explicit target date is visible" in normalized
+            assert "date label binds only the content row" in normalized
+            assert "never return those titles as the requested field" in normalized
+            assert "every target-date row before answering" in normalized
             assert '"completion_evidence":[]' in normalized

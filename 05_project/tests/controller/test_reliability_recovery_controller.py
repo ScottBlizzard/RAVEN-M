@@ -154,6 +154,97 @@ def test_controller_replays_r61_markers_claim_as_older_history_swipe(
     assert block["action"]["type"] == "tap"
 
 
+def test_controller_replays_r62_answer_as_target_row_detail_tap(
+    tmp_path: Path,
+) -> None:
+    goal = (
+        "What activities did I do September 24 2023? "
+        "Answer with the activity type only."
+    )
+    initial = {
+        "status": "done",
+        "action": {
+            "type": "answer",
+            "text": "Bicycle Adventure, Recovery day",
+            "text_origin": "current_screen",
+            "source_memory_ids": [],
+        },
+        "expected_outcome": "The requested activity types are answered.",
+        "decision_summary": (
+            "Answer with the visible string associated with the date."
+        ),
+        "state_delta": [],
+        "memory_citations": [],
+    }
+    repair = {
+        "status": "continue",
+        "action": {"type": "tap", "x": 0.45, "y": 0.75},
+        "expected_outcome": "The target-date row detail opens.",
+        "decision_summary": (
+            "Tap the visible target-date row to inspect its activity type."
+        ),
+        "state_delta": [],
+        "memory_citations": [],
+    }
+    elements: list[dict] = []
+    for name, date, center in (
+        ("Bicycle Adventure", "2 Oct", 0.60),
+        ("Skill work", "24 Sep", 0.75),
+        ("Recovery day", "24 Sep", 0.84),
+    ):
+        elements.extend(
+            [
+                {
+                    "package_name": "org.example.history",
+                    "text": name,
+                    "is_visible": True,
+                    "bbox": {"x_min": 0.08, "x_max": 0.70,
+                             "y_min": center - 0.035,
+                             "y_max": center + 0.035},
+                },
+                {
+                    "package_name": "org.example.history",
+                    "text": date,
+                    "is_visible": True,
+                    "bbox": {"x_min": 0.88, "x_max": 0.98,
+                             "y_min": center - 0.035,
+                             "y_max": center + 0.035},
+                },
+                {
+                    "package_name": "org.example.history",
+                    "is_visible": True,
+                    "is_enabled": True,
+                    "is_clickable": True,
+                    "bbox": {"x_min": 0.02, "x_max": 0.98,
+                             "y_min": center - 0.04,
+                             "y_max": center + 0.04},
+                },
+            ]
+        )
+    client = RepairSequenceClient(initial, repair)
+    controller = controller_for(client, protocol_v2_2=True)
+    controller.decision_guard.reset(goal=goal)
+    parsed, calls, meta = call_and_parse(
+        controller,
+        tmp_path=tmp_path,
+        task_goal=goal,
+        ui_elements=elements,
+    )
+    assert len(calls) == 2
+    assert parsed["action"] == {"type": "tap", "x": 0.45, "y": 0.75}
+    assert "ANSWER_ASSOCIATION_GUARD" in meta["initial_validation_error"]
+    repair_prompt = client.requests[1]["user_prompt"]
+    assert "TARGET_DATE_ROW_DETAIL_REPAIR" in repair_prompt
+    assert repair_prompt.index("TARGET_DATE_ROW_DETAIL_REPAIR") < (
+        repair_prompt.index("ORIGINAL")
+    )
+    audit = controller.decision_guard.audit_record()
+    assert audit["answer_association_block_count"] == 1
+    assert audit["target_date_row_count"] == 2
+    assert audit["target_row_tap_validation_count"] == 1
+    assert meta["adjudication_model_call_count"] == 0
+
+
 def test_controller_repairs_redundant_focused_empty_tap_to_type(
     tmp_path: Path,
 ) -> None:

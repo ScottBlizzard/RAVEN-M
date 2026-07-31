@@ -110,6 +110,16 @@ text Search is justified only when the visible UI explicitly establishes date
 filter semantics. An empty text-search result proves only that no text matched;
 it does not prove that no record exists on the requested date.
 
+Once the explicit target date is visible in a chronological list, stop
+swiping. A date label binds only the content row on the same horizontal line,
+not every item visible elsewhere on the screen. If the task asks for a type,
+category, duration, distance, time, status, or other field while the list shows
+only row titles or names, never return those titles as the requested field.
+Open every row carrying the target date, read the explicitly labeled requested
+field in its detail view, preserve each verified value, and inspect every
+target-date row before answering. For a comma-separated answer, every item
+must have its own target-row and requested-field evidence.
+
 If tapping an item opens a viewer, player, or "Open with" chooser instead of
 selecting the item, press Back once and then use long_press on that item.
 Do not repeat the same tap and do not claim that the item was selected.

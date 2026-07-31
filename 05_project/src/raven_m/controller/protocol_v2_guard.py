@@ -166,6 +166,18 @@ CHRONOLOGICAL_LABEL_RE = re.compile(
     rf"\d{{1,2}}(?:st|nd|rd|th)?\s+{MONTH_TOKEN}\.?)$",
     flags=re.IGNORECASE,
 )
+ANSWER_FIELD_REQUEST_RE = re.compile(
+    r"\banswer\s+with\s+(?:the\s+)?"
+    r"(?P<role>[a-z][a-z0-9 /_-]{0,60}?)"
+    r"(?=\s+only\b|[.;,\n]|$)",
+    flags=re.IGNORECASE,
+)
+DETAIL_REQUIRED_ANSWER_ROLE_RE = re.compile(
+    r"\b(types?|categories|category|kinds?|durations?|distances?|"
+    r"times?|statuses|status|amounts?|locations?|descriptions?|"
+    r"notes?|values?)\b",
+    flags=re.IGNORECASE,
+)
 IGNORED_UI_PACKAGES = {"com.android.systemui"}
 SOFT_KEYBOARD_PACKAGES = {
     "com.android.inputmethod.latin",
@@ -1310,6 +1322,23 @@ def _absolute_dates(text: str | None) -> set[tuple[int | None, int, int]]:
     return dates
 
 
+def _dates_match(
+    target: tuple[int | None, int, int],
+    visible: tuple[int | None, int, int],
+) -> bool:
+    target_year, target_month, target_day = target
+    visible_year, visible_month, visible_day = visible
+    return bool(
+        target_month == visible_month
+        and target_day == visible_day
+        and (
+            target_year is None
+            or visible_year is None
+            or target_year == visible_year
+        )
+    )
+
+
 def chronological_list_navigation_assessment(
     goal: str,
     ui_elements: Any,
@@ -1384,24 +1413,8 @@ def chronological_list_navigation_assessment(
         vertically_distributed and left_or_center_aligned
     )
 
-    def date_matches(
-        target: tuple[int | None, int, int],
-        visible: tuple[int | None, int, int],
-    ) -> bool:
-        target_year, target_month, target_day = target
-        visible_year, visible_month, visible_day = visible
-        return bool(
-            target_month == visible_month
-            and target_day == visible_day
-            and (
-                target_year is None
-                or visible_year is None
-                or target_year == visible_year
-            )
-        )
-
     target_visible = any(
-        date_matches(target, visible)
+        _dates_match(target, visible)
         for target in target_dates
         for visible in visible_dates
     )
@@ -1579,6 +1592,275 @@ def toolbar_affordance_claim_assessment(
         "matched_controls": matched_controls,
         "adjudicable": adjudicable,
         "matched": role_match if adjudicable else None,
+        "chronological_list_navigation_assessment": chronology,
+    }
+
+
+def _requested_answer_role(goal: str) -> str | None:
+    match = ANSWER_FIELD_REQUEST_RE.search(goal or "")
+    if match is None:
+        return None
+    role = match.group("role").strip()
+    return role or None
+
+
+def _cluster_row_centers(
+    centers: list[float],
+    *,
+    tolerance: float = 0.025,
+) -> list[float]:
+    clusters: list[list[float]] = []
+    for center in sorted(centers):
+        if not clusters or center - clusters[-1][-1] > tolerance:
+            clusters.append([center])
+        else:
+            clusters[-1].append(center)
+    return [round(sum(cluster) / len(cluster), 6) for cluster in clusters]
+
+
+def dated_list_answer_assessment(
+    goal: str,
+    ui_elements: Any,
+    decision: dict[str, Any] | None,
+    *,
+    screen_width: int,
+    screen_height: int,
+) -> dict[str, Any]:
+    """Bind answer items and navigation to rows carrying the target date."""
+    chronology = chronological_list_navigation_assessment(
+        goal,
+        ui_elements,
+        screen_width=screen_width,
+        screen_height=screen_height,
+    )
+    target_dates = {
+        (item["year"], item["month"], item["day"])
+        for item in chronology["target_dates"]
+    }
+    target_anchor_centers: list[float] = []
+    for anchor in chronology["date_anchors"]:
+        anchor_dates = {
+            (item["year"], item["month"], item["day"])
+            for item in anchor["dates"]
+        }
+        if any(
+            _dates_match(target, visible)
+            for target in target_dates
+            for visible in anchor_dates
+        ):
+            target_anchor_centers.append(anchor["y_center"])
+    target_row_centers = _cluster_row_centers(target_anchor_centers)
+
+    label_records: list[dict[str, Any]] = []
+    explicit_labels: list[str] = []
+    for element in ui_elements or ():
+        if _element_value(element, "is_visible") is False:
+            continue
+        bbox = _normalized_element_bbox(
+            element,
+            screen_width=screen_width,
+            screen_height=screen_height,
+        )
+        labels = [
+            label
+            for field in (
+                "text",
+                "content_description",
+                "hint_text",
+                "tooltip",
+            )
+            if (
+                label := _normalized_text(_element_value(element, field))
+            )
+            is not None
+        ]
+        explicit_labels.extend(labels)
+        if bbox is None:
+            continue
+        y_center = round((bbox[2] + bbox[3]) / 2, 6)
+        for label in labels:
+            label_records.append(
+                {
+                    "label": label,
+                    "normalized": " ".join(label.casefold().split()),
+                    "y_center": y_center,
+                }
+            )
+
+    action = decision.get("action") if isinstance(decision, dict) else None
+    action_type = action.get("type") if isinstance(action, dict) else None
+    answer_text = (
+        _normalized_text(action.get("text"))
+        if isinstance(action, dict) and action_type == "answer"
+        else None
+    )
+    answer_items = [
+        item.strip()
+        for item in (answer_text or "").split(",")
+        if item.strip()
+    ]
+    item_bindings: list[dict[str, Any]] = []
+    for item in answer_items:
+        normalized_item = " ".join(item.casefold().split())
+        matched = [
+            record
+            for record in label_records
+            if record["normalized"] == normalized_item
+        ]
+        nearest_distance = (
+            min(
+                abs(record["y_center"] - target_center)
+                for record in matched
+                for target_center in target_row_centers
+            )
+            if matched and target_row_centers
+            else None
+        )
+        item_bindings.append(
+            {
+                "item": item,
+                "visible_match_count": len(matched),
+                "visible_y_centers": sorted(
+                    {record["y_center"] for record in matched}
+                ),
+                "nearest_target_row_distance": (
+                    round(nearest_distance, 6)
+                    if nearest_distance is not None
+                    else None
+                ),
+                "target_row_bound": bool(
+                    nearest_distance is not None
+                    and nearest_distance <= 0.055
+                ),
+            }
+        )
+
+    requested_role = _requested_answer_role(goal)
+    role_detail_required = bool(
+        requested_role
+        and DETAIL_REQUIRED_ANSWER_ROLE_RE.search(requested_role)
+    )
+    role_tokens = set(
+        re.findall(r"[a-z]+", (requested_role or "").casefold())
+    )
+    singular_role_tokens = {
+        {
+            "categories": "category",
+            "statuses": "status",
+        }.get(token, token[:-1] if token.endswith("s") else token)
+        for token in role_tokens
+    }
+    if singular_role_tokens.intersection({"type", "category", "kind"}):
+        singular_role_tokens.update({"type", "category", "kind"})
+    singular_role_tokens.difference_update(
+        {"a", "an", "answer", "activity", "only", "the"}
+    )
+    role_label_hits = sorted(
+        {
+            label
+            for label in explicit_labels
+            if singular_role_tokens
+            and any(
+                re.search(
+                    rf"\b{re.escape(token)}\b",
+                    label,
+                    flags=re.IGNORECASE,
+                )
+                for token in singular_role_tokens
+            )
+        }
+    )
+    field_role_explicitly_visible = bool(role_label_hits)
+
+    tap_x = action.get("x") if isinstance(action, dict) else None
+    tap_y = action.get("y") if isinstance(action, dict) else None
+    row_aligned_tap = bool(
+        action_type == "tap"
+        and isinstance(tap_x, (int, float))
+        and isinstance(tap_y, (int, float))
+        and 0.05 <= tap_x <= 0.88
+        and any(abs(tap_y - center) <= 0.055 for center in target_row_centers)
+    )
+    clickable_target_hit = False
+    target_row_tap_center: float | None = None
+    target_row_tap_index: int | None = None
+    if row_aligned_tap and isinstance(tap_y, (int, float)):
+        target_row_tap_index = min(
+            range(len(target_row_centers)),
+            key=lambda index: abs(tap_y - target_row_centers[index]),
+        )
+        target_row_tap_center = target_row_centers[target_row_tap_index]
+    if row_aligned_tap:
+        for element in ui_elements or ():
+            if _element_value(element, "is_visible") is not True:
+                continue
+            if _element_value(element, "is_enabled") is not True:
+                continue
+            if _element_value(element, "is_clickable") is not True:
+                continue
+            if not _tap_hits_element(
+                action,
+                element,
+                screen_width=screen_width,
+                screen_height=screen_height,
+            ):
+                continue
+            bbox = _normalized_element_bbox(
+                element,
+                screen_width=screen_width,
+                screen_height=screen_height,
+            )
+            if bbox is not None and any(
+                bbox[2] - 0.02 <= center <= bbox[3] + 0.02
+                for center in target_row_centers
+            ):
+                clickable_target_hit = True
+                break
+
+    target_date_list_visible = bool(
+        chronology["chronological_history_detected"]
+        and chronology["target_visible"]
+        and target_row_centers
+    )
+    return {
+        "schema_version": "dated_list_answer_assessment.v1",
+        "action_type": action_type,
+        "chronological_history_detected": chronology[
+            "chronological_history_detected"
+        ],
+        "target_visible": chronology["target_visible"],
+        "target_date_list_visible": target_date_list_visible,
+        "target_row_centers": target_row_centers,
+        "target_row_count": len(target_row_centers),
+        "requested_answer_role": requested_role,
+        "role_detail_required": role_detail_required,
+        "field_role_explicitly_visible": field_role_explicitly_visible,
+        "role_label_hits": role_label_hits,
+        "answer_items": answer_items,
+        "answer_item_count": len(answer_items),
+        "answer_item_count_matches_target_rows": bool(
+            target_row_centers
+            and len(answer_items) == len(target_row_centers)
+        ),
+        "item_bindings": item_bindings,
+        "all_answer_items_target_row_bound": bool(
+            item_bindings
+            and all(item["target_row_bound"] for item in item_bindings)
+        ),
+        "requested_field_detail_required": bool(
+            target_date_list_visible
+            and role_detail_required
+            and not field_role_explicitly_visible
+        ),
+        "row_aligned_tap": row_aligned_tap,
+        "clickable_target_hit": clickable_target_hit,
+        "target_row_tap_permitted": bool(
+            target_date_list_visible
+            and row_aligned_tap
+            and clickable_target_hit
+        ),
+        "target_row_tap_index": target_row_tap_index,
+        "target_row_tap_center": target_row_tap_center,
         "chronological_list_navigation_assessment": chronology,
     }
 
@@ -2475,6 +2757,15 @@ class ProtocolV2DecisionGuard:
         self.soft_keyboard_swipe_block_count = 0
         self.focused_empty_tap_block_count = 0
         self.toolbar_affordance_block_count = 0
+        self.target_date_visible_swipe_block_count = 0
+        self.answer_association_block_count = 0
+        self.target_row_enumeration_block_count = 0
+        self.target_row_tap_validation_count = 0
+        self.target_date_row_count = 0
+        self.target_row_detail_required = False
+        self.target_row_visit_keys: list[str] = []
+        self.requested_answer_role: str | None = None
+        self.target_date_row_observations: list[dict[str, Any]] = []
         self.last_unverified_progress_no_effect_fingerprint: (
             tuple[str, str] | None
         ) = None
@@ -2907,15 +3198,8 @@ class ProtocolV2DecisionGuard:
         toolbar_affordance_claim_assessment: (
             dict[str, Any] | None
         ) = None,
+        dated_list_answer_assessment: dict[str, Any] | None = None,
     ) -> None:
-        self._validate_text_provenance(
-            decision,
-            page_sha256=page_sha256,
-            declared_source_assessment=declared_text_source_assessment,
-            declared_source_soft_keyboard_present=(
-                declared_source_soft_keyboard_present
-            ),
-        )
         action = decision.get("action")
         if not isinstance(action, dict):
             return
@@ -2973,6 +3257,145 @@ class ProtocolV2DecisionGuard:
                 "kind of control."
                 + chronology_directive
             )
+        dated_assessment = dated_list_answer_assessment or {}
+        if dated_assessment.get("target_date_list_visible") is True:
+            observed_row_count = int(
+                dated_assessment.get("target_row_count") or 0
+            )
+            self.target_date_row_count = max(
+                self.target_date_row_count,
+                observed_row_count,
+            )
+            self.target_row_detail_required = bool(
+                self.target_row_detail_required
+                or dated_assessment.get("requested_field_detail_required")
+                is True
+            )
+            requested_role = dated_assessment.get("requested_answer_role")
+            if isinstance(requested_role, str):
+                self.requested_answer_role = requested_role
+            observation = {
+                "semantic_state_sha256": page_sha256,
+                "target_row_count": observed_row_count,
+                "target_row_centers": list(
+                    dated_assessment.get("target_row_centers") or []
+                ),
+                "requested_answer_role": requested_role,
+            }
+            if observation not in self.target_date_row_observations:
+                self.target_date_row_observations.append(observation)
+            if action.get("type") == "swipe":
+                record = {
+                    "semantic_state_sha256": page_sha256,
+                    "action": action,
+                    "reason": "target_date_visible_swipe_blocked",
+                    "dated_list_answer_assessment": dated_assessment,
+                    "required_recovery_classes": [
+                        "open_visible_target_date_row",
+                    ],
+                }
+                self.validation_blocks.append(record)
+                self.target_date_visible_swipe_block_count += 1
+                raise ActionValidationError(
+                    "TARGET_DATE_VISIBLE_GUARD: the explicit task date is "
+                    "already visible in this chronological list. Another "
+                    "swipe can move target rows out of view and cannot reveal "
+                    "the requested row field. TARGET_DATE_ROW_TAP_REQUIRED: "
+                    "tap one visible enabled content row horizontally aligned "
+                    "with the target date. Do not swipe, tap a toolbar icon, "
+                    "wait, answer, or infer a row field from its title."
+                )
+            if action.get("type") == "answer":
+                wrong_row_items = [
+                    item["item"]
+                    for item in dated_assessment.get("item_bindings") or []
+                    if item.get("target_row_bound") is not True
+                ]
+                count_matches = dated_assessment.get(
+                    "answer_item_count_matches_target_rows"
+                ) is True
+                detail_required = dated_assessment.get(
+                    "requested_field_detail_required"
+                ) is True
+                if wrong_row_items or not count_matches or detail_required:
+                    record = {
+                        "semantic_state_sha256": page_sha256,
+                        "action": action,
+                        "reason": "dated_list_answer_association_blocked",
+                        "dated_list_answer_assessment": dated_assessment,
+                        "required_recovery_classes": [
+                            "open_visible_target_date_row",
+                            "inspect_requested_field_in_detail",
+                        ],
+                    }
+                    self.validation_blocks.append(record)
+                    self.answer_association_block_count += 1
+                    rendered_wrong = json.dumps(
+                        wrong_row_items,
+                        ensure_ascii=False,
+                    )
+                    raise ActionValidationError(
+                        "ANSWER_ASSOCIATION_GUARD: terminal answer items must "
+                        "each belong to a visible row carrying the explicit "
+                        "task date, and the number of items must match the "
+                        "visible target-date rows. Items not bound to a target "
+                        f"row: {rendered_wrong}. The requested answer field "
+                        f"is {self.requested_answer_role!r}; a visible row "
+                        "title or name is not evidence for a different field. "
+                        "TARGET_DATE_ROW_TAP_REQUIRED: tap one visible enabled "
+                        "target-date content row and inspect its details. Do "
+                        "not answer, swipe, wait, or use a non-target row."
+                    )
+            if dated_assessment.get("target_row_tap_permitted") is True:
+                self.target_row_tap_validation_count += 1
+                tap_center = dated_assessment.get("target_row_tap_center")
+                if isinstance(tap_center, (int, float)):
+                    visit_key = f"target-row-y:{float(tap_center):.3f}"
+                    if visit_key not in self.target_row_visit_keys:
+                        self.target_row_visit_keys.append(visit_key)
+        elif (
+            action.get("type") == "answer"
+            and self.target_row_detail_required
+            and self.target_date_row_count > 0
+        ):
+            answer_item_count = int(
+                dated_assessment.get("answer_item_count") or 0
+            )
+            visited_row_count = len(self.target_row_visit_keys)
+            if (
+                visited_row_count < self.target_date_row_count
+                or answer_item_count != self.target_date_row_count
+            ):
+                record = {
+                    "semantic_state_sha256": page_sha256,
+                    "action": action,
+                    "reason": "target_row_enumeration_incomplete",
+                    "dated_list_answer_assessment": dated_assessment,
+                    "required_recovery_classes": [
+                        "navigate_back",
+                        "inspect_remaining_target_date_row",
+                    ],
+                }
+                self.validation_blocks.append(record)
+                self.target_row_enumeration_block_count += 1
+                raise ActionValidationError(
+                    "TARGET_ROW_ENUMERATION_GUARD: the earlier target-date "
+                    f"list exposed {self.target_date_row_count} distinct rows, "
+                    f"{visited_row_count} distinct target rows were opened, "
+                    f"and this answer contains {answer_item_count} item(s). "
+                    "TARGET_ROW_ENUMERATION_BACK_REQUIRED: press Back once to "
+                    "return to the dated list, inspect every remaining target "
+                    "row, and answer only after all requested field values are "
+                    "grounded."
+                )
+        self._validate_text_provenance(
+            decision,
+            page_sha256=page_sha256,
+            declared_source_assessment=declared_text_source_assessment,
+            declared_source_soft_keyboard_present=(
+                declared_source_soft_keyboard_present
+            ),
+        )
         source_context_assessment = (
             post_destination_source_context_assessment or {}
         )
@@ -4081,6 +4504,28 @@ class ProtocolV2DecisionGuard:
             ),
             "toolbar_affordance_block_count": (
                 self.toolbar_affordance_block_count
+            ),
+            "target_date_visible_swipe_block_count": (
+                self.target_date_visible_swipe_block_count
+            ),
+            "answer_association_block_count": (
+                self.answer_association_block_count
+            ),
+            "target_row_enumeration_block_count": (
+                self.target_row_enumeration_block_count
+            ),
+            "target_row_tap_validation_count": (
+                self.target_row_tap_validation_count
+            ),
+            "target_date_row_count": self.target_date_row_count,
+            "target_row_detail_required": self.target_row_detail_required,
+            "target_row_distinct_visit_count": len(
+                self.target_row_visit_keys
+            ),
+            "target_row_visit_keys": list(self.target_row_visit_keys),
+            "requested_answer_role": self.requested_answer_role,
+            "target_date_row_observations": list(
+                self.target_date_row_observations
             ),
             "unverified_progress_repeat_block_count": (
                 self.unverified_progress_repeat_block_count

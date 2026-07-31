@@ -31,6 +31,13 @@ on scrolling the content toward older rows. Never plan to reinterpret a named
 as proof that no record exists on the date unless the visible UI explicitly
 establishes date-filter semantics.
 
+Once the explicit target date is visible, keep the next subgoal on opening and
+enumerating its rows rather than scrolling farther. Distinguish each row's
+title/name from the field the task requests. If type, category, duration,
+distance, time, status, or another requested field is not explicitly labeled
+in the list, plan to inspect every target-date row detail and retain one
+verified field value per row before completion.
+
 Use exactly these top-level keys and this shape:
 {"schema_version":"plan.v1","current_subgoal":{"subgoal_id":"sg_01","description":"next subgoal"},"open_requirements":["still-open requirement"],"required_variables":["explicit task variable"],"completion_requirements":[{"id":"cr_1","description":"visible completion condition","evidence_memory_ids":[]}],"plan_summary":"compact plan"}
 

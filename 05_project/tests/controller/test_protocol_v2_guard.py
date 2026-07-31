@@ -7,6 +7,7 @@ from raven_m.controller.protocol_v2_guard import (
     ProtocolV2DecisionGuard,
     bounded_task_repeated_tap_assessment,
     coordinate_type_text_target_assessment,
+    dated_list_answer_assessment,
     declared_text_source_assessment,
     destination_picker_active,
     destination_picker_commit_action,
@@ -99,6 +100,378 @@ def toolbar_decision(label: str) -> dict:
         "state_delta": [],
         "memory_citations": [],
     }
+
+
+def dated_activity_list_fixture(*, explicit_type: bool = False) -> list[dict]:
+    rows = [
+        ("Bicycle Adventure", "2 Oct", 0.60),
+        ("Skill work", "24 Sep", 0.75),
+        ("Recovery day", "24 Sep", 0.84),
+    ]
+    elements: list[dict] = []
+    for name, date, center in rows:
+        elements.extend(
+            [
+                {
+                    "package_name": "org.example.history",
+                    "text": name,
+                    "is_visible": True,
+                    "bbox": {
+                        "x_min": 0.08,
+                        "x_max": 0.70,
+                        "y_min": center - 0.035,
+                        "y_max": center + 0.035,
+                    },
+                },
+                {
+                    "package_name": "org.example.history",
+                    "text": date,
+                    "is_visible": True,
+                    "bbox": {
+                        "x_min": 0.88,
+                        "x_max": 0.98,
+                        "y_min": center - 0.035,
+                        "y_max": center + 0.035,
+                    },
+                },
+                {
+                    "package_name": "org.example.history",
+                    "is_visible": True,
+                    "is_enabled": True,
+                    "is_clickable": True,
+                    "bbox": {
+                        "x_min": 0.02,
+                        "x_max": 0.98,
+                        "y_min": center - 0.04,
+                        "y_max": center + 0.04,
+                    },
+                },
+            ]
+        )
+    if explicit_type:
+        elements.extend(
+            [
+                {
+                    "package_name": "org.example.history",
+                    "text": "Activity type",
+                    "is_visible": True,
+                    "bbox": {"x_min": 0.08, "x_max": 0.30,
+                             "y_min": 0.68, "y_max": 0.71},
+                },
+                {
+                    "package_name": "org.example.history",
+                    "text": "Cycling",
+                    "is_visible": True,
+                    "bbox": {"x_min": 0.32, "x_max": 0.55,
+                             "y_min": 0.72, "y_max": 0.78},
+                },
+                {
+                    "package_name": "org.example.history",
+                    "text": "Inline skating",
+                    "is_visible": True,
+                    "bbox": {"x_min": 0.32, "x_max": 0.60,
+                             "y_min": 0.81, "y_max": 0.87},
+                },
+            ]
+        )
+    return elements
+
+
+def answer_decision(text: str) -> dict:
+    return {
+        "status": "done",
+        "action": {
+            "type": "answer",
+            "text": text,
+            "text_origin": "current_screen",
+            "source_memory_ids": [],
+        },
+        "memory_citations": [],
+    }
+
+
+def test_dated_list_answer_replays_r62_date_and_field_mismatch() -> None:
+    assessment = dated_list_answer_assessment(
+        (
+            "What activities did I do September 24 2023? "
+            "Answer with the activity type only."
+        ),
+        dated_activity_list_fixture(),
+        answer_decision("Bicycle Adventure, Recovery day"),
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert assessment["target_date_list_visible"]
+    assert assessment["target_row_count"] == 2
+    assert assessment["requested_answer_role"] == "activity type"
+    assert assessment["requested_field_detail_required"]
+    assert assessment["answer_item_count_matches_target_rows"]
+    bindings = {item["item"]: item for item in assessment["item_bindings"]}
+    assert not bindings["Bicycle Adventure"]["target_row_bound"]
+    assert bindings["Recovery day"]["target_row_bound"]
+    assert not assessment["all_answer_items_target_row_bound"]
+
+
+def test_dated_list_accepts_target_bound_names_when_names_are_requested() -> None:
+    assessment = dated_list_answer_assessment(
+        (
+            "What activities did I do September 24 2023? "
+            "Answer with the activity name only."
+        ),
+        dated_activity_list_fixture(),
+        answer_decision("Skill work, Recovery day"),
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert assessment["target_date_list_visible"]
+    assert assessment["requested_answer_role"] == "activity name"
+    assert not assessment["role_detail_required"]
+    assert not assessment["requested_field_detail_required"]
+    assert assessment["answer_item_count_matches_target_rows"]
+    assert assessment["all_answer_items_target_row_bound"]
+
+
+def test_dated_list_recognizes_plural_requested_field_role() -> None:
+    assessment = dated_list_answer_assessment(
+        (
+            "What activities did I do September 24 2023? "
+            "Answer with the activity types only."
+        ),
+        dated_activity_list_fixture(),
+        answer_decision("Skill work, Recovery day"),
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert assessment["requested_answer_role"] == "activity types"
+    assert assessment["role_detail_required"]
+    assert assessment["requested_field_detail_required"]
+
+
+def test_dated_list_accepts_explicit_target_bound_requested_field() -> None:
+    assessment = dated_list_answer_assessment(
+        (
+            "What activities did I do September 24 2023? "
+            "Answer with the activity type only."
+        ),
+        dated_activity_list_fixture(explicit_type=True),
+        answer_decision("Cycling, Inline skating"),
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert assessment["field_role_explicitly_visible"]
+    assert not assessment["requested_field_detail_required"]
+    assert assessment["answer_item_count_matches_target_rows"]
+    assert assessment["all_answer_items_target_row_bound"]
+
+
+def test_dated_list_target_row_tap_is_coordinate_and_control_bound() -> None:
+    goal = (
+        "What activities did I do September 24 2023? "
+        "Answer with the activity type only."
+    )
+    target = dated_list_answer_assessment(
+        goal,
+        dated_activity_list_fixture(),
+        {"action": {"type": "tap", "x": 0.45, "y": 0.75}},
+        screen_width=1080,
+        screen_height=2400,
+    )
+    other = dated_list_answer_assessment(
+        goal,
+        dated_activity_list_fixture(),
+        {"action": {"type": "tap", "x": 0.45, "y": 0.60}},
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert target["target_row_tap_permitted"]
+    assert not other["target_row_tap_permitted"]
+
+
+def test_guard_blocks_swipe_after_target_date_is_visible() -> None:
+    goal = (
+        "What activities did I do September 24 2023? "
+        "Answer with the activity type only."
+    )
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(goal=goal)
+    proposed = decision(
+        {"type": "swipe", "x": 0.5, "y": 0.8,
+         "x2": 0.5, "y2": 0.2, "duration_ms": 500}
+    )
+    assessment = dated_list_answer_assessment(
+        goal,
+        dated_activity_list_fixture(),
+        proposed,
+        screen_width=1080,
+        screen_height=2400,
+    )
+    with pytest.raises(ActionValidationError, match="TARGET_DATE_VISIBLE_GUARD"):
+        guard.validate_decision(
+            proposed,
+            page_sha256="dated-list",
+            dated_list_answer_assessment=assessment,
+        )
+    assert guard.audit_record()["target_date_visible_swipe_block_count"] == 1
+
+
+def test_guard_blocks_r62_terminal_answer_association() -> None:
+    goal = (
+        "What activities did I do September 24 2023? "
+        "Answer with the activity type only."
+    )
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(goal=goal)
+    proposed = answer_decision("Bicycle Adventure, Recovery day")
+    assessment = dated_list_answer_assessment(
+        goal,
+        dated_activity_list_fixture(),
+        proposed,
+        screen_width=1080,
+        screen_height=2400,
+    )
+    with pytest.raises(ActionValidationError, match="ANSWER_ASSOCIATION_GUARD"):
+        guard.validate_decision(
+            proposed,
+            page_sha256="dated-list",
+            dated_list_answer_assessment=assessment,
+        )
+    audit = guard.audit_record()
+    assert audit["answer_association_block_count"] == 1
+    assert audit["target_date_row_count"] == 2
+
+
+def test_guard_requires_all_observed_target_rows_before_detail_answer() -> None:
+    goal = (
+        "What activities did I do September 24 2023? "
+        "Answer with the activity type only."
+    )
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(goal=goal)
+    tap = decision({"type": "tap", "x": 0.45, "y": 0.75})
+    list_assessment = dated_list_answer_assessment(
+        goal,
+        dated_activity_list_fixture(),
+        tap,
+        screen_width=1080,
+        screen_height=2400,
+    )
+    guard.validate_decision(
+        tap,
+        page_sha256="dated-list",
+        dated_list_answer_assessment=list_assessment,
+    )
+    one_item = answer_decision("Cycling")
+    detail_assessment = dated_list_answer_assessment(
+        goal,
+        [
+            {"text": "Activity type", "is_visible": True},
+            {"text": "Cycling", "is_visible": True},
+        ],
+        one_item,
+        screen_width=1080,
+        screen_height=2400,
+    )
+    with pytest.raises(
+        ActionValidationError,
+        match="TARGET_ROW_ENUMERATION_GUARD",
+    ):
+        guard.validate_decision(
+            one_item,
+            page_sha256="detail",
+            dated_list_answer_assessment=detail_assessment,
+        )
+
+
+def test_guard_requires_distinct_target_rows_not_repeated_same_row() -> None:
+    goal = (
+        "What activities did I do September 24 2023? "
+        "Answer with the activity types only."
+    )
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(goal=goal)
+    first_tap = decision({"type": "tap", "x": 0.45, "y": 0.75})
+    first_assessment = dated_list_answer_assessment(
+        goal,
+        dated_activity_list_fixture(),
+        first_tap,
+        screen_width=1080,
+        screen_height=2400,
+    )
+    guard.validate_decision(
+        first_tap,
+        page_sha256="dated-list",
+        dated_list_answer_assessment=first_assessment,
+    )
+    guard.validate_decision(
+        first_tap,
+        page_sha256="dated-list-returned",
+        dated_list_answer_assessment=first_assessment,
+    )
+    two_items = answer_decision("Cycling, Inline skating")
+    detail_assessment = dated_list_answer_assessment(
+        goal,
+        [
+            {"text": "Activity type", "is_visible": True},
+            {"text": "Cycling", "is_visible": True},
+        ],
+        two_items,
+        screen_width=1080,
+        screen_height=2400,
+    )
+    with pytest.raises(
+        ActionValidationError,
+        match="TARGET_ROW_ENUMERATION_GUARD",
+    ):
+        guard.validate_decision(
+            two_items,
+            page_sha256="detail",
+            dated_list_answer_assessment=detail_assessment,
+        )
+    audit = guard.audit_record()
+    assert audit["target_row_tap_validation_count"] == 2
+    assert audit["target_row_distinct_visit_count"] == 1
+
+
+def test_guard_allows_complete_answer_after_each_distinct_row_opened() -> None:
+    goal = (
+        "What activities did I do September 24 2023? "
+        "Answer with the activity types only."
+    )
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(goal=goal)
+    for y, page in ((0.75, "dated-list"), (0.84, "dated-list-returned")):
+        tap = decision({"type": "tap", "x": 0.45, "y": y})
+        assessment = dated_list_answer_assessment(
+            goal,
+            dated_activity_list_fixture(),
+            tap,
+            screen_width=1080,
+            screen_height=2400,
+        )
+        guard.validate_decision(
+            tap,
+            page_sha256=page,
+            dated_list_answer_assessment=assessment,
+        )
+    two_items = answer_decision("Cycling, Inline skating")
+    detail_assessment = dated_list_answer_assessment(
+        goal,
+        [
+            {"text": "Activity type", "is_visible": True},
+            {"text": "Inline skating", "is_visible": True},
+        ],
+        two_items,
+        screen_width=1080,
+        screen_height=2400,
+    )
+    guard.validate_decision(
+        two_items,
+        page_sha256="second-detail",
+        dated_list_answer_assessment=detail_assessment,
+    )
+    audit = guard.audit_record()
+    assert audit["target_row_distinct_visit_count"] == 2
+    assert audit["target_row_enumeration_block_count"] == 0
 
 
 @pytest.mark.parametrize("label", ["Markers", "Search"])

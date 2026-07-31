@@ -19,6 +19,14 @@ visible screenshot context binds it to the task's requested target. Reject a
 clipped, ambiguous, inferred, or wrong-context candidate. Judge only the
 unchanged screenshot and supplied task/candidate; do not rewrite the answer.
 
+For an answer grounded in a dated list, verify each comma-separated item
+against the row carrying the requested date on the same horizontal line; text
+visible in another date's row is wrong-context evidence. Also verify that each
+item represents the field requested by the task. A row title/name is not an
+activity type, category, duration, distance, time, status, or other distinct
+field. When the requested field is not explicitly labeled in the list, reject
+completion and require opening every target-date row detail.
+
 For trigger `consequential_action_candidate`, inspect the action candidate
 before it executes. Return `proceed` only when the exact task target and every
 commit-critical variable are visibly bound on the current screenshot. For a
