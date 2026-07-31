@@ -80,6 +80,80 @@ def call_and_parse(
     )
 
 
+def test_controller_replays_r61_markers_claim_as_older_history_swipe(
+    tmp_path: Path,
+) -> None:
+    initial = {
+        "status": "continue",
+        "action": {"type": "tap", "x": 0.84, "y": 0.085},
+        "expected_outcome": "Open the date picker for September 24, 2023.",
+        "decision_summary": (
+            "Tap the location icon in the top app bar to open the date "
+            "picker for selecting a specific date."
+        ),
+        "state_delta": [],
+        "memory_citations": [],
+    }
+    repair = {
+        "status": "continue",
+        "action": {
+            "type": "swipe",
+            "x": 0.5,
+            "y": 0.8,
+            "x2": 0.5,
+            "y2": 0.2,
+            "duration_ms": 500,
+        },
+        "expected_outcome": "Older history rows become visible.",
+        "decision_summary": "Swipe up through the history toward older rows.",
+        "state_delta": [],
+        "memory_citations": [],
+    }
+    client = RepairSequenceClient(initial, repair)
+    controller = controller_for(client, protocol_v2_2=True)
+    elements = [
+        {
+            "package_name": "org.example.history",
+            "content_description": "Markers",
+            "is_visible": True,
+            "is_enabled": True,
+            "is_clickable": True,
+            "bbox": {"x_min": 0.76, "x_max": 0.90,
+                     "y_min": 0.05, "y_max": 0.12},
+        },
+        *[
+            {
+                "package_name": "org.example.history",
+                "text": label,
+                "is_visible": True,
+                "bbox": {"x_min": 0.05, "x_max": 0.22,
+                         "y_min": y, "y_max": y + 0.04},
+            }
+            for label, y in (("Today", 0.20), ("Friday", 0.44),
+                             ("7 Oct", 0.72))
+        ],
+    ]
+    parsed, calls, _ = call_and_parse(
+        controller,
+        tmp_path=tmp_path,
+        task_goal="What happened on September 24 2023?",
+        ui_elements=elements,
+    )
+    assert len(calls) == 2
+    assert parsed["action"]["type"] == "swipe"
+    assert parsed["action"]["y2"] < parsed["action"]["y"]
+    repair_prompt = client.requests[1]["user_prompt"]
+    assert "CHRONOLOGICAL_LIST_SCROLL_REPAIR" in repair_prompt
+    assert repair_prompt.index("CHRONOLOGICAL_LIST_SCROLL_REPAIR") < (
+        repair_prompt.index("ORIGINAL")
+    )
+    audit = controller.decision_guard.audit_record()
+    assert audit["toolbar_affordance_block_count"] == 1
+    block = audit["validation_blocks"][0]
+    assert block["reason"] == "toolbar_affordance_claim_mismatch"
+    assert block["action"]["type"] == "tap"
+
+
 def test_controller_repairs_redundant_focused_empty_tap_to_type(
     tmp_path: Path,
 ) -> None:

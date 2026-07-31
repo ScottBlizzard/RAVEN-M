@@ -37,6 +37,7 @@ from raven_m.controller.protocol_v2_guard import (
     soft_keyboard_swipe_assessment,
     swipe_direction_consistency_assessment,
     task_literal_field_role_assessment,
+    toolbar_affordance_claim_assessment,
     visible_control_activation_retry_assessment,
 )
 from raven_m.env.androidworld_adapter import AndroidWorldAdapter
@@ -628,7 +629,9 @@ class EpisodeController:
                     "UI; do not invent optional field values or relabel them."
                     " A coordinate-bearing task literal must target a visible "
                     "editable field whose label matches the value's role; "
-                    "Search/Filter/Query fields may accept task queries."
+                    "Search/Filter/Query fields accept textual queries only "
+                    "when the visible UI establishes that field purpose. A "
+                    "calendar date is not a text-search query by default."
                     if protocol_v2
                     else
                     "TEXT_SAFETY: type_text may contain only a value explicitly "
@@ -700,6 +703,23 @@ class EpisodeController:
                         "keyboard. Do not tap another visible option or the "
                         "row center to speculate that a menu will open. Tap "
                         "only after the exact requested label is visible."
+                    ]
+                    if protocol_v2_2
+                    else []
+                ),
+                *(
+                    [
+                        "CHRONOLOGICAL_HISTORY_NAVIGATION: when the TASK "
+                        "contains an explicit date and the current screen "
+                        "shows a vertically ordered history with newer date "
+                        "headings above older ones, first move through the "
+                        "content list toward the target. If the older target "
+                        "is absent, swipe upward inside the list to reveal "
+                        "older rows. Do not speculate that a map-pin/Markers "
+                        "control is a calendar or that a magnifying-glass "
+                        "text Search is a date picker. An empty text-search "
+                        "result proves only that no text matched; it does not "
+                        "prove that no record exists on the requested date."
                     ]
                     if protocol_v2_2
                     else []
@@ -833,6 +853,7 @@ class EpisodeController:
             "DESTINATION_PICKER_GUARD:",
             "FILES_ROOTS_DRAWER_GUARD:",
             "SOFT_KEYBOARD_SWIPE_GUARD:",
+            "TOOLBAR_AFFORDANCE_GUARD:",
             "SWIPE_DIRECTION_GUARD:",
             "LOOP_GUARD:",
             "CRITIC_CONSTRAINT:",
@@ -897,6 +918,12 @@ class EpisodeController:
             "POST_DESTINATION_COMPLETION_REOBSERVE_REQUIRED:"
         )
         loop_guard_rejected = error.startswith("LOOP_GUARD:")
+        toolbar_affordance_rejected = error.startswith(
+            "TOOLBAR_AFFORDANCE_GUARD:"
+        )
+        chronological_list_scroll_required = (
+            "CHRONOLOGICAL_LIST_SCROLL_REQUIRED:" in error
+        )
         task_repeat_complete_rejected = error.startswith(
             "TASK_REPEAT_COUNT_COMPLETE:"
         )
@@ -926,7 +953,33 @@ class EpisodeController:
         visual_source_rejected = (
             "VISUAL_SOURCE_ADJUDICATION_REJECTED:" in error
         )
-        if task_repeat_complete_rejected:
+        if toolbar_affordance_rejected:
+            if chronological_list_scroll_required:
+                repair_directive = (
+                    "\n\nCHRONOLOGICAL_LIST_SCROLL_REPAIR: The proposed "
+                    "top-app-bar tap claimed a role that conflicts with the "
+                    "visible named control. The current screen is also a "
+                    "vertically arranged chronological history whose older "
+                    "target date is absent. For this one repair, return "
+                    "status=continue with exactly one vertical swipe upward "
+                    "inside the content list: start below y=0.60, end above "
+                    "y=0.40, keep both x coordinates in the content area and "
+                    "nearly equal, and describe moving toward older rows. Do "
+                    "not tap any toolbar control, open Search or Markers, "
+                    "type the date, wait, answer, or claim a state change. "
+                    "Use empty state_delta, memory_citations, and "
+                    "completion_evidence.\n"
+                )
+            else:
+                repair_directive = (
+                    "\n\nTOOLBAR_AFFORDANCE_REPAIR: The proposed top-app-bar "
+                    "tap claimed a role that conflicts with the visible named "
+                    "control. For this one repair, do not repeat that tap or "
+                    "reinterpret its role. Choose one reversible action whose "
+                    "visible affordance actually matches the claimed outcome, "
+                    "or inspect the content instead.\n"
+                )
+        elif task_repeat_complete_rejected:
             repair_directive = (
                 "\n\nVERIFIED_REPEAT_COMPLETION_REPAIR: The exact requested "
                 "number of task-bound activations has already executed. The "
@@ -1291,7 +1344,9 @@ class EpisodeController:
             else ""
         )
         priority_repair = bool(
-            loop_guard_rejected or task_repeat_complete_rejected
+            toolbar_affordance_rejected
+            or loop_guard_rejected
+            or task_repeat_complete_rejected
         )
         repair_prefix = repair_directive if priority_repair else ""
         repair_suffix = "" if priority_repair else repair_directive
@@ -1382,6 +1437,9 @@ class EpisodeController:
         latest_bounded_task_repeated_tap_assessment: (
             dict[str, Any] | None
         ) = None
+        latest_toolbar_affordance_claim_assessment: (
+            dict[str, Any] | None
+        ) = None
         visual_source_cache: dict[str, dict[str, Any]] = {}
         parse_kwargs = (
             {"schema_path": self.action_schema_path}
@@ -1400,9 +1458,11 @@ class EpisodeController:
             nonlocal latest_repair_rationale_normalization
             nonlocal latest_files_view_mode_repair_assessment
             nonlocal latest_bounded_task_repeated_tap_assessment
+            nonlocal latest_toolbar_affordance_claim_assessment
             latest_verification_navigation_assessment = None
             latest_source_context_assessment = None
             latest_bounded_task_repeated_tap_assessment = None
+            latest_toolbar_affordance_claim_assessment = None
             candidate_content = content
             if repair_contract_error is not None:
                 (
@@ -1420,7 +1480,7 @@ class EpisodeController:
                 repair_contract_error
                 and repair_contract_error.startswith(
                     "FILES_EXACT_TARGET_VIEW_MODE_REPAIR_REQUIRED:"
-                )
+                    )
             ):
                 candidate_action = parsed_candidate.decision.get("action")
                 latest_files_view_mode_repair_assessment = (
@@ -1640,6 +1700,50 @@ class EpisodeController:
                     "permits only the exact "
                     '{"type":"press_back"} action in this bounded repair.'
                 )
+            if (
+                repair_contract_error
+                and "CHRONOLOGICAL_LIST_SCROLL_REQUIRED:"
+                in repair_contract_error
+            ):
+                candidate = parsed_candidate.decision
+                candidate_action = candidate.get("action")
+                coordinates = (
+                    candidate_action
+                    if isinstance(candidate_action, dict)
+                    else {}
+                )
+                summary = str(candidate.get("decision_summary") or "").lower()
+                geometry_matches = bool(
+                    coordinates.get("type") == "swipe"
+                    and set(coordinates)
+                    == {"type", "x", "y", "x2", "y2", "duration_ms"}
+                    and isinstance(coordinates.get("x"), (int, float))
+                    and isinstance(coordinates.get("y"), (int, float))
+                    and isinstance(coordinates.get("x2"), (int, float))
+                    and isinstance(coordinates.get("y2"), (int, float))
+                    and 0.15 <= coordinates["x"] <= 0.85
+                    and 0.15 <= coordinates["x2"] <= 0.85
+                    and coordinates["y"] > 0.60
+                    and coordinates["y2"] < 0.40
+                    and abs(coordinates["x2"] - coordinates["x"])
+                    <= 0.15
+                )
+                completion_evidence = candidate.get("completion_evidence", [])
+                if (
+                    candidate.get("status") != "continue"
+                    or not geometry_matches
+                    or "older" not in summary
+                    or candidate.get("state_delta") != []
+                    or candidate.get("memory_citations") != []
+                    or completion_evidence != []
+                ):
+                    raise ActionValidationError(
+                        "REPAIR_CONTRACT_GUARD: "
+                        "CHRONOLOGICAL_LIST_SCROLL_REQUIRED permits only one "
+                        "vertical content swipe upward toward older rows, "
+                        "with empty state_delta, memory_citations, and "
+                        "completion_evidence."
+                    )
             self.history_policy.validate_decision(parsed_candidate.decision)
             picker_commit_is_action = False
             if self.decision_guard is not None:
@@ -1870,6 +1974,17 @@ class EpisodeController:
                         screen_height=screen_height,
                     )
                 )
+                latest_toolbar_affordance_claim_assessment = (
+                    toolbar_affordance_claim_assessment(
+                        task_goal,
+                        ui_elements,
+                        parsed_candidate.decision,
+                        screen_width=screen_width,
+                        screen_height=screen_height,
+                    )
+                    if self.protocol_v2_2
+                    else None
+                )
                 repeated_tap_transition_context = (
                     self.decision_guard.repeated_tap_transition_context(
                         page_sha256=page_semantic_sha256,
@@ -1975,6 +2090,9 @@ class EpisodeController:
                     bounded_task_repeated_tap_assessment=(
                         latest_bounded_task_repeated_tap_assessment
                     ),
+                    toolbar_affordance_claim_assessment=(
+                        latest_toolbar_affordance_claim_assessment
+                    ),
                 )
             consequential_action_candidate = None
             if self.protocol_v2_2 and destination_picker_is_active:
@@ -2075,6 +2193,9 @@ class EpisodeController:
                     ),
                     "bounded_task_repeated_tap_assessment": (
                         latest_bounded_task_repeated_tap_assessment
+                    ),
+                    "toolbar_affordance_claim_assessment": (
+                        latest_toolbar_affordance_claim_assessment
                     ),
                 },
             )
@@ -2251,6 +2372,9 @@ class EpisodeController:
                     ),
                     "bounded_task_repeated_tap_assessment": (
                         latest_bounded_task_repeated_tap_assessment
+                    ),
+                    "toolbar_affordance_claim_assessment": (
+                        latest_toolbar_affordance_claim_assessment
                     ),
                 },
             )

@@ -24,6 +24,7 @@ from raven_m.controller.protocol_v2_guard import (
     soft_keyboard_swipe_assessment,
     swipe_direction_consistency_assessment,
     task_literal_field_role_assessment,
+    toolbar_affordance_claim_assessment,
     visible_control_activation_retry_assessment,
 )
 
@@ -52,6 +53,159 @@ def decision(action: dict, *, citations: list[str] | None = None) -> dict:
         "action": action,
         "memory_citations": citations or [],
     }
+
+
+def chronological_toolbar_fixture(label: str) -> list[dict]:
+    return [
+        {
+            "package_name": "org.example.history",
+            "content_description": label,
+            "is_visible": True,
+            "is_enabled": True,
+            "is_clickable": True,
+            "bbox": {"x_min": 0.76, "x_max": 0.90,
+                     "y_min": 0.05, "y_max": 0.12},
+        },
+        {
+            "package_name": "org.example.history",
+            "text": "Today",
+            "is_visible": True,
+            "bbox": {"x_min": 0.06, "x_max": 0.24,
+                     "y_min": 0.20, "y_max": 0.24},
+        },
+        {
+            "package_name": "org.example.history",
+            "text": "Friday",
+            "is_visible": True,
+            "bbox": {"x_min": 0.06, "x_max": 0.24,
+                     "y_min": 0.43, "y_max": 0.47},
+        },
+        {
+            "package_name": "org.example.history",
+            "text": "7 Oct",
+            "is_visible": True,
+            "bbox": {"x_min": 0.06, "x_max": 0.24,
+                     "y_min": 0.72, "y_max": 0.76},
+        },
+    ]
+
+
+def toolbar_decision(label: str) -> dict:
+    return {
+        "status": "continue",
+        "action": {"type": "tap", "x": 0.83, "y": 0.085},
+        "expected_outcome": label,
+        "decision_summary": "Use the visible top toolbar control.",
+        "state_delta": [],
+        "memory_citations": [],
+    }
+
+
+@pytest.mark.parametrize("label", ["Markers", "Search"])
+def test_toolbar_role_mismatch_requires_older_history_scroll(
+    label: str,
+) -> None:
+    assessment = toolbar_affordance_claim_assessment(
+        "What happened on September 24 2023?",
+        chronological_toolbar_fixture(label),
+        toolbar_decision("Open the date picker for September 24, 2023."),
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert assessment["adjudicable"]
+    assert assessment["expected_roles"] == ["date"]
+    assert assessment["target_roles"] == [label.casefold().rstrip("s")]
+    assert assessment["matched"] is False
+    chronology = assessment["chronological_list_navigation_assessment"]
+    assert chronology["chronological_history_detected"]
+    assert chronology["target_visible"] is False
+    assert chronology["target_older_than_visible_history"]
+    assert chronology["scroll_toward_older_required"]
+
+
+@pytest.mark.parametrize(
+    ("control", "outcome", "role"),
+    [
+        ("Calendar", "Open the date picker.", "date"),
+        ("Markers", "Open the Markers map.", "marker"),
+        ("Search", "Open the Search field.", "search"),
+    ],
+)
+def test_toolbar_role_match_is_accepted(
+    control: str,
+    outcome: str,
+    role: str,
+) -> None:
+    assessment = toolbar_affordance_claim_assessment(
+        "What happened on September 24 2023?",
+        chronological_toolbar_fixture(control),
+        toolbar_decision(outcome),
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert assessment["adjudicable"]
+    assert assessment["expected_roles"] == [role]
+    assert assessment["target_roles"] == [role]
+    assert assessment["matched"]
+
+
+def test_unknown_toolbar_role_does_not_block() -> None:
+    assessment = toolbar_affordance_claim_assessment(
+        "What happened on September 24 2023?",
+        chronological_toolbar_fixture("More options"),
+        toolbar_decision("Open the date picker."),
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert not assessment["adjudicable"]
+    assert assessment["matched"] is None
+
+
+def test_nonchronological_toolbar_mismatch_does_not_force_scroll() -> None:
+    elements = chronological_toolbar_fixture("Markers")[:1]
+    assessment = toolbar_affordance_claim_assessment(
+        "What happened on September 24 2023?",
+        elements,
+        toolbar_decision("Open the date picker."),
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert assessment["adjudicable"]
+    assert assessment["matched"] is False
+    chronology = assessment["chronological_list_navigation_assessment"]
+    assert not chronology["chronological_history_detected"]
+    assert not chronology["scroll_toward_older_required"]
+
+
+def test_visible_target_date_does_not_force_older_scroll() -> None:
+    elements = chronological_toolbar_fixture("Markers")
+    elements[-1]["text"] = "September 24"
+    assessment = toolbar_affordance_claim_assessment(
+        "What happened on September 24 2023?",
+        elements,
+        toolbar_decision("Open the date picker."),
+        screen_width=1080,
+        screen_height=2400,
+    )
+    chronology = assessment["chronological_list_navigation_assessment"]
+    assert chronology["chronological_history_detected"]
+    assert chronology["target_visible"]
+    assert not chronology["scroll_toward_older_required"]
+
+
+def test_newer_absent_target_date_does_not_force_older_scroll() -> None:
+    assessment = toolbar_affordance_claim_assessment(
+        "What happened on December 24 2023?",
+        chronological_toolbar_fixture("Markers"),
+        toolbar_decision("Open the date picker."),
+        screen_width=1080,
+        screen_height=2400,
+    )
+    chronology = assessment["chronological_list_navigation_assessment"]
+    assert chronology["chronological_history_detected"]
+    assert chronology["target_visible"] is False
+    assert not chronology["target_older_than_visible_history"]
+    assert not chronology["scroll_toward_older_required"]
 
 
 @pytest.mark.parametrize(

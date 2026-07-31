@@ -91,6 +91,32 @@ def test_v2_2_prompt_grounds_weekday_after_next_before_navigation() -> None:
     assert "above any soft keyboard" in prompt
     assert "Do not tap another visible option or the row center" in prompt
     assert "only after the exact requested label is visible" in prompt
+    assert "CHRONOLOGICAL_HISTORY_NAVIGATION" in prompt
+    assert "swipe upward inside the list" in prompt
+    assert "map-pin/Markers control is a calendar" in prompt
+    assert "text Search is a date picker" in prompt
+    assert "empty text-search result proves only that no text matched" in prompt
+
+
+def test_v2_toolbar_mismatch_repair_forces_content_swipe() -> None:
+    error = (
+        "TOOLBAR_AFFORDANCE_GUARD: date conflicts with marker. "
+        "CHRONOLOGICAL_LIST_SCROLL_REQUIRED: the older target is absent."
+    )
+    prompt = EpisodeController._repair_prompt(
+        "original",
+        '{"action":{"type":"tap","x":0.83,"y":0.085}}',
+        error,
+        protocol_v2=True,
+    )
+    assert "CHRONOLOGICAL_LIST_SCROLL_REPAIR" in prompt
+    assert "exactly one vertical swipe upward" in prompt
+    assert "start below y=0.60, end above y=0.40" in prompt
+    assert "Do not tap any toolbar control" in prompt
+    assert "Use empty state_delta" in prompt
+    assert prompt.index("CHRONOLOGICAL_LIST_SCROLL_REPAIR") < (
+        prompt.index("original")
+    )
 
 
 def test_v2_loop_guard_repair_requires_higher_level_selector() -> None:
@@ -368,4 +394,8 @@ def test_v2_system_prompts_distinguish_ordinary_and_answer_completion() -> None:
         assert "Do not tap another visible option or the row center" in normalized
         assert "only after the exact requested label is visible" in normalized
         if filename == "executor_raven_v2.md":
+            assert "vertically ordered chronological history" in normalized
+            assert "map-pin/`Markers` control is spatial" in normalized
+            assert "magnifying-glass" in normalized
+            assert "empty text-search result proves only" in normalized
             assert '"completion_evidence":[]' in normalized

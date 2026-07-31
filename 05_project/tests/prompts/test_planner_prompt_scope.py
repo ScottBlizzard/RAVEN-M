@@ -10,3 +10,7 @@ def test_planner_prompt_forbids_optional_payload_invention() -> None:
     assert "visible blank optional field is not a new requirement" in prompt
     assert "Never add a company, email, note, label, placeholder" in prompt
     assert "remove it on the next refresh" in prompt
+    assert "distinguish a chronological history" in prompt
+    assert "scrolling the content toward older rows" in prompt
+    assert "`Markers`/map control as a calendar" in prompt
+    assert "empty text-search results" in prompt

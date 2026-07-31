@@ -23,6 +23,14 @@ payload text. Never add a company, email, note, label, placeholder, example, or
 default value unless `task` explicitly asks for it. Do not preserve an
 invented optional variable from `previous_plan`; remove it on the next refresh.
 
+For an explicit-date lookup, distinguish a chronological history from a
+calendar/date picker and from text Search. When the screenshot shows newer
+date headings above older ones and the target is absent, keep the next subgoal
+on scrolling the content toward older rows. Never plan to reinterpret a named
+`Markers`/map control as a calendar, and never treat empty text-search results
+as proof that no record exists on the date unless the visible UI explicitly
+establishes date-filter semantics.
+
 Use exactly these top-level keys and this shape:
 {"schema_version":"plan.v1","current_subgoal":{"subgoal_id":"sg_01","description":"next subgoal"},"open_requirements":["still-open requirement"],"required_variables":["explicit task variable"],"completion_requirements":[{"id":"cr_1","description":"visible completion condition","evidence_memory_ids":[]}],"plan_summary":"compact plan"}
 

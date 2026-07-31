@@ -102,6 +102,70 @@ COMMIT_LIKE_CONTROL_RE = re.compile(
     r"log\s*out|factory\s+reset)\b",
     flags=re.IGNORECASE,
 )
+TOOLBAR_AFFORDANCE_ROLE_RES = {
+    "date": re.compile(
+        r"\b(calendar|date(?:\s+picker)?|day\s+picker|month\s+grid)\b",
+        flags=re.IGNORECASE,
+    ),
+    "search": re.compile(
+        r"\b(search|filter|query|find)(?:ing|ed|es)?\b",
+        flags=re.IGNORECASE,
+    ),
+    "marker": re.compile(
+        r"\b(marker|markers|map|maps|location|locations|place|places)\b",
+        flags=re.IGNORECASE,
+    ),
+}
+MONTH_NAME_TO_NUMBER = {
+    "january": 1,
+    "jan": 1,
+    "february": 2,
+    "feb": 2,
+    "march": 3,
+    "mar": 3,
+    "april": 4,
+    "apr": 4,
+    "may": 5,
+    "june": 6,
+    "jun": 6,
+    "july": 7,
+    "jul": 7,
+    "august": 8,
+    "aug": 8,
+    "september": 9,
+    "sep": 9,
+    "sept": 9,
+    "october": 10,
+    "oct": 10,
+    "november": 11,
+    "nov": 11,
+    "december": 12,
+    "dec": 12,
+}
+MONTH_TOKEN = "(?:" + "|".join(
+    sorted(MONTH_NAME_TO_NUMBER, key=len, reverse=True)
+) + ")"
+MONTH_FIRST_DATE_RE = re.compile(
+    rf"\b(?P<month>{MONTH_TOKEN})\.?\s+(?P<day>\d{{1,2}})"
+    r"(?:st|nd|rd|th)?(?:\s*,?\s*(?P<year>\d{4}))?\b",
+    flags=re.IGNORECASE,
+)
+DAY_FIRST_DATE_RE = re.compile(
+    rf"\b(?P<day>\d{{1,2}})(?:st|nd|rd|th)?\s+"
+    rf"(?P<month>{MONTH_TOKEN})\.?(?:\s*,?\s*(?P<year>\d{{4}}))?\b",
+    flags=re.IGNORECASE,
+)
+NUMERIC_DATE_RE = re.compile(
+    r"\b(?P<year>20\d{2})[-/.](?P<month>0?[1-9]|1[0-2])"
+    r"[-/.](?P<day>0?[1-9]|[12]\d|3[01])\b"
+)
+CHRONOLOGICAL_LABEL_RE = re.compile(
+    rf"^(?:today|yesterday|monday|tuesday|wednesday|thursday|friday|"
+    rf"saturday|sunday|mon|tue|tues|wed|thu|thur|thurs|fri|sat|sun|"
+    rf"{MONTH_TOKEN}\.?\s+\d{{1,2}}(?:st|nd|rd|th)?|"
+    rf"\d{{1,2}}(?:st|nd|rd|th)?\s+{MONTH_TOKEN}\.?)$",
+    flags=re.IGNORECASE,
+)
 IGNORED_UI_PACKAGES = {"com.android.systemui"}
 SOFT_KEYBOARD_PACKAGES = {
     "com.android.inputmethod.latin",
@@ -1210,6 +1274,315 @@ def _tap_hits_element(
     )
 
 
+def _affordance_roles(text: str | None) -> set[str]:
+    if not text:
+        return set()
+    return {
+        role
+        for role, pattern in TOOLBAR_AFFORDANCE_ROLE_RES.items()
+        if pattern.search(text)
+    }
+
+
+def _absolute_dates(text: str | None) -> set[tuple[int | None, int, int]]:
+    """Extract only explicit calendar dates, never relative date language."""
+    dates: set[tuple[int | None, int, int]] = set()
+    value = text or ""
+    for pattern in (MONTH_FIRST_DATE_RE, DAY_FIRST_DATE_RE):
+        for match in pattern.finditer(value):
+            month = MONTH_NAME_TO_NUMBER[match.group("month").casefold()]
+            year_text = match.group("year")
+            dates.add(
+                (
+                    int(year_text) if year_text else None,
+                    month,
+                    int(match.group("day")),
+                )
+            )
+    for match in NUMERIC_DATE_RE.finditer(value):
+        dates.add(
+            (
+                int(match.group("year")),
+                int(match.group("month")),
+                int(match.group("day")),
+            )
+        )
+    return dates
+
+
+def chronological_list_navigation_assessment(
+    goal: str,
+    ui_elements: Any,
+    *,
+    screen_width: int,
+    screen_height: int,
+) -> dict[str, Any]:
+    """Detect a vertically arranged chronological history with an older target."""
+    target_dates = _absolute_dates(goal)
+    visible_dates: set[tuple[int | None, int, int]] = set()
+    date_anchors: list[dict[str, Any]] = []
+    visible_labels: list[str] = []
+    for element in ui_elements or ():
+        if _element_value(element, "is_visible") is False:
+            continue
+        labels = [
+            label
+            for field in (
+                "text",
+                "content_description",
+                "hint_text",
+                "tooltip",
+            )
+            if (
+                label := _normalized_text(_element_value(element, field))
+            )
+            is not None
+        ]
+        for label in labels:
+            visible_labels.append(label)
+            visible_dates.update(_absolute_dates(label))
+            if not CHRONOLOGICAL_LABEL_RE.fullmatch(label.strip()):
+                continue
+            bbox = _normalized_element_bbox(
+                element,
+                screen_width=screen_width,
+                screen_height=screen_height,
+            )
+            if bbox is None:
+                continue
+            x_min, x_max, y_min, y_max = bbox
+            anchor_dates = _absolute_dates(label)
+            date_anchors.append(
+                {
+                    "label": label,
+                    "x_center": round((x_min + x_max) / 2, 6),
+                    "y_center": round((y_min + y_max) / 2, 6),
+                    "dates": [
+                        {"year": year, "month": month, "day": day}
+                        for year, month, day in sorted(
+                            anchor_dates,
+                            key=lambda item: (
+                                item[0] or 0,
+                                item[1],
+                                item[2],
+                            ),
+                        )
+                    ],
+                }
+            )
+    x_centers = [item["x_center"] for item in date_anchors]
+    y_centers = [item["y_center"] for item in date_anchors]
+    vertically_distributed = bool(
+        len(date_anchors) >= 3
+        and max(y_centers) - min(y_centers) >= 0.12
+    )
+    left_or_center_aligned = bool(
+        len(date_anchors) >= 3
+        and max(x_centers) - min(x_centers) <= 0.35
+    )
+    chronological_history_detected = bool(
+        vertically_distributed and left_or_center_aligned
+    )
+
+    def date_matches(
+        target: tuple[int | None, int, int],
+        visible: tuple[int | None, int, int],
+    ) -> bool:
+        target_year, target_month, target_day = target
+        visible_year, visible_month, visible_day = visible
+        return bool(
+            target_month == visible_month
+            and target_day == visible_day
+            and (
+                target_year is None
+                or visible_year is None
+                or target_year == visible_year
+            )
+        )
+
+    target_visible = any(
+        date_matches(target, visible)
+        for target in target_dates
+        for visible in visible_dates
+    )
+    dated_anchors = [
+        anchor for anchor in date_anchors if anchor["dates"]
+    ]
+    bottom_visible_date = None
+    if dated_anchors:
+        bottom_anchor = max(
+            dated_anchors,
+            key=lambda anchor: anchor["y_center"],
+        )
+        bottom_visible_date = bottom_anchor["dates"][0]
+
+    def target_is_older(
+        target: tuple[int | None, int, int],
+        visible: dict[str, int | None],
+    ) -> bool:
+        target_year, target_month, target_day = target
+        visible_year = visible["year"]
+        if target_year is not None and visible_year is not None:
+            return (target_year, target_month, target_day) < (
+                visible_year,
+                visible["month"],
+                visible["day"],
+            )
+        return (target_month, target_day) < (
+            visible["month"],
+            visible["day"],
+        )
+
+    target_older_than_visible_history = bool(
+        bottom_visible_date is not None
+        and any(
+            target_is_older(target, bottom_visible_date)
+            for target in target_dates
+        )
+    )
+    scroll_toward_older_required = bool(
+        target_dates
+        and chronological_history_detected
+        and not target_visible
+        and target_older_than_visible_history
+    )
+    return {
+        "schema_version": "chronological_list_navigation_assessment.v1",
+        "target_dates": [
+            {"year": year, "month": month, "day": day}
+            for year, month, day in sorted(
+                target_dates,
+                key=lambda item: (item[0] or 0, item[1], item[2]),
+            )
+        ],
+        "visible_dates": [
+            {"year": year, "month": month, "day": day}
+            for year, month, day in sorted(
+                visible_dates,
+                key=lambda item: (item[0] or 0, item[1], item[2]),
+            )
+        ],
+        "visible_label_count": len(visible_labels),
+        "date_anchor_count": len(date_anchors),
+        "date_anchors": date_anchors,
+        "vertically_distributed": vertically_distributed,
+        "left_or_center_aligned": left_or_center_aligned,
+        "chronological_history_detected": chronological_history_detected,
+        "target_visible": target_visible,
+        "bottom_visible_date": bottom_visible_date,
+        "target_older_than_visible_history": (
+            target_older_than_visible_history
+        ),
+        "scroll_toward_older_required": scroll_toward_older_required,
+    }
+
+
+def toolbar_affordance_claim_assessment(
+    goal: str,
+    ui_elements: Any,
+    decision: dict[str, Any] | None,
+    *,
+    screen_width: int,
+    screen_height: int,
+) -> dict[str, Any]:
+    """Bind a claimed toolbar outcome to the tapped control's visible role."""
+    action = decision.get("action") if isinstance(decision, dict) else None
+    expected_outcome = (
+        _normalized_text(decision.get("expected_outcome"))
+        if isinstance(decision, dict)
+        else None
+    )
+    decision_summary = (
+        _normalized_text(decision.get("decision_summary"))
+        if isinstance(decision, dict)
+        else None
+    )
+    expected_roles = _affordance_roles(expected_outcome)
+    expected_role_source = "expected_outcome"
+    if not expected_roles:
+        expected_roles = _affordance_roles(decision_summary)
+        expected_role_source = "decision_summary"
+    matched_controls: list[dict[str, Any]] = []
+    target_roles: set[str] = set()
+    for element in ui_elements or ():
+        package_name = _normalized_text(
+            _element_value(element, "package_name")
+        )
+        if package_name in IGNORED_UI_PACKAGES:
+            continue
+        if _element_value(element, "is_visible") is not True:
+            continue
+        if _element_value(element, "is_enabled") is not True:
+            continue
+        if _element_value(element, "is_clickable") is not True:
+            continue
+        if not _tap_hits_element(
+            action,
+            element,
+            screen_width=screen_width,
+            screen_height=screen_height,
+        ):
+            continue
+        bbox = _normalized_element_bbox(
+            element,
+            screen_width=screen_width,
+            screen_height=screen_height,
+        )
+        if bbox is None or (bbox[2] + bbox[3]) / 2 > 0.16:
+            continue
+        labels = [
+            label
+            for field in (
+                "text",
+                "content_description",
+                "hint_text",
+                "tooltip",
+            )
+            if (
+                label := _normalized_text(_element_value(element, field))
+            )
+            is not None
+        ]
+        control_roles = set().union(
+            *(_affordance_roles(label) for label in labels)
+        )
+        if not labels:
+            continue
+        target_roles.update(control_roles)
+        matched_controls.append(
+            {
+                "labels": labels,
+                "roles": sorted(control_roles),
+                "bbox": [round(value, 6) for value in bbox],
+            }
+        )
+    role_match = bool(expected_roles.intersection(target_roles))
+    adjudicable = bool(
+        isinstance(action, dict)
+        and action.get("type") == "tap"
+        and matched_controls
+        and expected_roles
+        and target_roles
+    )
+    chronology = chronological_list_navigation_assessment(
+        goal,
+        ui_elements,
+        screen_width=screen_width,
+        screen_height=screen_height,
+    )
+    return {
+        "schema_version": "toolbar_affordance_claim_assessment.v1",
+        "action_type": action.get("type") if isinstance(action, dict) else None,
+        "expected_role_source": expected_role_source,
+        "expected_roles": sorted(expected_roles),
+        "target_roles": sorted(target_roles),
+        "matched_controls": matched_controls,
+        "adjudicable": adjudicable,
+        "matched": role_match if adjudicable else None,
+        "chronological_list_navigation_assessment": chronology,
+    }
+
+
 def soft_keyboard_swipe_assessment(
     ui_elements: Any,
     action: dict[str, Any] | None,
@@ -2101,6 +2474,7 @@ class ProtocolV2DecisionGuard:
         self.task_literal_field_role_block_count = 0
         self.soft_keyboard_swipe_block_count = 0
         self.focused_empty_tap_block_count = 0
+        self.toolbar_affordance_block_count = 0
         self.last_unverified_progress_no_effect_fingerprint: (
             tuple[str, str] | None
         ) = None
@@ -2530,6 +2904,9 @@ class ProtocolV2DecisionGuard:
         bounded_task_repeated_tap_assessment: (
             dict[str, Any] | None
         ) = None,
+        toolbar_affordance_claim_assessment: (
+            dict[str, Any] | None
+        ) = None,
     ) -> None:
         self._validate_text_provenance(
             decision,
@@ -2543,6 +2920,59 @@ class ProtocolV2DecisionGuard:
         if not isinstance(action, dict):
             return
         action_key = canonical_action_key(action)
+        toolbar_assessment = toolbar_affordance_claim_assessment or {}
+        if (
+            toolbar_assessment.get("adjudicable") is True
+            and toolbar_assessment.get("matched") is False
+        ):
+            chronology = toolbar_assessment.get(
+                "chronological_list_navigation_assessment"
+            ) or {}
+            scroll_required = chronology.get(
+                "scroll_toward_older_required"
+            ) is True
+            required_recovery_classes = [
+                "inspect_different_visible_control",
+            ]
+            if scroll_required:
+                required_recovery_classes.insert(
+                    0,
+                    "scroll_chronological_content_toward_older",
+                )
+            record = {
+                "semantic_state_sha256": page_sha256,
+                "action": action,
+                "reason": "toolbar_affordance_claim_mismatch",
+                "toolbar_affordance_claim_assessment": toolbar_assessment,
+                "required_recovery_classes": required_recovery_classes,
+            }
+            self.validation_blocks.append(record)
+            self.toolbar_affordance_block_count += 1
+            expected_roles = ", ".join(
+                toolbar_assessment.get("expected_roles") or []
+            )
+            target_roles = ", ".join(
+                toolbar_assessment.get("target_roles") or []
+            )
+            chronology_directive = (
+                " CHRONOLOGICAL_LIST_SCROLL_REQUIRED: the task contains an "
+                "explicit date, the current screen exposes date headings "
+                "as a vertically arranged chronological history, and the "
+                "target date is not visible. Swipe upward inside the content "
+                "list to reveal older entries; do not tap a toolbar control, "
+                "open text search, type the date, wait, or answer in this "
+                "bounded repair."
+                if scroll_required
+                else ""
+            )
+            raise ActionValidationError(
+                "TOOLBAR_AFFORDANCE_GUARD: the proposed top-app-bar tap "
+                f"claims an expected role ({expected_roles}) but hits a "
+                f"visible control with a conflicting role ({target_roles}). "
+                "Do not treat one named toolbar affordance as a different "
+                "kind of control."
+                + chronology_directive
+            )
         source_context_assessment = (
             post_destination_source_context_assessment or {}
         )
@@ -3648,6 +4078,9 @@ class ProtocolV2DecisionGuard:
             ),
             "focused_empty_tap_block_count": (
                 self.focused_empty_tap_block_count
+            ),
+            "toolbar_affordance_block_count": (
+                self.toolbar_affordance_block_count
             ),
             "unverified_progress_repeat_block_count": (
                 self.unverified_progress_repeat_block_count
