@@ -219,6 +219,7 @@ Raw trajectories are under `runs/excluded_protocol_dry_run/` and
 | `04_protocols/protocol_v2_2_r58_candidate_addendum.md` | delayed semantic convergence reconciliation, task-control binding, and preserved denial boundaries | local candidate |
 | `reports/protocol_v2_2_r58_local_validation.json` | machine-readable 430-test, denial-matrix, v1-seal, exact-source, model, and emulator evidence | passed locally; preflight preparation allowed |
 | `reports/protocol_v2_2_r58_local_validation.md` | human-readable r58 rationale, validation result, and zero-call boundary | current |
+| `05_project/scripts/run_protocol_v2_2_r58_h01_candidate_smoke.py` | exact-source r58 preflight and isolated non-scored H01 B3 entry point | prepared |
 
 The r39 raw trajectories are under
 `runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/` and remain
