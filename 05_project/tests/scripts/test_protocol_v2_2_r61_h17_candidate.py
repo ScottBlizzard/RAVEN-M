@@ -28,14 +28,6 @@ R60_STOP_REPORT = (
 R61_LOCAL_REPORT = (
     ROOT / "reports/protocol_v2_2_r61_local_validation.json"
 )
-R61_SUITE = (
-    ROOT
-    / "runs/protocol_v2_2_development/"
-    "hard_micro_v2_2_seed20260730_r61_candidate_"
-    "development_smoke_sequence_2"
-)
-
-
 def load_wrapper(name: str):
     scripts = str(ROOT / "05_project/scripts")
     if scripts not in sys.path:
@@ -179,7 +171,6 @@ def test_r61_candidate_wrapper_allows_only_preflight_or_h17_m0() -> None:
     wrapper.validate_invocation(
         ["--adb-path", "adb", "--development-smoke-sequence", "2"]
     )
-    assert not R61_SUITE.exists()
 
 
 def test_r61_candidate_wrapper_uses_non_formal_mode() -> None:

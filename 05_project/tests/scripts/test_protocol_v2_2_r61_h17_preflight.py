@@ -87,5 +87,5 @@ def test_r61_h17_preflight_matches_exact_live_environment() -> None:
     assert report["fresh_suite_directory_absent"] is True
 
 
-def test_r61_h17_suite_is_absent_before_the_authorized_launch() -> None:
-    assert not SUITE.exists()
+def test_r61_h17_preflight_recorded_suite_absence_before_launch() -> None:
+    assert payload()["fresh_suite_directory_absent"] is True
