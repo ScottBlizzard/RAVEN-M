@@ -676,6 +676,65 @@ class WrongFileThenSearchClient:
         )
 
 
+class WrongFileThenFilesViewClient:
+    def __init__(
+        self,
+        *,
+        repair_action: dict | None = None,
+        repair_state_delta: list[dict] | None = None,
+    ) -> None:
+        self.requests: list[dict] = []
+        self.repair_action = repair_action or {
+            "type": "tap",
+            "x": 0.88,
+            "y": 0.16,
+        }
+        self.repair_state_delta = repair_state_delta or []
+
+    def generate(self, **kwargs) -> ModelCall:
+        self.requests.append(kwargs)
+        label = kwargs["call_label"]
+        if label.endswith("_repair"):
+            action = self.repair_action
+            summary = "Switch to the visible list view for full labels."
+            state_delta = self.repair_state_delta
+        else:
+            action = {
+                "type": "long_press",
+                "x": 0.30,
+                "y": 0.35,
+                "duration_ms": 800,
+            }
+            summary = "Long-press the first visually truncated result."
+            state_delta = []
+        decision = {
+            "status": "continue",
+            "action": action,
+            "expected_outcome": "A clearer file layout becomes visible.",
+            "decision_summary": summary,
+            "state_delta": state_delta,
+            "memory_citations": [],
+            "completion_evidence": [],
+        }
+        return ModelCall(
+            call_id=label,
+            episode_id=kwargs["episode_id"],
+            idempotency_key=label,
+            image_sha256="0" * 64,
+            image_sha256s=("0" * 64,),
+            prompt_sha256=label,
+            request_sha256=label,
+            response_sha256=label,
+            content=json.dumps(decision),
+            usage={
+                "prompt_tokens": 1,
+                "completion_tokens": 1,
+                "total_tokens": 2,
+            },
+            raven_meta={},
+        )
+
+
 class FocusedInputThenSafeTextClient:
     def __init__(self) -> None:
         self.requests: list[dict] = []
@@ -1761,6 +1820,84 @@ class ExactTargetGridEnv(DestinationPickerEnv):
                     ),
                 ),
             ],
+        )
+
+
+class ExactTargetDocumentsGridEnv(DestinationPickerEnv):
+    def __init__(self, *, include_view_mode: bool = True) -> None:
+        super().__init__()
+        self.include_view_mode = include_view_mode
+
+    def get_state(self, wait_to_stabilize: bool):
+        assert wait_to_stabilize
+        elements = [
+            SimpleNamespace(
+                package_name="com.google.android.documentsui",
+                text="nature_sounds_2023_02_11.mp3",
+                is_visible=True,
+                is_enabled=True,
+                is_clickable=True,
+                bbox=SimpleNamespace(
+                    x_min=0.18,
+                    x_max=0.42,
+                    y_min=0.30,
+                    y_max=0.40,
+                ),
+            ),
+            SimpleNamespace(
+                package_name="com.google.android.documentsui",
+                text="nature_sounds.mp3",
+                is_visible=True,
+                is_enabled=True,
+                is_clickable=True,
+                bbox=SimpleNamespace(
+                    x_min=0.58,
+                    x_max=0.82,
+                    y_min=0.30,
+                    y_max=0.40,
+                ),
+            ),
+            SimpleNamespace(
+                package_name="com.google.android.documentsui",
+                content_description="Search",
+                resource_id=(
+                    "com.google.android.documentsui:id/action_search"
+                ),
+                is_visible=True,
+                is_enabled=True,
+                is_clickable=True,
+                is_editable=False,
+                bbox=SimpleNamespace(
+                    x_min=0.78,
+                    x_max=0.86,
+                    y_min=0.05,
+                    y_max=0.10,
+                ),
+            ),
+        ]
+        if self.include_view_mode:
+            elements.append(
+                SimpleNamespace(
+                    package_name="com.google.android.documentsui",
+                    content_description="List view",
+                    resource_id=(
+                        "com.google.android.documentsui:id/menu_list"
+                    ),
+                    is_visible=True,
+                    is_enabled=True,
+                    is_clickable=True,
+                    is_editable=False,
+                    bbox=SimpleNamespace(
+                        x_min=0.84,
+                        x_max=0.92,
+                        y_min=0.13,
+                        y_max=0.19,
+                    ),
+                )
+            )
+        return SimpleNamespace(
+            pixels=np.zeros((100, 100, 3), dtype=np.uint8),
+            ui_elements=elements,
         )
 
 
@@ -3506,6 +3643,178 @@ def test_controller_repairs_wrong_exact_target_to_search(
     assert 'action.type must not be "long_press"' in repair_prompt
     assert "only on a later policy step" in repair_prompt
     assert "Correct its format only" not in repair_prompt
+
+
+def test_controller_r56_repairs_exact_r55_shape_only_to_view_mode(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = ExactTargetDocumentsGridEnv()
+    client = WrongFileThenFilesViewClient()
+    controller = EpisodeController(
+        client=client,  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=1,
+        max_model_calls=2,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="r56-exact-target-view-mode-repair-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="M0",
+    )
+    assert env.execute_count == 1
+    assert summary["model_call_count"] == 2
+    step = summary["steps"][0]
+    assert step["decision"]["action"] == {
+        "type": "tap",
+        "x": 0.88,
+        "y": 0.16,
+    }
+    assert step["parse"]["initial_validation_error"].startswith(
+        "EXACT_TARGET_GUARD:"
+    )
+    assert step["parse"]["repair_contract_error"].startswith(
+        "FILES_EXACT_TARGET_VIEW_MODE_REPAIR_REQUIRED:"
+    )
+    assessment = step["parse"]["files_view_mode_repair_assessment"]
+    assert assessment["unambiguous"]
+    assert assessment["permitted"]
+    assert assessment["matched_labels"] == ["List view"]
+    repair_prompt = client.requests[1]["user_prompt"]
+    assert "FILES_EXACT_TARGET_VIEW_MODE_REPAIR_CONTRACT" in repair_prompt
+    assert "Do not tap Search" in repair_prompt
+    assert "No coordinate is supplied by the controller" in repair_prompt
+    assert "prefer the visible Search" not in repair_prompt
+
+
+def test_controller_r56_rejects_search_inside_view_mode_repair(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = ExactTargetDocumentsGridEnv()
+    client = WrongFileThenFilesViewClient(
+        repair_action={"type": "tap", "x": 0.82, "y": 0.075}
+    )
+    controller = EpisodeController(
+        client=client,  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=1,
+        max_model_calls=2,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="r56-exact-target-search-repair-rejected-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="M0",
+    )
+    assert env.execute_count == 0
+    assert summary["failure_code"] == "MODEL_OUTPUT_INVALID_AFTER_REPAIR"
+    error = summary["model_output_error"]
+    assert error["initial_validation_error"].startswith(
+        "EXACT_TARGET_GUARD:"
+    )
+    assert "FILES_EXACT_TARGET_VIEW_MODE_REPAIR_REQUIRED" in (
+        error["repair_validation_error"]
+    )
+    assessment = error["files_view_mode_repair_assessment"]
+    assert assessment["control_count"] == 1
+    assert assessment["action_hit_count"] == 0
+    assert not assessment["permitted"]
+
+
+def test_controller_r56_rejects_claimed_progress_inside_view_mode_repair(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = ExactTargetDocumentsGridEnv()
+    client = WrongFileThenFilesViewClient(
+        repair_state_delta=[
+            {
+                "kind": "progress",
+                "subject": "file layout",
+                "predicate": "changed",
+                "object": "list view",
+                "natural_language": "The file layout changed to list view.",
+                "evidence": "direct_screen",
+                "confidence": 0.99,
+            }
+        ]
+    )
+    controller = EpisodeController(
+        client=client,  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=1,
+        max_model_calls=2,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="r56-view-mode-claimed-progress-rejected-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="M0",
+    )
+    assert env.execute_count == 0
+    assert summary["failure_code"] == "MODEL_OUTPUT_INVALID_AFTER_REPAIR"
+    error = summary["model_output_error"]
+    assert "empty state_delta" in error["repair_validation_error"]
+    assert error["files_view_mode_repair_assessment"]["permitted"]
+
+
+def test_controller_r56_does_not_specialize_without_view_mode_control(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = ExactTargetDocumentsGridEnv(include_view_mode=False)
+    client = WrongFileThenFilesViewClient(
+        repair_action={"type": "tap", "x": 0.82, "y": 0.075}
+    )
+    controller = EpisodeController(
+        client=client,  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=1,
+        max_model_calls=2,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="r56-exact-target-no-view-mode-fallback-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="M0",
+    )
+    assert env.execute_count == 1
+    step = summary["steps"][0]
+    assert "repair_contract_error" not in step["parse"]
+    assert "files_view_mode_repair_assessment" not in step["parse"]
+    repair_prompt = client.requests[1]["user_prompt"]
+    assert "FILES_EXACT_TARGET_VIEW_MODE_REPAIR_CONTRACT" not in repair_prompt
+    assert "prefer the visible Search" in repair_prompt
 
 
 def test_controller_repairs_coordinate_type_into_focused_input(

@@ -107,6 +107,16 @@ SOFT_KEYBOARD_PACKAGES = {
     "com.google.android.inputmethod.latin",
 }
 ANDROID_FILES_PACKAGES = {"com.google.android.documentsui"}
+FILES_VIEW_MODE_LABEL_RE = re.compile(
+    r"^(?:(?:show|display)\s+(?:as\s+)?)?"
+    r"(?:list|grid)(?:\s+(?:view|layout|mode))?$",
+    flags=re.IGNORECASE,
+)
+FILES_VIEW_MODE_RESOURCE_RE = re.compile(
+    r"(?:^|[/.:_-])(?:action|menu|mode|view)[_-]?(?:list|grid)"
+    r"(?:$|[/.:_-])",
+    flags=re.IGNORECASE,
+)
 SEMANTIC_FIELDS = (
     "text",
     "content_description",
@@ -1478,6 +1488,132 @@ def exact_selection_long_press_assessment(
         "candidate_count": len(candidates),
         "nearest_text": nearest["text"],
         "nearest_distance": round(distance, 6),
+    }
+
+
+def files_view_mode_toggle_action_assessment(
+    ui_elements: Any,
+    action: dict[str, Any] | None,
+    *,
+    screen_width: int,
+    screen_height: int,
+) -> dict[str, Any]:
+    """Bind a tap to one unambiguous Android Files list/grid toggle."""
+    action_type = (
+        action.get("type") if isinstance(action, dict) else None
+    )
+    controls: dict[
+        tuple[float, float, float, float],
+        dict[str, Any],
+    ] = {}
+    for element in ui_elements or ():
+        if (
+            _normalized_text(_element_value(element, "package_name"))
+            not in ANDROID_FILES_PACKAGES
+            or _element_value(element, "is_visible") is not True
+            or _element_value(element, "is_enabled") is not True
+            or _element_value(element, "is_clickable") is not True
+            or _element_value(element, "is_editable") is True
+        ):
+            continue
+        bbox = _normalized_element_bbox(
+            element,
+            screen_width=screen_width,
+            screen_height=screen_height,
+        )
+        if bbox is None:
+            continue
+        labels = {
+            label
+            for field in (
+                "text",
+                "content_description",
+                "tooltip",
+            )
+            if (
+                label := _normalized_text(
+                    _element_value(element, field)
+                )
+            )
+            is not None
+        }
+        resource_ids = {
+            resource_id
+            for field in ("resource_id", "resource_name")
+            if (
+                resource_id := _normalized_text(
+                    _element_value(element, field)
+                )
+            )
+            is not None
+        }
+        if not (
+            any(FILES_VIEW_MODE_LABEL_RE.fullmatch(label) for label in labels)
+            or any(
+                FILES_VIEW_MODE_RESOURCE_RE.search(resource_id)
+                for resource_id in resource_ids
+            )
+        ):
+            continue
+        record = controls.setdefault(
+            bbox,
+            {
+                "labels": set(),
+                "resource_ids": set(),
+                "elements": [],
+            },
+        )
+        record["labels"].update(labels)
+        record["resource_ids"].update(resource_ids)
+        record["elements"].append(element)
+
+    ordered_controls = [
+        {
+            "bbox": list(bbox),
+            "labels": sorted(record["labels"]),
+            "resource_ids": sorted(record["resource_ids"]),
+            "hit": bool(
+                action_type == "tap"
+                and any(
+                    _tap_hits_element(
+                        action,
+                        element,
+                        screen_width=screen_width,
+                        screen_height=screen_height,
+                    )
+                    for element in record["elements"]
+                )
+            ),
+        }
+        for bbox, record in sorted(controls.items())
+    ]
+    hit_count = sum(control["hit"] for control in ordered_controls)
+    return {
+        "schema_version": "files_view_mode_toggle_assessment.v1",
+        "adjudicable": bool(ui_elements),
+        "action_type": action_type,
+        "control_count": len(ordered_controls),
+        "matched_labels": sorted(
+            {
+                label
+                for control in ordered_controls
+                for label in control["labels"]
+            }
+        ),
+        "matched_resource_ids": sorted(
+            {
+                resource_id
+                for control in ordered_controls
+                for resource_id in control["resource_ids"]
+            }
+        ),
+        "action_hit_count": hit_count,
+        "unambiguous": len(ordered_controls) == 1,
+        "permitted": bool(
+            action_type == "tap"
+            and len(ordered_controls) == 1
+            and hit_count == 1
+        ),
     }
 
 

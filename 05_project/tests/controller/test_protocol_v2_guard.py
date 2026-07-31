@@ -12,6 +12,7 @@ from raven_m.controller.protocol_v2_guard import (
     destination_picker_empty_stall_assessment,
     destination_picker_navigation_drawer_action,
     exact_selection_long_press_assessment,
+    files_view_mode_toggle_action_assessment,
     files_roots_drawer_action_assessment,
     focused_empty_editable_tap_assessment,
     focused_editable_input_assessment,
@@ -2468,6 +2469,119 @@ def test_exact_selection_assessment_uses_full_text_and_nearest_tile() -> None:
     )
     assert correct["matched"]
     assert correct["nearest_text"] == "nature_sounds.mp3"
+
+
+def test_files_view_mode_toggle_assessment_binds_one_documentsui_control() -> None:
+    elements = [
+        {
+            "package_name": "com.google.android.documentsui",
+            "content_description": "List view",
+            "resource_id": "com.google.android.documentsui:id/menu_list",
+            "is_visible": True,
+            "is_enabled": True,
+            "is_clickable": True,
+            "is_editable": False,
+            "bbox": {
+                "x_min": 0.84,
+                "x_max": 0.92,
+                "y_min": 0.13,
+                "y_max": 0.19,
+            },
+        },
+        {
+            "package_name": "com.google.android.documentsui",
+            "content_description": "Search",
+            "resource_id": "com.google.android.documentsui:id/action_search",
+            "is_visible": True,
+            "is_enabled": True,
+            "is_clickable": True,
+            "is_editable": False,
+            "bbox": {
+                "x_min": 0.78,
+                "x_max": 0.86,
+                "y_min": 0.05,
+                "y_max": 0.10,
+            },
+        },
+    ]
+    allowed = files_view_mode_toggle_action_assessment(
+        elements,
+        {"type": "tap", "x": 0.88, "y": 0.16},
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert allowed["adjudicable"]
+    assert allowed["unambiguous"]
+    assert allowed["control_count"] == 1
+    assert allowed["action_hit_count"] == 1
+    assert allowed["permitted"]
+    assert allowed["matched_labels"] == ["List view"]
+
+    search = files_view_mode_toggle_action_assessment(
+        elements,
+        {"type": "tap", "x": 0.82, "y": 0.075},
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert search["control_count"] == 1
+    assert search["action_hit_count"] == 0
+    assert not search["permitted"]
+
+
+def test_files_view_mode_toggle_requires_files_package_and_one_control() -> None:
+    controls = [
+        {
+            "package_name": "other.files",
+            "content_description": "List view",
+            "is_visible": True,
+            "is_enabled": True,
+            "is_clickable": True,
+            "is_editable": False,
+            "bbox": {
+                "x_min": 0.70,
+                "x_max": 0.78,
+                "y_min": 0.13,
+                "y_max": 0.19,
+            },
+        },
+        {
+            "package_name": "com.google.android.documentsui",
+            "content_description": "List view",
+            "is_visible": True,
+            "is_enabled": True,
+            "is_clickable": True,
+            "is_editable": False,
+            "bbox": {
+                "x_min": 0.80,
+                "x_max": 0.86,
+                "y_min": 0.13,
+                "y_max": 0.19,
+            },
+        },
+        {
+            "package_name": "com.google.android.documentsui",
+            "content_description": "Grid view",
+            "is_visible": True,
+            "is_enabled": True,
+            "is_clickable": True,
+            "is_editable": False,
+            "bbox": {
+                "x_min": 0.88,
+                "x_max": 0.94,
+                "y_min": 0.13,
+                "y_max": 0.19,
+            },
+        },
+    ]
+    assessment = files_view_mode_toggle_action_assessment(
+        controls,
+        {"type": "tap", "x": 0.83, "y": 0.16},
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert assessment["control_count"] == 2
+    assert not assessment["unambiguous"]
+    assert not assessment["permitted"]
 
 
 def test_exact_selection_guard_blocks_wrong_full_filename() -> None:

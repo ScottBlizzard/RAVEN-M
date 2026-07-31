@@ -25,6 +25,7 @@ from raven_m.controller.protocol_v2_guard import (
     destination_picker_empty_stall_assessment,
     destination_picker_navigation_drawer_action,
     exact_selection_long_press_assessment,
+    files_view_mode_toggle_action_assessment,
     files_roots_drawer_action_assessment,
     focused_empty_editable_tap_assessment,
     focused_editable_input_assessment,
@@ -279,6 +280,9 @@ class ModelOutputInvalid(RuntimeError):
         action_adjudications: list[dict[str, Any]] | None = None,
         completion_adjudications: list[dict[str, Any]] | None = None,
         repair_rationale_normalization: dict[str, Any] | None = None,
+        files_view_mode_repair_assessment: (
+            dict[str, Any] | None
+        ) = None,
     ) -> None:
         super().__init__(repair_error)
         self.calls = calls
@@ -289,6 +293,9 @@ class ModelOutputInvalid(RuntimeError):
         self.completion_adjudications = completion_adjudications or []
         self.repair_rationale_normalization = (
             repair_rationale_normalization
+        )
+        self.files_view_mode_repair_assessment = (
+            files_view_mode_repair_assessment
         )
 
 
@@ -766,6 +773,7 @@ class EpisodeController:
     ) -> str:
         semantic_action_error_prefixes = (
             "EXACT_TARGET_GUARD:",
+            "FILES_EXACT_TARGET_VIEW_MODE_REPAIR_REQUIRED:",
             "FOCUSED_INPUT_GUARD:",
             "FOCUSED_EMPTY_TAP_GUARD:",
             "POST_ACTIVATION_INPUT_GUARD:",
@@ -789,7 +797,13 @@ class EpisodeController:
         semantic_action_rejected = error.startswith(
             semantic_action_error_prefixes
         )
-        exact_target_rejected = error.startswith("EXACT_TARGET_GUARD:")
+        exact_target_view_mode_repair_required = error.startswith(
+            "FILES_EXACT_TARGET_VIEW_MODE_REPAIR_REQUIRED:"
+        )
+        exact_target_rejected = bool(
+            error.startswith("EXACT_TARGET_GUARD:")
+            or exact_target_view_mode_repair_required
+        )
         focused_input_rejected = error.startswith("FOCUSED_INPUT_GUARD:")
         focused_empty_tap_rejected = error.startswith(
             "FOCUSED_EMPTY_TAP_GUARD:"
@@ -1122,6 +1136,20 @@ class EpisodeController:
                     "step. Do not guess a hidden icon coordinate and do not "
                     "repeat either half of the open_app/press_back cycle.\n"
                 )
+        elif exact_target_view_mode_repair_required:
+            repair_directive = (
+                "\n\nFILES_EXACT_TARGET_VIEW_MODE_REPAIR_CONTRACT: Current "
+                "Android Files accessibility exposes the exact task-literal "
+                "filename among multiple visually truncated candidates and "
+                "exactly one enabled list/grid view-mode control. For this "
+                "one repair, return status=continue with one pure tap that "
+                "hits only that visible view-mode control. Do not tap Search, "
+                "type, swipe, long-press, select a file, navigate, commit, "
+                "finish, cite memory, or claim a state change. Use empty "
+                "state_delta and completion_evidence. No coordinate is "
+                "supplied by the controller. Observe the changed layout on "
+                "the next policy step before attempting exact selection.\n"
+            )
         elif semantic_action_rejected:
             repair_directive = (
                 "\n\nYour previous JSON was structurally valid, but its GUI "
@@ -1280,6 +1308,9 @@ class EpisodeController:
         latest_repair_rationale_normalization: (
             dict[str, Any] | None
         ) = None
+        latest_files_view_mode_repair_assessment: (
+            dict[str, Any] | None
+        ) = None
         visual_source_cache: dict[str, dict[str, Any]] = {}
         parse_kwargs = (
             {"schema_path": self.action_schema_path}
@@ -1296,6 +1327,7 @@ class EpisodeController:
             nonlocal latest_verification_navigation_assessment
             nonlocal latest_source_context_assessment
             nonlocal latest_repair_rationale_normalization
+            nonlocal latest_files_view_mode_repair_assessment
             latest_verification_navigation_assessment = None
             latest_source_context_assessment = None
             candidate_content = content
@@ -1311,6 +1343,45 @@ class EpisodeController:
                 candidate_content,
                 **parse_kwargs,
             )
+            if (
+                repair_contract_error
+                and repair_contract_error.startswith(
+                    "FILES_EXACT_TARGET_VIEW_MODE_REPAIR_REQUIRED:"
+                )
+            ):
+                candidate_action = parsed_candidate.decision.get("action")
+                latest_files_view_mode_repair_assessment = (
+                    files_view_mode_toggle_action_assessment(
+                        ui_elements,
+                        candidate_action,
+                        screen_width=screen_width,
+                        screen_height=screen_height,
+                    )
+                )
+                if (
+                    parsed_candidate.decision.get("status") != "continue"
+                    or not isinstance(candidate_action, dict)
+                    or set(candidate_action) != {"type", "x", "y"}
+                    or latest_files_view_mode_repair_assessment.get(
+                        "permitted"
+                    )
+                    is not True
+                    or parsed_candidate.decision.get("state_delta") != []
+                    or parsed_candidate.decision.get(
+                        "completion_evidence"
+                    )
+                    != []
+                    or parsed_candidate.decision.get("memory_citations")
+                    != []
+                ):
+                    raise ActionValidationError(
+                        "REPAIR_CONTRACT_GUARD: "
+                        "FILES_EXACT_TARGET_VIEW_MODE_REPAIR_REQUIRED permits "
+                        "only status=continue with one pure tap on the sole "
+                        "visible enabled Android Files list/grid view-mode "
+                        "control and empty state_delta, memory_citations, and "
+                        "completion_evidence."
+                    )
             if self.protocol_v2:
                 swipe_assessment = (
                     swipe_direction_consistency_assessment(
@@ -1903,6 +1974,56 @@ class EpisodeController:
                     completion_adjudications=completion_adjudications,
                 ) from initial_error
             repair_contract_error = str(initial_error)
+            if (
+                repair_contract_error.startswith("EXACT_TARGET_GUARD:")
+                and self.protocol_v2_2
+                and self.decision_guard is not None
+            ):
+                initial_decision = parse_action_response(
+                    initial.content,
+                    **parse_kwargs,
+                ).decision
+                initial_selection_assessment = (
+                    exact_selection_long_press_assessment(
+                        ui_elements,
+                        initial_decision.get("action"),
+                        required_text=(
+                            self.decision_guard.required_selection_text
+                        ),
+                        screen_width=screen_width,
+                        screen_height=screen_height,
+                    )
+                )
+                available_view_mode_assessment = (
+                    files_view_mode_toggle_action_assessment(
+                        ui_elements,
+                        None,
+                        screen_width=screen_width,
+                        screen_height=screen_height,
+                    )
+                )
+                if (
+                    initial_selection_assessment.get("matched") is False
+                    and initial_selection_assessment.get(
+                        "exact_text_visible"
+                    )
+                    is True
+                    and int(
+                        initial_selection_assessment.get(
+                            "candidate_count",
+                            0,
+                        )
+                    )
+                    >= 2
+                    and available_view_mode_assessment.get(
+                        "unambiguous"
+                    )
+                    is True
+                ):
+                    repair_contract_error = (
+                        "FILES_EXACT_TARGET_VIEW_MODE_REPAIR_REQUIRED: "
+                        + repair_contract_error
+                    )
             malformed_coordinate_contract = (
                 self._malformed_coordinate_input_repair_contract(
                     initial.content
@@ -1959,6 +2080,9 @@ class EpisodeController:
                     repair_rationale_normalization=(
                         latest_repair_rationale_normalization
                     ),
+                    files_view_mode_repair_assessment=(
+                        latest_files_view_mode_repair_assessment
+                    ),
                 ) from repair_error
             return (
                 parsed.decision,
@@ -1988,6 +2112,15 @@ class EpisodeController:
                             )
                         }
                         if latest_repair_rationale_normalization is not None
+                        else {}
+                    ),
+                    **(
+                        {
+                            "files_view_mode_repair_assessment": (
+                                latest_files_view_mode_repair_assessment
+                            )
+                        }
+                        if latest_files_view_mode_repair_assessment is not None
                         else {}
                     ),
                     "post_destination_verification_navigation_assessment": (
@@ -2220,6 +2353,18 @@ class EpisodeController:
                                 )
                             }
                             if exc.repair_rationale_normalization is not None
+                            else {}
+                        ),
+                        **(
+                            {
+                                "files_view_mode_repair_assessment": (
+                                    exc.files_view_mode_repair_assessment
+                                )
+                            }
+                            if (
+                                exc.files_view_mode_repair_assessment
+                                is not None
+                            )
                             else {}
                         ),
                     }
