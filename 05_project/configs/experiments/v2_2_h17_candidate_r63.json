@@ -1,0 +1,30 @@
+{
+  "schema_version": "protocol_v2_2_h17_candidate_r63_overlay.v1",
+  "manifest_id": "protocol_v2_2_h17_candidate_seed20260730_r63",
+  "base_manifest": "05_project/configs/experiments/v2_2_hard_micro_gate_r56.json",
+  "source_tag": "protocol-v2-2-r63-local-candidate",
+  "source_commit": "fe16e7dac9c383b400ca7ab7e4e760e29166ed5a",
+  "suite_id": "hard_micro_v2_2_seed20260730_r63_candidate",
+  "output_root": "runs/protocol_v2_2_development",
+  "authorized_development_sequence": 2,
+  "authorized_task_id": "H17",
+  "authorized_variant": "M0",
+  "prerequisite_r62_stop_report": {
+    "path": "reports/protocol_v2_2_r62_h17_candidate_stopped.json",
+    "sha256": "2b0700dd933cf358ed77e66cd26e1df18dd036f4832546672a6194d409d7c95f"
+  },
+  "prerequisite_r63_local_validation": {
+    "path": "reports/protocol_v2_2_r63_local_validation.json",
+    "sha256": "e83cc5b55130259bc40f9f20a5dda741fef5c6c502f3c6823be103bd02b9597a"
+  },
+  "updated_freeze_hashes": {
+    "05_project/scripts/run_protocol_v2_gate_f.py": "1a836b2ca63cee1a5298610ae65cb7141203b6a3c6ebfa0ae5ae76bd6ba338a4",
+    "05_project/src/raven_m/controller/episode_controller.py": "5fabbbcdbfad30ab3383b81ace807054f19b855207a97095a141705618382a63",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "00d4ae1ef5af16057242543125541f73612e8f3575fe27d8715a19e97f9a39c2",
+    "05_project/src/raven_m/history/policies.py": "21d472d208935029daebb74b4c1c0a73a5ca51d0902d09a3f818150c3c17fe26",
+    "05_project/src/raven_m/memory/manager.py": "93f699c42f9484613821a7c6eae1da275951b3a0f734ecbd00e4c1c2d778bf2a",
+    "05_project/prompts/executor_raven_v2.md": "7e1f3789967e55d0044cfc265fe1ccbb39ae8fed84088e15bd4a7108a00e2ba2",
+    "05_project/prompts/planner_v1.md": "d88d45dd3600253bfd9ac5b2eb0956a9f719d101c2adb2622f6df2f1fdd249cc",
+    "05_project/prompts/critic_v1.md": "a19af64a428bcd0906b8d0eab3b47e6050f28b28ce44a33ebc17339e5ce6126c"
+  }
+}
