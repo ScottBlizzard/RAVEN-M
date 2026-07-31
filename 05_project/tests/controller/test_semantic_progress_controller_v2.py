@@ -762,6 +762,76 @@ class UnboundTextThenActivateInputClient:
         )
 
 
+class MalformedCoordinateThenActivateInputClient:
+    def __init__(self, *, safe_repair: bool = True) -> None:
+        self.safe_repair = safe_repair
+        self.requests: list[dict] = []
+
+    def generate(self, **kwargs) -> ModelCall:
+        self.requests.append(kwargs)
+        label = kwargs["call_label"]
+        if label == "step_000_initial":
+            action = {
+                "type": "type_text",
+                "text": "nature_sounds.mp3",
+                "text_origin": "task_literal",
+                "source_memory_ids": [],
+                "clear_text": True,
+                "x": 0.5,
+                "y": 75,
+            }
+            summary = "Enter the requested filename in Search."
+        elif label == "step_000_repair" and self.safe_repair:
+            action = {"type": "tap", "x": 0.5, "y": 0.075}
+            summary = "Activate the visible Search input safely."
+        elif label == "step_000_repair":
+            action = {
+                "type": "type_text",
+                "text": "nature_sounds.mp3",
+                "text_origin": "task_literal",
+                "source_memory_ids": [],
+                "clear_text": True,
+                "x": 0.5,
+                "y": 0.075,
+            }
+            summary = "Retry typing directly in the unfocused Search input."
+        else:
+            action = {
+                "type": "type_text",
+                "text": "nature_sounds.mp3",
+                "text_origin": "task_literal",
+                "source_memory_ids": [],
+                "clear_text": False,
+            }
+            summary = "Type in the now-active Search input."
+        decision = {
+            "status": "continue",
+            "action": action,
+            "expected_outcome": "The exact filename appears in Search.",
+            "decision_summary": summary,
+            "state_delta": [],
+            "memory_citations": [],
+            "completion_evidence": [],
+        }
+        return ModelCall(
+            call_id=label,
+            episode_id=kwargs["episode_id"],
+            idempotency_key=label,
+            image_sha256="0" * 64,
+            image_sha256s=("0" * 64,),
+            prompt_sha256=label,
+            request_sha256=label,
+            response_sha256=label,
+            content=json.dumps(decision),
+            usage={
+                "prompt_tokens": 1,
+                "completion_tokens": 1,
+                "total_tokens": 2,
+            },
+            raven_meta={},
+        )
+
+
 class RepeatedActivationRecoveryClient:
     def __init__(self) -> None:
         self.requests: list[dict] = []
@@ -3457,6 +3527,100 @@ def test_controller_repairs_unfocused_clear_text_to_input_activation(
     assert "action.type must not be type_text" in repair_prompt
     assert "Tap that same visibly supported input control" in repair_prompt
     assert "Do not send Ctrl+A to an unfocused screen" in repair_prompt
+
+
+def test_controller_routes_malformed_text_coordinate_to_safe_activation(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = PostActivationKeyboardOnlyEnv()
+    client = MalformedCoordinateThenActivateInputClient()
+    controller = EpisodeController(
+        client=client,  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=2,
+        max_model_calls=3,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="malformed-coordinate-activation-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="M0",
+    )
+    assert summary["model_call_count"] == 3
+    assert env.execute_count == 2
+    assert env.value == "nature_sounds.mp3"
+    assert summary["steps"][0]["decision"]["action"] == {
+        "type": "tap",
+        "x": 0.5,
+        "y": 0.075,
+    }
+    assert summary["steps"][0]["parse"]["model_repair_used"] is True
+    assert summary["steps"][0]["parse"]["repair_contract_error"].startswith(
+        "MALFORMED_COORDINATE_INPUT_GUARD:"
+    )
+    assert summary["steps"][0]["input_activation_repair_marked"] is True
+    assert summary["steps"][1]["decision"]["action"] == {
+        "type": "type_text",
+        "text": "nature_sounds.mp3",
+        "text_origin": "task_literal",
+        "source_memory_ids": [],
+        "clear_text": False,
+    }
+    audit = summary["protocol_v2_guard"]
+    assert audit["input_activation_proof_count"] == 1
+    assert audit["input_activation_proof_consumed_count"] == 1
+    assert audit["input_activation_repair_pending"] is False
+    repair_prompt = client.requests[1]["user_prompt"]
+    assert "MALFORMED_COORDINATE_INPUT_GUARD" in repair_prompt
+    assert "action.type=tap" in repair_prompt
+    assert "Do not type, clear text" in repair_prompt
+
+
+def test_controller_rejects_direct_text_malformed_coordinate_repair(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = PostActivationKeyboardOnlyEnv()
+    controller = EpisodeController(
+        client=MalformedCoordinateThenActivateInputClient(
+            safe_repair=False
+        ),  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=1,
+        max_model_calls=2,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="malformed-coordinate-direct-text-rejected-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="M0",
+    )
+    assert env.execute_count == 0
+    assert summary["failure_code"] == "MODEL_OUTPUT_INVALID_AFTER_REPAIR"
+    assert summary["model_output_error"][
+        "initial_validation_error"
+    ].startswith("action:")
+    assert "REPAIR_CONTRACT_GUARD" in summary["model_output_error"][
+        "repair_validation_error"
+    ]
+    assert "permits only one normalized tap" in summary[
+        "model_output_error"
+    ]["repair_validation_error"]
 
 
 def test_controller_repairs_post_activation_clear_text_without_focused_editable(

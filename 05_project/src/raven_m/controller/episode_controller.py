@@ -612,6 +612,51 @@ class EpisodeController:
         )
 
     @staticmethod
+    def _malformed_coordinate_input_repair_contract(
+        invalid_content: str,
+    ) -> str | None:
+        """Route a malformed task-literal text coordinate to safe activation."""
+        try:
+            payload = json.loads(invalid_content)
+        except (json.JSONDecodeError, TypeError):
+            return None
+        if not isinstance(payload, dict):
+            return None
+        action = payload.get("action")
+        if (
+            not isinstance(action, dict)
+            or action.get("type") != "type_text"
+            or action.get("text_origin") != "task_literal"
+            or action.get("source_memory_ids") != []
+            or not isinstance(action.get("text"), str)
+            or not action["text"].strip()
+        ):
+            return None
+        malformed_fields = []
+        for field in ("x", "y"):
+            value = action.get(field)
+            if (
+                field in action
+                and (
+                    isinstance(value, bool)
+                    or not isinstance(value, (int, float))
+                    or not 0.0 <= float(value) <= 1.0
+                )
+            ):
+                malformed_fields.append(field)
+        if not malformed_fields:
+            return None
+        return (
+            "MALFORMED_COORDINATE_INPUT_GUARD: the proposed task-literal "
+            "type_text action contains coordinate field(s) outside normalized "
+            f"[0,1]: {', '.join(malformed_fields)}. The bounded repair must "
+            "not type or clear text. It may only tap one visible editable "
+            "field whose semantic role matches the unchanged task-literal "
+            "value, then observe input activation on the next policy step. "
+            "No replacement coordinate is supplied by the controller."
+        )
+
+    @staticmethod
     def _repair_prompt(
         original_prompt: str,
         invalid_content: str,
@@ -625,6 +670,7 @@ class EpisodeController:
             "POST_ACTIVATION_INPUT_GUARD:",
             "POST_ACTIVATION_CLEAR_TEXT_GUARD:",
             "UNFOCUSED_CLEAR_TEXT_GUARD:",
+            "MALFORMED_COORDINATE_INPUT_GUARD:",
             "TEXT_TARGET_GUARD:",
             "DECLARED_TEXT_SOURCE_GUARD:",
             "FIELD_VALUE_BINDING_GUARD:",
@@ -655,6 +701,9 @@ class EpisodeController:
         )
         unfocused_clear_text_rejected = error.startswith(
             "UNFOCUSED_CLEAR_TEXT_GUARD:"
+        )
+        malformed_coordinate_input_rejected = error.startswith(
+            "MALFORMED_COORDINATE_INPUT_GUARD:"
         )
         text_target_rejected = error.startswith("TEXT_TARGET_GUARD:")
         declared_source_rejected = error.startswith(
@@ -879,6 +928,19 @@ class EpisodeController:
                 "after a focused editable or the soft keyboard is visible; "
                 "then omit x,y and use clear_text=false when the field is "
                 "empty. Do not send Ctrl+A to an unfocused screen.\n"
+            )
+        elif malformed_coordinate_input_rejected:
+            repair_directive = (
+                "\n\nYour previous task-literal type_text action contained "
+                "an out-of-range coordinate, so its intended input target "
+                "was not safely validated. For this one repair, return "
+                "status=continue with action.type=tap and normalized x,y in "
+                "[0,1], targeting only the visible editable field whose label "
+                "matches the original unchanged task-literal value. Do not "
+                "type, clear text, press back, wait, navigate, save, or commit "
+                "during this repair. Observe the activated input on the next "
+                "policy step before typing. No coordinate or field is supplied "
+                "by the controller.\n"
             )
         elif text_target_rejected:
             repair_directive = (
@@ -1183,6 +1245,67 @@ class EpisodeController:
                         "POST_ACTIVATION_CLEAR_TEXT_GUARD permits only the "
                         "same type_text text and provenance with no x/y and "
                         "clear_text=false in this bounded repair."
+                    )
+            if (
+                repair_contract_error
+                and repair_contract_error.startswith(
+                    "MALFORMED_COORDINATE_INPUT_GUARD:"
+                )
+            ):
+                try:
+                    original_payload = json.loads(initial.content)
+                except (json.JSONDecodeError, TypeError) as exc:
+                    raise ActionValidationError(
+                        "REPAIR_CONTRACT_GUARD: malformed-coordinate input "
+                        "recovery requires the original strict JSON object."
+                    ) from exc
+                original_action = original_payload.get("action")
+                candidate_action = parsed_candidate.decision.get("action")
+                if (
+                    not isinstance(original_action, dict)
+                    or not isinstance(candidate_action, dict)
+                    or candidate_action.get("type") != "tap"
+                ):
+                    raise ActionValidationError(
+                        "REPAIR_CONTRACT_GUARD: "
+                        "MALFORMED_COORDINATE_INPUT_GUARD permits only one "
+                        "normalized tap on a visible role-matched editable "
+                        "field; typing or any other action is forbidden."
+                    )
+                projected_action = {
+                    **original_action,
+                    "x": candidate_action.get("x"),
+                    "y": candidate_action.get("y"),
+                }
+                target_assessment = coordinate_type_text_target_assessment(
+                    ui_elements,
+                    projected_action,
+                    screen_width=screen_width,
+                    screen_height=screen_height,
+                )
+                source_assessment = declared_text_source_assessment(
+                    task_goal,
+                    ui_elements,
+                    projected_action,
+                )
+                field_role_assessment = task_literal_field_role_assessment(
+                    task_goal,
+                    ui_elements,
+                    projected_action,
+                    screen_width=screen_width,
+                    screen_height=screen_height,
+                )
+                if (
+                    target_assessment.get("matched") is not True
+                    or source_assessment.get("matched") is not True
+                    or field_role_assessment.get("adjudicable") is not True
+                    or field_role_assessment.get("matched") is not True
+                ):
+                    raise ActionValidationError(
+                        "REPAIR_CONTRACT_GUARD: malformed-coordinate input "
+                        "recovery tap must hit one visible editable field "
+                        "whose semantic role matches the unchanged, verified "
+                        "task-literal value."
                     )
             if (
                 repair_contract_error
@@ -1663,6 +1786,17 @@ class EpisodeController:
                     completion_adjudications=completion_adjudications,
                 ) from initial_error
             repair_contract_error = str(initial_error)
+            malformed_coordinate_contract = (
+                self._malformed_coordinate_input_repair_contract(
+                    initial.content
+                )
+            )
+            if malformed_coordinate_contract is not None:
+                repair_contract_error = (
+                    malformed_coordinate_contract
+                    + " Original schema validation error: "
+                    + str(initial_error)
+                )
             if (
                 self.protocol_v2_2
                 and self.decision_guard is not None
@@ -1714,6 +1848,13 @@ class EpisodeController:
                     "extraction_used": parsed.extraction_used,
                     "model_repair_used": True,
                     "initial_validation_error": str(initial_error),
+                    **(
+                        {
+                            "repair_contract_error": repair_contract_error,
+                        }
+                        if repair_contract_error != str(initial_error)
+                        else {}
+                    ),
                     "schema_sha256": parsed.schema_sha256,
                     "adjudication_model_call_count": (
                         adjudication_model_call_count
@@ -2168,10 +2309,18 @@ class EpisodeController:
                     if (
                         str(
                             parse_meta.get(
-                                "initial_validation_error",
-                                "",
+                                "repair_contract_error",
+                                parse_meta.get(
+                                    "initial_validation_error",
+                                    "",
+                                ),
                             )
-                        ).startswith("UNFOCUSED_CLEAR_TEXT_GUARD:")
+                        ).startswith(
+                            (
+                                "UNFOCUSED_CLEAR_TEXT_GUARD:",
+                                "MALFORMED_COORDINATE_INPUT_GUARD:",
+                            )
+                        )
                         and decision["action"].get("type") == "tap"
                     ):
                         self.decision_guard.mark_input_activation_repair(
