@@ -232,6 +232,9 @@ Raw trajectories are under `runs/excluded_protocol_dry_run/` and
 | `reports/protocol_v2_2_r59_candidate_preflight.md` | human-readable zero-call result and one-cell non-scored r59 authorization boundary | current |
 | `reports/protocol_v2_2_r59_h01_candidate_smoke_stopped.json` | immutable wrong-control ledger binding, load-time operand semantics, five-click trace, retrospective correction, and raw hashes | r59 stopped; formal Gate F withheld |
 | `reports/protocol_v2_2_r59_h01_candidate_smoke_stopped.md` | human-readable setup-button false binding, correct 3240 operand sequence, and bounded two-axis state-machine direction | current |
+| `04_protocols/protocol_v2_2_r60_candidate_addendum.md` | target-and-number co-binding, pre-action operand sampling, joint action/operand completion, and preserved denials | local candidate |
+| `reports/protocol_v2_2_r60_local_validation.json` | machine-readable 446-test, replay/denial matrix, r56-r59 freeze, v1-seal, exact-source, model, and emulator evidence | passed locally; preflight preparation allowed |
+| `reports/protocol_v2_2_r60_local_validation.md` | human-readable correct 3240 state machine, validation result, and zero-call boundary | current |
 
 The r39 raw trajectories are under
 `runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/` and remain
