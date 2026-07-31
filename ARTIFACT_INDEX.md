@@ -216,6 +216,9 @@ Raw trajectories are under `runs/excluded_protocol_dry_run/` and
 | `reports/protocol_v2_2_r57_candidate_preflight.md` | human-readable zero-call result and one-cell non-scored H01 authorization boundary | current |
 | `reports/protocol_v2_2_r57_h01_candidate_smoke_stopped.json` | immutable non-scored H01 failure, delayed-DOM causal audit, denial counters, and raw hashes | r57 stopped; formal Gate F withheld |
 | `reports/protocol_v2_2_r57_h01_candidate_smoke_stopped.md` | human-readable r57 failure analysis and bounded delayed-progress reconciliation direction | current |
+| `04_protocols/protocol_v2_2_r58_candidate_addendum.md` | delayed semantic convergence reconciliation, task-control binding, and preserved denial boundaries | local candidate |
+| `reports/protocol_v2_2_r58_local_validation.json` | machine-readable 430-test, denial-matrix, v1-seal, exact-source, model, and emulator evidence | passed locally; preflight preparation allowed |
+| `reports/protocol_v2_2_r58_local_validation.md` | human-readable r58 rationale, validation result, and zero-call boundary | current |
 
 The r39 raw trajectories are under
 `runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/` and remain
