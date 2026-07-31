@@ -201,6 +201,11 @@ Raw trajectories are under `runs/excluded_protocol_dry_run/` and
 | `reports/protocol_v2_2_r56_gate_d_freeze.json` | machine-readable r56 Gate-D freeze and bounded formal-launch authorization | passed; one fresh Gate-E launch authorized |
 | `reports/protocol_v2_2_r56_gate_e_final.json` | machine-readable eight-cell result, 19-criterion audit, retained M0 Contacts failure, Files guard trace, and immutable hashes | Gate E passed at 7/8 |
 | `reports/protocol_v2_2_r56_gate_e_final.md` | human-readable r56 Gate-E result, planner-reliability finding, descriptive pairing, and Gate-F boundary | current |
+| `04_protocols/protocol_v2_2_r56_gate_f_addendum.md` | r56 Gate-F compatibility mapping, preserved controls, zero-call requirements, and authorization boundary | frozen |
+| `05_project/configs/experiments/v2_2_hard_micro_gate_r56.json` | exact-source twelve-cell r56 Hard manifest with unchanged task/order/budget controls and frozen prerequisites | prepared |
+| `05_project/scripts/run_protocol_v2_2_gate_f_r56.py` | r56 Gate-F zero-call or one-explicit-batch entry point | prepared |
+| `reports/protocol_v2_2_r56_gate_f_preflight.json` | machine-readable 28-file freeze, Gate-E prerequisite, six paired Hard instances, model, emulator, and v1-seal audit | passed; zero calls/cells |
+| `reports/protocol_v2_2_r56_gate_f_preflight.md` | compatibility decision, 411-test validation, frozen Batch-1 schedule, and manual-launch boundary | current |
 
 The r39 raw trajectories are under
 `runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/` and remain
