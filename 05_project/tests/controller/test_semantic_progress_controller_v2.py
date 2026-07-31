@@ -505,8 +505,20 @@ class PostCommitVerificationClient:
 
 
 class CommitThenSourceBrowseClient:
-    def __init__(self, *, valid_repair: bool = True) -> None:
+    def __init__(
+        self,
+        *,
+        valid_repair: bool = True,
+        repair_summary: str | None = None,
+        repair_expected_outcome: str | None = None,
+        invalid_repair_completion_evidence: bool = False,
+    ) -> None:
         self.valid_repair = valid_repair
+        self.repair_summary = repair_summary
+        self.repair_expected_outcome = repair_expected_outcome
+        self.invalid_repair_completion_evidence = (
+            invalid_repair_completion_evidence
+        )
         self.requests: list[dict] = []
 
     def generate(self, **kwargs) -> ModelCall:
@@ -521,7 +533,9 @@ class CommitThenSourceBrowseClient:
                 if self.valid_repair
                 else {"type": "tap", "x": 0.82, "y": 0.08}
             )
-            summary = "Leave the exact source directory after the move."
+            summary = self.repair_summary or (
+                "Leave the exact source directory after the move."
+            )
         else:
             action = {
                 "type": "swipe",
@@ -535,11 +549,29 @@ class CommitThenSourceBrowseClient:
         decision = {
             "status": "continue",
             "action": action,
-            "expected_outcome": "The file workflow advances.",
+            "expected_outcome": (
+                self.repair_expected_outcome
+                if label.endswith("_repair")
+                and self.repair_expected_outcome is not None
+                else "The file workflow advances."
+            ),
             "decision_summary": summary,
             "state_delta": [],
             "memory_citations": [],
-            "completion_evidence": [],
+            "completion_evidence": (
+                [
+                    {
+                        "claim": "The file was moved.",
+                        "evidence": "direct_screen",
+                        "memory_ids": [],
+                    }
+                ]
+                if (
+                    label.endswith("_repair")
+                    and self.invalid_repair_completion_evidence
+                )
+                else []
+            ),
         }
         return ModelCall(
             call_id=label,
@@ -3130,6 +3162,176 @@ def test_controller_repairs_post_commit_source_browse_to_back(
     repair_prompt = client.requests[2]["user_prompt"]
     assert 'exactly {"type":"press_back"}' in repair_prompt
     assert "Do not tap, wait, swipe, type" in repair_prompt
+
+
+def test_controller_normalizes_exact_r54_overlong_back_repair_rationale(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = PostCommitSourceExitEnv()
+    r54_repair_summary = (
+        "The current screen shows the Music folder, but the move operation "
+        "may not have been confirmed or the destination may not be verified; "
+        "pressing Back to exit this view will allow navigation to the "
+        "Ringtones folder to verify the file's presence."
+    )
+    assert len(r54_repair_summary) == 242
+    client = CommitThenSourceBrowseClient(
+        repair_summary=r54_repair_summary,
+    )
+    controller = EpisodeController(
+        client=client,  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=2,
+        max_model_calls=3,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="r54-overlong-back-repair-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="M0",
+    )
+    assert env.execute_count == 2
+    assert summary["model_output_error"] is None
+    repaired = summary["steps"][1]
+    assert repaired["decision"]["action"] == {"type": "press_back"}
+    assert len(repaired["decision"]["decision_summary"]) <= 159
+    audit = repaired["parse"][
+        "bounded_repair_rationale_normalization"
+    ]
+    assert audit["scope"] == "post_destination_exact_press_back_repair"
+    assert audit["limit"] == 159
+    assert audit["normalized_fields"] == [
+        {
+            "field": "decision_summary",
+            "before_length": 242,
+            "after_length": 159,
+        }
+    ]
+    assert audit["protected_payload_unchanged"] is True
+    assert len(audit["protected_payload_sha256_before"]) == 64
+    assert (
+        audit["protected_payload_sha256_before"]
+        == audit["protected_payload_sha256_after"]
+    )
+
+
+def test_controller_does_not_normalize_overlong_non_back_repair(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = PostCommitSourceExitEnv()
+    overlong = "x" * 242
+    controller = EpisodeController(
+        client=CommitThenSourceBrowseClient(
+            valid_repair=False,
+            repair_summary=overlong,
+        ),  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=2,
+        max_model_calls=3,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="overlong-non-back-repair-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="M0",
+    )
+    assert env.execute_count == 1
+    assert summary["failure_code"] == "MODEL_OUTPUT_INVALID_AFTER_REPAIR"
+    error = summary["model_output_error"]
+    assert "too long" in error["repair_validation_error"]
+    assert "bounded_repair_rationale_normalization" not in error
+
+
+def test_controller_normalizes_both_exact_back_rationale_fields(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = PostCommitSourceExitEnv()
+    controller = EpisodeController(
+        client=CommitThenSourceBrowseClient(
+            repair_summary="s" * 242,
+            repair_expected_outcome="o" * 242,
+        ),  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=2,
+        max_model_calls=3,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="both-overlong-back-rationale-fields-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="M0",
+    )
+    assert env.execute_count == 2
+    repaired = summary["steps"][1]
+    assert len(repaired["decision"]["decision_summary"]) == 159
+    assert len(repaired["decision"]["expected_outcome"]) == 159
+    audit = repaired["parse"][
+        "bounded_repair_rationale_normalization"
+    ]
+    assert [item["field"] for item in audit["normalized_fields"]] == [
+        "decision_summary",
+        "expected_outcome",
+    ]
+
+
+def test_controller_normalization_does_not_rescue_unrelated_schema_error(
+    tmp_path: Path,
+) -> None:
+    root = Path(__file__).resolve().parents[2]
+    env = PostCommitSourceExitEnv()
+    controller = EpisodeController(
+        client=CommitThenSourceBrowseClient(
+            repair_summary="x" * 242,
+            invalid_repair_completion_evidence=True,
+        ),  # type: ignore[arg-type]
+        system_prompt="v2.2",
+        max_steps=2,
+        max_model_calls=3,
+        action_schema_path=root / "schemas/action.raven.v2.schema.json",
+        decision_guard=ProtocolV2DecisionGuard(),
+        protocol_v2=True,
+        protocol_v2_2=True,
+    )
+    summary = controller.run(
+        env=env,
+        task=FilesTask(),
+        episode_id="overlong-back-unrelated-error-v2-2",
+        episode_dir=tmp_path / "episode",
+        seed=1,
+        protocol="androidworld_protocol_v2_2_exploratory",
+        variant="M0",
+    )
+    assert env.execute_count == 1
+    assert summary["failure_code"] == "MODEL_OUTPUT_INVALID_AFTER_REPAIR"
+    error = summary["model_output_error"]
+    assert "completion_evidence" in error["repair_validation_error"]
+    audit = error["bounded_repair_rationale_normalization"]
+    assert audit["normalized_fields"][0]["before_length"] == 242
+    assert audit["protected_payload_unchanged"] is True
 
 
 def test_controller_rejects_non_back_source_exit_repair(

@@ -92,6 +92,103 @@ def _json_safe(value: Any) -> Any:
     return repr(value)
 
 
+_REPAIR_RATIONALE_LIMIT = 159
+_POST_DESTINATION_BACK_REPAIR_PREFIXES = (
+    "POST_DESTINATION_COMMIT_GUARD:",
+    "POST_DESTINATION_SOURCE_EXIT_GUARD:",
+    "POST_DESTINATION_COMPLETION_REOBSERVE_REQUIRED:",
+)
+
+
+def _normalize_post_destination_back_repair_rationale(
+    raw: str,
+    *,
+    repair_contract_error: str,
+) -> tuple[str, dict[str, Any] | None]:
+    """Bound only rationale length for an exact post-destination Back repair."""
+    if not repair_contract_error.startswith(
+        _POST_DESTINATION_BACK_REPAIR_PREFIXES
+    ):
+        return raw, None
+    try:
+        value = json.loads(raw.strip())
+    except (json.JSONDecodeError, TypeError):
+        return raw, None
+    if (
+        not isinstance(value, dict)
+        or value.get("status") != "continue"
+        or value.get("action") != {"type": "press_back"}
+    ):
+        return raw, None
+
+    protected_payload = {
+        key: item
+        for key, item in value.items()
+        if key not in {"decision_summary", "expected_outcome"}
+    }
+    protected_sha256_before = sha256(
+        json.dumps(
+            protected_payload,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()
+    normalized_fields: list[dict[str, Any]] = []
+    for field in ("decision_summary", "expected_outcome"):
+        original = value.get(field)
+        if not isinstance(original, str) or len(original) <= (
+            _REPAIR_RATIONALE_LIMIT
+        ):
+            continue
+        prefix = original[: _REPAIR_RATIONALE_LIMIT - 1].rstrip()
+        shortened = prefix + "\u2026"
+        value[field] = shortened
+        normalized_fields.append(
+            {
+                "field": field,
+                "before_length": len(original),
+                "after_length": len(shortened),
+            }
+        )
+    if not normalized_fields:
+        return raw, None
+    protected_payload_after = {
+        key: item
+        for key, item in value.items()
+        if key not in {"decision_summary", "expected_outcome"}
+    }
+    protected_sha256_after = sha256(
+        json.dumps(
+            protected_payload_after,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()
+    normalized = json.dumps(
+        value,
+        ensure_ascii=False,
+        separators=(",", ":"),
+    )
+    return (
+        normalized,
+        {
+            "schema_version": (
+                "bounded_repair_rationale_normalization.v1"
+            ),
+            "scope": "post_destination_exact_press_back_repair",
+            "limit": _REPAIR_RATIONALE_LIMIT,
+            "normalized_fields": normalized_fields,
+            "protected_payload_sha256_before": protected_sha256_before,
+            "protected_payload_sha256_after": protected_sha256_after,
+            "protected_payload_unchanged": (
+                protected_sha256_before == protected_sha256_after
+            ),
+        },
+    )
+
+
 def action_authority_record(
     decision: dict[str, Any],
     *,
@@ -181,6 +278,7 @@ class ModelOutputInvalid(RuntimeError):
         adjudication_model_call_count: int = 0,
         action_adjudications: list[dict[str, Any]] | None = None,
         completion_adjudications: list[dict[str, Any]] | None = None,
+        repair_rationale_normalization: dict[str, Any] | None = None,
     ) -> None:
         super().__init__(repair_error)
         self.calls = calls
@@ -189,6 +287,9 @@ class ModelOutputInvalid(RuntimeError):
         self.adjudication_model_call_count = adjudication_model_call_count
         self.action_adjudications = action_adjudications or []
         self.completion_adjudications = completion_adjudications or []
+        self.repair_rationale_normalization = (
+            repair_rationale_normalization
+        )
 
 
 class VisibleInfrastructureFailure(RuntimeError):
@@ -1176,6 +1277,9 @@ class EpisodeController:
             dict[str, Any] | None
         ) = None
         latest_source_context_assessment: dict[str, Any] | None = None
+        latest_repair_rationale_normalization: (
+            dict[str, Any] | None
+        ) = None
         visual_source_cache: dict[str, dict[str, Any]] = {}
         parse_kwargs = (
             {"schema_path": self.action_schema_path}
@@ -1191,9 +1295,22 @@ class EpisodeController:
             nonlocal adjudication_model_call_count
             nonlocal latest_verification_navigation_assessment
             nonlocal latest_source_context_assessment
+            nonlocal latest_repair_rationale_normalization
             latest_verification_navigation_assessment = None
             latest_source_context_assessment = None
-            parsed_candidate = parse_action_response(content, **parse_kwargs)
+            candidate_content = content
+            if repair_contract_error is not None:
+                (
+                    candidate_content,
+                    latest_repair_rationale_normalization,
+                ) = _normalize_post_destination_back_repair_rationale(
+                    content,
+                    repair_contract_error=repair_contract_error,
+                )
+            parsed_candidate = parse_action_response(
+                candidate_content,
+                **parse_kwargs,
+            )
             if self.protocol_v2:
                 swipe_assessment = (
                     swipe_direction_consistency_assessment(
@@ -1839,6 +1956,9 @@ class EpisodeController:
                     ),
                     action_adjudications=action_adjudications,
                     completion_adjudications=completion_adjudications,
+                    repair_rationale_normalization=(
+                        latest_repair_rationale_normalization
+                    ),
                 ) from repair_error
             return (
                 parsed.decision,
@@ -1861,6 +1981,15 @@ class EpisodeController:
                     ),
                     "action_adjudications": action_adjudications,
                     "completion_adjudications": completion_adjudications,
+                    **(
+                        {
+                            "bounded_repair_rationale_normalization": (
+                                latest_repair_rationale_normalization
+                            )
+                        }
+                        if latest_repair_rationale_normalization is not None
+                        else {}
+                    ),
                     "post_destination_verification_navigation_assessment": (
                         latest_verification_navigation_assessment
                     ),
@@ -2083,6 +2212,15 @@ class EpisodeController:
                         ),
                         "completion_adjudications": (
                             exc.completion_adjudications
+                        ),
+                        **(
+                            {
+                                "bounded_repair_rationale_normalization": (
+                                    exc.repair_rationale_normalization
+                                )
+                            }
+                            if exc.repair_rationale_normalization is not None
+                            else {}
                         ),
                     }
                     step_record = {
