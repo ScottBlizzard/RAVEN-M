@@ -195,6 +195,8 @@ Raw trajectories are under `runs/excluded_protocol_dry_run/` and
 | `reports/protocol_v2_2_r56_candidate_preflight.json` | source, 27-file freeze, four instances, exact model, emulator, and fresh Files smoke directory | passed |
 | `reports/protocol_v2_2_r56_m0_files_smoke.json` | machine-readable native success, r55 live normalization, r56 evidence boundary, and immutable hashes | Gate-D preparation allowed |
 | `reports/protocol_v2_2_r56_m0_files_smoke.md` | human-readable r56 Files success, reliability observation, and formal boundary | current |
+| `05_project/configs/experiments/v2_2_capability_gate_r56.json` | frozen eight-cell r56 Gate-E manifest with unchanged schedule and acceptance | prepared |
+| `05_project/scripts/run_protocol_v2_2_gate_e_r56.py` | exact-source r56 formal preflight and one-launch entry point | prepared |
 
 The r39 raw trajectories are under
 `runs/protocol_v2_2/nonhard_capability_v2_2_seed20260729_r39/` and remain
