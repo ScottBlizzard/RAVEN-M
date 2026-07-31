@@ -5,6 +5,7 @@ from hashlib import sha256
 import json
 from pathlib import Path
 import re
+import subprocess
 import sys
 
 
@@ -48,9 +49,8 @@ def test_r58_wrapper_freezes_exact_candidate_source() -> None:
     assert tag.group(1) == "protocol-v2-2-r58-local-candidate"
 
 
-def test_r58_candidate_preserves_r56_controls_and_validates() -> None:
+def test_r58_candidate_preserves_historical_controls_and_freeze() -> None:
     wrapper = load_module(WRAPPER, "r58_h01_wrapper")
-    runner = load_module(RUNNER, "r58_gate_f_runner")
     candidate_path = wrapper.build_candidate_manifest()
     candidate = json.loads(candidate_path.read_text(encoding="utf-8"))
     base = json.loads(BASE_MANIFEST.read_text(encoding="utf-8"))
@@ -73,15 +73,32 @@ def test_r58_candidate_preserves_r56_controls_and_validates() -> None:
         assert candidate[key] == base[key]
     assert candidate["source_commit"] == wrapper.SOURCE_COMMIT
     assert candidate["source_tag"] == wrapper.SOURCE_TAG
-    audit = runner.validate_manifest(
-        candidate,
-        expected_source_tag=wrapper.SOURCE_TAG,
-        expected_source_commit=wrapper.SOURCE_COMMIT,
-        expected_prerequisite_commit=wrapper.PARENT_GATE_E_COMMIT,
+    execution_commit = (
+        "d1c24d53f9c72aef61560fc4b545011ec387593c"
     )
-    assert len(audit["freeze_file_checks"]) == 28
-    assert all(row["passed"] for row in audit["freeze_file_checks"])
-    assert all(row["passed"] for row in audit["prerequisite_checks"])
+    for record in candidate["freeze_files"]:
+        frozen = subprocess.check_output(
+            [
+                "git",
+                "show",
+                f"{execution_commit}:{record['path']}",
+            ],
+            cwd=ROOT,
+        )
+        assert sha256(frozen).hexdigest() == record["sha256"]
+    prerequisite = candidate["prerequisite_gate_e_report"]
+    frozen_prerequisite = subprocess.check_output(
+        [
+            "git",
+            "show",
+            f"{execution_commit}:{prerequisite['path']}",
+        ],
+        cwd=ROOT,
+    )
+    assert (
+        sha256(frozen_prerequisite).hexdigest()
+        == prerequisite["sha256"]
+    )
 
 
 def test_r57_development_stop_remains_byte_frozen() -> None:
@@ -96,4 +113,3 @@ def test_r58_uses_only_isolated_non_scored_development_mode() -> None:
     assert '"formal_scoring"] = False' in source
     assert "--development-smoke-sequence" in source
     assert "runs/protocol_v2_2_development" in source
-

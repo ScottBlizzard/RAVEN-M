@@ -1763,6 +1763,24 @@ def repeated_button() -> dict:
     }
 
 
+def numeric_result(value: str, *, clickable: bool = False) -> dict:
+    return {
+        "package_name": "com.android.chrome",
+        "class_name": "android.view.View",
+        "text": value,
+        "is_visible": True,
+        "is_enabled": True,
+        "is_clickable": clickable,
+        "is_editable": False,
+        "bbox": {
+            "x_min": 0.46,
+            "x_max": 0.54,
+            "y_min": 0.14,
+            "y_max": 0.18,
+        },
+    }
+
+
 def task_repeat_assessment(
     *,
     goal: str = (
@@ -1951,6 +1969,167 @@ def test_guard_reconciles_one_delayed_semantic_repeat_then_bounds_count() -> Non
     assert audit["deferred_semantic_progress_reconciliation_count"] == 1
     assert audit["identical_coordinate_no_effect_count"] == 0
     assert audit["bounded_task_repeated_tap_override_count"] == 2
+
+
+def test_verified_repeat_ledger_overrides_stale_summary_and_calculates() -> None:
+    guard = ProtocolV2DecisionGuard(
+        max_no_effect_repeats=10,
+        max_identical_coordinate_actions=3,
+    )
+    goal = (
+        "Open the task with Chrome. Then click the button 5 times, "
+        "remember the numbers displayed, and enter their product."
+    )
+    action = {"type": "tap", "x": 0.5, "y": 0.208}
+    guard.reset(goal=goal)
+    displayed_results = ["2", "3", "9", "10", "10"]
+
+    for ordinal in range(1, 6):
+        current_value = "6" if ordinal == 1 else displayed_results[ordinal - 2]
+        page = f"before-{ordinal}"
+        assessment = bounded_task_repeated_tap_assessment(
+            goal,
+            [repeated_button(), numeric_result(current_value)],
+            action,
+            prior_identical_coordinate_action_count=(
+                guard.identical_coordinate_action_count
+            ),
+            identical_coordinate_no_effect_count=(
+                guard.identical_coordinate_no_effect_count
+            ),
+            screen_width=1080,
+            screen_height=2400,
+            transition_context=guard.repeated_tap_transition_context(
+                page_sha256=page,
+                action=action,
+            ),
+        )
+        assert assessment["proposed_ordinal"] == ordinal
+        assert assessment["task_target_bound"]
+        assert assessment["numeric_result_collection_bound"]
+        guard.validate_decision(
+            decision(action),
+            page_sha256=page,
+            bounded_task_repeated_tap_assessment=assessment,
+        )
+        guard.observe_transition(
+            before_sha256=page,
+            action=action,
+            after_sha256=f"after-{ordinal}",
+            bounded_task_repeated_tap_assessment=assessment,
+        )
+        progress = guard.refresh_verified_task_repeat_progress(
+            goal=goal,
+            ui_elements=[
+                repeated_button(),
+                numeric_result(displayed_results[ordinal - 1]),
+            ],
+            page_sha256=f"fresh-result-{ordinal}",
+        )
+        assert progress is not None
+        assert progress["executed_count"] == ordinal
+        assert progress["verified_operands"] == displayed_results[:ordinal]
+
+    progress = guard.verified_task_repeat_progress_record()
+    assert progress is not None
+    assert progress["complete"]
+    assert progress["operands_complete"]
+    assert progress["deterministic_calculation"] == {
+        "operation": "product",
+        "operands": ["2", "3", "9", "10", "10"],
+        "result": "5400",
+        "text_origin": "deterministic_calculation",
+    }
+
+    sixth = bounded_task_repeated_tap_assessment(
+        goal,
+        [repeated_button(), numeric_result("10")],
+        action,
+        prior_identical_coordinate_action_count=5,
+        identical_coordinate_no_effect_count=0,
+        screen_width=1080,
+        screen_height=2400,
+        transition_context=guard.repeated_tap_transition_context(
+            page_sha256="fresh-result-5",
+            action=action,
+        ),
+    )
+    with pytest.raises(
+        ActionValidationError,
+        match="TASK_REPEAT_COUNT_COMPLETE",
+    ):
+        guard.validate_decision(
+            decision(action),
+            page_sha256="fresh-result-5",
+            bounded_task_repeated_tap_assessment=sixth,
+        )
+    audit = guard.audit_record()
+    assert audit["task_repeat_count_complete_block_count"] == 1
+    assert audit["verified_task_repeat_progress"]["executed_count"] == 5
+
+
+def test_verified_repeat_ledger_does_not_guess_ambiguous_result() -> None:
+    guard = ProtocolV2DecisionGuard()
+    goal = (
+        "Open with Chrome, click the button 2 times, remember the numbers "
+        "displayed, and enter their product."
+    )
+    action = {"type": "tap", "x": 0.5, "y": 0.208}
+    guard.reset(goal=goal)
+    first = bounded_task_repeated_tap_assessment(
+        goal,
+        [repeated_button(), numeric_result("6")],
+        action,
+        prior_identical_coordinate_action_count=0,
+        identical_coordinate_no_effect_count=0,
+        screen_width=1080,
+        screen_height=2400,
+    )
+    guard.observe_transition(
+        before_sha256="before",
+        action=action,
+        after_sha256="after",
+        bounded_task_repeated_tap_assessment=first,
+    )
+    progress = guard.refresh_verified_task_repeat_progress(
+        goal=goal,
+        ui_elements=[
+            repeated_button(),
+            numeric_result("2"),
+            numeric_result("3"),
+        ],
+        page_sha256="ambiguous",
+    )
+    assert progress is not None
+    assert progress["executed_count"] == 1
+    assert progress["verified_operands"] == []
+    assert not progress["operands_complete"]
+    assert progress["deterministic_calculation"] is None
+
+
+def test_numeric_repeat_result_excludes_clickable_and_wrong_package() -> None:
+    assessment = bounded_task_repeated_tap_assessment(
+        (
+            "Open with Chrome, click the button 5 times, remember the "
+            "numbers displayed, and enter their product."
+        ),
+        [
+            repeated_button(),
+            numeric_result("2", clickable=True),
+            {
+                **numeric_result("3"),
+                "package_name": "com.android.systemui",
+            },
+        ],
+        {"type": "tap", "x": 0.5, "y": 0.208},
+        prior_identical_coordinate_action_count=1,
+        identical_coordinate_no_effect_count=0,
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert assessment["numeric_result_collection_bound"]
+    assert assessment["visible_numeric_result_candidates"] == []
+    assert assessment["unique_visible_numeric_result"] is None
 
 
 @pytest.mark.parametrize(

@@ -556,6 +556,7 @@ class EpisodeController:
         protocol_v2: bool = False,
         protocol_v2_2: bool = False,
         post_destination_commit_active: bool = False,
+        verified_task_repeat_progress: dict[str, Any] | None = None,
     ) -> str:
         coordinate_denominator = max(screen_height - 1, 1)
         app_bar_pixel_y = min(
@@ -574,6 +575,30 @@ class EpisodeController:
                 f"model calls {model_calls}/{max_model_calls}",
                 f"PREVIOUS_ACTION_AND_OBSERVED_OUTCOME: {previous_outcome}",
                 f"MEMORY_CONTEXT: {memory_context}",
+                *(
+                    [
+                        "VERIFIED_TASK_REPEAT_PROGRESS: "
+                        + json.dumps(
+                            verified_task_repeat_progress,
+                            ensure_ascii=False,
+                            sort_keys=True,
+                            separators=(",", ":"),
+                        ),
+                        "VERIFIED_PROGRESS_PRECEDENCE: This ledger is "
+                        "derived from actions that actually executed and "
+                        "fresh semantic UI evidence. It is newer and more "
+                        "authoritative than any conflicting summary or "
+                        "recent-entry wording in MEMORY_CONTEXT. Never repeat "
+                        "the task-bound action after complete=true. When "
+                        "operands_complete=true, use deterministic_calculation "
+                        "for the required post-repeat input with "
+                        "text_origin=deterministic_calculation and empty "
+                        "source_memory_ids. If an operand is absent, do not "
+                        "invent it."
+                    ]
+                    if verified_task_repeat_progress is not None
+                    else []
+                ),
                 (
                     "TEXT_PROVENANCE: type_text/answer text must come from a "
                     "TASK literal, the current screen, verified routed memory, "
@@ -853,6 +878,9 @@ class EpisodeController:
             "POST_DESTINATION_COMPLETION_REOBSERVE_REQUIRED:"
         )
         loop_guard_rejected = error.startswith("LOOP_GUARD:")
+        task_repeat_complete_rejected = error.startswith(
+            "TASK_REPEAT_COUNT_COMPLETE:"
+        )
         unverified_progress_repeat_required = (
             "UNVERIFIED_PROGRESS_REPEAT_REQUIRED:" in error
         )
@@ -879,7 +907,23 @@ class EpisodeController:
         visual_source_rejected = (
             "VISUAL_SOURCE_ADJUDICATION_REJECTED:" in error
         )
-        if visual_source_rejected:
+        if task_repeat_complete_rejected:
+            repair_directive = (
+                "\n\nVERIFIED_REPEAT_COMPLETION_REPAIR: The exact requested "
+                "number of task-bound activations has already executed. The "
+                "verified progress ledger in VALIDATION_ERROR and the "
+                "original prompt is newer and more authoritative than any "
+                "conflicting summary memory. For this repair, action.type "
+                "must not repeat that completed control. If the ledger "
+                "contains a complete deterministic calculation and a visible "
+                "editable field corresponds to the pending result, enter "
+                "that exact result with "
+                "text_origin=deterministic_calculation and empty "
+                "source_memory_ids. Otherwise use one reversible visible "
+                "action toward the pending post-repeat subtask. Never invent "
+                "a missing operand or execute a sixth activation.\n"
+            )
+        elif visual_source_rejected:
             repair_directive = (
                 "\n\nThe bounded visual-source critic did not verify the "
                 "terminal answer on this unchanged screenshot. For this one "
@@ -1227,8 +1271,11 @@ class EpisodeController:
             if protocol_v2
             else ""
         )
-        repair_prefix = repair_directive if loop_guard_rejected else ""
-        repair_suffix = "" if loop_guard_rejected else repair_directive
+        priority_repair = bool(
+            loop_guard_rejected or task_repeat_complete_rejected
+        )
+        repair_prefix = repair_directive if priority_repair else ""
+        repair_suffix = "" if priority_repair else repair_directive
         return (
             repair_prefix
             + original_prompt
@@ -2344,6 +2391,19 @@ class EpisodeController:
                         }
                     )
                     raise VisibleInfrastructureFailure(messages)
+                verified_repeat_progress = (
+                    self.decision_guard
+                    .refresh_verified_task_repeat_progress(
+                        goal=effective_task_goal,
+                        ui_elements=getattr(
+                            state_before, "ui_elements", ()
+                        ),
+                        page_sha256=before_semantic["sha256"],
+                    )
+                    if self.protocol_v2_2
+                    and self.decision_guard is not None
+                    else None
+                )
                 history_context = self.history_policy.context()
                 evidence_outcome = previous_outcome
                 user_prompt = self._user_prompt(
@@ -2361,6 +2421,9 @@ class EpisodeController:
                     post_destination_commit_active=bool(
                         self.decision_guard is not None
                         and self.decision_guard.post_destination_commit_active
+                    ),
+                    verified_task_repeat_progress=(
+                        verified_repeat_progress
                     ),
                 )
                 try:
@@ -2639,6 +2702,11 @@ class EpisodeController:
                         post_destination_verification_navigation_assessment=(
                             parse_meta.get(
                                 "post_destination_verification_navigation_assessment"
+                            )
+                        ),
+                        bounded_task_repeated_tap_assessment=(
+                            parse_meta.get(
+                                "bounded_task_repeated_tap_assessment"
                             )
                         ),
                         claimed_unverified_progress=any(

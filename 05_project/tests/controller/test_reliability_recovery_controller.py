@@ -4,7 +4,10 @@ import json
 from pathlib import Path
 
 from raven_m.controller.episode_controller import EpisodeController
-from raven_m.controller.protocol_v2_guard import ProtocolV2DecisionGuard
+from raven_m.controller.protocol_v2_guard import (
+    ProtocolV2DecisionGuard,
+    bounded_task_repeated_tap_assessment,
+)
 from raven_m.models.transformers_client import ModelCall
 
 
@@ -346,6 +349,160 @@ def test_controller_reconciles_delayed_task_button_progress(
     audit = controller.decision_guard.audit_record()
     assert audit["deferred_semantic_progress_reconciliation_count"] == 1
     assert audit["identical_coordinate_no_effect_count"] == 0
+
+
+def test_controller_repairs_sixth_tap_to_post_repeat_action(
+    tmp_path: Path,
+) -> None:
+    tap = {"type": "tap", "x": 0.5, "y": 0.208}
+    initial = {
+        "status": "continue",
+        "action": tap,
+        "expected_outcome": "The next number appears.",
+        "decision_summary": "Tap Click Me for another number.",
+        "state_delta": [],
+        "memory_citations": [],
+    }
+    repair = {
+        "status": "continue",
+        "action": {
+            "type": "swipe",
+            "x": 0.5,
+            "y": 0.8,
+            "x2": 0.5,
+            "y2": 0.3,
+            "duration_ms": 500,
+        },
+        "expected_outcome": "The result form becomes visible.",
+        "decision_summary": "Scroll toward the pending product form.",
+        "state_delta": [],
+        "memory_citations": [],
+    }
+    client = RepairSequenceClient(initial, repair)
+    controller = controller_for(client, protocol_v2_2=True)
+    guard = controller.decision_guard
+    assert guard is not None
+    goal = (
+        "Open the task with Chrome, then click the button 5 times, "
+        "remember the numbers displayed, and enter their product."
+    )
+    values = ["2", "3", "9", "10", "10"]
+    button = {
+        "package_name": "com.android.chrome",
+        "class_name": "android.widget.Button",
+        "text": "Click Me",
+        "is_visible": True,
+        "is_enabled": True,
+        "is_clickable": True,
+        "is_editable": False,
+        "bbox": {
+            "x_min": 0.43,
+            "x_max": 0.57,
+            "y_min": 0.18,
+            "y_max": 0.23,
+        },
+    }
+    for ordinal, value in enumerate(values, start=1):
+        assessment = bounded_task_repeated_tap_assessment(
+            goal,
+            [button],
+            tap,
+            prior_identical_coordinate_action_count=(
+                guard.identical_coordinate_action_count
+            ),
+            identical_coordinate_no_effect_count=(
+                guard.identical_coordinate_no_effect_count
+            ),
+            screen_width=1080,
+            screen_height=2400,
+            transition_context=guard.repeated_tap_transition_context(
+                page_sha256=f"before-{ordinal}",
+                action=tap,
+            ),
+        )
+        guard.validate_decision(
+            {
+                "status": "continue",
+                "action": tap,
+                "memory_citations": [],
+            },
+            page_sha256=f"before-{ordinal}",
+            bounded_task_repeated_tap_assessment=assessment,
+        )
+        guard.observe_transition(
+            before_sha256=f"before-{ordinal}",
+            action=tap,
+            after_sha256=f"after-{ordinal}",
+            bounded_task_repeated_tap_assessment=assessment,
+        )
+        guard.refresh_verified_task_repeat_progress(
+            goal=goal,
+            ui_elements=[
+                button,
+                {
+                    "package_name": "com.android.chrome",
+                    "text": value,
+                    "is_visible": True,
+                    "is_clickable": False,
+                    "is_editable": False,
+                },
+            ],
+            page_sha256=f"result-{ordinal}",
+        )
+
+    decision_value, calls, meta = call_and_parse(
+        controller,
+        tmp_path=tmp_path,
+        task_goal=goal,
+        ui_elements=[button],
+    )
+    assert len(calls) == 2
+    assert meta["model_repair_used"]
+    assert meta["initial_validation_error"].startswith(
+        "TASK_REPEAT_COUNT_COMPLETE:"
+    )
+    assert decision_value["action"] == repair["action"]
+    repair_prompt = client.requests[1]["user_prompt"]
+    assert "VERIFIED_REPEAT_COMPLETION_REPAIR" in repair_prompt
+    assert '"result":"5400"' in repair_prompt
+    assert guard.audit_record()[
+        "task_repeat_count_complete_block_count"
+    ] == 1
+
+
+def test_user_prompt_marks_verified_repeat_progress_authoritative() -> None:
+    progress = {
+        "executed_count": 5,
+        "requested_repetitions": 5,
+        "complete": True,
+        "verified_operands": ["2", "3", "9", "10", "10"],
+        "operands_complete": True,
+        "deterministic_calculation": {
+            "operation": "product",
+            "result": "5400",
+        },
+    }
+    prompt = EpisodeController._user_prompt(
+        goal="Click the button 5 times and enter their product.",
+        step=14,
+        max_steps=22,
+        model_calls=17,
+        max_model_calls=54,
+        screen_width=1080,
+        screen_height=2400,
+        previous_outcome="The fifth tap changed the semantic UI.",
+        memory_context=(
+            '{"summary":"Clicked once; click four more times."}'
+        ),
+        protocol_v2=True,
+        protocol_v2_2=True,
+        verified_task_repeat_progress=progress,
+    )
+    assert "VERIFIED_TASK_REPEAT_PROGRESS" in prompt
+    assert "newer and more authoritative" in prompt
+    assert '"executed_count":5' in prompt
+    assert '"result":"5400"' in prompt
+    assert "Never repeat" in prompt
 
 
 def test_controller_uses_one_step_activation_proof_for_text_repair(

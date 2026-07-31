@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from collections import defaultdict
+from decimal import Decimal, InvalidOperation
 from hashlib import sha256
 import json
 import math
@@ -148,6 +149,14 @@ REPEATED_TARGET_STOPWORDS = {
     "the",
     "this",
 }
+NUMERIC_REPEAT_RESULT_GOAL_RE = re.compile(
+    r"\b(?:number|numbers|value|values)\b[^.;\n]{0,160}?"
+    r"\b(?:product|multiply|sum|average|total)\b",
+    flags=re.IGNORECASE,
+)
+EXACT_NUMERIC_LABEL_RE = re.compile(
+    r"^[+-]?(?:\d+(?:\.\d+)?|\.\d+)$"
+)
 NUMBER_WORD_VALUES = {
     "two": 2,
     "three": 3,
@@ -502,6 +511,11 @@ def bounded_task_repeated_tap_assessment(
         screen_width=screen_width,
         screen_height=screen_height,
     )
+    numeric_result = visible_numeric_repeat_result_assessment(
+        goal,
+        ui_elements,
+        allowed_packages=control["matched_packages"],
+    )
     matched_class_names: set[str] = set()
     matched_resource_ids: set[str] = set()
     matched_button_like_count = 0
@@ -657,9 +671,65 @@ def bounded_task_repeated_tap_assessment(
         "explicit_label_bound": explicit_label_bound,
         "package_goal_bound": package_goal_bound,
         "task_target_bound": task_target_bound,
+        "numeric_result_collection_bound": numeric_result[
+            "collection_bound"
+        ],
+        "visible_numeric_result_candidates": numeric_result[
+            "visible_numeric_result_candidates"
+        ],
+        "unique_visible_numeric_result": numeric_result[
+            "unique_visible_numeric_result"
+        ],
         "current_visible_failures": sorted(current_visible_failures),
         "commit_like": control["commit_like"],
         "permitted": permitted,
+    }
+
+
+def visible_numeric_repeat_result_assessment(
+    goal: str,
+    ui_elements: Any,
+    *,
+    allowed_packages: list[str] | tuple[str, ...] | set[str],
+) -> dict[str, Any]:
+    """Extract one exact numeric result from the task-bound application."""
+    packages = set(allowed_packages)
+    candidates: set[str] = set()
+    for element in ui_elements or ():
+        package_name = _normalized_text(
+            _element_value(element, "package_name")
+        )
+        if package_name not in packages:
+            continue
+        if _element_value(element, "is_visible") is not True:
+            continue
+        if _element_value(element, "is_clickable") is True:
+            continue
+        if _element_value(element, "is_editable") is True:
+            continue
+        for field in (
+            "text",
+            "content_description",
+            "hint_text",
+            "tooltip",
+        ):
+            label = _normalized_text(_element_value(element, field))
+            if label and EXACT_NUMERIC_LABEL_RE.fullmatch(label):
+                candidates.add(label)
+    ordered = sorted(candidates)
+    collection_bound = bool(
+        NUMERIC_REPEAT_RESULT_GOAL_RE.search(goal or "")
+    )
+    return {
+        "schema_version": "visible_numeric_repeat_result_assessment.v1",
+        "collection_bound": collection_bound,
+        "allowed_packages": sorted(packages),
+        "visible_numeric_result_candidates": ordered,
+        "unique_visible_numeric_result": (
+            ordered[0]
+            if collection_bound and len(ordered) == 1
+            else None
+        ),
     }
 
 
@@ -2047,6 +2117,11 @@ class ProtocolV2DecisionGuard:
         self.deferred_semantic_progress_reconciliation_records: list[
             dict[str, Any]
         ] = []
+        self._verified_task_repeat_progress: dict[str, Any] | None = None
+        self.verified_task_repeat_observation_records: list[
+            dict[str, Any]
+        ] = []
+        self.task_repeat_count_complete_block_count = 0
 
     def mark_input_activation_repair(
         self,
@@ -2112,6 +2187,150 @@ class ProtocolV2DecisionGuard:
             "last_after_semantic_sha256": last_after,
             "current_semantic_sha256": page_sha256,
         }
+
+    @staticmethod
+    def _deterministic_repeat_calculation(
+        *,
+        goal: str,
+        operands: list[str],
+        requested_repetitions: int,
+    ) -> dict[str, Any] | None:
+        if (
+            len(operands) != requested_repetitions
+            or not re.search(r"\bproduct\b", goal or "", re.IGNORECASE)
+        ):
+            return None
+        try:
+            product = Decimal(1)
+            for operand in operands:
+                product *= Decimal(operand)
+        except InvalidOperation:
+            return None
+        result = format(product, "f")
+        if "." in result:
+            result = result.rstrip("0").rstrip(".")
+        return {
+            "operation": "product",
+            "operands": list(operands),
+            "result": result,
+            "text_origin": "deterministic_calculation",
+        }
+
+    def refresh_verified_task_repeat_progress(
+        self,
+        *,
+        goal: str,
+        ui_elements: Any,
+        page_sha256: str,
+    ) -> dict[str, Any] | None:
+        """Attach one fresh numeric result to an already executed ordinal."""
+        progress = self._verified_task_repeat_progress
+        if progress is None:
+            return None
+        observation = visible_numeric_repeat_result_assessment(
+            goal,
+            ui_elements,
+            allowed_packages=progress["matched_packages"],
+        )
+        candidate = observation["unique_visible_numeric_result"]
+        operands = progress["verified_operands"]
+        if (
+            progress["numeric_result_collection_bound"]
+            and progress["executed_count"] > len(operands)
+            and candidate is not None
+        ):
+            ordinal = len(operands) + 1
+            record = {
+                "result_ordinal": ordinal,
+                "value": candidate,
+                "semantic_state_sha256": page_sha256,
+                "assessment": observation,
+            }
+            operands.append(candidate)
+            progress["operand_records"].append(record)
+            self.verified_task_repeat_observation_records.append(record)
+        progress["complete"] = bool(
+            progress["executed_count"]
+            == progress["requested_repetitions"]
+        )
+        progress["operands_complete"] = bool(
+            len(operands) == progress["requested_repetitions"]
+        )
+        progress["deterministic_calculation"] = (
+            self._deterministic_repeat_calculation(
+                goal=goal,
+                operands=operands,
+                requested_repetitions=progress[
+                    "requested_repetitions"
+                ],
+            )
+        )
+        return self.verified_task_repeat_progress_record()
+
+    def verified_task_repeat_progress_record(
+        self,
+    ) -> dict[str, Any] | None:
+        progress = self._verified_task_repeat_progress
+        if progress is None:
+            return None
+        return json.loads(json.dumps(progress))
+
+    def _record_executed_task_repeat(
+        self,
+        *,
+        action: dict[str, Any],
+        after_sha256: str,
+        assessment: dict[str, Any] | None,
+    ) -> None:
+        value = assessment or {}
+        requested = value.get("requested_repetitions")
+        ordinal = value.get("proposed_ordinal")
+        if (
+            action.get("type") != "tap"
+            or value.get("task_target_bound") is not True
+            or not isinstance(requested, int)
+            or not isinstance(ordinal, int)
+            or not 1 <= ordinal <= requested
+        ):
+            return
+        action_key = canonical_action_key(action)
+        progress = self._verified_task_repeat_progress
+        if progress is None:
+            if ordinal != 1:
+                return
+            progress = {
+                "schema_version": "verified_task_repeat_progress.v1",
+                "authority": "executed_action_and_fresh_semantic_ui",
+                "action": action,
+                "action_key": action_key,
+                "requested_repetitions": requested,
+                "executed_count": 0,
+                "complete": False,
+                "matched_labels": list(
+                    value.get("matched_labels") or []
+                ),
+                "matched_packages": list(
+                    value.get("matched_packages") or []
+                ),
+                "numeric_result_collection_bound": bool(
+                    value.get("numeric_result_collection_bound")
+                ),
+                "verified_operands": [],
+                "operand_records": [],
+                "operands_complete": False,
+                "deterministic_calculation": None,
+                "last_after_semantic_sha256": None,
+            }
+            self._verified_task_repeat_progress = progress
+        if (
+            progress["action_key"] != action_key
+            or progress["requested_repetitions"] != requested
+            or ordinal != progress["executed_count"] + 1
+        ):
+            return
+        progress["executed_count"] = ordinal
+        progress["complete"] = ordinal == requested
+        progress["last_after_semantic_sha256"] = after_sha256
 
     def _block_fingerprint(
         self,
@@ -2939,6 +3158,51 @@ class ProtocolV2DecisionGuard:
                     "transition_context": transition_context,
                 }
             )
+        verified_repeat_progress = self._verified_task_repeat_progress
+        task_repeat_count_complete = bool(
+            action.get("type") == "tap"
+            and task_repeat.get("task_target_bound") is True
+            and verified_repeat_progress is not None
+            and verified_repeat_progress.get("complete") is True
+            and verified_repeat_progress.get("action_key") == action_key
+            and task_repeat.get("requested_repetitions")
+            == verified_repeat_progress.get("requested_repetitions")
+            and task_repeat.get("proposed_ordinal", 0)
+            > verified_repeat_progress.get(
+                "requested_repetitions",
+                0,
+            )
+        )
+        if task_repeat_count_complete:
+            progress_record = (
+                self.verified_task_repeat_progress_record()
+            )
+            record = {
+                "semantic_state_sha256": page_sha256,
+                "action": action,
+                "reason": "verified_task_repeat_count_complete",
+                "verified_task_repeat_progress": progress_record,
+                "required_recovery_classes": [
+                    "perform_post_repeat_subtask",
+                    "use_verified_deterministic_calculation",
+                    "fail_safely_if_verified_operands_incomplete",
+                ],
+            }
+            self.validation_blocks.append(record)
+            self.task_repeat_count_complete_block_count += 1
+            raise ActionValidationError(
+                "TASK_REPEAT_COUNT_COMPLETE: the task-bound action has "
+                "already executed the exact requested count. Another repeat "
+                "is forbidden. Treat VERIFIED_TASK_REPEAT_PROGRESS as newer "
+                "than conflicting summary memory and perform the pending "
+                "post-repeat subtask. Verified ledger: "
+                + json.dumps(
+                    progress_record,
+                    ensure_ascii=False,
+                    sort_keys=True,
+                    separators=(",", ":"),
+                )
+            )
         bounded_task_repeat = bool(
             action.get("type") == "tap"
             and task_repeat.get("permitted") is True
@@ -3039,6 +3303,9 @@ class ProtocolV2DecisionGuard:
         post_destination_verification_navigation_assessment: (
             dict[str, Any] | None
         ) = None,
+        bounded_task_repeated_tap_assessment: (
+            dict[str, Any] | None
+        ) = None,
         claimed_unverified_progress: bool = False,
     ) -> dict[str, Any]:
         input_activation_proof_consumed = (
@@ -3111,6 +3378,11 @@ class ProtocolV2DecisionGuard:
         if new_visible_failures:
             self._block_fingerprint(fingerprint)
             self.visible_failure_trigger_count += 1
+        self._record_executed_task_repeat(
+            action=action,
+            after_sha256=after_sha256,
+            assessment=bounded_task_repeated_tap_assessment,
+        )
         self.transition_fingerprints.append(
             (before_sha256, action_key, after_sha256)
         )
@@ -3170,6 +3442,9 @@ class ProtocolV2DecisionGuard:
             ),
             "bounded_task_repeated_tap_override_count": (
                 self.bounded_task_repeated_tap_override_count
+            ),
+            "verified_task_repeat_progress": (
+                self.verified_task_repeat_progress_record()
             ),
             "new_visible_failures": new_visible_failures,
         }
@@ -3279,6 +3554,15 @@ class ProtocolV2DecisionGuard:
             ),
             "deferred_semantic_progress_reconciliation_records": list(
                 self.deferred_semantic_progress_reconciliation_records
+            ),
+            "verified_task_repeat_progress": (
+                self.verified_task_repeat_progress_record()
+            ),
+            "verified_task_repeat_observation_records": list(
+                self.verified_task_repeat_observation_records
+            ),
+            "task_repeat_count_complete_block_count": (
+                self.task_repeat_count_complete_block_count
             ),
             "ab_ab_cycle_trigger_count": self.cycle_trigger_count,
             "visible_failure_trigger_count": (
