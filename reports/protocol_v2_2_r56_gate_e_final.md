@@ -1,9 +1,9 @@
 # Protocol-v2.2 Gate-E r56 final report
 
-Date: 2026-07-31  
-Suite: `nonhard_capability_v2_2_seed20260729_r56`  
-Source: `24ddb7a34c0e873218cbac6b081d7d24ecd7d61e`  
-Tag: `protocol-v2-2-gate-e-r56`  
+Date: 2026-07-31<br>
+Suite: `nonhard_capability_v2_2_seed20260729_r56`<br>
+Source: `24ddb7a34c0e873218cbac6b081d7d24ecd7d61e`<br>
+Tag: `protocol-v2-2-gate-e-r56`<br>
 Decision: **PASS as a protocol requalification gate; Gate F not started**
 
 ## Bottom line
