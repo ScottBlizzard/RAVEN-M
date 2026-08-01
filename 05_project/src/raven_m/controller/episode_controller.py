@@ -723,14 +723,24 @@ class EpisodeController:
             target_row_progress
             and target_row_progress.get("active_detail_row_key")
         )
-        if active_target_row_detail and target_row_progress is not None:
+        target_row_list_return_pending = bool(
+            target_row_progress
+            and target_row_progress.get("return_to_target_list_pending")
+        )
+        if (
+            active_target_row_detail or target_row_list_return_pending
+        ) and target_row_progress is not None:
             displayed_target_row_progress = dict(target_row_progress)
             deferred_rows = list(
                 displayed_target_row_progress.pop("unvisited_rows", [])
             )
             displayed_target_row_progress.update(
                 {
-                    "phase": "inspect_active_detail",
+                    "phase": (
+                        "inspect_active_detail"
+                        if active_target_row_detail
+                        else "return_to_target_date_list"
+                    ),
                     "deferred_unvisited_row_count": len(deferred_rows),
                     "deferred_row_coordinates_executable": False,
                 }
@@ -779,12 +789,25 @@ class EpisodeController:
                             "requested-field text is visible."
                             if active_target_row_detail
                             else
-                            "When unvisited_rows is non-empty on the visible "
-                            "target-date list, tap one listed unvisited row "
-                            "center and never reopen a visited_row_key. Answer "
-                            "only when all_rows_visited and "
-                            "all_detail_frames_captured are true and the "
-                            "target-date list is again visible."
+                            (
+                                "RETURN_TO_TARGET_DATE_LIST: the explicit "
+                                "requested-field frame is already captured, "
+                                "but the controller has not yet observed the "
+                                "target-date list. No deferred row coordinate "
+                                "is valid on this intermediate screen. Press "
+                                "Back exactly once, then reobserve. Do not "
+                                "tap, swipe, wait, answer, or repeat Back "
+                                "without a new observation."
+                                if target_row_list_return_pending
+                                else
+                                "When unvisited_rows is non-empty on the "
+                                "visible target-date list, tap one listed "
+                                "unvisited row center and never reopen a "
+                                "visited_row_key. Answer only when "
+                                "all_rows_visited and "
+                                "all_detail_frames_captured are true and the "
+                                "target-date list is again visible."
+                            )
                         )
                     ]
                     if target_row_progress is not None
@@ -3346,13 +3369,6 @@ class EpisodeController:
                     else None
                 )
                 history_context = self.history_policy.context()
-                target_row_progress = (
-                    self.decision_guard.target_row_progress_record()
-                    if self.protocol_v2_2
-                    and self.decision_guard is not None
-                    else None
-                )
-                routed_context_images = list(history_context.images)
                 current_dated_list = (
                     dated_list_answer_assessment(
                         effective_task_goal,
@@ -3370,6 +3386,18 @@ class EpisodeController:
                     if self.protocol_v2_2
                     else {}
                 )
+                if self.protocol_v2_2 and self.decision_guard is not None:
+                    self.decision_guard.reconcile_target_row_list_return(
+                        page_sha256=before_semantic["sha256"],
+                        dated_list_answer_assessment=current_dated_list,
+                    )
+                target_row_progress = (
+                    self.decision_guard.target_row_progress_record()
+                    if self.protocol_v2_2
+                    and self.decision_guard is not None
+                    else None
+                )
+                routed_context_images = list(history_context.images)
                 route_target_field_images = bool(
                     self.protocol_v2_2
                     and self.decision_guard is not None

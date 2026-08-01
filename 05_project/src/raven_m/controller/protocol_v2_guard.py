@@ -3414,6 +3414,13 @@ class ProtocolV2DecisionGuard:
         self.target_row_visit_keys: list[str] = []
         self.active_target_row_visit_key: str | None = None
         self.target_row_detail_frames: list[dict[str, Any]] = []
+        self.target_row_return_pending_visit_key: str | None = None
+        self.target_row_return_back_count = 0
+        self.target_row_return_start_count = 0
+        self.target_row_return_navigation_count = 0
+        self.target_row_return_confirmation_count = 0
+        self.target_row_return_block_count = 0
+        self.target_row_return_records: list[dict[str, Any]] = []
         self.requested_answer_role: str | None = None
         self.target_date_row_observations: list[dict[str, Any]] = []
         self.last_unverified_progress_no_effect_fingerprint: (
@@ -3475,6 +3482,15 @@ class ProtocolV2DecisionGuard:
             "detail_required": self.target_row_detail_required,
             "visited_row_keys": list(self.target_row_visit_keys),
             "active_detail_row_key": self.active_target_row_visit_key,
+            "return_to_target_list_pending": (
+                self.target_row_return_pending_visit_key is not None
+            ),
+            "return_to_target_list_visit_key": (
+                self.target_row_return_pending_visit_key
+            ),
+            "return_to_target_list_back_count": (
+                self.target_row_return_back_count
+            ),
             "unvisited_rows": [
                 item for item in keyed_centers
                 if item["visit_key"] not in visited
@@ -3496,6 +3512,48 @@ class ProtocolV2DecisionGuard:
                 >= self.target_date_row_count
             ),
         }
+
+    def reconcile_target_row_list_return(
+        self,
+        *,
+        page_sha256: str,
+        dated_list_answer_assessment: dict[str, Any] | None,
+    ) -> dict[str, Any]:
+        """Release deferred row coordinates only on the verified date list."""
+        visit_key = self.target_row_return_pending_visit_key
+        if visit_key is None:
+            return {
+                "schema_version": "target_row_list_return_reconciliation.v1",
+                "status": "not_pending",
+            }
+        assessment = dated_list_answer_assessment or {}
+        observed_row_count = int(assessment.get("target_row_count") or 0)
+        confirmed = bool(
+            assessment.get("target_date_list_visible") is True
+            and self.target_date_row_count > 0
+            and observed_row_count == self.target_date_row_count
+            and len(assessment.get("target_row_centers") or [])
+            == self.target_date_row_count
+        )
+        record = {
+            "schema_version": "target_row_list_return_reconciliation.v1",
+            "status": "confirmed" if confirmed else "awaiting_target_list",
+            "semantic_state_sha256": page_sha256,
+            "visit_key": visit_key,
+            "back_count": self.target_row_return_back_count,
+            "target_date_list_visible": assessment.get(
+                "target_date_list_visible"
+            )
+            is True,
+            "expected_target_row_count": self.target_date_row_count,
+            "observed_target_row_count": observed_row_count,
+        }
+        if confirmed:
+            self.target_row_return_pending_visit_key = None
+            self.target_row_return_back_count = 0
+            self.target_row_return_confirmation_count += 1
+            self.target_row_return_records.append(record)
+        return record
 
     def target_row_detail_context_images(self) -> list[tuple[str, str]]:
         """Return verified requested-field crops in target-row order."""
@@ -4049,6 +4107,7 @@ class ProtocolV2DecisionGuard:
         action_key = canonical_action_key(action)
         pending_target_visit_key: str | None = None
         pending_target_detail_frame: dict[str, Any] | None = None
+        pending_target_return_navigation = False
         pending_visual_answer_accept = False
         field_value_assessment = requested_field_value_assessment or {}
         toolbar_assessment = toolbar_affordance_claim_assessment or {}
@@ -4105,6 +4164,55 @@ class ProtocolV2DecisionGuard:
                 + chronology_directive
             )
         dated_assessment = dated_list_answer_assessment or {}
+        return_reconciliation = self.reconcile_target_row_list_return(
+            page_sha256=page_sha256,
+            dated_list_answer_assessment=dated_assessment,
+        )
+        if return_reconciliation["status"] == "awaiting_target_list":
+            if action.get("type") != "press_back":
+                record = {
+                    "semantic_state_sha256": page_sha256,
+                    "action": action,
+                    "reason": "target_row_list_return_not_confirmed",
+                    "target_row_list_return_reconciliation": (
+                        return_reconciliation
+                    ),
+                    "required_recovery_classes": ["navigate_back"],
+                }
+                self.validation_blocks.append(record)
+                self.target_row_return_block_count += 1
+                self.target_row_return_records.append(record)
+                raise ActionValidationError(
+                    "TARGET_ROW_LIST_RETURN_GUARD: the requested-field "
+                    "frame is captured, but the current screen is not yet "
+                    "the verified target-date list. Deferred row coordinates "
+                    "are invalid on this intermediate screen. "
+                    "TARGET_ROW_ENUMERATION_BACK_REQUIRED: press Back "
+                    "exactly once with empty state_delta, memory_citations, "
+                    "and completion_evidence, then reobserve. Do not tap, "
+                    "swipe, wait, answer, or use a deferred row coordinate."
+                )
+            if self.target_row_return_back_count >= 2:
+                record = {
+                    "semantic_state_sha256": page_sha256,
+                    "action": action,
+                    "reason": "target_row_list_return_back_bound_exhausted",
+                    "target_row_list_return_reconciliation": (
+                        return_reconciliation
+                    ),
+                    "required_recovery_classes": ["fail_safely"],
+                }
+                self.validation_blocks.append(record)
+                self.target_row_return_block_count += 1
+                self.target_row_return_records.append(record)
+                raise ActionValidationError(
+                    "TARGET_ROW_LIST_RETURN_FAILED: two read-only Back "
+                    "actions were already authorized after capturing the "
+                    "field, but the target-date list is still unconfirmed. "
+                    "Do not press Back again, execute any row coordinate, "
+                    "or continue navigation; fail safely."
+                )
+            pending_target_return_navigation = True
         self.validate_active_target_detail_control(
             decision,
             page_sha256=page_sha256,
@@ -5247,6 +5355,36 @@ class ProtocolV2DecisionGuard:
                 pending_target_detail_frame
             )
             self.active_target_row_visit_key = None
+            self.target_row_return_pending_visit_key = (
+                pending_target_detail_frame["visit_key"]
+            )
+            self.target_row_return_back_count = 1
+            self.target_row_return_start_count += 1
+            self.target_row_return_records.append(
+                {
+                    "schema_version": (
+                        "target_row_list_return_reconciliation.v1"
+                    ),
+                    "status": "return_started",
+                    "semantic_state_sha256": page_sha256,
+                    "visit_key": pending_target_detail_frame["visit_key"],
+                    "back_count": 1,
+                }
+            )
+        if pending_target_return_navigation:
+            self.target_row_return_back_count += 1
+            self.target_row_return_navigation_count += 1
+            self.target_row_return_records.append(
+                {
+                    "schema_version": (
+                        "target_row_list_return_reconciliation.v1"
+                    ),
+                    "status": "return_navigation_authorized",
+                    "semantic_state_sha256": page_sha256,
+                    "visit_key": self.target_row_return_pending_visit_key,
+                    "back_count": self.target_row_return_back_count,
+                }
+            )
         if pending_visual_answer_accept:
             self.target_row_visual_answer_accept_count += 1
 
@@ -5593,6 +5731,27 @@ class ProtocolV2DecisionGuard:
             ),
             "target_row_detail_frames": list(
                 self.target_row_detail_frames
+            ),
+            "target_row_return_pending_visit_key": (
+                self.target_row_return_pending_visit_key
+            ),
+            "target_row_return_back_count": (
+                self.target_row_return_back_count
+            ),
+            "target_row_return_start_count": (
+                self.target_row_return_start_count
+            ),
+            "target_row_return_navigation_count": (
+                self.target_row_return_navigation_count
+            ),
+            "target_row_return_confirmation_count": (
+                self.target_row_return_confirmation_count
+            ),
+            "target_row_return_block_count": (
+                self.target_row_return_block_count
+            ),
+            "target_row_return_records": list(
+                self.target_row_return_records
             ),
             "target_row_progress": self.target_row_progress_record(),
             "requested_answer_role": self.requested_answer_role,
