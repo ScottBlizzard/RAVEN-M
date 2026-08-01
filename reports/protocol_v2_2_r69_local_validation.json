@@ -1,0 +1,130 @@
+{
+  "schema_version": "protocol_v2_2_r69_local_validation.v1",
+  "decision": "local_candidate_passed_exact_package_preflight_pending",
+  "checked_at": "2026-08-01T07:47:09.3864814Z",
+  "source_commit": "b30867d12b10f51a0b13cf16bf8d0ffcb614dd56",
+  "source_tag": "protocol-v2-2-r69-local-candidate",
+  "source_tag_resolves_exactly": true,
+  "formal_gate_f_authorized": false,
+  "live_development_smoke_authorized": false,
+  "parent_r68_stop": {
+    "report": "reports/protocol_v2_2_r68_h17_candidate_stopped.json",
+    "report_sha256": "d6d12ee99406bd674642c2ea4929971d8680ba61032a33896e9cf9656965dfc3",
+    "execution_stop_commit": "6e3479ab56f0287c76cadb5f603f5a5d9d978891",
+    "execution_stop_tag": "protocol-v2-2-r68-h17-stopped",
+    "decision": "r68_blank_tap_guard_and_prompt_cap_validated_but_overflow_control_geometry_not_grounded",
+    "immutable": true
+  },
+  "candidate_contract": {
+    "verified_route": "when exact target-row field text is absent, detail-screen exploration accepts only a current enabled accessibility control whose sanitized label denotes information, details, edit, or overflow navigation",
+    "candidate_geometry": "a rejected detail tap may route at most eight controller-observed normalized candidate centers and bounding boxes into the single repair prompt",
+    "label_sanitization": "only the matched generic navigation phrase is routed; suffix text, requested-field values, row titles, and answer candidates are withheld",
+    "repair_binding": "when VERIFIED_INSPECTION_CONTROL_CANDIDATES is present, the repair must copy exactly one listed center instead of estimating another coordinate",
+    "pre_history_priority": "the active-detail inspection-control check remains ahead of history-policy critic and loop constraints",
+    "row_coordinate_scope": "remembered target-list row coordinates remain invalid on an active detail screen",
+    "read_only_policy": "Back, answer, wait, swipe, typing, selector changes, and Save-class controls remain forbidden until exact existing requested-field text is visible",
+    "hidden_evaluator_or_answer_data_used": false,
+    "task_app_target_date_row_title_category_or_answer_special_case_used": false
+  },
+  "validation": {
+    "complete_project_tests": {
+      "passed": true,
+      "collected_count": 704,
+      "passed_count": 704,
+      "failed_count": 0,
+      "duration_seconds": 201.4,
+      "scope": "05_project/tests"
+    },
+    "focused_controller_guard_stop_and_trace_tests": {
+      "passed": true,
+      "passed_count": 202,
+      "duration_seconds": 8.6,
+      "coverage": [
+        "the recorded r68 blank detail tap is rejected and receives one verified More options candidate",
+        "the recorded r68 repair coordinate is independently verified inside the native More options bounds",
+        "only the generic matched navigation phrase is routed even if an accessibility label has a suffix",
+        "the compact repair preserves the exact controller-verified center without MEMORY_CONTEXT or answer labels",
+        "arbitrary visible controls that are not inspection navigation no longer authorize active-detail exploration",
+        "historical r68 package validation fails closed after future-head source drift"
+      ]
+    },
+    "recorded_r68_trace_and_native_ui_replay": {
+      "passed": true,
+      "source_episode_step": 3,
+      "native_ui_dump": "06_local_runtime/temp/r66_detail1.xml",
+      "native_visible_control_count": 7,
+      "recorded_initial_blank_tap": {
+        "type": "tap",
+        "x": 0.5,
+        "y": 0.15
+      },
+      "recorded_repair_tap": {
+        "type": "tap",
+        "x": 0.405,
+        "y": 0.925
+      },
+      "recorded_repair_hits_verified_control": true,
+      "verified_candidate": {
+        "label": "More options",
+        "bbox": {
+          "x_min": 0.362037,
+          "x_max": 0.459259,
+          "y_min": 0.90375,
+          "y_max": 0.95625
+        },
+        "center": {
+          "x": 0.410648,
+          "y": 0.93
+        }
+      },
+      "r69_preexecution_error": "TARGET_ROW_DETAIL_CONTROL_GUARD",
+      "r69_repair_characters": 2557,
+      "memory_context_present_in_repair": false,
+      "answer_or_row_title_present_in_candidate_or_repair": false
+    },
+    "compileall": {
+      "passed": true,
+      "paths": [
+        "05_project/src",
+        "05_project/tests"
+      ]
+    },
+    "git_diff_check": {
+      "passed": true
+    },
+    "protocol_v1_seal": {
+      "passed": true,
+      "file_count": 197,
+      "failure_count": 0,
+      "rewritten": false
+    }
+  },
+  "source_sha256": {
+    "05_project/src/raven_m/controller/episode_controller.py": "7a52d03778bebbd8e252139bcae1893a7232b5f0ab83e7bf2efddbcbcbc9ebce",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "d0e049d75421d38dc1fac245c5bf16cca1336656a82451351926ca71f14be392",
+    "05_project/src/raven_m/roles/orchestrator.py": "bb812660f1ba438f3f491b3582bf5094224585f963c13a56cddaba5cefeb3521",
+    "05_project/prompts/executor_raven_v2.md": "4810e577f19c987ee8ec875c8c5e042e6af314a7d2a409166f28dcd7d7910877",
+    "05_project/prompts/planner_v1.md": "a3584d330b53cc1e1ef3e28eba3c9f7184ef271e5650bd9debff5e3f4e977e11",
+    "05_project/prompts/critic_v1.md": "82f0be700752aa38cd229e6ea66feeee7974b5a6ce5760326616ea2be053c7a5"
+  },
+  "online_boundary_at_validation": {
+    "model_calls": 0,
+    "gpu_experiment_cells": 0,
+    "interpretation": "source, native-control geometry, and recorded-trace validation passed, but no r69 live smoke is authorized before an exact-package zero-call preflight verifies the frozen route and online dependencies"
+  },
+  "next_action_boundary": {
+    "allowed": [
+      "prepare a fresh r69 H17-only development wrapper and namespace",
+      "add exact-source freeze, prerequisite, and invocation-boundary tests",
+      "run a zero-model-call online preflight against the exact r69 package",
+      "run at most one non-scored H17 M0 smoke only after that preflight passes"
+    ],
+    "forbidden": [
+      "resume or overwrite the r68 development suite",
+      "launch any formal r69 Gate-F batch",
+      "run any r69 development sequence other than its single frozen H17 M0 cell",
+      "use hidden task parameters or the offline expected answer",
+      "modify or save the inspected application record"
+    ]
+  }
+}
