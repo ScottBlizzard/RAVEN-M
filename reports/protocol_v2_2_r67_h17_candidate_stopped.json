@@ -1,0 +1,172 @@
+{
+  "schema_version": "protocol_v2_2_r67_h17_candidate_stop_audit.v1",
+  "decision": "r67_active_detail_precedence_and_context_cap_validated_but_blank_tap_and_repair_priority_failed",
+  "checked_at": "2026-08-01T05:29:13.4083266Z",
+  "development_smoke": true,
+  "formal_scoring": false,
+  "formal_gate_f_authorized": false,
+  "source_commit": "f4361f464e5beb43ff2fd36d908cc61ad9824815",
+  "source_tag": "protocol-v2-2-r67-local-candidate",
+  "package_commit": "562fdddd2a86713d8c03fcd829783280ac0a2510",
+  "package_tag": "protocol-v2-2-r67-h17-candidate-package",
+  "preflight_commit": "ba368930cb5f1c8e42f40af944c8a1723e096b9d",
+  "preflight_tag": "protocol-v2-2-r67-h17-preflight",
+  "preflight_report_sha256": "1e794bd5d888ed66416404919c3953c4199b2174740c04ae64c6aab78fdf8e87",
+  "suite_id": "hard_micro_v2_2_seed20260730_r67_candidate_development_smoke_sequence_2",
+  "suite_path": "runs/protocol_v2_2_development/hard_micro_v2_2_seed20260730_r67_candidate_development_smoke_sequence_2",
+  "result": {
+    "task_id": "H17",
+    "task": "SportsTrackerActivitiesOnDate",
+    "variant": "M0",
+    "sequence": 2,
+    "seed": 20260730,
+    "attempt_count": 1,
+    "valid_method_attempt": 1,
+    "success": false,
+    "evaluator_reward": 0.0,
+    "failure_code": "MODEL_OUTPUT_INVALID_AFTER_REPAIR",
+    "termination_reason": "model_output_invalid_after_repair",
+    "executed_action_count": 6,
+    "decision_attempt_count": 7,
+    "model_call_count": 12,
+    "executor_model_call_count": 9,
+    "history_model_call_count": 3,
+    "answer_action_count": 0,
+    "answer_cache_match_count": 0,
+    "prompt_tokens": 75674,
+    "completion_tokens": 1431,
+    "wall_time_seconds": 274.448951,
+    "max_prompt_tokens": 8050,
+    "configured_max_prompt_tokens": 8192,
+    "context_cap_error_count": 0,
+    "readiness_observation_count": 19,
+    "readiness_retry_count": 6,
+    "reset_audit_passed": true
+  },
+  "infrastructure_accounting": {
+    "excluded_episode_attempt_count": 0,
+    "startup_environment_failure_count": 1,
+    "startup_environment_recovery_count": 1,
+    "startup_environment_last_status": "recovered",
+    "startup_failure_code": "INFRA_ENVIRONMENT_CONSTRUCTION",
+    "startup_failure_detail": "the first AndroidWorld control-APK install exceeded its 120-second ADB timeout",
+    "cold_recovery_smoke_passed": true,
+    "valid_attempt_reset_passed": true,
+    "model_healthy_after_run": true,
+    "emulator_connected_after_run": true,
+    "classification": "one valid method attempt began only after the audited cold recovery succeeded; the initial startup failure consumed no method attempt and no model call"
+  },
+  "r67_validated_mechanisms": {
+    "target_date_reached": true,
+    "target_date_row_count": 2,
+    "target_date_visible_swipe_block_count": 1,
+    "blocked_swipe_executed_in_application": false,
+    "compact_target_row_repair_succeeded": true,
+    "distinct_target_row_visit_count": 1,
+    "active_target_row_visit_key": "target-row-y:0.747",
+    "deferred_row_coordinate_exposed_on_active_detail": false,
+    "deferred_row_coordinate_executed_on_active_detail": false,
+    "stale_list_planner_rendered_during_active_detail": false,
+    "maximum_prompt_tokens": 8050,
+    "prompt_cap_passed": true,
+    "unsafe_application_mutation_executed": false,
+    "answer_submitted": false,
+    "conclusion": "r67 corrected the r66 deferred-coordinate, stale-context, and prompt-cap failures, but it did not constrain arbitrary detail-screen taps to visible controls"
+  },
+  "blank_tap_failure_audit": {
+    "detail_screen_visible": true,
+    "visible_non_commit_overflow_control_present": true,
+    "model_selected_overflow_control": false,
+    "executed_no_effect_actions": [
+      {
+        "step": 4,
+        "action": {
+          "type": "tap",
+          "x": 0.5,
+          "y": 0.15
+        },
+        "visible_control_hit": false
+      },
+      {
+        "step": 5,
+        "action": {
+          "type": "tap",
+          "x": 0.5,
+          "y": 0.15
+        },
+        "visible_control_hit": false
+      }
+    ],
+    "initial_terminal_guard": "CRITIC_CONSTRAINT",
+    "terminal_repair_action": {
+      "type": "press_back"
+    },
+    "terminal_repair_guard": "TARGET_ROW_EXPLICIT_FIELD_GUARD",
+    "terminal_action_executed": false,
+    "root_cause_1": "the r67 off-list coordinate guard recognized remembered row y-centers but still permitted arbitrary taps that did not hit any visible enabled control on an active detail screen",
+    "root_cause_2": "because the third repeated blank tap first triggered CRITIC_CONSTRAINT, repair selection used the generic critic path instead of the active-detail explicit-field priority path",
+    "required_change": "while exact target-row field text is absent, require every detail-screen tap to hit a visible enabled control and make the active-detail inspection repair supersede critic and loop recovery directives"
+  },
+  "prompt_budget_audit": {
+    "configured_max_prompt_tokens": 8192,
+    "observed_max_prompt_tokens": 8050,
+    "headroom_tokens": 142,
+    "context_cap_error_count": 0,
+    "per_step_executor_prompt_tokens": [
+      [6606],
+      [6843],
+      [7038],
+      [7484, 5881],
+      [6943],
+      [6946],
+      [6945, 8050]
+    ],
+    "conclusion": "r67 eliminated every r66 prompt-cap violation, including the target-date repair; the 8050 generic critic repair remained under the cap but should be replaced by the shorter active-detail priority repair"
+  },
+  "semantic_progress_audit": {
+    "executed_step_count": 6,
+    "validation_block_count": 2,
+    "executed_blocked_action_steps": [],
+    "unresolved_guard_repair": true,
+    "maximum_semantic_no_progress_repeat_count": 2,
+    "passed": false
+  },
+  "artifact_sha256": {
+    "gate_summary.json": "0054a3e10972596f401780f339900365ab71bedb05733e43d5b00c5533e62ef8",
+    "gate_progress.json": "0054a3e10972596f401780f339900365ab71bedb05733e43d5b00c5533e62ef8",
+    "manifest.snapshot.json": "34e3518bc217fffefef4d3115756db7eef09a30d8fe708fec6cce679a350b9e9",
+    "instances.snapshot.json": "a96be7900f83b372ae5a3b16c3f6ec0828602aeb28818c16373a8ecd99d54599",
+    "startup_environment_audit.json": "5b0d4e61c25afdf4d0fbfe851fcd711f7560172400d2ee5ff3be4b7f7db4b9b4",
+    "androidworld_smoke.json": "4997b376063358182541347ddb19863b57b02aae7cceb90d5ecef8937c08d281",
+    "episode.json": "c900e1625a0f8caa0326f05853035b3c25cb4d495545d55a01d966316248e1b1",
+    "events.jsonl": "62d325b8c507ddbc42e4bc6992c55796d8daac113c605dfcd438a3180b0ff075",
+    "memory_events.jsonl": "8a129cd7ee44b704d567f88b6b51e2b3a851cc3f1113628f45963cdbc64c911f",
+    "step_003_before.png": "ebf4c32b648b9e02b7f3a855abcd8f663af1d19d3df266f67877cc28881fb970",
+    "step_003_after.png": "7e25ba1bfad85c17e176df720188a0b40e657b9a8ede4d02963786585aea3e20",
+    "step_004_before.png": "7e25ba1bfad85c17e176df720188a0b40e657b9a8ede4d02963786585aea3e20",
+    "step_006_before.png": "a75fb6964220a11e5f62741e9a7d7fe4bd389f3a92f6003ac3f892f7a8c4a7a2"
+  },
+  "immutability": {
+    "suite_may_be_resumed": false,
+    "suite_may_be_overwritten": false,
+    "same_candidate_may_be_retried": false,
+    "failure_may_be_relabelled": false
+  },
+  "next_action_boundary": {
+    "allowed": [
+      "freeze and test the r67 stopped development checkpoint",
+      "preserve r67 active-detail precedence, deferred-coordinate hiding, memory projection, compact dated-row repairs, and prompt-cap compliance",
+      "reject any active-detail tap that does not hit a visible enabled control while exact requested-field text is absent",
+      "make active-detail inspection repair override critic and loop directives",
+      "replay the exact r67 terminal trace locally before creating a new r68 source commit"
+    ],
+    "forbidden": [
+      "retry r67 H17 M0",
+      "resume or overwrite the r67 suite",
+      "launch formal Gate F from r67",
+      "permit blank-coordinate exploration while an exact-field detail obligation is active",
+      "allow a critic or loop repair to recommend Back before exact requested-field text is visible",
+      "inject H17, OpenTracks, the target date, row titles, observed categories, or expected answers into runtime mechanism code or prompts"
+    ]
+  }
+}
