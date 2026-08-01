@@ -1,0 +1,123 @@
+{
+  "schema_version": "protocol_v2_2_r72_h17_candidate_stopped.v1",
+  "decision": "r72_live_accessibility_sufficient_but_verified_inspection_repair_overridden_by_generic_critic",
+  "checked_at": "2026-08-01T15:46:26.3113548Z",
+  "formal_scoring": false,
+  "formal_gate_f_authorized": false,
+  "source_commit": "114d3ab9582d7c9a522629d591723db733fe6ca8",
+  "source_tag": "protocol-v2-2-r72-local-candidate",
+  "execution_commit": "e034c938893118839230e648901eb68d13d82da9",
+  "execution_tag": "protocol-v2-2-r72-h17-candidate-package",
+  "preflight_commit": "720c02e7b8637d7a450b1fb5443e80dd87fd6878",
+  "preflight_tag": "protocol-v2-2-r72-h17-preflight",
+  "preflight_report": {
+    "path": "reports/protocol_v2_2_r72_h17_candidate_preflight.json",
+    "sha256": "a8c631cb7c89607cad2f7b3b87362ebf57d7f9de24c0275dbbe12dbb3ae6f60c",
+    "passed": true,
+    "model_calls": 0
+  },
+  "suite": "runs/protocol_v2_2_development/hard_micro_v2_2_seed20260730_r72_candidate_development_smoke_sequence_2",
+  "result": {
+    "valid_method_attempt_count": 1,
+    "recorded_attempt_ordinal": 1,
+    "success": false,
+    "failure_code": "MODEL_OUTPUT_INVALID_AFTER_REPAIR",
+    "termination_reason": "model_output_invalid_after_repair",
+    "executed_action_count": 5,
+    "decision_attempt_count": 6,
+    "model_call_count": 12,
+    "executor_model_call_count": 8,
+    "history_model_call_count": 4,
+    "prompt_tokens": 73769,
+    "completion_tokens": 1473,
+    "configured_max_prompt_tokens": 8192,
+    "observed_max_prompt_tokens": 7854,
+    "prompt_headroom_tokens": 338,
+    "valid_episode_wall_time_seconds": 532.619224,
+    "suite_cumulative_active_seconds": 583.5160000000014,
+    "readiness_observation_count": 20,
+    "readiness_retry_count": 9,
+    "reset_audit_passed": true,
+    "answer_action_count": 0,
+    "blocked_actions_executed_in_application": false
+  },
+  "infrastructure_accounting": {
+    "excluded_episode_attempt_count": 0,
+    "startup_environment_failure_count": 0,
+    "model_health_after_suite": "ok",
+    "emulator_connected_after_suite": true
+  },
+  "task_progress": {
+    "target_date_reached": true,
+    "target_row_count": 2,
+    "visited_row_count": 1,
+    "active_detail_row_key": "target-row-y:0.834",
+    "unvisited_row_count": 1,
+    "captured_detail_frame_count": 0
+  },
+  "r72_mechanism_validation": {
+    "r71_popup_bottleneck_replay_passed_locally": true,
+    "native_popup_supplement_configured": true,
+    "native_popup_supplement_attempted_live": false,
+    "native_popup_supplement_status": "live_accessibility_sufficient",
+    "native_popup_row_count": 0,
+    "live_accessibility_inspection_candidate_count": 1,
+    "live_accessibility_candidate_label": "More options",
+    "live_accessibility_candidate_action": {
+      "type": "tap",
+      "x": 0.410648,
+      "y": 0.93
+    },
+    "native_mechanism_failure_observed": false,
+    "detector_change_required": false
+  },
+  "critic_override_bottleneck": {
+    "terminal_step": 5,
+    "initial_blank_tap_blocked": true,
+    "initial_block_reason": "target_row_detail_non_control_tap",
+    "repair_hit_verified_inspection_control": true,
+    "repair_decision_summary": "Tap the verified more options control to access non-commit details and expose the activity type.",
+    "phrase_trigger": "non-commit",
+    "matched_consequential_token": "commit",
+    "action_adjudication_count": 2,
+    "action_rejection_count": 1,
+    "terminal_critic_verdict": "reobserve",
+    "terminal_critic_false_claims": [
+      "the current screen does not show any visible overflow menu or options control at the specified coordinates",
+      "Skill work is already the requested activity type"
+    ],
+    "verified_repair_executed": false,
+    "root_cause": "a generic phrase-based consequential-action trigger launched a stochastic critic that overrode controller-verified current-screen evidence for a non-mutating inspection tap"
+  },
+  "required_change": {
+    "revision": "r73",
+    "scope": "in an active protocol-v2.2 target-row detail only, skip generic consequential-action adjudication when the candidate tap exactly hits a controller-verified inspection control and does not hit a mutation control",
+    "authority": "current requested-field control assessment from the same observation",
+    "must_remain_adjudicated_or_blocked": [
+      "unverified coordinates",
+      "mutation-control hits",
+      "Save, Submit, Apply, Confirm, Delete, Send, and Record actions",
+      "all non-protocol-v2.2 paths"
+    ],
+    "forbidden_shortcut": "do not globally weaken the consequential-action regex, mutation filters, detail guard, or answer association guard",
+    "new_live_scope": "one fresh non-scored H17 M0 smoke only after frozen r72 trace replay, negative safety tests, full local validation, package freeze, and zero-call preflight"
+  },
+  "artifact_sha256": {
+    "gate_summary.json": "f04f7ff3e95a0846c82884fc5cfb7ec69ec5fabbd5f5de9cacf24d36e3a0972e",
+    "gate_progress.json": "f04f7ff3e95a0846c82884fc5cfb7ec69ec5fabbd5f5de9cacf24d36e3a0972e",
+    "manifest.snapshot.json": "944cd2956fd8b0b36087182144d4a07b63eff848b3c4fd401a782141052df37e",
+    "instances.snapshot.json": "a96be7900f83b372ae5a3b16c3f6ec0828602aeb28818c16373a8ecd99d54599",
+    "startup_environment_audit.json": "4eba41be789c9f2d66abc81c9da61e5fc707f0e05a9c5fd032d9534fc719f01c",
+    "episode.json": "3cff615f4652f04d9109cda1ce95741a53f27316b123c321724760b0a1d108aa",
+    "events.jsonl": "771a55062d8b44891ccc7ce0126f893f01a5466760117bb3b88a03964b129a5b",
+    "memory_events.jsonl": "b116733da278d4a1c71909d6801dcdf8a9d2f3626859c104bec90f1827c707de",
+    "step_004_before.png": "810ce3259bf2ab72a5aa1425ac70a76bfdd8a65b6550e5599fc9101acfcd4fe8",
+    "step_005_before.png": "999c61e1b4ff6c414de1b7090803de4532c9e8d6db3809914f9aaf03660730cf"
+  },
+  "immutability": {
+    "suite_may_be_resumed": false,
+    "suite_may_be_overwritten": false,
+    "additional_r72_attempt_authorized": false,
+    "formal_gate_f_authorized": false
+  }
+}
