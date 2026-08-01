@@ -33,6 +33,9 @@ from raven_m.controller.episode_controller import (  # noqa: E402
 from raven_m.controller.protocol_v2_guard import (  # noqa: E402
     ProtocolV2DecisionGuard,
 )
+from raven_m.env.androidworld_adapter import (  # noqa: E402
+    current_native_popup_menu_ui_elements,
+)
 from raven_m.history.policies import (  # noqa: E402
     make_history_policy,
     make_history_policy_v2,
@@ -1140,6 +1143,11 @@ def main(
                         manifest["protocol"] == PROTOCOL_V2_2
                     ),
                     visual_source_critic_prompt=prompts["critic"],
+                    native_popup_menu_provider=(
+                        current_native_popup_menu_ui_elements
+                        if manifest["protocol"] == PROTOCOL_V2_2
+                        else None
+                    ),
                 )
                 summary = controller.run(
                     env=env,

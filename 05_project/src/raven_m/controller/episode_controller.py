@@ -11,7 +11,7 @@ import json
 from pathlib import Path
 import time
 import traceback
-from typing import Any
+from typing import Any, Callable
 
 from PIL import Image
 
@@ -459,6 +459,9 @@ class EpisodeController:
         protocol_v2: bool = False,
         protocol_v2_2: bool = False,
         visual_source_critic_prompt: str = "",
+        native_popup_menu_provider: (
+            Callable[..., list[dict[str, Any]]] | None
+        ) = None,
         readiness_max_observations: int = 12,
         readiness_retry_delay_seconds: float = 0.75,
         readiness_reconnect_after_observations: int = 3,
@@ -475,6 +478,7 @@ class EpisodeController:
         self.decision_guard = decision_guard
         self.protocol_v2 = protocol_v2
         self.protocol_v2_2 = protocol_v2_2
+        self.native_popup_menu_provider = native_popup_menu_provider
         self.visual_source_roles = (
             RoleOrchestrator(
                 client=client,
@@ -1740,6 +1744,7 @@ class EpisodeController:
         page_semantic_sha256: str,
         destination_picker_is_active: bool,
         ui_elements: Any,
+        requested_field_ui_elements: Any | None = None,
         screen_width: int,
         screen_height: int,
         task_goal: str,
@@ -2200,7 +2205,11 @@ class EpisodeController:
             latest_requested_field_value_assessment = (
                 requested_field_value_assessment(
                     task_goal,
-                    ui_elements,
+                    (
+                        requested_field_ui_elements
+                        if requested_field_ui_elements is not None
+                        else ui_elements
+                    ),
                     parsed_candidate.decision,
                     screen_width=screen_width,
                     screen_height=screen_height,
@@ -3369,6 +3378,156 @@ class EpisodeController:
                     ),
                     target_row_progress=target_row_progress,
                 )
+                live_ui_elements = tuple(
+                    getattr(state_before, "ui_elements", ()) or ()
+                )
+                requested_field_ui_elements: Any = live_ui_elements
+                native_popup_menu_audit = {
+                    "schema_version": (
+                        "native_popup_menu_supplement.v1"
+                    ),
+                    "configured": (
+                        self.native_popup_menu_provider is not None
+                    ),
+                    "attempted": False,
+                    "status": "not_required",
+                    "live_element_count": len(live_ui_elements),
+                    "native_row_count": 0,
+                    "native_inspection_candidate_count": 0,
+                }
+                if (
+                    self.protocol_v2_2
+                    and self.decision_guard is not None
+                    and self.decision_guard.target_row_detail_required
+                    and self.decision_guard.active_target_row_visit_key
+                    is not None
+                    and self.native_popup_menu_provider is not None
+                ):
+                    live_field_assessment = (
+                        requested_field_value_assessment(
+                            effective_task_goal,
+                            live_ui_elements,
+                            {
+                                "status": "continue",
+                                "action": {
+                                    "type": "wait",
+                                    "duration_ms": 1000,
+                                },
+                            },
+                            screen_width=width,
+                            screen_height=height,
+                        )
+                    )
+                    native_popup_menu_audit.update(
+                        {
+                            "live_explicit_value_visible": (
+                                live_field_assessment.get(
+                                    "explicit_value_visible"
+                                )
+                                is True
+                            ),
+                            "live_inspection_candidate_count": len(
+                                live_field_assessment.get(
+                                    "inspection_control_candidates"
+                                )
+                                or []
+                            ),
+                        }
+                    )
+                    needs_supplement = bool(
+                        live_field_assessment.get(
+                            "explicit_value_visible"
+                        )
+                        is not True
+                        and not live_field_assessment.get(
+                            "inspection_control_candidates"
+                        )
+                    )
+                    if needs_supplement:
+                        native_popup_menu_audit["attempted"] = True
+                        try:
+                            native_rows = self.native_popup_menu_provider(
+                                env,
+                                screen_width=width,
+                                screen_height=height,
+                            )
+                            if not isinstance(native_rows, (list, tuple)):
+                                raise TypeError(
+                                    "native popup provider must return a "
+                                    "list or tuple"
+                                )
+                            if not all(
+                                isinstance(item, dict)
+                                for item in native_rows
+                            ):
+                                raise TypeError(
+                                    "native popup rows must be dictionaries"
+                                )
+                            requested_field_ui_elements = (
+                                *live_ui_elements,
+                                *native_rows,
+                            )
+                            supplemented_assessment = (
+                                requested_field_value_assessment(
+                                    effective_task_goal,
+                                    requested_field_ui_elements,
+                                    {
+                                        "status": "continue",
+                                        "action": {
+                                            "type": "wait",
+                                            "duration_ms": 1000,
+                                        },
+                                    },
+                                    screen_width=width,
+                                    screen_height=height,
+                                )
+                            )
+                            native_candidate_count = int(
+                                supplemented_assessment.get(
+                                    "native_inspection_candidate_count",
+                                    0,
+                                )
+                            )
+                            native_popup_menu_audit.update(
+                                {
+                                    "status": (
+                                        "supplemented"
+                                        if native_candidate_count > 0
+                                        else "no_verified_popup_rows"
+                                    ),
+                                    "native_row_count": len(native_rows),
+                                    "native_inspection_candidate_count": (
+                                        native_candidate_count
+                                    ),
+                                    "inspection_control_candidates": [
+                                        item
+                                        for item in supplemented_assessment.get(
+                                            "inspection_control_candidates"
+                                        )
+                                        or []
+                                        if item.get("source")
+                                        == "native_uiautomator_popup_row"
+                                    ],
+                                }
+                            )
+                        except Exception as exc:
+                            # Native supplementation is optional evidence.
+                            # Any transport, parse, or provider error leaves
+                            # the original live tree in force and fails closed.
+                            requested_field_ui_elements = live_ui_elements
+                            native_popup_menu_audit.update(
+                                {
+                                    "status": "failed_closed",
+                                    "error": {
+                                        "type": type(exc).__name__,
+                                        "message": str(exc)[:240],
+                                    },
+                                }
+                            )
+                    else:
+                        native_popup_menu_audit["status"] = (
+                            "live_accessibility_sufficient"
+                        )
                 try:
                     picker_active = destination_picker_active(
                         getattr(state_before, "ui_elements", ()),
@@ -3380,6 +3539,9 @@ class EpisodeController:
                         destination_picker_is_active=picker_active,
                         ui_elements=getattr(
                             state_before, "ui_elements", ()
+                        ),
+                        requested_field_ui_elements=(
+                            requested_field_ui_elements
                         ),
                         screen_width=width,
                         screen_height=height,
@@ -3466,6 +3628,10 @@ class EpisodeController:
                         "decision": None,
                         "executed": False,
                     }
+                    if self.native_popup_menu_provider is not None:
+                        step_record["native_popup_menu_supplement"] = (
+                            native_popup_menu_audit
+                        )
                     if self.protocol_v2:
                         step_record["before_semantic_ui"] = before_semantic
                     if late_transition_reconciliation is not None:
@@ -3527,6 +3693,10 @@ class EpisodeController:
                     ),
                     "before_readiness_observations": before_readiness,
                 }
+                if self.native_popup_menu_provider is not None:
+                    step_record["native_popup_menu_supplement"] = (
+                        native_popup_menu_audit
+                    )
                 if self.protocol_v2:
                     step_record["before_semantic_ui"] = before_semantic
                 if late_transition_reconciliation is not None:

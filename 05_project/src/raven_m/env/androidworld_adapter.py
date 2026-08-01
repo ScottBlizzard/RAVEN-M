@@ -3,12 +3,242 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import re
 import time
 from typing import Any
+from xml.etree import ElementTree
 
 
 _ATOMIC_CLEAR_AND_TYPE_TIMEOUT_SECONDS = 10.0
 _ATOMIC_CLEAR_AND_TYPE_MAX_TIMEOUT_SECONDS = 120.0
+_NATIVE_BOUNDS_RE = re.compile(
+    r"^\[(?P<x_min>\d+),(?P<y_min>\d+)\]"
+    r"\[(?P<x_max>\d+),(?P<y_max>\d+)\]$"
+)
+_NATIVE_INSPECTION_LABEL_RE = re.compile(
+    r"\b(more\s+options|overflow|information|info|details?|edit)\b",
+    flags=re.IGNORECASE,
+)
+_NATIVE_MUTATION_LABEL_RE = re.compile(
+    r"\b(save|submit|apply|confirm|delete|send|record)\b",
+    flags=re.IGNORECASE,
+)
+
+
+def _native_bounds(node: Any) -> dict[str, int] | None:
+    match = _NATIVE_BOUNDS_RE.fullmatch(str(node.get("bounds") or ""))
+    if match is None:
+        return None
+    bounds = {key: int(value) for key, value in match.groupdict().items()}
+    if (
+        bounds["x_min"] >= bounds["x_max"]
+        or bounds["y_min"] >= bounds["y_max"]
+    ):
+        return None
+    return bounds
+
+
+def _native_row_label(
+    row: Any,
+    row_bounds: dict[str, int],
+) -> tuple[str, str] | None:
+    """Return one bounded visible row label and its resource id."""
+    labels: dict[str, str] = {}
+    resource_ids: set[str] = set()
+    for descendant in row.iter("node"):
+        resource_id = " ".join(
+            str(descendant.get("resource-id") or "").split()
+        )
+        if resource_id:
+            resource_ids.add(resource_id)
+        for field in ("text", "content-desc"):
+            label = " ".join(str(descendant.get(field) or "").split())
+            if not label or len(label) > 80 or "\n" in label:
+                continue
+            label_bounds = _native_bounds(descendant)
+            if (
+                label_bounds is None
+                or label_bounds["x_min"] < row_bounds["x_min"]
+                or label_bounds["x_max"] > row_bounds["x_max"]
+                or label_bounds["y_min"] < row_bounds["y_min"]
+                or label_bounds["y_max"] > row_bounds["y_max"]
+            ):
+                return None
+            labels.setdefault(label.casefold(), label)
+    if len(labels) != 1:
+        return None
+    label = next(iter(labels.values()))
+    resource_id = sorted(resource_ids)[0] if len(resource_ids) == 1 else ""
+    return label, resource_id
+
+
+def native_popup_menu_ui_elements_from_xml(
+    xml: str,
+    *,
+    screen_width: int,
+    screen_height: int,
+) -> list[dict[str, Any]]:
+    """Derive only structurally verified popup rows from native UI XML.
+
+    Android UIAutomator can preserve popup labels and row bounds while
+    incorrectly reporting every menu row as non-clickable.  This parser does
+    not generally upgrade such nodes.  It accepts only a compact ListView
+    whose direct children are two to ten equally sized, contiguous, singly
+    labelled rows and which contains both an inspection route and a distinct
+    mutating route.  The latter requirement makes the safety distinction that
+    motivates this supplement explicit.  Any malformed or ambiguous tree
+    returns no elements.
+    """
+    if (
+        not isinstance(xml, str)
+        or not xml.strip()
+        or len(xml) > 2_000_000
+        or screen_width <= 0
+        or screen_height <= 0
+    ):
+        return []
+    try:
+        root = ElementTree.fromstring(xml)
+    except ElementTree.ParseError:
+        return []
+
+    candidates: list[list[dict[str, Any]]] = []
+    for list_view in root.iter("node"):
+        if list_view.get("class") != "android.widget.ListView":
+            continue
+        if (
+            list_view.get("enabled") == "false"
+            or list_view.get("scrollable") == "true"
+        ):
+            continue
+        list_bounds = _native_bounds(list_view)
+        if list_bounds is None:
+            continue
+        list_width = list_bounds["x_max"] - list_bounds["x_min"]
+        list_height = list_bounds["y_max"] - list_bounds["y_min"]
+        if (
+            list_width > 0.75 * screen_width
+            or list_height > 0.75 * screen_height
+        ):
+            continue
+        rows = [child for child in list(list_view) if child.tag == "node"]
+        if not 2 <= len(rows) <= 10:
+            continue
+
+        parsed_rows: list[dict[str, Any]] = []
+        valid = True
+        package_names: set[str] = set()
+        for row in rows:
+            if (
+                row.get("class") != "android.widget.LinearLayout"
+                or row.get("enabled") == "false"
+            ):
+                valid = False
+                break
+            bounds = _native_bounds(row)
+            package_name = " ".join(
+                str(row.get("package") or "").split()
+            )
+            if bounds is None or not package_name:
+                valid = False
+                break
+            labelled = _native_row_label(row, bounds)
+            if labelled is None:
+                valid = False
+                break
+            if (
+                abs(bounds["x_min"] - list_bounds["x_min"]) > 2
+                or abs(bounds["x_max"] - list_bounds["x_max"]) > 2
+                or bounds["y_min"] < list_bounds["y_min"] - 2
+                or bounds["y_max"] > list_bounds["y_max"] + 2
+            ):
+                valid = False
+                break
+            label, resource_id = labelled
+            package_names.add(package_name)
+            parsed_rows.append(
+                {
+                    "text": label,
+                    "content_description": "",
+                    "resource_id": resource_id,
+                    "class_name": row.get("class"),
+                    "package_name": package_name,
+                    "bbox_pixels": bounds,
+                    "is_visible": True,
+                    "is_enabled": True,
+                    # The row is actionable by its verified ListView-row
+                    # structure even when UIAutomator's raw flag is false.
+                    "is_clickable": True,
+                    "source": "native_uiautomator_popup_row",
+                }
+            )
+        if not valid or len(package_names) != 1:
+            continue
+        if (
+            abs(
+                parsed_rows[0]["bbox_pixels"]["y_min"]
+                - list_bounds["y_min"]
+            )
+            > 2
+            or abs(
+                parsed_rows[-1]["bbox_pixels"]["y_max"]
+                - list_bounds["y_max"]
+            )
+            > 2
+        ):
+            continue
+
+        heights = [
+            item["bbox_pixels"]["y_max"]
+            - item["bbox_pixels"]["y_min"]
+            for item in parsed_rows
+        ]
+        if (
+            min(heights) < max(24, 0.01 * screen_height)
+            or max(heights) > 1.15 * min(heights)
+        ):
+            continue
+        if any(
+            abs(
+                parsed_rows[index]["bbox_pixels"]["y_max"]
+                - parsed_rows[index + 1]["bbox_pixels"]["y_min"]
+            )
+            > 2
+            for index in range(len(parsed_rows) - 1)
+        ):
+            continue
+        labels = [item["text"] for item in parsed_rows]
+        if len({label.casefold() for label in labels}) != len(labels):
+            continue
+        if not any(_NATIVE_INSPECTION_LABEL_RE.search(label) for label in labels):
+            continue
+        if not any(_NATIVE_MUTATION_LABEL_RE.search(label) for label in labels):
+            continue
+        candidates.append(parsed_rows)
+
+    # Multiple independently valid popup lists are ambiguous; fail closed.
+    return candidates[0] if len(candidates) == 1 else []
+
+
+def current_native_popup_menu_ui_elements(
+    env: Any,
+    *,
+    screen_width: int,
+    screen_height: int,
+    timeout_seconds: float = 10.0,
+) -> list[dict[str, Any]]:
+    """Capture and parse one current-screen native popup hierarchy."""
+    from android_world.env import adb_utils
+
+    xml = adb_utils.uiautomator_dump(
+        env.controller,
+        timeout_sec=timeout_seconds,
+    )
+    return native_popup_menu_ui_elements_from_xml(
+        xml,
+        screen_width=screen_width,
+        screen_height=screen_height,
+    )
 
 
 @dataclass(frozen=True)

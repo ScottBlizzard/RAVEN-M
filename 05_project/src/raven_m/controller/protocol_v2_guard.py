@@ -2035,6 +2035,15 @@ def requested_field_value_assessment(
                         "x": round(float(bbox[0] + bbox[1]) / 2.0, 6),
                         "y": round(float(bbox[2] + bbox[3]) / 2.0, 6),
                     },
+                    **(
+                        {"source": source}
+                        if (
+                            source := _normalized_text(
+                                _element_value(element, "source")
+                            )
+                        )
+                        else {}
+                    ),
                 }
             )
 
@@ -2108,6 +2117,10 @@ def requested_field_value_assessment(
         ),
         "visual_inspection_candidate_count": sum(
             item.get("source") == "current_screenshot_shape"
+            for item in inspection_controls
+        ),
+        "native_inspection_candidate_count": sum(
+            item.get("source") == "native_uiautomator_popup_row"
             for item in inspection_controls
         ),
         "type_text_attempted": type_text_attempted,
