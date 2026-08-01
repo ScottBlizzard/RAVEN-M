@@ -1,0 +1,163 @@
+{
+  "schema_version": "protocol_v2_2_r65_h17_candidate_stop_audit.v1",
+  "decision": "r65_distinct_row_visual_evidence_validated_but_canonical_icon_category_grounding_and_context_cap_failed",
+  "checked_at": "2026-08-01T02:21:12.7275666Z",
+  "development_smoke": true,
+  "formal_scoring": false,
+  "formal_gate_f_authorized": false,
+  "source_commit": "0eaf8ae0e157392ac33907a3cd06a57d18e00e07",
+  "source_tag": "protocol-v2-2-r65-local-candidate",
+  "package_commit": "6e2db153b074f4710f7718b83ba72e9ed69c3f51",
+  "preflight_commit": "7b6199340d2fde36b64bbdd3732309301113d8a0",
+  "suite_id": "hard_micro_v2_2_seed20260730_r65_candidate_development_smoke_sequence_2",
+  "suite_path": "runs/protocol_v2_2_development/hard_micro_v2_2_seed20260730_r65_candidate_development_smoke_sequence_2",
+  "result": {
+    "task_id": "H17",
+    "task": "SportsTrackerActivitiesOnDate",
+    "variant": "M0",
+    "sequence": 2,
+    "seed": 20260730,
+    "attempt_count": 1,
+    "valid_method_attempt": 1,
+    "success": false,
+    "evaluator_reward": 0.0,
+    "failure_code": "INCORRECT_ANSWER",
+    "termination_reason": "model_answer",
+    "executed_action_count": 8,
+    "model_call_count": 13,
+    "executor_model_call_count": 9,
+    "history_model_call_count": 4,
+    "answer_action_count": 1,
+    "answer_cache_match_count": 1,
+    "wall_time_seconds": 282.28048,
+    "total_active_seconds": 658.625,
+    "max_prompt_tokens": 12334,
+    "readiness_observation_count": 19,
+    "readiness_retry_count": 3,
+    "reset_audit_passed": true
+  },
+  "infrastructure_accounting": {
+    "excluded_episode_attempt_count": 0,
+    "startup_environment_failure_count": 1,
+    "startup_environment_recovery_count": 1,
+    "startup_environment_last_status": "recovered",
+    "model_preflight_wait_seconds_before_recovery": 341.0,
+    "valid_attempt_reset_passed": true,
+    "model_healthy_after_run": true,
+    "emulator_connected_after_run": true,
+    "classification": "one valid method attempt after separately audited startup and model-service recovery"
+  },
+  "r65_mechanism_audit": {
+    "status": "distinct_row_routing_and_cross_screen_evidence_binding_executed_successfully",
+    "executed_actions": [
+      "open_app",
+      "swipe_up_toward_older_rows",
+      "swipe_up_toward_older_rows",
+      "tap_first_target_date_row",
+      "press_back_and_bind_first_detail_frame",
+      "tap_second_unvisited_target_date_row",
+      "press_back_and_bind_second_detail_frame",
+      "answer_after_restored_list_and_joint_visual_review"
+    ],
+    "target_date_reached": true,
+    "target_date_row_count": 2,
+    "target_row_centers": [
+      0.747292,
+      0.834375
+    ],
+    "distinct_target_row_visit_count": 2,
+    "distinct_target_row_visit_keys": [
+      "target-row-y:0.747",
+      "target-row-y:0.834"
+    ],
+    "detail_frame_count": 2,
+    "first_detail_title": "Skill work",
+    "second_detail_title": "Recovery day",
+    "first_detail_sha256": "f5c545b810a4c981aeeb7bd494033aef5009ae1e667b1b52c4d83dbb1ee9cdcd",
+    "second_detail_sha256": "2e2ccfc1acc9fdce6f928e9ab1ee753bd697ae1cb63f65d4154e76fdc08e8060",
+    "final_list_sha256": "1dd3bfe177a5a9cce94afacd648d00f6892d7e20b3c807143d68c9ed5f763201",
+    "detail_frames_rehashed_before_review": true,
+    "answer_deferred_until_all_rows_visited": true,
+    "joint_visual_review_executed": true,
+    "joint_visual_review_image_count": 3,
+    "answer_submitted": "Bicycling, Walking",
+    "conclusion": "r65 fixed the isolated r64 defects: it routed to both distinct target rows, bound each detail frame transactionally, restored the list, and admitted an answer only after joint visual review"
+  },
+  "canonical_category_failure_audit": {
+    "requested_answer_role": "activity type",
+    "explicit_category_text_visible": false,
+    "category_source": "one conventional activity icon per target row and detail page",
+    "deterministically_reconstructed_expected_categories": [
+      "inline skating",
+      "cycling"
+    ],
+    "submitted_categories": [
+      "Bicycling",
+      "Walking"
+    ],
+    "first_row_error": "the bicycle icon was semantically recognized but normalized to the non-canonical synonym Bicycling instead of the app category cycling",
+    "second_row_error": "the inline-skating icon, including wheels beneath the feet, was collapsed to Walking",
+    "critic_error": "both same-turn visual critic calls returned proceed despite the two category-label mismatches",
+    "scientific_interpretation": "visual provenance alone was insufficient; an icon-derived answer also needs exact category granularity and canonical-label validation rather than permissive semantic similarity"
+  },
+  "context_cap_audit": {
+    "context_cap_error_count": 1,
+    "configured_max_prompt_tokens": 12000,
+    "observed_max_prompt_tokens": 12334,
+    "excess_tokens": 334,
+    "offending_step": 7,
+    "offending_role": "executor",
+    "offending_image_count": 3,
+    "redundancy": "the final executor received the restored list plus both historical detail frames, while the dedicated visual critic received the same three images again",
+    "required_change": "keep historical detail frames in the dedicated critic path and prevent redundant executor delivery unless the current screen alone cannot form a candidate"
+  },
+  "semantic_progress_audit": {
+    "executed_step_count": 8,
+    "validation_block_count": 1,
+    "executed_blocked_action_steps": [],
+    "unresolved_guard_repair": false,
+    "passed": true
+  },
+  "artifact_sha256": {
+    "gate_summary.json": "dbee2fa615502fb730fdf4b1f44bebe1671076c639724e8e0cc74e91151c9214",
+    "gate_progress.json": "dbee2fa615502fb730fdf4b1f44bebe1671076c639724e8e0cc74e91151c9214",
+    "batch_01_checkpoint.json": "dbee2fa615502fb730fdf4b1f44bebe1671076c639724e8e0cc74e91151c9214",
+    "manifest.snapshot.json": "3020c2a9e57145c914c32270e8463fe42c47ae3d345878f187e9758995d60b37",
+    "instances.snapshot.json": "a96be7900f83b372ae5a3b16c3f6ec0828602aeb28818c16373a8ecd99d54599",
+    "startup_environment_audit.json": "b5e8de10d4d29823d0142a0c41f0cc3ff6689bcaef5d7f2d5dda7a17f6d37657",
+    "model_service_recovery.json": "9ccbe7200b6aaae06f91891451a85f80af659dbb0d9b5e0e52c76a8ebbfe7d9e",
+    "episode.json": "f78ae2edba566ea5e6495b5ca685664896f1ce36944663b277bbee3f76fae043",
+    "events.jsonl": "ff91fed947771f26a946bd44c90c3fac6a2c9066f189d91acc7a12cea145053e",
+    "memory_events.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "step_002_after.png": "921b0270d08ed99fcb4b1abbf687eec0c27eb9afae9965bdf8416f9d51317fd9",
+    "step_003_after.png": "f5c545b810a4c981aeeb7bd494033aef5009ae1e667b1b52c4d83dbb1ee9cdcd",
+    "step_005_after.png": "2e2ccfc1acc9fdce6f928e9ab1ee753bd697ae1cb63f65d4154e76fdc08e8060",
+    "step_006_after.png": "1dd3bfe177a5a9cce94afacd648d00f6892d7e20b3c807143d68c9ed5f763201",
+    "step_007_before.png": "1dd3bfe177a5a9cce94afacd648d00f6892d7e20b3c807143d68c9ed5f763201"
+  },
+  "immutability": {
+    "suite_may_be_resumed": false,
+    "suite_may_be_overwritten": false,
+    "same_candidate_may_be_retried": false,
+    "failure_may_be_relabelled": false
+  },
+  "next_action_boundary": {
+    "allowed": [
+      "freeze and test the r65 stopped development checkpoint",
+      "preserve r65 distinct-row routing and transactional detail-frame binding",
+      "make icon-derived categorical answers require exact sport granularity and canonical category wording",
+      "require the joint visual critic to reject generic or synonymous labels that are not supported at the requested field granularity",
+      "remove redundant historical detail images from the executor while retaining them for final visual adjudication",
+      "test wrong-category, near-synonym, row-order, evidence-hash, and prompt-budget behavior locally",
+      "create a new r66 source commit and zero-call preflight before any further live request"
+    ],
+    "forbidden": [
+      "retry r65 H17 M0",
+      "resume or overwrite the r65 suite",
+      "launch formal Gate F from r65",
+      "accept a generic visual label when the icon supports a more specific activity type",
+      "treat semantic synonyms as evaluator-equivalent without visible canonical evidence",
+      "inject H17, OpenTracks, the target date, row titles, observed icon answers, or expected answers into runtime mechanism code or prompts"
+    ]
+  }
+}
