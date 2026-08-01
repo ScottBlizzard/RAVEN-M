@@ -103,6 +103,11 @@ COMMIT_LIKE_CONTROL_RE = re.compile(
     r"log\s*out|factory\s+reset)\b",
     flags=re.IGNORECASE,
 )
+INSPECTION_NAVIGATION_CONTROL_RE = re.compile(
+    r"\b(more\s+options|overflow|information|info|details?|edit)\b",
+    flags=re.IGNORECASE,
+)
+MAX_INSPECTION_CONTROL_CANDIDATES = 8
 TOOLBAR_AFFORDANCE_ROLE_RES = {
     "date": re.compile(
         r"\b(calendar|date(?:\s+picker)?|day\s+picker|month\s+grid)\b",
@@ -1641,6 +1646,7 @@ def requested_field_value_assessment(
     matched_metadata_fields: set[str] = set()
     mutation_controls: list[dict[str, Any]] = []
     visible_control_bboxes: list[dict[str, float]] = []
+    inspection_controls: list[dict[str, Any]] = []
     action = decision.get("action") if isinstance(decision, dict) else None
     tap_x = action.get("x") if isinstance(action, dict) else None
     tap_y = action.get("y") if isinstance(action, dict) else None
@@ -1738,10 +1744,72 @@ def requested_field_value_assessment(
                     },
                 }
             )
+        semantic_label = next(
+            (
+                label
+                for label in (
+                    _normalized_text(
+                        _element_value(element, "content_description")
+                    ),
+                    text,
+                    _normalized_text(_element_value(element, "tooltip")),
+                )
+                if label is not None
+            ),
+            None,
+        )
+        resource_label = _normalized_text(
+            _element_value(element, "resource_id")
+        )
+        inspection_label = semantic_label
+        if inspection_label is None and resource_label is not None:
+            inspection_label = re.sub(
+                r"[^a-z0-9]+",
+                " ",
+                resource_label.casefold(),
+            ).strip()
+        inspection_match = (
+            INSPECTION_NAVIGATION_CONTROL_RE.search(inspection_label)
+            if inspection_label and len(inspection_label) <= 80
+            else None
+        )
+        inspection_navigation = bool(
+            bbox is not None
+            and _element_value(element, "is_clickable") is True
+            and _element_value(element, "is_enabled") is not False
+            and inspection_match is not None
+            and mutation_label is None
+            and not role_matched
+        )
+        if (
+            inspection_navigation
+            and inspection_match is not None
+            and bbox is not None
+            and len(inspection_controls)
+            < MAX_INSPECTION_CONTROL_CANDIDATES
+        ):
+            inspection_controls.append(
+                {
+                    # Route only the matched navigation affordance, never the
+                    # full accessible label, which could contain task data.
+                    "label": inspection_match.group(0),
+                    "bbox": {
+                        "x_min": round(float(bbox[0]), 6),
+                        "x_max": round(float(bbox[1]), 6),
+                        "y_min": round(float(bbox[2]), 6),
+                        "y_max": round(float(bbox[3]), 6),
+                    },
+                    "center": {
+                        "x": round(float(bbox[0] + bbox[1]) / 2.0, 6),
+                        "y": round(float(bbox[2] + bbox[3]) / 2.0, 6),
+                    },
+                }
+            )
 
     mutation_control_hits = []
     requested_field_control_hit = False
     visible_control_hit = False
+    inspection_control_hit = False
     if isinstance(tap_x, (int, float)) and isinstance(tap_y, (int, float)):
         mutation_control_hits = [
             item["label"]
@@ -1763,6 +1831,13 @@ def requested_field_value_assessment(
             and item["y_min"] <= float(tap_y) <= item["y_max"]
             for item in visible_control_bboxes
         )
+        inspection_control_hit = any(
+            item["bbox"]["x_min"] <= float(tap_x)
+            <= item["bbox"]["x_max"]
+            and item["bbox"]["y_min"] <= float(tap_y)
+            <= item["bbox"]["y_max"]
+            for item in inspection_controls
+        )
     type_text_attempted = bool(
         isinstance(action, dict) and action.get("type") == "type_text"
     )
@@ -1779,6 +1854,8 @@ def requested_field_value_assessment(
         "requested_field_control_hit": requested_field_control_hit,
         "visible_control_hit": visible_control_hit,
         "visible_control_count": len(visible_control_bboxes),
+        "inspection_control_hit": inspection_control_hit,
+        "inspection_control_candidates": inspection_controls,
         "type_text_attempted": type_text_attempted,
         "read_only_inspection_safe": bool(
             matched_bboxes
@@ -3581,7 +3658,7 @@ class ProtocolV2DecisionGuard:
             and isinstance(action, dict)
             and action.get("type") == "tap"
             and field_assessment.get("explicit_value_visible") is not True
-            and field_assessment.get("visible_control_hit") is not True
+            and field_assessment.get("inspection_control_hit") is not True
             and dated_assessment.get("target_date_list_visible") is not True
         ):
             return
@@ -3630,14 +3707,32 @@ class ProtocolV2DecisionGuard:
                 "change a selector, or Save before that text is visible."
             )
         self.target_row_non_control_tap_block_count += 1
+        candidates = field_assessment.get(
+            "inspection_control_candidates",
+            [],
+        )
+        candidate_directive = (
+            " VERIFIED_INSPECTION_CONTROL_CANDIDATES: "
+            + json.dumps(
+                candidates,
+                ensure_ascii=False,
+                sort_keys=True,
+                separators=(",", ":"),
+            )
+            + ". Tap the exact normalized center of one listed candidate."
+            if candidates
+            else " No verified inspection control is currently available."
+        )
         raise ActionValidationError(
             "TARGET_ROW_DETAIL_CONTROL_GUARD: an active target-row detail "
             "requires exact requested-field text, but this tap does not hit "
-            "any visible enabled control. Do not explore blank content or "
-            "guess a coordinate. Tap one visible enabled non-commit "
-            "information, overflow-menu, or edit-details control. Do not "
+            "a controller-verified inspection control. Do not explore blank "
+            "content or guess a coordinate. Tap one visible enabled "
+            "non-commit information, overflow-menu, or edit-details "
+            "control. Do not "
             "press Back, answer, type, change a selector, or Save before "
             "the exact existing requested-field text is visible."
+            + candidate_directive
         )
 
     def validate_decision(

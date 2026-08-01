@@ -666,7 +666,51 @@ def test_requested_field_value_assessment_withholds_value_and_binds_role() -> No
     )
     assert overflow_assessment["visible_control_hit"] is True
     assert overflow_assessment["visible_control_count"] == 2
+    assert overflow_assessment["inspection_control_hit"] is True
+    assert overflow_assessment["inspection_control_candidates"] == [
+        {
+            "label": "More options",
+            "bbox": {
+                "x_min": 0.35,
+                "x_max": 0.45,
+                "y_min": 0.92,
+                "y_max": 0.98,
+            },
+            "center": {"x": 0.4, "y": 0.95},
+        }
+    ]
     assert overflow_assessment["mutation_control_hit"] is False
+
+
+def test_requested_field_inspection_route_withholds_label_suffix() -> None:
+    assessment = requested_field_value_assessment(
+        "Return the activity type.",
+        [
+            {
+                "text": "",
+                "content_description": (
+                    "More options hidden-answer-text"
+                ),
+                "is_visible": True,
+                "is_clickable": True,
+                "is_enabled": True,
+                "bbox": {
+                    "x_min": 0.35,
+                    "x_max": 0.45,
+                    "y_min": 0.92,
+                    "y_max": 0.98,
+                },
+            }
+        ],
+        decision({"type": "tap", "x": 0.4, "y": 0.95}),
+        screen_width=1000,
+        screen_height=2400,
+    )
+
+    assert assessment["inspection_control_candidates"][0]["label"] == (
+        "More options"
+    )
+    assert "hidden-answer-text" not in repr(assessment)
 
 
 def test_guard_requires_explicit_requested_field_before_back() -> None:
@@ -767,6 +811,7 @@ def test_guard_allows_visible_non_commit_control_on_active_detail() -> None:
         requested_field_value_assessment={
             "explicit_value_visible": False,
             "visible_control_hit": True,
+            "inspection_control_hit": True,
         },
     )
 

@@ -1179,18 +1179,19 @@ class EpisodeController:
         if target_row_detail_inspection_required:
             repair_directive = (
                 "TARGET_ROW_DETAIL_INSPECTION_REPAIR: A controller-bound "
-                "target-row detail is active and its requested field is not "
-                "yet explicit. Deferred target-list row coordinates are "
-                "invalid on this screen. For this one repair, return "
-                "status=continue with exactly one tap on a visible enabled "
-                "non-commit information, overflow-menu, or edit-details "
-                "control. If an overflow menu is already open, tap its "
-                "visible information/edit-details entry. Do not press Back, "
-                "use any list-row coordinate, answer, wait, swipe, type, "
-                "change a selector, or Save. Use empty state_delta, "
-                "memory_citations, and completion_evidence. No coordinate "
-                "or answer is supplied by the controller; bind the tap only "
-                "from the unchanged screenshot.\n"
+                "target-row detail is active; its requested field is not "
+                "explicit. Deferred list-row coordinates are invalid. "
+                "Return status=continue with exactly one tap on a visible "
+                "enabled non-commit information, overflow-menu, or "
+                "edit-details control. If overflow is open, tap its visible "
+                "information/edit-details entry. Do not press Back, use a row "
+                "coordinate, answer, wait, swipe, type, change a selector, "
+                "or Save. Keep state_delta, memory_citations, and "
+                "completion_evidence empty. The controller supplies no "
+                "answer. If VALIDATION_ERROR includes "
+                "VERIFIED_INSPECTION_CONTROL_CANDIDATES, copy exactly one "
+                "verified center into the tap; otherwise use only the "
+                "unchanged screenshot.\n"
             )
             if active_detail_priority_override:
                 repair_directive += (
