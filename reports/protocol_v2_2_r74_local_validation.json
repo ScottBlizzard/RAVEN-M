@@ -1,0 +1,131 @@
+{
+  "schema_version": "protocol_v2_2_r74_local_validation.v1",
+  "decision": "local_candidate_passed_exact_package_preflight_pending",
+  "checked_at": "2026-08-01T16:58:20.7934438Z",
+  "source_commit": "b1b853920304057a52b1713e4a5a82dd98249dec",
+  "source_tag": "protocol-v2-2-r74-local-candidate",
+  "source_tag_resolves_exactly": true,
+  "formal_gate_f_authorized": false,
+  "live_development_smoke_authorized": false,
+  "parent_r73_stop": {
+    "report": "reports/protocol_v2_2_r73_h17_candidate_stopped.json",
+    "report_sha256": "cfa22bbcdafb400306690fe8b5e3c51b99628c9e88c561b2319d8f335af13ba0",
+    "execution_stop_commit": "5c9595e875ac2267ba77702e231758c4b96ad70f",
+    "execution_stop_tag": "protocol-v2-2-r73-h17-stopped",
+    "decision": "r73_live_smoke_crossed_r72_and_exercised_native_edit_but_released_a_deferred_second_row_coordinate_before_the_nested_return_reached_the_target_date_list",
+    "immutable": true
+  },
+  "candidate_contract": {
+    "single_change": "after a requested-field frame is captured, keep all deferred target-row coordinates unavailable until a fresh same-screen assessment proves that the exact target-date list and its original row cardinality are visible",
+    "maximum_return_navigation": "the capture Back counts as level one; at most one additional pure Back is authorized before the guard fails closed",
+    "release_evidence": "target_date_list_visible=true, observed target-row count equals the previously verified count, and target-row center count equals that same count",
+    "history_policy_changed": false,
+    "mutation_filter_changed": false,
+    "requested_field_guard_weakened": false,
+    "answer_association_guard_changed": false,
+    "native_popup_parser_or_provider_changed": false,
+    "experiment_controls_changed": false,
+    "hidden_evaluator_or_answer_data_used": false,
+    "task_app_target_date_row_title_category_or_answer_special_case_used": false
+  },
+  "return_state_machine": {
+    "capture_transition": "capture the explicit requested-field frame, execute the already-authorized Back, clear the active detail row, set return pending, and record back_count=1",
+    "pending_prompt": "declare phase return_to_target_date_list, hide unvisited row coordinates, and require one exact pure press_back with empty state_delta, memory_citations, and completion_evidence",
+    "pending_guard": "block taps, swipes, waits, answers, and every other non-Back action before execution",
+    "confirmation_transition": "only a fresh verified target-date list with the original row cardinality clears pending state and releases the next row coordinate",
+    "failure_transition": "if the list remains unconfirmed after two total Back actions, reject a third Back and fail closed"
+  },
+  "exact_r73_trace_replay": {
+    "parent_report_sha256": "cfa22bbcdafb400306690fe8b5e3c51b99628c9e88c561b2319d8f335af13ba0",
+    "replayed_failure": "the exact frozen r73 stale second-row tap at normalized coordinate (0.5, 0.834375) is presented on the intermediate activity-detail screen after the first Back",
+    "deferred_coordinate_hidden_while_pending": true,
+    "stale_tap_blocked_before_execution": true,
+    "one_bounded_repair_to_pure_back": true,
+    "wrong_row_count_does_not_confirm": true,
+    "exact_original_row_count_confirms": true,
+    "second_row_released_only_after_confirmation": true,
+    "third_back_fails_closed": true,
+    "task_and_answer_agnostic": true
+  },
+  "negative_safety_coverage": [
+    "a non-Back action on an intermediate return screen is blocked before execution",
+    "a target-date label without the original row cardinality cannot release deferred coordinates",
+    "a third Back cannot escape farther through the application when the expected list is absent",
+    "no unvisited-row coordinate is exposed in the pending return prompt",
+    "the r73 More-options and native Edit read-only inspection fixes remain covered",
+    "the protocol-v1 sealed breadth remains byte-exact"
+  ],
+  "validation": {
+    "complete_project_tests": {
+      "passed": true,
+      "collected_count": 856,
+      "passed_count": 856,
+      "failed_count": 0,
+      "duration_seconds": 254.4,
+      "scope": "05_project/tests"
+    },
+    "focused_controller_guard_and_two_generation_trace_tests": {
+      "passed": true,
+      "passed_count": 223,
+      "duration_seconds": 63.8
+    },
+    "r74_exact_trace_and_negative_tests": {
+      "passed": true,
+      "passed_count": 6,
+      "test_file_sha256": "c54c1273833ea609fb9eb9907f5e4f30cf999f66945c0cb8cda21e5e25e3c0bc"
+    },
+    "r73_historical_package_lifecycle": {
+      "passed": true,
+      "future_head_source_drift_rejected": true,
+      "frozen_r73_manifest_or_artifact_rewritten": false
+    },
+    "compileall": {
+      "passed": true,
+      "paths": [
+        "05_project/src",
+        "05_project/tests"
+      ]
+    },
+    "git_diff_check": {
+      "passed": true
+    },
+    "protocol_v1_seal": {
+      "passed": true,
+      "file_count": 197,
+      "failure_count": 0,
+      "rewritten": false
+    }
+  },
+  "source_sha256": {
+    "05_project/src/raven_m/controller/episode_controller.py": "0c8e64342e2e78a535b11d417809cc5cb05665643e5cb1c5100bc4c0a732d68b",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "d372d82d0320f7ce614a4e02a118b4983f8b06613876e515f8a7940f93aac5a6",
+    "05_project/src/raven_m/env/androidworld_adapter.py": "ad4ecbee9430326ca7380334c49372911a1c6b1c217ee12bb3714d2fb1219c33",
+    "05_project/scripts/run_protocol_v2_gate_f.py": "6ad52a3063f223e4f9c7fb1b4b360e7df65712e33225519b39b9f32997289bfc",
+    "05_project/src/raven_m/roles/orchestrator.py": "bb812660f1ba438f3f491b3582bf5094224585f963c13a56cddaba5cefeb3521",
+    "05_project/prompts/executor_raven_v2.md": "4810e577f19c987ee8ec875c8c5e042e6af314a7d2a409166f28dcd7d7910877",
+    "05_project/tests/scripts/test_protocol_v2_2_r73_h17_candidate.py": "de08602e17445b30e088e5d6e9b86190c0b6ad3ad10578a5c8b044c4c1d9a14f",
+    "05_project/tests/scripts/test_protocol_v2_2_r74_r73_trace_replay.py": "c54c1273833ea609fb9eb9907f5e4f30cf999f66945c0cb8cda21e5e25e3c0bc"
+  },
+  "online_boundary_at_validation": {
+    "model_calls": 0,
+    "gpu_experiment_cells": 0,
+    "interpretation": "the exact r73 nested-return failure is fixed in frozen local replay, but no r74 live smoke is authorized before a fresh exact-package zero-call preflight"
+  },
+  "next_action_boundary": {
+    "allowed": [
+      "prepare a fresh r74 H17-only development wrapper and namespace",
+      "add exact-source freeze, r73-stop prerequisite, local-report, invocation-boundary, and single-change tests",
+      "run a zero-model-call online preflight against the exact r74 package",
+      "run at most one non-scored H17 M0 smoke only after that preflight passes"
+    ],
+    "forbidden": [
+      "resume or overwrite the r73 development suite",
+      "launch any formal r74 Gate-F batch",
+      "run any r74 development sequence other than its single frozen H17 M0 cell",
+      "release a deferred row coordinate before exact list confirmation",
+      "execute a third Back after the bounded nested return is exhausted",
+      "use OCR, hidden task parameters, or the offline expected answer",
+      "modify or save the inspected application record"
+    ]
+  }
+}
