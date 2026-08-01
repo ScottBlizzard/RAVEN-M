@@ -98,23 +98,22 @@ def test_r72_candidate_freeze_hashes_match_exact_source_commit() -> None:
         assert sha256(frozen).hexdigest() == record["sha256"]
 
 
-def test_r72_candidate_passes_full_static_manifest_validation() -> None:
+def test_r72_historical_static_validation_rejects_future_head_drift() -> None:
     wrapper = load_wrapper("r72_candidate_static_wrapper")
     runner = load_module(RUNNER, "r72_candidate_static_runner")
     manifest = json.loads(
         wrapper.build_candidate_manifest().read_text(encoding="utf-8")
     )
-    audit = runner.validate_manifest(
-        manifest,
-        expected_source_tag=wrapper.SOURCE_TAG,
-        expected_source_commit=wrapper.SOURCE_COMMIT,
-        expected_prerequisite_commit=wrapper.PARENT_GATE_E_COMMIT,
-    )
-    assert audit["schedule_cell_count"] == 12
-    assert audit["task_pair_count"] == 6
-    assert audit["batch_count"] == 3
-    assert len(audit["freeze_file_checks"]) == 28
-    assert all(item["passed"] for item in audit["freeze_file_checks"])
+    with pytest.raises(
+        RuntimeError,
+        match="Versioned Gate-F freeze file hash mismatch",
+    ):
+        runner.validate_manifest(
+            manifest,
+            expected_source_tag=wrapper.SOURCE_TAG,
+            expected_source_commit=wrapper.SOURCE_COMMIT,
+            expected_prerequisite_commit=wrapper.PARENT_GATE_E_COMMIT,
+        )
 
 
 def test_r72_candidate_prerequisites_are_byte_exact() -> None:

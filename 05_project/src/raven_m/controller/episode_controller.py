@@ -69,6 +69,38 @@ def _sha256_file(path: Path) -> str:
     return sha256(path.read_bytes()).hexdigest()
 
 
+def _verified_active_detail_inspection_action(
+    *,
+    protocol_v2_2: bool,
+    decision_guard: ProtocolV2DecisionGuard | None,
+    decision: dict[str, Any],
+    requested_field_assessment: dict[str, Any] | None,
+) -> bool:
+    """Identify a same-frame, controller-verified read-only detail tap.
+
+    This is deliberately narrower than generic reversible navigation.  The
+    active-detail guard has already validated the candidate against the same
+    requested-field assessment before this predicate is consulted.  A field
+    selector or any mutation-labelled overlap therefore remains ineligible.
+    """
+    action = decision.get("action")
+    assessment = requested_field_assessment or {}
+    return bool(
+        protocol_v2_2
+        and decision_guard is not None
+        and decision_guard.target_row_detail_required
+        and decision_guard.active_target_row_visit_key is not None
+        and isinstance(action, dict)
+        and action.get("type") == "tap"
+        and assessment.get("schema_version")
+        == "requested_field_value_assessment.v1"
+        and assessment.get("inspection_control_hit") is True
+        and assessment.get("mutation_control_hit") is False
+        and assessment.get("requested_field_control_hit") is False
+        and assessment.get("type_text_attempted") is False
+    )
+
+
 def _requested_field_evidence_frame(
     *,
     image_path: Path,
@@ -2782,6 +2814,19 @@ class EpisodeController:
                 ).get("permitted")
                 is True
             ):
+                consequential_action_candidate = False
+            elif _verified_active_detail_inspection_action(
+                protocol_v2_2=self.protocol_v2_2,
+                decision_guard=self.decision_guard,
+                decision=parsed_candidate.decision,
+                requested_field_assessment=(
+                    latest_requested_field_value_assessment
+                ),
+            ):
+                # The current-screen detail guard already proved that this
+                # tap hits a named inspection candidate and no mutation or
+                # requested-field selector.  A prose regex and stochastic
+                # critic must not override that stronger same-frame evidence.
                 consequential_action_candidate = False
             action_adjudication = self.history_policy.adjudicate_action(
                 parsed_candidate.decision,
