@@ -1605,6 +1605,168 @@ def _requested_answer_role(goal: str) -> str | None:
     return role or None
 
 
+def requested_field_value_assessment(
+    goal: str,
+    ui_elements: Any,
+    decision: dict[str, Any] | None,
+    *,
+    screen_width: int,
+    screen_height: int,
+) -> dict[str, Any]:
+    """Detect a visible value control whose metadata names the asked field.
+
+    This assessment deliberately withholds the value text.  It only proves
+    that the pixels contain a readable value in a control whose accessible
+    metadata matches the requested field role, and supplies geometry so the
+    controller can retain a small screenshot crop as visual evidence.
+    """
+    requested_role = _requested_answer_role(goal)
+    role_tokens = set(
+        re.findall(r"[a-z]+", (requested_role or "").casefold())
+    )
+    singular_role_tokens = {
+        {
+            "categories": "category",
+            "statuses": "status",
+        }.get(token, token[:-1] if token.endswith("s") else token)
+        for token in role_tokens
+    }
+    if singular_role_tokens.intersection({"type", "category", "kind"}):
+        singular_role_tokens.update({"type", "category", "kind"})
+    singular_role_tokens.difference_update(
+        {"a", "an", "answer", "activity", "only", "the"}
+    )
+
+    matched_bboxes: list[dict[str, float]] = []
+    matched_metadata_fields: set[str] = set()
+    mutation_controls: list[dict[str, Any]] = []
+    action = decision.get("action") if isinstance(decision, dict) else None
+    tap_x = action.get("x") if isinstance(action, dict) else None
+    tap_y = action.get("y") if isinstance(action, dict) else None
+
+    for element in ui_elements or ():
+        if _element_value(element, "is_visible") is False:
+            continue
+        bbox = _normalized_element_bbox(
+            element,
+            screen_width=screen_width,
+            screen_height=screen_height,
+        )
+        text = _normalized_text(_element_value(element, "text"))
+        metadata: dict[str, str] = {}
+        for field in (
+            "resource_id",
+            "hint_text",
+            "content_description",
+            "tooltip",
+        ):
+            value = _normalized_text(_element_value(element, field))
+            if value is not None:
+                metadata[field] = value
+        metadata_tokens = set(
+            re.findall(
+                r"[a-z]+",
+                " ".join(metadata.values()).casefold(),
+            )
+        )
+        role_matched = bool(
+            singular_role_tokens
+            and singular_role_tokens.intersection(metadata_tokens)
+        )
+        text_tokens = set(re.findall(r"[a-z]+", (text or "").casefold()))
+        value_is_distinct = bool(
+            text
+            and not (
+                text_tokens
+                and text_tokens <= singular_role_tokens
+            )
+        )
+        if role_matched and value_is_distinct and bbox is not None:
+            matched_bboxes.append(
+                {
+                    "x_min": round(float(bbox[0]), 6),
+                    "x_max": round(float(bbox[1]), 6),
+                    "y_min": round(float(bbox[2]), 6),
+                    "y_max": round(float(bbox[3]), 6),
+                }
+            )
+            matched_metadata_fields.update(metadata)
+
+        labels = [
+            value
+            for field in ("text", "content_description", "tooltip")
+            if (
+                value := _normalized_text(_element_value(element, field))
+            )
+            is not None
+        ]
+        mutation_label = next(
+            (
+                label
+                for label in labels
+                if re.search(
+                    r"\b(save|submit|apply|confirm|delete|send|record)\b",
+                    label,
+                    flags=re.IGNORECASE,
+                )
+            ),
+            None,
+        )
+        if mutation_label is not None and bbox is not None:
+            mutation_controls.append(
+                {
+                    "label": mutation_label,
+                    "bbox": {
+                        "x_min": round(float(bbox[0]), 6),
+                        "x_max": round(float(bbox[1]), 6),
+                        "y_min": round(float(bbox[2]), 6),
+                        "y_max": round(float(bbox[3]), 6),
+                    },
+                }
+            )
+
+    mutation_control_hits = []
+    requested_field_control_hit = False
+    if isinstance(tap_x, (int, float)) and isinstance(tap_y, (int, float)):
+        mutation_control_hits = [
+            item["label"]
+            for item in mutation_controls
+            if (
+                item["bbox"]["x_min"] <= float(tap_x)
+                <= item["bbox"]["x_max"]
+                and item["bbox"]["y_min"] <= float(tap_y)
+                <= item["bbox"]["y_max"]
+            )
+        ]
+        requested_field_control_hit = any(
+            item["x_min"] <= float(tap_x) <= item["x_max"]
+            and item["y_min"] <= float(tap_y) <= item["y_max"]
+            for item in matched_bboxes
+        )
+    type_text_attempted = bool(
+        isinstance(action, dict) and action.get("type") == "type_text"
+    )
+    return {
+        "schema_version": "requested_field_value_assessment.v1",
+        "requested_answer_role": requested_role,
+        "role_tokens": sorted(singular_role_tokens),
+        "explicit_value_control_count": len(matched_bboxes),
+        "explicit_value_visible": bool(matched_bboxes),
+        "matched_metadata_fields": sorted(matched_metadata_fields),
+        "matched_value_bboxes": matched_bboxes,
+        "mutation_control_hit": bool(mutation_control_hits),
+        "mutation_control_hit_labels": mutation_control_hits,
+        "requested_field_control_hit": requested_field_control_hit,
+        "type_text_attempted": type_text_attempted,
+        "read_only_inspection_safe": bool(
+            matched_bboxes
+            and not mutation_control_hits
+            and not requested_field_control_hit
+            and not type_text_attempted
+        ),
+    }
+
+
 def _cluster_row_centers(
     centers: list[float],
     *,
@@ -2877,6 +3039,8 @@ class ProtocolV2DecisionGuard:
         self.target_row_revisit_block_count = 0
         self.target_row_aggregation_block_count = 0
         self.target_row_visual_answer_accept_count = 0
+        self.target_row_explicit_field_block_count = 0
+        self.target_row_read_only_mutation_block_count = 0
         self.target_date_row_count = 0
         self.target_row_detail_required = False
         self.target_row_visit_keys: list[str] = []
@@ -2966,7 +3130,7 @@ class ProtocolV2DecisionGuard:
         }
 
     def target_row_detail_context_images(self) -> list[tuple[str, str]]:
-        """Return controller-bound detail frames in target-row order."""
+        """Return verified requested-field crops in target-row order."""
         context_images: list[tuple[str, str]] = []
         for frame in sorted(
             self.target_row_detail_frames,
@@ -2984,9 +3148,26 @@ class ProtocolV2DecisionGuard:
                     "Controller-bound target-row detail frame hash mismatch: "
                     + str(path)
                 )
+            source_path = Path(str(frame["source_path"]))
+            if not source_path.is_file():
+                raise RuntimeError(
+                    "Controller-bound target-row source frame is missing: "
+                    + str(source_path)
+                )
+            source_sha256 = sha256(source_path.read_bytes()).hexdigest()
+            if source_sha256 != frame["source_sha256"]:
+                raise RuntimeError(
+                    "Controller-bound target-row source frame hash mismatch: "
+                    + str(source_path)
+                )
+            if frame.get("requested_field_evidence_explicit") is not True:
+                raise RuntimeError(
+                    "Controller-bound target-row crop lacks explicit "
+                    "requested-field evidence."
+                )
             context_images.append(
                 (
-                    f"DATED_TARGET_DETAIL {frame['visit_key']}",
+                    f"DATED_TARGET_REQUESTED_FIELD {frame['visit_key']}",
                     str(path),
                 )
             )
@@ -3397,6 +3578,7 @@ class ProtocolV2DecisionGuard:
         dated_list_answer_assessment: dict[str, Any] | None = None,
         dated_visual_answer_assessment: dict[str, Any] | None = None,
         dated_row_detail_frame: dict[str, Any] | None = None,
+        requested_field_value_assessment: dict[str, Any] | None = None,
     ) -> None:
         action = decision.get("action")
         if not isinstance(action, dict):
@@ -3405,6 +3587,7 @@ class ProtocolV2DecisionGuard:
         pending_target_visit_key: str | None = None
         pending_target_detail_frame: dict[str, Any] | None = None
         pending_visual_answer_accept = False
+        field_value_assessment = requested_field_value_assessment or {}
         toolbar_assessment = toolbar_affordance_claim_assessment or {}
         if (
             toolbar_assessment.get("adjudicable") is True
@@ -3646,6 +3829,71 @@ class ProtocolV2DecisionGuard:
                         )
                     pending_target_visit_key = visit_key
         elif (
+            self.target_row_detail_required
+            and self.active_target_row_visit_key is not None
+            and (
+                action.get("type") == "type_text"
+                or field_value_assessment.get("mutation_control_hit")
+                is True
+                or field_value_assessment.get(
+                    "requested_field_control_hit"
+                )
+                is True
+            )
+        ):
+            self.validation_blocks.append(
+                {
+                    "semantic_state_sha256": page_sha256,
+                    "action": action,
+                    "reason": "target_row_read_only_inspection_mutation_blocked",
+                    "requested_field_value_assessment": (
+                        field_value_assessment
+                    ),
+                    "required_recovery_classes": [
+                        "navigate_back_without_saving",
+                    ],
+                }
+            )
+            self.target_row_read_only_mutation_block_count += 1
+            raise ActionValidationError(
+                "TARGET_ROW_READ_ONLY_GUARD: this screen is being used only "
+                "to inspect the existing requested-field value. Do not "
+                "type, change a selector, Save, Submit, Apply, Confirm, "
+                "Delete, Send, or Record. Preserve the current value and "
+                "press Back without committing after it is visibly read."
+            )
+        elif (
+            self.target_row_detail_required
+            and self.active_target_row_visit_key is not None
+            and action.get("type") in {"answer", "press_back"}
+            and field_value_assessment.get("explicit_value_visible")
+            is not True
+        ):
+            self.validation_blocks.append(
+                {
+                    "semantic_state_sha256": page_sha256,
+                    "action": action,
+                    "reason": "target_row_explicit_requested_field_missing",
+                    "requested_field_value_assessment": (
+                        field_value_assessment
+                    ),
+                    "required_recovery_classes": [
+                        "inspect_non_commit_detail_metadata",
+                    ],
+                }
+            )
+            self.target_row_explicit_field_block_count += 1
+            raise ActionValidationError(
+                "TARGET_ROW_EXPLICIT_FIELD_GUARD: the current target-row "
+                f"screen does not show an explicit readable value for "
+                f"{self.requested_answer_role!r} in a control whose visible "
+                "field metadata matches that role. Do not infer it from an "
+                "icon or title and do not go Back yet. Inspect a visible "
+                "non-commit information or edit-details path until the "
+                "existing value is explicit. Treat any edit form as "
+                "read-only: never type, change a selector, or Save."
+            )
+        elif (
             action.get("type") == "answer"
             and self.target_row_detail_required
             and self.target_date_row_count > 0
@@ -3693,6 +3941,10 @@ class ProtocolV2DecisionGuard:
                 and isinstance(frame.get("path"), str)
                 and isinstance(frame.get("sha256"), str)
                 and len(frame["sha256"]) == 64
+                and isinstance(frame.get("source_path"), str)
+                and isinstance(frame.get("source_sha256"), str)
+                and len(frame["source_sha256"]) == 64
+                and frame.get("requested_field_evidence_explicit") is True
             ):
                 pending_target_detail_frame = dict(frame)
         self._validate_text_provenance(
@@ -4848,6 +5100,12 @@ class ProtocolV2DecisionGuard:
             ),
             "target_row_visual_answer_accept_count": (
                 self.target_row_visual_answer_accept_count
+            ),
+            "target_row_explicit_field_block_count": (
+                self.target_row_explicit_field_block_count
+            ),
+            "target_row_read_only_mutation_block_count": (
+                self.target_row_read_only_mutation_block_count
             ),
             "target_date_row_count": self.target_date_row_count,
             "target_row_detail_required": self.target_row_detail_required,

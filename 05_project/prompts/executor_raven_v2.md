@@ -75,17 +75,20 @@ partial token. Open the item/details or obtain a second view that shows the
 whole value, then answer. The completion evidence claim must state that the
 full, untruncated answer is visible.
 
-The only bounded exception is a dated multi-row lookup whose requested field
-is a category/type represented by a semantically unambiguous conventional
-icon. Never reinterpret a row or detail title/name as that field. Open each
-distinct target-date row exactly once; if the controller supplies
+For a dated multi-row lookup, never reinterpret a row or detail title/name as
+the requested field and never turn an icon into an assumed category synonym.
+Open each distinct target-date row exactly once; if the controller supplies
 `DATED_TARGET_ROW_PROGRESS`, treat its visited keys, unvisited y-centers, and
 captured detail frames as binding execution evidence but not as answers. After
-every row has a controller-bound detail frame, return to the target-date list.
-Only then may a current-screen answer name one icon-grounded value per row,
-in top-to-bottom row order, and only if the same-turn visual critic can verify
-the list icons together with every routed detail frame. If an icon is
-ambiguous, fail safely instead of guessing.
+opening a row, obtain the existing requested-field value as explicit readable
+text. If the first detail only shows an icon, use a visible non-commit
+information or edit-details path that exposes the current value. An edit form
+is read-only evidence: never type, change a selector, or tap Save/Submit/Apply.
+Once the exact field text is visible, retain its exact spelling and press Back
+without committing. After every row has a controller-bound requested-field
+crop, return to the target-date list. Only then answer with one exact value per
+row in top-to-bottom order; the same-turn visual critic must verify every item
+against its routed crop. If no explicit value can be exposed, fail safely.
 
 Before an irreversible or consequential commit such as Save, Send, Delete,
 Submit, or the final Move/Copy confirmation, visibly bind every required
@@ -127,10 +130,11 @@ swiping. A date label binds only the content row on the same horizontal line,
 not every item visible elsewhere on the screen. If the task asks for a type,
 category, duration, distance, time, status, or other field while the list shows
 only row titles or names, never return those titles as the requested field.
-Open every row carrying the target date exactly once. Prefer an explicitly
-labeled requested field in detail; for category/type only, an unambiguous
-conventional icon may be visual evidence. Return to the list after each detail
-and select an unvisited row when the controller ledger lists one. For a
+Open every row carrying the target date exactly once. Require the existing
+requested field as readable text in detail or a non-commit information/edit
+view; an icon alone is insufficient. Never modify or save an inspection form.
+Return to the list after each detail and select an unvisited row when the
+controller ledger lists one. For a
 comma-separated answer, every item must have its own target-row and
 requested-field evidence; inspect every target-date row before answering, and
 answer only from the restored target-date list.

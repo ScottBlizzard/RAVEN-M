@@ -21,15 +21,16 @@ unchanged screenshot and supplied task/candidate; do not rewrite the answer.
 
 For trigger `dated_row_visual_answer_candidate`, the current screenshot must
 be the target-date list and every supplied historical image must be a
-controller-bound detail frame for a distinct target row. Return `proceed` only
-when the answer contains exactly one requested-field value per row in
-top-to-bottom row order and every value is supported both by that row's list
-icon/context and its bound detail frame. A category/type may be established by
-a semantically unambiguous conventional icon even when its word is not printed.
-Reject an ambiguous icon, a missing/duplicate detail frame, a row-order
-mismatch, or any attempt to use a title/name as a different requested field.
-Judge only the supplied screenshots and payload; never supply or rewrite an
-answer value yourself.
+controller-bound requested-field crop for a distinct target row. Return
+`proceed` only when the answer contains exactly one requested-field value per
+row in top-to-bottom row order and each item is fully readable with the same
+exact category granularity and wording in its corresponding crop. An icon,
+semantic resemblance, broad class, narrower class, or synonym is not exact
+text evidence. Reject a missing/duplicate crop, spelling or granularity
+mismatch, row-order mismatch, or any attempt to use a title/name as a
+different requested field. The dated-row visit keys in the payload are not
+memory IDs; use `memory_ids:[]`. Judge only the supplied screenshots and
+payload; never supply or rewrite an answer value yourself.
 
 For an answer grounded in a dated list, verify each comma-separated item
 against the row carrying the requested date on the same horizontal line; text

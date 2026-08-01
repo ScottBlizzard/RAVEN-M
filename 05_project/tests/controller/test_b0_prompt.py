@@ -199,6 +199,8 @@ def test_v2_prompt_exposes_dated_row_progress_without_answer_values() -> None:
     assert "never supplies an answer" in prompt
     assert "never reopen a key in visited_row_keys" in prompt
     assert "all_detail_frames_captured" in prompt
+    assert "non-commit information/edit-details path" in prompt
+    assert "Treat such a form as read-only" in prompt
 
 
 def test_v2_loop_guard_repair_requires_higher_level_selector() -> None:
@@ -484,4 +486,7 @@ def test_v2_system_prompts_distinguish_ordinary_and_answer_completion() -> None:
             assert "date label binds only the content row" in normalized
             assert "never return those titles as the requested field" in normalized
             assert "every target-date row before answering" in normalized
+            assert "never turn an icon into an assumed category synonym" in normalized
+            assert "controller-bound requested-field crop" in normalized
+            assert "Never modify or save an inspection form" in normalized
             assert '"completion_evidence":[]' in normalized

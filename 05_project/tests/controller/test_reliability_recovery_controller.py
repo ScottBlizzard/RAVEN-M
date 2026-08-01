@@ -403,7 +403,17 @@ def test_controller_detail_answer_repairs_to_bound_back_frame(
         tmp_path=tmp_path,
         task_goal=goal,
         ui_elements=[
-            {"text": "Visible row title", "is_visible": True},
+            {
+                "text": "Visible category",
+                "resource_id": "example/track_edit_activity_type",
+                "is_visible": True,
+                "bbox": {
+                    "x_min": 0.05,
+                    "x_max": 0.85,
+                    "y_min": 0.15,
+                    "y_max": 0.22,
+                },
+            },
             {"text": "Sep 24", "is_visible": True},
         ],
     )
@@ -417,10 +427,19 @@ def test_controller_detail_answer_repairs_to_bound_back_frame(
     assert guard.target_row_detail_frames[0]["visit_key"] == (
         "target-row-y:0.750"
     )
+    frame = guard.target_row_detail_frames[0]
+    assert frame["requested_field_evidence_explicit"] is True
+    assert frame["source_path"] == str((tmp_path / "screen.png").resolve())
+    assert frame["path"] != frame["source_path"]
+    with Image.open(frame["source_path"]) as source, Image.open(
+        frame["path"]
+    ) as crop:
+        assert crop.width == source.width
+        assert crop.height < source.height
     assert guard.active_target_row_visit_key is None
 
 
-def test_controller_adjudicates_dated_icon_answer_with_bound_frames(
+def test_controller_adjudicates_dated_explicit_field_answer_with_bound_crops(
     tmp_path: Path,
 ) -> None:
     goal = (
@@ -431,12 +450,12 @@ def test_controller_adjudicates_dated_icon_answer_with_bound_frames(
         "status": "done",
         "action": {
             "type": "answer",
-            "text": "Cycling, Walking",
+            "text": "Cycling, Inline skating",
             "text_origin": "current_screen",
             "source_memory_ids": [],
         },
         "expected_outcome": "The two activity types are returned.",
-        "decision_summary": "Return one icon-grounded type per target row.",
+        "decision_summary": "Return one exact field value per target row.",
         "state_delta": [],
         "memory_citations": [],
     }
@@ -470,6 +489,9 @@ def test_controller_adjudicates_dated_icon_answer_with_bound_frames(
                 "visit_key": key,
                 "path": str(path),
                 "sha256": sha256(path.read_bytes()).hexdigest(),
+                "source_path": str(path),
+                "source_sha256": sha256(path.read_bytes()).hexdigest(),
+                "requested_field_evidence_explicit": True,
             }
         )
     Image.new("RGB", (24, 32)).save(tmp_path / "screen.png")
@@ -517,6 +539,10 @@ def test_controller_adjudicates_dated_icon_answer_with_bound_frames(
     payload = json.loads(critic_request["user_prompt"])
     assert payload["trigger"] == "dated_row_visual_answer_candidate"
     assert len(critic_request["context_images"]) == 2
+    assert all(
+        label.startswith("DATED_TARGET_REQUESTED_FIELD")
+        for label, _ in critic_request["context_images"]
+    )
     assert guard.audit_record()[
         "target_row_visual_answer_accept_count"
     ] == 1

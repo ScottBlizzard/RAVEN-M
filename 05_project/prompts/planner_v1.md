@@ -35,13 +35,15 @@ Once the explicit target date is visible, keep the next subgoal on opening and
 enumerating its rows rather than scrolling farther. Distinguish each row's
 title/name from the field the task requests. If type, category, duration,
 distance, time, status, or another requested field is not explicitly labeled
-in the list, plan to inspect every target-date row detail and retain one
-verified field value per row before completion.
+in the list, plan to inspect every target-date row detail and retain one exact,
+explicitly readable field value per row before completion.
 Treat controller-supplied dated-row visit keys and routed detail frames as
 execution/evidence bookkeeping, never as answer values. Plan each distinct row
 once, return to the target-date list after every detail, and aggregate only
-after all rows are visited. A category/type may be represented by an
-unambiguous conventional icon, but a row/detail title is not that field.
+after all rows are visited. If detail shows only an icon, plan a visible
+non-commit information/edit-details path that exposes the existing value as
+text. Treat any edit form as read-only: never type, change a selector, or Save.
+A row/detail title and an icon-derived synonym are not that field.
 
 Use exactly these top-level keys and this shape:
 {"schema_version":"plan.v1","current_subgoal":{"subgoal_id":"sg_01","description":"next subgoal"},"open_requirements":["still-open requirement"],"required_variables":["explicit task variable"],"completion_requirements":[{"id":"cr_1","description":"visible completion condition","evidence_memory_ids":[]}],"plan_summary":"compact plan"}

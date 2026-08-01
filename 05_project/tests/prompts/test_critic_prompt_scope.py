@@ -14,3 +14,7 @@ def test_critic_prompt_requires_dated_row_and_requested_field_binding() -> None:
     assert "text visible in another date's row is wrong-context" in normalized
     assert "row title/name is not an activity type" in normalized
     assert "opening every target-date row detail" in normalized
+    assert "controller-bound requested-field crop" in normalized
+    assert "same exact category granularity and wording" in normalized
+    assert "synonym is not exact text evidence" in normalized
+    assert "dated-row visit keys in the payload are not memory IDs" in normalized

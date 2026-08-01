@@ -17,4 +17,7 @@ def test_planner_prompt_forbids_optional_payload_invention() -> None:
     assert "empty text-search results" in prompt
     assert "opening and enumerating its rows" in normalized
     assert "Distinguish each row's title/name" in normalized
-    assert "one verified field value per row" in normalized
+    assert "one exact, explicitly readable field value per row" in normalized
+    assert "non-commit information/edit-details path" in normalized
+    assert "Treat any edit form as read-only" in normalized
+    assert "icon-derived synonym" in normalized

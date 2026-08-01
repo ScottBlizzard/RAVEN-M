@@ -22,6 +22,7 @@ from raven_m.controller.protocol_v2_guard import (
     post_destination_source_context_assessment,
     post_destination_verification_navigation_assessment,
     post_destination_transfer_command_action,
+    requested_field_value_assessment,
     semantic_ui_snapshot,
     soft_keyboard_swipe_assessment,
     swipe_direction_consistency_assessment,
@@ -522,8 +523,17 @@ def test_guard_requires_all_observed_target_rows_before_detail_answer() -> None:
     detail_assessment = dated_list_answer_assessment(
         goal,
         [
-            {"text": "Activity type", "is_visible": True},
-            {"text": "Cycling", "is_visible": True},
+            {
+                "text": "Cycling",
+                "resource_id": "example/track_edit_activity_type",
+                "is_visible": True,
+                "bbox": {
+                    "x_min": 0.05,
+                    "x_max": 0.85,
+                    "y_min": 0.15,
+                    "y_max": 0.22,
+                },
+            },
         ],
         one_item,
         screen_width=1080,
@@ -537,7 +547,201 @@ def test_guard_requires_all_observed_target_rows_before_detail_answer() -> None:
             one_item,
             page_sha256="detail",
             dated_list_answer_assessment=detail_assessment,
+            requested_field_value_assessment=(
+                requested_field_value_assessment(
+                    goal,
+                    [
+                        {
+                            "text": "Cycling",
+                            "resource_id": (
+                                "example/track_edit_activity_type"
+                            ),
+                            "is_visible": True,
+                            "bbox": {
+                                "x_min": 0.05,
+                                "x_max": 0.85,
+                                "y_min": 0.15,
+                                "y_max": 0.22,
+                            },
+                        }
+                    ],
+                    one_item,
+                    screen_width=1080,
+                    screen_height=2400,
+                )
+            ),
         )
+
+
+def test_requested_field_value_assessment_withholds_value_and_binds_role() -> None:
+    goal = (
+        "What activities did I do September 24 2023? "
+        "Answer with the activity type only."
+    )
+    elements = [
+        {
+            "text": "Visible row title",
+            "resource_id": "example/track_edit_name",
+            "is_visible": True,
+            "bbox": {"x_min": 0.02, "x_max": 0.95,
+                     "y_min": 0.06, "y_max": 0.13},
+        },
+        {
+            "text": "Exact category value",
+            "resource_id": "example/track_edit_activity_type",
+            "is_visible": True,
+            "bbox": {"x_min": 0.02, "x_max": 0.90,
+                     "y_min": 0.15, "y_max": 0.22},
+        },
+        {
+            "text": "Save",
+            "is_visible": True,
+            "is_clickable": True,
+            "bbox": {"x_min": 0.50, "x_max": 1.00,
+                     "y_min": 0.83, "y_max": 0.90},
+        },
+    ]
+    back = decision({"type": "press_back"})
+    assessment = requested_field_value_assessment(
+        goal,
+        elements,
+        back,
+        screen_width=1080,
+        screen_height=2400,
+    )
+
+    assert assessment["explicit_value_visible"] is True
+    assert assessment["explicit_value_control_count"] == 1
+    assert assessment["matched_metadata_fields"] == ["resource_id"]
+    assert assessment["read_only_inspection_safe"] is True
+    serialized = str(assessment)
+    assert "Exact category value" not in serialized
+    assert "Visible row title" not in serialized
+
+    save = decision({"type": "tap", "x": 0.75, "y": 0.86})
+    save_assessment = requested_field_value_assessment(
+        goal,
+        elements,
+        save,
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert save_assessment["mutation_control_hit"] is True
+    assert save_assessment["mutation_control_hit_labels"] == ["Save"]
+    assert save_assessment["read_only_inspection_safe"] is False
+
+    selector = decision({"type": "tap", "x": 0.50, "y": 0.18})
+    selector_assessment = requested_field_value_assessment(
+        goal,
+        elements,
+        selector,
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert selector_assessment["requested_field_control_hit"] is True
+    assert selector_assessment["mutation_control_hit"] is False
+    assert selector_assessment["read_only_inspection_safe"] is False
+
+
+def test_guard_requires_explicit_requested_field_before_back() -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(
+        goal=(
+            "What activities did I do September 24 2023? "
+            "Answer with the activity type only."
+        )
+    )
+    guard.target_date_row_count = 2
+    guard.target_row_detail_required = True
+    guard.requested_answer_role = "activity type"
+    guard.target_row_visit_keys = ["target-row-y:0.750"]
+    guard.active_target_row_visit_key = "target-row-y:0.750"
+
+    with pytest.raises(
+        ActionValidationError,
+        match="TARGET_ROW_EXPLICIT_FIELD_GUARD",
+    ):
+        guard.validate_decision(
+            decision({"type": "press_back"}),
+            page_sha256="icon-only-detail",
+            requested_field_value_assessment={
+                "explicit_value_visible": False,
+            },
+        )
+
+    audit = guard.audit_record()
+    assert audit["target_row_explicit_field_block_count"] == 1
+    assert audit["target_row_detail_frames"] == []
+    assert audit["active_target_row_visit_key"] == "target-row-y:0.750"
+
+
+def test_guard_blocks_mutation_during_read_only_field_inspection() -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(
+        goal=(
+            "What activities did I do September 24 2023? "
+            "Answer with the activity type only."
+        )
+    )
+    guard.target_date_row_count = 2
+    guard.target_row_detail_required = True
+    guard.requested_answer_role = "activity type"
+    guard.target_row_visit_keys = ["target-row-y:0.750"]
+    guard.active_target_row_visit_key = "target-row-y:0.750"
+
+    with pytest.raises(
+        ActionValidationError,
+        match="TARGET_ROW_READ_ONLY_GUARD",
+    ):
+        guard.validate_decision(
+            decision({"type": "tap", "x": 0.75, "y": 0.86}),
+            page_sha256="explicit-field-form",
+            requested_field_value_assessment={
+                "explicit_value_visible": True,
+                "mutation_control_hit": True,
+                "mutation_control_hit_labels": ["Save"],
+            },
+        )
+
+    audit = guard.audit_record()
+    assert audit["target_row_read_only_mutation_block_count"] == 1
+    assert audit["target_row_detail_frames"] == []
+    assert audit["active_target_row_visit_key"] == "target-row-y:0.750"
+
+
+def test_guard_blocks_requested_field_selector_during_read_only_inspection(
+) -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(
+        goal=(
+            "What activities did I do September 24 2023? "
+            "Answer with the activity type only."
+        )
+    )
+    guard.target_date_row_count = 2
+    guard.target_row_detail_required = True
+    guard.requested_answer_role = "activity type"
+    guard.target_row_visit_keys = ["target-row-y:0.750"]
+    guard.active_target_row_visit_key = "target-row-y:0.750"
+
+    with pytest.raises(
+        ActionValidationError,
+        match="TARGET_ROW_READ_ONLY_GUARD",
+    ):
+        guard.validate_decision(
+            decision({"type": "tap", "x": 0.50, "y": 0.18}),
+            page_sha256="explicit-field-form",
+            requested_field_value_assessment={
+                "explicit_value_visible": True,
+                "mutation_control_hit": False,
+                "requested_field_control_hit": True,
+            },
+        )
+
+    audit = guard.audit_record()
+    assert audit["target_row_read_only_mutation_block_count"] == 1
+    assert audit["target_row_detail_frames"] == []
+    assert audit["active_target_row_visit_key"] == "target-row-y:0.750"
 
 
 def test_guard_requires_distinct_target_rows_not_repeated_same_row() -> None:
@@ -607,6 +811,14 @@ def test_guard_allows_visual_answer_after_distinct_rows_and_frames() -> None:
                 "visit_key": guard.active_target_row_visit_key,
                 "path": f"C:/evidence/detail-{y}.png",
                 "sha256": ("a" if y == 0.75 else "b") * 64,
+                "source_path": f"C:/evidence/source-{y}.png",
+                "source_sha256": (
+                    "c" if y == 0.75 else "d"
+                ) * 64,
+                "requested_field_evidence_explicit": True,
+            },
+            requested_field_value_assessment={
+                "explicit_value_visible": True,
             },
         )
     two_items = answer_decision("Cycling, Inline skating")
@@ -690,6 +902,12 @@ def test_detail_frame_is_not_committed_when_later_loop_guard_blocks() -> None:
                 "visit_key": "target-row-y:0.750",
                 "path": "C:/evidence/detail.png",
                 "sha256": "a" * 64,
+                "source_path": "C:/evidence/source.png",
+                "source_sha256": "b" * 64,
+                "requested_field_evidence_explicit": True,
+            },
+            requested_field_value_assessment={
+                "explicit_value_visible": True,
             },
         )
 

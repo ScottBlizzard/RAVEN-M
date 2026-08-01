@@ -34,6 +34,7 @@ from raven_m.controller.protocol_v2_guard import (
     post_destination_source_context_assessment,
     post_destination_verification_navigation_assessment,
     post_destination_transfer_command_action,
+    requested_field_value_assessment,
     semantic_ui_snapshot,
     soft_keyboard_swipe_assessment,
     swipe_direction_consistency_assessment,
@@ -66,6 +67,58 @@ def _write_json(path: Path, value: dict[str, Any]) -> None:
 
 def _sha256_file(path: Path) -> str:
     return sha256(path.read_bytes()).hexdigest()
+
+
+def _requested_field_evidence_frame(
+    *,
+    image_path: Path,
+    visit_key: str,
+    assessment: dict[str, Any],
+) -> dict[str, Any]:
+    """Crop visible requested-field pixels without exposing their text."""
+    source_path = image_path.resolve()
+    record: dict[str, Any] = {
+        "visit_key": visit_key,
+        "source_path": str(source_path),
+        "source_sha256": _sha256_file(source_path),
+        "requested_field_evidence_explicit": False,
+    }
+    bboxes = assessment.get("matched_value_bboxes") or []
+    if assessment.get("explicit_value_visible") is not True or not bboxes:
+        return record
+    with Image.open(source_path) as source:
+        width, height = source.size
+        y_min = min(float(item["y_min"]) for item in bboxes)
+        y_max = max(float(item["y_max"]) for item in bboxes)
+        crop_box = (
+            0,
+            max(0, int((y_min - 0.15) * height)),
+            width,
+            min(height, int((y_max + 0.10) * height + 0.999999)),
+        )
+        if crop_box[3] <= crop_box[1]:
+            return record
+        safe_key = "".join(
+            char if char.isalnum() else "_" for char in visit_key
+        ).strip("_")
+        crop_path = image_path.with_name(
+            f"{image_path.stem}_{safe_key}_requested_field.png"
+        ).resolve()
+        source.crop(crop_box).save(crop_path, format="PNG")
+    return {
+        **record,
+        "path": str(crop_path),
+        "sha256": _sha256_file(crop_path),
+        "crop_box_pixels": list(crop_box),
+        "requested_field_evidence_explicit": True,
+        "requested_answer_role": assessment.get(
+            "requested_answer_role"
+        ),
+        "matched_value_control_count": assessment.get(
+            "explicit_value_control_count",
+            0,
+        ),
+    }
 
 
 def _json_safe(value: Any) -> Any:
@@ -610,8 +663,13 @@ class EpisodeController:
                         "an answer. If unvisited_rows is non-empty, tap one "
                         "listed unvisited row center and never reopen a key "
                         "in visited_row_keys. If active_detail_row_key is set, "
-                        "inspect that detail's requested field, not its title, "
-                        "then press Back. Answer only when all_rows_visited "
+                        "inspect that detail's requested field, not its title. "
+                        "If only an icon is visible, use a visible non-commit "
+                        "information/edit-details path to expose the existing "
+                        "field value as text. Treat such a form as read-only: "
+                        "never type, change a selector, or Save. Press Back "
+                        "only after the exact requested-field value is visibly "
+                        "readable. Answer only when all_rows_visited "
                         "and all_detail_frames_captured are true and the "
                         "target-date list is again visible."
                     ]
@@ -1553,6 +1611,9 @@ class EpisodeController:
         latest_dated_visual_answer_assessment: (
             dict[str, Any] | None
         ) = None
+        latest_requested_field_value_assessment: (
+            dict[str, Any] | None
+        ) = None
         visual_source_cache: dict[str, dict[str, Any]] = {}
         parse_kwargs = (
             {"schema_path": self.action_schema_path}
@@ -1574,12 +1635,14 @@ class EpisodeController:
             nonlocal latest_toolbar_affordance_claim_assessment
             nonlocal latest_dated_list_answer_assessment
             nonlocal latest_dated_visual_answer_assessment
+            nonlocal latest_requested_field_value_assessment
             latest_verification_navigation_assessment = None
             latest_source_context_assessment = None
             latest_bounded_task_repeated_tap_assessment = None
             latest_toolbar_affordance_claim_assessment = None
             latest_dated_list_answer_assessment = None
             latest_dated_visual_answer_assessment = None
+            latest_requested_field_value_assessment = None
             candidate_content = content
             if repair_contract_error is not None:
                 (
@@ -2070,6 +2133,17 @@ class EpisodeController:
                     if self.protocol_v2_2
                     else None
                 )
+                latest_requested_field_value_assessment = (
+                    requested_field_value_assessment(
+                        task_goal,
+                        ui_elements,
+                        parsed_candidate.decision,
+                        screen_width=screen_width,
+                        screen_height=screen_height,
+                    )
+                    if self.protocol_v2_2
+                    else None
+                )
                 dated_assessment = (
                     latest_dated_list_answer_assessment or {}
                 )
@@ -2470,21 +2544,30 @@ class EpisodeController:
                         latest_dated_visual_answer_assessment
                     ),
                     dated_row_detail_frame=(
-                        {
-                            "visit_key": (
+                        _requested_field_evidence_frame(
+                            image_path=image_path,
+                            visit_key=(
                                 self.decision_guard
                                 .active_target_row_visit_key
                             ),
-                            "path": str(image_path.resolve()),
-                            "sha256": _sha256_file(image_path),
-                        }
+                            assessment=(
+                                latest_requested_field_value_assessment
+                                or {}
+                            ),
+                        )
                         if (
                             self.protocol_v2_2
                             and self.decision_guard
                             .active_target_row_visit_key
                             is not None
+                            and isinstance(candidate_action, dict)
+                            and candidate_action.get("type")
+                            in {"answer", "press_back"}
                         )
                         else None
+                    ),
+                    requested_field_value_assessment=(
+                        latest_requested_field_value_assessment
                     ),
                 )
             consequential_action_candidate = None
@@ -2601,6 +2684,9 @@ class EpisodeController:
                     ),
                     "dated_visual_answer_assessment": (
                         latest_dated_visual_answer_assessment
+                    ),
+                    "requested_field_value_assessment": (
+                        latest_requested_field_value_assessment
                     ),
                 },
             )
@@ -2786,6 +2872,9 @@ class EpisodeController:
                     ),
                     "dated_visual_answer_assessment": (
                         latest_dated_visual_answer_assessment
+                    ),
+                    "requested_field_value_assessment": (
+                        latest_requested_field_value_assessment
                     ),
                 },
             )
@@ -3019,7 +3108,38 @@ class EpisodeController:
                     else None
                 )
                 routed_context_images = list(history_context.images)
-                if self.protocol_v2_2 and self.decision_guard is not None:
+                current_dated_list = (
+                    dated_list_answer_assessment(
+                        effective_task_goal,
+                        getattr(state_before, "ui_elements", ()),
+                        {
+                            "status": "continue",
+                            "action": {
+                                "type": "wait",
+                                "duration_ms": 1000,
+                            },
+                        },
+                        screen_width=width,
+                        screen_height=height,
+                    )
+                    if self.protocol_v2_2
+                    else {}
+                )
+                route_target_field_images = bool(
+                    self.protocol_v2_2
+                    and self.decision_guard is not None
+                    and target_row_progress is not None
+                    and target_row_progress.get("all_rows_visited") is True
+                    and target_row_progress.get(
+                        "all_detail_frames_captured"
+                    )
+                    is True
+                    and current_dated_list.get(
+                        "target_date_list_visible"
+                    )
+                    is True
+                )
+                if route_target_field_images:
                     seen_context_paths = {
                         str(path.resolve())
                         for _, path in routed_context_images
