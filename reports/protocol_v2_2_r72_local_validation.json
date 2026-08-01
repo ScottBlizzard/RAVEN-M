@@ -1,0 +1,177 @@
+{
+  "schema_version": "protocol_v2_2_r72_local_validation.v1",
+  "decision": "local_candidate_passed_exact_package_preflight_pending",
+  "checked_at": "2026-08-01T15:27:08.9394271Z",
+  "source_commit": "114d3ab9582d7c9a522629d591723db733fe6ca8",
+  "source_tag": "protocol-v2-2-r72-local-candidate",
+  "source_tag_resolves_exactly": true,
+  "formal_gate_f_authorized": false,
+  "live_development_smoke_authorized": false,
+  "parent_r71_stop": {
+    "report": "reports/protocol_v2_2_r71_h17_candidate_stopped.json",
+    "report_sha256": "2cccf1bc8a9a4c1abde04759fa706d3dc335f0b345e3f43cd95bcda801df56d8",
+    "execution_stop_commit": "52a1d49eaaae9e84a0a73e559d51ed779374d4dc",
+    "execution_stop_tag": "protocol-v2-2-r71-h17-stopped",
+    "decision": "r71_ordering_and_visual_ellipsis_validated_but_popup_edit_control_unverified",
+    "immutable": true
+  },
+  "candidate_contract": {
+    "single_change": "supplement the active target-detail requested-field guard with one same-turn native UIAutomator popup-list observation only when live accessibility exposes neither an explicit field value nor an inspection candidate",
+    "accessibility_first": true,
+    "native_capture_precedes_model_generation": true,
+    "native_scope": "requested_field_value_assessment only",
+    "other_guard_inputs_unchanged": true,
+    "visual_ellipsis_fallback_unchanged": true,
+    "prompt_unchanged": true,
+    "experiment_controls_unchanged": true,
+    "ocr_used": false,
+    "screenshot_text_or_pixels_routed": false,
+    "hidden_evaluator_or_answer_data_used": false,
+    "task_app_target_date_row_title_category_or_answer_special_case_used": false,
+    "provider_or_parse_error_behavior": "retain the original live accessibility tree and fail closed"
+  },
+  "native_popup_structure_contract": {
+    "xml_size_limit_bytes": 2000000,
+    "accepted_container_class": "android.widget.ListView",
+    "accepted_direct_row_class": "android.widget.LinearLayout",
+    "row_count_min": 2,
+    "row_count_max": 10,
+    "maximum_list_width_fraction": 0.75,
+    "maximum_list_height_fraction": 0.75,
+    "maximum_row_height_ratio": 1.15,
+    "maximum_inter_row_gap_pixels": 2,
+    "minimum_row_height_pixels": 24,
+    "singly_labelled_rows_required": true,
+    "unique_labels_required": true,
+    "single_package_required": true,
+    "inspection_and_mutation_rows_both_required": true,
+    "multiple_valid_popup_lists_behavior": "fail_closed",
+    "malformed_missing_disabled_scrollable_irregular_or_ambiguous_behavior": "fail_closed"
+  },
+  "diagnostic_observation": {
+    "formal_experiment": false,
+    "scored": false,
+    "model_calls": 0,
+    "gpu_experiment_cells": 0,
+    "abandoned_high_level_diagnostic_attempt_count": 2,
+    "abandoned_high_level_reason": "AndroidWorld accessibility-wrapper setup exceeded bounded local diagnostic timeouts; no model request was issued",
+    "adb_connection_recovered_after_each_timeout": true,
+    "final_emulator_status": "device",
+    "direct_adb_same_application_menu_capture": {
+      "screenshot_sha256": "0abc4ac90ebef3aa43cad02284c7a27e2694c43c12c7c88f54ee99a1b9fa5b58",
+      "uiautomator_xml_sha256": "c0a80428f0e8855be473ba20ba6e286f66878ad9d0081fbed530fc8f6e26b9a3",
+      "uiautomator_xml_bytes": 8211,
+      "popup_list_bbox_pixels": {
+        "x_min": 0,
+        "x_max": 515,
+        "y_min": 1519,
+        "y_max": 2149
+      },
+      "visible_row_labels": [
+        "Markers",
+        "Edit",
+        "Delete",
+        "Resume track",
+        "Settings"
+      ],
+      "raw_row_clickable_flags_all_false": true,
+      "edit_row_bbox_pixels": {
+        "x_min": 0,
+        "x_max": 515,
+        "y_min": 1645,
+        "y_max": 1771
+      },
+      "edit_row_bbox_normalized": {
+        "x_min": 0.0,
+        "x_max": 0.476852,
+        "y_min": 0.685417,
+        "y_max": 0.737917
+      },
+      "edit_row_center_normalized": {
+        "x": 0.238426,
+        "y": 0.711667
+      },
+      "r71_model_edit_coordinate_hits_edit_row": true,
+      "delete_row_is_nonoverlapping_adjacent_row": true
+    }
+  },
+  "validation": {
+    "complete_project_tests": {
+      "passed": true,
+      "collected_count": 794,
+      "passed_count": 794,
+      "failed_count": 0,
+      "duration_seconds": 231.2,
+      "scope": "05_project/tests"
+    },
+    "focused_controller_env_and_trace_tests": {
+      "passed": true,
+      "passed_count": 300,
+      "duration_seconds": 75.1
+    },
+    "r72_popup_and_exact_trace_tests": {
+      "passed": true,
+      "passed_count": 10,
+      "coverage": [
+        "strict popup hierarchy and row geometry recovery",
+        "Edit is the sole routed inspection candidate",
+        "the adjacent Delete row is a mutation hit and never an inspection candidate",
+        "malformed XML, missing mutation contrast, row gaps, duplicate labels, tiny rows, and multiple valid popup lists fail closed",
+        "the native provider performs one bounded current-screen dump",
+        "the recorded r71 Edit coordinate passes EpisodeController._call_and_parse on the exact frozen r71 popup screenshot without repair"
+      ]
+    },
+    "r71_historical_package_lifecycle_tests": {
+      "passed": true,
+      "future_head_source_drift_rejected": true
+    },
+    "compileall": {
+      "passed": true,
+      "paths": [
+        "05_project/src",
+        "05_project/tests"
+      ]
+    },
+    "git_diff_check": {
+      "passed": true
+    },
+    "protocol_v1_seal": {
+      "passed": true,
+      "file_count": 197,
+      "failure_count": 0,
+      "rewritten": false
+    }
+  },
+  "source_sha256": {
+    "05_project/src/raven_m/controller/episode_controller.py": "86fe7b1024350b4ad7d5ad0794489fe8f9a9bac20ca0d85e70413eba4c0e9636",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "0c6def61154014160ad7d51f91aa1f047dca90e6017e5ce7b1f5ac879f52b7b5",
+    "05_project/src/raven_m/env/androidworld_adapter.py": "ad4ecbee9430326ca7380334c49372911a1c6b1c217ee12bb3714d2fb1219c33",
+    "05_project/scripts/run_protocol_v2_gate_f.py": "6ad52a3063f223e4f9c7fb1b4b360e7df65712e33225519b39b9f32997289bfc",
+    "05_project/src/raven_m/roles/orchestrator.py": "bb812660f1ba438f3f491b3582bf5094224585f963c13a56cddaba5cefeb3521",
+    "05_project/prompts/executor_raven_v2.md": "4810e577f19c987ee8ec875c8c5e042e6af314a7d2a409166f28dcd7d7910877",
+    "05_project/prompts/planner_v1.md": "a3584d330b53cc1e1ef3e28eba3c9f7184ef271e5650bd9debff5e3f4e977e11",
+    "05_project/prompts/critic_v1.md": "82f0be700752aa38cd229e6ea66feeee7974b5a6ce5760326616ea2be053c7a5"
+  },
+  "online_boundary_at_validation": {
+    "model_calls": 0,
+    "gpu_experiment_cells": 0,
+    "interpretation": "the exact r71 popup action and mutation separation are fixed in local replay, but no r72 live smoke is authorized before a fresh exact-package zero-call preflight"
+  },
+  "next_action_boundary": {
+    "allowed": [
+      "prepare a fresh r72 H17-only development wrapper and namespace",
+      "add exact-source freeze, prerequisite, provider-wiring, and invocation-boundary tests",
+      "run a zero-model-call online preflight against the exact r72 package",
+      "run at most one non-scored H17 M0 smoke only after that preflight passes"
+    ],
+    "forbidden": [
+      "resume or overwrite the r71 development suite",
+      "launch any formal r72 Gate-F batch",
+      "run any r72 development sequence other than its single frozen H17 M0 cell",
+      "weaken the inspection or mutation label filters",
+      "accept a popup row from coordinates without a valid native hierarchy",
+      "use OCR, hidden task parameters, or the offline expected answer",
+      "modify or save the inspected application record"
+    ]
+  }
+}
