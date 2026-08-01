@@ -1640,6 +1640,7 @@ def requested_field_value_assessment(
     matched_bboxes: list[dict[str, float]] = []
     matched_metadata_fields: set[str] = set()
     mutation_controls: list[dict[str, Any]] = []
+    visible_control_bboxes: list[dict[str, float]] = []
     action = decision.get("action") if isinstance(decision, dict) else None
     tap_x = action.get("x") if isinstance(action, dict) else None
     tap_y = action.get("y") if isinstance(action, dict) else None
@@ -1652,6 +1653,19 @@ def requested_field_value_assessment(
             screen_width=screen_width,
             screen_height=screen_height,
         )
+        if (
+            bbox is not None
+            and _element_value(element, "is_clickable") is True
+            and _element_value(element, "is_enabled") is not False
+        ):
+            visible_control_bboxes.append(
+                {
+                    "x_min": round(float(bbox[0]), 6),
+                    "x_max": round(float(bbox[1]), 6),
+                    "y_min": round(float(bbox[2]), 6),
+                    "y_max": round(float(bbox[3]), 6),
+                }
+            )
         text = _normalized_text(_element_value(element, "text"))
         metadata: dict[str, str] = {}
         for field in (
@@ -1727,6 +1741,7 @@ def requested_field_value_assessment(
 
     mutation_control_hits = []
     requested_field_control_hit = False
+    visible_control_hit = False
     if isinstance(tap_x, (int, float)) and isinstance(tap_y, (int, float)):
         mutation_control_hits = [
             item["label"]
@@ -1743,6 +1758,11 @@ def requested_field_value_assessment(
             and item["y_min"] <= float(tap_y) <= item["y_max"]
             for item in matched_bboxes
         )
+        visible_control_hit = any(
+            item["x_min"] <= float(tap_x) <= item["x_max"]
+            and item["y_min"] <= float(tap_y) <= item["y_max"]
+            for item in visible_control_bboxes
+        )
     type_text_attempted = bool(
         isinstance(action, dict) and action.get("type") == "type_text"
     )
@@ -1757,6 +1777,8 @@ def requested_field_value_assessment(
         "mutation_control_hit": bool(mutation_control_hits),
         "mutation_control_hit_labels": mutation_control_hits,
         "requested_field_control_hit": requested_field_control_hit,
+        "visible_control_hit": visible_control_hit,
+        "visible_control_count": len(visible_control_bboxes),
         "type_text_attempted": type_text_attempted,
         "read_only_inspection_safe": bool(
             matched_bboxes
@@ -3041,6 +3063,7 @@ class ProtocolV2DecisionGuard:
         self.target_row_visual_answer_accept_count = 0
         self.target_row_explicit_field_block_count = 0
         self.target_row_read_only_mutation_block_count = 0
+        self.target_row_off_list_coordinate_block_count = 0
         self.target_date_row_count = 0
         self.target_row_detail_required = False
         self.target_row_visit_keys: list[str] = []
@@ -3828,6 +3851,52 @@ class ProtocolV2DecisionGuard:
                             "coordinate."
                         )
                     pending_target_visit_key = visit_key
+        elif (
+            self.target_row_detail_required
+            and self.active_target_row_visit_key is not None
+            and action.get("type") == "tap"
+            and field_value_assessment.get("explicit_value_visible")
+            is not True
+            and field_value_assessment.get("visible_control_hit")
+            is not True
+            and dated_assessment.get("target_date_list_visible") is not True
+            and isinstance(action.get("y"), (int, float))
+            and any(
+                abs(float(action["y"]) - float(center)) <= 0.035
+                for center in (
+                    self.target_date_row_observations[-1].get(
+                        "target_row_centers",
+                        [],
+                    )
+                    if self.target_date_row_observations
+                    else []
+                )
+            )
+        ):
+            self.validation_blocks.append(
+                {
+                    "semantic_state_sha256": page_sha256,
+                    "action": action,
+                    "reason": "target_row_coordinate_used_off_list",
+                    "requested_field_value_assessment": (
+                        field_value_assessment
+                    ),
+                    "required_recovery_classes": [
+                        "inspect_visible_non_commit_detail_control",
+                    ],
+                }
+            )
+            self.target_row_off_list_coordinate_block_count += 1
+            raise ActionValidationError(
+                "TARGET_ROW_LEDGER_SCOPE_GUARD: target-date row "
+                "coordinates are valid only while the target-date list is "
+                "currently visible. An active detail is open, so do not tap "
+                "a deferred or visited row y-center on this screen. Use one "
+                "visible enabled non-commit information, overflow-menu, or "
+                "edit-details control to expose the exact existing "
+                "requested-field text. Do not press Back, answer, type, "
+                "change a selector, or Save before that text is visible."
+            )
         elif (
             self.target_row_detail_required
             and self.active_target_row_visit_key is not None
@@ -5106,6 +5175,9 @@ class ProtocolV2DecisionGuard:
             ),
             "target_row_read_only_mutation_block_count": (
                 self.target_row_read_only_mutation_block_count
+            ),
+            "target_row_off_list_coordinate_block_count": (
+                self.target_row_off_list_coordinate_block_count
             ),
             "target_date_row_count": self.target_date_row_count,
             "target_row_detail_required": self.target_row_detail_required,

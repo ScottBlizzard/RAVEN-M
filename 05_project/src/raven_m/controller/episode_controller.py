@@ -121,6 +121,57 @@ def _requested_field_evidence_frame(
     }
 
 
+def _target_row_executor_memory_context(
+    memory_context: str,
+    target_row_progress: dict[str, Any] | None,
+) -> str:
+    """Project stale history out while a dated-row obligation is active."""
+    if not (
+        target_row_progress
+        and target_row_progress.get("detail_required") is True
+    ):
+        return memory_context
+    try:
+        payload = json.loads(memory_context)
+    except (json.JSONDecodeError, TypeError):
+        return memory_context
+    if not isinstance(payload, dict):
+        return memory_context
+    projection = {
+        "schema_version": payload.get(
+            "schema_version",
+            "memory_bundle.v1",
+        ),
+        "critic_alert": None,
+        "critic_constraint": None,
+        "items": [],
+        "planner_state": None,
+        "working_memory": [],
+        "controller_projection": {
+            "authority": "dated_target_row_progress",
+            "reason": (
+                "controller-bound row/detail evidence supersedes stale "
+                "list-navigation and no-effect recovery memory"
+            ),
+            "suppressed_item_count": len(payload.get("items") or []),
+            "suppressed_working_memory_count": len(
+                payload.get("working_memory") or []
+            ),
+            "suppressed_critic_alert": bool(payload.get("critic_alert")),
+            "suppressed_critic_constraint": bool(
+                payload.get("critic_constraint")
+            ),
+            "suppressed_planner_state": bool(payload.get("planner_state")),
+        },
+    }
+    return json.dumps(
+        projection,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    )
+
+
 def _json_safe(value: Any) -> Any:
     """Convert AndroidWorld parameter objects into stable JSON values."""
     if value is None or isinstance(value, (bool, int, float, str)):
@@ -631,6 +682,23 @@ class EpisodeController:
         verified_task_repeat_progress: dict[str, Any] | None = None,
         target_row_progress: dict[str, Any] | None = None,
     ) -> str:
+        displayed_target_row_progress = target_row_progress
+        active_target_row_detail = bool(
+            target_row_progress
+            and target_row_progress.get("active_detail_row_key")
+        )
+        if active_target_row_detail and target_row_progress is not None:
+            displayed_target_row_progress = dict(target_row_progress)
+            deferred_rows = list(
+                displayed_target_row_progress.pop("unvisited_rows", [])
+            )
+            displayed_target_row_progress.update(
+                {
+                    "phase": "inspect_active_detail",
+                    "deferred_unvisited_row_count": len(deferred_rows),
+                    "deferred_row_coordinates_executable": False,
+                }
+            )
         coordinate_denominator = max(screen_height - 1, 1)
         app_bar_pixel_y = min(
             round(0.08 * coordinate_denominator),
@@ -652,7 +720,7 @@ class EpisodeController:
                     [
                         "DATED_TARGET_ROW_PROGRESS: "
                         + json.dumps(
-                            target_row_progress,
+                            displayed_target_row_progress,
                             ensure_ascii=False,
                             sort_keys=True,
                             separators=(",", ":"),
@@ -660,18 +728,28 @@ class EpisodeController:
                         "DATED_TARGET_ROW_PROGRESS_AUTHORITY: This ledger "
                         "contains only controller-observed row geometry and "
                         "executed visit/detail-frame state; it never supplies "
-                        "an answer. If unvisited_rows is non-empty, tap one "
-                        "listed unvisited row center and never reopen a key "
-                        "in visited_row_keys. If active_detail_row_key is set, "
-                        "inspect that detail's requested field, not its title. "
-                        "If only an icon is visible, use a visible non-commit "
-                        "information/edit-details path to expose the existing "
-                        "field value as text. Treat such a form as read-only: "
-                        "never type, change a selector, or Save. Press Back "
-                        "only after the exact requested-field value is visibly "
-                        "readable. Answer only when all_rows_visited "
-                        "and all_detail_frames_captured are true and the "
-                        "target-date list is again visible."
+                        "an answer. "
+                        + (
+                            "ACTIVE_DETAIL_PRECEDENCE: active_detail_row_key "
+                            "is set, so finish this detail before every "
+                            "deferred row. No target-list row coordinate is "
+                            "valid on the current screen. Inspect the current "
+                            "detail's requested field, not its title or icon. "
+                            "Use a visible enabled non-commit information, "
+                            "overflow-menu, or edit-details control to expose "
+                            "the existing field value as exact readable text. "
+                            "Treat any form as read-only: never type, change a "
+                            "selector, or Save. Press Back only after the exact "
+                            "requested-field text is visible."
+                            if active_target_row_detail
+                            else
+                            "When unvisited_rows is non-empty on the visible "
+                            "target-date list, tap one listed unvisited row "
+                            "center and never reopen a visited_row_key. Answer "
+                            "only when all_rows_visited and "
+                            "all_detail_frames_captured are true and the "
+                            "target-date list is again visible."
+                        )
                     ]
                     if target_row_progress is not None
                     else []
@@ -818,11 +896,12 @@ class EpisodeController:
                         "but the list shows only row titles/names, do not "
                         "answer with those titles. Open each row carrying the "
                         "target date and inspect the requested field in "
-                        "detail. A category/type may be represented by a "
-                        "semantically unambiguous conventional icon rather "
-                        "than text; use it only for that requested role and "
-                        "never reinterpret the row/detail title as the field. "
-                        "Return to the dated list after each detail and "
+                        "detail. A title, icon, semantic class, or synonym is "
+                        "not exact field evidence. If necessary, use a "
+                        "visible non-commit information or edit-details path "
+                        "to expose the existing value as readable text, and "
+                        "never modify or save it. Return to the dated list "
+                        "after each detail and "
                         "inspect every target-date row before answering. A "
                         "multi-row "
                         "answer is allowed only after the controller has "
@@ -966,6 +1045,9 @@ class EpisodeController:
             "ANSWER_ASSOCIATION_GUARD:",
             "TARGET_ROW_UNVISITED_GUARD:",
             "TARGET_ROW_ENUMERATION_GUARD:",
+            "TARGET_ROW_EXPLICIT_FIELD_GUARD:",
+            "TARGET_ROW_LEDGER_SCOPE_GUARD:",
+            "TARGET_ROW_READ_ONLY_GUARD:",
             "SWIPE_DIRECTION_GUARD:",
             "LOOP_GUARD:",
             "CRITIC_CONSTRAINT:",
@@ -1048,6 +1130,10 @@ class EpisodeController:
         target_row_aggregation_back_required = (
             "TARGET_ROW_AGGREGATION_BACK_REQUIRED:" in error
         )
+        target_row_detail_inspection_required = bool(
+            error.startswith("TARGET_ROW_EXPLICIT_FIELD_GUARD:")
+            or error.startswith("TARGET_ROW_LEDGER_SCOPE_GUARD:")
+        )
         task_repeat_complete_rejected = error.startswith(
             "TASK_REPEAT_COUNT_COMPLETE:"
         )
@@ -1077,7 +1163,23 @@ class EpisodeController:
         visual_source_rejected = (
             "VISUAL_SOURCE_ADJUDICATION_REJECTED:" in error
         )
-        if target_date_unvisited_row_tap_required:
+        if target_row_detail_inspection_required:
+            repair_directive = (
+                "TARGET_ROW_DETAIL_INSPECTION_REPAIR: A controller-bound "
+                "target-row detail is active and its requested field is not "
+                "yet explicit. Deferred target-list row coordinates are "
+                "invalid on this screen. For this one repair, return "
+                "status=continue with exactly one tap on a visible enabled "
+                "non-commit information, overflow-menu, or edit-details "
+                "control. If an overflow menu is already open, tap its "
+                "visible information/edit-details entry. Do not press Back, "
+                "use any list-row coordinate, answer, wait, swipe, type, "
+                "change a selector, or Save. Use empty state_delta, "
+                "memory_citations, and completion_evidence. No coordinate "
+                "or answer is supplied by the controller; bind the tap only "
+                "from the unchanged screenshot.\n"
+            )
+        elif target_date_unvisited_row_tap_required:
             repair_directive = (
                 "\n\nTARGET_DATE_UNVISITED_ROW_REPAIR: The controller "
                 "ledger identifies one or more target-date rows that have "
@@ -1462,6 +1564,48 @@ class EpisodeController:
                 "\n\nYour previous response was invalid. Correct its format "
                 "only while choosing the action from the same screenshot.\n"
             )
+        compact_dated_row_repair = bool(
+            target_row_detail_inspection_required
+            or target_date_unvisited_row_tap_required
+            or target_date_row_tap_required
+            or target_row_enumeration_back_required
+            or target_row_aggregation_back_required
+        )
+        if compact_dated_row_repair:
+            retained_lines = [
+                line
+                for line in original_prompt.splitlines()
+                if line.startswith(
+                    (
+                        "TASK:",
+                        "STEP/BUDGET:",
+                        "CURRENT_SCREENSHOT:",
+                        "COORDINATE_CHECK:",
+                    )
+                )
+            ]
+            compact_action_contract = (
+                "The action must be one normalized tap object."
+                if (
+                    target_row_detail_inspection_required
+                    or target_date_unvisited_row_tap_required
+                    or target_date_row_tap_required
+                )
+                else 'The action must be exactly {"type":"press_back"}.'
+            )
+            return (
+                repair_directive
+                + "\n".join(retained_lines)
+                + f"\nVALIDATION_ERROR: {error}\n"
+                + f"INVALID_RESPONSE: {invalid_content}\n"
+                + "Return exactly one strict JSON object with status, "
+                "action, expected_outcome, decision_summary, state_delta, "
+                "memory_citations, and completion_evidence. "
+                + compact_action_contract
+                + " All three arrays must be []. "
+                "Keep each sentence under 160 characters and output no "
+                "surrounding text."
+            )
         v2_contract = (
             "\nPROTOCOL_V2_ACTION_CONTRACT: The action field is the object "
             "itself. open_app is "
@@ -1511,6 +1655,7 @@ class EpisodeController:
             or target_date_row_tap_required
             or target_row_enumeration_back_required
             or target_row_aggregation_back_required
+            or target_row_detail_inspection_required
             or toolbar_affordance_rejected
             or loop_guard_rejected
             or task_repeat_complete_rejected
@@ -3163,7 +3308,10 @@ class EpisodeController:
                     screen_width=width,
                     screen_height=height,
                     previous_outcome=previous_outcome,
-                    memory_context=history_context.rendered,
+                    memory_context=_target_row_executor_memory_context(
+                        history_context.rendered,
+                        target_row_progress,
+                    ),
                     protocol_v2=self.protocol_v2,
                     protocol_v2_2=self.protocol_v2_2,
                     post_destination_commit_active=bool(

@@ -1,6 +1,10 @@
+import json
 from pathlib import Path
 
-from raven_m.controller.episode_controller import EpisodeController
+from raven_m.controller.episode_controller import (
+    EpisodeController,
+    _target_row_executor_memory_context,
+)
 
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -140,9 +144,9 @@ def test_v2_target_date_visible_repair_forces_row_detail_tap() -> None:
     assert "horizontally aligned with that target date" in prompt
     assert "Do not tap the date text or a toolbar icon" in prompt
     assert "Use empty state_delta" in prompt
-    assert prompt.index("TARGET_DATE_ROW_DETAIL_REPAIR") < (
-        prompt.index("original")
-    )
+    assert "original" not in prompt
+    assert "MEMORY_CONTEXT" not in prompt
+    assert len(prompt) < 2500
 
 
 def test_v2_target_row_enumeration_repair_requires_back() -> None:
@@ -160,9 +164,9 @@ def test_v2_target_row_enumeration_repair_requires_back() -> None:
     assert 'exactly {"type":"press_back"}' in prompt
     assert "inspect an unvisited target row" in prompt
     assert "do not answer or invent the missing value" in prompt
-    assert prompt.index("TARGET_ROW_ENUMERATION_REPAIR") < (
-        prompt.index("original")
-    )
+    assert "original" not in prompt
+    assert "MEMORY_CONTEXT" not in prompt
+    assert len(prompt) < 2500
 
 
 def test_v2_prompt_exposes_dated_row_progress_without_answer_values() -> None:
@@ -197,10 +201,113 @@ def test_v2_prompt_exposes_dated_row_progress_without_answer_values() -> None:
     assert "DATED_TARGET_ROW_PROGRESS" in prompt
     assert '"y_center":0.834375' in prompt
     assert "never supplies an answer" in prompt
-    assert "never reopen a key in visited_row_keys" in prompt
+    assert "never reopen a visited_row_key" in prompt
     assert "all_detail_frames_captured" in prompt
-    assert "non-commit information/edit-details path" in prompt
-    assert "Treat such a form as read-only" in prompt
+    assert "title, icon, semantic class, or synonym" in prompt
+    assert "visible non-commit information or edit-details path" in prompt
+
+
+def test_v2_active_detail_hides_deferred_coordinates_and_takes_precedence(
+) -> None:
+    progress = {
+        "schema_version": "dated_target_row_progress.v1",
+        "target_row_count": 2,
+        "requested_answer_role": "activity type",
+        "detail_required": True,
+        "visited_row_keys": ["target-row-y:0.747"],
+        "active_detail_row_key": "target-row-y:0.747",
+        "unvisited_rows": [
+            {"visit_key": "target-row-y:0.834", "y_center": 0.834375}
+        ],
+        "captured_detail_frame_keys": [],
+        "all_rows_visited": False,
+        "all_detail_frames_captured": False,
+    }
+    prompt = EpisodeController._user_prompt(
+        goal="Return the requested types for the target date.",
+        step=7,
+        max_steps=20,
+        model_calls=10,
+        max_model_calls=64,
+        screen_width=1080,
+        screen_height=2400,
+        previous_outcome="A target-row detail opened.",
+        protocol_v2=True,
+        protocol_v2_2=True,
+        target_row_progress=progress,
+    )
+
+    assert '"phase":"inspect_active_detail"' in prompt
+    assert '"deferred_unvisited_row_count":1' in prompt
+    assert '"deferred_row_coordinates_executable":false' in prompt
+    assert '"y_center":0.834375' not in prompt
+    assert "ACTIVE_DETAIL_PRECEDENCE" in prompt
+    assert "No target-list row coordinate is valid" in prompt
+    assert "visible enabled non-commit" in prompt
+    assert "conventional icon" not in prompt
+
+
+def test_v2_target_row_memory_projection_suppresses_stale_recovery() -> None:
+    original = json.dumps(
+        {
+            "schema_version": "memory_bundle.v1",
+            "critic_alert": {"recommended_constraint": "Press Back."},
+            "critic_constraint": {"verdict": "reobserve"},
+            "items": [{"memory_id": "f_0001", "content": "old"}],
+            "planner_state": {"current_subgoal": "scroll list"},
+            "working_memory": [{"step": 7, "action": "old"}],
+        }
+    )
+    projected = json.loads(
+        _target_row_executor_memory_context(
+            original,
+            {
+                "detail_required": True,
+                "active_detail_row_key": "target-row-y:0.747",
+            },
+        )
+    )
+
+    assert projected["critic_alert"] is None
+    assert projected["critic_constraint"] is None
+    assert projected["planner_state"] is None
+    assert projected["items"] == []
+    assert projected["working_memory"] == []
+    audit = projected["controller_projection"]
+    assert audit["authority"] == "dated_target_row_progress"
+    assert audit["suppressed_item_count"] == 1
+    assert audit["suppressed_working_memory_count"] == 1
+    assert audit["suppressed_critic_alert"] is True
+    assert audit["suppressed_planner_state"] is True
+
+
+def test_v2_explicit_field_repair_is_priority_scoped_and_compact() -> None:
+    original = (
+        "TASK: Return the requested field.\n"
+        "STEP/BUDGET: 8/20; model calls 10/64\n"
+        "MEMORY_CONTEXT: " + ("stale-memory-marker" * 800) + "\n"
+        "CURRENT_SCREENSHOT: attached image; size 1080x2400 pixels.\n"
+        "COORDINATE_CHECK: coordinates are normalized.\n"
+    )
+    error = (
+        "TARGET_ROW_EXPLICIT_FIELD_GUARD: exact requested-field text is "
+        "not visible."
+    )
+    prompt = EpisodeController._repair_prompt(
+        original,
+        '{"status":"continue","action":{"type":"press_back"}}',
+        error,
+        protocol_v2=True,
+    )
+
+    assert prompt.startswith("TARGET_ROW_DETAIL_INSPECTION_REPAIR")
+    assert "visible enabled non-commit" in prompt
+    assert "overflow-menu" in prompt
+    assert "Do not press Back" in prompt
+    assert "stale-memory-marker" not in prompt
+    assert "MEMORY_CONTEXT" not in prompt
+    assert len(prompt) < 2500
+    assert error in prompt
 
 
 def test_v2_loop_guard_repair_requires_higher_level_selector() -> None:

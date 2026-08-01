@@ -628,6 +628,7 @@ def test_requested_field_value_assessment_withholds_value_and_binds_role() -> No
     )
     assert save_assessment["mutation_control_hit"] is True
     assert save_assessment["mutation_control_hit_labels"] == ["Save"]
+    assert save_assessment["visible_control_hit"] is True
     assert save_assessment["read_only_inspection_safe"] is False
 
     selector = decision({"type": "tap", "x": 0.50, "y": 0.18})
@@ -641,6 +642,31 @@ def test_requested_field_value_assessment_withholds_value_and_binds_role() -> No
     assert selector_assessment["requested_field_control_hit"] is True
     assert selector_assessment["mutation_control_hit"] is False
     assert selector_assessment["read_only_inspection_safe"] is False
+
+    overflow = elements + [
+        {
+            "content_description": "More options",
+            "is_visible": True,
+            "is_clickable": True,
+            "is_enabled": True,
+            "bbox": {
+                "x_min": 0.35,
+                "x_max": 0.45,
+                "y_min": 0.92,
+                "y_max": 0.98,
+            },
+        }
+    ]
+    overflow_assessment = requested_field_value_assessment(
+        goal,
+        overflow,
+        decision({"type": "tap", "x": 0.40, "y": 0.95}),
+        screen_width=1080,
+        screen_height=2400,
+    )
+    assert overflow_assessment["visible_control_hit"] is True
+    assert overflow_assessment["visible_control_count"] == 2
+    assert overflow_assessment["mutation_control_hit"] is False
 
 
 def test_guard_requires_explicit_requested_field_before_back() -> None:
@@ -673,6 +699,80 @@ def test_guard_requires_explicit_requested_field_before_back() -> None:
     assert audit["target_row_explicit_field_block_count"] == 1
     assert audit["target_row_detail_frames"] == []
     assert audit["active_target_row_visit_key"] == "target-row-y:0.750"
+
+
+def test_guard_blocks_r66_deferred_list_coordinate_on_active_detail() -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(
+        goal=(
+            "What activities did I do September 24 2023? "
+            "Answer with the activity type only."
+        )
+    )
+    guard.target_date_row_count = 2
+    guard.target_row_detail_required = True
+    guard.requested_answer_role = "activity type"
+    guard.target_row_visit_keys = ["target-row-y:0.747"]
+    guard.active_target_row_visit_key = "target-row-y:0.747"
+    guard.target_date_row_observations = [
+        {
+            "semantic_state_sha256": "dated-list",
+            "target_row_count": 2,
+            "target_row_centers": [0.747292, 0.834375],
+            "requested_answer_role": "activity type",
+        }
+    ]
+
+    with pytest.raises(
+        ActionValidationError,
+        match="TARGET_ROW_LEDGER_SCOPE_GUARD",
+    ):
+        guard.validate_decision(
+            decision({"type": "tap", "x": 0.5, "y": 0.834}),
+            page_sha256="active-detail",
+            dated_list_answer_assessment={
+                "target_date_list_visible": False,
+            },
+            requested_field_value_assessment={
+                "explicit_value_visible": False,
+                "visible_control_hit": False,
+            },
+        )
+
+    audit = guard.audit_record()
+    assert audit["target_row_off_list_coordinate_block_count"] == 1
+    assert audit["active_target_row_visit_key"] == "target-row-y:0.747"
+    assert audit["target_row_detail_frames"] == []
+
+
+def test_guard_allows_visible_non_commit_control_on_active_detail() -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(goal="Answer with the activity type only.")
+    guard.target_date_row_count = 2
+    guard.target_row_detail_required = True
+    guard.requested_answer_role = "activity type"
+    guard.target_row_visit_keys = ["target-row-y:0.747"]
+    guard.active_target_row_visit_key = "target-row-y:0.747"
+    guard.target_date_row_observations = [
+        {
+            "target_row_count": 2,
+            "target_row_centers": [0.747292, 0.834375],
+        }
+    ]
+
+    guard.validate_decision(
+        decision({"type": "tap", "x": 0.40, "y": 0.95}),
+        page_sha256="active-detail",
+        dated_list_answer_assessment={"target_date_list_visible": False},
+        requested_field_value_assessment={
+            "explicit_value_visible": False,
+            "visible_control_hit": True,
+        },
+    )
+
+    audit = guard.audit_record()
+    assert audit["target_row_off_list_coordinate_block_count"] == 0
+    assert audit["active_target_row_visit_key"] == "target-row-y:0.747"
 
 
 def test_guard_blocks_mutation_during_read_only_field_inspection() -> None:

@@ -264,9 +264,9 @@ def test_controller_replays_r63_row_repair_without_clickable_node(
     assert "ANSWER_ASSOCIATION_GUARD" in meta["initial_validation_error"]
     repair_prompt = client.requests[1]["user_prompt"]
     assert "TARGET_DATE_ROW_DETAIL_REPAIR" in repair_prompt
-    assert repair_prompt.index("TARGET_DATE_ROW_DETAIL_REPAIR") < (
-        repair_prompt.index("ORIGINAL")
-    )
+    assert "ORIGINAL" not in repair_prompt
+    assert "MEMORY_CONTEXT" not in repair_prompt
+    assert len(repair_prompt) < 2500
     audit = controller.decision_guard.audit_record()
     assert audit["answer_association_block_count"] == 1
     assert audit["target_date_row_count"] == 2
