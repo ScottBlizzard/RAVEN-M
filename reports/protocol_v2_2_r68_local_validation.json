@@ -1,0 +1,112 @@
+{
+  "schema_version": "protocol_v2_2_r68_local_validation.v1",
+  "decision": "local_candidate_passed_exact_package_preflight_pending",
+  "checked_at": "2026-08-01T06:09:27.8783359Z",
+  "source_commit": "41f6e39708de59c48c0211eb724f9391edd1a2fe",
+  "source_tag": "protocol-v2-2-r68-local-candidate",
+  "source_tag_resolves_exactly": true,
+  "formal_gate_f_authorized": false,
+  "live_development_smoke_authorized": false,
+  "parent_r67_stop": {
+    "report": "reports/protocol_v2_2_r67_h17_candidate_stopped.json",
+    "report_sha256": "0b010630f3c807b01b723c3b4f03302d9f606f12fb0f307d979e4e093230b187",
+    "execution_stop_commit": "16cd11e842b5375c922f0bff9b6bb783724e70dd",
+    "execution_stop_tag": "protocol-v2-2-r67-h17-stopped",
+    "decision": "r67_active_detail_precedence_and_context_cap_validated_but_blank_tap_and_repair_priority_failed",
+    "immutable": true
+  },
+  "candidate_contract": {
+    "visible_control_binding": "while exact target-row field text is absent, every detail-screen tap must hit one currently visible enabled accessibility control",
+    "pre_history_priority": "the active-detail control check runs before history-policy critic or loop constraints can accept or reject the candidate action",
+    "row_coordinate_scope": "a remembered target-list row y-center remains separately classified and rejected when used off-list",
+    "blank_coordinate_policy": "arbitrary detail-content coordinates are rejected before application execution instead of being treated as information-gathering actions",
+    "repair_precedence": "an active-detail exact-field obligation supersedes stale critic and loop recovery directives",
+    "repair_sanitization": "when that precedence override is used, the compact repair does not repeat the conflicting critic or loop error text",
+    "read_only_policy": "typing, selector changes, and Save-class controls remain forbidden throughout requested-field inspection",
+    "hidden_evaluator_or_answer_data_used": false,
+    "task_app_target_date_row_title_category_or_answer_special_case_used": false
+  },
+  "validation": {
+    "complete_project_tests": {
+      "passed": true,
+      "collected_count": 676,
+      "passed_count": 676,
+      "failed_count": 0,
+      "duration_seconds": 193.1
+    },
+    "focused_controller_guard_stop_and_trace_tests": {
+      "passed": true,
+      "passed_count": 200,
+      "duration_seconds": 8.1,
+      "coverage": [
+        "the first recorded r67 blank detail tap is rejected before history-policy validation",
+        "the recorded r67 deferred target-row coordinate remains rejected off-list",
+        "a visible enabled non-commit detail control remains permitted",
+        "the recorded r67 terminal critic failure is converted to active-detail priority repair",
+        "conflicting record-title and return-to-list critic text is absent from that repair",
+        "historical r67 package validation fails closed after future-head source drift"
+      ]
+    },
+    "recorded_r67_trace_replay": {
+      "passed": true,
+      "blank_tap_step": 4,
+      "blank_tap_action": {
+        "type": "tap",
+        "x": 0.5,
+        "y": 0.15
+      },
+      "r68_preexecution_error": "TARGET_ROW_DETAIL_CONTROL_GUARD",
+      "r67_terminal_initial_error": "CRITIC_CONSTRAINT",
+      "r67_terminal_original_prompt_characters": 7785,
+      "r68_priority_repair_characters": 2183,
+      "stale_record_title_present_in_r68_repair": false,
+      "stale_return_to_list_directive_present_in_r68_repair": false,
+      "memory_context_present_in_r68_repair": false,
+      "repair_instructs_back_before_exact_field": false
+    },
+    "compileall": {
+      "passed": true,
+      "paths": [
+        "05_project/src",
+        "05_project/tests"
+      ]
+    },
+    "git_diff_check": {
+      "passed": true
+    },
+    "protocol_v1_seal": {
+      "passed": true,
+      "file_count": 197,
+      "failure_count": 0,
+      "rewritten": false
+    }
+  },
+  "source_sha256": {
+    "05_project/src/raven_m/controller/episode_controller.py": "14a02428953cb4ce635fe1107ef12bb5fc54257a838607d8e3d26c72d2c39116",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "2aea59101b7a2f30bf13c2752a662adf990505e82fefb66cad4bd4d327e957bb",
+    "05_project/src/raven_m/roles/orchestrator.py": "bb812660f1ba438f3f491b3582bf5094224585f963c13a56cddaba5cefeb3521",
+    "05_project/prompts/executor_raven_v2.md": "4810e577f19c987ee8ec875c8c5e042e6af314a7d2a409166f28dcd7d7910877",
+    "05_project/prompts/planner_v1.md": "a3584d330b53cc1e1ef3e28eba3c9f7184ef271e5650bd9debff5e3f4e977e11",
+    "05_project/prompts/critic_v1.md": "82f0be700752aa38cd229e6ea66feeee7974b5a6ce5760326616ea2be053c7a5"
+  },
+  "online_boundary_at_validation": {
+    "model_calls": 0,
+    "gpu_experiment_cells": 0,
+    "interpretation": "source and recorded-trace validation passed, but no r68 live smoke is authorized before an exact-package zero-call preflight verifies the frozen route and online dependencies"
+  },
+  "next_action_boundary": {
+    "allowed": [
+      "prepare a fresh r68 H17-only development wrapper and namespace",
+      "add exact-source freeze, prerequisite, and invocation-boundary tests",
+      "run a zero-model-call online preflight against the exact r68 package",
+      "run at most one non-scored H17 M0 smoke only after that preflight passes"
+    ],
+    "forbidden": [
+      "resume or overwrite the r67 development suite",
+      "launch any formal r68 Gate-F batch",
+      "run any r68 development sequence other than its single frozen H17 M0 cell",
+      "use hidden task parameters or the offline expected answer",
+      "modify or save the inspected application record"
+    ]
+  }
+}
