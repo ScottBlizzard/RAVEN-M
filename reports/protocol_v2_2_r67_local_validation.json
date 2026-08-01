@@ -1,0 +1,108 @@
+{
+  "schema_version": "protocol_v2_2_r67_local_validation.v1",
+  "decision": "local_candidate_passed_exact_package_preflight_pending",
+  "checked_at": "2026-08-01T05:06:09.2091315Z",
+  "source_commit": "f4361f464e5beb43ff2fd36d908cc61ad9824815",
+  "source_tag": "protocol-v2-2-r67-local-candidate",
+  "source_tag_resolves_exactly": true,
+  "formal_gate_f_authorized": false,
+  "live_development_smoke_authorized": false,
+  "parent_r66_stop": {
+    "report": "reports/protocol_v2_2_r66_h17_candidate_stopped.json",
+    "report_sha256": "2996dacb59dd0641285d15fb226adeae149633cf330897a8c305af1fea0eedac",
+    "execution_stop_commit": "d285449aaf42886f9c1f2001de975f51b5d97b6e",
+    "execution_stop_tag": "protocol-v2-2-r66-h17-stopped",
+    "decision": "r66_explicit_field_guard_validated_but_active_detail_ledger_precedence_and_context_cap_failed",
+    "immutable": true
+  },
+  "candidate_contract": {
+    "active_detail_precedence": "when one target-row detail is active, finish its exact requested-field inspection before every deferred target row",
+    "coordinate_scope": "target-list row coordinates are withheld from the executor on detail screens and rejected before execution if reused off-list",
+    "memory_projection": "stale planner, critic, episodic, and working-memory content is projected out of executor rendering while a dated-row evidence obligation is active; the underlying audit history remains stored",
+    "requested_field_binding": "require exact requested-field text through a visible enabled non-commit information, overflow-menu, or edit-details path",
+    "read_only_policy": "never type, change a selector, or invoke a Save-class control while inspecting an existing target-row value",
+    "repair_policy": "dated-row priority violations receive compact controller-scoped repairs instead of appending the full stale prompt",
+    "answer_policy": "answer only after every target-date row has a captured explicit-field frame and the target-date list is restored",
+    "hidden_evaluator_or_answer_data_used": false,
+    "task_app_target_date_row_title_category_or_answer_special_case_used": false
+  },
+  "validation": {
+    "complete_project_tests": {
+      "passed": true,
+      "collected_count": 648,
+      "passed_count": 648,
+      "failed_count": 0,
+      "duration_seconds": 183.7
+    },
+    "focused_controller_and_r66_trace_replay_tests": {
+      "passed": true,
+      "passed_count": 194,
+      "coverage": [
+        "active detail progress hides deferred target-row coordinates and declares strict precedence",
+        "r66 deferred row coordinate is rejected before execution on the active detail screen",
+        "a visible enabled non-commit detail control remains permitted",
+        "stale planner, critic, history, and working memory are absent from executor rendering during the controller-bound obligation",
+        "explicit-field and dated-row repair prompts use compact priority contracts",
+        "historical r66 package validation fails closed after future-head source drift"
+      ]
+    },
+    "recorded_r66_trace_replay": {
+      "passed": true,
+      "terminal_original_prompt_characters": 11395,
+      "terminal_r67_prompt_characters": 7745,
+      "terminal_original_memory_characters": 4064,
+      "terminal_r67_memory_characters": 472,
+      "step_6_recorded_initial_prompt_tokens": 7806,
+      "step_6_recorded_repair_prompt_tokens": 8991,
+      "step_6_r67_repair_characters": 2245,
+      "step_9_r67_repair_characters": 2392,
+      "recorded_deferred_coordinate_present_in_r67_executor_prompt": false,
+      "recorded_deferred_coordinate_executable_on_active_detail": false
+    },
+    "compileall": {
+      "passed": true,
+      "paths": [
+        "05_project/src",
+        "05_project/scripts",
+        "05_project/tests"
+      ]
+    },
+    "git_diff_check": {
+      "passed": true
+    },
+    "protocol_v1_seal": {
+      "passed": true,
+      "file_count": 197,
+      "failure_count": 0,
+      "rewritten": false
+    }
+  },
+  "source_sha256": {
+    "05_project/src/raven_m/controller/episode_controller.py": "2f73a50605ef67e117188f05d47cce6fbc8aeaf4d4a7c39167b6c7bea74884ff",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "4b7cf5c99d615f5b9e7c018fd17c1a7ac8c3ef5744b572b61db23717a3c388ed",
+    "05_project/src/raven_m/roles/orchestrator.py": "bb812660f1ba438f3f491b3582bf5094224585f963c13a56cddaba5cefeb3521",
+    "05_project/prompts/executor_raven_v2.md": "4810e577f19c987ee8ec875c8c5e042e6af314a7d2a409166f28dcd7d7910877",
+    "05_project/prompts/planner_v1.md": "a3584d330b53cc1e1ef3e28eba3c9f7184ef271e5650bd9debff5e3f4e977e11",
+    "05_project/prompts/critic_v1.md": "82f0be700752aa38cd229e6ea66feeee7974b5a6ce5760326616ea2be053c7a5"
+  },
+  "online_boundary_at_validation": {
+    "model_calls": 0,
+    "gpu_experiment_cells": 0,
+    "interpretation": "source and recorded-trace validation passed, but no r67 live smoke is authorized before an exact-package zero-call preflight verifies the frozen route and online dependencies"
+  },
+  "next_action_boundary": {
+    "allowed": [
+      "prepare a fresh r67 H17-only development wrapper and namespace",
+      "add exact-source freeze, prerequisite, and invocation-boundary tests",
+      "run a zero-model-call online preflight against the exact r67 package",
+      "run at most one non-scored H17 M0 smoke only after that preflight passes"
+    ],
+    "forbidden": [
+      "resume or overwrite the r66 development suite",
+      "launch any formal r67 Gate-F batch",
+      "run any r67 development sequence other than its single frozen H17 M0 cell",
+      "use hidden task parameters or the offline expected answer",
+      "modify or save the inspected application record"
+    ]
+  }
+}
