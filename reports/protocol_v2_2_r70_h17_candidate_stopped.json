@@ -1,0 +1,134 @@
+{
+  "schema_version": "protocol_v2_2_r70_h17_candidate_stopped.v1",
+  "decision": "r70_visual_detector_validated_offline_but_pre_guard_order_bypassed_assessment",
+  "checked_at": "2026-08-01T14:17:42.0726549Z",
+  "formal_scoring": false,
+  "formal_gate_f_authorized": false,
+  "source_commit": "1ccd6290b4584478d0eda7e602584d149888968c",
+  "source_tag": "protocol-v2-2-r70-local-candidate",
+  "execution_commit": "d0a3263c3e1a4dfa7cce5a48c9f866639795001b",
+  "execution_tag": "protocol-v2-2-r70-h17-candidate-package",
+  "preflight_commit": "7bc483f27b3e67c38dd60a01d159384002be136d",
+  "preflight_tag": "protocol-v2-2-r70-h17-preflight",
+  "preflight_report": {
+    "path": "reports/protocol_v2_2_r70_h17_candidate_preflight.json",
+    "sha256": "ed30f11dfd69af6d7e214bc30c7eefbfe8c305a9eddc5111a4c79cc65c929cff",
+    "passed": true,
+    "model_calls": 0
+  },
+  "suite": "runs/protocol_v2_2_development/hard_micro_v2_2_seed20260730_r70_candidate_development_smoke_sequence_2",
+  "result": {
+    "valid_method_attempt_count": 1,
+    "recorded_attempt_ordinal": 2,
+    "success": false,
+    "failure_code": "MODEL_OUTPUT_INVALID_AFTER_REPAIR",
+    "termination_reason": "model_output_invalid_after_repair",
+    "executed_action_count": 4,
+    "decision_attempt_count": 5,
+    "model_call_count": 8,
+    "executor_model_call_count": 7,
+    "history_model_call_count": 1,
+    "prompt_tokens": 50334,
+    "completion_tokens": 941,
+    "configured_max_prompt_tokens": 8192,
+    "observed_max_prompt_tokens": 7488,
+    "prompt_headroom_tokens": 704,
+    "valid_episode_wall_time_seconds": 185.238239,
+    "suite_cumulative_active_seconds": 1004.235,
+    "reset_audit_passed": true,
+    "answer_action_count": 0,
+    "blocked_actions_executed_in_application": false
+  },
+  "infrastructure_accounting": {
+    "excluded_episode_attempt_count": 1,
+    "excluded_failure_code": "INFRA_OR_CONTROLLER",
+    "excluded_reason": "Could not get a11y tree",
+    "excluded_model_call_count": 0,
+    "excluded_executed_action_count": 0,
+    "automatic_androidworld_recovery_completed": true,
+    "valid_method_attempt_started_after_recovery": true,
+    "model_health_after_suite": "ok",
+    "emulator_connected_after_suite": true
+  },
+  "task_progress": {
+    "target_date_reached": true,
+    "target_row_count": 2,
+    "visited_row_count": 1,
+    "active_detail_row_key": "target-row-y:0.747",
+    "unvisited_row_count": 1,
+    "captured_detail_frame_count": 0
+  },
+  "integration_order_audit": {
+    "terminal_screenshot_sha256": "7e25ba1bfad85c17e176df720188a0b40e657b9a8ede4d02963786585aea3e20",
+    "terminal_semantic_ui_sha256": "3bc67c3ee126f003b18e50095368b222d3534511a47f94e3277fc1257fdd546b",
+    "terminal_semantic_element_count": 38,
+    "runtime_initial_tap": {
+      "type": "tap",
+      "x": 0.5,
+      "y": 0.15
+    },
+    "runtime_repair_tap": {
+      "type": "tap",
+      "x": 0.405,
+      "y": 0.925
+    },
+    "active_detail_validation_block_count": 2,
+    "assessment_recorded_in_each_active_detail_block": {},
+    "early_active_detail_guard_source_line": 2201,
+    "requested_field_assessment_source_line": 2320,
+    "early_guard_precedes_assessment": true,
+    "runtime_detector_was_reached_before_early_guard": false,
+    "root_cause": "the pre-history active-detail guard receives the still-uninitialized latest_requested_field_value_assessment before the current screenshot assessment is computed"
+  },
+  "offline_same_artifact_replay": {
+    "passed": true,
+    "same_terminal_screenshot_sha256": "7e25ba1bfad85c17e176df720188a0b40e657b9a8ede4d02963786585aea3e20",
+    "candidate_count": 1,
+    "verified_candidate": {
+      "label": "vertical ellipsis",
+      "source": "current_screenshot_shape",
+      "bbox": {
+        "x_min": 0.400926,
+        "x_max": 0.411111,
+        "y_min": 0.921667,
+        "y_max": 0.93875
+      },
+      "center": {
+        "x": 0.405536,
+        "y": 0.929999
+      }
+    },
+    "recorded_repair_tap_hits_candidate": true,
+    "detector_false_negative_on_frozen_artifact": false,
+    "answer_or_row_title_routed": false
+  },
+  "required_change": {
+    "revision": "r71",
+    "scope": "compute the current requested-field assessment before the early active-detail guard and reuse the same assessment for later full decision validation",
+    "detector_change_required": false,
+    "prompt_change_required": false,
+    "experiment_control_change_required": false,
+    "new_live_scope": "one fresh non-scored H17 M0 smoke only after full local validation, exact package freeze, and zero-call preflight"
+  },
+  "artifact_sha256": {
+    "gate_summary.json": "0e3b6d01dd53e433a1bf5c7095d7637d3d4f6106627762bfd11fd4255301ebe9",
+    "gate_progress.json": "0e3b6d01dd53e433a1bf5c7095d7637d3d4f6106627762bfd11fd4255301ebe9",
+    "manifest.snapshot.json": "fbe92b6a4b1e610bfec4f6c8e69757b40acbba9aadfead81dd58a3a4078740dd",
+    "instances.snapshot.json": "a96be7900f83b372ae5a3b16c3f6ec0828602aeb28818c16373a8ecd99d54599",
+    "startup_environment_audit.json": "1d65992860a80c6173ee9f4af1253ad7ddb675d059fdbed8fdfa00c74b67c9df",
+    "model_preflight_recovery.json": "23a2045043dbf01e480db4de76ffd80b6fbea7fe8a3825c4cd1ddc308ac595d2",
+    "invalid_attempt_01_episode.json": "b23c47893559d0ef6cea3897480d4e7936f6b6c62aaea1c8d5dc90a09e2f854c",
+    "androidworld_recovery_commands.json": "b1ea95a7c29e528c754182865763d99a8e439eceb8295679cffba65559cecb4d",
+    "androidworld_recovery_smoke.json": "261789b0cb18e971e6cd4776768a93626c998f20e145ed8d254feed4bd10462c",
+    "episode.json": "83e2f231fbe52fedad0083b7c315422b8ffd19e34eb25d8056dd93ae8a8b3ce9",
+    "events.jsonl": "4e950cd0564b688fea9c3d35c9dd4f8394ae34885830c9168d49129cbe134eed",
+    "memory_events.jsonl": "c1ca4b0201e49c0befa74388a57d7263fc67ca1d02a4d20fcd1ae13f93f021c6",
+    "step_004_before.png": "7e25ba1bfad85c17e176df720188a0b40e657b9a8ede4d02963786585aea3e20"
+  },
+  "immutability": {
+    "suite_may_be_resumed": false,
+    "suite_may_be_overwritten": false,
+    "additional_r70_attempt_authorized": false,
+    "formal_gate_f_authorized": false
+  }
+}
