@@ -775,6 +775,43 @@ def test_guard_allows_visible_non_commit_control_on_active_detail() -> None:
     assert audit["active_target_row_visit_key"] == "target-row-y:0.747"
 
 
+def test_guard_blocks_blank_tap_on_active_detail() -> None:
+    guard = ProtocolV2DecisionGuard()
+    guard.reset(goal="Answer with the activity type only.")
+    guard.target_date_row_count = 2
+    guard.target_row_detail_required = True
+    guard.requested_answer_role = "activity type"
+    guard.target_row_visit_keys = ["target-row-y:0.747"]
+    guard.active_target_row_visit_key = "target-row-y:0.747"
+    guard.target_date_row_observations = [
+        {
+            "target_row_count": 2,
+            "target_row_centers": [0.747292, 0.834375],
+        }
+    ]
+
+    with pytest.raises(
+        ActionValidationError,
+        match="TARGET_ROW_DETAIL_CONTROL_GUARD",
+    ):
+        guard.validate_active_target_detail_control(
+            decision({"type": "tap", "x": 0.5, "y": 0.15}),
+            page_sha256="active-detail",
+            dated_list_answer_assessment={
+                "target_date_list_visible": False,
+            },
+            requested_field_value_assessment={
+                "explicit_value_visible": False,
+                "visible_control_hit": False,
+            },
+        )
+
+    audit = guard.audit_record()
+    assert audit["target_row_non_control_tap_block_count"] == 1
+    assert audit["target_row_off_list_coordinate_block_count"] == 0
+    assert audit["active_target_row_visit_key"] == "target-row-y:0.747"
+
+
 def test_guard_blocks_mutation_during_read_only_field_inspection() -> None:
     guard = ProtocolV2DecisionGuard()
     guard.reset(

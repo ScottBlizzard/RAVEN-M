@@ -310,6 +310,37 @@ def test_v2_explicit_field_repair_is_priority_scoped_and_compact() -> None:
     assert error in prompt
 
 
+def test_v2_active_detail_priority_overrides_stale_critic_repair() -> None:
+    original = (
+        "TASK: Return the requested field.\n"
+        "STEP/BUDGET: 7/20; model calls 10/64\n"
+        "DATED_TARGET_ROW_PROGRESS_AUTHORITY: ACTIVE_DETAIL_PRECEDENCE: "
+        "finish the current detail first.\n"
+        "MEMORY_CONTEXT: stale\n"
+        "CURRENT_SCREENSHOT: attached image; size 1080x2400 pixels.\n"
+        "COORDINATE_CHECK: coordinates are normalized.\n"
+    )
+    error = (
+        "CRITIC_CONSTRAINT: inspect 'record title' and then open the "
+        "activity list before continuing."
+    )
+    prompt = EpisodeController._repair_prompt(
+        original,
+        '{"status":"continue","action":{"type":"tap","x":0.5,'
+        '"y":0.15}}',
+        error,
+        protocol_v2=True,
+    )
+
+    assert prompt.startswith("TARGET_ROW_DETAIL_INSPECTION_REPAIR")
+    assert "ACTIVE_DETAIL_PRIORITY_OVERRIDE" in prompt
+    assert "record title" not in prompt
+    assert "open the activity list" not in prompt
+    assert "MEMORY_CONTEXT" not in prompt
+    assert "Do not press Back" in prompt
+    assert len(prompt) < 2500
+
+
 def test_v2_loop_guard_repair_requires_higher_level_selector() -> None:
     error = (
         "LOOP_GUARD: the same coordinate action has already been executed "

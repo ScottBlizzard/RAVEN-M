@@ -3064,6 +3064,7 @@ class ProtocolV2DecisionGuard:
         self.target_row_explicit_field_block_count = 0
         self.target_row_read_only_mutation_block_count = 0
         self.target_row_off_list_coordinate_block_count = 0
+        self.target_row_non_control_tap_block_count = 0
         self.target_date_row_count = 0
         self.target_row_detail_required = False
         self.target_row_visit_keys: list[str] = []
@@ -3562,6 +3563,83 @@ class ProtocolV2DecisionGuard:
                     "answer is permitted only for an information-return goal."
                 )
 
+    def validate_active_target_detail_control(
+        self,
+        decision: dict[str, Any],
+        *,
+        page_sha256: str,
+        dated_list_answer_assessment: dict[str, Any] | None = None,
+        requested_field_value_assessment: dict[str, Any] | None = None,
+    ) -> None:
+        """Reject detail exploration that is not bound to a visible control."""
+        action = decision.get("action")
+        dated_assessment = dated_list_answer_assessment or {}
+        field_assessment = requested_field_value_assessment or {}
+        if not (
+            self.target_row_detail_required
+            and self.active_target_row_visit_key is not None
+            and isinstance(action, dict)
+            and action.get("type") == "tap"
+            and field_assessment.get("explicit_value_visible") is not True
+            and field_assessment.get("visible_control_hit") is not True
+            and dated_assessment.get("target_date_list_visible") is not True
+        ):
+            return
+        row_centers = (
+            self.target_date_row_observations[-1].get(
+                "target_row_centers",
+                [],
+            )
+            if self.target_date_row_observations
+            else []
+        )
+        y = action.get("y")
+        row_coordinate_used = bool(
+            isinstance(y, (int, float))
+            and any(
+                abs(float(y) - float(center)) <= 0.035
+                for center in row_centers
+            )
+        )
+        reason = (
+            "target_row_coordinate_used_off_list"
+            if row_coordinate_used
+            else "target_row_detail_non_control_tap"
+        )
+        self.validation_blocks.append(
+            {
+                "semantic_state_sha256": page_sha256,
+                "action": action,
+                "reason": reason,
+                "requested_field_value_assessment": field_assessment,
+                "required_recovery_classes": [
+                    "inspect_visible_non_commit_detail_control",
+                ],
+            }
+        )
+        if row_coordinate_used:
+            self.target_row_off_list_coordinate_block_count += 1
+            raise ActionValidationError(
+                "TARGET_ROW_LEDGER_SCOPE_GUARD: target-date row "
+                "coordinates are valid only while the target-date list is "
+                "currently visible. An active detail is open, so do not tap "
+                "a deferred or visited row y-center on this screen. Use one "
+                "visible enabled non-commit information, overflow-menu, or "
+                "edit-details control to expose the exact existing "
+                "requested-field text. Do not press Back, answer, type, "
+                "change a selector, or Save before that text is visible."
+            )
+        self.target_row_non_control_tap_block_count += 1
+        raise ActionValidationError(
+            "TARGET_ROW_DETAIL_CONTROL_GUARD: an active target-row detail "
+            "requires exact requested-field text, but this tap does not hit "
+            "any visible enabled control. Do not explore blank content or "
+            "guess a coordinate. Tap one visible enabled non-commit "
+            "information, overflow-menu, or edit-details control. Do not "
+            "press Back, answer, type, change a selector, or Save before "
+            "the exact existing requested-field text is visible."
+        )
+
     def validate_decision(
         self,
         decision: dict[str, Any],
@@ -3665,6 +3743,12 @@ class ProtocolV2DecisionGuard:
                 + chronology_directive
             )
         dated_assessment = dated_list_answer_assessment or {}
+        self.validate_active_target_detail_control(
+            decision,
+            page_sha256=page_sha256,
+            dated_list_answer_assessment=dated_assessment,
+            requested_field_value_assessment=field_value_assessment,
+        )
         if dated_assessment.get("target_date_list_visible") is True:
             observed_row_count = int(
                 dated_assessment.get("target_row_count") or 0
@@ -3851,52 +3935,6 @@ class ProtocolV2DecisionGuard:
                             "coordinate."
                         )
                     pending_target_visit_key = visit_key
-        elif (
-            self.target_row_detail_required
-            and self.active_target_row_visit_key is not None
-            and action.get("type") == "tap"
-            and field_value_assessment.get("explicit_value_visible")
-            is not True
-            and field_value_assessment.get("visible_control_hit")
-            is not True
-            and dated_assessment.get("target_date_list_visible") is not True
-            and isinstance(action.get("y"), (int, float))
-            and any(
-                abs(float(action["y"]) - float(center)) <= 0.035
-                for center in (
-                    self.target_date_row_observations[-1].get(
-                        "target_row_centers",
-                        [],
-                    )
-                    if self.target_date_row_observations
-                    else []
-                )
-            )
-        ):
-            self.validation_blocks.append(
-                {
-                    "semantic_state_sha256": page_sha256,
-                    "action": action,
-                    "reason": "target_row_coordinate_used_off_list",
-                    "requested_field_value_assessment": (
-                        field_value_assessment
-                    ),
-                    "required_recovery_classes": [
-                        "inspect_visible_non_commit_detail_control",
-                    ],
-                }
-            )
-            self.target_row_off_list_coordinate_block_count += 1
-            raise ActionValidationError(
-                "TARGET_ROW_LEDGER_SCOPE_GUARD: target-date row "
-                "coordinates are valid only while the target-date list is "
-                "currently visible. An active detail is open, so do not tap "
-                "a deferred or visited row y-center on this screen. Use one "
-                "visible enabled non-commit information, overflow-menu, or "
-                "edit-details control to expose the exact existing "
-                "requested-field text. Do not press Back, answer, type, "
-                "change a selector, or Save before that text is visible."
-            )
         elif (
             self.target_row_detail_required
             and self.active_target_row_visit_key is not None
@@ -5178,6 +5216,9 @@ class ProtocolV2DecisionGuard:
             ),
             "target_row_off_list_coordinate_block_count": (
                 self.target_row_off_list_coordinate_block_count
+            ),
+            "target_row_non_control_tap_block_count": (
+                self.target_row_non_control_tap_block_count
             ),
             "target_date_row_count": self.target_date_row_count,
             "target_row_detail_required": self.target_row_detail_required,

@@ -1047,6 +1047,7 @@ class EpisodeController:
             "TARGET_ROW_ENUMERATION_GUARD:",
             "TARGET_ROW_EXPLICIT_FIELD_GUARD:",
             "TARGET_ROW_LEDGER_SCOPE_GUARD:",
+            "TARGET_ROW_DETAIL_CONTROL_GUARD:",
             "TARGET_ROW_READ_ONLY_GUARD:",
             "SWIPE_DIRECTION_GUARD:",
             "LOOP_GUARD:",
@@ -1112,6 +1113,9 @@ class EpisodeController:
             "POST_DESTINATION_COMPLETION_REOBSERVE_REQUIRED:"
         )
         loop_guard_rejected = error.startswith("LOOP_GUARD:")
+        critic_constraint_rejected = error.startswith(
+            "CRITIC_CONSTRAINT:"
+        )
         toolbar_affordance_rejected = error.startswith(
             "TOOLBAR_AFFORDANCE_GUARD:"
         )
@@ -1130,9 +1134,18 @@ class EpisodeController:
         target_row_aggregation_back_required = (
             "TARGET_ROW_AGGREGATION_BACK_REQUIRED:" in error
         )
+        active_target_row_detail_prompt = (
+            "ACTIVE_DETAIL_PRECEDENCE:" in original_prompt
+        )
+        active_detail_priority_override = bool(
+            active_target_row_detail_prompt
+            and (loop_guard_rejected or critic_constraint_rejected)
+        )
         target_row_detail_inspection_required = bool(
             error.startswith("TARGET_ROW_EXPLICIT_FIELD_GUARD:")
             or error.startswith("TARGET_ROW_LEDGER_SCOPE_GUARD:")
+            or error.startswith("TARGET_ROW_DETAIL_CONTROL_GUARD:")
+            or active_detail_priority_override
         )
         task_repeat_complete_rejected = error.startswith(
             "TASK_REPEAT_COUNT_COMPLETE:"
@@ -1179,6 +1192,13 @@ class EpisodeController:
                 "or answer is supplied by the controller; bind the tap only "
                 "from the unchanged screenshot.\n"
             )
+            if active_detail_priority_override:
+                repair_directive += (
+                    "ACTIVE_DETAIL_PRIORITY_OVERRIDE: Ignore the older "
+                    "critic or loop recovery directive; it cannot authorize "
+                    "leaving the current detail before exact field evidence "
+                    "is visible.\n"
+                )
         elif target_date_unvisited_row_tap_required:
             repair_directive = (
                 "\n\nTARGET_DATE_UNVISITED_ROW_REPAIR: The controller "
@@ -1572,6 +1592,13 @@ class EpisodeController:
             or target_row_aggregation_back_required
         )
         if compact_dated_row_repair:
+            compact_validation_error = error
+            if active_detail_priority_override:
+                compact_validation_error = (
+                    "ACTIVE_DETAIL_PRIORITY_OVERRIDE: the stale critic or "
+                    "loop directive is superseded by the current exact-field "
+                    "detail obligation."
+                )
             retained_lines = [
                 line
                 for line in original_prompt.splitlines()
@@ -1596,7 +1623,7 @@ class EpisodeController:
             return (
                 repair_directive
                 + "\n".join(retained_lines)
-                + f"\nVALIDATION_ERROR: {error}\n"
+                + f"\nVALIDATION_ERROR: {compact_validation_error}\n"
                 + f"INVALID_RESPONSE: {invalid_content}\n"
                 + "Return exactly one strict JSON object with status, "
                 "action, expected_outcome, decision_summary, state_delta, "
@@ -2169,6 +2196,17 @@ class EpisodeController:
                         "the exact press_back action with empty state_delta, "
                         "memory_citations, and completion_evidence."
                     )
+            if self.protocol_v2_2 and self.decision_guard is not None:
+                self.decision_guard.validate_active_target_detail_control(
+                    parsed_candidate.decision,
+                    page_sha256=page_semantic_sha256,
+                    dated_list_answer_assessment=(
+                        latest_dated_list_answer_assessment
+                    ),
+                    requested_field_value_assessment=(
+                        latest_requested_field_value_assessment
+                    ),
+                )
             self.history_policy.validate_decision(parsed_candidate.decision)
             picker_commit_is_action = False
             if self.decision_guard is not None:
