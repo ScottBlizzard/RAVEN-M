@@ -1,0 +1,155 @@
+{
+  "schema_version": "protocol_v2_2_r70_local_validation.v1",
+  "decision": "local_candidate_passed_exact_package_preflight_pending",
+  "checked_at": "2026-08-01T13:49:43.9589151Z",
+  "source_commit": "1ccd6290b4584478d0eda7e602584d149888968c",
+  "source_tag": "protocol-v2-2-r70-local-candidate",
+  "source_tag_resolves_exactly": true,
+  "formal_gate_f_authorized": false,
+  "live_development_smoke_authorized": false,
+  "parent_r69_stop": {
+    "report": "reports/protocol_v2_2_r69_h17_candidate_stopped.json",
+    "report_sha256": "a05cac6f4fada2f63756487c92834213ce99552ccea2a9961aca2db97f367741",
+    "execution_stop_commit": "f0c7c0fb30c25574e716dba9422a85ad38094aac",
+    "execution_stop_tag": "protocol-v2-2-r69-h17-stopped",
+    "decision": "r69_accessibility_candidate_routing_validated_but_live_detail_tree_omitted_overflow_control",
+    "immutable": true
+  },
+  "candidate_contract": {
+    "priority": "an enabled sanitized accessibility inspection candidate remains authoritative whenever one exists",
+    "fallback_scope": "current-screenshot visual fallback is evaluated only while an exact-field target-row detail is active and the accessibility route produced zero inspection candidates",
+    "visual_affordance": "three compact dark components must be vertically aligned, near-circular, similar in area and dimensions, regularly spaced, and located inside a top or bottom toolbar band",
+    "pixel_boundary": "the detector performs no OCR and persists or routes no screenshot pixels, crops, task text, row title, field value, or answer candidate",
+    "candidate_payload": "only the generic label vertical ellipsis, source class current_screenshot_shape, normalized bounding box, and normalized center are routed",
+    "tap_binding": "an active-detail tap is permitted only when its normalized coordinate hits the exact controller-observed candidate bounding box",
+    "failure_policy": "missing or malformed screenshots and images without a high-confidence ellipsis fail closed with zero candidates",
+    "read_only_policy": "Back, answer, typing, arbitrary exploration, selector changes, and Save-class controls remain forbidden until exact existing requested-field text is visible",
+    "hidden_evaluator_or_answer_data_used": false,
+    "task_app_target_date_row_title_category_or_answer_special_case_used": false
+  },
+  "validation": {
+    "complete_project_tests": {
+      "passed": true,
+      "collected_count": 734,
+      "passed_count": 734,
+      "failed_count": 0,
+      "duration_seconds": 207.9,
+      "scope": "05_project/tests"
+    },
+    "focused_controller_and_trace_tests": {
+      "passed": true,
+      "passed_count": 164,
+      "duration_seconds": 15.0,
+      "coverage": [
+        "the frozen r69 live terminal screenshot yields exactly one generic visual inspection candidate",
+        "the recorded initial blank tap is still blocked and receives the current-screenshot candidate in its bounded repair",
+        "the recorded repair tap at normalized coordinate 0.405,0.925 is independently grounded by current pixels",
+        "an accessibility More options candidate prevents visual fallback evaluation",
+        "a blank screenshot yields zero visual candidates",
+        "the candidate and repair contain neither the visible row title nor requested-field value",
+        "historical r69 package validation fails closed after future-head source drift"
+      ]
+    },
+    "recorded_r69_live_trace_replay": {
+      "passed": true,
+      "source_episode_step": 4,
+      "source_screenshot": "runs/protocol_v2_2_development/hard_micro_v2_2_seed20260730_r69_candidate_development_smoke_sequence_2/episodes/02_H17_M0_SportsTrackerActivitiesOnDate_seed20260730/step_004_before.png",
+      "source_screenshot_sha256": "c4e4b6258f1928076a243ad6182c94a2b75ab7a17d1f89f21c3a8d3ffd528313",
+      "live_semantic_element_count": 38,
+      "live_accessibility_candidate_count": 0,
+      "recorded_initial_blank_tap": {
+        "type": "tap",
+        "x": 0.5,
+        "y": 0.15
+      },
+      "recorded_repair_tap": {
+        "type": "tap",
+        "x": 0.405,
+        "y": 0.925
+      },
+      "recorded_repair_hits_current_pixel_candidate": true,
+      "verified_candidate": {
+        "label": "vertical ellipsis",
+        "source": "current_screenshot_shape",
+        "bbox": {
+          "x_min": 0.400926,
+          "x_max": 0.411111,
+          "y_min": 0.921667,
+          "y_max": 0.93875
+        },
+        "center": {
+          "x": 0.405536,
+          "y": 0.929999
+        }
+      },
+      "answer_or_row_title_present_in_candidate_or_repair": false
+    },
+    "cross_task_screenshot_shape_audit": {
+      "passed": true,
+      "probe_implementation": "shape-equivalent vectorized replay of the frozen component, alignment, similarity, spacing, and toolbar-band predicates",
+      "recent_protocol_v2_2_images_scanned": 403,
+      "candidate_instances": 220,
+      "unique_normalized_coordinate_templates": 7,
+      "unique_templates_visually_verified_as_vertical_ellipsis_controls": 7,
+      "visually_observed_non_ellipsis_candidates": 0,
+      "sampled_app_contexts": [
+        "browser",
+        "files",
+        "contacts",
+        "sports tracker"
+      ]
+    },
+    "detector_runtime_probe": {
+      "image_width": 1080,
+      "image_height": 2400,
+      "repetitions": 5,
+      "mean_seconds": 0.674728,
+      "model_calls": 0
+    },
+    "compileall": {
+      "passed": true,
+      "paths": [
+        "05_project/src",
+        "05_project/tests"
+      ]
+    },
+    "git_diff_check": {
+      "passed": true
+    },
+    "protocol_v1_seal": {
+      "passed": true,
+      "file_count": 197,
+      "failure_count": 0,
+      "rewritten": false
+    }
+  },
+  "source_sha256": {
+    "05_project/src/raven_m/controller/episode_controller.py": "abbee3d6027110ea10b3009a6563f38d24d079ab78cfbfeb3d0e6a6c0ed6c39d",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "dad8a7de4776edcb4c4bfe98ffd00fd78209129fb91c1d2320d2405f88fed53d",
+    "05_project/src/raven_m/roles/orchestrator.py": "bb812660f1ba438f3f491b3582bf5094224585f963c13a56cddaba5cefeb3521",
+    "05_project/prompts/executor_raven_v2.md": "4810e577f19c987ee8ec875c8c5e042e6af314a7d2a409166f28dcd7d7910877",
+    "05_project/prompts/planner_v1.md": "a3584d330b53cc1e1ef3e28eba3c9f7184ef271e5650bd9debff5e3f4e977e11",
+    "05_project/prompts/critic_v1.md": "82f0be700752aa38cd229e6ea66feeee7974b5a6ce5760326616ea2be053c7a5"
+  },
+  "online_boundary_at_validation": {
+    "model_calls": 0,
+    "gpu_experiment_cells": 0,
+    "interpretation": "source and recorded current-screenshot geometry validation passed, but no r70 live smoke is authorized before an exact-package zero-call preflight verifies the frozen route and online dependencies"
+  },
+  "next_action_boundary": {
+    "allowed": [
+      "prepare a fresh r70 H17-only development wrapper and namespace",
+      "add exact-source freeze, prerequisite, and invocation-boundary tests",
+      "run a zero-model-call online preflight against the exact r70 package",
+      "run at most one non-scored H17 M0 smoke only after that preflight passes"
+    ],
+    "forbidden": [
+      "resume or overwrite the r69 development suite",
+      "launch any formal r70 Gate-F batch",
+      "run any r70 development sequence other than its single frozen H17 M0 cell",
+      "use hidden task parameters or the offline expected answer",
+      "route screenshot text or pixels into the decision prompt",
+      "modify or save the inspected application record"
+    ]
+  }
+}
