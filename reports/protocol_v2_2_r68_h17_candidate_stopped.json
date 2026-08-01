@@ -1,0 +1,147 @@
+{
+  "schema_version": "protocol_v2_2_r68_h17_candidate_stop_audit.v1",
+  "decision": "r68_blank_tap_guard_and_prompt_cap_validated_but_overflow_control_geometry_not_grounded",
+  "checked_at": "2026-08-01T06:56:06.3422307Z",
+  "development_smoke": true,
+  "formal_scoring": false,
+  "formal_gate_f_authorized": false,
+  "source_commit": "41f6e39708de59c48c0211eb724f9391edd1a2fe",
+  "source_tag": "protocol-v2-2-r68-local-candidate",
+  "package_commit": "dc3c199c82e2db8eaa5a9b55ef0e409080548876",
+  "package_tag": "protocol-v2-2-r68-h17-candidate-package",
+  "preflight_commit": "5204a2ebf736bb6c197562dd9e15c8335dc31e27",
+  "preflight_tag": "protocol-v2-2-r68-h17-preflight",
+  "preflight_report_sha256": "c7e0f0a5f333dab047b1ecab20c2385685760775db9caec6da3dda36f0ef9ffb",
+  "suite_id": "hard_micro_v2_2_seed20260730_r68_candidate_development_smoke_sequence_2",
+  "suite_path": "runs/protocol_v2_2_development/hard_micro_v2_2_seed20260730_r68_candidate_development_smoke_sequence_2",
+  "result": {
+    "task_id": "H17",
+    "task": "SportsTrackerActivitiesOnDate",
+    "variant": "M0",
+    "sequence": 2,
+    "seed": 20260730,
+    "attempt_count": 1,
+    "valid_method_attempt": 1,
+    "success": false,
+    "evaluator_reward": 0.0,
+    "failure_code": "MODEL_OUTPUT_INVALID_AFTER_REPAIR",
+    "termination_reason": "model_output_invalid_after_repair",
+    "executed_action_count": 3,
+    "decision_attempt_count": 4,
+    "model_call_count": 7,
+    "executor_model_call_count": 6,
+    "history_model_call_count": 1,
+    "answer_action_count": 0,
+    "prompt_tokens": 43105,
+    "completion_tokens": 783,
+    "wall_time_seconds": 188.453796,
+    "max_prompt_tokens": 7329,
+    "configured_max_prompt_tokens": 8192,
+    "context_cap_error_count": 0,
+    "readiness_observation_count": 9,
+    "readiness_retry_count": 2,
+    "reset_audit_passed": true
+  },
+  "infrastructure_accounting": {
+    "excluded_episode_attempt_count": 0,
+    "startup_environment_failure_count": 1,
+    "startup_environment_recovery_count": 1,
+    "startup_environment_last_status": "recovered",
+    "startup_failure_code": "INFRA_ENVIRONMENT_CONSTRUCTION",
+    "cold_recovery_smoke_passed": true,
+    "valid_attempt_reset_passed": true,
+    "model_healthy_after_run": true,
+    "emulator_connected_after_run": true,
+    "classification": "the valid method attempt began only after the audited cold recovery; the earlier ADB install timeout consumed no model call and no method attempt"
+  },
+  "r68_mechanism_audit": {
+    "target_date_reached": true,
+    "target_date_row_count": 2,
+    "target_date_visible_swipe_block_count": 1,
+    "distinct_target_row_visit_count": 1,
+    "active_target_row_visit_key": "target-row-y:0.747",
+    "target_row_non_control_tap_block_count": 2,
+    "target_row_off_list_coordinate_block_count": 0,
+    "blocked_detail_taps_executed_in_application": false,
+    "requested_field_crop_count": 0,
+    "unsafe_application_mutation_executed": false,
+    "answer_submitted": false,
+    "prompt_cap_passed": true,
+    "conclusion": "r68 prevented both blank-coordinate detail actions and kept every prompt below the frozen cap, but the bounded repair could not bind its visually intended overflow tap to a controller-verified accessibility control"
+  },
+  "overflow_grounding_failure_audit": {
+    "detail_screen_visible": true,
+    "visible_overflow_icon_present_in_screenshot": true,
+    "initial_blocked_action": {
+      "type": "tap",
+      "x": 0.5,
+      "y": 0.15
+    },
+    "repair_action": {
+      "type": "tap",
+      "x": 0.405,
+      "y": 0.925
+    },
+    "repair_decision_summary": "tap the three-dot overflow menu to access non-commit information or edit-details options",
+    "repair_guard_result": "TARGET_ROW_DETAIL_CONTROL_GUARD",
+    "repair_action_executed": false,
+    "root_cause": "the repair prompt named the desired control class but supplied no controller-observed safe-control label or geometry; the model's visual coordinate did not register as a visible enabled accessibility-control hit",
+    "required_change": "derive task-independent visible enabled non-commit navigation candidates from the current accessibility tree, expose only their labels and normalized geometry, and require the bounded repair to select one of those verified candidates"
+  },
+  "prompt_budget_audit": {
+    "configured_max_prompt_tokens": 8192,
+    "observed_max_prompt_tokens": 7329,
+    "headroom_tokens": 863,
+    "context_cap_error_count": 0,
+    "per_step_executor_prompt_tokens": [
+      [6606],
+      [6848],
+      [7329, 5867],
+      [6943, 5810]
+    ]
+  },
+  "semantic_progress_audit": {
+    "executed_step_count": 3,
+    "validation_block_count": 3,
+    "executed_blocked_action_steps": [],
+    "unresolved_guard_repair": true,
+    "maximum_semantic_no_progress_repeat_count": 0,
+    "passed": false
+  },
+  "artifact_sha256": {
+    "gate_summary.json": "a2273fe9952bc270c2eeaf8daf25bed210967b09769b83f8350d1767f80e80b4",
+    "gate_progress.json": "a2273fe9952bc270c2eeaf8daf25bed210967b09769b83f8350d1767f80e80b4",
+    "manifest.snapshot.json": "dcce97ffd6e346573ac80c8d92a193b80499e0decdbe554bd20cf66be6f6379f",
+    "instances.snapshot.json": "a96be7900f83b372ae5a3b16c3f6ec0828602aeb28818c16373a8ecd99d54599",
+    "startup_environment_audit.json": "f262dc6729ceab05c9d17072ad0e24287b8b05873f101683dd0ef4805fd9ad87",
+    "androidworld_smoke.json": "9a937aee9df95af5ec1a16ea166e10173f4170c546dc88d35e83eee85c667a21",
+    "episode.json": "603cfa0c81416219254399202cfa473fee67a9d17dd018729cea8f9b3a094d8e",
+    "events.jsonl": "7cde4fbe53e137321daae6ba49eb9ddadc683791edae3cd594bbd9e91a92fbd3",
+    "memory_events.jsonl": "0b364e6cf9fa22c9ae006bb7797cf5fe7ccc5fc6e14b607d01ff8da6ddbf656a",
+    "step_002_before.png": "f8084ee085fd3e30f0f68412f9d7b6a4fb1f71186d5fb6a550fb37dec1d6258a",
+    "step_002_after.png": "f5c545b810a4c981aeeb7bd494033aef5009ae1e667b1b52c4d83dbb1ee9cdcd",
+    "step_003_before.png": "f5c545b810a4c981aeeb7bd494033aef5009ae1e667b1b52c4d83dbb1ee9cdcd"
+  },
+  "immutability": {
+    "suite_may_be_resumed": false,
+    "suite_may_be_overwritten": false,
+    "same_candidate_may_be_retried": false,
+    "failure_may_be_relabelled": false
+  },
+  "next_action_boundary": {
+    "allowed": [
+      "freeze and test the r68 stopped development checkpoint",
+      "preserve r68 blank-tap rejection, active-detail repair priority, and prompt-cap compliance",
+      "probe the native detail accessibility tree without model calls",
+      "route sanitized safe-navigation control candidates into the active-detail bounded repair",
+      "replay the exact r68 terminal trace locally before creating r69"
+    ],
+    "forbidden": [
+      "retry r68 H17 M0",
+      "resume or overwrite the r68 suite",
+      "launch formal Gate F from r68",
+      "expose requested-field values or answers in control-candidate routing",
+      "inject task, app, date, row-title, category, or expected-answer special cases"
+    ]
+  }
+}
