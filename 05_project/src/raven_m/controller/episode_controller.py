@@ -2197,6 +2197,24 @@ class EpisodeController:
                         "the exact press_back action with empty state_delta, "
                         "memory_citations, and completion_evidence."
                     )
+            latest_requested_field_value_assessment = (
+                requested_field_value_assessment(
+                    task_goal,
+                    ui_elements,
+                    parsed_candidate.decision,
+                    screen_width=screen_width,
+                    screen_height=screen_height,
+                    image_path=image_path,
+                    allow_visual_inspection_fallback=bool(
+                        self.decision_guard is not None
+                        and self.decision_guard.target_row_detail_required
+                        and self.decision_guard.active_target_row_visit_key
+                        is not None
+                    ),
+                )
+                if self.protocol_v2_2
+                else None
+            )
             if self.protocol_v2_2 and self.decision_guard is not None:
                 self.decision_guard.validate_active_target_detail_control(
                     parsed_candidate.decision,
@@ -2313,26 +2331,6 @@ class EpisodeController:
                         parsed_candidate.decision,
                         screen_width=screen_width,
                         screen_height=screen_height,
-                    )
-                    if self.protocol_v2_2
-                    else None
-                )
-                latest_requested_field_value_assessment = (
-                    requested_field_value_assessment(
-                        task_goal,
-                        ui_elements,
-                        parsed_candidate.decision,
-                        screen_width=screen_width,
-                        screen_height=screen_height,
-                        image_path=image_path,
-                        allow_visual_inspection_fallback=bool(
-                            self.decision_guard is not None
-                            and self.decision_guard
-                            .target_row_detail_required
-                            and self.decision_guard
-                            .active_target_row_visit_key
-                            is not None
-                        ),
                     )
                     if self.protocol_v2_2
                     else None
