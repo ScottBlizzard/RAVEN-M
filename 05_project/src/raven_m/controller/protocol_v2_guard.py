@@ -11,6 +11,8 @@ from pathlib import Path
 import re
 from typing import Any
 
+from PIL import Image
+
 from raven_m.actions.schema import ActionValidationError
 
 
@@ -108,6 +110,8 @@ INSPECTION_NAVIGATION_CONTROL_RE = re.compile(
     flags=re.IGNORECASE,
 )
 MAX_INSPECTION_CONTROL_CANDIDATES = 8
+VISUAL_ELLIPSIS_DARK_THRESHOLD = 96
+VISUAL_ELLIPSIS_TOOLBAR_BANDS = ((0.0, 0.20), (0.80, 0.985))
 TOOLBAR_AFFORDANCE_ROLE_RES = {
     "date": re.compile(
         r"\b(calendar|date(?:\s+picker)?|day\s+picker|month\s+grid)\b",
@@ -1610,6 +1614,232 @@ def _requested_answer_role(goal: str) -> str | None:
     return role or None
 
 
+def _dark_compact_components(
+    image: Image.Image,
+    *,
+    y_min: int,
+    y_max: int,
+) -> list[dict[str, float | int]]:
+    """Return compact dark blobs from one toolbar band.
+
+    This intentionally performs no OCR and retains no crop or pixel payload.
+    The temporary component data contains geometry and shape statistics only.
+    """
+    width, height = image.size
+    scale = min(width, height)
+    minimum_dimension = max(3, round(scale * 0.0035))
+    maximum_dimension = max(minimum_dimension + 2, round(scale * 0.019))
+    band = image.crop((0, y_min, width, y_max)).convert("RGB")
+    pixel_data = (
+        band.get_flattened_data()
+        if hasattr(band, "get_flattened_data")
+        else band.getdata()
+    )
+    dark_pixels = {
+        (index % width, index // width + y_min)
+        for index, pixel in enumerate(pixel_data)
+        if max(pixel) <= VISUAL_ELLIPSIS_DARK_THRESHOLD
+    }
+    components: list[dict[str, float | int]] = []
+    while dark_pixels:
+        seed = dark_pixels.pop()
+        pending = [seed]
+        area = 0
+        x_sum = 0
+        y_sum = 0
+        left = right = seed[0]
+        top = bottom = seed[1]
+        for x, y in pending:
+            area += 1
+            x_sum += x
+            y_sum += y
+            left = min(left, x)
+            right = max(right, x)
+            top = min(top, y)
+            bottom = max(bottom, y)
+            for delta_y in (-1, 0, 1):
+                for delta_x in (-1, 0, 1):
+                    if delta_x == 0 and delta_y == 0:
+                        continue
+                    neighbor = (x + delta_x, y + delta_y)
+                    if neighbor in dark_pixels:
+                        dark_pixels.remove(neighbor)
+                        pending.append(neighbor)
+        component_width = right - left + 1
+        component_height = bottom - top + 1
+        if not (
+            minimum_dimension <= component_width <= maximum_dimension
+            and minimum_dimension <= component_height <= maximum_dimension
+            and 0.55 <= component_width / component_height <= 1.8
+            and area / (component_width * component_height) >= 0.42
+        ):
+            continue
+        components.append(
+            {
+                "area": area,
+                "left": left,
+                "right": right,
+                "top": top,
+                "bottom": bottom,
+                "width": component_width,
+                "height": component_height,
+                "center_x": x_sum / area,
+                "center_y": y_sum / area,
+            }
+        )
+    return components
+
+
+def vertical_ellipsis_visual_candidates(
+    image_path: Path,
+) -> list[dict[str, Any]]:
+    """Detect high-confidence vertical-ellipsis shapes in toolbar bands.
+
+    The detector is deliberately task- and text-independent.  It routes only
+    a generic affordance name and normalized geometry; screenshot text and
+    pixels never enter the decision prompt or persisted assessment.
+    """
+    with Image.open(image_path) as source:
+        image = source.convert("RGB")
+    width, height = image.size
+    components: list[dict[str, float | int]] = []
+    for start, end in VISUAL_ELLIPSIS_TOOLBAR_BANDS:
+        components.extend(
+            _dark_compact_components(
+                image,
+                y_min=max(0, int(height * start)),
+                y_max=min(height, int(height * end)),
+            )
+        )
+
+    triples: list[tuple[dict[str, float | int], ...]] = []
+    ordered = sorted(
+        components,
+        key=lambda component: (
+            float(component["center_y"]),
+            float(component["center_x"]),
+        ),
+    )
+    for first_index, first in enumerate(ordered):
+        for second_index in range(first_index + 1, len(ordered)):
+            second = ordered[second_index]
+            if float(second["center_y"]) <= float(first["center_y"]):
+                continue
+            if abs(
+                float(second["center_x"])
+                - float(first["center_x"])
+            ) > 0.45 * max(
+                float(first["width"]),
+                float(second["width"]),
+            ):
+                continue
+            for third in ordered[second_index + 1 :]:
+                if float(third["center_y"]) <= float(second["center_y"]):
+                    continue
+                if abs(
+                    float(third["center_x"])
+                    - float(first["center_x"])
+                ) > 0.45 * max(
+                    float(first["width"]),
+                    float(third["width"]),
+                ):
+                    continue
+                candidate = (first, second, third)
+                mean_dimension = sum(
+                    float(component[key])
+                    for component in candidate
+                    for key in ("width", "height")
+                ) / 6.0
+                gaps = (
+                    float(second["center_y"])
+                    - float(first["center_y"]),
+                    float(third["center_y"])
+                    - float(second["center_y"]),
+                )
+                dimensions = [
+                    float(component[key])
+                    for component in candidate
+                    for key in ("width", "height")
+                ]
+                areas = [
+                    float(component["area"])
+                    for component in candidate
+                ]
+                if not all(
+                    1.05 * mean_dimension
+                    <= gap
+                    <= 2.2 * mean_dimension
+                    for gap in gaps
+                ):
+                    continue
+                if abs(gaps[0] - gaps[1]) > 0.35 * mean_dimension:
+                    continue
+                if max(dimensions) > 1.55 * min(dimensions):
+                    continue
+                if max(areas) > 1.7 * min(areas):
+                    continue
+                triples.append(candidate)
+
+    candidates: list[dict[str, Any]] = []
+    for triple in triples:
+        center_x = sum(
+            float(component["center_x"]) for component in triple
+        ) / 3.0
+        center_y = sum(
+            float(component["center_y"]) for component in triple
+        ) / 3.0
+        if any(
+            abs(center_x / width - item["center"]["x"]) < 0.01
+            and abs(center_y / height - item["center"]["y"]) < 0.02
+            for item in candidates
+        ):
+            continue
+        candidates.append(
+            {
+                "label": "vertical ellipsis",
+                "source": "current_screenshot_shape",
+                "bbox": {
+                    "x_min": round(
+                        min(float(item["left"]) for item in triple)
+                        / width,
+                        6,
+                    ),
+                    "x_max": round(
+                        (
+                            max(float(item["right"]) for item in triple)
+                            + 1.0
+                        )
+                        / width,
+                        6,
+                    ),
+                    "y_min": round(
+                        min(float(item["top"]) for item in triple)
+                        / height,
+                        6,
+                    ),
+                    "y_max": round(
+                        (
+                            max(float(item["bottom"]) for item in triple)
+                            + 1.0
+                        )
+                        / height,
+                        6,
+                    ),
+                },
+                "center": {
+                    "x": round(center_x / width, 6),
+                    "y": round(center_y / height, 6),
+                },
+            }
+        )
+        if len(candidates) >= MAX_INSPECTION_CONTROL_CANDIDATES:
+            break
+    return sorted(
+        candidates,
+        key=lambda item: (item["center"]["y"], item["center"]["x"]),
+    )
+
+
 def requested_field_value_assessment(
     goal: str,
     ui_elements: Any,
@@ -1617,6 +1847,8 @@ def requested_field_value_assessment(
     *,
     screen_width: int,
     screen_height: int,
+    image_path: Path | None = None,
+    allow_visual_inspection_fallback: bool = False,
 ) -> dict[str, Any]:
     """Detect a visible value control whose metadata names the asked field.
 
@@ -1806,6 +2038,21 @@ def requested_field_value_assessment(
                 }
             )
 
+    visual_fallback_evaluated = bool(
+        allow_visual_inspection_fallback
+        and image_path is not None
+        and not inspection_controls
+    )
+    if visual_fallback_evaluated:
+        try:
+            inspection_controls.extend(
+                vertical_ellipsis_visual_candidates(image_path)
+            )
+        except (OSError, ValueError):
+            # A missing or malformed screenshot fails closed: no candidate is
+            # routed and the existing active-detail guard still blocks taps.
+            pass
+
     mutation_control_hits = []
     requested_field_control_hit = False
     visible_control_hit = False
@@ -1856,6 +2103,13 @@ def requested_field_value_assessment(
         "visible_control_count": len(visible_control_bboxes),
         "inspection_control_hit": inspection_control_hit,
         "inspection_control_candidates": inspection_controls,
+        "visual_inspection_fallback_evaluated": (
+            visual_fallback_evaluated
+        ),
+        "visual_inspection_candidate_count": sum(
+            item.get("source") == "current_screenshot_shape"
+            for item in inspection_controls
+        ),
         "type_text_attempted": type_text_attempted,
         "read_only_inspection_safe": bool(
             matched_bboxes

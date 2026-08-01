@@ -2324,6 +2324,15 @@ class EpisodeController:
                         parsed_candidate.decision,
                         screen_width=screen_width,
                         screen_height=screen_height,
+                        image_path=image_path,
+                        allow_visual_inspection_fallback=bool(
+                            self.decision_guard is not None
+                            and self.decision_guard
+                            .target_row_detail_required
+                            and self.decision_guard
+                            .active_target_row_visit_key
+                            is not None
+                        ),
                     )
                     if self.protocol_v2_2
                     else None
