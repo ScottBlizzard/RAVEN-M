@@ -1,0 +1,31 @@
+{
+  "schema_version": "protocol_v2_2_h17_candidate_r68_overlay.v1",
+  "manifest_id": "protocol_v2_2_h17_candidate_seed20260730_r68",
+  "base_manifest": "05_project/configs/experiments/v2_2_hard_micro_gate_r56.json",
+  "source_tag": "protocol-v2-2-r68-local-candidate",
+  "source_commit": "41f6e39708de59c48c0211eb724f9391edd1a2fe",
+  "suite_id": "hard_micro_v2_2_seed20260730_r68_candidate",
+  "output_root": "runs/protocol_v2_2_development",
+  "authorized_development_sequence": 2,
+  "authorized_task_id": "H17",
+  "authorized_variant": "M0",
+  "prerequisite_r67_stop_report": {
+    "path": "reports/protocol_v2_2_r67_h17_candidate_stopped.json",
+    "sha256": "0b010630f3c807b01b723c3b4f03302d9f606f12fb0f307d979e4e093230b187"
+  },
+  "prerequisite_r68_local_validation": {
+    "path": "reports/protocol_v2_2_r68_local_validation.json",
+    "sha256": "b9d31c45c215cbddd43db690eaf2267aa929a0a1663bbdfca0d0e7856abfae09"
+  },
+  "updated_freeze_hashes": {
+    "05_project/scripts/run_protocol_v2_gate_f.py": "1a836b2ca63cee1a5298610ae65cb7141203b6a3c6ebfa0ae5ae76bd6ba338a4",
+    "05_project/src/raven_m/controller/episode_controller.py": "14a02428953cb4ce635fe1107ef12bb5fc54257a838607d8e3d26c72d2c39116",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "2aea59101b7a2f30bf13c2752a662adf990505e82fefb66cad4bd4d327e957bb",
+    "05_project/src/raven_m/history/policies.py": "21d472d208935029daebb74b4c1c0a73a5ca51d0902d09a3f818150c3c17fe26",
+    "05_project/src/raven_m/roles/orchestrator.py": "bb812660f1ba438f3f491b3582bf5094224585f963c13a56cddaba5cefeb3521",
+    "05_project/src/raven_m/memory/manager.py": "93f699c42f9484613821a7c6eae1da275951b3a0f734ecbd00e4c1c2d778bf2a",
+    "05_project/prompts/executor_raven_v2.md": "4810e577f19c987ee8ec875c8c5e042e6af314a7d2a409166f28dcd7d7910877",
+    "05_project/prompts/planner_v1.md": "a3584d330b53cc1e1ef3e28eba3c9f7184ef271e5650bd9debff5e3f4e977e11",
+    "05_project/prompts/critic_v1.md": "82f0be700752aa38cd229e6ea66feeee7974b5a6ce5760326616ea2be053c7a5"
+  }
+}
