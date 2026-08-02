@@ -1,0 +1,154 @@
+{
+  "schema_version": "protocol_v2_2_r77_local_validation.v1",
+  "decision": "local_candidate_passed_exact_package_preflight_pending",
+  "checked_at": "2026-08-02T04:37:56.7504599Z",
+  "source_commit": "0fd13aa540f811b7ede347b7736e7aa081393532",
+  "source_tag": "protocol-v2-2-r77-local-candidate",
+  "source_tag_resolves_exactly": true,
+  "formal_gate_f_authorized": false,
+  "live_development_smoke_authorized": false,
+  "parent_r76_stop": {
+    "report": "reports/protocol_v2_2_r76_h17_candidate_stopped.json",
+    "report_sha256": "f88a60ec248dedf83677b054f7fab1ac1a9aa8fee04f38294c8c62a8441d772c",
+    "execution_stop_commit": "102e0ace576b0d43e283c5ae7ed3429d5a7bc62b",
+    "execution_stop_tag": "protocol-v2-2-r76-h17-stopped",
+    "decision": "r76_completed_distinct_identity_bound_field_capture_but_executor_provenance_and_visual_critic_contracts_rejected_same_episode_routed_detail_evidence",
+    "immutable": true
+  },
+  "candidate_contract": {
+    "single_change": "make the existing controller-bound same-episode requested-field crops unambiguous current visual evidence for the executor and visual critic after all rows and frames are complete on the verified target-date list",
+    "executor_authority": "only when the controller actually routes the complete frame set, the step prompt states that visit keys are evidence handles rather than memory IDs and that a crop-grounded answer must use current_screen provenance with empty memory IDs and citations",
+    "critic_authority": "the dated-row critic payload states that the current list proves task context, row count, and top-to-bottom order while each routed crop proves the corresponding exact requested-field value; those values need not also appear on the list",
+    "answer_free_manifest": "the critic receives only frame ordinal, visit key, crop SHA-256, explicit-field flag, and identity-confirmed flag, with no controller-extracted answer values",
+    "fail_closed_manifest": "the manifest is unavailable unless there is exactly one hash-valid explicit-field crop per target row, every visit key is unique and executed, and every row identity is confirmed",
+    "context_labels": "each crop is labeled as a same-episode controller-bound requested-field image with explicit row ordinal and total count",
+    "model_call_budget_changed": false,
+    "shared_executor_prompt_changed": false,
+    "shared_critic_prompt_changed": false,
+    "history_policy_changed": false,
+    "mutation_filter_changed": false,
+    "requested_field_guard_changed": false,
+    "answer_association_guard_weakened": false,
+    "target_row_identity_guard_weakened": false,
+    "nested_return_guard_weakened": false,
+    "experiment_controls_changed": false,
+    "hidden_evaluator_or_answer_data_used": false,
+    "task_app_target_date_row_title_category_or_answer_special_case_used": false
+  },
+  "r76_failure_reconciliation": {
+    "recorded_answer_candidate_sha256": "9b85b559fe0571d33621f099ef157c01dcaf4acd15c3d05910caa23e9c6500f2",
+    "recorded_initial_executor_failure": "the correct answer text used verified_memory provenance and controller visit keys as invalid source memory IDs",
+    "recorded_repair_executor_status": "the repair emitted schema-valid current_screen provenance with empty source memory IDs and citations",
+    "recorded_visual_critic_failure": "two critic calls rejected the exact controller-bound crops as historical evidence because the field values were absent from the current target-date list",
+    "r77_executor_rule": {
+      "text_origin": "current_screen",
+      "source_memory_ids": [],
+      "memory_citations": [],
+      "completion_evidence": "direct_screen with empty memory_ids"
+    },
+    "r77_critic_rule": {
+      "current_list_role": "task context, target row count, and top-to-bottom order",
+      "routed_crop_role": "exact requested-field value for the corresponding row",
+      "require_values_on_current_list": false,
+      "visit_keys_are_memory_ids": false
+    },
+    "ordered_crop_sha256": [
+      "6f30807e41f2eb51921496eac7000f0b7eae3b2e370dc69953e54de9daf75dae",
+      "1bd4dec3c9fb25996be95b8e59327986c6610dea36a959450f2027c050848704"
+    ],
+    "controller_answer_extraction_used": false,
+    "additional_model_calls_added": 0,
+    "critic_bypass_used": false
+  },
+  "negative_safety_coverage": [
+    "the exact r76 stop report and both bound crop hashes are replayed byte-exactly",
+    "the evidence manifest contains no answer text and preserves top-to-bottom frame order",
+    "a crop whose bytes drift from its recorded hash fails before routing",
+    "an identity-unconfirmed row fails before routing",
+    "the executor provenance instruction appears only when a routed manifest is supplied",
+    "the critic payload explicitly separates current-list and routed-crop evidence roles",
+    "a critic rejection still blocks the answer twice and never increments visual-answer acceptance",
+    "the r76 historical package validation rejects future HEAD source drift",
+    "the protocol-v1 sealed breadth remains byte-exact"
+  ],
+  "validation": {
+    "complete_project_tests": {
+      "passed": true,
+      "collected_count": 922,
+      "passed_count": 922,
+      "failed_count": 0,
+      "duration_seconds": 307.6,
+      "scope": "05_project/tests"
+    },
+    "focused_r77_controller_guard_and_r76_lifecycle": {
+      "passed": true,
+      "passed_count": 59,
+      "duration_seconds": 23.2
+    },
+    "r77_exact_r76_trace_authority_and_negative_tests": {
+      "passed": true,
+      "passed_count": 7,
+      "test_file_sha256": "0ffadd8653fd4628555d2c194b8ddc71a2cb4681113adcc3b8fbe8f3909067e4"
+    },
+    "r76_historical_package_lifecycle": {
+      "passed": true,
+      "future_head_source_drift_rejected": true,
+      "frozen_r76_manifest_or_artifact_rewritten": false
+    },
+    "compileall": {
+      "passed": true,
+      "paths": [
+        "05_project/src",
+        "05_project/tests"
+      ]
+    },
+    "git_diff_check": {
+      "passed": true
+    },
+    "protocol_v1_seal": {
+      "passed": true,
+      "file_count": 197,
+      "failure_count": 0,
+      "rewritten": false
+    }
+  },
+  "source_sha256": {
+    "05_project/src/raven_m/controller/episode_controller.py": "d398647771152c2fe24cc46f3b81a06d3b4306188b9066650076692c4f31d734",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "fc65955b59b4efb5db495690b3f6448c4ac867d52516dbdc88e604559731b654",
+    "05_project/src/raven_m/env/androidworld_adapter.py": "ad4ecbee9430326ca7380334c49372911a1c6b1c217ee12bb3714d2fb1219c33",
+    "05_project/scripts/run_protocol_v2_gate_f.py": "6ad52a3063f223e4f9c7fb1b4b360e7df65712e33225519b39b9f32997289bfc",
+    "05_project/src/raven_m/history/policies.py": "21d472d208935029daebb74b4c1c0a73a5ca51d0902d09a3f818150c3c17fe26",
+    "05_project/src/raven_m/roles/orchestrator.py": "bb812660f1ba438f3f491b3582bf5094224585f963c13a56cddaba5cefeb3521",
+    "05_project/src/raven_m/memory/manager.py": "93f699c42f9484613821a7c6eae1da275951b3a0f734ecbd00e4c1c2d778bf2a",
+    "05_project/prompts/executor_raven_v2.md": "4810e577f19c987ee8ec875c8c5e042e6af314a7d2a409166f28dcd7d7910877",
+    "05_project/prompts/planner_v1.md": "a3584d330b53cc1e1ef3e28eba3c9f7184ef271e5650bd9debff5e3f4e977e11",
+    "05_project/prompts/critic_v1.md": "82f0be700752aa38cd229e6ea66feeee7974b5a6ce5760326616ea2be053c7a5",
+    "05_project/tests/scripts/test_protocol_v2_2_r77_r76_trace_replay.py": "0ffadd8653fd4628555d2c194b8ddc71a2cb4681113adcc3b8fbe8f3909067e4",
+    "05_project/tests/scripts/test_protocol_v2_2_r76_h17_candidate.py": "6f5b8b4285981e5faef50610e8433f10bf287b6d537087d318dce7cb6c077d07"
+  },
+  "online_boundary_at_validation": {
+    "model_calls": 0,
+    "gpu_experiment_cells": 0,
+    "interpretation": "r76's evidence-authority dead end is closed in exact local replay, but no r77 live smoke is authorized before a fresh exact-package zero-call preflight"
+  },
+  "next_action_boundary": {
+    "allowed": [
+      "prepare a fresh r77 H17-only development wrapper and namespace",
+      "add exact-source freeze, r76-stop prerequisite, local-report, invocation-boundary, and single-change tests",
+      "run a zero-model-call online preflight against the exact r77 package",
+      "run at most one non-scored H17 M0 smoke only after that preflight passes"
+    ],
+    "forbidden": [
+      "resume or overwrite the r76 development suite",
+      "launch any formal r77 Gate-F batch",
+      "run any r77 development sequence other than its single frozen H17 M0 cell",
+      "route a missing, duplicate, hash-invalid, unvisited, or identity-unconfirmed frame",
+      "treat a visit key as a memory ID",
+      "require crop values to be duplicated on the current target-date list",
+      "extract or hard-code an answer in the controller",
+      "bypass a critic rejection or weaken the answer guard",
+      "use OCR, hidden task parameters, or the offline expected answer",
+      "modify or save the inspected application record"
+    ]
+  }
+}
