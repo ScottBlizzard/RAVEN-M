@@ -1,0 +1,140 @@
+{
+  "schema_version": "protocol_v2_2_r75_local_validation.v1",
+  "decision": "local_candidate_passed_exact_package_preflight_pending",
+  "checked_at": "2026-08-02T02:56:18.1767065Z",
+  "source_commit": "a74aa3943fd57f58b6721423418144ce13389580",
+  "source_tag": "protocol-v2-2-r75-local-candidate",
+  "source_tag_resolves_exactly": true,
+  "formal_gate_f_authorized": false,
+  "live_development_smoke_authorized": false,
+  "parent_r74_stop": {
+    "report": "reports/protocol_v2_2_r74_h17_candidate_stopped.json",
+    "report_sha256": "129c8f7c34c0431b28c8c3aced6c7706944ff40cb75ccf44b91a4918ce48f775",
+    "execution_stop_commit": "e65a4c56f4303e9cb6cc70a29887b47a897f13a9",
+    "execution_stop_tag": "protocol-v2-2-r74-h17-stopped",
+    "decision": "r74_nested_return_succeeded_but_tolerant_row_hit_assigned_the_same_detail_to_two_rows",
+    "immutable": true
+  },
+  "candidate_contract": {
+    "single_change": "bind every target-date detail visit to an exact controller-routed row center and a row-specific visible identity label before the visit or requested-field frame can count",
+    "tap_routing": "a content-side tap within the old broad diagnostic band is executable only when its y coordinate is within 0.0125 of the routed row center; otherwise one bounded repair may execute only the exact routed pure tap for that same row",
+    "identity_binding": "row-specific visible content labels are captured from the target-date list, labels shared by multiple target rows are discarded, and the opened detail must expose at least one exact normalized bound label",
+    "mismatch_recovery": "on identity mismatch the tentative visit and any frame are rolled back, the row remains unvisited, and only one pure Back may start the already-bounded exact-list return protocol",
+    "history_policy_changed": false,
+    "mutation_filter_changed": false,
+    "requested_field_guard_weakened": false,
+    "answer_association_guard_weakened": false,
+    "nested_return_guard_weakened": false,
+    "experiment_controls_changed": false,
+    "hidden_evaluator_or_answer_data_used": false,
+    "task_app_target_date_row_title_category_or_answer_special_case_used": false
+  },
+  "r74_failure_reconciliation": {
+    "recorded_ambiguous_action": {
+      "type": "tap",
+      "x": 0.5,
+      "y": 0.805
+    },
+    "controller_diagnostic_assignment": {
+      "row_index": 1,
+      "row_center": 0.834375,
+      "offset": -0.029375
+    },
+    "actual_application_result": "the upper Skill work detail opened, demonstrating that the old nearest-center ledger assignment disagreed with the application's adjacent-row hit box",
+    "duplicate_detail_evidence": "both r74 visits exposed the same Skill work identity and byte-identical requested-field crop below y=120",
+    "r75_pre_execution_result": "the exact r74 action is classified as imprecise and blocked before execution",
+    "repair_row_switch_blocked": true,
+    "wrong_detail_visit_rolled_back": true,
+    "correct_detail_identity_required_before_frame_capture": true,
+    "one_item_answer_guard_preserved": true
+  },
+  "negative_safety_coverage": [
+    "the exact r74 ambiguous 0.805 tap cannot execute",
+    "the repair cannot switch from the originally routed row to another row",
+    "a detail exposing another target row's identity cannot count as a visit",
+    "a mismatched detail cannot retain a requested-field frame",
+    "only pure Back is allowed after an identity mismatch",
+    "a row with no identity label distinct from the other target rows fails closed",
+    "the r74 exact-list return state machine remains enforced",
+    "the protocol-v1 sealed breadth remains byte-exact"
+  ],
+  "validation": {
+    "complete_project_tests": {
+      "passed": true,
+      "collected_count": 885,
+      "passed_count": 885,
+      "failed_count": 0,
+      "duration_seconds": 238.6,
+      "scope": "05_project/tests"
+    },
+    "focused_controller_guard_and_three_generation_trace_tests": {
+      "passed": true,
+      "passed_count": 232,
+      "duration_seconds": 63.9
+    },
+    "r75_exact_r74_trace_and_negative_tests": {
+      "passed": true,
+      "passed_count": 6,
+      "test_file_sha256": "b6b64b39595f23ca970233cfb2a40a5cec6b4ad6e9599a1c0b8a38210c11d490"
+    },
+    "historical_trace_fixture_compatibility": {
+      "passed": true,
+      "r71_r70_r72_r71_and_r75_r74_combined_passed_count": 17,
+      "production_guard_weakened": false
+    },
+    "r74_historical_package_lifecycle": {
+      "passed": true,
+      "future_head_source_drift_rejected": true,
+      "frozen_r74_manifest_or_artifact_rewritten": false
+    },
+    "compileall": {
+      "passed": true,
+      "paths": [
+        "05_project/src",
+        "05_project/tests"
+      ]
+    },
+    "git_diff_check": {
+      "passed": true
+    },
+    "protocol_v1_seal": {
+      "passed": true,
+      "file_count": 197,
+      "failure_count": 0,
+      "rewritten": false
+    }
+  },
+  "source_sha256": {
+    "05_project/src/raven_m/controller/episode_controller.py": "121a28a2e397fa1991b85201082eb31a8d4be5000446d22aa9528585c78cad75",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "53ae0b2128451373be910da06024c23850b6c69207f25a458aeb27b2f5981b4e",
+    "05_project/src/raven_m/env/androidworld_adapter.py": "ad4ecbee9430326ca7380334c49372911a1c6b1c217ee12bb3714d2fb1219c33",
+    "05_project/scripts/run_protocol_v2_gate_f.py": "6ad52a3063f223e4f9c7fb1b4b360e7df65712e33225519b39b9f32997289bfc",
+    "05_project/src/raven_m/roles/orchestrator.py": "bb812660f1ba438f3f491b3582bf5094224585f963c13a56cddaba5cefeb3521",
+    "05_project/prompts/executor_raven_v2.md": "4810e577f19c987ee8ec875c8c5e042e6af314a7d2a409166f28dcd7d7910877",
+    "05_project/tests/scripts/test_protocol_v2_2_r74_h17_candidate.py": "093f42cd7efa7b07174e8b1f002af6a10a358022a8a7bfa556517d3013b70a86",
+    "05_project/tests/scripts/test_protocol_v2_2_r75_r74_trace_replay.py": "b6b64b39595f23ca970233cfb2a40a5cec6b4ad6e9599a1c0b8a38210c11d490"
+  },
+  "online_boundary_at_validation": {
+    "model_calls": 0,
+    "gpu_experiment_cells": 0,
+    "interpretation": "the exact r74 same-row duplication mechanism is blocked in frozen local replay, but no r75 live smoke is authorized before a fresh exact-package zero-call preflight"
+  },
+  "next_action_boundary": {
+    "allowed": [
+      "prepare a fresh r75 H17-only development wrapper and namespace",
+      "add exact-source freeze, r74-stop prerequisite, local-report, invocation-boundary, and single-change tests",
+      "run a zero-model-call online preflight against the exact r75 package",
+      "run at most one non-scored H17 M0 smoke only after that preflight passes"
+    ],
+    "forbidden": [
+      "resume or overwrite the r74 development suite",
+      "launch any formal r75 Gate-F batch",
+      "run any r75 development sequence other than its single frozen H17 M0 cell",
+      "execute an imprecise target-row coordinate",
+      "count a detail visit before its bound identity is visible",
+      "retain a visit or frame after an identity mismatch",
+      "use OCR, hidden task parameters, or the offline expected answer",
+      "modify or save the inspected application record"
+    ]
+  }
+}
