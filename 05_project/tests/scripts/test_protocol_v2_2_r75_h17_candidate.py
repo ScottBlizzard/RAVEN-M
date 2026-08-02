@@ -1,0 +1,232 @@
+from __future__ import annotations
+
+from hashlib import sha256
+import importlib.util
+import json
+from pathlib import Path
+import subprocess
+import sys
+
+import pytest
+
+
+ROOT = Path(__file__).resolve().parents[3]
+BASE_MANIFEST = (
+    ROOT / "05_project/configs/experiments/v2_2_hard_micro_gate_r56.json"
+)
+OVERLAY = (
+    ROOT / "05_project/configs/experiments/v2_2_h17_candidate_r75.json"
+)
+WRAPPER = (
+    ROOT / "05_project/scripts/"
+    "run_protocol_v2_2_r75_h17_candidate_smoke.py"
+)
+RUNNER = ROOT / "05_project/scripts/run_protocol_v2_gate_f.py"
+R74_STOP_REPORT = (
+    ROOT / "reports/protocol_v2_2_r74_h17_candidate_stopped.json"
+)
+R75_LOCAL_REPORT = (
+    ROOT / "reports/protocol_v2_2_r75_local_validation.json"
+)
+
+
+def load_module(path: Path, name: str):
+    scripts = str(ROOT / "05_project/scripts")
+    if scripts not in sys.path:
+        sys.path.insert(0, scripts)
+    spec = importlib.util.spec_from_file_location(name, path)
+    assert spec and spec.loader
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def load_wrapper(name: str):
+    return load_module(WRAPPER, name)
+
+
+def test_r75_candidate_preserves_frozen_experiment_controls() -> None:
+    wrapper = load_wrapper("r75_candidate_controls")
+    generated = json.loads(
+        wrapper.build_candidate_manifest().read_text(encoding="utf-8")
+    )
+    base = json.loads(BASE_MANIFEST.read_text(encoding="utf-8"))
+    for key in (
+        "protocol",
+        "instance_seed",
+        "blocked_order_seed",
+        "blocked_order_algorithm",
+        "blocked_order_candidate_index",
+        "variants",
+        "task_families",
+        "schedule",
+        "prompts",
+        "schemas",
+        "limits",
+        "acceptance",
+        "stop_policy",
+        "prerequisite_gate_e_report",
+    ):
+        assert generated[key] == base[key]
+    assert generated["source_commit"] == wrapper.SOURCE_COMMIT
+    assert generated["source_tag"] == wrapper.SOURCE_TAG
+    assert generated["candidate_scope"] == {
+        "formal_scoring": False,
+        "authorized_development_sequence": 2,
+        "authorized_task_id": "H17",
+        "authorized_variant": "M0",
+    }
+
+
+def test_r75_candidate_freeze_hashes_match_exact_source_commit() -> None:
+    wrapper = load_wrapper("r75_candidate_freeze")
+    manifest = json.loads(
+        wrapper.build_candidate_manifest().read_text(encoding="utf-8")
+    )
+    resolved = subprocess.check_output(
+        ["git", "rev-list", "-n", "1", wrapper.SOURCE_TAG],
+        cwd=ROOT,
+        text=True,
+    ).strip()
+    assert resolved == wrapper.SOURCE_COMMIT
+    assert len(manifest["freeze_files"]) == 28
+    for record in manifest["freeze_files"]:
+        frozen = subprocess.check_output(
+            ["git", "show", f"{resolved}:{record['path']}"],
+            cwd=ROOT,
+        )
+        assert sha256(frozen).hexdigest() == record["sha256"]
+
+
+def test_r75_candidate_static_manifest_validation_passes() -> None:
+    wrapper = load_wrapper("r75_candidate_static_wrapper")
+    runner = load_module(RUNNER, "r75_candidate_static_runner")
+    manifest = json.loads(
+        wrapper.build_candidate_manifest().read_text(encoding="utf-8")
+    )
+    audit = runner.validate_manifest(
+        manifest,
+        expected_source_tag=wrapper.SOURCE_TAG,
+        expected_source_commit=wrapper.SOURCE_COMMIT,
+        expected_prerequisite_commit=wrapper.PARENT_GATE_E_COMMIT,
+    )
+    assert all(item["passed"] for item in audit["freeze_file_checks"])
+    assert all(item["passed"] for item in audit["prerequisite_checks"])
+
+
+def test_r75_candidate_prerequisites_are_byte_exact() -> None:
+    overlay = json.loads(OVERLAY.read_text(encoding="utf-8"))
+    assert sha256(R74_STOP_REPORT.read_bytes()).hexdigest() == (
+        overlay["prerequisite_r74_stop_report"]["sha256"]
+    )
+    stopped = json.loads(R74_STOP_REPORT.read_text(encoding="utf-8"))
+    assert stopped["decision"] == (
+        "r74_nested_return_succeeded_but_tolerant_row_hit_"
+        "assigned_the_same_detail_to_two_rows"
+    )
+    assert stopped["immutability"]["suite_may_be_resumed"] is False
+    assert sha256(R75_LOCAL_REPORT.read_bytes()).hexdigest() == (
+        overlay["prerequisite_r75_local_validation"]["sha256"]
+    )
+    local = json.loads(R75_LOCAL_REPORT.read_text(encoding="utf-8"))
+    assert local["source_commit"] == (
+        "a74aa3943fd57f58b6721423418144ce13389580"
+    )
+    assert local["formal_gate_f_authorized"] is False
+    assert local["live_development_smoke_authorized"] is False
+
+
+@pytest.mark.parametrize(
+    "argv",
+    [
+        ["--adb-path", "adb", "--batch", "1"],
+        ["--adb-path", "adb", "--development-smoke-sequence", "1"],
+        ["--adb-path", "adb", "--development-smoke-sequence=8"],
+        ["--adb-path", "adb"],
+        [
+            "--adb-path",
+            "adb",
+            "--preflight-only",
+            "--development-smoke-sequence",
+            "2",
+        ],
+    ],
+)
+def test_r75_candidate_wrapper_rejects_every_other_live_scope(
+    argv: list[str],
+) -> None:
+    wrapper = load_wrapper("r75_candidate_invalid_invocation")
+    with pytest.raises(RuntimeError):
+        wrapper.validate_invocation(argv)
+
+
+def test_r75_candidate_wrapper_allows_only_preflight_or_h17_m0() -> None:
+    wrapper = load_wrapper("r75_candidate_valid_invocation")
+    wrapper.validate_invocation(["--adb-path", "adb", "--preflight-only"])
+    wrapper.validate_invocation(
+        ["--adb-path", "adb", "--development-smoke-sequence", "2"]
+    )
+
+
+def test_r75_candidate_wrapper_uses_non_formal_mode() -> None:
+    source = WRAPPER.read_text(encoding="utf-8")
+    assert "allow_development_smoke=True" in source
+    assert "diagnostic_pause=None" in source
+    assert "AUTHORIZED_SEQUENCE = 2" in source
+
+
+def test_r75_mechanism_is_bounded_and_fails_closed() -> None:
+    controller = (
+        ROOT / "05_project/src/raven_m/controller/episode_controller.py"
+    ).read_text(encoding="utf-8")
+    guard = (
+        ROOT / "05_project/src/raven_m/controller/protocol_v2_guard.py"
+    ).read_text(encoding="utf-8")
+    assert "TARGET_DATE_ROW_EXACT_CENTER_TAP_REQUIRED" in controller
+    assert "TARGET_ROW_IDENTITY_MISMATCH_BACK_REQUIRED" in controller
+    assert "TARGET_ROW_TAP_CENTER_TOLERANCE = 0.0125" in guard
+    assert "target_row_tap_precisely_aligned" in guard
+    assert "target_row_detail_identity_assessment" in guard
+    assert "target_row_identity_mismatch_pending_visit_key" in guard
+    assert "TARGET_ROW_IDENTITY_UNAVAILABLE" in guard
+    assert "TARGET_ROW_LIST_RETURN_FAILED" in guard
+
+
+def test_r75_mechanism_leaves_unrelated_frozen_sources_unchanged() -> None:
+    overlay = json.loads(OVERLAY.read_text(encoding="utf-8"))
+    for path in (
+        "05_project/src/raven_m/env/androidworld_adapter.py",
+        "05_project/src/raven_m/history/policies.py",
+        "05_project/src/raven_m/roles/orchestrator.py",
+        "05_project/src/raven_m/memory/manager.py",
+        "05_project/prompts/executor_raven_v2.md",
+        "05_project/prompts/planner_v1.md",
+        "05_project/prompts/critic_v1.md",
+    ):
+        assert sha256((ROOT / path).read_bytes()).hexdigest() == (
+            overlay["updated_freeze_hashes"][path]
+        )
+
+
+def test_r75_mechanism_sources_are_task_and_answer_agnostic() -> None:
+    paths = [
+        ROOT / "05_project/src/raven_m/controller/episode_controller.py",
+        ROOT / "05_project/src/raven_m/controller/protocol_v2_guard.py",
+        ROOT / "05_project/src/raven_m/env/androidworld_adapter.py",
+        ROOT / "05_project/src/raven_m/history/policies.py",
+        ROOT / "05_project/prompts/executor_raven_v2.md",
+        ROOT / "05_project/prompts/planner_v1.md",
+        ROOT / "05_project/prompts/critic_v1.md",
+    ]
+    source = "\n".join(path.read_text(encoding="utf-8") for path in paths)
+    for forbidden in (
+        "SportsTrackerActivitiesOnDate",
+        "de.dennisguse.opentracks",
+        "September 24 2023",
+        "September 24, 2023",
+        "Skill work",
+        "Recovery day",
+        "swimming",
+        "H17",
+    ):
+        assert forbidden not in source
