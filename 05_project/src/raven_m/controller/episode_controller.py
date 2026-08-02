@@ -755,6 +755,99 @@ class EpisodeController:
                     "deferred_row_coordinates_executable": False,
                 }
             )
+        if target_row_routed_evidence_manifest is not None:
+            if not (
+                target_row_progress
+                and target_row_progress.get("all_rows_visited") is True
+                and target_row_progress.get(
+                    "all_detail_frames_captured"
+                )
+                is True
+            ):
+                raise RuntimeError(
+                    "Terminal routed evidence requires complete target-row "
+                    "progress."
+                )
+            terminal_progress = {
+                key: target_row_progress.get(key)
+                for key in (
+                    "schema_version",
+                    "target_row_count",
+                    "requested_answer_role",
+                    "visited_row_keys",
+                    "captured_detail_frame_keys",
+                    "all_rows_visited",
+                    "all_detail_frames_captured",
+                )
+            }
+            terminal_memory_projection = {
+                "schema_version": (
+                    "terminal_routed_evidence_memory_projection.v1"
+                ),
+                "authority": (
+                    "controller_bound_same_episode_current_visual_evidence"
+                ),
+                "items": [],
+                "memory_ids": [],
+            }
+            return "\n".join(
+                [
+                    f"TASK: {goal}",
+                    f"STEP/BUDGET: {step + 1}/{max_steps}; "
+                    f"model calls {model_calls}/{max_model_calls}",
+                    "PREVIOUS_ACTION_AND_OBSERVED_OUTCOME: "
+                    + previous_outcome,
+                    "MEMORY_CONTEXT: "
+                    + json.dumps(
+                        terminal_memory_projection,
+                        ensure_ascii=False,
+                        sort_keys=True,
+                        separators=(",", ":"),
+                    ),
+                    "DATED_TARGET_ROW_PROGRESS: "
+                    + json.dumps(
+                        terminal_progress,
+                        ensure_ascii=False,
+                        sort_keys=True,
+                        separators=(",", ":"),
+                    ),
+                    "DATED_TARGET_ROUTED_VISUAL_EVIDENCE: "
+                    + json.dumps(
+                        target_row_routed_evidence_manifest,
+                        ensure_ascii=False,
+                        sort_keys=True,
+                        separators=(",", ":"),
+                    ),
+                    "DATED_TARGET_ROUTED_VISUAL_EVIDENCE_AUTHORITY: The "
+                    "current screenshot proves the target-date list, row "
+                    "count, and top-to-bottom order. Each attached "
+                    "DATED_TARGET_REQUESTED_FIELD "
+                    "SAME_EPISODE_CONTROLLER_BOUND crop proves the exact "
+                    "requested-field value for its corresponding ordinal. "
+                    "These crops are current same-episode visual evidence, "
+                    "not memory records; their values need not also appear "
+                    "on the list.",
+                    "DATED_TARGET_ROUTED_ANSWER_PROVENANCE: If every exact "
+                    "value is readable and ordered, return status=done with "
+                    "one answer action using text_origin=current_screen, "
+                    "source_memory_ids=[], memory_citations=[], and "
+                    "direct_screen completion_evidence with memory_ids=[]. "
+                    "A visit_key is an evidence handle, never a memory ID.",
+                    "TERMINAL_EVIDENCE_SCOPE: Read only the supplied pixels "
+                    "and preserve exact requested-field wording and "
+                    "granularity. Never substitute a row title, icon, "
+                    "semantic class, or synonym. If any row crop is missing, "
+                    "unreadable, duplicated, conflicting, or out of order, "
+                    "fail safely with status=fail and action=null. Do not "
+                    "emit a GUI action or invent a value.",
+                    "CURRENT_SCREENSHOT: attached image; size "
+                    f"{screen_width}x{screen_height} pixels.",
+                    "LENGTH_CHECK: expected_outcome and decision_summary "
+                    "must each be one short sentence under 160 characters.",
+                    "Return one JSON object matching the action schema named "
+                    "in the system prompt now.",
+                ]
+            )
         coordinate_denominator = max(screen_height - 1, 1)
         app_bar_pixel_y = min(
             round(0.08 * coordinate_denominator),

@@ -309,10 +309,10 @@ def test_r77_executor_prompt_uses_current_screen_provenance() -> None:
         ),
     )
     assert "DATED_TARGET_ROUTED_VISUAL_EVIDENCE_AUTHORITY" in prompt
-    assert "not a historical memory record" in prompt
-    assert "values do not also need to appear on the current list" in prompt
-    assert "action.text_origin=current_screen" in prompt
-    assert "action.source_memory_ids=[]" in prompt
+    assert "not memory records" in prompt
+    assert "values need not also appear on the list" in prompt
+    assert "text_origin=current_screen" in prompt
+    assert "source_memory_ids=[]" in prompt
     assert "memory_citations=[]" in prompt
     assert "memory_ids=[]" in prompt
     assert "visit_key is an evidence handle, never a memory ID" in prompt
