@@ -240,6 +240,9 @@ def test_r72_accepts_recorded_r71_edit_on_exact_frozen_screenshot() -> None:
     guard.target_row_detail_required = True
     guard.target_row_visit_keys = ["target-row-y:0.800"]
     guard.active_target_row_visit_key = "target-row-y:0.800"
+    guard.target_row_expected_identity_by_visit_key = {
+        "target-row-y:0.800": ["Synthetic target row identity"]
+    }
     guard.requested_answer_role = "activity type"
     controller = EpisodeController(
         client=client,  # type: ignore[arg-type]
@@ -257,7 +260,9 @@ def test_r72_accepts_recorded_r71_edit_on_exact_frozen_screenshot() -> None:
             "e1c54259eae15772b668e316408b2501c2bd0d0ab95bf7ff7e993b50303cd089"
         ),
         destination_picker_is_active=False,
-        ui_elements=[],
+        ui_elements=[
+            {"text": "Synthetic target row identity", "is_visible": True}
+        ],
         requested_field_ui_elements=parsed_rows(),
         screen_width=1080,
         screen_height=2400,

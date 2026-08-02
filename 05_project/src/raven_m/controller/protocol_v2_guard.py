@@ -110,6 +110,7 @@ INSPECTION_NAVIGATION_CONTROL_RE = re.compile(
     flags=re.IGNORECASE,
 )
 MAX_INSPECTION_CONTROL_CANDIDATES = 8
+TARGET_ROW_TAP_CENTER_TOLERANCE = 0.0125
 VISUAL_ELLIPSIS_DARK_THRESHOLD = 96
 VISUAL_ELLIPSIS_TOOLBAR_BANDS = ((0.0, 0.20), (0.80, 0.985))
 TOOLBAR_AFFORDANCE_ROLE_RES = {
@@ -2245,6 +2246,7 @@ def dated_list_answer_assessment(
             )
 
     target_row_content_labels: list[list[str]] = []
+    target_row_identity_candidates: list[list[str]] = []
     target_row_date_sides: list[str] = []
     for row_center, date_x_center in zip(
         target_row_centers,
@@ -2278,6 +2280,44 @@ def dated_list_answer_assessment(
             }
         )
         target_row_content_labels.append(content_labels)
+        target_row_identity_candidates.append(
+            sorted(
+                {
+                    record["label"]
+                    for record in label_records
+                    if not record["is_date_label"]
+                    and abs(record["y_center"] - row_center) <= 0.025
+                    and (
+                        (
+                            date_side == "right"
+                            and record["x_center"] < date_x_center - 0.03
+                        )
+                        or (
+                            date_side == "left"
+                            and record["x_center"] > date_x_center + 0.03
+                        )
+                    )
+                }
+            )
+        )
+
+    identity_label_frequency: defaultdict[str, int] = defaultdict(int)
+    for labels in target_row_identity_candidates:
+        for normalized in {
+            " ".join(label.casefold().split()) for label in labels
+        }:
+            identity_label_frequency[normalized] += 1
+    target_row_identity_labels = [
+        [
+            label
+            for label in labels
+            if identity_label_frequency[
+                " ".join(label.casefold().split())
+            ]
+            == 1
+        ]
+        for labels in target_row_identity_candidates
+    ]
 
     action = decision.get("action") if isinstance(decision, dict) else None
     action_type = action.get("type") if isinstance(action, dict) else None
@@ -2368,6 +2408,7 @@ def dated_list_answer_assessment(
     tap_y = action.get("y") if isinstance(action, dict) else None
     target_row_tap_center: float | None = None
     target_row_tap_index: int | None = None
+    target_row_tap_offset: float | None = None
     if (
         action_type == "tap"
         and isinstance(tap_y, (int, float))
@@ -2380,6 +2421,10 @@ def dated_list_answer_assessment(
         if abs(tap_y - target_row_centers[nearest_index]) <= 0.055:
             target_row_tap_index = nearest_index
             target_row_tap_center = target_row_centers[nearest_index]
+            target_row_tap_offset = round(
+                float(tap_y) - float(target_row_tap_center),
+                6,
+            )
     target_row_tap_date_side = (
         target_row_date_sides[target_row_tap_index]
         if target_row_tap_index is not None
@@ -2408,8 +2453,15 @@ def dated_list_answer_assessment(
             )
         )
     )
+    target_row_tap_precisely_aligned = bool(
+        target_row_tap_offset is not None
+        and abs(target_row_tap_offset)
+        <= TARGET_ROW_TAP_CENTER_TOLERANCE
+    )
     row_aligned_tap = bool(
-        target_row_tap_index is not None and tap_on_content_side
+        target_row_tap_index is not None
+        and tap_on_content_side
+        and target_row_tap_precisely_aligned
     )
     clickable_target_hit = False
     if row_aligned_tap:
@@ -2451,6 +2503,23 @@ def dated_list_answer_assessment(
         if visible_content_target_hit
         else None
     )
+    target_row_tap_routed_action = (
+        {
+            "type": "tap",
+            "x": 0.5,
+            "y": target_row_tap_center,
+        }
+        if (
+            target_row_tap_index is not None
+            and target_row_tap_center is not None
+            and target_row_tap_date_side in {"left", "right"}
+        )
+        else None
+    )
+    target_row_tap_identity_available = bool(
+        target_row_tap_index is not None
+        and target_row_identity_labels[target_row_tap_index]
+    )
 
     target_date_list_visible = bool(
         chronology["chronological_history_detected"]
@@ -2469,6 +2538,7 @@ def dated_list_answer_assessment(
         "target_row_date_x_centers": target_row_date_x_centers,
         "target_row_date_sides": target_row_date_sides,
         "target_row_content_labels": target_row_content_labels,
+        "target_row_identity_labels": target_row_identity_labels,
         "target_row_count": len(target_row_centers),
         "requested_answer_role": requested_role,
         "role_detail_required": role_detail_required,
@@ -2498,11 +2568,61 @@ def dated_list_answer_assessment(
             target_date_list_visible
             and row_aligned_tap
             and (clickable_target_hit or visible_content_target_hit)
+            and target_row_tap_identity_available
         ),
         "target_row_tap_authority": target_row_tap_authority,
         "target_row_tap_index": target_row_tap_index,
         "target_row_tap_center": target_row_tap_center,
+        "target_row_tap_offset": target_row_tap_offset,
+        "target_row_tap_precisely_aligned": (
+            target_row_tap_precisely_aligned
+        ),
+        "target_row_tap_routed_action": target_row_tap_routed_action,
+        "target_row_tap_identity_available": (
+            target_row_tap_identity_available
+        ),
         "chronological_list_navigation_assessment": chronology,
+    }
+
+
+def target_row_detail_identity_assessment(
+    ui_elements: Any,
+    *,
+    expected_identity_labels: list[str] | tuple[str, ...],
+) -> dict[str, Any]:
+    """Verify an opened detail against row-specific visible list labels."""
+    expected_by_normalized = {
+        " ".join(label.casefold().split()): label
+        for label in expected_identity_labels
+        if _normalized_text(label) is not None
+    }
+    visible_normalized: set[str] = set()
+    for element in ui_elements or ():
+        if _element_value(element, "is_visible") is False:
+            continue
+        for field in (
+            "text",
+            "content_description",
+            "hint_text",
+            "tooltip",
+        ):
+            label = _normalized_text(_element_value(element, field))
+            if label is not None:
+                visible_normalized.add(" ".join(label.casefold().split()))
+    matched = sorted(set(expected_by_normalized).intersection(
+        visible_normalized
+    ))
+    return {
+        "schema_version": "target_row_detail_identity_assessment.v1",
+        "adjudicable": bool(expected_by_normalized),
+        "matched": bool(matched),
+        "expected_identity_label_count": len(expected_by_normalized),
+        "visible_label_count": len(visible_normalized),
+        "matched_identity_label_count": len(matched),
+        "matched_identity_label_sha256": [
+            sha256(label.encode("utf-8")).hexdigest()
+            for label in matched
+        ],
     }
 
 
@@ -3409,10 +3529,22 @@ class ProtocolV2DecisionGuard:
         self.target_row_read_only_mutation_block_count = 0
         self.target_row_off_list_coordinate_block_count = 0
         self.target_row_non_control_tap_block_count = 0
+        self.target_row_precise_tap_block_count = 0
+        self.target_row_identity_unavailable_block_count = 0
         self.target_date_row_count = 0
         self.target_row_detail_required = False
         self.target_row_visit_keys: list[str] = []
         self.active_target_row_visit_key: str | None = None
+        self.target_row_expected_identity_by_visit_key: dict[
+            str, list[str]
+        ] = {}
+        self.target_row_identity_confirmed_visit_keys: list[str] = []
+        self.target_row_identity_confirmation_count = 0
+        self.target_row_identity_mismatch_count = 0
+        self.target_row_identity_mismatch_pending_visit_key: (
+            str | None
+        ) = None
+        self.target_row_identity_records: list[dict[str, Any]] = []
         self.target_row_detail_frames: list[dict[str, Any]] = []
         self.target_row_return_pending_visit_key: str | None = None
         self.target_row_return_back_count = 0
@@ -3482,6 +3614,14 @@ class ProtocolV2DecisionGuard:
             "detail_required": self.target_row_detail_required,
             "visited_row_keys": list(self.target_row_visit_keys),
             "active_detail_row_key": self.active_target_row_visit_key,
+            "active_detail_identity_confirmed": bool(
+                self.active_target_row_visit_key
+                in self.target_row_identity_confirmed_visit_keys
+            ),
+            "identity_mismatch_return_pending": (
+                self.target_row_identity_mismatch_pending_visit_key
+                is not None
+            ),
             "return_to_target_list_pending": (
                 self.target_row_return_pending_visit_key is not None
             ),
@@ -3512,6 +3652,21 @@ class ProtocolV2DecisionGuard:
                 >= self.target_date_row_count
             ),
         }
+
+    def active_target_row_expected_identity_labels(self) -> list[str]:
+        """Return internal row identity labels for same-screen matching."""
+        visit_key = (
+            self.active_target_row_visit_key
+            or self.target_row_identity_mismatch_pending_visit_key
+        )
+        if visit_key is None:
+            return []
+        return list(
+            self.target_row_expected_identity_by_visit_key.get(
+                visit_key,
+                [],
+            )
+        )
 
     def reconcile_target_row_list_return(
         self,
@@ -4100,14 +4255,20 @@ class ProtocolV2DecisionGuard:
         dated_visual_answer_assessment: dict[str, Any] | None = None,
         dated_row_detail_frame: dict[str, Any] | None = None,
         requested_field_value_assessment: dict[str, Any] | None = None,
+        target_row_detail_identity_assessment: (
+            dict[str, Any] | None
+        ) = None,
     ) -> None:
         action = decision.get("action")
         if not isinstance(action, dict):
             return
         action_key = canonical_action_key(action)
         pending_target_visit_key: str | None = None
+        pending_target_visit_identity_labels: list[str] | None = None
         pending_target_detail_frame: dict[str, Any] | None = None
         pending_target_return_navigation = False
+        pending_target_identity_confirmation = False
+        pending_target_identity_mismatch_return = False
         pending_visual_answer_accept = False
         field_value_assessment = requested_field_value_assessment or {}
         toolbar_assessment = toolbar_affordance_claim_assessment or {}
@@ -4213,6 +4374,100 @@ class ProtocolV2DecisionGuard:
                     "or continue navigation; fail safely."
                 )
             pending_target_return_navigation = True
+        identity_assessment = target_row_detail_identity_assessment or {}
+        mismatch_visit_key = (
+            self.target_row_identity_mismatch_pending_visit_key
+        )
+        if mismatch_visit_key is not None:
+            if action.get("type") != "press_back":
+                self.validation_blocks.append(
+                    {
+                        "semantic_state_sha256": page_sha256,
+                        "action": action,
+                        "reason": "target_row_identity_mismatch_return",
+                        "visit_key": mismatch_visit_key,
+                        "required_recovery_classes": ["navigate_back"],
+                    }
+                )
+                raise ActionValidationError(
+                    "TARGET_ROW_DETAIL_IDENTITY_GUARD: the opened detail "
+                    "did not match the controller-bound identity of the "
+                    "intended target-date row, so that row remains "
+                    "unvisited. TARGET_ROW_IDENTITY_MISMATCH_BACK_REQUIRED: "
+                    "press Back exactly once with empty state_delta, "
+                    "memory_citations, and completion_evidence. Do not "
+                    "inspect, answer, wait, mutate, or reuse the prior "
+                    "coordinate."
+                )
+            pending_target_identity_mismatch_return = True
+        elif (
+            target_row_detail_identity_assessment is not None
+            and self.target_row_detail_required
+            and self.active_target_row_visit_key is not None
+            and self.active_target_row_visit_key
+            not in self.target_row_identity_confirmed_visit_keys
+            and dated_assessment.get("target_date_list_visible") is not True
+        ):
+            identity_matches = bool(
+                identity_assessment.get("adjudicable") is True
+                and identity_assessment.get("matched") is True
+            )
+            if identity_matches:
+                pending_target_identity_confirmation = True
+            else:
+                mismatch_visit_key = self.active_target_row_visit_key
+                self.target_row_visit_keys = [
+                    key
+                    for key in self.target_row_visit_keys
+                    if key != mismatch_visit_key
+                ]
+                self.target_row_detail_frames = [
+                    frame
+                    for frame in self.target_row_detail_frames
+                    if frame.get("visit_key") != mismatch_visit_key
+                ]
+                self.target_row_identity_confirmed_visit_keys = [
+                    key
+                    for key in self.target_row_identity_confirmed_visit_keys
+                    if key != mismatch_visit_key
+                ]
+                self.active_target_row_visit_key = None
+                self.target_row_identity_mismatch_pending_visit_key = (
+                    mismatch_visit_key
+                )
+                self.target_row_identity_mismatch_count += 1
+                record = {
+                    "schema_version": (
+                        "target_row_detail_identity_reconciliation.v1"
+                    ),
+                    "status": "mismatch",
+                    "semantic_state_sha256": page_sha256,
+                    "visit_key": mismatch_visit_key,
+                    "assessment": identity_assessment,
+                }
+                self.target_row_identity_records.append(record)
+                self.validation_blocks.append(
+                    {
+                        **record,
+                        "action": action,
+                        "reason": "target_row_detail_identity_mismatch",
+                        "required_recovery_classes": ["navigate_back"],
+                    }
+                )
+                if action.get("type") != "press_back":
+                    raise ActionValidationError(
+                        "TARGET_ROW_DETAIL_IDENTITY_GUARD: the opened detail "
+                        "does not expose any row-specific visible identity "
+                        "label bound to the intended target-date row. The "
+                        "ledger assignment was rolled back and the row "
+                        "remains unvisited. "
+                        "TARGET_ROW_IDENTITY_MISMATCH_BACK_REQUIRED: press "
+                        "Back exactly once with empty state_delta, "
+                        "memory_citations, and completion_evidence. Do not "
+                        "inspect, answer, wait, mutate, or reuse the prior "
+                        "coordinate."
+                    )
+                pending_target_identity_mismatch_return = True
         self.validate_active_target_detail_control(
             decision,
             page_sha256=page_sha256,
@@ -4241,6 +4496,9 @@ class ProtocolV2DecisionGuard:
                 "target_row_centers": list(
                     dated_assessment.get("target_row_centers") or []
                 ),
+                "target_row_identity_labels": list(
+                    dated_assessment.get("target_row_identity_labels") or []
+                ),
                 "requested_answer_role": requested_role,
             }
             if observation not in self.target_date_row_observations:
@@ -4265,6 +4523,75 @@ class ProtocolV2DecisionGuard:
                     "tap one visible enabled content row horizontally aligned "
                     "with the target date. Do not swipe, tap a toolbar icon, "
                     "wait, answer, or infer a row field from its title."
+                )
+            if (
+                action.get("type") == "tap"
+                and dated_assessment.get("target_row_tap_index") is not None
+                and dated_assessment.get("tap_on_content_side") is True
+                and dated_assessment.get(
+                    "target_row_tap_precisely_aligned"
+                )
+                is not True
+            ):
+                routed_action = dated_assessment.get(
+                    "target_row_tap_routed_action"
+                )
+                record = {
+                    "semantic_state_sha256": page_sha256,
+                    "action": action,
+                    "reason": "target_row_tap_not_precisely_centered",
+                    "target_row_tap_offset": dated_assessment.get(
+                        "target_row_tap_offset"
+                    ),
+                    "routed_action": routed_action,
+                    "required_recovery_classes": [
+                        "use_controller_routed_row_center",
+                    ],
+                }
+                self.validation_blocks.append(record)
+                self.target_row_precise_tap_block_count += 1
+                raise ActionValidationError(
+                    "TARGET_ROW_PRECISE_TAP_GUARD: this content-side tap "
+                    "is close enough to be ambiguously attributed to a "
+                    "target-date row but is not at its controller-routed "
+                    "center, so the application's adjacent-row hit boxes "
+                    "may disagree with the ledger. "
+                    "TARGET_DATE_ROW_EXACT_CENTER_TAP_REQUIRED: execute "
+                    "exactly "
+                    + json.dumps(
+                        routed_action,
+                        ensure_ascii=False,
+                        sort_keys=True,
+                        separators=(",", ":"),
+                    )
+                    + " with empty state_delta, memory_citations, and "
+                    "completion_evidence."
+                )
+            if (
+                action.get("type") == "tap"
+                and dated_assessment.get(
+                    "target_row_tap_precisely_aligned"
+                )
+                is True
+                and dated_assessment.get(
+                    "target_row_tap_identity_available"
+                )
+                is not True
+            ):
+                self.validation_blocks.append(
+                    {
+                        "semantic_state_sha256": page_sha256,
+                        "action": action,
+                        "reason": "target_row_identity_unavailable",
+                        "required_recovery_classes": ["fail_safely"],
+                    }
+                )
+                self.target_row_identity_unavailable_block_count += 1
+                raise ActionValidationError(
+                    "TARGET_ROW_IDENTITY_UNAVAILABLE: the target-date row "
+                    "has no row-specific visible identity distinct from "
+                    "the other target rows, so a detail visit cannot be "
+                    "safely attributed. Do not open, answer, or guess."
                 )
             if action.get("type") == "answer":
                 wrong_row_items = [
@@ -4405,6 +4732,22 @@ class ProtocolV2DecisionGuard:
                             "coordinate."
                         )
                     pending_target_visit_key = visit_key
+                    identity_sets = list(
+                        dated_assessment.get(
+                            "target_row_identity_labels"
+                        )
+                        or []
+                    )
+                    tap_index = dated_assessment.get(
+                        "target_row_tap_index"
+                    )
+                    if (
+                        isinstance(tap_index, int)
+                        and 0 <= tap_index < len(identity_sets)
+                    ):
+                        pending_target_visit_identity_labels = list(
+                            identity_sets[tap_index]
+                        )
         elif (
             self.target_row_detail_required
             and self.active_target_row_visit_key is not None
@@ -4515,6 +4858,12 @@ class ProtocolV2DecisionGuard:
             frame = dated_row_detail_frame or {}
             if (
                 frame.get("visit_key") == self.active_target_row_visit_key
+                and (
+                    target_row_detail_identity_assessment is None
+                    or pending_target_identity_confirmation
+                    or self.active_target_row_visit_key
+                    in self.target_row_identity_confirmed_visit_keys
+                )
                 and isinstance(frame.get("path"), str)
                 and isinstance(frame.get("sha256"), str)
                 and len(frame["sha256"]) == 64
@@ -5345,6 +5694,53 @@ class ProtocolV2DecisionGuard:
             self.target_row_tap_validation_count += 1
             self.target_row_visit_keys.append(pending_target_visit_key)
             self.active_target_row_visit_key = pending_target_visit_key
+            self.target_row_expected_identity_by_visit_key[
+                pending_target_visit_key
+            ] = list(pending_target_visit_identity_labels or [])
+        if (
+            pending_target_identity_confirmation
+            and self.active_target_row_visit_key is not None
+        ):
+            visit_key = self.active_target_row_visit_key
+            if visit_key not in self.target_row_identity_confirmed_visit_keys:
+                self.target_row_identity_confirmed_visit_keys.append(
+                    visit_key
+                )
+                self.target_row_identity_confirmation_count += 1
+                self.target_row_identity_records.append(
+                    {
+                        "schema_version": (
+                            "target_row_detail_identity_reconciliation.v1"
+                        ),
+                        "status": "confirmed",
+                        "semantic_state_sha256": page_sha256,
+                        "visit_key": visit_key,
+                        "assessment": identity_assessment,
+                    }
+                )
+        if pending_target_identity_mismatch_return:
+            visit_key = (
+                self.target_row_identity_mismatch_pending_visit_key
+            )
+            if visit_key is None:
+                raise RuntimeError(
+                    "Target-row identity mismatch return lost its visit key."
+                )
+            self.target_row_return_pending_visit_key = visit_key
+            self.target_row_return_back_count = 1
+            self.target_row_return_start_count += 1
+            self.target_row_return_records.append(
+                {
+                    "schema_version": (
+                        "target_row_list_return_reconciliation.v1"
+                    ),
+                    "status": "identity_mismatch_return_started",
+                    "semantic_state_sha256": page_sha256,
+                    "visit_key": visit_key,
+                    "back_count": 1,
+                }
+            )
+            self.target_row_identity_mismatch_pending_visit_key = None
         if pending_target_detail_frame is not None:
             self.target_row_detail_frames = [
                 frame for frame in self.target_row_detail_frames
@@ -5720,6 +6116,12 @@ class ProtocolV2DecisionGuard:
             "target_row_non_control_tap_block_count": (
                 self.target_row_non_control_tap_block_count
             ),
+            "target_row_precise_tap_block_count": (
+                self.target_row_precise_tap_block_count
+            ),
+            "target_row_identity_unavailable_block_count": (
+                self.target_row_identity_unavailable_block_count
+            ),
             "target_date_row_count": self.target_date_row_count,
             "target_row_detail_required": self.target_row_detail_required,
             "target_row_distinct_visit_count": len(
@@ -5728,6 +6130,38 @@ class ProtocolV2DecisionGuard:
             "target_row_visit_keys": list(self.target_row_visit_keys),
             "active_target_row_visit_key": (
                 self.active_target_row_visit_key
+            ),
+            "target_row_expected_identity_records": [
+                {
+                    "visit_key": visit_key,
+                    "label_count": len(labels),
+                    "label_sha256": [
+                        sha256(
+                            " ".join(label.casefold().split()).encode(
+                                "utf-8"
+                            )
+                        ).hexdigest()
+                        for label in labels
+                    ],
+                }
+                for visit_key, labels in sorted(
+                    self.target_row_expected_identity_by_visit_key.items()
+                )
+            ],
+            "target_row_identity_confirmed_visit_keys": list(
+                self.target_row_identity_confirmed_visit_keys
+            ),
+            "target_row_identity_confirmation_count": (
+                self.target_row_identity_confirmation_count
+            ),
+            "target_row_identity_mismatch_count": (
+                self.target_row_identity_mismatch_count
+            ),
+            "target_row_identity_mismatch_pending_visit_key": (
+                self.target_row_identity_mismatch_pending_visit_key
+            ),
+            "target_row_identity_records": list(
+                self.target_row_identity_records
             ),
             "target_row_detail_frames": list(
                 self.target_row_detail_frames

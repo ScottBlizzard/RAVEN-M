@@ -305,7 +305,7 @@ def test_dated_list_replays_r63_visual_row_tap_without_clickable_node() -> None:
     assessment = dated_list_answer_assessment(
         goal,
         dated_activity_list_fixture(clickable_rows=False),
-        {"action": {"type": "tap", "x": 0.5, "y": 0.775}},
+        {"action": {"type": "tap", "x": 0.5, "y": 0.75}},
         screen_width=1080,
         screen_height=2400,
     )
@@ -359,7 +359,7 @@ def test_dated_list_visual_fallback_requires_same_row_content() -> None:
             "Answer with the activity type only."
         ),
         elements,
-        {"action": {"type": "tap", "x": 0.5, "y": 0.775}},
+        {"action": {"type": "tap", "x": 0.5, "y": 0.75}},
         screen_width=1080,
         screen_height=2400,
     )
@@ -397,7 +397,7 @@ def test_dated_list_visual_fallback_supports_left_date_column() -> None:
     assessment = dated_list_answer_assessment(
         "Find September 24 2023. Answer with the item name only.",
         elements,
-        {"action": {"type": "tap", "x": 0.5, "y": 0.775}},
+        {"action": {"type": "tap", "x": 0.5, "y": 0.75}},
         screen_width=1080,
         screen_height=2400,
     )

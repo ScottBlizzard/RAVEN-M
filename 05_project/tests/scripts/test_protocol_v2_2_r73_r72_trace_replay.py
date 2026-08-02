@@ -52,6 +52,10 @@ MORE_OPTIONS = {
         "y_max": 0.95625,
     },
 }
+ROW_IDENTITY = {
+    "text": "Synthetic target row identity",
+    "is_visible": True,
+}
 
 
 def decision(action: dict[str, Any], summary: str) -> dict[str, Any]:
@@ -143,6 +147,9 @@ def active_guard() -> ProtocolV2DecisionGuard:
     guard.target_row_detail_required = True
     guard.target_row_visit_keys = ["target-row-y:0.834"]
     guard.active_target_row_visit_key = "target-row-y:0.834"
+    guard.target_row_expected_identity_by_visit_key = {
+        "target-row-y:0.834": ["Synthetic target row identity"]
+    }
     guard.requested_answer_role = "activity type"
     return guard
 
@@ -182,7 +189,7 @@ def test_r73_replays_exact_r72_repair_without_launching_false_critic() -> None:
             "3bc67c3ee126f003b18e50095368b222d3534511a47f94e3277fc1257fdd546b"
         ),
         destination_picker_is_active=False,
-        ui_elements=[MORE_OPTIONS],
+        ui_elements=[ROW_IDENTITY, MORE_OPTIONS],
         screen_width=1080,
         screen_height=2400,
         task_goal=GOAL,

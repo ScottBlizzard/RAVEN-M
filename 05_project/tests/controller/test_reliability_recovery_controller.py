@@ -216,7 +216,7 @@ def test_controller_replays_r63_row_repair_without_clickable_node(
     }
     repair = {
         "status": "continue",
-        "action": {"type": "tap", "x": 0.5, "y": 0.775},
+        "action": {"type": "tap", "x": 0.5, "y": 0.75},
         "expected_outcome": "The target-date row detail opens.",
         "decision_summary": (
             "Tap the visible target-date row to inspect its activity type."
@@ -260,7 +260,7 @@ def test_controller_replays_r63_row_repair_without_clickable_node(
         ui_elements=elements,
     )
     assert len(calls) == 2
-    assert parsed["action"] == {"type": "tap", "x": 0.5, "y": 0.775}
+    assert parsed["action"] == {"type": "tap", "x": 0.5, "y": 0.75}
     assert "ANSWER_ASSOCIATION_GUARD" in meta["initial_validation_error"]
     repair_prompt = client.requests[1]["user_prompt"]
     assert "TARGET_DATE_ROW_DETAIL_REPAIR" in repair_prompt
@@ -396,6 +396,9 @@ def test_controller_detail_answer_repairs_to_bound_back_frame(
     guard.target_row_detail_required = True
     guard.target_row_visit_keys = ["target-row-y:0.750"]
     guard.active_target_row_visit_key = "target-row-y:0.750"
+    guard.target_row_expected_identity_by_visit_key = {
+        "target-row-y:0.750": ["Visible row identity"]
+    }
     guard.requested_answer_role = "activity type"
 
     parsed, calls, meta = call_and_parse(
@@ -403,6 +406,7 @@ def test_controller_detail_answer_repairs_to_bound_back_frame(
         tmp_path=tmp_path,
         task_goal=goal,
         ui_elements=[
+            {"text": "Visible row identity", "is_visible": True},
             {
                 "text": "Visible category",
                 "resource_id": "example/track_edit_activity_type",

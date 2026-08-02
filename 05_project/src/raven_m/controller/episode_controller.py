@@ -39,6 +39,7 @@ from raven_m.controller.protocol_v2_guard import (
     soft_keyboard_swipe_assessment,
     swipe_direction_consistency_assessment,
     task_literal_field_role_assessment,
+    target_row_detail_identity_assessment,
     toolbar_affordance_claim_assessment,
     visible_control_activation_retry_assessment,
 )
@@ -1847,6 +1848,9 @@ class EpisodeController:
         latest_requested_field_value_assessment: (
             dict[str, Any] | None
         ) = None
+        latest_target_row_detail_identity_assessment: (
+            dict[str, Any] | None
+        ) = None
         visual_source_cache: dict[str, dict[str, Any]] = {}
         parse_kwargs = (
             {"schema_path": self.action_schema_path}
@@ -1869,6 +1873,7 @@ class EpisodeController:
             nonlocal latest_dated_list_answer_assessment
             nonlocal latest_dated_visual_answer_assessment
             nonlocal latest_requested_field_value_assessment
+            nonlocal latest_target_row_detail_identity_assessment
             latest_verification_navigation_assessment = None
             latest_source_context_assessment = None
             latest_bounded_task_repeated_tap_assessment = None
@@ -1876,6 +1881,7 @@ class EpisodeController:
             latest_dated_list_answer_assessment = None
             latest_dated_visual_answer_assessment = None
             latest_requested_field_value_assessment = None
+            latest_target_row_detail_identity_assessment = None
             candidate_content = content
             if repair_contract_error is not None:
                 (
@@ -2159,6 +2165,60 @@ class EpisodeController:
                     )
             if (
                 repair_contract_error
+                and "TARGET_DATE_ROW_EXACT_CENTER_TAP_REQUIRED:"
+                in repair_contract_error
+            ):
+                initial_decision = parse_action_response(
+                    initial.content,
+                    **parse_kwargs,
+                ).decision
+                initial_assessment = dated_list_answer_assessment(
+                    task_goal,
+                    ui_elements,
+                    initial_decision,
+                    screen_width=screen_width,
+                    screen_height=screen_height,
+                )
+                routed_action = initial_assessment.get(
+                    "target_row_tap_routed_action"
+                )
+                candidate = parsed_candidate.decision
+                if (
+                    candidate.get("status") != "continue"
+                    or candidate.get("action") != routed_action
+                    or candidate.get("state_delta") != []
+                    or candidate.get("memory_citations") != []
+                    or candidate.get("completion_evidence", []) != []
+                ):
+                    raise ActionValidationError(
+                        "REPAIR_CONTRACT_GUARD: "
+                        "TARGET_DATE_ROW_EXACT_CENTER_TAP_REQUIRED permits "
+                        "only the exact controller-routed pure tap for the "
+                        "same intended target row, with empty state_delta, "
+                        "memory_citations, and completion_evidence."
+                    )
+            if (
+                repair_contract_error
+                and "TARGET_ROW_IDENTITY_MISMATCH_BACK_REQUIRED:"
+                in repair_contract_error
+            ):
+                candidate = parsed_candidate.decision
+                if (
+                    candidate.get("status") != "continue"
+                    or candidate.get("action") != {"type": "press_back"}
+                    or candidate.get("state_delta") != []
+                    or candidate.get("memory_citations") != []
+                    or candidate.get("completion_evidence", []) != []
+                ):
+                    raise ActionValidationError(
+                        "REPAIR_CONTRACT_GUARD: "
+                        "TARGET_ROW_IDENTITY_MISMATCH_BACK_REQUIRED permits "
+                        "only the exact press_back action with empty "
+                        "state_delta, memory_citations, and "
+                        "completion_evidence."
+                    )
+            if (
+                repair_contract_error
                 and "TARGET_DATE_UNVISITED_ROW_TAP_REQUIRED:"
                 in repair_contract_error
             ):
@@ -2395,6 +2455,19 @@ class EpisodeController:
                         parsed_candidate.decision,
                         screen_width=screen_width,
                         screen_height=screen_height,
+                    )
+                    if self.protocol_v2_2
+                    else None
+                )
+                latest_target_row_detail_identity_assessment = (
+                    target_row_detail_identity_assessment(
+                        ui_elements,
+                        expected_identity_labels=(
+                            self.decision_guard
+                            .active_target_row_expected_identity_labels()
+                            if self.decision_guard is not None
+                            else []
+                        ),
                     )
                     if self.protocol_v2_2
                     else None
@@ -2824,6 +2897,9 @@ class EpisodeController:
                     requested_field_value_assessment=(
                         latest_requested_field_value_assessment
                     ),
+                    target_row_detail_identity_assessment=(
+                        latest_target_row_detail_identity_assessment
+                    ),
                 )
             consequential_action_candidate = None
             if self.protocol_v2_2 and destination_picker_is_active:
@@ -2955,6 +3031,9 @@ class EpisodeController:
                     ),
                     "requested_field_value_assessment": (
                         latest_requested_field_value_assessment
+                    ),
+                    "target_row_detail_identity_assessment": (
+                        latest_target_row_detail_identity_assessment
                     ),
                 },
             )
@@ -3143,6 +3222,9 @@ class EpisodeController:
                     ),
                     "requested_field_value_assessment": (
                         latest_requested_field_value_assessment
+                    ),
+                    "target_row_detail_identity_assessment": (
+                        latest_target_row_detail_identity_assessment
                     ),
                 },
             )

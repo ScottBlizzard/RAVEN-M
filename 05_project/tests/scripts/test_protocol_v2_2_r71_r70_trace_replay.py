@@ -80,6 +80,9 @@ def test_r71_computes_visual_assessment_before_pre_history_guard() -> None:
     guard.target_row_detail_required = True
     guard.target_row_visit_keys = ["target-row-y:0.747"]
     guard.active_target_row_visit_key = "target-row-y:0.747"
+    guard.target_row_expected_identity_by_visit_key = {
+        "target-row-y:0.747": ["Synthetic target row identity"]
+    }
     guard.requested_answer_role = "activity type"
     controller = EpisodeController(
         client=client,  # type: ignore[arg-type]
@@ -97,7 +100,9 @@ def test_r71_computes_visual_assessment_before_pre_history_guard() -> None:
             "3bc67c3ee126f003b18e50095368b222d3534511a47f94e3277fc1257fdd546b"
         ),
         destination_picker_is_active=False,
-        ui_elements=[],
+        ui_elements=[
+            {"text": "Synthetic target row identity", "is_visible": True}
+        ],
         screen_width=1080,
         screen_height=2400,
         task_goal=goal,
