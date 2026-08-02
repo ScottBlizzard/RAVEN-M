@@ -2409,11 +2409,17 @@ def dated_list_answer_assessment(
     target_row_tap_center: float | None = None
     target_row_tap_index: int | None = None
     target_row_tap_offset: float | None = None
+    target_row_tap_candidate_indices: list[int] = []
     if (
         action_type == "tap"
         and isinstance(tap_y, (int, float))
         and target_row_centers
     ):
+        target_row_tap_candidate_indices = [
+            index
+            for index, center in enumerate(target_row_centers)
+            if abs(float(tap_y) - float(center)) <= 0.055
+        ]
         nearest_index = min(
             range(len(target_row_centers)),
             key=lambda index: abs(tap_y - target_row_centers[index]),
@@ -2571,6 +2577,9 @@ def dated_list_answer_assessment(
             and target_row_tap_identity_available
         ),
         "target_row_tap_authority": target_row_tap_authority,
+        "target_row_tap_candidate_indices": (
+            target_row_tap_candidate_indices
+        ),
         "target_row_tap_index": target_row_tap_index,
         "target_row_tap_center": target_row_tap_center,
         "target_row_tap_offset": target_row_tap_offset,

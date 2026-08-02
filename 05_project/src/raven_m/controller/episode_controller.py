@@ -423,6 +423,9 @@ class ModelOutputInvalid(RuntimeError):
         files_view_mode_repair_assessment: (
             dict[str, Any] | None
         ) = None,
+        target_row_repair_normalization: (
+            dict[str, Any] | None
+        ) = None,
     ) -> None:
         super().__init__(repair_error)
         self.calls = calls
@@ -436,6 +439,9 @@ class ModelOutputInvalid(RuntimeError):
         )
         self.files_view_mode_repair_assessment = (
             files_view_mode_repair_assessment
+        )
+        self.target_row_repair_normalization = (
+            target_row_repair_normalization
         )
 
 
@@ -1835,6 +1841,9 @@ class EpisodeController:
         latest_files_view_mode_repair_assessment: (
             dict[str, Any] | None
         ) = None
+        latest_target_row_repair_normalization: (
+            dict[str, Any] | None
+        ) = None
         latest_bounded_task_repeated_tap_assessment: (
             dict[str, Any] | None
         ) = None
@@ -1868,6 +1877,7 @@ class EpisodeController:
             nonlocal latest_source_context_assessment
             nonlocal latest_repair_rationale_normalization
             nonlocal latest_files_view_mode_repair_assessment
+            nonlocal latest_target_row_repair_normalization
             nonlocal latest_bounded_task_repeated_tap_assessment
             nonlocal latest_toolbar_affordance_claim_assessment
             nonlocal latest_dated_list_answer_assessment
@@ -1876,6 +1886,7 @@ class EpisodeController:
             nonlocal latest_target_row_detail_identity_assessment
             latest_verification_navigation_assessment = None
             latest_source_context_assessment = None
+            latest_target_row_repair_normalization = None
             latest_bounded_task_repeated_tap_assessment = None
             latest_toolbar_affordance_claim_assessment = None
             latest_dated_list_answer_assessment = None
@@ -1895,6 +1906,88 @@ class EpisodeController:
                 candidate_content,
                 **parse_kwargs,
             )
+
+            def normalize_unique_target_row_repair(
+                candidate: dict[str, Any],
+                assessment: dict[str, Any],
+                *,
+                trigger: str,
+            ) -> dict[str, Any]:
+                """Route one pure approximate repair to its unique row."""
+                nonlocal latest_target_row_repair_normalization
+                action = candidate.get("action")
+                routed_action = assessment.get(
+                    "target_row_tap_routed_action"
+                )
+                candidate_indices = list(
+                    assessment.get("target_row_tap_candidate_indices")
+                    or []
+                )
+                row_index = assessment.get("target_row_tap_index")
+                pure_repair = bool(
+                    candidate.get("status") == "continue"
+                    and isinstance(action, dict)
+                    and set(action) == {"type", "x", "y"}
+                    and action.get("type") == "tap"
+                    and candidate.get("state_delta") == []
+                    and candidate.get("memory_citations") == []
+                    and candidate.get("completion_evidence", []) == []
+                )
+                uniquely_attributed = bool(
+                    isinstance(row_index, int)
+                    and candidate_indices == [row_index]
+                )
+                routable = bool(
+                    pure_repair
+                    and assessment.get("target_date_list_visible") is True
+                    and assessment.get("tap_on_content_side") is True
+                    and assessment.get(
+                        "target_row_tap_precisely_aligned"
+                    )
+                    is False
+                    and uniquely_attributed
+                    and assessment.get(
+                        "target_row_tap_identity_available"
+                    )
+                    is True
+                    and isinstance(routed_action, dict)
+                    and set(routed_action) == {"type", "x", "y"}
+                    and routed_action.get("type") == "tap"
+                )
+                if not routable:
+                    return assessment
+                original_action = dict(action)
+                candidate["action"] = dict(routed_action)
+                normalized = dated_list_answer_assessment(
+                    task_goal,
+                    ui_elements,
+                    candidate,
+                    screen_width=screen_width,
+                    screen_height=screen_height,
+                )
+                latest_target_row_repair_normalization = {
+                    "schema_version": (
+                        "target_row_repair_normalization.v1"
+                    ),
+                    "trigger": trigger,
+                    "original_action": original_action,
+                    "routed_action": dict(routed_action),
+                    "target_row_index": row_index,
+                    "target_row_center": assessment.get(
+                        "target_row_tap_center"
+                    ),
+                    "target_row_tap_offset": assessment.get(
+                        "target_row_tap_offset"
+                    ),
+                    "target_row_tap_candidate_indices": candidate_indices,
+                    "target_row_identity_available": True,
+                    "normalized_target_row_tap_permitted": normalized.get(
+                        "target_row_tap_permitted"
+                    )
+                    is True,
+                    "additional_model_calls": 0,
+                }
+                return normalized
             if (
                 repair_contract_error
                 and repair_contract_error.startswith(
@@ -2223,7 +2316,6 @@ class EpisodeController:
                 in repair_contract_error
             ):
                 candidate = parsed_candidate.decision
-                candidate_action = candidate.get("action")
                 repair_assessment = dated_list_answer_assessment(
                     task_goal,
                     ui_elements,
@@ -2231,6 +2323,12 @@ class EpisodeController:
                     screen_width=screen_width,
                     screen_height=screen_height,
                 )
+                repair_assessment = normalize_unique_target_row_repair(
+                    candidate,
+                    repair_assessment,
+                    trigger="target_date_unvisited_row_tap_required",
+                )
+                candidate_action = candidate.get("action")
                 tap_center = repair_assessment.get(
                     "target_row_tap_center"
                 )
@@ -2269,7 +2367,6 @@ class EpisodeController:
                 in repair_contract_error
             ):
                 candidate = parsed_candidate.decision
-                candidate_action = candidate.get("action")
                 repair_assessment = dated_list_answer_assessment(
                     task_goal,
                     ui_elements,
@@ -2277,6 +2374,12 @@ class EpisodeController:
                     screen_width=screen_width,
                     screen_height=screen_height,
                 )
+                repair_assessment = normalize_unique_target_row_repair(
+                    candidate,
+                    repair_assessment,
+                    trigger="target_date_row_tap_required",
+                )
+                candidate_action = candidate.get("action")
                 if (
                     candidate.get("status") != "continue"
                     or not isinstance(candidate_action, dict)
@@ -3162,6 +3265,9 @@ class EpisodeController:
                     files_view_mode_repair_assessment=(
                         latest_files_view_mode_repair_assessment
                     ),
+                    target_row_repair_normalization=(
+                        latest_target_row_repair_normalization
+                    ),
                 ) from repair_error
             return (
                 parsed.decision,
@@ -3200,6 +3306,15 @@ class EpisodeController:
                             )
                         }
                         if latest_files_view_mode_repair_assessment is not None
+                        else {}
+                    ),
+                    **(
+                        {
+                            "target_row_repair_normalization": (
+                                latest_target_row_repair_normalization
+                            )
+                        }
+                        if latest_target_row_repair_normalization is not None
                         else {}
                     ),
                     "post_destination_verification_navigation_assessment": (
@@ -3748,6 +3863,15 @@ class EpisodeController:
                                 exc.files_view_mode_repair_assessment
                                 is not None
                             )
+                            else {}
+                        ),
+                        **(
+                            {
+                                "target_row_repair_normalization": (
+                                    exc.target_row_repair_normalization
+                                )
+                            }
+                            if exc.target_row_repair_normalization is not None
                             else {}
                         ),
                     }
