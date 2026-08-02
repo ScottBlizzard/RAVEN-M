@@ -724,6 +724,9 @@ class EpisodeController:
         post_destination_commit_active: bool = False,
         verified_task_repeat_progress: dict[str, Any] | None = None,
         target_row_progress: dict[str, Any] | None = None,
+        target_row_routed_evidence_manifest: (
+            dict[str, Any] | None
+        ) = None,
     ) -> str:
         displayed_target_row_progress = target_row_progress
         active_target_row_detail = bool(
@@ -818,6 +821,36 @@ class EpisodeController:
                         )
                     ]
                     if target_row_progress is not None
+                    else []
+                ),
+                *(
+                    [
+                        "DATED_TARGET_ROUTED_VISUAL_EVIDENCE: "
+                        + json.dumps(
+                            target_row_routed_evidence_manifest,
+                            ensure_ascii=False,
+                            sort_keys=True,
+                            separators=(",", ":"),
+                        ),
+                        "DATED_TARGET_ROUTED_VISUAL_EVIDENCE_AUTHORITY: "
+                        "Every attached DATED_TARGET_REQUESTED_FIELD "
+                        "SAME_EPISODE_CONTROLLER_BOUND image is current "
+                        "same-episode visual evidence routed by the "
+                        "controller for the corresponding target row. It "
+                        "is not a historical memory record. The current "
+                        "target-date list proves row count and top-to-bottom "
+                        "order; each routed crop proves that row's exact "
+                        "requested-field value. The requested values do not "
+                        "also need to appear on the current list.",
+                        "DATED_TARGET_ROUTED_ANSWER_PROVENANCE: If the exact "
+                        "answer is grounded only in these attached images, "
+                        "use action.text_origin=current_screen, "
+                        "action.source_memory_ids=[], memory_citations=[], "
+                        "and direct_screen completion_evidence with "
+                        "memory_ids=[]. A target-row visit_key is an evidence "
+                        "handle, never a memory ID.",
+                    ]
+                    if target_row_routed_evidence_manifest is not None
                     else []
                 ),
                 *(
@@ -2715,6 +2748,34 @@ class EpisodeController:
                                             "dated_target_row_progress": (
                                                 target_row_progress
                                             ),
+                                            "same_episode_routed_visual_evidence": (
+                                                self.decision_guard
+                                                .target_row_detail_evidence_manifest()
+                                                if self.decision_guard
+                                                is not None
+                                                else None
+                                            ),
+                                            "same_episode_routed_visual_evidence_contract": {
+                                                "schema_version": (
+                                                    "dated_row_visual_evidence_authority.v1"
+                                                ),
+                                                "authority": (
+                                                    "controller_bound_same_episode_current_visual_evidence"
+                                                ),
+                                                "current_screenshot_role": (
+                                                    "proves_target_date_list_context_row_count_and_top_to_bottom_order"
+                                                ),
+                                                "routed_detail_frame_role": (
+                                                    "proves_exact_requested_field_value_for_corresponding_row"
+                                                ),
+                                                "requested_field_values_must_also_appear_on_current_list": False,
+                                                "routed_frames_are_historical_memory": False,
+                                                "visit_keys_are_memory_ids": False,
+                                                "required_memory_ids": [],
+                                                "adjudication_rule": (
+                                                    "compare_each_answer_item_to_the_corresponding_ordered_routed_frame"
+                                                ),
+                                            },
                                             "dated_list_evidence": {
                                                 "target_row_centers": (
                                                     dated_assessment.get(
@@ -3610,6 +3671,10 @@ class EpisodeController:
                     is True
                 )
                 if route_target_field_images:
+                    target_row_routed_evidence_manifest = (
+                        self.decision_guard
+                        .target_row_detail_evidence_manifest()
+                    )
                     seen_context_paths = {
                         str(path.resolve())
                         for _, path in routed_context_images
@@ -3623,6 +3688,8 @@ class EpisodeController:
                         if resolved not in seen_context_paths:
                             routed_context_images.append((label, path))
                             seen_context_paths.add(resolved)
+                else:
+                    target_row_routed_evidence_manifest = None
                 evidence_outcome = previous_outcome
                 user_prompt = self._user_prompt(
                     goal=effective_task_goal,
@@ -3647,6 +3714,9 @@ class EpisodeController:
                         verified_repeat_progress
                     ),
                     target_row_progress=target_row_progress,
+                    target_row_routed_evidence_manifest=(
+                        target_row_routed_evidence_manifest
+                    ),
                 )
                 live_ui_elements = tuple(
                     getattr(state_before, "ui_elements", ()) or ()

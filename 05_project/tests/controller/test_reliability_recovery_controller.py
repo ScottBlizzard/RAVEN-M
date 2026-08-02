@@ -484,6 +484,9 @@ def test_controller_adjudicates_dated_explicit_field_answer_with_bound_crops(
         "target-row-y:0.750",
         "target-row-y:0.840",
     ]
+    guard.target_row_identity_confirmed_visit_keys = list(
+        guard.target_row_visit_keys
+    )
     guard.requested_answer_role = "activity types"
     for index, key in enumerate(guard.target_row_visit_keys):
         path = tmp_path / f"detail-{index}.png"

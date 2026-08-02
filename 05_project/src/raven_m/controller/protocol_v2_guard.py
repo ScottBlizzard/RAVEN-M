@@ -3722,10 +3722,12 @@ class ProtocolV2DecisionGuard:
     def target_row_detail_context_images(self) -> list[tuple[str, str]]:
         """Return verified requested-field crops in target-row order."""
         context_images: list[tuple[str, str]] = []
-        for frame in sorted(
+        ordered_frames = sorted(
             self.target_row_detail_frames,
             key=lambda item: str(item["visit_key"]),
-        ):
+        )
+        frame_count = len(ordered_frames)
+        for ordinal, frame in enumerate(ordered_frames, start=1):
             path = Path(str(frame["path"]))
             if not path.is_file():
                 raise RuntimeError(
@@ -3757,11 +3759,77 @@ class ProtocolV2DecisionGuard:
                 )
             context_images.append(
                 (
-                    f"DATED_TARGET_REQUESTED_FIELD {frame['visit_key']}",
+                    "DATED_TARGET_REQUESTED_FIELD "
+                    "SAME_EPISODE_CONTROLLER_BOUND "
+                    f"ROW_{ordinal}_OF_{frame_count} "
+                    f"{frame['visit_key']}",
                     str(path),
                 )
             )
         return context_images
+
+    def target_row_detail_evidence_manifest(self) -> dict[str, Any]:
+        """Describe routed frames without exposing or deriving answer text."""
+        # Reuse the context-image path and hash checks so every manifest item
+        # is guaranteed to describe the exact crop supplied to the model.
+        self.target_row_detail_context_images()
+        ordered_frames = sorted(
+            self.target_row_detail_frames,
+            key=lambda item: str(item["visit_key"]),
+        )
+        confirmed = set(self.target_row_identity_confirmed_visit_keys)
+        visited = set(self.target_row_visit_keys)
+        frame_keys = [str(frame["visit_key"]) for frame in ordered_frames]
+        if (
+            self.target_date_row_count <= 0
+            or len(ordered_frames) != self.target_date_row_count
+            or len(set(frame_keys)) != len(frame_keys)
+        ):
+            raise RuntimeError(
+                "Controller-bound target-row evidence does not contain "
+                "exactly one frame per target row."
+            )
+        if any(key not in visited for key in frame_keys):
+            raise RuntimeError(
+                "Controller-bound target-row evidence includes an "
+                "unexecuted row visit."
+            )
+        if any(key not in confirmed for key in frame_keys):
+            raise RuntimeError(
+                "Controller-bound target-row evidence includes an "
+                "identity-unconfirmed row."
+            )
+        return {
+            "schema_version": (
+                "same_episode_target_row_visual_evidence.v1"
+            ),
+            "authority": (
+                "controller_bound_same_episode_current_visual_evidence"
+            ),
+            "requested_answer_role": self.requested_answer_role,
+            "target_row_count": self.target_date_row_count,
+            "frame_count": len(ordered_frames),
+            "order": "top_to_bottom_target_date_list_order",
+            "answer_values_in_manifest": False,
+            "ordered_frames": [
+                {
+                    "ordinal": ordinal,
+                    "visit_key": str(frame["visit_key"]),
+                    "crop_sha256": str(frame["sha256"]),
+                    "requested_field_evidence_explicit": (
+                        frame.get("requested_field_evidence_explicit")
+                        is True
+                    ),
+                    "row_identity_confirmed": (
+                        str(frame["visit_key"]) in confirmed
+                    ),
+                }
+                for ordinal, frame in enumerate(
+                    ordered_frames,
+                    start=1,
+                )
+            ],
+        }
 
     def mark_input_activation_repair(
         self,
