@@ -1,0 +1,206 @@
+{
+  "schema_version": "protocol_v2_2_r76_h17_candidate_stopped.v1",
+  "decision": "r76_completed_distinct_identity_bound_field_capture_but_executor_provenance_and_visual_critic_contracts_rejected_same_episode_routed_detail_evidence",
+  "checked_at": "2026-08-02T04:07:00.1055380Z",
+  "formal_scoring": false,
+  "formal_gate_f_authorized": false,
+  "source_commit": "0231b8f0c7f9e806bf763a60d975dcc76b128b67",
+  "source_tag": "protocol-v2-2-r76-local-candidate",
+  "execution_commit": "db0bb0c90174371f9da708b719d8c3155b271072",
+  "execution_tag": "protocol-v2-2-r76-h17-candidate-package",
+  "preflight_commit": "207687c978856217536ea194600b843e3ac7f956",
+  "preflight_tag": "protocol-v2-2-r76-h17-preflight",
+  "preflight_report": {
+    "path": "reports/protocol_v2_2_r76_h17_candidate_preflight.json",
+    "sha256": "b5d7adc8596c40d83a57537a0ec1637a84b85e6bf5803970b333bc361b53b074",
+    "passed": true,
+    "model_calls": 0
+  },
+  "suite": "runs/protocol_v2_2_development/hard_micro_v2_2_seed20260730_r76_candidate_development_smoke_sequence_2",
+  "result": {
+    "valid_method_attempt_count": 1,
+    "total_attempt_count": 1,
+    "success": false,
+    "failure_code": "MODEL_OUTPUT_INVALID_AFTER_REPAIR",
+    "termination_reason": "model_output_invalid_after_repair",
+    "executed_action_count": 16,
+    "decision_attempt_count": 17,
+    "model_call_count": 31,
+    "executor_model_call_count": 22,
+    "history_model_call_count": 9,
+    "prompt_tokens": 198891,
+    "completion_tokens": 3745,
+    "configured_max_prompt_tokens": 8192,
+    "observed_max_prompt_tokens": 9889,
+    "prompt_headroom_tokens": -1697,
+    "context_cap_error_count": 1,
+    "episode_wall_time_seconds": 1233.745443,
+    "suite_cumulative_active_seconds": 1283.061999999998,
+    "readiness_observation_count": 70,
+    "readiness_retry_count": 37,
+    "reset_audit_passed": true,
+    "answer_action_count": 0,
+    "completion_adjudication_count": 1,
+    "completion_rejection_count": 1,
+    "action_adjudication_count": 1,
+    "action_rejection_count": 0,
+    "blocked_actions_executed_in_application": false
+  },
+  "infrastructure_accounting": {
+    "excluded_episode_attempt_count": 0,
+    "startup_environment_failure_count": 0,
+    "startup_environment_status": "clean",
+    "accessibility_reconnect_or_retry_warnings_observed": true,
+    "warnings_changed_method_result_classification": false,
+    "reset_audit_passed": true,
+    "model_health_after_suite": "ok",
+    "emulator_connected_after_suite": true
+  },
+  "task_progress": {
+    "target_date_reached": true,
+    "target_row_count": 2,
+    "visited_row_keys": [
+      "target-row-y:0.834",
+      "target-row-y:0.747"
+    ],
+    "identity_confirmed_row_keys": [
+      "target-row-y:0.834",
+      "target-row-y:0.747"
+    ],
+    "identity_confirmation_count": 2,
+    "identity_mismatch_count": 0,
+    "captured_detail_frame_count": 2,
+    "captured_detail_frame_keys": [
+      "target-row-y:0.834",
+      "target-row-y:0.747"
+    ],
+    "return_start_count": 2,
+    "return_navigation_count": 2,
+    "return_confirmation_count": 2,
+    "return_block_count": 0,
+    "target_row_tap_validation_count": 2,
+    "answer_association_block_count": 2,
+    "visual_answer_accept_count": 0,
+    "read_only_mutation_block_count": 0,
+    "answer_executed": false,
+    "mutation_or_save_action_executed": false
+  },
+  "identity_and_field_evidence": [
+    {
+      "visit_key": "target-row-y:0.834",
+      "entry_action_step": 6,
+      "entry_action": {
+        "type": "tap",
+        "x": 0.5,
+        "y": 0.845
+      },
+      "routed_center": 0.834375,
+      "entry_offset": 0.010625,
+      "r76_repair_normalization_used": false,
+      "identity_confirmed": true,
+      "explicit_field_step": 9,
+      "explicit_value_control_count": 1,
+      "matched_metadata_fields": [
+        "hint_text"
+      ],
+      "crop_sha256": "1bd4dec3c9fb25996be95b8e59327986c6610dea36a959450f2027c050848704",
+      "human_visual_audit": "Name Recovery day; Activity type inline skating"
+    },
+    {
+      "visit_key": "target-row-y:0.747",
+      "entry_action_step": 11,
+      "entry_action": {
+        "type": "tap",
+        "x": 0.5,
+        "y": 0.747
+      },
+      "routed_center": 0.747292,
+      "entry_offset": -0.000292,
+      "r76_repair_normalization_used": false,
+      "identity_confirmed": true,
+      "explicit_field_step": 14,
+      "explicit_value_control_count": 1,
+      "matched_metadata_fields": [
+        "hint_text"
+      ],
+      "crop_sha256": "6f30807e41f2eb51921496eac7000f0b7eae3b2e370dc69953e54de9daf75dae",
+      "human_visual_audit": "Name Skill work; Activity type cycling"
+    }
+  ],
+  "r76_mechanism_live_validation": {
+    "r75_failure_point_crossed": true,
+    "first_target_row_repair_was_already_within_exact_center_tolerance": true,
+    "first_target_row_repair_normalization_required": false,
+    "r76_normalization_live_exercised": false,
+    "r75_exact_center_guard_preserved": true,
+    "r75_distinct_identity_confirmation_live_validated": true,
+    "two_distinct_requested_field_frames_live_validated": true,
+    "nested_return_live_validated_for_both_rows": true
+  },
+  "terminal_provenance_bottleneck": {
+    "failure_step": 16,
+    "target_list_semantic_ui_sha256": "8095b9ed6872f7192aebaebd86781114778bb6aa65fe5dafddc4295e9dd535cc",
+    "context_image_sha256_in_model_order": [
+      "6f30807e41f2eb51921496eac7000f0b7eae3b2e370dc69953e54de9daf75dae",
+      "1bd4dec3c9fb25996be95b8e59327986c6610dea36a959450f2027c050848704",
+      "0bb90668c3e80ae6e0ec15b8c9d4a804bfe8db6b2bc4a3e9e24b1301d43b497f"
+    ],
+    "answer_candidate_text": "cycling, inline skating",
+    "answer_candidate_sha256": "9b85b559fe0571d33621f099ef157c01dcaf4acd15c3d05910caa23e9c6500f2",
+    "initial_executor_failure": {
+      "text_origin": "verified_memory",
+      "invalid_source_memory_ids": [
+        "target-row-y:0.747",
+        "target-row-y:0.834"
+      ],
+      "reason": "controller visit keys do not satisfy the memory-id schema and are not memory records"
+    },
+    "repair_executor_candidate": {
+      "text_origin": "current_screen",
+      "source_memory_ids": [],
+      "memory_citations": [],
+      "schema_valid": true
+    },
+    "visual_critic": {
+      "trigger": "dated_row_visual_answer_candidate",
+      "model_call_count": 2,
+      "accepted": false,
+      "verdict": "reject_completion",
+      "misclassification": "both critics described the controller-bound same-episode requested-field crops as historical screenshots that could not authorize an answer because the current target-date list lacked the field text",
+      "guard_behavior": "the answer remained blocked; the answer guard was not bypassed or weakened"
+    },
+    "root_cause": "the executor and critic authority language does not unambiguously distinguish controller-bound same-episode routed visual evidence from stale history: the executor treats visit keys as memory IDs, while the critic gives current-list absence precedence over the explicit requested-field crops even though the dated-row trigger is designed to authorize those crops"
+  },
+  "required_change": {
+    "revision": "r77",
+    "scope": "make controller-bound same-episode detail-frame authority explicit and consistent for the executor and visual critic without deterministic answer extraction or guard weakening",
+    "executor_contract": "when all routed detail frames are attached on the verified target-date list, state that visit keys are evidence handles rather than memory IDs; any answer based only on these attached images must use text_origin=current_screen with empty source_memory_ids, memory_citations, and completion memory_ids",
+    "critic_contract": "for dated_row_visual_answer_candidate, call the attached crops controller-bound same-episode routed evidence rather than historical memory and explicitly forbid requiring the requested values to also appear on the current list; the list establishes row count and order while each crop establishes the exact requested field value",
+    "payload_contract": "include an ordered answer-free frame manifest containing ordinal, visit key, crop hash, explicit-field flag, and identity-confirmed flag so the critic can audit provenance without hidden values",
+    "critic_obligation": "still reject any missing, duplicate, mismatched, unreadable, wrong-order, wrong-granularity, or title-substitution evidence and require the model to read the pixels",
+    "normalization_identity_answer_mutation_and_return_guards": "unchanged",
+    "forbidden_shortcut": "do not parse or hard-code the answer in the controller, accept from row titles, use hidden evaluator values, automatically trust critic failure, bypass the critic, or weaken answer count, identity, mutation, loop, exact-center, or nested-return guards",
+    "new_live_scope": "one fresh non-scored H17 M0 smoke only after exact r76 trace replay, critic-contract negative tests, full local validation, package freeze, and zero-call preflight"
+  },
+  "artifact_sha256": {
+    "gate_summary.json": "5a790675eac0b0e669dab15f6f5af7b4560efee7be8a8eb350fc59d11307a700",
+    "gate_progress.json": "5a790675eac0b0e669dab15f6f5af7b4560efee7be8a8eb350fc59d11307a700",
+    "manifest.snapshot.json": "e2d46823be0b8d5769c59dd14e2c82c73d672de6eaa10f4555b798353249f32d",
+    "instances.snapshot.json": "a96be7900f83b372ae5a3b16c3f6ec0828602aeb28818c16373a8ecd99d54599",
+    "startup_environment_audit.json": "d64747c5e12bacaf98f6633efa797747f353c02a75a971a6e561c55e8cf9f701",
+    "episode.json": "08d97eca72bdaff973131e89ecfe9eac13795d99e8db74a02329c9a49560a956",
+    "events.jsonl": "3300eecbb73627abc895f8e6424ae7331225c35d96f8a80b9d03c9082a326a37",
+    "memory_events.jsonl": "a3a777e0df602e146d2c560255eaa0ff0e295acb112b498723db07028dccf3c2",
+    "step_009_before.png": "567c52ae20611a30c8b2a5805e8022acf2b0a039d4ffb1421ebca7a5c1f27065",
+    "step_009_field.png": "1bd4dec3c9fb25996be95b8e59327986c6610dea36a959450f2027c050848704",
+    "step_014_before.png": "3e0b24400ec344c4b6c27d29fbadad2d94f2a6574af2b1fd6b0be5aede87003d",
+    "step_014_field.png": "6f30807e41f2eb51921496eac7000f0b7eae3b2e370dc69953e54de9daf75dae",
+    "step_016_before.png": "0bb90668c3e80ae6e0ec15b8c9d4a804bfe8db6b2bc4a3e9e24b1301d43b497f"
+  },
+  "immutability": {
+    "suite_may_be_resumed": false,
+    "suite_may_be_overwritten": false,
+    "additional_r76_attempt_authorized": false,
+    "formal_gate_f_authorized": false
+  }
+}
