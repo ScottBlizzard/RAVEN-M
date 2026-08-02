@@ -1,0 +1,151 @@
+{
+  "schema_version": "protocol_v2_2_r76_local_validation.v1",
+  "decision": "local_candidate_passed_exact_package_preflight_pending",
+  "checked_at": "2026-08-02T03:37:30.6710536Z",
+  "source_commit": "0231b8f0c7f9e806bf763a60d975dcc76b128b67",
+  "source_tag": "protocol-v2-2-r76-local-candidate",
+  "source_tag_resolves_exactly": true,
+  "formal_gate_f_authorized": false,
+  "live_development_smoke_authorized": false,
+  "parent_r75_stop": {
+    "report": "reports/protocol_v2_2_r75_h17_candidate_stopped.json",
+    "report_sha256": "ca688dfa080968300d2aff9b7d4361ab8634de7589ee88da87f47fb108d39c01",
+    "execution_stop_commit": "752e8a7a119e6190aac102c2b5345fc14423f71e",
+    "execution_stop_tag": "protocol-v2-2-r75-h17-stopped",
+    "decision": "r75_blocked_imprecise_target_row_repair_before_execution_but_generic_row_tap_contract_could_not_route_the_single_repair_to_an_exact_center",
+    "immutable": true
+  },
+  "candidate_contract": {
+    "single_change": "close both target-date row-tap repair contracts over r75 by deterministically replacing one uniquely attributable approximate repair coordinate with that same row's controller-routed exact center",
+    "model_call_budget": "the existing single model repair is retained and the normalization adds zero model calls",
+    "unique_association": "exactly one target row must fall within the pre-existing 0.055 diagnostic band; a tap whose band contains zero or multiple rows is not normalized",
+    "content_and_identity_requirements": "the repair must be a pure content-side tap and its uniquely associated row must expose row-specific identity evidence",
+    "execution_requirement": "the approximate model coordinate is never executed; the normalized action must independently pass the full r75 exact-center, identity-availability, unvisited-row, and general decision guards",
+    "audit_requirement": "parse metadata retains the original model action, routed action, row index, row center, offset, candidate indices, identity availability, and zero additional-call count",
+    "history_policy_changed": false,
+    "mutation_filter_changed": false,
+    "requested_field_guard_changed": false,
+    "answer_association_guard_changed": false,
+    "target_row_identity_guard_changed": false,
+    "nested_return_guard_changed": false,
+    "experiment_controls_changed": false,
+    "hidden_evaluator_or_answer_data_used": false,
+    "task_app_target_date_row_title_category_or_answer_special_case_used": false
+  },
+  "r75_failure_reconciliation": {
+    "recorded_initial_action": {
+      "type": "swipe",
+      "x": 0.5,
+      "y": 0.8,
+      "x2": 0.5,
+      "y2": 0.2,
+      "duration_ms": 500
+    },
+    "recorded_repair_action": {
+      "type": "tap",
+      "x": 0.5,
+      "y": 0.775
+    },
+    "verified_row_centers": [
+      0.747292,
+      0.834375
+    ],
+    "diagnostic_candidate_indices_for_recorded_repair": [
+      0
+    ],
+    "same_row_routed_action": {
+      "type": "tap",
+      "x": 0.5,
+      "y": 0.747292
+    },
+    "recorded_offset": 0.027708,
+    "original_model_call_preserved": true,
+    "additional_model_calls": 0,
+    "normalized_action_full_guard_passed": true,
+    "row_visit_key_after_normalized_replay": "target-row-y:0.747"
+  },
+  "negative_safety_coverage": [
+    "a repair lying inside two rows' diagnostic bands is not normalized",
+    "a date-side or otherwise off-content tap is not normalized",
+    "a row without identity evidence distinct from other target rows is not normalized",
+    "an already exact permitted repair passes without controller rewriting",
+    "normalization cannot reopen an already visited row",
+    "normalization cannot add state deltas, citations, completion evidence, or another model call",
+    "r75 historical package validation rejects future HEAD source drift",
+    "the protocol-v1 sealed breadth remains byte-exact"
+  ],
+  "validation": {
+    "complete_project_tests": {
+      "passed": true,
+      "collected_count": 915,
+      "passed_count": 915,
+      "failed_count": 0,
+      "duration_seconds": 235.6,
+      "scope": "05_project/tests"
+    },
+    "focused_controller_guard_and_r71_through_r76_chain": {
+      "passed": true,
+      "passed_count": 259,
+      "duration_seconds": 65.4
+    },
+    "r76_exact_r75_trace_and_negative_tests": {
+      "passed": true,
+      "passed_count": 8,
+      "test_file_sha256": "277243396bd1b1879e5f76c89383dc6b41008d3032f705a646fe79018134d73c"
+    },
+    "r75_historical_package_lifecycle": {
+      "passed": true,
+      "future_head_source_drift_rejected": true,
+      "frozen_r75_manifest_or_artifact_rewritten": false
+    },
+    "compileall": {
+      "passed": true,
+      "paths": [
+        "05_project/src",
+        "05_project/tests"
+      ]
+    },
+    "git_diff_check": {
+      "passed": true
+    },
+    "protocol_v1_seal": {
+      "passed": true,
+      "file_count": 197,
+      "failure_count": 0,
+      "rewritten": false
+    }
+  },
+  "source_sha256": {
+    "05_project/src/raven_m/controller/episode_controller.py": "8e3843ff87465d83f57e8752ff57e8e37e6b9168fd88c550b82db23d8c87fec4",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "8ce28a8580674a0542da95d5e1dad1e81dd39d057f4c3d2b4cf0328092f6ad70",
+    "05_project/src/raven_m/env/androidworld_adapter.py": "ad4ecbee9430326ca7380334c49372911a1c6b1c217ee12bb3714d2fb1219c33",
+    "05_project/scripts/run_protocol_v2_gate_f.py": "6ad52a3063f223e4f9c7fb1b4b360e7df65712e33225519b39b9f32997289bfc",
+    "05_project/src/raven_m/roles/orchestrator.py": "bb812660f1ba438f3f491b3582bf5094224585f963c13a56cddaba5cefeb3521",
+    "05_project/prompts/executor_raven_v2.md": "4810e577f19c987ee8ec875c8c5e042e6af314a7d2a409166f28dcd7d7910877",
+    "05_project/tests/scripts/test_protocol_v2_2_r75_h17_candidate.py": "8338d07f39cff906baa094bb4484cbc05860ea4084d930268ad75b62458210b5",
+    "05_project/tests/scripts/test_protocol_v2_2_r76_r75_trace_replay.py": "277243396bd1b1879e5f76c89383dc6b41008d3032f705a646fe79018134d73c"
+  },
+  "online_boundary_at_validation": {
+    "model_calls": 0,
+    "gpu_experiment_cells": 0,
+    "interpretation": "the exact r75 generic-repair dead end is closed in frozen local replay, but no r76 live smoke is authorized before a fresh exact-package zero-call preflight"
+  },
+  "next_action_boundary": {
+    "allowed": [
+      "prepare a fresh r76 H17-only development wrapper and namespace",
+      "add exact-source freeze, r75-stop prerequisite, local-report, invocation-boundary, and single-change tests",
+      "run a zero-model-call online preflight against the exact r76 package",
+      "run at most one non-scored H17 M0 smoke only after that preflight passes"
+    ],
+    "forbidden": [
+      "resume or overwrite the r75 development suite",
+      "launch any formal r76 Gate-F batch",
+      "run any r76 development sequence other than its single frozen H17 M0 cell",
+      "execute the original approximate repair coordinate",
+      "normalize a repair associated with zero or multiple target rows",
+      "normalize a date-side tap or a row without distinct identity evidence",
+      "use OCR, hidden task parameters, or the offline expected answer",
+      "modify or save the inspected application record"
+    ]
+  }
+}
