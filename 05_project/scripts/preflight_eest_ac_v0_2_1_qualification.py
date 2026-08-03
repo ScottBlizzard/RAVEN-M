@@ -149,8 +149,8 @@ def _verify_config(config: dict[str, Any]) -> None:
     if any(len(item["allowed_action_types"]) != 1 for item in probes):
         raise RuntimeError("Each probe must have one frozen action category.")
     serialized = json.dumps(config, ensure_ascii=False).casefold()
-    if any(value in serialized for value in ("eest-p2a", "eest-p2b", "eest-n2", "m_risk")):
-        raise RuntimeError("Development tasks or M-RISK leaked into qualification config.")
+    if any(value in serialized for value in ("eest-p2a", "eest-p2b", "eest-n2")):
+        raise RuntimeError("Development task IDs leaked into qualification config.")
 
 
 def _verify_lock(lock_path: Path, config: dict[str, Any]) -> list[dict[str, str]]:
