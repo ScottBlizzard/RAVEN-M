@@ -187,6 +187,19 @@ def test_shared_exact_span_parser_separates_source_field_destination() -> None:
         TaskRoleParser().parse("Do whatever seems useful.", require_transfer=True)
 
 
+def test_generic_create_with_from_grammar_uses_only_exact_spans() -> None:
+    goal = (
+        "Create a file in a writing app, called output.md with the transactions "
+        "from the receipt.png. Use an image viewer to view the receipt."
+    )
+    frame = TaskRoleParser().parse(goal, require_transfer=True)
+    assert verify_exact_spans(goal, frame)
+    assert frame.destination.text == "a file in a writing app, called output.md"
+    assert frame.requested_field.text == "the transactions"
+    assert frame.source.text == "the receipt.png"
+    assert frame.parse_rule == "create_destination_with_field_from_source"
+
+
 def test_delayed_transition_never_becomes_recovery() -> None:
     unchanged = screen("Conversation list")
     changed = screen("Avery Stone", "123 Main St", value=10)

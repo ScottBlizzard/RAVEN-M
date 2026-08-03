@@ -104,6 +104,16 @@ class TaskRoleParser:
                 _FLAGS,
             ),
         ),
+        (
+            "create_destination_with_field_from_source",
+            re.compile(
+                r"\b(?:create|write|make|prepare)\s+"
+                r"(?P<destination>.+?)\s+with\s+"
+                r"(?P<field>.+?)\s+from\s+"
+                r"(?P<source>.+?)(?=\.(?:\s|$)|;|$)",
+                _FLAGS,
+            ),
+        ),
     )
     _OPEN_PATTERN = re.compile(
         r"^open\s+(?:the\s+)?(?P<destination>.+?)\s+app(?:\b|[.])",
