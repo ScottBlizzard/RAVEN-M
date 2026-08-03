@@ -1,0 +1,60 @@
+{
+  "schema_version": "eest_ac_action_qualification.v0_2_1",
+  "study_id": "eest_ac_v0_2_1_action_qualification_20260804",
+  "run_root": "runs/eest_ac_v0_2_1_action_qualification_20260804",
+  "qualification_only": true,
+  "scored": false,
+  "arms": [],
+  "m_risk_online": false,
+  "auto_start_efficacy": false,
+  "stop_after_cells": 3,
+  "stop_on_first_hard_failure": true,
+  "model": {
+    "id": "Qwen/Qwen3-VL-32B-Instruct",
+    "revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+    "backend": "qwen3_vl_32b_transformers_bf16_4x4090_v1",
+    "temperature": 0,
+    "do_sample": false,
+    "seed": 2026080401,
+    "max_new_tokens": 256,
+    "max_calls_per_probe": 2
+  },
+  "observation": {
+    "delay_seconds": 1.0,
+    "max_post_observations": 3,
+    "require_state_change": true
+  },
+  "reset": {
+    "action": {"type": "press_home"},
+    "require_reference_a11y_match": true
+  },
+  "probes": [
+    {
+      "cell": 1,
+      "probe_id": "Q-SWIPE",
+      "seed": 2026080411,
+      "coverage_category": "swipe",
+      "allowed_action_types": ["swipe"],
+      "setup_action": null,
+      "instruction": "From the current launcher home screen, use exactly one canonical swipe action to reveal the app drawer. Choose normalized start and end coordinates from the screenshot; do not use fixed pixel coordinates."
+    },
+    {
+      "cell": 2,
+      "probe_id": "Q-OPEN-APP",
+      "seed": 2026080412,
+      "coverage_category": "app_navigation",
+      "allowed_action_types": ["open_app"],
+      "setup_action": null,
+      "instruction": "Use exactly one canonical open_app action to open Settings from the current launcher state. Do not navigate by tapping coordinates."
+    },
+    {
+      "cell": 3,
+      "probe_id": "Q-PRESS-BACK",
+      "seed": 2026080413,
+      "coverage_category": "navigation_press",
+      "allowed_action_types": ["press_back"],
+      "setup_action": {"type": "open_app", "app_name": "Settings"},
+      "instruction": "The qualification harness opened an app from the launcher. Use exactly one canonical press_back action to return to the previous launcher screen."
+    }
+  ]
+}

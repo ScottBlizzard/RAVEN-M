@@ -1,0 +1,274 @@
+{
+  "generated_artifacts_exact": true,
+  "hashes": {
+    "contract": "10f4818a5a1a47ab49a77766263be88135110a0dec6b63aa6d38afc825f536d8",
+    "prompt": "7bdcdaf9aaf9a556cca8ec914301d17d47bb4a8c9aee5d29758c0e56c7d8d397",
+    "schema": "1898c4d742eee23ef9421f963f7aed8cf74b44d387eebc74fc13af8c3e8ef23a",
+    "tokenizer_json": "a5d85b6dcc535e6b93115a9ef287e6132fdbf30270da6218194ba742261173c7"
+  },
+  "maximal_serialization": {
+    "construction": "all required action fields at schema maxima plus high-entropy maximum intent/evidence/citation fields",
+    "max_new_tokens": 256,
+    "maximum_qwen_tokens": 200,
+    "maximum_utf8_bytes": 382,
+    "rows": [
+      {
+        "qwen_tokens": 152,
+        "serialized_sha256": "eb0d8ed398982259c3e54ca64d55aefc7ffd38f7e24fb0b469cafc93b323a61a",
+        "type": "tap",
+        "under_256": true,
+        "utf8_bytes": 298
+      },
+      {
+        "qwen_tokens": 161,
+        "serialized_sha256": "8b2427c69a7f95748eff4797507cd52133798ab40f66be9b136e56627b90e928",
+        "type": "long_press",
+        "under_256": true,
+        "utf8_bytes": 324
+      },
+      {
+        "qwen_tokens": 175,
+        "serialized_sha256": "606da90c8dc05d84e9f26d07929b486338ab942e5baf6e4894a50fddc1b54af6",
+        "type": "swipe",
+        "under_256": true,
+        "utf8_bytes": 337
+      },
+      {
+        "qwen_tokens": 200,
+        "serialized_sha256": "9b72254821d2782d500429d65b838f9fe4477ee61b6b7a10382b33be313ca01f",
+        "type": "type_text",
+        "under_256": true,
+        "utf8_bytes": 382
+      },
+      {
+        "qwen_tokens": 141,
+        "serialized_sha256": "d5dbe676a1cbc5190c0c983066ed30bf0e4214e6d2b5860dbd27413e78a04545",
+        "type": "press_back",
+        "under_256": true,
+        "utf8_bytes": 289
+      },
+      {
+        "qwen_tokens": 141,
+        "serialized_sha256": "b97d1aca26c9ce24072b2c44880ede71efce4630a335177c4c8e844f58c9503d",
+        "type": "press_home",
+        "under_256": true,
+        "utf8_bytes": 289
+      },
+      {
+        "qwen_tokens": 141,
+        "serialized_sha256": "48107b6bbbfd814df50404d354c53d3317ebd935790c62be01cf0e47b489c294",
+        "type": "press_enter",
+        "under_256": true,
+        "utf8_bytes": 290
+      },
+      {
+        "qwen_tokens": 185,
+        "serialized_sha256": "1d6b3acc56127b643ef1b7bef62b484325aaa64c02c30a83af71406016cee85a",
+        "type": "open_app",
+        "under_256": true,
+        "utf8_bytes": 350
+      },
+      {
+        "qwen_tokens": 194,
+        "serialized_sha256": "522b1e1ff95f684494770df44e3c303965308e7e203218d15bd7725721ec2aaf",
+        "type": "answer",
+        "under_256": true,
+        "utf8_bytes": 357
+      },
+      {
+        "qwen_tokens": 148,
+        "serialized_sha256": "e0f06d4b9e84b613c68ccdd84bbd5f3cee7660ddedd61a0273e236a7a2553941",
+        "type": "wait",
+        "under_256": true,
+        "utf8_bytes": 302
+      }
+    ]
+  },
+  "model_id": "Qwen/Qwen3-VL-32B-Instruct",
+  "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+  "prompt_matrix": [
+    {
+      "syntax_and_example_present": true,
+      "type": "tap"
+    },
+    {
+      "syntax_and_example_present": true,
+      "type": "long_press"
+    },
+    {
+      "syntax_and_example_present": true,
+      "type": "swipe"
+    },
+    {
+      "syntax_and_example_present": true,
+      "type": "type_text"
+    },
+    {
+      "syntax_and_example_present": true,
+      "type": "press_back"
+    },
+    {
+      "syntax_and_example_present": true,
+      "type": "press_home"
+    },
+    {
+      "syntax_and_example_present": true,
+      "type": "press_enter"
+    },
+    {
+      "syntax_and_example_present": true,
+      "type": "open_app"
+    },
+    {
+      "syntax_and_example_present": true,
+      "type": "answer"
+    },
+    {
+      "syntax_and_example_present": true,
+      "type": "wait"
+    }
+  ],
+  "schema_adapter_matrix": [
+    {
+      "adapter_actual": "click",
+      "adapter_conformant": true,
+      "adapter_expected": "click",
+      "optional": [],
+      "phase": "continue",
+      "required": [
+        "type",
+        "x",
+        "y"
+      ],
+      "schema_accepts_example": true,
+      "type": "tap"
+    },
+    {
+      "adapter_actual": "adb_long_press",
+      "adapter_conformant": true,
+      "adapter_expected": "adb_long_press",
+      "optional": [],
+      "phase": "continue",
+      "required": [
+        "type",
+        "x",
+        "y",
+        "duration_ms"
+      ],
+      "schema_accepts_example": true,
+      "type": "long_press"
+    },
+    {
+      "adapter_actual": "adb_swipe",
+      "adapter_conformant": true,
+      "adapter_expected": "adb_swipe",
+      "optional": [],
+      "phase": "continue",
+      "required": [
+        "type",
+        "x",
+        "y",
+        "x2",
+        "y2",
+        "duration_ms"
+      ],
+      "schema_accepts_example": true,
+      "type": "swipe"
+    },
+    {
+      "adapter_actual": "input_text",
+      "adapter_conformant": true,
+      "adapter_expected": "input_text",
+      "optional": [
+        "x",
+        "y"
+      ],
+      "phase": "continue",
+      "required": [
+        "type",
+        "text",
+        "clear_text"
+      ],
+      "schema_accepts_example": true,
+      "type": "type_text"
+    },
+    {
+      "adapter_actual": "navigate_back",
+      "adapter_conformant": true,
+      "adapter_expected": "navigate_back",
+      "optional": [],
+      "phase": "continue",
+      "required": [
+        "type"
+      ],
+      "schema_accepts_example": true,
+      "type": "press_back"
+    },
+    {
+      "adapter_actual": "navigate_home",
+      "adapter_conformant": true,
+      "adapter_expected": "navigate_home",
+      "optional": [],
+      "phase": "continue",
+      "required": [
+        "type"
+      ],
+      "schema_accepts_example": true,
+      "type": "press_home"
+    },
+    {
+      "adapter_actual": "keyboard_enter",
+      "adapter_conformant": true,
+      "adapter_expected": "keyboard_enter",
+      "optional": [],
+      "phase": "continue",
+      "required": [
+        "type"
+      ],
+      "schema_accepts_example": true,
+      "type": "press_enter"
+    },
+    {
+      "adapter_actual": "open_app",
+      "adapter_conformant": true,
+      "adapter_expected": "open_app",
+      "optional": [],
+      "phase": "continue",
+      "required": [
+        "type",
+        "app_name"
+      ],
+      "schema_accepts_example": true,
+      "type": "open_app"
+    },
+    {
+      "adapter_actual": "interaction_cache_answer",
+      "adapter_conformant": true,
+      "adapter_expected": "interaction_cache_answer",
+      "optional": [],
+      "phase": "done",
+      "required": [
+        "type",
+        "text"
+      ],
+      "schema_accepts_example": true,
+      "type": "answer"
+    },
+    {
+      "adapter_actual": "sleep",
+      "adapter_conformant": true,
+      "adapter_expected": "sleep",
+      "optional": [],
+      "phase": "continue",
+      "required": [
+        "type",
+        "duration_ms"
+      ],
+      "schema_accepts_example": true,
+      "type": "wait"
+    }
+  ],
+  "schema_version": "eest_ac_action_contract_audit.v0_2_1",
+  "status": "pass",
+  "zero_model_generation_calls": 0
+}
