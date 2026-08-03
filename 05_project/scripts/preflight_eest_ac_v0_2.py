@@ -132,11 +132,18 @@ def _source_isolation() -> dict[str, Any]:
 def _implementation_hashes() -> dict[str, str]:
     paths = [
         *_production_paths(),
+        PROJECT_ROOT / "src/raven_m/eest_ac/models.py",
+        PROJECT_ROOT / "src/raven_m/eest_ac/risk.py",
+        PROJECT_ROOT / "src/raven_m/eest_ac/schema.py",
+        PROJECT_ROOT / "src/raven_m/eest_ac/state.py",
+        PROJECT_ROOT / "src/raven_m/env/androidworld_adapter.py",
+        PROJECT_ROOT / "src/raven_m/models/transformers_client.py",
         PROJECT_ROOT / "schemas/eest_ac_decision.v0_2.schema.json",
         PROJECT_ROOT / "prompts/eest_ac/executor_v0_2.md",
         PROJECT_ROOT / "prompts/eest_ac/summary_v0_1.md",
         PROJECT_ROOT / "scripts/preflight_eest_ac_v0_2.py",
         PROJECT_ROOT / "scripts/run_eest_ac_v0_2.py",
+        LOCAL_RUNTIME / "scripts/androidworld_compat.py",
     ]
     return {
         str(path.relative_to(REPOSITORY_ROOT)).replace("\\", "/"): sha256(path.read_bytes()).hexdigest()
