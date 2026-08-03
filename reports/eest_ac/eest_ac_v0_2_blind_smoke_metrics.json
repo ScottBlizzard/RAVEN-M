@@ -1,0 +1,1024 @@
+{
+  "arm_aggregates": {
+    "B3": {
+      "auxiliary_calls": 0,
+      "cells": 3,
+      "completion_tokens": 326,
+      "eligible_opportunities": 0,
+      "environment_actions": 0,
+      "executor_calls": 6,
+      "model_calls": 6,
+      "planned_auxiliary_calls": 0,
+      "prompt_tokens": 19372,
+      "realized_auxiliary_calls": 0,
+      "recovery_records": 0,
+      "repeated_action_blocks": 0,
+      "successes": 0,
+      "total_tokens": 19698,
+      "wall_time_seconds": 125.81200000000536
+    },
+    "B3_MATCH": {
+      "auxiliary_calls": 0,
+      "cells": 3,
+      "completion_tokens": 282,
+      "eligible_opportunities": 0,
+      "environment_actions": 0,
+      "executor_calls": 6,
+      "model_calls": 6,
+      "planned_auxiliary_calls": 0,
+      "prompt_tokens": 19306,
+      "realized_auxiliary_calls": 0,
+      "recovery_records": 0,
+      "repeated_action_blocks": 0,
+      "successes": 0,
+      "total_tokens": 19588,
+      "wall_time_seconds": 178.40600000000268
+    },
+    "M_SLOTS": {
+      "auxiliary_calls": 0,
+      "cells": 3,
+      "completion_tokens": 282,
+      "eligible_opportunities": 0,
+      "environment_actions": 0,
+      "executor_calls": 6,
+      "model_calls": 6,
+      "planned_auxiliary_calls": 0,
+      "prompt_tokens": 19342,
+      "realized_auxiliary_calls": 0,
+      "recovery_records": 0,
+      "repeated_action_blocks": 0,
+      "successes": 0,
+      "total_tokens": 19624,
+      "wall_time_seconds": 118.74900000001071
+    }
+  },
+  "b3_match_fairness": {
+    "by_cell": [
+      {
+        "arm": "B3_MATCH",
+        "cell": 1,
+        "eligible": 0,
+        "missed": 0,
+        "planned": 0,
+        "realized": 0,
+        "task_key": "EEST-P2A",
+        "total_raw_calls": 2
+      },
+      {
+        "arm": "B3",
+        "cell": 2,
+        "eligible": 0,
+        "missed": 0,
+        "planned": 0,
+        "realized": 0,
+        "task_key": "EEST-P2B",
+        "total_raw_calls": 2
+      },
+      {
+        "arm": "B3",
+        "cell": 3,
+        "eligible": 0,
+        "missed": 0,
+        "planned": 0,
+        "realized": 0,
+        "task_key": "EEST-P2A",
+        "total_raw_calls": 2
+      },
+      {
+        "arm": "B3",
+        "cell": 4,
+        "eligible": 0,
+        "missed": 0,
+        "planned": 0,
+        "realized": 0,
+        "task_key": "EEST-N2",
+        "total_raw_calls": 2
+      },
+      {
+        "arm": "M_SLOTS",
+        "cell": 5,
+        "eligible": 0,
+        "missed": 0,
+        "planned": 0,
+        "realized": 0,
+        "task_key": "EEST-P2B",
+        "total_raw_calls": 2
+      },
+      {
+        "arm": "B3_MATCH",
+        "cell": 6,
+        "eligible": 0,
+        "missed": 0,
+        "planned": 0,
+        "realized": 0,
+        "task_key": "EEST-N2",
+        "total_raw_calls": 2
+      },
+      {
+        "arm": "B3_MATCH",
+        "cell": 7,
+        "eligible": 0,
+        "missed": 0,
+        "planned": 0,
+        "realized": 0,
+        "task_key": "EEST-P2B",
+        "total_raw_calls": 2
+      },
+      {
+        "arm": "M_SLOTS",
+        "cell": 8,
+        "eligible": 0,
+        "missed": 0,
+        "planned": 0,
+        "realized": 0,
+        "task_key": "EEST-N2",
+        "total_raw_calls": 2
+      },
+      {
+        "arm": "M_SLOTS",
+        "cell": 9,
+        "eligible": 0,
+        "missed": 0,
+        "planned": 0,
+        "realized": 0,
+        "task_key": "EEST-P2A",
+        "total_raw_calls": 2
+      }
+    ],
+    "first_proposal_divergence": {
+      "EEST-N2": {
+        "diverged_before_execution": false,
+        "executed_actions_before_failure": 0,
+        "first_proposed_actions": {
+          "B3": {
+            "dx": 0,
+            "dy": 0.5,
+            "type": "swipe",
+            "x": 0.5,
+            "y": 0.75
+          },
+          "B3_MATCH": {
+            "dx": 0,
+            "dy": 0.5,
+            "type": "swipe",
+            "x": 0.5,
+            "y": 0.75
+          },
+          "M_SLOTS": {
+            "dx": 0,
+            "dy": 0.5,
+            "type": "swipe",
+            "x": 0.5,
+            "y": 0.75
+          }
+        },
+        "interpretation": "All arms proposed the same invalid first action; no environment action was executed.",
+        "unique_first_proposals": 1
+      },
+      "EEST-P2A": {
+        "diverged_before_execution": true,
+        "executed_actions_before_failure": 0,
+        "first_proposed_actions": {
+          "B3": {
+            "direction": "up",
+            "distance": 0.5,
+            "type": "swipe",
+            "x": 0.5,
+            "y": 0.75
+          },
+          "B3_MATCH": {
+            "key": "recent_app",
+            "type": "press"
+          },
+          "M_SLOTS": {
+            "key": "recent_app",
+            "type": "press"
+          }
+        },
+        "interpretation": "The first raw executor proposals differed before any environment action was accepted. This is model-output branching, not an executed-trajectory or memory-effect divergence.",
+        "unique_first_proposals": 2
+      },
+      "EEST-P2B": {
+        "diverged_before_execution": true,
+        "executed_actions_before_failure": 0,
+        "first_proposed_actions": {
+          "B3": {
+            "dx": 0,
+            "dy": 0.25,
+            "type": "swipe",
+            "x": 0.5,
+            "y": 0.75
+          },
+          "B3_MATCH": {
+            "direction": "up",
+            "distance": 0.25,
+            "type": "swipe",
+            "x": 0.5,
+            "y": 0.75
+          },
+          "M_SLOTS": {
+            "dx": 0,
+            "dy": 0.25,
+            "type": "swipe",
+            "x": 0.5,
+            "y": 0.75
+          }
+        },
+        "interpretation": "The first raw executor proposals differed before any environment action was accepted. This is model-output branching, not an executed-trajectory or memory-effect divergence.",
+        "unique_first_proposals": 2
+      }
+    },
+    "interpretation": "Eligible/planned/realized auxiliary calls were 0/0/0 in every cell. The identical two raw calls per cell were executor plus repair calls on a shared invalid-output path, not evidence that realized matched-memory usage is generally equal."
+  },
+  "batch": {
+    "cell_count": 9,
+    "completed_at_utc": "2026-08-03T15:39:01.283242+00:00",
+    "runner_stop_reason": "preregistered_nine_cell_batch_complete_no_auto_expand",
+    "sum_cell_wall_time_seconds": 422.96700000001874,
+    "trajectory_blind_lock_released": true
+  },
+  "batch_complete_sha256": "d920aaf1e11b5b53432639880c55fad504e1f9560c59bb98a0d0b3c55c9e8d67",
+  "cells": [
+    {
+      "arm": "B3_MATCH",
+      "auxiliary_calls": 0,
+      "binding": {
+        "destination_role_retention": "missing",
+        "source_field_value_capture": "missing",
+        "value_to_destination_action": "not_attempted"
+      },
+      "cell": 1,
+      "completion_fn": false,
+      "completion_fp": false,
+      "completion_tokens": 66,
+      "completion_tp": false,
+      "context_cap_respected": true,
+      "different_class_after_recovery": 0,
+      "eligible_opportunities": 0,
+      "environment_actions": 0,
+      "error_message": "action: {'type': 'press', 'key': 'recent_app'} is not valid under any of the given schemas; action: {'type': 'press', 'key': 'recent_app'} is not valid under any of the given schemas",
+      "error_type": "EestDecisionValidationError",
+      "evaluator_result_present": true,
+      "evaluator_reward": 0.0,
+      "evaluator_status": "ran_after_controller_error",
+      "evidence_records": 0,
+      "executor_calls": 2,
+      "failure_class": "model_or_controller_invalid",
+      "goal_records": 1,
+      "h3_correct": false,
+      "invented_requirements": 0,
+      "max_prompt_tokens": 3267,
+      "missed_auxiliary_calls": 0,
+      "model_call_accounting_valid": true,
+      "model_call_attempt_count": 2,
+      "model_call_record_count": 2,
+      "model_calls": 2,
+      "planned_auxiliary_calls": 0,
+      "prompt_tokens": 6434,
+      "realized_auxiliary_calls": 0,
+      "recovery_records": 0,
+      "repeated_action_blocks": 0,
+      "role": "cross_page_positive",
+      "schema_truncation_count": 0,
+      "task_class": "SimpleSmsSendClipboardContent",
+      "task_key": "EEST-P2A",
+      "task_success": false,
+      "termination_reason": "model_or_controller_invalid",
+      "total_tokens": 6500,
+      "wall_time_seconds": 101.95300000000134
+    },
+    {
+      "arm": "B3",
+      "auxiliary_calls": 0,
+      "binding": {
+        "destination_role_retention": "missing",
+        "source_field_value_capture": "missing",
+        "value_to_destination_action": "not_attempted"
+      },
+      "cell": 2,
+      "completion_fn": false,
+      "completion_fp": false,
+      "completion_tokens": 110,
+      "completion_tp": false,
+      "context_cap_respected": true,
+      "different_class_after_recovery": 0,
+      "eligible_opportunities": 0,
+      "environment_actions": 0,
+      "error_message": "action: {'type': 'swipe', 'x': 0.5, 'y': 0.75, 'dx': 0, 'dy': 0.25} is not valid under any of the given schemas; action: {'type': 'swipe', 'x': 0.5, 'y': 0.75, 'dx': 0, 'dy': 0.25} is not valid under any of the given schemas",
+      "error_type": "EestDecisionValidationError",
+      "evaluator_result_present": true,
+      "evaluator_reward": 0.0,
+      "evaluator_status": "ran_after_controller_error",
+      "evidence_records": 0,
+      "executor_calls": 2,
+      "failure_class": "model_or_controller_invalid",
+      "goal_records": 1,
+      "h3_correct": false,
+      "invented_requirements": 0,
+      "max_prompt_tokens": 3350,
+      "missed_auxiliary_calls": 0,
+      "model_call_accounting_valid": true,
+      "model_call_attempt_count": 2,
+      "model_call_record_count": 2,
+      "model_calls": 2,
+      "planned_auxiliary_calls": 0,
+      "prompt_tokens": 6526,
+      "realized_auxiliary_calls": 0,
+      "recovery_records": 0,
+      "repeated_action_blocks": 0,
+      "role": "cross_page_positive",
+      "schema_truncation_count": 0,
+      "task_class": "MarkorTranscribeReceipt",
+      "task_key": "EEST-P2B",
+      "task_success": false,
+      "termination_reason": "model_or_controller_invalid",
+      "total_tokens": 6636,
+      "wall_time_seconds": 40.90600000000268
+    },
+    {
+      "arm": "B3",
+      "auxiliary_calls": 0,
+      "binding": {
+        "destination_role_retention": "missing",
+        "source_field_value_capture": "missing",
+        "value_to_destination_action": "not_attempted"
+      },
+      "cell": 3,
+      "completion_fn": false,
+      "completion_fp": false,
+      "completion_tokens": 110,
+      "completion_tp": false,
+      "context_cap_respected": true,
+      "different_class_after_recovery": 0,
+      "eligible_opportunities": 0,
+      "environment_actions": 0,
+      "error_message": "action: {'type': 'swipe', 'x': 0.5, 'y': 0.75, 'direction': 'up', 'distance': 0.5} is not valid under any of the given schemas; action: {'type': 'swipe', 'x': 0.5, 'y': 0.75, 'direction': 'up', 'distance': 0.5} is not valid under any of the given schemas",
+      "error_type": "EestDecisionValidationError",
+      "evaluator_result_present": true,
+      "evaluator_reward": 0.0,
+      "evaluator_status": "ran_after_controller_error",
+      "evidence_records": 0,
+      "executor_calls": 2,
+      "failure_class": "model_or_controller_invalid",
+      "goal_records": 1,
+      "h3_correct": false,
+      "invented_requirements": 0,
+      "max_prompt_tokens": 3338,
+      "missed_auxiliary_calls": 0,
+      "model_call_accounting_valid": true,
+      "model_call_attempt_count": 2,
+      "model_call_record_count": 2,
+      "model_calls": 2,
+      "planned_auxiliary_calls": 0,
+      "prompt_tokens": 6504,
+      "realized_auxiliary_calls": 0,
+      "recovery_records": 0,
+      "repeated_action_blocks": 0,
+      "role": "cross_page_positive",
+      "schema_truncation_count": 0,
+      "task_class": "SimpleSmsSendClipboardContent",
+      "task_key": "EEST-P2A",
+      "task_success": false,
+      "termination_reason": "model_or_controller_invalid",
+      "total_tokens": 6614,
+      "wall_time_seconds": 52.875
+    },
+    {
+      "arm": "B3",
+      "auxiliary_calls": 0,
+      "binding": null,
+      "cell": 4,
+      "completion_fn": false,
+      "completion_fp": false,
+      "completion_tokens": 106,
+      "completion_tp": false,
+      "context_cap_respected": true,
+      "different_class_after_recovery": 0,
+      "eligible_opportunities": 0,
+      "environment_actions": 0,
+      "error_message": "action: {'type': 'swipe', 'x': 0.5, 'y': 0.75, 'dx': 0, 'dy': 0.5} is not valid under any of the given schemas; action: {'type': 'swipe', 'x': 0.5, 'y': 0.75, 'dx': 0, 'dy': 0.5} is not valid under any of the given schemas",
+      "error_type": "EestDecisionValidationError",
+      "evaluator_result_present": true,
+      "evaluator_reward": 0.0,
+      "evaluator_status": "ran_after_controller_error",
+      "evidence_records": 0,
+      "executor_calls": 2,
+      "failure_class": "model_or_controller_invalid",
+      "goal_records": 1,
+      "h3_correct": false,
+      "invented_requirements": 0,
+      "max_prompt_tokens": 3256,
+      "missed_auxiliary_calls": 0,
+      "model_call_accounting_valid": true,
+      "model_call_attempt_count": 2,
+      "model_call_record_count": 2,
+      "model_calls": 2,
+      "planned_auxiliary_calls": 0,
+      "prompt_tokens": 6342,
+      "realized_auxiliary_calls": 0,
+      "recovery_records": 0,
+      "repeated_action_blocks": 0,
+      "role": "negative_control",
+      "schema_truncation_count": 0,
+      "task_class": "ClockStopWatchRunning",
+      "task_key": "EEST-N2",
+      "task_success": false,
+      "termination_reason": "model_or_controller_invalid",
+      "total_tokens": 6448,
+      "wall_time_seconds": 32.03100000000268
+    },
+    {
+      "arm": "M_SLOTS",
+      "auxiliary_calls": 0,
+      "binding": {
+        "destination_role_retention": "missing",
+        "source_field_value_capture": "missing",
+        "value_to_destination_action": "not_attempted"
+      },
+      "cell": 5,
+      "completion_fn": false,
+      "completion_fp": false,
+      "completion_tokens": 110,
+      "completion_tp": false,
+      "context_cap_respected": true,
+      "different_class_after_recovery": 0,
+      "eligible_opportunities": 0,
+      "environment_actions": 0,
+      "error_message": "action: {'type': 'swipe', 'x': 0.5, 'y': 0.75, 'dx': 0, 'dy': 0.25} is not valid under any of the given schemas; action: {'type': 'swipe', 'x': 0.5, 'y': 0.75, 'dx': 0, 'dy': 0.25} is not valid under any of the given schemas",
+      "error_type": "EestDecisionValidationError",
+      "evaluator_result_present": true,
+      "evaluator_reward": 0.0,
+      "evaluator_status": "ran_after_controller_error",
+      "evidence_records": 0,
+      "executor_calls": 2,
+      "failure_class": "model_or_controller_invalid",
+      "goal_records": 1,
+      "h3_correct": false,
+      "invented_requirements": 0,
+      "max_prompt_tokens": 3357,
+      "missed_auxiliary_calls": 0,
+      "model_call_accounting_valid": true,
+      "model_call_attempt_count": 2,
+      "model_call_record_count": 2,
+      "model_calls": 2,
+      "planned_auxiliary_calls": 0,
+      "prompt_tokens": 6540,
+      "realized_auxiliary_calls": 0,
+      "recovery_records": 0,
+      "repeated_action_blocks": 0,
+      "role": "cross_page_positive",
+      "schema_truncation_count": 0,
+      "task_class": "MarkorTranscribeReceipt",
+      "task_key": "EEST-P2B",
+      "task_success": false,
+      "termination_reason": "model_or_controller_invalid",
+      "total_tokens": 6650,
+      "wall_time_seconds": 46.984000000004016
+    },
+    {
+      "arm": "B3_MATCH",
+      "auxiliary_calls": 0,
+      "binding": null,
+      "cell": 6,
+      "completion_fn": false,
+      "completion_fp": false,
+      "completion_tokens": 106,
+      "completion_tp": false,
+      "context_cap_respected": true,
+      "different_class_after_recovery": 0,
+      "eligible_opportunities": 0,
+      "environment_actions": 0,
+      "error_message": "action: {'type': 'swipe', 'x': 0.5, 'y': 0.75, 'dx': 0, 'dy': 0.5} is not valid under any of the given schemas; action: {'type': 'swipe', 'x': 0.5, 'y': 0.75, 'dx': 0, 'dy': 0.5} is not valid under any of the given schemas",
+      "error_type": "EestDecisionValidationError",
+      "evaluator_result_present": true,
+      "evaluator_reward": 0.0,
+      "evaluator_status": "ran_after_controller_error",
+      "evidence_records": 0,
+      "executor_calls": 2,
+      "failure_class": "model_or_controller_invalid",
+      "goal_records": 1,
+      "h3_correct": false,
+      "invented_requirements": 0,
+      "max_prompt_tokens": 3257,
+      "missed_auxiliary_calls": 0,
+      "model_call_accounting_valid": true,
+      "model_call_attempt_count": 2,
+      "model_call_record_count": 2,
+      "model_calls": 2,
+      "planned_auxiliary_calls": 0,
+      "prompt_tokens": 6344,
+      "realized_auxiliary_calls": 0,
+      "recovery_records": 0,
+      "repeated_action_blocks": 0,
+      "role": "negative_control",
+      "schema_truncation_count": 0,
+      "task_class": "ClockStopWatchRunning",
+      "task_key": "EEST-N2",
+      "task_success": false,
+      "termination_reason": "model_or_controller_invalid",
+      "total_tokens": 6450,
+      "wall_time_seconds": 35.125
+    },
+    {
+      "arm": "B3_MATCH",
+      "auxiliary_calls": 0,
+      "binding": {
+        "destination_role_retention": "missing",
+        "source_field_value_capture": "missing",
+        "value_to_destination_action": "not_attempted"
+      },
+      "cell": 7,
+      "completion_fn": false,
+      "completion_fp": false,
+      "completion_tokens": 110,
+      "completion_tp": false,
+      "context_cap_respected": true,
+      "different_class_after_recovery": 0,
+      "eligible_opportunities": 0,
+      "environment_actions": 0,
+      "error_message": "action: {'type': 'swipe', 'x': 0.5, 'y': 0.75, 'direction': 'up', 'distance': 0.25} is not valid under any of the given schemas; action: {'type': 'swipe', 'x': 0.5, 'y': 0.75, 'direction': 'up', 'distance': 0.25} is not valid under any of the given schemas",
+      "error_type": "EestDecisionValidationError",
+      "evaluator_result_present": true,
+      "evaluator_reward": 0.0,
+      "evaluator_status": "ran_after_controller_error",
+      "evidence_records": 0,
+      "executor_calls": 2,
+      "failure_class": "model_or_controller_invalid",
+      "goal_records": 1,
+      "h3_correct": false,
+      "invented_requirements": 0,
+      "max_prompt_tokens": 3351,
+      "missed_auxiliary_calls": 0,
+      "model_call_accounting_valid": true,
+      "model_call_attempt_count": 2,
+      "model_call_record_count": 2,
+      "model_calls": 2,
+      "planned_auxiliary_calls": 0,
+      "prompt_tokens": 6528,
+      "realized_auxiliary_calls": 0,
+      "recovery_records": 0,
+      "repeated_action_blocks": 0,
+      "role": "cross_page_positive",
+      "schema_truncation_count": 0,
+      "task_class": "MarkorTranscribeReceipt",
+      "task_key": "EEST-P2B",
+      "task_success": false,
+      "termination_reason": "model_or_controller_invalid",
+      "total_tokens": 6638,
+      "wall_time_seconds": 41.32800000000134
+    },
+    {
+      "arm": "M_SLOTS",
+      "auxiliary_calls": 0,
+      "binding": null,
+      "cell": 8,
+      "completion_fn": false,
+      "completion_fp": false,
+      "completion_tokens": 106,
+      "completion_tp": false,
+      "context_cap_respected": true,
+      "different_class_after_recovery": 0,
+      "eligible_opportunities": 0,
+      "environment_actions": 0,
+      "error_message": "action: {'type': 'swipe', 'x': 0.5, 'y': 0.75, 'dx': 0, 'dy': 0.5} is not valid under any of the given schemas; action: {'type': 'swipe', 'x': 0.5, 'y': 0.75, 'dx': 0, 'dy': 0.5} is not valid under any of the given schemas",
+      "error_type": "EestDecisionValidationError",
+      "evaluator_result_present": true,
+      "evaluator_reward": 0.0,
+      "evaluator_status": "ran_after_controller_error",
+      "evidence_records": 0,
+      "executor_calls": 2,
+      "failure_class": "model_or_controller_invalid",
+      "goal_records": 1,
+      "h3_correct": false,
+      "invented_requirements": 0,
+      "max_prompt_tokens": 3263,
+      "missed_auxiliary_calls": 0,
+      "model_call_accounting_valid": true,
+      "model_call_attempt_count": 2,
+      "model_call_record_count": 2,
+      "model_calls": 2,
+      "planned_auxiliary_calls": 0,
+      "prompt_tokens": 6356,
+      "realized_auxiliary_calls": 0,
+      "recovery_records": 0,
+      "repeated_action_blocks": 0,
+      "role": "negative_control",
+      "schema_truncation_count": 0,
+      "task_class": "ClockStopWatchRunning",
+      "task_key": "EEST-N2",
+      "task_success": false,
+      "termination_reason": "model_or_controller_invalid",
+      "total_tokens": 6462,
+      "wall_time_seconds": 30.968000000000757
+    },
+    {
+      "arm": "M_SLOTS",
+      "auxiliary_calls": 0,
+      "binding": {
+        "destination_role_retention": "missing",
+        "source_field_value_capture": "missing",
+        "value_to_destination_action": "not_attempted"
+      },
+      "cell": 9,
+      "completion_fn": false,
+      "completion_fp": false,
+      "completion_tokens": 66,
+      "completion_tp": false,
+      "context_cap_respected": true,
+      "different_class_after_recovery": 0,
+      "eligible_opportunities": 0,
+      "environment_actions": 0,
+      "error_message": "action: {'type': 'press', 'key': 'recent_app'} is not valid under any of the given schemas; action: {'type': 'press', 'key': 'recent_app'} is not valid under any of the given schemas",
+      "error_type": "EestDecisionValidationError",
+      "evaluator_result_present": true,
+      "evaluator_reward": 0.0,
+      "evaluator_status": "ran_after_controller_error",
+      "evidence_records": 0,
+      "executor_calls": 2,
+      "failure_class": "model_or_controller_invalid",
+      "goal_records": 1,
+      "h3_correct": false,
+      "invented_requirements": 0,
+      "max_prompt_tokens": 3273,
+      "missed_auxiliary_calls": 0,
+      "model_call_accounting_valid": true,
+      "model_call_attempt_count": 2,
+      "model_call_record_count": 2,
+      "model_calls": 2,
+      "planned_auxiliary_calls": 0,
+      "prompt_tokens": 6446,
+      "realized_auxiliary_calls": 0,
+      "recovery_records": 0,
+      "repeated_action_blocks": 0,
+      "role": "cross_page_positive",
+      "schema_truncation_count": 0,
+      "task_class": "SimpleSmsSendClipboardContent",
+      "task_key": "EEST-P2A",
+      "task_success": false,
+      "termination_reason": "model_or_controller_invalid",
+      "total_tokens": 6512,
+      "wall_time_seconds": 40.79700000000594
+    }
+  ],
+  "claim_evidence_verdict": {
+    "V2-C1": "Mechanical replay evidence passes; no live Recovery admission occurred, so live confirmation is unexercised.",
+    "V2-C10": "Out of scope as preregistered; M-RISK had no live cells.",
+    "V2-C2": "Mechanical replay evidence passes; no live block or recovery denominator occurred.",
+    "V2-C3": "Supported: shared exact-span frames match 6/6 positive episode initializations (18/18 roles); this is parser evidence only.",
+    "V2-C4": "Unsupported/unmeasured online: M-SLOTS H1 is missing in 2/2 positives because execution never began.",
+    "V2-C5": "Unsupported/unmeasured online: M-SLOTS H2 is missing in 2/2 positives; parser destination spans are not retention evidence.",
+    "V2-C6": "Unsupported and continuation criterion failed: zero positive success and zero H3 paired wins.",
+    "V2-C7": "Policy/ceiling configuration remains frozen, but live usefulness is unexercised: all cells had 0 eligible opportunities and 0 auxiliary calls.",
+    "V2-C8": "Not demonstrated: all three negative-control cells failed before the first action, so no satisfied stable screen reached completion policy.",
+    "V2-C9": "Supported in this batch: zero truncations, 18/18 raw calls counted, and evaluator results in 9/9 cells."
+  },
+  "completion": {
+    "fn": 0,
+    "fp": 0,
+    "interpretation": "Undefined precision/recall: no episode predicted completion and no task succeeded.",
+    "precision": null,
+    "recall": null,
+    "tp": 0
+  },
+  "continuation_conditions": {
+    "all_positive_controller_floor": {
+      "observation": "All 6 positive cells across all 3 arms failed.",
+      "triggered": true
+    },
+    "decision": "STOP_MEMORY_EFFICACY_REPAIR_SHARED_ACTION_INTERFACE",
+    "integrity_gate": {
+      "observation": "0 truncations; 18 calls equal 18 records/attempts; 9/9 evaluator results.",
+      "passed": true
+    },
+    "m_risk_exclusion": {
+      "observation": "M-RISK remained offline-only and must remain excluded until a non-floor M-SLOTS signal exists.",
+      "passed": true
+    },
+    "m_slots_h3_paired_win": {
+      "observation": "win/loss/tie = 0/0/2.",
+      "passed": false
+    },
+    "m_slots_positive_signal": {
+      "observation": "M-SLOTS 0/2; B3-MATCH 0/2.",
+      "passed": false
+    },
+    "m_slots_zero_net_win_stop": {
+      "observation": "net paired task-success wins=0.",
+      "triggered": true
+    },
+    "negative_control": {
+      "observation": "completion=False; actions=0; token change=0.001860.",
+      "passed": false
+    },
+    "overall_expand_to_48": false
+  },
+  "hard_gates": {
+    "complete_raw_call_accounting": true,
+    "evaluator_result_every_cell": true,
+    "no_schema_truncation": true,
+    "passed": true
+  },
+  "negative_control_cost": {
+    "B3_vs_B3_MATCH": {
+      "environment_actions": {
+        "baseline": 0,
+        "relative_change": null,
+        "treatment": 0
+      },
+      "model_calls": {
+        "baseline": 2,
+        "relative_change": 0.0,
+        "treatment": 2
+      },
+      "total_tokens": {
+        "baseline": 6450,
+        "relative_change": -0.000310077519379845,
+        "treatment": 6448
+      },
+      "wall_time_seconds": {
+        "baseline": 35.125,
+        "relative_change": -0.08808540925259281,
+        "treatment": 32.03100000000268
+      }
+    },
+    "M_SLOTS_vs_B3_MATCH": {
+      "environment_actions": {
+        "baseline": 0,
+        "relative_change": null,
+        "treatment": 0
+      },
+      "model_calls": {
+        "baseline": 2,
+        "relative_change": 0.0,
+        "treatment": 2
+      },
+      "total_tokens": {
+        "baseline": 6450,
+        "relative_change": 0.0018604651162790699,
+        "treatment": 6462
+      },
+      "wall_time_seconds": {
+        "baseline": 35.125,
+        "relative_change": -0.11834875444837703,
+        "treatment": 30.968000000000757
+      }
+    }
+  },
+  "paired_win_loss_tie": {
+    "B3_vs_B3_MATCH": {
+      "all_tasks": {
+        "details": [
+          {
+            "control": 0,
+            "outcome": "tie",
+            "task_key": "EEST-P2A",
+            "treatment": 0
+          },
+          {
+            "control": 0,
+            "outcome": "tie",
+            "task_key": "EEST-P2B",
+            "treatment": 0
+          },
+          {
+            "control": 0,
+            "outcome": "tie",
+            "task_key": "EEST-N2",
+            "treatment": 0
+          }
+        ],
+        "loss": 0,
+        "net_wins": 0,
+        "tie": 3,
+        "win": 0
+      },
+      "positive_tasks": {
+        "details": [
+          {
+            "control": 0,
+            "outcome": "tie",
+            "task_key": "EEST-P2A",
+            "treatment": 0
+          },
+          {
+            "control": 0,
+            "outcome": "tie",
+            "task_key": "EEST-P2B",
+            "treatment": 0
+          }
+        ],
+        "loss": 0,
+        "net_wins": 0,
+        "tie": 2,
+        "win": 0
+      }
+    },
+    "M_SLOTS_vs_B3_MATCH": {
+      "all_tasks": {
+        "details": [
+          {
+            "control": 0,
+            "outcome": "tie",
+            "task_key": "EEST-P2A",
+            "treatment": 0
+          },
+          {
+            "control": 0,
+            "outcome": "tie",
+            "task_key": "EEST-P2B",
+            "treatment": 0
+          },
+          {
+            "control": 0,
+            "outcome": "tie",
+            "task_key": "EEST-N2",
+            "treatment": 0
+          }
+        ],
+        "loss": 0,
+        "net_wins": 0,
+        "tie": 3,
+        "win": 0
+      },
+      "positive_h3": {
+        "details": [
+          {
+            "control": 0,
+            "outcome": "tie",
+            "task_key": "EEST-P2A",
+            "treatment": 0
+          },
+          {
+            "control": 0,
+            "outcome": "tie",
+            "task_key": "EEST-P2B",
+            "treatment": 0
+          }
+        ],
+        "loss": 0,
+        "net_wins": 0,
+        "tie": 2,
+        "win": 0
+      },
+      "positive_tasks": {
+        "details": [
+          {
+            "control": 0,
+            "outcome": "tie",
+            "task_key": "EEST-P2A",
+            "treatment": 0
+          },
+          {
+            "control": 0,
+            "outcome": "tie",
+            "task_key": "EEST-P2B",
+            "treatment": 0
+          }
+        ],
+        "loss": 0,
+        "net_wins": 0,
+        "tie": 2,
+        "win": 0
+      }
+    }
+  },
+  "recovery_and_verification": {
+    "blocked_action_recovery_rate": null,
+    "different_class_after_recovery": 0,
+    "interpretation": "No action executed, so live recovery and verification mechanisms had no eligible denominator.",
+    "recovery_records": 0,
+    "repeated_action_blocks": 0,
+    "unnecessary_verification_denominator": 0,
+    "unnecessary_verification_numerator": 0,
+    "unnecessary_verification_rate": null
+  },
+  "requirements": {
+    "invented": 0,
+    "invented_requirement_rate": 0.0,
+    "records": 9
+  },
+  "root_cause": {
+    "affected_cells": 9,
+    "classification": "shared_action_interface_controller_floor",
+    "environment_actions_before_failure": 0,
+    "invalid_outputs": 18,
+    "mechanism": "The model emitted Android-style press{key}, swipe{dx,dy}, or swipe{direction,distance} actions. The frozen decision schema accepts different canonical forms. The one allowed repair repeated the invalid proposal, so parsing failed before execution in every cell."
+  },
+  "schema_version": "eest_ac_v0_2_post_batch_analysis.v1",
+  "study_id": "eest_ac_v0_2_blind_smoke_20260803",
+  "three_layer_binding": {
+    "by_arm": {
+      "B3": {
+        "destination_role_retention": {
+          "accuracy": 0.0,
+          "confusion": {
+            "missing": 2
+          },
+          "correct": 0,
+          "episodes": 2
+        },
+        "source_field_value_capture": {
+          "accuracy": 0.0,
+          "confusion": {
+            "missing": 2
+          },
+          "correct": 0,
+          "episodes": 2
+        },
+        "value_to_destination_action": {
+          "accuracy": 0.0,
+          "confusion": {
+            "not_attempted": 2
+          },
+          "correct": 0,
+          "episodes": 2
+        }
+      },
+      "B3_MATCH": {
+        "destination_role_retention": {
+          "accuracy": 0.0,
+          "confusion": {
+            "missing": 2
+          },
+          "correct": 0,
+          "episodes": 2
+        },
+        "source_field_value_capture": {
+          "accuracy": 0.0,
+          "confusion": {
+            "missing": 2
+          },
+          "correct": 0,
+          "episodes": 2
+        },
+        "value_to_destination_action": {
+          "accuracy": 0.0,
+          "confusion": {
+            "not_attempted": 2
+          },
+          "correct": 0,
+          "episodes": 2
+        }
+      },
+      "M_SLOTS": {
+        "destination_role_retention": {
+          "accuracy": 0.0,
+          "confusion": {
+            "missing": 2
+          },
+          "correct": 0,
+          "episodes": 2
+        },
+        "source_field_value_capture": {
+          "accuracy": 0.0,
+          "confusion": {
+            "missing": 2
+          },
+          "correct": 0,
+          "episodes": 2
+        },
+        "value_to_destination_action": {
+          "accuracy": 0.0,
+          "confusion": {
+            "not_attempted": 2
+          },
+          "correct": 0,
+          "episodes": 2
+        }
+      }
+    },
+    "overall": {
+      "destination_role_retention": {
+        "accuracy": 0.0,
+        "confusion": {
+          "missing": 6
+        },
+        "correct": 0,
+        "episodes": 6
+      },
+      "source_field_value_capture": {
+        "accuracy": 0.0,
+        "confusion": {
+          "missing": 6
+        },
+        "correct": 0,
+        "episodes": 6
+      },
+      "value_to_destination_action": {
+        "accuracy": 0.0,
+        "confusion": {
+          "not_attempted": 6
+        },
+        "correct": 0,
+        "episodes": 6
+      }
+    },
+    "shared_parser_exact_span": {
+      "correct_episodes": 6,
+      "correct_roles": 18,
+      "episodes": 6,
+      "roles": 18,
+      "warning": "Parser initialization is not runtime memory evidence."
+    }
+  }
+}
