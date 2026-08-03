@@ -157,6 +157,17 @@ def _verify_lock(lock_path: Path, config: dict[str, Any]) -> list[dict[str, str]
     lock = json.loads(lock_path.read_text(encoding="utf-8"))
     if lock.get("study_id") != config["study_id"] or lock.get("frozen_before_model_calls") is not True:
         raise RuntimeError("Invalid v0.2.1 lock.")
+    if _git("rev-list", "-n", "1", lock["source_tag"]) != lock["source_commit"]:
+        raise RuntimeError("Qualification source tag does not resolve to the frozen source commit.")
+    ancestor = subprocess.run(
+        ["git", "merge-base", "--is-ancestor", lock["source_commit"], "HEAD"],
+        cwd=REPOSITORY_ROOT,
+        check=False,
+        capture_output=True,
+        timeout=30,
+    )
+    if ancestor.returncode != 0:
+        raise RuntimeError("Qualification source commit is not an ancestor of HEAD.")
     records = []
     for item in lock["files"]:
         path = REPOSITORY_ROOT / item["path"]
