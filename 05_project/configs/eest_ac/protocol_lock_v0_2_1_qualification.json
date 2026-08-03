@@ -1,0 +1,55 @@
+{
+  "schema_version": "eest_ac_action_qualification_lock.v0_2_1",
+  "study_id": "eest_ac_v0_2_1_action_qualification_20260804",
+  "source_commit": "1722430f7674247fb41a4f297ccc2792f1c1863a",
+  "source_tag": "eest-ac-v0.2.1-qualification-candidate-3-20260804",
+  "frozen_before_model_calls": true,
+  "maximum_cells": 3,
+  "scored": false,
+  "arms": [],
+  "m_risk_online": false,
+  "auto_start_efficacy": false,
+  "probe_order": ["Q-SWIPE", "Q-OPEN-APP", "Q-PRESS-BACK"],
+  "offline_gate_snapshot": {
+    "eest_tests_passed": 59,
+    "full_regression_passed": 1059,
+    "full_regression_expected_legacy_failures": 1,
+    "maximum_qwen_completion_tokens": 200,
+    "v0_2_replay_confusion": {
+      "original_invalid": 18,
+      "safe_normalize": 8,
+      "must_repair": 10,
+      "canonical_direct": 0,
+      "repair_outputs_identical_to_initial_invalid_action": 9
+    }
+  },
+  "legacy_wip": {
+    "05_project/src/raven_m/controller/episode_controller.py": "fc0e82e0fde90119365d4f685f080eb4519bf2f602e4bda58de5d4809a40fe33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "ff89d6b70be4b4738646d262beb67d7b7e932e9eb95956d940b1c5000a999d10",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5bb1f1e3de673a1072cfee62938b761a62fd69c187d5eadf54bc46b115a3fd0a"
+  },
+  "files": [
+    {"path":"04_protocols/eest_ac_v0_2_1_action_contract_qualification.md","sha256":"394eb5e20fed0fa59c3746c916bf1098e8dd5c357840d3b697f3644e1aecc748"},
+    {"path":"reports/eest_ac/claim_evidence_v0_2_1_preregistered.md","sha256":"4fe25177701f77cedd6bad396978610187b8ae2707d967786145053e0cd2a043"},
+    {"path":"05_project/configs/eest_ac/eest_ac_v0_2_1_action_qualification.json","sha256":"1a10f64285d6e2229e0760534c34181e6c8ed7aa0eec3e39a500a15a886f2d76"},
+    {"path":"05_project/contracts/eest_ac_action_contract.v0_2_1.json","sha256":"10f4818a5a1a47ab49a77766263be88135110a0dec6b63aa6d38afc825f536d8"},
+    {"path":"05_project/prompts/eest_ac/executor_v0_2_1.md","sha256":"7bdcdaf9aaf9a556cca8ec914301d17d47bb4a8c9aee5d29758c0e56c7d8d397"},
+    {"path":"05_project/schemas/eest_ac_decision.v0_2_1.schema.json","sha256":"1898c4d742eee23ef9421f963f7aed8cf74b44d387eebc74fc13af8c3e8ef23a"},
+    {"path":"05_project/src/raven_m/eest_ac/action_contract_v0_2_1.py","sha256":"ee051271921fb3737f89a79f0bd22531ea13c565900dcb9bab2c3c4e76f34c44"},
+    {"path":"05_project/src/raven_m/eest_ac/action_adapter_v0_2_1.py","sha256":"a636060994bdb2b3c34fe6105b5b9e02fb1c6b4440df3f1be1516a9397e97b62"},
+    {"path":"05_project/src/raven_m/eest_ac/qualification_v0_2_1.py","sha256":"cd2c016d927bb40c0a1bc156cd4cc4031eafad7131efaa0b2c33eff6ca4e8804"},
+    {"path":"05_project/src/raven_m/eest_ac/observation_v0_2.py","sha256":"1a3e552836f374590fcc0eeda030db9c90095e28774f5efec3682c2d0a636efe"},
+    {"path":"05_project/src/raven_m/env/androidworld_adapter.py","sha256":"ad4ecbee9430326ca7380334c49372911a1c6b1c217ee12bb3714d2fb1219c33"},
+    {"path":"05_project/src/raven_m/models/transformers_client.py","sha256":"15f82bfdde5c30d036e2872f9bf66be02a74e43815ea284ea7b09798b2c955ae"},
+    {"path":"05_project/scripts/generate_eest_ac_action_contract_v0_2_1.py","sha256":"417dd970ea95883ce377a6d2d56cc5f236c46d0154847664c7d608a3502118c6"},
+    {"path":"05_project/scripts/audit_eest_ac_action_contract_v0_2_1.py","sha256":"71564989ad749bd3068b2a86c2710c58614d170a4e2be9774bf1cc2abc64dcfe"},
+    {"path":"05_project/scripts/replay_eest_ac_v0_2_actions_v0_2_1.py","sha256":"bc11d805047864f9bc0c7717bb39d0e2c0e2221587542459f7fc275ea21c1426"},
+    {"path":"05_project/scripts/preflight_eest_ac_v0_2_1_qualification.py","sha256":"5e001b6a50b8adf8d8ea35907aa444a938bd2c008c6dd3563244b97266632958"},
+    {"path":"05_project/scripts/run_eest_ac_v0_2_1_qualification.py","sha256":"84bdaa5c71d9278fa14779ba9a6ef2f0fc09dc479ae5321b2ca4ff9c86d8fb92"},
+    {"path":"05_project/tests/eest_ac/test_v0_2_1_action_contract.py","sha256":"9d793aacdd3a6a83e12faad64dca88ec9545e9e354b8643b7fab60591d4afdd1"},
+    {"path":"05_project/tests/eest_ac/test_v0_2_1_qualification.py","sha256":"ec1c27cc54b06c51a32487215c74f379499fda3180da1093c4a183a4c83cf436"},
+    {"path":"reports/eest_ac/eest_ac_v0_2_1_contract_audit.json","sha256":"d092b9878c4c259c1ed3a495809b1b0df79ef18212afa72c8abe4fe7049e6cb7"},
+    {"path":"reports/eest_ac/eest_ac_v0_2_1_v0_2_raw_replay.json","sha256":"de5e7755b8a959ce93d157ded166287e9753fcf12d7b8e7d4ba712c974b73d11"},
+    {"path":"06_local_runtime/scripts/androidworld_compat.py","sha256":"76bd4cae773543986275c9b6e14bc5eef47b25a2af9e08fb8c69930e25b13865"}
+  ]
+}
