@@ -214,21 +214,20 @@ class EvidenceLedger:
                     "Current-screen evidence entity is not present in visible UI text."
                 )
         clean_tags = tuple(
-            dict.fromkeys(
-                tag.strip().casefold()
-                for tag in relevance_tags
-                if isinstance(tag, str) and tag.strip()
+            sorted(
+                {
+                    tag.strip().casefold()
+                    for tag in relevance_tags
+                    if isinstance(tag, str) and tag.strip()
+                }
             )
         )
         identity = {
-            "entity": entity,
-            "field": field,
-            "value": value,
+            "entity": _normalized_text(entity),
+            "field": _normalized_text(field),
+            "value": _normalized_text(value),
             "source": source.value,
             "scope": scope.value,
-            "acquisition_step": acquisition_step,
-            "source_sha256": source_sha256,
-            "relevance_tags": clean_tags,
         }
         evidence_id = "ev:" + _digest(identity)[:16]
         for item in self._records:
