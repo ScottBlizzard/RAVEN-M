@@ -1,0 +1,72 @@
+{
+  "schema_version": "eest_ac_experiment.v0_1_1",
+  "study_id": "eest_ac_smoke_v0_1_1_20260803",
+  "base_protocol_path": "04_protocols/eest_ac_minimal_smoke_v0_1.md",
+  "amendment_path": "04_protocols/eest_ac_minimal_smoke_v0_1_1_amendment.md",
+  "claim_evidence_path": "reports/eest_ac/claim_evidence_v0_1.md",
+  "research_namespace": "raven_m.eest_ac",
+  "formal_scoring": false,
+  "development_smoke": true,
+  "blind_until_batch_complete": true,
+  "parameter_seed": 20260803,
+  "schedule_seed": 20260803,
+  "model": {
+    "id": "Qwen/Qwen3-VL-32B-Instruct",
+    "revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+    "backend": "qwen3_vl_32b_transformers_bf16_4x4090_v1",
+    "temperature": 0,
+    "context_cap_tokens": 8192,
+    "max_new_tokens": 256
+  },
+  "arms": ["B3", "B3_MATCH", "M_SLOTS", "M_RISK"],
+  "tasks": [
+    {
+      "task_key": "EEST-P1",
+      "task_class": "SimpleSmsSendReceivedAddress",
+      "role": "cross_page_entity_field_positive",
+      "max_environment_actions": 18,
+      "max_model_calls": 36
+    },
+    {
+      "task_key": "EEST-N1",
+      "task_class": "OpenAppTaskEval",
+      "role": "short_reversible_negative_control",
+      "max_environment_actions": 10,
+      "max_model_calls": 20
+    }
+  ],
+  "schedule": [
+    {"cell": 1, "task_key": "EEST-P1", "arm": "M_SLOTS"},
+    {"cell": 2, "task_key": "EEST-N1", "arm": "B3_MATCH"},
+    {"cell": 3, "task_key": "EEST-P1", "arm": "B3"},
+    {"cell": 4, "task_key": "EEST-N1", "arm": "M_RISK"},
+    {"cell": 5, "task_key": "EEST-P1", "arm": "M_RISK"},
+    {"cell": 6, "task_key": "EEST-N1", "arm": "B3"},
+    {"cell": 7, "task_key": "EEST-P1", "arm": "B3_MATCH"},
+    {"cell": 8, "task_key": "EEST-N1", "arm": "M_SLOTS"}
+  ],
+  "forbidden_task_classes": [
+    "SportsTrackerActivitiesOnDate",
+    "SportsTrackerTotalDistanceForCategoryOverInterval",
+    "SportsTrackerTotalDurationForCategoryThisWeek"
+  ],
+  "forbidden_patterns": [
+    "H17",
+    "SportsTracker",
+    "same_date_row_layout",
+    "previously_debugged_row_date_pattern"
+  ],
+  "risk_gate": {
+    "eligible_intents": ["save", "send", "delete", "answer", "done"],
+    "gate_low_risk_navigation": false,
+    "negative_control_terminal_done_gate_allowed": true,
+    "maximum_auxiliary_calls_per_candidate": 1
+  },
+  "stopping_rules": {
+    "memory_specific_hazard_floor": 0.02,
+    "all_arms_controller_floor_successes_out_of_12": 4,
+    "m_slots_min_net_paired_wins_over_b3_match_out_of_12": 3,
+    "risk_gate_max_relative_cost_without_error_reduction": 0.15
+  },
+  "run_root": "runs/eest_ac_smoke_v0_1_1_20260803"
+}
