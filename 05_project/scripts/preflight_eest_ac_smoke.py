@@ -181,6 +181,22 @@ def _source_isolation() -> dict[str, Any]:
     }
 
 
+def _implementation_hashes() -> dict[str, str]:
+    paths = [
+        *sorted((PROJECT_ROOT / "src/raven_m/eest_ac").glob("*.py")),
+        PROJECT_ROOT / "schemas/eest_ac_decision.v0_1.schema.json",
+        *sorted((PROJECT_ROOT / "prompts/eest_ac").glob("*.md")),
+        PROJECT_ROOT / "scripts/preflight_eest_ac_smoke.py",
+        PROJECT_ROOT / "scripts/run_eest_ac_smoke.py",
+    ]
+    return {
+        str(path.relative_to(REPOSITORY_ROOT)).replace("\\", "/"): sha256(
+            path.read_bytes()
+        ).hexdigest()
+        for path in paths
+    }
+
+
 def _verify_legacy_wip() -> dict[str, str]:
     actual = {}
     for relative, expected in EXPECTED_LEGACY_WIP.items():
@@ -264,6 +280,7 @@ def main() -> None:
         "protocol_tag_commit": tag_commit,
         "task_instance_hashes": _task_hashes(config),
         "source_isolation": _source_isolation(),
+        "implementation_hashes": _implementation_hashes(),
         "legacy_wip": _verify_legacy_wip(),
         "run_root": str(run_root.resolve()),
         "run_root_empty": True,

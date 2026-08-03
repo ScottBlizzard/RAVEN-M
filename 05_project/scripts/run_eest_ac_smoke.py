@@ -64,6 +64,14 @@ def _load_preflight(path: Path, config_path: Path, study_id: str) -> dict[str, A
         raise RuntimeError("Config changed after preflight.")
     if value.get("runtime_health", {}).get("status") == "not_checked":
         raise RuntimeError("Runtime health was not checked in the required preflight.")
+    hashes = value.get("implementation_hashes")
+    if not isinstance(hashes, dict) or not hashes:
+        raise RuntimeError("Preflight lacks implementation hashes.")
+    for relative, expected in hashes.items():
+        implementation_path = REPOSITORY_ROOT / relative
+        actual = sha256(implementation_path.read_bytes()).hexdigest()
+        if actual != expected:
+            raise RuntimeError(f"Implementation changed after preflight: {relative}")
     return value
 
 
