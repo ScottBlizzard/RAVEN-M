@@ -1,0 +1,213 @@
+{
+  "claim_evidence": {
+    "a11y_tested": false,
+    "held_out_tested": false,
+    "m8_overloaded_view_verified": true,
+    "m9_implementation_tested": false,
+    "role_binding_hypothesis_tested": false,
+    "runtime_tested": false
+  },
+  "decision": "ELIGIBLE_FOR_M9_OFFLINE_IMPLEMENTATION_ONLY",
+  "device_mutations": 0,
+  "direct_evidence": {
+    "ancestry_only_count": 7,
+    "broad_name_selected_count": 4,
+    "broad_name_selected_paths": [
+      "D:\\\u7535\u8111\u7ba1\u5bb6\u8fc1\u79fb\u6587\u4ef6\\weixin\\4.1.11.55\\crashpad_handler.exe",
+      "C:\\Program Files (x86)\\Lenovo\\PCManager\\5.1.190.5202\\crashpad_handler.exe",
+      "C:\\Program Files (x86)\\Lenovo\\PCManager\\5.1.190.5202\\runtime\\crashpad_handler.exe",
+      "C:\\Program Files (x86)\\Lenovo\\LeAppStore\\crashpad_handler.exe"
+    ],
+    "completion_sha256": "d82a443ff1efb2226f174ad8a73714b8ccfd7565e0e56109082ce81d902f6e91",
+    "controlled_ports_present": {
+      "5037": [],
+      "5038": [],
+      "5554": [],
+      "5555": [],
+      "8554": []
+    },
+    "failure_sha256": "bf7f25f5207a69909163361a7cbdf23de0861b46ce4a5666973ad70d8b2ec336",
+    "full_observation_count": 362,
+    "missing_identity_pids": [
+      5848
+    ],
+    "structural_projection_count": 11
+  },
+  "generation_calls": 0,
+  "global_vetoes_independent_of_membership": [
+    "any 5037 listener",
+    "controlled port owned by a support-only or unrelated row",
+    "trusted runner PID/creation/path/command drift",
+    "missing or ambiguous required direct ancestry segment",
+    "candidate PID reuse or incomplete role evidence"
+  ],
+  "m8_commits": [
+    "960a818",
+    "35a0d06",
+    "7135029"
+  ],
+  "m8_first_edge_immutable": "PROCESS_IDENTITY:prelaunch_baseline:AUTHORIZATION_CANDIDATE_IDENTITY_MISSING",
+  "m8_verdict_immutable": "PROCESS_IDENTITY_FAILED",
+  "mode": "READ_ONLY_FROZEN_M8_EVIDENCE",
+  "protected_wip": {
+    "05_project/src/raven_m/controller/episode_controller.py": "fc0e82e0fde90119365d4f685f080eb4519bf2f602e4bda58de5d4809a40fe33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "ff89d6b70be4b4738646d262beb67d7b7e932e9eb95956d940b1c5000a999d10",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5bb1f1e3de673a1072cfee62938b761a62fd69c187d5eadf54bc46b115a3fd0a"
+  },
+  "required_disjoint_views": {
+    "project_authorization_candidates": {
+      "authority": "only class eligible for project-role completeness and role assignment",
+      "membership": "locked project binary/path/hash, controlled-port owner, or descendant admitted under a frozen role policy",
+      "role_policy_evaluated": true
+    },
+    "support_only_ancestry_nodes": {
+      "authority": "parent existence, creation ordering and PID-reuse evidence only",
+      "membership": "current full-snapshot nodes needed only to connect a candidate chain",
+      "role_policy_evaluated": false
+    },
+    "trusted_runner_root": {
+      "authority": "ancestry root proof only",
+      "membership": "exact frozen PID+creation_time+path+command identity",
+      "role_policy_evaluated": false
+    },
+    "unrelated_observed_processes": {
+      "authority": "observation only; never adopted, killed or role-assigned",
+      "membership": "all remaining full-snapshot rows",
+      "role_policy_evaluated": false
+    }
+  },
+  "required_type_assertions": [
+    "support-only and unrelated rows cannot be registered as core",
+    "support-only and unrelated rows cannot be assigned a project role",
+    "support-only and unrelated rows cannot be cleanup kill targets",
+    "support-only and unrelated rows cannot own controlled ports",
+    "every full-snapshot PID appears in exactly one non-root derived view, except the separately frozen runner root",
+    "the full trigger snapshot and every derived view are persisted and hashed"
+  ],
+  "schema_version": "role_binding_timing.infra_m9.authorization_view_audit.v1",
+  "source_evidence": [
+    {
+      "path": "05_project/src/raven_m/role_binding_timing/infra_m8_full_snapshot_ancestry.py",
+      "sha256": "97a62aeb93883cac3ac634bdfb07e8a9f5a0a5fc1ef9644baa4974eec7dcf88f",
+      "structural_processes_hits": [
+        {
+          "line": 61,
+          "text": "\"authorization_candidates\": \"structural_processes\","
+        },
+        {
+          "line": 63,
+          "text": "\"authorization_candidates_sha256\": canonical_hash(value[\"structural_processes\"]),"
+        },
+        {
+          "line": 65,
+          "text": "\"authorization_candidate_count\": len(value[\"structural_processes\"]),"
+        },
+        {
+          "line": 85,
+          "text": "candidates = snapshot.get(\"structural_processes\")"
+        },
+        {
+          "line": 226,
+          "text": "for record in [*snapshot[\"structural_processes\"], *recent]:"
+        },
+        {
+          "line": 230,
+          "text": "self.add_history(snapshot[\"structural_processes\"]); self.add_history(recent)"
+        },
+        {
+          "line": 391,
+          "text": "self.policy.add_history(snapshot[\"structural_processes\"]); self.policy.add_history(self.history.records())"
+        }
+      ]
+    },
+    {
+      "path": "05_project/src/raven_m/role_binding_timing/infra_m5_process_identity.py",
+      "sha256": "8af10b07e0abc4645efdb2b6d0f14111e1671a9046a514b2c1363b3019da27e1",
+      "structural_processes_hits": [
+        {
+          "line": 214,
+          "text": "\"structural_processes\": structural,"
+        },
+        {
+          "line": 308,
+          "text": "for record in snapshot[\"structural_processes\"]:"
+        },
+        {
+          "line": 316,
+          "text": "self.add_history(snapshot[\"structural_processes\"])"
+        },
+        {
+          "line": 468,
+          "text": "current = process_index(snapshot[\"structural_processes\"])"
+        },
+        {
+          "line": 470,
+          "text": "for record in [*snapshot[\"structural_processes\"], *recent_records]:"
+        },
+        {
+          "line": 474,
+          "text": "self.add_history(snapshot[\"structural_processes\"])"
+        },
+        {
+          "line": 556,
+          "text": "\"structural_processes\": structural,"
+        },
+        {
+          "line": 639,
+          "text": "self.policy.add_history(snapshot[\"structural_processes\"])"
+        },
+        {
+          "line": 682,
+          "text": "record = process_index(snapshot[\"structural_processes\"]).get(pid)"
+        }
+      ]
+    }
+  ],
+  "structural_processes_use_ledger": [
+    {
+      "classification": "OVERLOADED_DECLARATION",
+      "effect": "Names all structural_processes as authorization candidates although the producer adds selected ancestors.",
+      "use": "snapshot_view_contract"
+    },
+    {
+      "classification": "DIRECT_FALSE_REJECTION",
+      "effect": "Requires candidate identity completeness for every structural row, including AccessDenied ancestry-only rows.",
+      "use": "derive_authorization_view"
+    },
+    {
+      "classification": "ROLE_LOOP_PARTIALLY_FILTERED",
+      "effect": "The role loop filters by broad process name, but path/hash authority is evaluated only later; unrelated same-name binaries enter policy evaluation.",
+      "use": "policy_evaluate_combined"
+    },
+    {
+      "classification": "AUTHORITY_HISTORY_CONTAMINATION",
+      "effect": "All structural rows are retained in the same history store used for role candidates.",
+      "use": "policy_history"
+    },
+    {
+      "classification": "BASELINE_CANDIDATE_AMBIGUITY",
+      "effect": "Inherited baseline reads structural_processes and broad relevant names rather than an explicit candidate view.",
+      "use": "monitor_baseline"
+    },
+    {
+      "classification": "AUTHORITY_HISTORY_CONTAMINATION",
+      "effect": "Discovery adds the overloaded structural set to policy history.",
+      "use": "monitor_discovery"
+    },
+    {
+      "classification": "OVERLOADED_PERSISTENCE",
+      "effect": "The history event calls an ancestry-enriched projection authorization_candidates.",
+      "use": "continuous_history"
+    },
+    {
+      "classification": "CORE_ADOPTION_RISK",
+      "effect": "Inherited core registration selects from structural_processes without a view-type assertion.",
+      "use": "register_core_from_snapshot"
+    },
+    {
+      "classification": "PROVENANCE_PRESENT_SEMANTICS_WRONG",
+      "effect": "Full trigger and derived view are preserved, but the derived candidate semantics are the overloaded M8 semantics.",
+      "use": "failure_persistence"
+    }
+  ]
+}
