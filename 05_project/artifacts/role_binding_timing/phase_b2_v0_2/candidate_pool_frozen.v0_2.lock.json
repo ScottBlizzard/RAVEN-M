@@ -1,0 +1,110 @@
+{
+  "candidate_manifest_path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/candidate_pool_frozen.v0_2.json",
+  "candidate_manifest_sha256": "9b85e166db3bee15b9eb2e4a28ad5137bc1cc741cea08e66c44aa0e866e81e7f",
+  "candidate_replacements": 0,
+  "config_path": "05_project/configs/role_binding_timing/phase_b2_collection_v0_2.json",
+  "config_sha256": "1a89460d3679f58884c29426489aba94f4ee894b308078540db31141b49b95af",
+  "files": [
+    {
+      "bytes": 111223,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/candidate_pool_frozen.v0_2.json",
+      "sha256": "9b85e166db3bee15b9eb2e4a28ad5137bc1cc741cea08e66c44aa0e866e81e7f"
+    },
+    {
+      "bytes": 783,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-001/high/setup_trace.json",
+      "sha256": "65b234be195d5bef81914828b69add5137cda87309ebc5201527bbd7941d4c9c"
+    },
+    {
+      "bytes": 771,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-001/low/setup_trace.json",
+      "sha256": "ff0eb53a51a050eab9fe98c2730133293de5d2a1ceea89012fb36bad7b15d78b"
+    },
+    {
+      "bytes": 19870,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-002/high/setup_trace.json",
+      "sha256": "ffbe7ba7b8d03610bc4a846c3382a985046ce8e23337e5f8d6a40161a0e72aef"
+    },
+    {
+      "bytes": 795,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-002/low/setup_trace.json",
+      "sha256": "3c85ded7adfbf7dfe30e3ee0ca805b43ebb8828bd0c8c23016cbac345c3c0e09"
+    },
+    {
+      "bytes": 799,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-003/high/setup_trace.json",
+      "sha256": "ace0c08d253eee9ff581a67acf50c5897ed7befd0d02e361512ccb2ef54b3cff"
+    },
+    {
+      "bytes": 20209,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-003/low/setup_trace.json",
+      "sha256": "94ceed39610e6eb743ac1d4d57f539c13b3fe42fc21c79821cc065ceac98d8db"
+    },
+    {
+      "bytes": 996,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-004/high/setup_trace.json",
+      "sha256": "73f8740220a682f00140f283b88c9815c3d70681d5753683b7833a5e33343575"
+    },
+    {
+      "bytes": 978,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-004/low/setup_trace.json",
+      "sha256": "ccfcc1ebb521eabc2ae857a0697c25ce8d82d50722cef1a17ae089e90e393edc"
+    },
+    {
+      "bytes": 1073,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-005/high/setup_trace.json",
+      "sha256": "3e75b1f3aed0b8303bc4649e42125359b9a25f7671f005d64b2fd0c1d6802976"
+    },
+    {
+      "bytes": 1040,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-005/low/setup_trace.json",
+      "sha256": "541b46504db2992a7b9997fd48246c65ade4d0f00426fc66462722ddbd683ccd"
+    },
+    {
+      "bytes": 1015,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-006/high/setup_trace.json",
+      "sha256": "e91f1d14442da6e16acced334c7677f2f8f4c4d127775f3700e62ed5211575bb"
+    },
+    {
+      "bytes": 999,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-006/low/setup_trace.json",
+      "sha256": "dc285f61b8d27c5bed2f51ea0cbbfb41b1b70d59d1a6744652363a898d1c837b"
+    },
+    {
+      "bytes": 1036,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-007/high/setup_trace.json",
+      "sha256": "f6409d38a50f39a652d21903c3e34a375708db443fba3df72ef39ec4546115a9"
+    },
+    {
+      "bytes": 1006,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-007/low/setup_trace.json",
+      "sha256": "6c97a22f67f479d48970a6a048f9f380448819c8872b4b0b061c30ab2c96cb95"
+    },
+    {
+      "bytes": 799,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-008/high/setup_trace.json",
+      "sha256": "e5b5617a6e6c007921d02148739333c1bbc83355195b8c91f03b627a10fd5680"
+    },
+    {
+      "bytes": 798,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-008/low/setup_trace.json",
+      "sha256": "aff3c5b421678fee1015e622ab3d82a5e4bed26ae52e5cbe95ab9efe20247a90"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/infrastructure/emulator_stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 9313,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/infrastructure/emulator_stdout.log",
+      "sha256": "89c06295e7873f7c1779c3375b83d0c567ebe57fd60bb2e8479ae9065a726391"
+    }
+  ],
+  "frozen_at": "2026-08-04T13:21:09.006553+00:00",
+  "frozen_before_qualification": true,
+  "generation_calls": 0,
+  "protocol_freeze_commit": "76473dfb238e5e5d9a601e52c8f4e8eaf2e95f00",
+  "schema_version": "role_binding_timing.snapshot_pool_lock.v0_2",
+  "study_id": "role_binding_timing_phase_b2_v0_2"
+}

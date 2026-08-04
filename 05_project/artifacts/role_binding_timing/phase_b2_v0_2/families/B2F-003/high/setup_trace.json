@@ -1,0 +1,29 @@
+{
+  "finished_at": "2026-08-04T13:15:04.736132+00:00",
+  "operations": [
+    {
+      "operation": "reset_before",
+      "record": {
+        "driver": "download_file_rows",
+        "observable_item_count": 1153714,
+        "passed": false,
+        "wall_time_seconds": 25.046000000002095
+      }
+    },
+    {
+      "operation": "reset_after",
+      "record": {
+        "driver": "download_file_rows",
+        "observable_item_count": 1152894,
+        "passed": false,
+        "wall_time_seconds": 26.110000000000582
+      }
+    }
+  ],
+  "primary_error": {
+    "message": "RESET_BEFORE_FAILED",
+    "traceback_sha256": "51989a2a591af61af2ddcb98eedd2550e6d9fbe571f80c3dad2646d0bd204e35",
+    "type": "RuntimeError"
+  },
+  "started_at": "2026-08-04T13:14:13.153726+00:00"
+}

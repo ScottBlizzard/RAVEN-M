@@ -1,0 +1,40 @@
+{
+  "finished_at": "2026-08-04T13:15:37.662564+00:00",
+  "operations": [
+    {
+      "operation": "reset_before",
+      "record": {
+        "driver": "tasks_rows",
+        "observable_item_count": 0,
+        "passed": true,
+        "wall_time_seconds": 5.23399999999674
+      }
+    },
+    {
+      "labels": [
+        "Harbor source 4204",
+        "Harbor target 4204"
+      ],
+      "operation": "task_app_utils.add_tasks"
+    },
+    {
+      "app_name": "tasks",
+      "operation": "launch_app"
+    },
+    {
+      "operation": "reset_after",
+      "record": {
+        "driver": "tasks_rows",
+        "observable_item_count": 0,
+        "passed": true,
+        "wall_time_seconds": 7.125
+      }
+    }
+  ],
+  "primary_error": {
+    "message": "FOREGROUND_PACKAGE:None:org.tasks",
+    "traceback_sha256": "25edeb8f4b411d5c7765c4711ab069fc83896203012060fe52bf1b6ff76fa190",
+    "type": "RuntimeError"
+  },
+  "started_at": "2026-08-04T13:15:04.777170+00:00"
+}

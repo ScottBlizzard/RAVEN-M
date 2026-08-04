@@ -1,0 +1,39 @@
+{
+  "finished_at": "2026-08-04T13:18:15.165962+00:00",
+  "operations": [
+    {
+      "operation": "reset_before",
+      "record": {
+        "driver": "recipe_cards",
+        "observable_item_count": 0,
+        "passed": true,
+        "wall_time_seconds": 4.062999999994645
+      }
+    },
+    {
+      "labels": [
+        "Lumen Target 4207"
+      ],
+      "operation": "sqlite_utils.insert_recipes"
+    },
+    {
+      "app_name": "broccoli app",
+      "operation": "launch_app"
+    },
+    {
+      "operation": "reset_after",
+      "record": {
+        "driver": "recipe_cards",
+        "observable_item_count": 0,
+        "passed": true,
+        "wall_time_seconds": 5.139999999999418
+      }
+    }
+  ],
+  "primary_error": {
+    "message": "FOREGROUND_PACKAGE:None:com.flauschcode.broccoli",
+    "traceback_sha256": "c519b6c16986c0e6107c88cc8c4373ccc71f5f25864e10277a37909a905dacfd",
+    "type": "RuntimeError"
+  },
+  "started_at": "2026-08-04T13:17:47.404689+00:00"
+}

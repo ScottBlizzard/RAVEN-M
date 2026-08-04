@@ -1,0 +1,39 @@
+{
+  "finished_at": "2026-08-04T13:17:47.369576+00:00",
+  "operations": [
+    {
+      "operation": "reset_before",
+      "record": {
+        "driver": "expense_rows",
+        "observable_item_count": 0,
+        "passed": true,
+        "wall_time_seconds": 3.702999999994063
+      }
+    },
+    {
+      "labels": [
+        "Kite target 4206"
+      ],
+      "operation": "sqlite_utils.insert_expenses"
+    },
+    {
+      "app_name": "pro expense",
+      "operation": "launch_app"
+    },
+    {
+      "operation": "reset_after",
+      "record": {
+        "driver": "expense_rows",
+        "observable_item_count": 0,
+        "passed": true,
+        "wall_time_seconds": 4.812000000005355
+      }
+    }
+  ],
+  "primary_error": {
+    "message": "FOREGROUND_PACKAGE:None:com.arduia.expense",
+    "traceback_sha256": "49443491fd7c3b94af0f18f6ea24ee97175fa96218fcfcb6c4775668a7d96f68",
+    "type": "RuntimeError"
+  },
+  "started_at": "2026-08-04T13:17:27.366916+00:00"
+}

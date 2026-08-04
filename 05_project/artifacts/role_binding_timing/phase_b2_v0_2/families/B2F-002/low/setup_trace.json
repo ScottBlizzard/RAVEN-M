@@ -1,0 +1,29 @@
+{
+  "finished_at": "2026-08-04T13:13:15.807660+00:00",
+  "operations": [
+    {
+      "operation": "reset_before",
+      "record": {
+        "driver": "markor_note_rows",
+        "observable_item_count": 1510493,
+        "passed": false,
+        "wall_time_seconds": 27.922000000005937
+      }
+    },
+    {
+      "operation": "reset_after",
+      "record": {
+        "driver": "markor_note_rows",
+        "observable_item_count": 1504758,
+        "passed": false,
+        "wall_time_seconds": 29.202999999994063
+      }
+    }
+  ],
+  "primary_error": {
+    "message": "RESET_BEFORE_FAILED",
+    "traceback_sha256": "51989a2a591af61af2ddcb98eedd2550e6d9fbe571f80c3dad2646d0bd204e35",
+    "type": "RuntimeError"
+  },
+  "started_at": "2026-08-04T13:12:18.252145+00:00"
+}

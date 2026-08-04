@@ -1,0 +1,230 @@
+{
+  "candidate_manifest_path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/candidate_pool_frozen.v0_2.json",
+  "candidate_manifest_sha256": "9b85e166db3bee15b9eb2e4a28ad5137bc1cc741cea08e66c44aa0e866e81e7f",
+  "candidate_replacements": 0,
+  "generation_calls": 0,
+  "generation_eligible": false,
+  "model_endpoint_called": false,
+  "pool_lock_path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/candidate_pool_frozen.v0_2.lock.json",
+  "pool_lock_sha256": "c37d1604d4173d43867607482e75390612d78c5c3c4837a7f2def9f9565b5d00",
+  "qualification_run_index": 1,
+  "qualified_at": "2026-08-04T13:21:28.892791+00:00",
+  "result": {
+    "diversity": {
+      "app_family_counts": {
+        "broccoli": 1,
+        "contacts": 1,
+        "files": 1,
+        "markor": 1,
+        "pro_expense": 1,
+        "simple_calendar": 1,
+        "simple_sms": 1,
+        "tasks": 1
+      },
+      "apps": 8,
+      "maximum_families_in_one_app": 1,
+      "widget_families": 8
+    },
+    "duplicate_screenshot_hashes": [],
+    "duplicate_ui_tree_hashes": [],
+    "family_qualification_rate": 0.0,
+    "family_results": [
+      {
+        "base_family_id": "B2F-001",
+        "family_issues": [],
+        "passed": false,
+        "variants": [
+          {
+            "issues": [
+              "CAPTURE_FAILED"
+            ],
+            "passed": false,
+            "role_ambiguity": "low"
+          },
+          {
+            "issues": [
+              "CAPTURE_FAILED"
+            ],
+            "passed": false,
+            "role_ambiguity": "high"
+          }
+        ]
+      },
+      {
+        "base_family_id": "B2F-002",
+        "family_issues": [],
+        "passed": false,
+        "variants": [
+          {
+            "issues": [
+              "CAPTURE_FAILED"
+            ],
+            "passed": false,
+            "role_ambiguity": "low"
+          },
+          {
+            "issues": [
+              "CAPTURE_FAILED"
+            ],
+            "passed": false,
+            "role_ambiguity": "high"
+          }
+        ]
+      },
+      {
+        "base_family_id": "B2F-003",
+        "family_issues": [],
+        "passed": false,
+        "variants": [
+          {
+            "issues": [
+              "CAPTURE_FAILED"
+            ],
+            "passed": false,
+            "role_ambiguity": "low"
+          },
+          {
+            "issues": [
+              "CAPTURE_FAILED"
+            ],
+            "passed": false,
+            "role_ambiguity": "high"
+          }
+        ]
+      },
+      {
+        "base_family_id": "B2F-004",
+        "family_issues": [],
+        "passed": false,
+        "variants": [
+          {
+            "issues": [
+              "CAPTURE_FAILED"
+            ],
+            "passed": false,
+            "role_ambiguity": "low"
+          },
+          {
+            "issues": [
+              "CAPTURE_FAILED"
+            ],
+            "passed": false,
+            "role_ambiguity": "high"
+          }
+        ]
+      },
+      {
+        "base_family_id": "B2F-005",
+        "family_issues": [],
+        "passed": false,
+        "variants": [
+          {
+            "issues": [
+              "CAPTURE_FAILED"
+            ],
+            "passed": false,
+            "role_ambiguity": "low"
+          },
+          {
+            "issues": [
+              "CAPTURE_FAILED"
+            ],
+            "passed": false,
+            "role_ambiguity": "high"
+          }
+        ]
+      },
+      {
+        "base_family_id": "B2F-006",
+        "family_issues": [],
+        "passed": false,
+        "variants": [
+          {
+            "issues": [
+              "CAPTURE_FAILED"
+            ],
+            "passed": false,
+            "role_ambiguity": "low"
+          },
+          {
+            "issues": [
+              "CAPTURE_FAILED"
+            ],
+            "passed": false,
+            "role_ambiguity": "high"
+          }
+        ]
+      },
+      {
+        "base_family_id": "B2F-007",
+        "family_issues": [],
+        "passed": false,
+        "variants": [
+          {
+            "issues": [
+              "CAPTURE_FAILED"
+            ],
+            "passed": false,
+            "role_ambiguity": "low"
+          },
+          {
+            "issues": [
+              "CAPTURE_FAILED"
+            ],
+            "passed": false,
+            "role_ambiguity": "high"
+          }
+        ]
+      },
+      {
+        "base_family_id": "B2F-008",
+        "family_issues": [],
+        "passed": false,
+        "variants": [
+          {
+            "issues": [
+              "CAPTURE_FAILED"
+            ],
+            "passed": false,
+            "role_ambiguity": "low"
+          },
+          {
+            "issues": [
+              "CAPTURE_FAILED"
+            ],
+            "passed": false,
+            "role_ambiguity": "high"
+          }
+        ]
+      }
+    ],
+    "first_broken_edge": {
+      "base_family_id": "B2F-001",
+      "family_issues": [],
+      "variants": [
+        {
+          "issues": [
+            "CAPTURE_FAILED"
+          ],
+          "passed": false,
+          "role_ambiguity": "low"
+        },
+        {
+          "issues": [
+            "CAPTURE_FAILED"
+          ],
+          "passed": false,
+          "role_ambiguity": "high"
+        }
+      ]
+    },
+    "generation_calls": 0,
+    "generation_eligible": false,
+    "qualified_families": 0,
+    "total_families": 8,
+    "verdict": "NOT_ELIGIBLE"
+  },
+  "same_version_recaptures": 0,
+  "schema_version": "role_binding_timing.snapshot_qualification.v0_2",
+  "study_id": "role_binding_timing_phase_b2_v0_2"
+}

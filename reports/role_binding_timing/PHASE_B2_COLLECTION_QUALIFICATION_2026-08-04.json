@@ -1,0 +1,124 @@
+{
+  "schema_version": "role_binding_timing.phase_b2_completion.v0_2",
+  "study_id": "role_binding_timing_phase_b2_v0_2",
+  "phase": "B2_fresh_snapshot_oracle_collection_qualification",
+  "verdict": "NOT_ELIGIBLE",
+  "next_gate": "NOT_ELIGIBLE_FOR_PHASE_C_PREREGISTRATION",
+  "generation_eligible": false,
+  "claim_boundary": {
+    "tested": "Whether one preregistered, model-free collection pass could yield at least eight structurally diverse, paired high/low ambiguity snapshot families with stable PNG/UI-tree evidence and independently checkable target oracles.",
+    "not_tested": [
+      "FactTiming by RoleAmbiguity interaction",
+      "WrongTarget@FirstTargetingAction",
+      "model behavior",
+      "memory efficacy",
+      "Destination-First Binding Gate",
+      "Phase C pilot"
+    ]
+  },
+  "protocol_freeze": {
+    "commit": "76473dfb238e5e5d9a601e52c8f4e8eaf2e95f00",
+    "tag": "role-binding-timing-phase-b2-v0.2-protocol-freeze-20260804",
+    "protocol_path": "04_protocols/role_binding_timing/phase_b2_snapshot_collection_v0_2.md",
+    "protocol_sha256": "67e797309f778338e557c3d6a668b4485cccca276c3378b427b28ec3f4ba4122",
+    "config_path": "05_project/configs/role_binding_timing/phase_b2_collection_v0_2.json",
+    "config_sha256": "1a89460d3679f58884c29426489aba94f4ee894b308078540db31141b49b95af",
+    "source_lock_path": "05_project/configs/role_binding_timing/phase_b2_collection_v0_2.lock.json",
+    "source_lock_sha256": "593a3fcb76caa796ace4ec4234bb7170be34807386c357d6e0d941deb5ab60db"
+  },
+  "collection": {
+    "started_at": "2026-08-04T13:02:12.691873+00:00",
+    "finished_at": "2026-08-04T13:21:08.868896+00:00",
+    "wall_time_seconds": 1136.1870000000054,
+    "capture_attempts": 16,
+    "candidate_replacements": 0,
+    "same_version_recaptures": 0,
+    "generation_calls": 0,
+    "model_endpoint_called": false,
+    "candidate_manifest_path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/candidate_pool_frozen.v0_2.json",
+    "candidate_manifest_sha256": "9b85e166db3bee15b9eb2e4a28ad5137bc1cc741cea08e66c44aa0e866e81e7f",
+    "pool_lock_path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/candidate_pool_frozen.v0_2.lock.json",
+    "pool_lock_sha256": "c37d1604d4173d43867607482e75390612d78c5c3c4837a7f2def9f9565b5d00",
+    "locked_file_count": 19,
+    "locked_file_hash_mismatches": 0,
+    "git_blob_byte_preservation": "21/21 artifact files identical between worktree and staged Git blobs; a narrow parent .gitattributes rule disables text/diff transforms only for phase_b2_v0_2",
+    "qualification_record_path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/qualification_once.v0_2.json",
+    "qualification_record_count": 1,
+    "artifact_file_count": 21,
+    "artifact_bytes": 184420,
+    "png_count": 0,
+    "raw_ui_tree_count": 0,
+    "setup_trace_count": 16
+  },
+  "diversity": {
+    "preregistered_minimum_families": 8,
+    "attempted_families": 8,
+    "distinct_apps": 8,
+    "distinct_destination_widget_families": 8,
+    "maximum_families_in_one_app": 1,
+    "diversity_gate_passed": true,
+    "pseudoreplication_by_contact_name": false,
+    "families": [
+      ["B2F-001", "contacts", "update_destination_contact_phone", "contacts_person_row"],
+      ["B2F-002", "markor", "append_code_to_destination_note", "markor_document_row"],
+      ["B2F-003", "files", "move_value_to_destination_document", "documentsui_file_row"],
+      ["B2F-004", "tasks", "update_destination_task_note", "tasks_task_row"],
+      ["B2F-005", "simple_calendar", "update_destination_event_location", "calendar_event_block"],
+      ["B2F-006", "pro_expense", "update_destination_expense_amount", "expense_record_row"],
+      ["B2F-007", "broccoli", "add_ingredient_to_destination_recipe", "broccoli_recipe_card"],
+      ["B2F-008", "simple_sms", "send_code_to_destination_conversation", "sms_conversation_row"]
+    ]
+  },
+  "qualification": {
+    "total_families": 8,
+    "qualified_families": 0,
+    "family_qualification_rate": 0.0,
+    "qualified_variants": 0,
+    "attempted_variants": 16,
+    "first_broken_edge": "B2F-001 low/high: capture failed before stable-frame PNG/UI-tree acquisition because exact target text SAVE was not found.",
+    "variant_failure_counts": {
+      "TARGET_TEXT_NOT_FOUND": 4,
+      "ADB_SHELL_FAILED": 2,
+      "RESET_BEFORE_FAILED": 2,
+      "FOREGROUND_PACKAGE_UNAVAILABLE": 8
+    },
+    "schema_validation_errors": 0,
+    "duplicate_screenshot_hashes": [],
+    "duplicate_ui_tree_hashes": [],
+    "oracle_qualification_executed": false
+  },
+  "infrastructure": {
+    "adb_port": 5038,
+    "device_serial": "emulator-5554",
+    "client_server_binary_sha256": "957e46b8615f7af5b7292a2ddabe98d2e61940c3fb2b0545756507f080613e71",
+    "fallback_to_5037": false,
+    "predeclared_cold_restart_attempted": true,
+    "predeclared_cold_restart_passed": true,
+    "post_restart_framework_services_present": ["package", "window", "activity"],
+    "post_restart_isolation_passed": true,
+    "post_collection_reset_failures": [
+      "B2F-002 markor reset raised ADB_SHELL_FAILED",
+      "B2F-003 files reset returned an invalid observable count and passed=false"
+    ],
+    "protocol_deviation": {
+      "occurred": true,
+      "provenance": "operator_observation_not_emitted_by_collector",
+      "description": "A read-only progress check addressed explicit port 5038 after its daemon had disappeared; the official locked adb binary implicitly restarted the same 5038 daemon during collection.",
+      "no_5037_fallback": true,
+      "impact": "Breaks a clean claim of uninterrupted ADB-server continuity and is a plausible infrastructure contributor. It cannot rescue or improve the already failing qualification verdict."
+    }
+  },
+  "tests": {
+    "phase_b2_focused": "10 passed",
+    "role_binding_timing_namespace": "27 passed",
+    "candidate_manifest_json_schema_errors": 0,
+    "pool_lock_hash_mismatches": 0,
+    "phase_b_full_regression_preserved_from_commit_99b3425": "1150 passed, 1 failed (known frozen r79 manifest conflict); not reinterpreted or overwritten"
+  },
+  "protected_wip_sha256_after": {
+    "05_project/src/raven_m/controller/episode_controller.py": "fc0e82e0fde90119365d4f685f080eb4519bf2f602e4bda58de5d4809a40fe33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "ff89d6b70be4b4738646d262beb67d7b7e932e9eb95956d940b1c5000a999d10",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5bb1f1e3de673a1072cfee62938b761a62fd69c187d5eadf54bc46b115a3fd0a"
+  },
+  "stop_decision": "Stop Phase B2. Do not recapture in v0.2, do not launch Phase C, and do not make any model, timing, role-binding, memory, or controller-efficacy claim."
+}

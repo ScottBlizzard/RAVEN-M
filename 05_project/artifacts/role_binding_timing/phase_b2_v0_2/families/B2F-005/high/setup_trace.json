@@ -1,0 +1,40 @@
+{
+  "finished_at": "2026-08-04T13:17:04.522046+00:00",
+  "operations": [
+    {
+      "operation": "reset_before",
+      "record": {
+        "driver": "calendar_event_blocks",
+        "observable_item_count": 0,
+        "passed": true,
+        "wall_time_seconds": 4.764999999999418
+      }
+    },
+    {
+      "labels": [
+        "Juniper Source 4205",
+        "Juniper Target 4205"
+      ],
+      "operation": "calendar_utils.add_events"
+    },
+    {
+      "app_name": "simple calendar pro",
+      "operation": "launch_app"
+    },
+    {
+      "operation": "reset_after",
+      "record": {
+        "driver": "calendar_event_blocks",
+        "observable_item_count": 0,
+        "passed": true,
+        "wall_time_seconds": 7.781999999991967
+      }
+    }
+  ],
+  "primary_error": {
+    "message": "FOREGROUND_PACKAGE:None:com.simplemobiletools.calendar.pro",
+    "traceback_sha256": "1eae973f9198c18163d136b343cb61bfb5886aa3e56aaf85c110b35f267660d3",
+    "type": "RuntimeError"
+  },
+  "started_at": "2026-08-04T13:16:39.351879+00:00"
+}

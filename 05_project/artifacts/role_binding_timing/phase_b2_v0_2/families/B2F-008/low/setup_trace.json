@@ -1,0 +1,29 @@
+{
+  "finished_at": "2026-08-04T13:19:37.776139+00:00",
+  "operations": [
+    {
+      "operation": "reset_before",
+      "record": {
+        "driver": "sms_conversation_rows",
+        "observable_item_count": 0,
+        "passed": true,
+        "wall_time_seconds": 5.64100000000326
+      }
+    },
+    {
+      "operation": "reset_after",
+      "record": {
+        "driver": "sms_conversation_rows",
+        "observable_item_count": 0,
+        "passed": true,
+        "wall_time_seconds": 7.015999999988708
+      }
+    }
+  ],
+  "primary_error": {
+    "message": "Target text \"SAVE\" not found.",
+    "traceback_sha256": "44de984e16810fd0e9d10aef49bd6983a3ee249e27a77db020bfb4175a74f12d",
+    "type": "ValueError"
+  },
+  "started_at": "2026-08-04T13:19:11.925445+00:00"
+}

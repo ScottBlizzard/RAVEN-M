@@ -1,0 +1,1541 @@
+{
+  "collection": {
+    "candidate_replacements": 0,
+    "capture_attempts": 16,
+    "finished_at": "2026-08-04T13:21:08.868896+00:00",
+    "model_endpoint_called": false,
+    "started_at": "2026-08-04T13:02:12.691873+00:00",
+    "wall_time_seconds": 1136.1870000000054
+  },
+  "families": [
+    {
+      "app_id": "contacts",
+      "app_name": "contacts",
+      "base_family_id": "B2F-001",
+      "collection_order": [
+        "low",
+        "high"
+      ],
+      "destination_widget_family": "contacts_person_row",
+      "driver": "contacts_rows",
+      "expected_package": "com.google.android.contacts",
+      "fact": {
+        "destination_entity_id": "E2",
+        "destination_label": "Iris Vela",
+        "field": "phone_number",
+        "source_entity_id": "E1",
+        "source_label": "Iris Vale",
+        "value": "+15550142001"
+      },
+      "task_semantics_id": "update_destination_contact_phone",
+      "task_without_value": "Use the phone number previously read from source contact E1 when updating destination contact E2. First target destination contact E2.",
+      "variants": {
+        "high": {
+          "artifact_root": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-001/high",
+          "candidate_targets": [],
+          "capture_status": "failed",
+          "destination_target_id": "A",
+          "destination_widget_id": "A",
+          "development_contaminated": false,
+          "error": {
+            "message": "Target text \"SAVE\" not found.",
+            "traceback_sha256": "01dd6d7fcddda0493966ed8450a06d27e23da837fabc4660eed487ff814c1815",
+            "type": "ValueError"
+          },
+          "held_out_eligible": false,
+          "oracle_rationale": {},
+          "provenance": {},
+          "raw_ui_tree_path": null,
+          "raw_ui_tree_sha256": null,
+          "reset_after": {
+            "driver": "contacts_rows",
+            "observable_item_count": 0,
+            "passed": true,
+            "wall_time_seconds": 6.639999999999418
+          },
+          "reset_before": {
+            "driver": "contacts_rows",
+            "observable_item_count": 0,
+            "passed": true,
+            "wall_time_seconds": 5.422000000005937
+          },
+          "role_ambiguity": "high",
+          "sample_records": [],
+          "screenshot_path": null,
+          "screenshot_sha256": null,
+          "setup_trace_path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-001/high/setup_trace.json",
+          "setup_trace_sha256": "65b234be195d5bef81914828b69add5137cda87309ebc5201527bbd7941d4c9c",
+          "source_target_id": null,
+          "stability": {}
+        },
+        "low": {
+          "artifact_root": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-001/low",
+          "candidate_targets": [],
+          "capture_status": "failed",
+          "destination_target_id": "A",
+          "destination_widget_id": "A",
+          "development_contaminated": false,
+          "error": {
+            "message": "Target text \"SAVE\" not found.",
+            "traceback_sha256": "01dd6d7fcddda0493966ed8450a06d27e23da837fabc4660eed487ff814c1815",
+            "type": "ValueError"
+          },
+          "held_out_eligible": false,
+          "oracle_rationale": {},
+          "provenance": {},
+          "raw_ui_tree_path": null,
+          "raw_ui_tree_sha256": null,
+          "reset_after": {
+            "driver": "contacts_rows",
+            "observable_item_count": 0,
+            "passed": true,
+            "wall_time_seconds": 6.688000000009197
+          },
+          "reset_before": {
+            "driver": "contacts_rows",
+            "observable_item_count": 0,
+            "passed": true,
+            "wall_time_seconds": 9.625
+          },
+          "role_ambiguity": "low",
+          "sample_records": [],
+          "screenshot_path": null,
+          "screenshot_sha256": null,
+          "setup_trace_path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-001/low/setup_trace.json",
+          "setup_trace_sha256": "ff0eb53a51a050eab9fe98c2730133293de5d2a1ceea89012fb36bad7b15d78b",
+          "source_target_id": null,
+          "stability": {}
+        }
+      }
+    },
+    {
+      "app_id": "markor",
+      "app_name": "markor",
+      "base_family_id": "B2F-002",
+      "collection_order": [
+        "high",
+        "low"
+      ],
+      "destination_widget_family": "markor_document_row",
+      "driver": "markor_note_rows",
+      "expected_package": "net.gsantner.markor",
+      "fact": {
+        "destination_entity_id": "E1",
+        "destination_label": "Atlas Target.md",
+        "field": "access_code",
+        "source_entity_id": "E2",
+        "source_label": "Atlas Source.md",
+        "value": "CODE-4202"
+      },
+      "task_semantics_id": "append_code_to_destination_note",
+      "task_without_value": "Append the access code previously read from source note E2 to destination note E1. First target destination note E1.",
+      "variants": {
+        "high": {
+          "artifact_root": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-002/high",
+          "candidate_targets": [],
+          "capture_status": "failed",
+          "destination_target_id": "B",
+          "destination_widget_id": "B",
+          "development_contaminated": false,
+          "error": {
+            "message": "ADB_SHELL_FAILED:['sh', '-c', 'find /storage/emulated/0/Documents/Markor -maxdepth 1 -type f | wc -l']:None:find: ./proc/2/task/2/exe: No such file or directory\nfind: ./proc/2/exe: No such file or directory\nfind: ./proc/3/task/3/exe: No such file or directory\nfind: ./proc/3/exe: No such file or directory\nfind: ./proc/4/task/4/exe: No such file or directory\nfind: ./proc/4/exe: No such file or directory\nfind: ./proc/5/task/5/exe: No such file or directory\nfind: ./proc/5/exe: No such file or directory\nfind: ./proc/7/task/7/exe: No such file or directory\nfind: ./proc/7/exe: No such file or directory\nfind: ./proc/9/task/9/exe: No such file or directory\nfind: ./proc/9/exe: No such file or directory\nfind: ./proc/10/task/10/exe: No such file or directory\nfind: ./proc/10/exe: No such file or directory\nfind: ./proc/11/task/11/exe: No such file or directory\nfind: ./proc/11/exe: No such file or directory\nfind: ./proc/12/task/12/exe: No such file or directory\nfind: ./proc/12/exe: No such file or directory\nfind: ./proc/13/task/13/exe: No such file or directory\nfind: ./proc/13/exe: No such file or directory\nfind: ./proc/14/task/14/exe: No such file or directory\nfind: ./proc/14/exe: No such file or directory\nfind: ./proc/15/task/15/exe: No such file or directory\nfind: ./proc/15/exe: No such file or directory\nfind: ./proc/16/task/16/exe: No such file or directory\nfind: ./proc/16/exe: No such file or directory\nfind: ./proc/17/task/17/exe: No such file or directory\nfind: ./proc/17/exe: No such file or directory\nfind: ./proc/18/task/18/exe: No such file or directory\nfind: ./proc/18/exe: No such file or directory\nfind: ./proc/19/task/19/exe: No such file or directory\nfind: ./proc/19/exe: No such file or directory\nfind: ./proc/20/task/20/exe: No such file or directory\nfind: ./proc/20/exe: No such file or directory\nfind: ./proc/21/task/21/exe: No such file or directory\nfind: ./proc/21/exe: No such file or directory\nfind: ./proc/22/task/22/exe: No such file or directory\nfind: ./proc/22/exe: No such file or directory\nfind: ./proc/23/task/23/exe: No such file or directory\nfind: ./proc/23/exe: No such file or directory\nfind: ./proc/24/task/24/exe: No such file or directory\nfind: ./proc/24/exe: No such file or directory\nfind: ./proc/25/task/25/exe: No such file or directory\nfind: ./proc/25/exe: No such file or directory\nfind: ./proc/27/task/27/exe: No such file or directory\nfind: ./proc/27/exe: No such file or directory\nfind: ./proc/28/task/28/exe: No such file or directory\nfind: ./proc/28/exe: No such file or directory\nfind: ./proc/29/task/29/exe: No such file or directory\nfind: ./proc/29/exe: No such file or directory\nfind: ./proc/30/task/30/exe: No such file or directory\nfind: ./proc/30/exe: No such file or directory\nfind: ./proc/31/task/31/exe: No such file or directory\nfind: ./proc/31/exe: No such file or directory\nfind: ./proc/33/task/33/exe: No such file or directory\nfind: ./proc/33/exe: No such file or directory\nfind: ./proc/34/task/34/exe: No such file or directory\nfind: ./proc/34/exe: No such file or directory\nfind: ./proc/35/task/35/exe: No such file or directory\nfind: ./proc/35/exe: No such file or directory\nfind: ./proc/36/task/36/exe: No such file or directory\nfind: ./proc/36/exe: No such file or directory\nfind: ./proc/37/task/37/exe: No such file or directory\nfind: ./proc/37/exe: No such file or directory\nfind: ./proc/39/task/39/exe: No such file or directory\nfind: ./proc/39/exe: No such file or directory\nfind: ./proc/40/task/40/exe: No such file or directory\nfind: ./proc/40/exe: No such file or directory\nfind: ./proc/41/task/41/exe: No such file or directory\nfind: ./proc/41/exe: No such file or directory\nfind: ./proc/42/task/42/exe: No such file or directory\nfind: ./proc/42/exe: No such file or directory\nfind: ./proc/43/task/43/exe: No such file or directory\nfind: ./proc/43/exe: No such file or directory\nfind: ./proc/44/task/44/exe: No such file or directory\nfind: ./proc/44/exe: No such file or directory\nfind: ./proc/45/task/45/exe: No such file or directory\nfind: ./proc/45/exe: No such file or directory\nfind: ./proc/46/task/46/exe: No such file or directory\nfind: ./proc/46/exe: No such file or directory\nfind: ./proc/47/task/47/exe: No such file or directory\nfind: ./proc/47/exe: No such file or directory\nfind: ./proc/48/task/48/exe: No such file or directory\nfind: ./proc/48/exe: No such file or directory\nfind: ./proc/49/task/49/exe: No such file or directory\nfind: ./proc/49/exe: No such file or directory\nfind: ./proc/50/task/50/exe: No such file or directory\nfind: ./proc/50/exe: No such file or directory\nfind: ./proc/51/task/51/exe: No such file or directory\nfind: ./proc/51/exe: No such file or directory\nfind: ./proc/52/task/52/exe: No such file or directory\nfind: ./proc/52/exe: No such file or directory\nfind: ./proc/53/task/53/exe: No such file or directory\nfind: ./proc/53/exe: No such file or directory\nfind: ./proc/54/task/54/exe: No such file or directory\nfind: ./proc/54/exe: No such file or directory\nfind: ./proc/55/task/55/exe: No such file or directory\nfind: ./proc/55/exe: No such file or directory\nfind: ./proc/56/task/56/exe: No such file or directory\nfind: ./proc/56/exe: No such file or directory\nfind: ./proc/57/task/57/exe: No such file or directory\nfind: ./proc/57/exe: No such file or directory\nfind: ./proc/58/task/58/exe: No such file or directory\nfind: ./proc/58/exe: No such file or directory\nfind: ./proc/59/task/59/exe: No such file or directory\nfind: ./proc/59/exe: No such file or directory\nfind: ./proc/60/task/60/exe: No such file or directory\nfind: ./proc/60/exe: No such file or directory\nfind: ./proc/61/task/61/exe: No such file or directory\nfind: ./proc/61/exe: No such file or directory\nfind: ./proc/62/task/62/exe: No such file or directory\nfind: ./proc/62/exe: No such file or directory\nfind: ./proc/63/task/63/exe: No such file or directory\nfind: ./proc/63/exe: No such file or directory\nfind: ./proc/64/task/64/exe: No such file or directory\nfind: ./proc/64/exe: No such file or directory\nfind: ./proc/65/task/65/exe: No such file or directory\nfind: ./proc/65/exe: No such file or directory\nfind: ./proc/66/task/66/exe: No such file or directory\nfind: ./proc/66/exe: No such file or directory\nfind: ./proc/67/task/67/exe: No such file or directory\nfind: ./proc/67/exe: No such file or directory\nfind: ./proc/68/task/68/exe: No such file or directory\nfind: ./proc/68/exe: No such file or directory\nfind: ./proc/70/task/70/exe: No such file or directory\nfind: ./proc/70/exe: No such file or directory\nfind: ./proc/71/task/71/exe: No such file or directory\nfind: ./proc/71/exe: No such file or directory\nfind: ./proc/72/task/72/exe: No such file or directory\nfind: ./proc/72/exe: No such file or directory\nfind: ./proc/76/task/76/exe: No such file or directory\nfind: ./proc/76/exe: No such file or directory\nfind: ./proc/77/task/77/exe: No such file or directory\nfind: ./proc/77/exe: No such file or directory\nfind: ./proc/78/task/78/exe: No such file or directory\nfind: ./proc/78/exe: No such file or directory\nfind: ./proc/79/task/79/exe: No such file or directory\nfind: ./proc/79/exe: No such file or directory\nfind: ./proc/80/task/80/exe: No such file or directory\nfind: ./proc/80/exe: No such file or directory\nfind: ./proc/81/task/81/exe: No such file or directory\nfind: ./proc/81/exe: No such file or directory\nfind: ./proc/82/task/82/exe: No such file or directory\nfind: ./proc/82/exe: No such file or directory\nfind: ./proc/84/task/84/exe: No such file or directory\nfind: ./proc/84/exe: No such file or directory\nfind: ./proc/85/task/85/exe: No such file or directory\nfind: ./proc/85/exe: No such file or directory\nfind: ./proc/86/task/86/exe: No such file or directory\nfind: ./proc/86/exe: No such file or directory\nfind: ./proc/87/task/87/exe: No such file or directory\nfind: ./proc/87/exe: No such file or directory\nfind: ./proc/88/task/88/exe: No such file or directory\nfind: ./proc/88/exe: No such file or directory\nfind: ./proc/89/task/89/exe: No such file or directory\nfind: ./proc/89/exe: No such file or directory\nfind: ./proc/90/task/90/exe: No such file or directory\nfind: ./proc/90/exe: No such file or directory\nfind: ./proc/91/task/91/exe: No such file or directory\nfind: ./proc/91/exe: No such file or directory\nfind: ./proc/92/task/92/exe: No such file or directory\nfind: ./proc/92/exe: No such file or directory\nfind: ./proc/93/task/93/exe: No such file or directory\nfind: ./proc/93/exe: No such file or directory\nfind: ./proc/99/task/99/exe: No such file or directory\nfind: ./proc/99/exe: No such file or directory\nfind: ./proc/105/task/105/exe: No such file or directory\nfind: ./proc/105/exe: No such file or directory\nfind: ./proc/106/task/106/exe: No such file or directory\nfind: ./proc/106/exe: No such file or directory\nfind: ./proc/107/task/107/exe: No such file or directory\nfind: ./proc/107/exe: No such file or directory\nfind: ./proc/109/task/109/exe: No such file or directory\nfind: ./proc/109/exe: No such file or directory\nfind: ./proc/110/task/110/exe: No such file or directory\nfind: ./proc/110/exe: No such file or directory\nfind: ./proc/111/task/111/exe: No such file or directory\nfind: ./proc/111/exe: No such file or directory\nfind: ./proc/113/task/113/exe: No such file or directory\nfind: ./proc/113/exe: No such file or directory\nfind: ./proc/114/task/114/exe: No such file or directory\nfind: ./proc/114/exe: No such file or directory\nfind: ./proc/115/task/115/exe: No such file or directory\nfind: ./proc/115/exe: No such file or directory\nfind: ./proc/118/task/118/exe: No such file or directory\nfind: ./proc/118/exe: No such file or directory\nfind: ./proc/119/task/119/exe: No such file or directory\nfind: ./proc/119/exe: No such file or directory\nfind: ./proc/120/task/120/exe: No such file or directory\nfind: ./proc/120/exe: No such file or directory\nfind: ./proc/121/task/121/exe: No such file or directory\nfind: ./proc/121/exe: No such file or directory\nfind: ./proc/122/task/122/exe: No such file or directory\nfind: ./proc/122/exe: No such file or directory\nfind: ./proc/123/task/123/exe: No such file or directory\nfind: ./proc/123/exe: No such file or directory\nfind: ./proc/124/task/124/exe: No such file or directory\nfind: ./proc/124/exe: No such file or directory\nfind: ./proc/125/task/125/exe: No such file or directory\nfind: ./proc/125/exe: No such file or directory\nfind: ./proc/126/task/126/exe: No such file or directory\nfind: ./proc/126/exe: No such file or directory\nfind: ./proc/127/task/127/exe: No such file or directory\nfind: ./proc/127/exe: No such file or directory\nfind: ./proc/131/task/131/exe: No such file or directory\nfind: ./proc/131/exe: No such file or directory\nfind: ./proc/132/task/132/exe: No such file or directory\nfind: ./proc/132/exe: No such file or directory\nfind: ./proc/135/task/135/exe: No such file or directory\nfind: ./proc/135/exe: No such file or directory\nfind: ./proc/136/task/136/exe: No such file or directory\nfind: ./proc/136/exe: No such file or directory\nfind: ./proc/137/task/137/exe: No such file or directory\nfind: ./proc/137/exe: No such file or directory\nfind: ./proc/138/task/138/exe: No such file or directory\nfind: ./proc/138/exe: No such file or directory\nfind: ./proc/143/task/143/exe: No such file or directory\nfind: ./proc/143/exe: No such file or directory\nfind: ./proc/146/task/146/exe: No such file or directory\nfind: ./proc/146/exe: No such file or directory\nfind: ./proc/163/task/163/exe: No such file or directory\nfind: ./proc/163/exe: No such file or directory\nfind: ./proc/164/task/164/exe: No such file or directory\nfind: ./proc/164/exe: No such file or directory\nfind: ./proc/165/task/165/exe: No such file or directory\nfind: ./proc/165/exe: No such file or directory\nfind: ./proc/166/task/166/exe: No such file or directory\nfind: ./proc/166/exe: No such file or directory\nfind: ./proc/167/task/167/exe: No such file or directory\nfind: ./proc/167/exe: No such file or directory\nfind: ./proc/168/task/168/exe: No such file or directory\nfind: ./proc/168/exe: No such file or directory\nfind: ./proc/169/task/169/exe: No such file or directory\nfind: ./proc/169/exe: No such file or directory\nfind: ./proc/176/task/176/exe: No such file or directory\nfind: ./proc/176/exe: No such file or directory\nfind: ./proc/190/task/190/exe: No such file or directory\nfind: ./proc/190/exe: No such file or directory\nfind: ./proc/192/task/192/exe: No such file or directory\nfind: ./proc/192/exe: No such file or directory\nfind: ./proc/194/task/194/exe: No such file or directory\nfind: ./proc/194/exe: No such file or directory\nfind: ./proc/195/task/195/exe: No such file or directory\nfind: ./proc/195/exe: No such file or directory\nfind: ./proc/196/task/196/exe: No such file or directory\nfind: ./proc/196/exe: No such file or directory\nfind: ./proc/201/task/201/exe: No such file or directory\nfind: ./proc/201/exe: No such file or directory\nfind: ./proc/202/task/202/exe: No such file or directory\nfind: ./proc/202/exe: No such file or directory\nfind: ./proc/218/task/218/exe: No such file or directory\nfind: ./proc/218/exe: No such file or directory\nfind: ./proc/219/task/219/exe: No such file or directory\nfind: ./proc/219/exe: No such file or directory\nfind: ./proc/220/task/220/exe: No such file or directory\nfind: ./proc/220/exe: No such file or directory\nfind: ./proc/221/task/221/exe: No such file or directory\nfind: ./proc/221/exe: No such file or directory\nfind: ./proc/222/task/222/exe: No such file or directory\nfind: ./proc/222/exe: No such file or directory\nfind: ./proc/223/task/223/exe: No such file or directory\nfind: ./proc/223/exe: No such file or directory\nfind: ./proc/224/task/224/exe: No such file or directory\nfind: ./proc/224/exe: No such file or directory\nfind: ./proc/225/task/225/exe: No such file or directory\nfind: ./proc/225/exe: No such file or directory\nfind: ./proc/226/task/226/exe: No such file or directory\nfind: ./proc/226/exe: No such file or directory\nfind: ./proc/227/task/227/exe: No such file or directory\nfind: ./proc/227/exe: No such file or directory\nfind: ./proc/228/task/228/exe: No such file or directory\nfind: ./proc/228/exe: No such file or directory\nfind: ./proc/229/task/229/exe: No such file or directory\nfind: ./proc/229/exe: No such file or directory\nfind: ./proc/230/task/230/exe: No such file or directory\nfind: ./proc/230/exe: No such file or directory\nfind: ./proc/231/task/231/exe: No such file or directory\nfind: ./proc/231/exe: No such file or directory\nfind: ./proc/232/task/232/exe: No such file or directory\nfind: ./proc/232/exe: No such file or directory\nfind: ./proc/233/task/233/exe: No such file or directory\nfind: ./proc/233/exe: No such file or directory\nfind: ./proc/234/task/234/exe: No such file or directory\nfind: ./proc/234/exe: No such file or directory\nfind: ./proc/235/task/235/exe: No such file or directory\nfind: ./proc/235/exe: No such file or directory\nfind: ./proc/236/task/236/exe: No such file or directory\nfind: ./proc/236/exe: No such file or directory\nfind: ./proc/237/task/237/exe: No such file or directory\nfind: ./proc/237/exe: No such file or directory\nfind: ./proc/238/task/238/exe: No such file or directory\nfind: ./proc/238/exe: No such file or directory\nfind: ./proc/239/task/239/exe: No such file or directory\nfind: ./proc/239/exe: No such file or directory\nfind: ./proc/240/task/240/exe: No such file or directory\nfind: ./proc/240/exe: No such file or directory\nfind: ./proc/241/task/241/exe: No such file or directory\nfind: ./proc/241/exe: No such file or directory\nfind: ./proc/242/task/242/exe: No such file or directory\nfind: ./proc/242/exe: No such file or directory\nfind: ./proc/243/task/243/exe: No such file or directory\nfind: ./proc/243/exe: No such file or directory\nfind: ./proc/244/task/244/exe: No such file or directory\nfind: ./proc/244/exe: No such file or directory\nfind: ./proc/245/task/245/exe: No such file or directory\nfind: ./proc/245/exe: No such file or directory\nfind: ./proc/246/task/246/exe: No such file or directory\nfind: ./proc/246/exe: No such file or directory\nfind: ./proc/247/task/247/exe: No such file or directory\nfind: ./proc/247/exe: No such file or directory\nfind: ./proc/248/task/248/exe: No such file or directory\nfind: ./proc/248/exe: No such file or directory\nfind: ./proc/249/task/249/exe: No such file or directory\nfind: ./proc/249/exe: No such file or directory\nfind: ./proc/250/task/250/exe: No such file or directory\nfind: ./proc/250/exe: No such file or directory\nfind: ./proc/251/task/251/exe: No such file or directory\nfind: ./proc/251/exe: No such file or directory\nfind: ./proc/252/task/252/exe: No such file or directory\nfind: ./proc/252/exe: No such file or directory\nfind: ./proc/253/task/253/exe: No such file or directory\nfind: ./proc/253/exe: No such file or directory\nfind: ./proc/254/task/254/exe: No such file or directory\nfind: ./proc/254/exe: No such file or directory\nfind: ./proc/255/task/255/exe: No such file or directory\nfind: ./proc/255/exe: No such file or directory\nfind: ./proc/256/task/256/exe: No such file or directory\nfind: ./proc/256/exe: No such file or directory\nfind: ./proc/257/task/257/exe: No such file or directory\nfind: ./proc/257/exe: No such file or directory\nfind: ./proc/258/task/258/exe: No such file or directory\nfind: ./proc/258/exe: No such file or directory\nfind: ./proc/259/task/259/exe: No such file or directory\nfind: ./proc/259/exe: No such file or directory\nfind: ./proc/260/task/260/exe: No such file or directory\nfind: ./proc/260/exe: No such file or directory\nfind: ./proc/261/task/261/exe: No such file or directory\nfind: ./proc/261/exe: No such file or directory\nfind: ./proc/262/task/262/exe: No such file or directory\nfind: ./proc/262/exe: No such file or directory\nfind: ./proc/263/task/263/exe: No such file or directory\nfind: ./proc/263/exe: No such file or directory\nfind: ./proc/264/task/264/exe: No such file or directory\nfind: ./proc/264/exe: No such file or directory\nfind: ./proc/265/task/265/exe: No such file or directory\nfind: ./proc/265/exe: No such file or directory\nfind: ./proc/266/task/266/exe: No such file or directory\nfind: ./proc/266/exe: No such file or directory\nfind: ./proc/278/task/278/exe: No such file or directory\nfind: ./proc/278/exe: No such file or directory\nfind: ./proc/326/task/326/exe: No such file or directory\nfind: ./proc/326/exe: No such file or directory\nfind: ./proc/329/task/329/exe: No such file or directory\nfind: ./proc/329/exe: No such file or directory\nfind: ./proc/1970/task/1970/exe: No such file or directory\nfind: ./proc/1970/exe: No such file or directory\nfind: ./proc/3239/task/3239/exe: No such file or directory\nfind: ./proc/3239/exe: No such file or directory\nfind: ./proc/3322/task/3322/exe: No such file or directory\nfind: ./proc/3322/exe: No such file or directory\nfind: ./proc/3332/task/3332/exe: No such file or directory\nfind: ./proc/3332/exe: No such file or directory\nfind: ./proc/3430/task/3430/exe: No such file or directory\nfind: ./proc/3430/exe: No such file or directory\n",
+            "traceback_sha256": "349d7f91e1c3d002c19223fbf07a36f963ad982426706f09f0e478ade99f7baf",
+            "type": "RuntimeError"
+          },
+          "held_out_eligible": false,
+          "oracle_rationale": {},
+          "provenance": {},
+          "raw_ui_tree_path": null,
+          "raw_ui_tree_sha256": null,
+          "reset_after": {
+            "driver": "markor_note_rows",
+            "observable_item_count": 1523564,
+            "passed": false,
+            "wall_time_seconds": 27.639999999999418
+          },
+          "reset_before": {
+            "passed": false
+          },
+          "role_ambiguity": "high",
+          "sample_records": [],
+          "screenshot_path": null,
+          "screenshot_sha256": null,
+          "setup_trace_path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-002/high/setup_trace.json",
+          "setup_trace_sha256": "ffbe7ba7b8d03610bc4a846c3382a985046ce8e23337e5f8d6a40161a0e72aef",
+          "source_target_id": null,
+          "stability": {}
+        },
+        "low": {
+          "artifact_root": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-002/low",
+          "candidate_targets": [],
+          "capture_status": "failed",
+          "destination_target_id": "B",
+          "destination_widget_id": "B",
+          "development_contaminated": false,
+          "error": {
+            "message": "RESET_BEFORE_FAILED",
+            "traceback_sha256": "51989a2a591af61af2ddcb98eedd2550e6d9fbe571f80c3dad2646d0bd204e35",
+            "type": "RuntimeError"
+          },
+          "held_out_eligible": false,
+          "oracle_rationale": {},
+          "provenance": {},
+          "raw_ui_tree_path": null,
+          "raw_ui_tree_sha256": null,
+          "reset_after": {
+            "driver": "markor_note_rows",
+            "observable_item_count": 1504758,
+            "passed": false,
+            "wall_time_seconds": 29.202999999994063
+          },
+          "reset_before": {
+            "driver": "markor_note_rows",
+            "observable_item_count": 1510493,
+            "passed": false,
+            "wall_time_seconds": 27.922000000005937
+          },
+          "role_ambiguity": "low",
+          "sample_records": [],
+          "screenshot_path": null,
+          "screenshot_sha256": null,
+          "setup_trace_path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-002/low/setup_trace.json",
+          "setup_trace_sha256": "3c85ded7adfbf7dfe30e3ee0ca805b43ebb8828bd0c8c23016cbac345c3c0e09",
+          "source_target_id": null,
+          "stability": {}
+        }
+      }
+    },
+    {
+      "app_id": "files",
+      "app_name": "files",
+      "base_family_id": "B2F-003",
+      "collection_order": [
+        "low",
+        "high"
+      ],
+      "destination_widget_family": "documentsui_file_row",
+      "driver": "download_file_rows",
+      "expected_package": "com.google.android.documentsui",
+      "fact": {
+        "destination_entity_id": "E4",
+        "destination_label": "cedar_target_4203.txt",
+        "field": "document_identifier",
+        "source_entity_id": "E3",
+        "source_label": "cedar_source_4203.txt",
+        "value": "DOC-4203"
+      },
+      "task_semantics_id": "move_value_to_destination_document",
+      "task_without_value": "Move the identifier previously read from source document E3 into destination document E4. First target destination document E4.",
+      "variants": {
+        "high": {
+          "artifact_root": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-003/high",
+          "candidate_targets": [],
+          "capture_status": "failed",
+          "destination_target_id": "C",
+          "destination_widget_id": "C",
+          "development_contaminated": false,
+          "error": {
+            "message": "RESET_BEFORE_FAILED",
+            "traceback_sha256": "51989a2a591af61af2ddcb98eedd2550e6d9fbe571f80c3dad2646d0bd204e35",
+            "type": "RuntimeError"
+          },
+          "held_out_eligible": false,
+          "oracle_rationale": {},
+          "provenance": {},
+          "raw_ui_tree_path": null,
+          "raw_ui_tree_sha256": null,
+          "reset_after": {
+            "driver": "download_file_rows",
+            "observable_item_count": 1152894,
+            "passed": false,
+            "wall_time_seconds": 26.110000000000582
+          },
+          "reset_before": {
+            "driver": "download_file_rows",
+            "observable_item_count": 1153714,
+            "passed": false,
+            "wall_time_seconds": 25.046000000002095
+          },
+          "role_ambiguity": "high",
+          "sample_records": [],
+          "screenshot_path": null,
+          "screenshot_sha256": null,
+          "setup_trace_path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-003/high/setup_trace.json",
+          "setup_trace_sha256": "ace0c08d253eee9ff581a67acf50c5897ed7befd0d02e361512ccb2ef54b3cff",
+          "source_target_id": null,
+          "stability": {}
+        },
+        "low": {
+          "artifact_root": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-003/low",
+          "candidate_targets": [],
+          "capture_status": "failed",
+          "destination_target_id": "C",
+          "destination_widget_id": "C",
+          "development_contaminated": false,
+          "error": {
+            "message": "ADB_SHELL_FAILED:['sh', '-c', 'find /storage/emulated/0/Download -maxdepth 1 -type f | wc -l']:None:find: ./proc/2/task/2/exe: No such file or directory\nfind: ./proc/2/exe: No such file or directory\nfind: ./proc/3/task/3/exe: No such file or directory\nfind: ./proc/3/exe: No such file or directory\nfind: ./proc/4/task/4/exe: No such file or directory\nfind: ./proc/4/exe: No such file or directory\nfind: ./proc/5/task/5/exe: No such file or directory\nfind: ./proc/5/exe: No such file or directory\nfind: ./proc/7/task/7/exe: No such file or directory\nfind: ./proc/7/exe: No such file or directory\nfind: ./proc/9/task/9/exe: No such file or directory\nfind: ./proc/9/exe: No such file or directory\nfind: ./proc/10/task/10/exe: No such file or directory\nfind: ./proc/10/exe: No such file or directory\nfind: ./proc/11/task/11/exe: No such file or directory\nfind: ./proc/11/exe: No such file or directory\nfind: ./proc/12/task/12/exe: No such file or directory\nfind: ./proc/12/exe: No such file or directory\nfind: ./proc/13/task/13/exe: No such file or directory\nfind: ./proc/13/exe: No such file or directory\nfind: ./proc/14/task/14/exe: No such file or directory\nfind: ./proc/14/exe: No such file or directory\nfind: ./proc/15/task/15/exe: No such file or directory\nfind: ./proc/15/exe: No such file or directory\nfind: ./proc/16/task/16/exe: No such file or directory\nfind: ./proc/16/exe: No such file or directory\nfind: ./proc/17/task/17/exe: No such file or directory\nfind: ./proc/17/exe: No such file or directory\nfind: ./proc/18/task/18/exe: No such file or directory\nfind: ./proc/18/exe: No such file or directory\nfind: ./proc/19/task/19/exe: No such file or directory\nfind: ./proc/19/exe: No such file or directory\nfind: ./proc/20/task/20/exe: No such file or directory\nfind: ./proc/20/exe: No such file or directory\nfind: ./proc/21/task/21/exe: No such file or directory\nfind: ./proc/21/exe: No such file or directory\nfind: ./proc/22/task/22/exe: No such file or directory\nfind: ./proc/22/exe: No such file or directory\nfind: ./proc/23/task/23/exe: No such file or directory\nfind: ./proc/23/exe: No such file or directory\nfind: ./proc/24/task/24/exe: No such file or directory\nfind: ./proc/24/exe: No such file or directory\nfind: ./proc/25/task/25/exe: No such file or directory\nfind: ./proc/25/exe: No such file or directory\nfind: ./proc/27/task/27/exe: No such file or directory\nfind: ./proc/27/exe: No such file or directory\nfind: ./proc/28/task/28/exe: No such file or directory\nfind: ./proc/28/exe: No such file or directory\nfind: ./proc/29/task/29/exe: No such file or directory\nfind: ./proc/29/exe: No such file or directory\nfind: ./proc/30/task/30/exe: No such file or directory\nfind: ./proc/30/exe: No such file or directory\nfind: ./proc/31/task/31/exe: No such file or directory\nfind: ./proc/31/exe: No such file or directory\nfind: ./proc/33/task/33/exe: No such file or directory\nfind: ./proc/33/exe: No such file or directory\nfind: ./proc/34/task/34/exe: No such file or directory\nfind: ./proc/34/exe: No such file or directory\nfind: ./proc/35/task/35/exe: No such file or directory\nfind: ./proc/35/exe: No such file or directory\nfind: ./proc/36/task/36/exe: No such file or directory\nfind: ./proc/36/exe: No such file or directory\nfind: ./proc/37/task/37/exe: No such file or directory\nfind: ./proc/37/exe: No such file or directory\nfind: ./proc/39/task/39/exe: No such file or directory\nfind: ./proc/39/exe: No such file or directory\nfind: ./proc/40/task/40/exe: No such file or directory\nfind: ./proc/40/exe: No such file or directory\nfind: ./proc/41/task/41/exe: No such file or directory\nfind: ./proc/41/exe: No such file or directory\nfind: ./proc/42/task/42/exe: No such file or directory\nfind: ./proc/42/exe: No such file or directory\nfind: ./proc/43/task/43/exe: No such file or directory\nfind: ./proc/43/exe: No such file or directory\nfind: ./proc/44/task/44/exe: No such file or directory\nfind: ./proc/44/exe: No such file or directory\nfind: ./proc/45/task/45/exe: No such file or directory\nfind: ./proc/45/exe: No such file or directory\nfind: ./proc/46/task/46/exe: No such file or directory\nfind: ./proc/46/exe: No such file or directory\nfind: ./proc/47/task/47/exe: No such file or directory\nfind: ./proc/47/exe: No such file or directory\nfind: ./proc/48/task/48/exe: No such file or directory\nfind: ./proc/48/exe: No such file or directory\nfind: ./proc/49/task/49/exe: No such file or directory\nfind: ./proc/49/exe: No such file or directory\nfind: ./proc/50/task/50/exe: No such file or directory\nfind: ./proc/50/exe: No such file or directory\nfind: ./proc/51/task/51/exe: No such file or directory\nfind: ./proc/51/exe: No such file or directory\nfind: ./proc/52/task/52/exe: No such file or directory\nfind: ./proc/52/exe: No such file or directory\nfind: ./proc/53/task/53/exe: No such file or directory\nfind: ./proc/53/exe: No such file or directory\nfind: ./proc/54/task/54/exe: No such file or directory\nfind: ./proc/54/exe: No such file or directory\nfind: ./proc/55/task/55/exe: No such file or directory\nfind: ./proc/55/exe: No such file or directory\nfind: ./proc/56/task/56/exe: No such file or directory\nfind: ./proc/56/exe: No such file or directory\nfind: ./proc/57/task/57/exe: No such file or directory\nfind: ./proc/57/exe: No such file or directory\nfind: ./proc/58/task/58/exe: No such file or directory\nfind: ./proc/58/exe: No such file or directory\nfind: ./proc/59/task/59/exe: No such file or directory\nfind: ./proc/59/exe: No such file or directory\nfind: ./proc/60/task/60/exe: No such file or directory\nfind: ./proc/60/exe: No such file or directory\nfind: ./proc/61/task/61/exe: No such file or directory\nfind: ./proc/61/exe: No such file or directory\nfind: ./proc/62/task/62/exe: No such file or directory\nfind: ./proc/62/exe: No such file or directory\nfind: ./proc/63/task/63/exe: No such file or directory\nfind: ./proc/63/exe: No such file or directory\nfind: ./proc/64/task/64/exe: No such file or directory\nfind: ./proc/64/exe: No such file or directory\nfind: ./proc/65/task/65/exe: No such file or directory\nfind: ./proc/65/exe: No such file or directory\nfind: ./proc/66/task/66/exe: No such file or directory\nfind: ./proc/66/exe: No such file or directory\nfind: ./proc/67/task/67/exe: No such file or directory\nfind: ./proc/67/exe: No such file or directory\nfind: ./proc/68/task/68/exe: No such file or directory\nfind: ./proc/68/exe: No such file or directory\nfind: ./proc/70/task/70/exe: No such file or directory\nfind: ./proc/70/exe: No such file or directory\nfind: ./proc/71/task/71/exe: No such file or directory\nfind: ./proc/71/exe: No such file or directory\nfind: ./proc/72/task/72/exe: No such file or directory\nfind: ./proc/72/exe: No such file or directory\nfind: ./proc/76/task/76/exe: No such file or directory\nfind: ./proc/76/exe: No such file or directory\nfind: ./proc/77/task/77/exe: No such file or directory\nfind: ./proc/77/exe: No such file or directory\nfind: ./proc/78/task/78/exe: No such file or directory\nfind: ./proc/78/exe: No such file or directory\nfind: ./proc/79/task/79/exe: No such file or directory\nfind: ./proc/79/exe: No such file or directory\nfind: ./proc/80/task/80/exe: No such file or directory\nfind: ./proc/80/exe: No such file or directory\nfind: ./proc/81/task/81/exe: No such file or directory\nfind: ./proc/81/exe: No such file or directory\nfind: ./proc/82/task/82/exe: No such file or directory\nfind: ./proc/82/exe: No such file or directory\nfind: ./proc/84/task/84/exe: No such file or directory\nfind: ./proc/84/exe: No such file or directory\nfind: ./proc/85/task/85/exe: No such file or directory\nfind: ./proc/85/exe: No such file or directory\nfind: ./proc/86/task/86/exe: No such file or directory\nfind: ./proc/86/exe: No such file or directory\nfind: ./proc/87/task/87/exe: No such file or directory\nfind: ./proc/87/exe: No such file or directory\nfind: ./proc/88/task/88/exe: No such file or directory\nfind: ./proc/88/exe: No such file or directory\nfind: ./proc/90/task/90/exe: No such file or directory\nfind: ./proc/90/exe: No such file or directory\nfind: ./proc/91/task/91/exe: No such file or directory\nfind: ./proc/91/exe: No such file or directory\nfind: ./proc/92/task/92/exe: No such file or directory\nfind: ./proc/92/exe: No such file or directory\nfind: ./proc/93/task/93/exe: No such file or directory\nfind: ./proc/93/exe: No such file or directory\nfind: ./proc/105/task/105/exe: No such file or directory\nfind: ./proc/105/exe: No such file or directory\nfind: ./proc/106/task/106/exe: No such file or directory\nfind: ./proc/106/exe: No such file or directory\nfind: ./proc/107/task/107/exe: No such file or directory\nfind: ./proc/107/exe: No such file or directory\nfind: ./proc/109/task/109/exe: No such file or directory\nfind: ./proc/109/exe: No such file or directory\nfind: ./proc/110/task/110/exe: No such file or directory\nfind: ./proc/110/exe: No such file or directory\nfind: ./proc/111/task/111/exe: No such file or directory\nfind: ./proc/111/exe: No such file or directory\nfind: ./proc/113/task/113/exe: No such file or directory\nfind: ./proc/113/exe: No such file or directory\nfind: ./proc/114/task/114/exe: No such file or directory\nfind: ./proc/114/exe: No such file or directory\nfind: ./proc/115/task/115/exe: No such file or directory\nfind: ./proc/115/exe: No such file or directory\nfind: ./proc/118/task/118/exe: No such file or directory\nfind: ./proc/118/exe: No such file or directory\nfind: ./proc/119/task/119/exe: No such file or directory\nfind: ./proc/119/exe: No such file or directory\nfind: ./proc/120/task/120/exe: No such file or directory\nfind: ./proc/120/exe: No such file or directory\nfind: ./proc/121/task/121/exe: No such file or directory\nfind: ./proc/121/exe: No such file or directory\nfind: ./proc/122/task/122/exe: No such file or directory\nfind: ./proc/122/exe: No such file or directory\nfind: ./proc/123/task/123/exe: No such file or directory\nfind: ./proc/123/exe: No such file or directory\nfind: ./proc/124/task/124/exe: No such file or directory\nfind: ./proc/124/exe: No such file or directory\nfind: ./proc/125/task/125/exe: No such file or directory\nfind: ./proc/125/exe: No such file or directory\nfind: ./proc/126/task/126/exe: No such file or directory\nfind: ./proc/126/exe: No such file or directory\nfind: ./proc/127/task/127/exe: No such file or directory\nfind: ./proc/127/exe: No such file or directory\nfind: ./proc/131/task/131/exe: No such file or directory\nfind: ./proc/131/exe: No such file or directory\nfind: ./proc/132/task/132/exe: No such file or directory\nfind: ./proc/132/exe: No such file or directory\nfind: ./proc/135/task/135/exe: No such file or directory\nfind: ./proc/135/exe: No such file or directory\nfind: ./proc/136/task/136/exe: No such file or directory\nfind: ./proc/136/exe: No such file or directory\nfind: ./proc/137/task/137/exe: No such file or directory\nfind: ./proc/137/exe: No such file or directory\nfind: ./proc/138/task/138/exe: No such file or directory\nfind: ./proc/138/exe: No such file or directory\nfind: ./proc/143/task/143/exe: No such file or directory\nfind: ./proc/143/exe: No such file or directory\nfind: ./proc/146/task/146/exe: No such file or directory\nfind: ./proc/146/exe: No such file or directory\nfind: ./proc/163/task/163/exe: No such file or directory\nfind: ./proc/163/exe: No such file or directory\nfind: ./proc/164/task/164/exe: No such file or directory\nfind: ./proc/164/exe: No such file or directory\nfind: ./proc/165/task/165/exe: No such file or directory\nfind: ./proc/165/exe: No such file or directory\nfind: ./proc/166/task/166/exe: No such file or directory\nfind: ./proc/166/exe: No such file or directory\nfind: ./proc/167/task/167/exe: No such file or directory\nfind: ./proc/167/exe: No such file or directory\nfind: ./proc/168/task/168/exe: No such file or directory\nfind: ./proc/168/exe: No such file or directory\nfind: ./proc/169/task/169/exe: No such file or directory\nfind: ./proc/169/exe: No such file or directory\nfind: ./proc/176/task/176/exe: No such file or directory\nfind: ./proc/176/exe: No such file or directory\nfind: ./proc/190/task/190/exe: No such file or directory\nfind: ./proc/190/exe: No such file or directory\nfind: ./proc/192/task/192/exe: No such file or directory\nfind: ./proc/192/exe: No such file or directory\nfind: ./proc/194/task/194/exe: No such file or directory\nfind: ./proc/194/exe: No such file or directory\nfind: ./proc/195/task/195/exe: No such file or directory\nfind: ./proc/195/exe: No such file or directory\nfind: ./proc/196/task/196/exe: No such file or directory\nfind: ./proc/196/exe: No such file or directory\nfind: ./proc/201/task/201/exe: No such file or directory\nfind: ./proc/201/exe: No such file or directory\nfind: ./proc/202/task/202/exe: No such file or directory\nfind: ./proc/202/exe: No such file or directory\nfind: ./proc/218/task/218/exe: No such file or directory\nfind: ./proc/218/exe: No such file or directory\nfind: ./proc/219/task/219/exe: No such file or directory\nfind: ./proc/219/exe: No such file or directory\nfind: ./proc/220/task/220/exe: No such file or directory\nfind: ./proc/220/exe: No such file or directory\nfind: ./proc/221/task/221/exe: No such file or directory\nfind: ./proc/221/exe: No such file or directory\nfind: ./proc/222/task/222/exe: No such file or directory\nfind: ./proc/222/exe: No such file or directory\nfind: ./proc/223/task/223/exe: No such file or directory\nfind: ./proc/223/exe: No such file or directory\nfind: ./proc/224/task/224/exe: No such file or directory\nfind: ./proc/224/exe: No such file or directory\nfind: ./proc/225/task/225/exe: No such file or directory\nfind: ./proc/225/exe: No such file or directory\nfind: ./proc/226/task/226/exe: No such file or directory\nfind: ./proc/226/exe: No such file or directory\nfind: ./proc/227/task/227/exe: No such file or directory\nfind: ./proc/227/exe: No such file or directory\nfind: ./proc/228/task/228/exe: No such file or directory\nfind: ./proc/228/exe: No such file or directory\nfind: ./proc/229/task/229/exe: No such file or directory\nfind: ./proc/229/exe: No such file or directory\nfind: ./proc/230/task/230/exe: No such file or directory\nfind: ./proc/230/exe: No such file or directory\nfind: ./proc/231/task/231/exe: No such file or directory\nfind: ./proc/231/exe: No such file or directory\nfind: ./proc/232/task/232/exe: No such file or directory\nfind: ./proc/232/exe: No such file or directory\nfind: ./proc/233/task/233/exe: No such file or directory\nfind: ./proc/233/exe: No such file or directory\nfind: ./proc/234/task/234/exe: No such file or directory\nfind: ./proc/234/exe: No such file or directory\nfind: ./proc/235/task/235/exe: No such file or directory\nfind: ./proc/235/exe: No such file or directory\nfind: ./proc/236/task/236/exe: No such file or directory\nfind: ./proc/236/exe: No such file or directory\nfind: ./proc/237/task/237/exe: No such file or directory\nfind: ./proc/237/exe: No such file or directory\nfind: ./proc/238/task/238/exe: No such file or directory\nfind: ./proc/238/exe: No such file or directory\nfind: ./proc/239/task/239/exe: No such file or directory\nfind: ./proc/239/exe: No such file or directory\nfind: ./proc/240/task/240/exe: No such file or directory\nfind: ./proc/240/exe: No such file or directory\nfind: ./proc/241/task/241/exe: No such file or directory\nfind: ./proc/241/exe: No such file or directory\nfind: ./proc/242/task/242/exe: No such file or directory\nfind: ./proc/242/exe: No such file or directory\nfind: ./proc/243/task/243/exe: No such file or directory\nfind: ./proc/243/exe: No such file or directory\nfind: ./proc/244/task/244/exe: No such file or directory\nfind: ./proc/244/exe: No such file or directory\nfind: ./proc/245/task/245/exe: No such file or directory\nfind: ./proc/245/exe: No such file or directory\nfind: ./proc/246/task/246/exe: No such file or directory\nfind: ./proc/246/exe: No such file or directory\nfind: ./proc/247/task/247/exe: No such file or directory\nfind: ./proc/247/exe: No such file or directory\nfind: ./proc/248/task/248/exe: No such file or directory\nfind: ./proc/248/exe: No such file or directory\nfind: ./proc/249/task/249/exe: No such file or directory\nfind: ./proc/249/exe: No such file or directory\nfind: ./proc/250/task/250/exe: No such file or directory\nfind: ./proc/250/exe: No such file or directory\nfind: ./proc/251/task/251/exe: No such file or directory\nfind: ./proc/251/exe: No such file or directory\nfind: ./proc/252/task/252/exe: No such file or directory\nfind: ./proc/252/exe: No such file or directory\nfind: ./proc/253/task/253/exe: No such file or directory\nfind: ./proc/253/exe: No such file or directory\nfind: ./proc/254/task/254/exe: No such file or directory\nfind: ./proc/254/exe: No such file or directory\nfind: ./proc/255/task/255/exe: No such file or directory\nfind: ./proc/255/exe: No such file or directory\nfind: ./proc/256/task/256/exe: No such file or directory\nfind: ./proc/256/exe: No such file or directory\nfind: ./proc/257/task/257/exe: No such file or directory\nfind: ./proc/257/exe: No such file or directory\nfind: ./proc/258/task/258/exe: No such file or directory\nfind: ./proc/258/exe: No such file or directory\nfind: ./proc/259/task/259/exe: No such file or directory\nfind: ./proc/259/exe: No such file or directory\nfind: ./proc/260/task/260/exe: No such file or directory\nfind: ./proc/260/exe: No such file or directory\nfind: ./proc/261/task/261/exe: No such file or directory\nfind: ./proc/261/exe: No such file or directory\nfind: ./proc/262/task/262/exe: No such file or directory\nfind: ./proc/262/exe: No such file or directory\nfind: ./proc/263/task/263/exe: No such file or directory\nfind: ./proc/263/exe: No such file or directory\nfind: ./proc/264/task/264/exe: No such file or directory\nfind: ./proc/264/exe: No such file or directory\nfind: ./proc/265/task/265/exe: No such file or directory\nfind: ./proc/265/exe: No such file or directory\nfind: ./proc/266/task/266/exe: No such file or directory\nfind: ./proc/266/exe: No such file or directory\nfind: ./proc/278/task/278/exe: No such file or directory\nfind: ./proc/278/exe: No such file or directory\nfind: ./proc/329/task/329/exe: No such file or directory\nfind: ./proc/329/exe: No such file or directory\nfind: ./proc/1970/task/1970/exe: No such file or directory\nfind: ./proc/1970/exe: No such file or directory\nfind: ./proc/3322/task/3322/exe: No such file or directory\nfind: ./proc/3322/exe: No such file or directory\nfind: ./proc/4627/task/4627/exe: No such file or directory\nfind: ./proc/4627/exe: No such file or directory\nfind: ./proc/4629/task/4629/exe: No such file or directory\nfind: ./proc/4629/exe: No such file or directory\nfind: ./proc/4990/task/4990/exe: No such file or directory\nfind: ./proc/4990/exe: No such file or directory\nfind: ./proc/5358/task/5358/exe: No such file or directory\nfind: ./proc/5358/exe: No such file or directory\nfind: ./proc/6501/task/6501/exe: No such file or directory\nfind: ./proc/6501/exe: No such file or directory\nfind: ./proc/6677/task/6677/exe: No such file or directory\nfind: ./proc/6677/exe: No such file or directory\nfind: ./proc/7549/task/7549/exe: No such file or directory\nfind: ./proc/7549/exe: No such file or directory\nfind: ./proc/7553/task/7553/exe: No such file or directory\nfind: ./proc/7553/exe: No such file or directory\nfind: ./proc/8009/task/8009/exe: No such file or directory\nfind: ./proc/8009/exe: No such file or directory\n",
+            "traceback_sha256": "c4c9c0bea45e713c95d06d3f9f69f31ecdbe769fbda7a5f0c6c385bf2eea113c",
+            "type": "RuntimeError"
+          },
+          "held_out_eligible": false,
+          "oracle_rationale": {},
+          "provenance": {},
+          "raw_ui_tree_path": null,
+          "raw_ui_tree_sha256": null,
+          "reset_after": {
+            "driver": "download_file_rows",
+            "observable_item_count": 1163506,
+            "passed": false,
+            "wall_time_seconds": 26.047000000005937
+          },
+          "reset_before": {
+            "passed": false
+          },
+          "role_ambiguity": "low",
+          "sample_records": [],
+          "screenshot_path": null,
+          "screenshot_sha256": null,
+          "setup_trace_path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-003/low/setup_trace.json",
+          "setup_trace_sha256": "94ceed39610e6eb743ac1d4d57f539c13b3fe42fc21c79821cc065ceac98d8db",
+          "source_target_id": null,
+          "stability": {}
+        }
+      }
+    },
+    {
+      "app_id": "tasks",
+      "app_name": "tasks",
+      "base_family_id": "B2F-004",
+      "collection_order": [
+        "high",
+        "low"
+      ],
+      "destination_widget_family": "tasks_task_row",
+      "driver": "tasks_rows",
+      "expected_package": "org.tasks",
+      "fact": {
+        "destination_entity_id": "E3",
+        "destination_label": "Harbor target 4204",
+        "field": "task_note_token",
+        "source_entity_id": "E4",
+        "source_label": "Harbor source 4204",
+        "value": "TASK-4204"
+      },
+      "task_semantics_id": "update_destination_task_note",
+      "task_without_value": "Copy the note token previously read from source task E4 into destination task E3. First target destination task E3.",
+      "variants": {
+        "high": {
+          "artifact_root": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-004/high",
+          "candidate_targets": [],
+          "capture_status": "failed",
+          "destination_target_id": "D",
+          "destination_widget_id": "D",
+          "development_contaminated": false,
+          "error": {
+            "message": "FOREGROUND_PACKAGE:None:org.tasks",
+            "traceback_sha256": "25edeb8f4b411d5c7765c4711ab069fc83896203012060fe52bf1b6ff76fa190",
+            "type": "RuntimeError"
+          },
+          "held_out_eligible": false,
+          "oracle_rationale": {},
+          "provenance": {
+            "android_release": "13",
+            "app_version_lines": [
+              "versionCode=130605 minSdk=24 targetSdk=33",
+              "versionName=13.6.3"
+            ],
+            "build_fingerprint": "google/sdk_gphone64_x86_64/emu64x:13/TE1A.240213.009/12342917:userdebug/dev-keys",
+            "foreground_activity": null,
+            "foreground_component": null,
+            "foreground_package": null,
+            "orientation": "portrait",
+            "rotation": "0",
+            "screen_density_raw": "Physical density: 420",
+            "screen_size_raw": "Physical size: 1080x2400"
+          },
+          "raw_ui_tree_path": null,
+          "raw_ui_tree_sha256": null,
+          "reset_after": {
+            "driver": "tasks_rows",
+            "observable_item_count": 0,
+            "passed": true,
+            "wall_time_seconds": 7.125
+          },
+          "reset_before": {
+            "driver": "tasks_rows",
+            "observable_item_count": 0,
+            "passed": true,
+            "wall_time_seconds": 5.23399999999674
+          },
+          "role_ambiguity": "high",
+          "sample_records": [],
+          "screenshot_path": null,
+          "screenshot_sha256": null,
+          "setup_trace_path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-004/high/setup_trace.json",
+          "setup_trace_sha256": "73f8740220a682f00140f283b88c9815c3d70681d5753683b7833a5e33343575",
+          "source_target_id": null,
+          "stability": {}
+        },
+        "low": {
+          "artifact_root": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-004/low",
+          "candidate_targets": [],
+          "capture_status": "failed",
+          "destination_target_id": "D",
+          "destination_widget_id": "D",
+          "development_contaminated": false,
+          "error": {
+            "message": "FOREGROUND_PACKAGE:None:org.tasks",
+            "traceback_sha256": "25edeb8f4b411d5c7765c4711ab069fc83896203012060fe52bf1b6ff76fa190",
+            "type": "RuntimeError"
+          },
+          "held_out_eligible": false,
+          "oracle_rationale": {},
+          "provenance": {
+            "android_release": "13",
+            "app_version_lines": [
+              "versionCode=130605 minSdk=24 targetSdk=33",
+              "versionName=13.6.3"
+            ],
+            "build_fingerprint": "google/sdk_gphone64_x86_64/emu64x:13/TE1A.240213.009/12342917:userdebug/dev-keys",
+            "foreground_activity": null,
+            "foreground_component": null,
+            "foreground_package": null,
+            "orientation": "portrait",
+            "rotation": "0",
+            "screen_density_raw": "Physical density: 420",
+            "screen_size_raw": "Physical size: 1080x2400"
+          },
+          "raw_ui_tree_path": null,
+          "raw_ui_tree_sha256": null,
+          "reset_after": {
+            "driver": "tasks_rows",
+            "observable_item_count": 0,
+            "passed": true,
+            "wall_time_seconds": 7.062999999994645
+          },
+          "reset_before": {
+            "driver": "tasks_rows",
+            "observable_item_count": 0,
+            "passed": true,
+            "wall_time_seconds": 3.562999999994645
+          },
+          "role_ambiguity": "low",
+          "sample_records": [],
+          "screenshot_path": null,
+          "screenshot_sha256": null,
+          "setup_trace_path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-004/low/setup_trace.json",
+          "setup_trace_sha256": "ccfcc1ebb521eabc2ae857a0697c25ce8d82d50722cef1a17ae089e90e393edc",
+          "source_target_id": null,
+          "stability": {}
+        }
+      }
+    },
+    {
+      "app_id": "simple_calendar",
+      "app_name": "simple calendar pro",
+      "base_family_id": "B2F-005",
+      "collection_order": [
+        "low",
+        "high"
+      ],
+      "destination_widget_family": "calendar_event_block",
+      "driver": "calendar_event_blocks",
+      "expected_package": "com.simplemobiletools.calendar.pro",
+      "fact": {
+        "destination_entity_id": "E6",
+        "destination_label": "Juniper Target 4205",
+        "field": "event_location",
+        "source_entity_id": "E5",
+        "source_label": "Juniper Source 4205",
+        "value": "Room J-4205"
+      },
+      "task_semantics_id": "update_destination_event_location",
+      "task_without_value": "Copy the location previously read from source event E5 into destination event E6. First target destination event E6.",
+      "variants": {
+        "high": {
+          "artifact_root": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-005/high",
+          "candidate_targets": [],
+          "capture_status": "failed",
+          "destination_target_id": "E",
+          "destination_widget_id": "E",
+          "development_contaminated": false,
+          "error": {
+            "message": "FOREGROUND_PACKAGE:None:com.simplemobiletools.calendar.pro",
+            "traceback_sha256": "1eae973f9198c18163d136b343cb61bfb5886aa3e56aaf85c110b35f267660d3",
+            "type": "RuntimeError"
+          },
+          "held_out_eligible": false,
+          "oracle_rationale": {},
+          "provenance": {
+            "android_release": "13",
+            "app_version_lines": [
+              "versionCode=238 minSdk=23 targetSdk=33",
+              "versionName=6.22.2"
+            ],
+            "build_fingerprint": "google/sdk_gphone64_x86_64/emu64x:13/TE1A.240213.009/12342917:userdebug/dev-keys",
+            "foreground_activity": null,
+            "foreground_component": null,
+            "foreground_package": null,
+            "orientation": "portrait",
+            "rotation": "0",
+            "screen_density_raw": "Physical density: 420",
+            "screen_size_raw": "Physical size: 1080x2400"
+          },
+          "raw_ui_tree_path": null,
+          "raw_ui_tree_sha256": null,
+          "reset_after": {
+            "driver": "calendar_event_blocks",
+            "observable_item_count": 0,
+            "passed": true,
+            "wall_time_seconds": 7.781999999991967
+          },
+          "reset_before": {
+            "driver": "calendar_event_blocks",
+            "observable_item_count": 0,
+            "passed": true,
+            "wall_time_seconds": 4.764999999999418
+          },
+          "role_ambiguity": "high",
+          "sample_records": [],
+          "screenshot_path": null,
+          "screenshot_sha256": null,
+          "setup_trace_path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-005/high/setup_trace.json",
+          "setup_trace_sha256": "3e75b1f3aed0b8303bc4649e42125359b9a25f7671f005d64b2fd0c1d6802976",
+          "source_target_id": null,
+          "stability": {}
+        },
+        "low": {
+          "artifact_root": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-005/low",
+          "candidate_targets": [],
+          "capture_status": "failed",
+          "destination_target_id": "E",
+          "destination_widget_id": "E",
+          "development_contaminated": false,
+          "error": {
+            "message": "FOREGROUND_PACKAGE:None:com.simplemobiletools.calendar.pro",
+            "traceback_sha256": "1eae973f9198c18163d136b343cb61bfb5886aa3e56aaf85c110b35f267660d3",
+            "type": "RuntimeError"
+          },
+          "held_out_eligible": false,
+          "oracle_rationale": {},
+          "provenance": {
+            "android_release": "13",
+            "app_version_lines": [
+              "versionCode=238 minSdk=23 targetSdk=33",
+              "versionName=6.22.2"
+            ],
+            "build_fingerprint": "google/sdk_gphone64_x86_64/emu64x:13/TE1A.240213.009/12342917:userdebug/dev-keys",
+            "foreground_activity": null,
+            "foreground_component": null,
+            "foreground_package": null,
+            "orientation": "portrait",
+            "rotation": "0",
+            "screen_density_raw": "Physical density: 420",
+            "screen_size_raw": "Physical size: 1080x2400"
+          },
+          "raw_ui_tree_path": null,
+          "raw_ui_tree_sha256": null,
+          "reset_after": {
+            "driver": "calendar_event_blocks",
+            "observable_item_count": 0,
+            "passed": true,
+            "wall_time_seconds": 8.218999999997322
+          },
+          "reset_before": {
+            "driver": "calendar_event_blocks",
+            "observable_item_count": 0,
+            "passed": true,
+            "wall_time_seconds": 4.76600000000326
+          },
+          "role_ambiguity": "low",
+          "sample_records": [],
+          "screenshot_path": null,
+          "screenshot_sha256": null,
+          "setup_trace_path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-005/low/setup_trace.json",
+          "setup_trace_sha256": "541b46504db2992a7b9997fd48246c65ade4d0f00426fc66462722ddbd683ccd",
+          "source_target_id": null,
+          "stability": {}
+        }
+      }
+    },
+    {
+      "app_id": "pro_expense",
+      "app_name": "pro expense",
+      "base_family_id": "B2F-006",
+      "collection_order": [
+        "high",
+        "low"
+      ],
+      "destination_widget_family": "expense_record_row",
+      "driver": "expense_rows",
+      "expected_package": "com.arduia.expense",
+      "fact": {
+        "destination_entity_id": "E5",
+        "destination_label": "Kite target 4206",
+        "field": "expense_amount_cents",
+        "source_entity_id": "E6",
+        "source_label": "Kite source 4206",
+        "value": "4206"
+      },
+      "task_semantics_id": "update_destination_expense_amount",
+      "task_without_value": "Copy the amount previously read from source expense E6 into destination expense E5. First target destination expense E5.",
+      "variants": {
+        "high": {
+          "artifact_root": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-006/high",
+          "candidate_targets": [],
+          "capture_status": "failed",
+          "destination_target_id": "F",
+          "destination_widget_id": "F",
+          "development_contaminated": false,
+          "error": {
+            "message": "FOREGROUND_PACKAGE:None:com.arduia.expense",
+            "traceback_sha256": "49443491fd7c3b94af0f18f6ea24ee97175fa96218fcfcb6c4775668a7d96f68",
+            "type": "RuntimeError"
+          },
+          "held_out_eligible": false,
+          "oracle_rationale": {},
+          "provenance": {
+            "android_release": "13",
+            "app_version_lines": [
+              "versionCode=11 minSdk=21 targetSdk=30",
+              "versionName=1.0.0-beta05"
+            ],
+            "build_fingerprint": "google/sdk_gphone64_x86_64/emu64x:13/TE1A.240213.009/12342917:userdebug/dev-keys",
+            "foreground_activity": null,
+            "foreground_component": null,
+            "foreground_package": null,
+            "orientation": "portrait",
+            "rotation": "0",
+            "screen_density_raw": "Physical density: 420",
+            "screen_size_raw": "Physical size: 1080x2400"
+          },
+          "raw_ui_tree_path": null,
+          "raw_ui_tree_sha256": null,
+          "reset_after": {
+            "driver": "expense_rows",
+            "observable_item_count": 0,
+            "passed": true,
+            "wall_time_seconds": 5.73399999999674
+          },
+          "reset_before": {
+            "driver": "expense_rows",
+            "observable_item_count": 0,
+            "passed": true,
+            "wall_time_seconds": 4.875
+          },
+          "role_ambiguity": "high",
+          "sample_records": [],
+          "screenshot_path": null,
+          "screenshot_sha256": null,
+          "setup_trace_path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-006/high/setup_trace.json",
+          "setup_trace_sha256": "e91f1d14442da6e16acced334c7677f2f8f4c4d127775f3700e62ed5211575bb",
+          "source_target_id": null,
+          "stability": {}
+        },
+        "low": {
+          "artifact_root": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-006/low",
+          "candidate_targets": [],
+          "capture_status": "failed",
+          "destination_target_id": "F",
+          "destination_widget_id": "F",
+          "development_contaminated": false,
+          "error": {
+            "message": "FOREGROUND_PACKAGE:None:com.arduia.expense",
+            "traceback_sha256": "49443491fd7c3b94af0f18f6ea24ee97175fa96218fcfcb6c4775668a7d96f68",
+            "type": "RuntimeError"
+          },
+          "held_out_eligible": false,
+          "oracle_rationale": {},
+          "provenance": {
+            "android_release": "13",
+            "app_version_lines": [
+              "versionCode=11 minSdk=21 targetSdk=30",
+              "versionName=1.0.0-beta05"
+            ],
+            "build_fingerprint": "google/sdk_gphone64_x86_64/emu64x:13/TE1A.240213.009/12342917:userdebug/dev-keys",
+            "foreground_activity": null,
+            "foreground_component": null,
+            "foreground_package": null,
+            "orientation": "portrait",
+            "rotation": "0",
+            "screen_density_raw": "Physical density: 420",
+            "screen_size_raw": "Physical size: 1080x2400"
+          },
+          "raw_ui_tree_path": null,
+          "raw_ui_tree_sha256": null,
+          "reset_after": {
+            "driver": "expense_rows",
+            "observable_item_count": 0,
+            "passed": true,
+            "wall_time_seconds": 4.812000000005355
+          },
+          "reset_before": {
+            "driver": "expense_rows",
+            "observable_item_count": 0,
+            "passed": true,
+            "wall_time_seconds": 3.702999999994063
+          },
+          "role_ambiguity": "low",
+          "sample_records": [],
+          "screenshot_path": null,
+          "screenshot_sha256": null,
+          "setup_trace_path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-006/low/setup_trace.json",
+          "setup_trace_sha256": "dc285f61b8d27c5bed2f51ea0cbbfb41b1b70d59d1a6744652363a898d1c837b",
+          "source_target_id": null,
+          "stability": {}
+        }
+      }
+    },
+    {
+      "app_id": "broccoli",
+      "app_name": "broccoli app",
+      "base_family_id": "B2F-007",
+      "collection_order": [
+        "low",
+        "high"
+      ],
+      "destination_widget_family": "broccoli_recipe_card",
+      "driver": "recipe_cards",
+      "expected_package": "com.flauschcode.broccoli",
+      "fact": {
+        "destination_entity_id": "E8",
+        "destination_label": "Lumen Target 4207",
+        "field": "ingredient",
+        "source_entity_id": "E7",
+        "source_label": "Lumen Source 4207",
+        "value": "sumac-4207"
+      },
+      "task_semantics_id": "add_ingredient_to_destination_recipe",
+      "task_without_value": "Add the ingredient previously read from source recipe E7 to destination recipe E8. First target destination recipe E8.",
+      "variants": {
+        "high": {
+          "artifact_root": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-007/high",
+          "candidate_targets": [],
+          "capture_status": "failed",
+          "destination_target_id": "G",
+          "destination_widget_id": "G",
+          "development_contaminated": false,
+          "error": {
+            "message": "FOREGROUND_PACKAGE:None:com.flauschcode.broccoli",
+            "traceback_sha256": "c519b6c16986c0e6107c88cc8c4373ccc71f5f25864e10277a37909a905dacfd",
+            "type": "RuntimeError"
+          },
+          "held_out_eligible": false,
+          "oracle_rationale": {},
+          "provenance": {
+            "android_release": "13",
+            "app_version_lines": [
+              "versionCode=1020600 minSdk=26 targetSdk=34",
+              "versionName=1.2.6"
+            ],
+            "build_fingerprint": "google/sdk_gphone64_x86_64/emu64x:13/TE1A.240213.009/12342917:userdebug/dev-keys",
+            "foreground_activity": null,
+            "foreground_component": null,
+            "foreground_package": null,
+            "orientation": "portrait",
+            "rotation": "0",
+            "screen_density_raw": "Physical density: 420",
+            "screen_size_raw": "Physical size: 1080x2400"
+          },
+          "raw_ui_tree_path": null,
+          "raw_ui_tree_sha256": null,
+          "reset_after": {
+            "driver": "recipe_cards",
+            "observable_item_count": 0,
+            "passed": true,
+            "wall_time_seconds": 6.26600000000326
+          },
+          "reset_before": {
+            "driver": "recipe_cards",
+            "observable_item_count": 0,
+            "passed": true,
+            "wall_time_seconds": 3.6569999999919673
+          },
+          "role_ambiguity": "high",
+          "sample_records": [],
+          "screenshot_path": null,
+          "screenshot_sha256": null,
+          "setup_trace_path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-007/high/setup_trace.json",
+          "setup_trace_sha256": "f6409d38a50f39a652d21903c3e34a375708db443fba3df72ef39ec4546115a9",
+          "source_target_id": null,
+          "stability": {}
+        },
+        "low": {
+          "artifact_root": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-007/low",
+          "candidate_targets": [],
+          "capture_status": "failed",
+          "destination_target_id": "G",
+          "destination_widget_id": "G",
+          "development_contaminated": false,
+          "error": {
+            "message": "FOREGROUND_PACKAGE:None:com.flauschcode.broccoli",
+            "traceback_sha256": "c519b6c16986c0e6107c88cc8c4373ccc71f5f25864e10277a37909a905dacfd",
+            "type": "RuntimeError"
+          },
+          "held_out_eligible": false,
+          "oracle_rationale": {},
+          "provenance": {
+            "android_release": "13",
+            "app_version_lines": [
+              "versionCode=1020600 minSdk=26 targetSdk=34",
+              "versionName=1.2.6"
+            ],
+            "build_fingerprint": "google/sdk_gphone64_x86_64/emu64x:13/TE1A.240213.009/12342917:userdebug/dev-keys",
+            "foreground_activity": null,
+            "foreground_component": null,
+            "foreground_package": null,
+            "orientation": "portrait",
+            "rotation": "0",
+            "screen_density_raw": "Physical density: 420",
+            "screen_size_raw": "Physical size: 1080x2400"
+          },
+          "raw_ui_tree_path": null,
+          "raw_ui_tree_sha256": null,
+          "reset_after": {
+            "driver": "recipe_cards",
+            "observable_item_count": 0,
+            "passed": true,
+            "wall_time_seconds": 5.139999999999418
+          },
+          "reset_before": {
+            "driver": "recipe_cards",
+            "observable_item_count": 0,
+            "passed": true,
+            "wall_time_seconds": 4.062999999994645
+          },
+          "role_ambiguity": "low",
+          "sample_records": [],
+          "screenshot_path": null,
+          "screenshot_sha256": null,
+          "setup_trace_path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-007/low/setup_trace.json",
+          "setup_trace_sha256": "6c97a22f67f479d48970a6a048f9f380448819c8872b4b0b061c30ab2c96cb95",
+          "source_target_id": null,
+          "stability": {}
+        }
+      }
+    },
+    {
+      "app_id": "simple_sms",
+      "app_name": "simple sms messenger",
+      "base_family_id": "B2F-008",
+      "collection_order": [
+        "high",
+        "low"
+      ],
+      "destination_widget_family": "sms_conversation_row",
+      "driver": "sms_conversation_rows",
+      "expected_package": "com.simplemobiletools.smsmessenger",
+      "fact": {
+        "destination_entity_id": "E7",
+        "destination_label": "Nora Wren",
+        "field": "received_code",
+        "source_entity_id": "E8",
+        "source_label": "Nora Wisp",
+        "value": "SMS-4208"
+      },
+      "task_semantics_id": "send_code_to_destination_conversation",
+      "task_without_value": "Send the code previously received from source conversation E8 to destination conversation E7. First target destination conversation E7.",
+      "variants": {
+        "high": {
+          "artifact_root": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-008/high",
+          "candidate_targets": [],
+          "capture_status": "failed",
+          "destination_target_id": "H",
+          "destination_widget_id": "H",
+          "development_contaminated": false,
+          "error": {
+            "message": "Target text \"SAVE\" not found.",
+            "traceback_sha256": "44de984e16810fd0e9d10aef49bd6983a3ee249e27a77db020bfb4175a74f12d",
+            "type": "ValueError"
+          },
+          "held_out_eligible": false,
+          "oracle_rationale": {},
+          "provenance": {},
+          "raw_ui_tree_path": null,
+          "raw_ui_tree_sha256": null,
+          "reset_after": {
+            "driver": "sms_conversation_rows",
+            "observable_item_count": 0,
+            "passed": true,
+            "wall_time_seconds": 7.734000000011292
+          },
+          "reset_before": {
+            "driver": "sms_conversation_rows",
+            "observable_item_count": 0,
+            "passed": true,
+            "wall_time_seconds": 6.812000000005355
+          },
+          "role_ambiguity": "high",
+          "sample_records": [],
+          "screenshot_path": null,
+          "screenshot_sha256": null,
+          "setup_trace_path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-008/high/setup_trace.json",
+          "setup_trace_sha256": "e5b5617a6e6c007921d02148739333c1bbc83355195b8c91f03b627a10fd5680",
+          "source_target_id": null,
+          "stability": {}
+        },
+        "low": {
+          "artifact_root": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-008/low",
+          "candidate_targets": [],
+          "capture_status": "failed",
+          "destination_target_id": "H",
+          "destination_widget_id": "H",
+          "development_contaminated": false,
+          "error": {
+            "message": "Target text \"SAVE\" not found.",
+            "traceback_sha256": "44de984e16810fd0e9d10aef49bd6983a3ee249e27a77db020bfb4175a74f12d",
+            "type": "ValueError"
+          },
+          "held_out_eligible": false,
+          "oracle_rationale": {},
+          "provenance": {},
+          "raw_ui_tree_path": null,
+          "raw_ui_tree_sha256": null,
+          "reset_after": {
+            "driver": "sms_conversation_rows",
+            "observable_item_count": 0,
+            "passed": true,
+            "wall_time_seconds": 7.015999999988708
+          },
+          "reset_before": {
+            "driver": "sms_conversation_rows",
+            "observable_item_count": 0,
+            "passed": true,
+            "wall_time_seconds": 5.64100000000326
+          },
+          "role_ambiguity": "low",
+          "sample_records": [],
+          "screenshot_path": null,
+          "screenshot_sha256": null,
+          "setup_trace_path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/families/B2F-008/low/setup_trace.json",
+          "setup_trace_sha256": "aff3c5b421678fee1015e622ab3d82a5e4bed26ae52e5cbe95ab9efe20247a90",
+          "source_target_id": null,
+          "stability": {}
+        }
+      }
+    }
+  ],
+  "frozen_before_qualification": true,
+  "generation_calls": 0,
+  "protocol_freeze_commit": "76473dfb238e5e5d9a601e52c8f4e8eaf2e95f00",
+  "runtime": {
+    "adb": {
+      "cold_restart": {
+        "after_ready": true,
+        "after_services": [
+          {
+            "present": true,
+            "returncode": 0,
+            "service": "package",
+            "stderr": "",
+            "stdout": "Service package: found"
+          },
+          {
+            "present": true,
+            "returncode": 0,
+            "service": "window",
+            "stderr": "",
+            "stdout": "Service window: found"
+          },
+          {
+            "present": true,
+            "returncode": 0,
+            "service": "activity",
+            "stderr": "",
+            "stdout": "Service activity: found"
+          }
+        ],
+        "attempted": true,
+        "before_ready": false,
+        "before_services": [
+          {
+            "present": false,
+            "returncode": 0,
+            "service": "package",
+            "stderr": "",
+            "stdout": "Service package: not found"
+          },
+          {
+            "present": false,
+            "returncode": 0,
+            "service": "window",
+            "stderr": "",
+            "stdout": "Service window: not found"
+          },
+          {
+            "present": false,
+            "returncode": 0,
+            "service": "activity",
+            "stderr": "",
+            "stdout": "Service activity: not found"
+          }
+        ],
+        "boot_observations": [
+          {
+            "boot": "",
+            "services_ready": false,
+            "transport_returncode": 1
+          },
+          {
+            "boot": "",
+            "services_ready": false,
+            "transport_returncode": 1
+          },
+          {
+            "boot": "",
+            "services_ready": false,
+            "transport_returncode": 1
+          },
+          {
+            "boot": "",
+            "services_ready": false,
+            "transport_returncode": 1
+          },
+          {
+            "boot": "",
+            "services_ready": false,
+            "transport_returncode": 1
+          },
+          {
+            "boot": "",
+            "services_ready": false,
+            "transport_returncode": 1
+          },
+          {
+            "boot": "",
+            "services_ready": false,
+            "transport_returncode": 1
+          },
+          {
+            "boot": "",
+            "services_ready": false,
+            "transport_returncode": 1
+          },
+          {
+            "boot": "",
+            "services_ready": false,
+            "transport_returncode": 1
+          },
+          {
+            "boot": "",
+            "services_ready": false,
+            "transport_returncode": 1
+          },
+          {
+            "boot": "",
+            "services_ready": false,
+            "transport_returncode": 1
+          },
+          {
+            "boot": "",
+            "services_ready": false,
+            "transport_returncode": 1
+          },
+          {
+            "boot": "",
+            "services_ready": false,
+            "transport_returncode": 1
+          },
+          {
+            "boot": "",
+            "services_ready": false,
+            "transport_returncode": 0
+          },
+          {
+            "boot": "",
+            "services_ready": false,
+            "transport_returncode": 0
+          },
+          {
+            "boot": "",
+            "services_ready": false,
+            "transport_returncode": 0
+          },
+          {
+            "boot": "",
+            "services_ready": false,
+            "transport_returncode": 0
+          },
+          {
+            "boot": "",
+            "services_ready": false,
+            "transport_returncode": 0
+          },
+          {
+            "boot": "",
+            "services_ready": true,
+            "transport_returncode": 0
+          },
+          {
+            "boot": "",
+            "services_ready": true,
+            "transport_returncode": 0
+          },
+          {
+            "boot": "",
+            "services_ready": true,
+            "transport_returncode": 0
+          },
+          {
+            "boot": "",
+            "services_ready": true,
+            "transport_returncode": 0
+          },
+          {
+            "boot": "",
+            "services_ready": true,
+            "transport_returncode": 0
+          },
+          {
+            "boot": "",
+            "services_ready": true,
+            "transport_returncode": 0
+          },
+          {
+            "boot": "",
+            "services_ready": true,
+            "transport_returncode": 0
+          },
+          {
+            "boot": "1",
+            "services_ready": true,
+            "transport_returncode": 0
+          }
+        ],
+        "kill": {
+          "command": [
+            "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+            "-P",
+            "5038",
+            "-s",
+            "emulator-5554",
+            "emu",
+            "kill"
+          ],
+          "returncode": 0,
+          "stderr": "",
+          "stdout": "OK: killing emulator, bye bye\n\nOK",
+          "timed_out": false,
+          "wall_time_seconds": 0.15600000000267755
+        },
+        "launch_command": [
+          "emulator.exe",
+          "-avd",
+          "AndroidWorldAvd",
+          "-port",
+          "5554",
+          "-no-snapshot",
+          "-grpc",
+          "8554",
+          "-no-window"
+        ],
+        "launch_pid": 35116,
+        "maximum": 1,
+        "passed": true,
+        "permitted": true,
+        "stderr_path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/infrastructure/emulator_stderr.log",
+        "stdout_path": "05_project/artifacts/role_binding_timing/phase_b2_v0_2/infrastructure/emulator_stdout.log"
+      },
+      "post_restart_isolation": {
+        "adb_server_port": 5038,
+        "client_binary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "client_binary_sha256": "957e46b8615f7af5b7292a2ddabe98d2e61940c3fb2b0545756507f080613e71",
+        "device_serial": "emulator-5554",
+        "fallback_to_5037": false,
+        "listeners": [
+          {
+            "line": "TCP    127.0.0.1:5038         0.0.0.0:0              LISTENING       3208",
+            "pid": 3208
+          }
+        ],
+        "passed": true,
+        "serial_check": {
+          "command": [
+            "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+            "-P",
+            "5038",
+            "-s",
+            "emulator-5554",
+            "get-serialno"
+          ],
+          "returncode": 0,
+          "stderr": "",
+          "stdout": "emulator-5554",
+          "timed_out": false,
+          "wall_time_seconds": 0.09399999999732245
+        },
+        "server_binary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "server_binary_sha256": "957e46b8615f7af5b7292a2ddabe98d2e61940c3fb2b0545756507f080613e71",
+        "state": {
+          "command": [
+            "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+            "-P",
+            "5038",
+            "-s",
+            "emulator-5554",
+            "get-state"
+          ],
+          "returncode": 0,
+          "stderr": "",
+          "stdout": "device",
+          "timed_out": false,
+          "wall_time_seconds": 0.14100000000325963
+        }
+      },
+      "pre_isolation": {
+        "adb_server_port": 5038,
+        "client_binary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "client_binary_sha256": "957e46b8615f7af5b7292a2ddabe98d2e61940c3fb2b0545756507f080613e71",
+        "device_serial": "emulator-5554",
+        "fallback_to_5037": false,
+        "listeners": [
+          {
+            "line": "TCP    127.0.0.1:5038         0.0.0.0:0              LISTENING       3208",
+            "pid": 3208
+          }
+        ],
+        "passed": true,
+        "serial_check": {
+          "command": [
+            "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+            "-P",
+            "5038",
+            "-s",
+            "emulator-5554",
+            "get-serialno"
+          ],
+          "returncode": 0,
+          "stderr": "",
+          "stdout": "emulator-5554",
+          "timed_out": false,
+          "wall_time_seconds": 0.10899999999674037
+        },
+        "server_binary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "server_binary_sha256": "957e46b8615f7af5b7292a2ddabe98d2e61940c3fb2b0545756507f080613e71",
+        "state": {
+          "command": [
+            "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+            "-P",
+            "5038",
+            "-s",
+            "emulator-5554",
+            "get-state"
+          ],
+          "returncode": 0,
+          "stderr": "",
+          "stdout": "device",
+          "timed_out": false,
+          "wall_time_seconds": 0.14100000000325963
+        }
+      }
+    },
+    "device": {
+      "android_release": "13",
+      "app_version_lines": [
+        "versionCode=2960682 minSdk=23 targetSdk=33",
+        "versionName=4.1.17.505591926"
+      ],
+      "build_fingerprint": "google/sdk_gphone64_x86_64/emu64x:13/TE1A.240213.009/12342917:userdebug/dev-keys",
+      "foreground_activity": null,
+      "foreground_component": null,
+      "foreground_package": null,
+      "orientation": "portrait",
+      "rotation": "0",
+      "screen_density_raw": "Physical density: 420",
+      "screen_size_raw": "Physical size: 1080x2400"
+    },
+    "final_reset_records": [
+      {
+        "base_family_id": "B2F-001",
+        "driver": "contacts_rows",
+        "observable_item_count": 0,
+        "passed": true,
+        "wall_time_seconds": 7.26600000000326
+      },
+      {
+        "base_family_id": "B2F-002",
+        "error": {
+          "message": "ADB_SHELL_FAILED:['sh', '-c', 'find /storage/emulated/0/Documents/Markor -maxdepth 1 -type f | wc -l']:None:find: ./proc/2/task/2/exe: No such file or directory\nfind: ./proc/2/exe: No such file or directory\nfind: ./proc/3/task/3/exe: No such file or directory\nfind: ./proc/3/exe: No such file or directory\nfind: ./proc/4/task/4/exe: No such file or directory\nfind: ./proc/4/exe: No such file or directory\nfind: ./proc/5/task/5/exe: No such file or directory\nfind: ./proc/5/exe: No such file or directory\nfind: ./proc/7/task/7/exe: No such file or directory\nfind: ./proc/7/exe: No such file or directory\nfind: ./proc/9/task/9/exe: No such file or directory\nfind: ./proc/9/exe: No such file or directory\nfind: ./proc/10/task/10/exe: No such file or directory\nfind: ./proc/10/exe: No such file or directory\nfind: ./proc/11/task/11/exe: No such file or directory\nfind: ./proc/11/exe: No such file or directory\nfind: ./proc/12/task/12/exe: No such file or directory\nfind: ./proc/12/exe: No such file or directory\nfind: ./proc/13/task/13/exe: No such file or directory\nfind: ./proc/13/exe: No such file or directory\nfind: ./proc/14/task/14/exe: No such file or directory\nfind: ./proc/14/exe: No such file or directory\nfind: ./proc/15/task/15/exe: No such file or directory\nfind: ./proc/15/exe: No such file or directory\nfind: ./proc/16/task/16/exe: No such file or directory\nfind: ./proc/16/exe: No such file or directory\nfind: ./proc/17/task/17/exe: No such file or directory\nfind: ./proc/17/exe: No such file or directory\nfind: ./proc/18/task/18/exe: No such file or directory\nfind: ./proc/18/exe: No such file or directory\nfind: ./proc/19/task/19/exe: No such file or directory\nfind: ./proc/19/exe: No such file or directory\nfind: ./proc/20/task/20/exe: No such file or directory\nfind: ./proc/20/exe: No such file or directory\nfind: ./proc/21/task/21/exe: No such file or directory\nfind: ./proc/21/exe: No such file or directory\nfind: ./proc/22/task/22/exe: No such file or directory\nfind: ./proc/22/exe: No such file or directory\nfind: ./proc/23/task/23/exe: No such file or directory\nfind: ./proc/23/exe: No such file or directory\nfind: ./proc/24/task/24/exe: No such file or directory\nfind: ./proc/24/exe: No such file or directory\nfind: ./proc/25/task/25/exe: No such file or directory\nfind: ./proc/25/exe: No such file or directory\nfind: ./proc/28/task/28/exe: No such file or directory\nfind: ./proc/28/exe: No such file or directory\nfind: ./proc/29/task/29/exe: No such file or directory\nfind: ./proc/29/exe: No such file or directory\nfind: ./proc/30/task/30/exe: No such file or directory\nfind: ./proc/30/exe: No such file or directory\nfind: ./proc/31/task/31/exe: No such file or directory\nfind: ./proc/31/exe: No such file or directory\nfind: ./proc/33/task/33/exe: No such file or directory\nfind: ./proc/33/exe: No such file or directory\nfind: ./proc/34/task/34/exe: No such file or directory\nfind: ./proc/34/exe: No such file or directory\nfind: ./proc/35/task/35/exe: No such file or directory\nfind: ./proc/35/exe: No such file or directory\nfind: ./proc/36/task/36/exe: No such file or directory\nfind: ./proc/36/exe: No such file or directory\nfind: ./proc/37/task/37/exe: No such file or directory\nfind: ./proc/37/exe: No such file or directory\nfind: ./proc/39/task/39/exe: No such file or directory\nfind: ./proc/39/exe: No such file or directory\nfind: ./proc/40/task/40/exe: No such file or directory\nfind: ./proc/40/exe: No such file or directory\nfind: ./proc/41/task/41/exe: No such file or directory\nfind: ./proc/41/exe: No such file or directory\nfind: ./proc/42/task/42/exe: No such file or directory\nfind: ./proc/42/exe: No such file or directory\nfind: ./proc/43/task/43/exe: No such file or directory\nfind: ./proc/43/exe: No such file or directory\nfind: ./proc/44/task/44/exe: No such file or directory\nfind: ./proc/44/exe: No such file or directory\nfind: ./proc/45/task/45/exe: No such file or directory\nfind: ./proc/45/exe: No such file or directory\nfind: ./proc/46/task/46/exe: No such file or directory\nfind: ./proc/46/exe: No such file or directory\nfind: ./proc/47/task/47/exe: No such file or directory\nfind: ./proc/47/exe: No such file or directory\nfind: ./proc/48/task/48/exe: No such file or directory\nfind: ./proc/48/exe: No such file or directory\nfind: ./proc/49/task/49/exe: No such file or directory\nfind: ./proc/49/exe: No such file or directory\nfind: ./proc/50/task/50/exe: No such file or directory\nfind: ./proc/50/exe: No such file or directory\nfind: ./proc/51/task/51/exe: No such file or directory\nfind: ./proc/51/exe: No such file or directory\nfind: ./proc/52/task/52/exe: No such file or directory\nfind: ./proc/52/exe: No such file or directory\nfind: ./proc/55/task/55/exe: No such file or directory\nfind: ./proc/55/exe: No such file or directory\nfind: ./proc/56/task/56/exe: No such file or directory\nfind: ./proc/56/exe: No such file or directory\nfind: ./proc/57/task/57/exe: No such file or directory\nfind: ./proc/57/exe: No such file or directory\nfind: ./proc/58/task/58/exe: No such file or directory\nfind: ./proc/58/exe: No such file or directory\nfind: ./proc/59/task/59/exe: No such file or directory\nfind: ./proc/59/exe: No such file or directory\nfind: ./proc/60/task/60/exe: No such file or directory\nfind: ./proc/60/exe: No such file or directory\nfind: ./proc/61/task/61/exe: No such file or directory\nfind: ./proc/61/exe: No such file or directory\nfind: ./proc/63/task/63/exe: No such file or directory\nfind: ./proc/63/exe: No such file or directory\nfind: ./proc/64/task/64/exe: No such file or directory\nfind: ./proc/64/exe: No such file or directory\nfind: ./proc/65/task/65/exe: No such file or directory\nfind: ./proc/65/exe: No such file or directory\nfind: ./proc/66/task/66/exe: No such file or directory\nfind: ./proc/66/exe: No such file or directory\nfind: ./proc/67/task/67/exe: No such file or directory\nfind: ./proc/67/exe: No such file or directory\nfind: ./proc/68/task/68/exe: No such file or directory\nfind: ./proc/68/exe: No such file or directory\nfind: ./proc/70/task/70/exe: No such file or directory\nfind: ./proc/70/exe: No such file or directory\nfind: ./proc/71/task/71/exe: No such file or directory\nfind: ./proc/71/exe: No such file or directory\nfind: ./proc/72/task/72/exe: No such file or directory\nfind: ./proc/72/exe: No such file or directory\nfind: ./proc/76/task/76/exe: No such file or directory\nfind: ./proc/76/exe: No such file or directory\nfind: ./proc/77/task/77/exe: No such file or directory\nfind: ./proc/77/exe: No such file or directory\nfind: ./proc/78/task/78/exe: No such file or directory\nfind: ./proc/78/exe: No such file or directory\nfind: ./proc/79/task/79/exe: No such file or directory\nfind: ./proc/79/exe: No such file or directory\nfind: ./proc/80/task/80/exe: No such file or directory\nfind: ./proc/80/exe: No such file or directory\nfind: ./proc/81/task/81/exe: No such file or directory\nfind: ./proc/81/exe: No such file or directory\nfind: ./proc/82/task/82/exe: No such file or directory\nfind: ./proc/82/exe: No such file or directory\nfind: ./proc/84/task/84/exe: No such file or directory\nfind: ./proc/84/exe: No such file or directory\nfind: ./proc/85/task/85/exe: No such file or directory\nfind: ./proc/85/exe: No such file or directory\nfind: ./proc/88/task/88/exe: No such file or directory\nfind: ./proc/88/exe: No such file or directory\nfind: ./proc/90/task/90/exe: No such file or directory\nfind: ./proc/90/exe: No such file or directory\nfind: ./proc/91/task/91/exe: No such file or directory\nfind: ./proc/91/exe: No such file or directory\nfind: ./proc/92/task/92/exe: No such file or directory\nfind: ./proc/92/exe: No such file or directory\nfind: ./proc/93/task/93/exe: No such file or directory\nfind: ./proc/93/exe: No such file or directory\nfind: ./proc/105/task/105/exe: No such file or directory\nfind: ./proc/105/exe: No such file or directory\nfind: ./proc/106/task/106/exe: No such file or directory\nfind: ./proc/106/exe: No such file or directory\nfind: ./proc/107/task/107/exe: No such file or directory\nfind: ./proc/107/exe: No such file or directory\nfind: ./proc/109/task/109/exe: No such file or directory\nfind: ./proc/109/exe: No such file or directory\nfind: ./proc/110/task/110/exe: No such file or directory\nfind: ./proc/110/exe: No such file or directory\nfind: ./proc/111/task/111/exe: No such file or directory\nfind: ./proc/111/exe: No such file or directory\nfind: ./proc/113/task/113/exe: No such file or directory\nfind: ./proc/113/exe: No such file or directory\nfind: ./proc/114/task/114/exe: No such file or directory\nfind: ./proc/114/exe: No such file or directory\nfind: ./proc/115/task/115/exe: No such file or directory\nfind: ./proc/115/exe: No such file or directory\nfind: ./proc/118/task/118/exe: No such file or directory\nfind: ./proc/118/exe: No such file or directory\nfind: ./proc/119/task/119/exe: No such file or directory\nfind: ./proc/119/exe: No such file or directory\nfind: ./proc/120/task/120/exe: No such file or directory\nfind: ./proc/120/exe: No such file or directory\nfind: ./proc/121/task/121/exe: No such file or directory\nfind: ./proc/121/exe: No such file or directory\nfind: ./proc/122/task/122/exe: No such file or directory\nfind: ./proc/122/exe: No such file or directory\nfind: ./proc/123/task/123/exe: No such file or directory\nfind: ./proc/123/exe: No such file or directory\nfind: ./proc/124/task/124/exe: No such file or directory\nfind: ./proc/124/exe: No such file or directory\nfind: ./proc/125/task/125/exe: No such file or directory\nfind: ./proc/125/exe: No such file or directory\nfind: ./proc/126/task/126/exe: No such file or directory\nfind: ./proc/126/exe: No such file or directory\nfind: ./proc/127/task/127/exe: No such file or directory\nfind: ./proc/127/exe: No such file or directory\nfind: ./proc/131/task/131/exe: No such file or directory\nfind: ./proc/131/exe: No such file or directory\nfind: ./proc/132/task/132/exe: No such file or directory\nfind: ./proc/132/exe: No such file or directory\nfind: ./proc/135/task/135/exe: No such file or directory\nfind: ./proc/135/exe: No such file or directory\nfind: ./proc/136/task/136/exe: No such file or directory\nfind: ./proc/136/exe: No such file or directory\nfind: ./proc/137/task/137/exe: No such file or directory\nfind: ./proc/137/exe: No such file or directory\nfind: ./proc/138/task/138/exe: No such file or directory\nfind: ./proc/138/exe: No such file or directory\nfind: ./proc/146/task/146/exe: No such file or directory\nfind: ./proc/146/exe: No such file or directory\nfind: ./proc/163/task/163/exe: No such file or directory\nfind: ./proc/163/exe: No such file or directory\nfind: ./proc/164/task/164/exe: No such file or directory\nfind: ./proc/164/exe: No such file or directory\nfind: ./proc/166/task/166/exe: No such file or directory\nfind: ./proc/166/exe: No such file or directory\nfind: ./proc/167/task/167/exe: No such file or directory\nfind: ./proc/167/exe: No such file or directory\nfind: ./proc/168/task/168/exe: No such file or directory\nfind: ./proc/168/exe: No such file or directory\nfind: ./proc/169/task/169/exe: No such file or directory\nfind: ./proc/169/exe: No such file or directory\nfind: ./proc/176/task/176/exe: No such file or directory\nfind: ./proc/176/exe: No such file or directory\nfind: ./proc/190/task/190/exe: No such file or directory\nfind: ./proc/190/exe: No such file or directory\nfind: ./proc/194/task/194/exe: No such file or directory\nfind: ./proc/194/exe: No such file or directory\nfind: ./proc/195/task/195/exe: No such file or directory\nfind: ./proc/195/exe: No such file or directory\nfind: ./proc/196/task/196/exe: No such file or directory\nfind: ./proc/196/exe: No such file or directory\nfind: ./proc/201/task/201/exe: No such file or directory\nfind: ./proc/201/exe: No such file or directory\nfind: ./proc/202/task/202/exe: No such file or directory\nfind: ./proc/202/exe: No such file or directory\nfind: ./proc/218/task/218/exe: No such file or directory\nfind: ./proc/218/exe: No such file or directory\nfind: ./proc/219/task/219/exe: No such file or directory\nfind: ./proc/219/exe: No such file or directory\nfind: ./proc/220/task/220/exe: No such file or directory\nfind: ./proc/220/exe: No such file or directory\nfind: ./proc/221/task/221/exe: No such file or directory\nfind: ./proc/221/exe: No such file or directory\nfind: ./proc/222/task/222/exe: No such file or directory\nfind: ./proc/222/exe: No such file or directory\nfind: ./proc/223/task/223/exe: No such file or directory\nfind: ./proc/223/exe: No such file or directory\nfind: ./proc/224/task/224/exe: No such file or directory\nfind: ./proc/224/exe: No such file or directory\nfind: ./proc/225/task/225/exe: No such file or directory\nfind: ./proc/225/exe: No such file or directory\nfind: ./proc/226/task/226/exe: No such file or directory\nfind: ./proc/226/exe: No such file or directory\nfind: ./proc/227/task/227/exe: No such file or directory\nfind: ./proc/227/exe: No such file or directory\nfind: ./proc/228/task/228/exe: No such file or directory\nfind: ./proc/228/exe: No such file or directory\nfind: ./proc/229/task/229/exe: No such file or directory\nfind: ./proc/229/exe: No such file or directory\nfind: ./proc/230/task/230/exe: No such file or directory\nfind: ./proc/230/exe: No such file or directory\nfind: ./proc/231/task/231/exe: No such file or directory\nfind: ./proc/231/exe: No such file or directory\nfind: ./proc/232/task/232/exe: No such file or directory\nfind: ./proc/232/exe: No such file or directory\nfind: ./proc/233/task/233/exe: No such file or directory\nfind: ./proc/233/exe: No such file or directory\nfind: ./proc/234/task/234/exe: No such file or directory\nfind: ./proc/234/exe: No such file or directory\nfind: ./proc/235/task/235/exe: No such file or directory\nfind: ./proc/235/exe: No such file or directory\nfind: ./proc/236/task/236/exe: No such file or directory\nfind: ./proc/236/exe: No such file or directory\nfind: ./proc/237/task/237/exe: No such file or directory\nfind: ./proc/237/exe: No such file or directory\nfind: ./proc/238/task/238/exe: No such file or directory\nfind: ./proc/238/exe: No such file or directory\nfind: ./proc/239/task/239/exe: No such file or directory\nfind: ./proc/239/exe: No such file or directory\nfind: ./proc/240/task/240/exe: No such file or directory\nfind: ./proc/240/exe: No such file or directory\nfind: ./proc/241/task/241/exe: No such file or directory\nfind: ./proc/241/exe: No such file or directory\nfind: ./proc/242/task/242/exe: No such file or directory\nfind: ./proc/242/exe: No such file or directory\nfind: ./proc/243/task/243/exe: No such file or directory\nfind: ./proc/243/exe: No such file or directory\nfind: ./proc/244/task/244/exe: No such file or directory\nfind: ./proc/244/exe: No such file or directory\nfind: ./proc/245/task/245/exe: No such file or directory\nfind: ./proc/245/exe: No such file or directory\nfind: ./proc/246/task/246/exe: No such file or directory\nfind: ./proc/246/exe: No such file or directory\nfind: ./proc/247/task/247/exe: No such file or directory\nfind: ./proc/247/exe: No such file or directory\nfind: ./proc/248/task/248/exe: No such file or directory\nfind: ./proc/248/exe: No such file or directory\nfind: ./proc/249/task/249/exe: No such file or directory\nfind: ./proc/249/exe: No such file or directory\nfind: ./proc/250/task/250/exe: No such file or directory\nfind: ./proc/250/exe: No such file or directory\nfind: ./proc/251/task/251/exe: No such file or directory\nfind: ./proc/251/exe: No such file or directory\nfind: ./proc/252/task/252/exe: No such file or directory\nfind: ./proc/252/exe: No such file or directory\nfind: ./proc/253/task/253/exe: No such file or directory\nfind: ./proc/253/exe: No such file or directory\nfind: ./proc/254/task/254/exe: No such file or directory\nfind: ./proc/254/exe: No such file or directory\nfind: ./proc/255/task/255/exe: No such file or directory\nfind: ./proc/255/exe: No such file or directory\nfind: ./proc/256/task/256/exe: No such file or directory\nfind: ./proc/256/exe: No such file or directory\nfind: ./proc/257/task/257/exe: No such file or directory\nfind: ./proc/257/exe: No such file or directory\nfind: ./proc/258/task/258/exe: No such file or directory\nfind: ./proc/258/exe: No such file or directory\nfind: ./proc/259/task/259/exe: No such file or directory\nfind: ./proc/259/exe: No such file or directory\nfind: ./proc/260/task/260/exe: No such file or directory\nfind: ./proc/260/exe: No such file or directory\nfind: ./proc/261/task/261/exe: No such file or directory\nfind: ./proc/261/exe: No such file or directory\nfind: ./proc/262/task/262/exe: No such file or directory\nfind: ./proc/262/exe: No such file or directory\nfind: ./proc/263/task/263/exe: No such file or directory\nfind: ./proc/263/exe: No such file or directory\nfind: ./proc/264/task/264/exe: No such file or directory\nfind: ./proc/264/exe: No such file or directory\nfind: ./proc/265/task/265/exe: No such file or directory\nfind: ./proc/265/exe: No such file or directory\nfind: ./proc/266/task/266/exe: No such file or directory\nfind: ./proc/266/exe: No such file or directory\nfind: ./proc/278/task/278/exe: No such file or directory\nfind: ./proc/278/exe: No such file or directory\nfind: ./proc/329/task/329/exe: No such file or directory\nfind: ./proc/329/exe: No such file or directory\nfind: ./proc/1970/task/1970/exe: No such file or directory\nfind: ./proc/1970/exe: No such file or directory\n",
+          "traceback_sha256": "e514a66d0392cc023edd759fa662c56d7a9879521ff0b3b580696f3c18e1e36a",
+          "type": "RuntimeError"
+        },
+        "passed": false
+      },
+      {
+        "base_family_id": "B2F-003",
+        "driver": "download_file_rows",
+        "observable_item_count": 1100756,
+        "passed": false,
+        "wall_time_seconds": 28.96799999999348
+      },
+      {
+        "base_family_id": "B2F-004",
+        "driver": "tasks_rows",
+        "observable_item_count": 0,
+        "passed": true,
+        "wall_time_seconds": 4.203000000008615
+      },
+      {
+        "base_family_id": "B2F-005",
+        "driver": "calendar_event_blocks",
+        "observable_item_count": 0,
+        "passed": true,
+        "wall_time_seconds": 4.360000000000582
+      },
+      {
+        "base_family_id": "B2F-006",
+        "driver": "expense_rows",
+        "observable_item_count": 0,
+        "passed": true,
+        "wall_time_seconds": 3.811999999990803
+      },
+      {
+        "base_family_id": "B2F-007",
+        "driver": "recipe_cards",
+        "observable_item_count": 0,
+        "passed": true,
+        "wall_time_seconds": 4.328000000008615
+      },
+      {
+        "base_family_id": "B2F-008",
+        "driver": "sms_conversation_rows",
+        "observable_item_count": 0,
+        "passed": true,
+        "wall_time_seconds": 4.562999999994645
+      }
+    ],
+    "framework_services": [
+      {
+        "present": true,
+        "returncode": 0,
+        "service": "package",
+        "stderr": "",
+        "stdout": "Service package: found"
+      },
+      {
+        "present": true,
+        "returncode": 0,
+        "service": "window",
+        "stderr": "",
+        "stdout": "Service window: found"
+      },
+      {
+        "present": true,
+        "returncode": 0,
+        "service": "activity",
+        "stderr": "",
+        "stdout": "Service activity: found"
+      }
+    ],
+    "generation_calls": 0,
+    "generation_endpoint_called": false,
+    "model_service_contacted": false,
+    "onboarding": [
+      {
+        "app_id": "contacts",
+        "records": [
+          {
+            "clicked": false,
+            "error": "UIAUTOMATOR_XML_INVALID",
+            "label": "Skip"
+          },
+          {
+            "clicked": false,
+            "error": "UIAUTOMATOR_XML_INVALID",
+            "label": "Don't allow"
+          },
+          {
+            "clicked": false,
+            "error": "UIAUTOMATOR_XML_INVALID",
+            "label": "Continue"
+          },
+          {
+            "clicked": false,
+            "label": "OK"
+          },
+          {
+            "clicked": false,
+            "label": "Got it"
+          }
+        ]
+      },
+      {
+        "app_id": "markor",
+        "records": [
+          {
+            "clicked": false,
+            "label": "Skip"
+          },
+          {
+            "clicked": false,
+            "label": "Don't allow"
+          },
+          {
+            "clicked": false,
+            "label": "Continue"
+          },
+          {
+            "clicked": false,
+            "label": "OK"
+          },
+          {
+            "clicked": false,
+            "label": "Got it"
+          }
+        ]
+      },
+      {
+        "app_id": "files",
+        "records": [
+          {
+            "clicked": false,
+            "label": "Skip"
+          },
+          {
+            "clicked": false,
+            "label": "Don't allow"
+          },
+          {
+            "clicked": false,
+            "label": "Continue"
+          },
+          {
+            "clicked": false,
+            "label": "OK"
+          },
+          {
+            "clicked": false,
+            "label": "Got it"
+          }
+        ]
+      },
+      {
+        "app_id": "tasks",
+        "records": [
+          {
+            "clicked": false,
+            "label": "Skip"
+          },
+          {
+            "clicked": false,
+            "label": "Don't allow"
+          },
+          {
+            "clicked": false,
+            "label": "Continue"
+          },
+          {
+            "clicked": false,
+            "label": "OK"
+          },
+          {
+            "clicked": false,
+            "label": "Got it"
+          }
+        ]
+      },
+      {
+        "app_id": "simple_calendar",
+        "records": [
+          {
+            "clicked": false,
+            "label": "Skip"
+          },
+          {
+            "clicked": false,
+            "label": "Don't allow"
+          },
+          {
+            "clicked": false,
+            "label": "Continue"
+          },
+          {
+            "clicked": false,
+            "label": "OK"
+          },
+          {
+            "clicked": false,
+            "label": "Got it"
+          }
+        ]
+      },
+      {
+        "app_id": "pro_expense",
+        "records": [
+          {
+            "clicked": false,
+            "label": "Skip"
+          },
+          {
+            "clicked": false,
+            "label": "Don't allow"
+          },
+          {
+            "clicked": false,
+            "label": "Continue"
+          },
+          {
+            "clicked": false,
+            "label": "OK"
+          },
+          {
+            "clicked": false,
+            "label": "Got it"
+          }
+        ]
+      },
+      {
+        "app_id": "broccoli",
+        "records": [
+          {
+            "clicked": false,
+            "label": "Skip"
+          },
+          {
+            "clicked": false,
+            "label": "Don't allow"
+          },
+          {
+            "clicked": false,
+            "label": "Continue"
+          },
+          {
+            "clicked": false,
+            "label": "OK"
+          },
+          {
+            "clicked": false,
+            "label": "Got it"
+          }
+        ]
+      },
+      {
+        "app_id": "simple_sms",
+        "records": [
+          {
+            "clicked": false,
+            "label": "Skip"
+          },
+          {
+            "clicked": false,
+            "label": "Don't allow"
+          },
+          {
+            "clicked": false,
+            "label": "Continue"
+          },
+          {
+            "clicked": false,
+            "label": "OK"
+          },
+          {
+            "clicked": false,
+            "label": "Got it"
+          }
+        ]
+      }
+    ]
+  },
+  "schema_version": "role_binding_timing.snapshot_pool.v0_2",
+  "study_id": "role_binding_timing_phase_b2_v0_2"
+}
