@@ -1,0 +1,75 @@
+{
+  "artifacts": [
+    {
+      "bytes": 16,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_10_accessibility_forwarder_lifecycle_qualification/.gitattributes",
+      "sha256": "5f098188d595641c34c309079424f0ba6c0525882b4a9337c4790d9d4f242eac"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_10_accessibility_forwarder_lifecycle_qualification/cleanup/disable_grpc.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 167,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_10_accessibility_forwarder_lifecycle_qualification/cleanup/disable_grpc.stdout.bin",
+      "sha256": "f9af1ce6818056866bbec0111350b9c0fc39f678368f49b2f668f7ea47a160da"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_10_accessibility_forwarder_lifecycle_qualification/cleanup/disable_tree.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 186,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_10_accessibility_forwarder_lifecycle_qualification/cleanup/disable_tree.stdout.bin",
+      "sha256": "d140f91a5e039cbc88b8cbd894c2e024b0b7d9711f88dcd6f4ac9ea2dfd21597"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_10_accessibility_forwarder_lifecycle_qualification/cleanup/press_home.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_10_accessibility_forwarder_lifecycle_qualification/cleanup/press_home.stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_10_accessibility_forwarder_lifecycle_qualification/lifecycle_rebind/commands/wake.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_10_accessibility_forwarder_lifecycle_qualification/lifecycle_rebind/commands/wake.stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_10_accessibility_forwarder_lifecycle_qualification/preflight/forwarder_apk_sha256sum.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 183,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_10_accessibility_forwarder_lifecycle_qualification/preflight/forwarder_apk_sha256sum.stdout.bin",
+      "sha256": "37880138a5bbff735e3a97c6b80ba9e65ec92448e5367dd70ad91e1ab4bc61ec"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_10_accessibility_forwarder_lifecycle_qualification/preflight/forwarder_pm_path.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 125,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_10_accessibility_forwarder_lifecycle_qualification/preflight/forwarder_pm_path.stdout.bin",
+      "sha256": "0f8797c3d4fa0dd2f75e20bac6784d584a458b3bc06aae43a7ff02ddca1cbfd9"
+    },
+    {
+      "bytes": 9475,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_10_accessibility_forwarder_lifecycle_qualification/qualification_completion.json",
+      "sha256": "10b82d65697c6a19f9d61b8a5efff50f15920a96eb5c0966a2dbbbac6e669457"
+    }
+  ],
+  "schema_version": "role_binding_timing.phase_b2_10.lifecycle_manifest.v0.2.10"
+}
