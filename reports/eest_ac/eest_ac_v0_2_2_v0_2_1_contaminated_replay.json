@@ -1,0 +1,103 @@
+{
+  "confusion": {
+    "inputs": 2,
+    "metadata_only_repair_calls": 0,
+    "semantic_swipe": 2,
+    "valid_complete_envelope": 2
+  },
+  "development_contaminated": true,
+  "input": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\eest_ac_v0_2_1_action_qualification_20260804\\probes\\01_Q-SWIPE\\model_calls.jsonl",
+  "input_sha256": "63b08898e4434045c77a044ffdc6ae55e4b695b4b5dd59d63077666c580ad238",
+  "live_evidence_eligible": false,
+  "rows": [
+    {
+      "call_id": "ba5bfaca-7174-4c6b-8ad1-d5988611e6cf",
+      "canonical_action": {
+        "duration_ms": 500,
+        "type": "swipe",
+        "x": 0.5,
+        "x2": 0.5,
+        "y": 0.75,
+        "y2": 0.25
+      },
+      "canonicalization": {
+        "action": {
+          "duration_ms": 500,
+          "type": "swipe",
+          "x": 0.5,
+          "x2": 0.5,
+          "y": 0.75,
+          "y2": 0.25
+        },
+        "changed": false,
+        "provenance": [
+          "canonical_input"
+        ]
+      },
+      "control_plane_valid": true,
+      "intent_metadata": {
+        "display_length_codepoints": 27,
+        "display_max_codepoints": 256,
+        "display_truncated": false,
+        "display_value": "swipe up to open app drawer",
+        "metadata_normalized": false,
+        "normalized_length_codepoints": 27,
+        "provenance": [
+          "canonical_metadata"
+        ],
+        "raw_length_codepoints": 27,
+        "raw_sha256": "d3b61d087f4761998e8508eff975c2ab58242645a2c4f1e77fb0d7b2bdcd9014"
+      },
+      "live_evidence_eligible": false,
+      "raw_response_sha256": "6188060f026ef63ce6267dd3aa25df6293f2c622e83da44c5a956ede2f8eb554",
+      "role": "qualification_initial",
+      "semantic_action_category": "swipe"
+    },
+    {
+      "call_id": "1a506db6-e545-4fe5-a493-1fd46a60b56c",
+      "canonical_action": {
+        "duration_ms": 500,
+        "type": "swipe",
+        "x": 0.5,
+        "x2": 0.5,
+        "y": 0.8,
+        "y2": 0.2
+      },
+      "canonicalization": {
+        "action": {
+          "duration_ms": 500,
+          "type": "swipe",
+          "x": 0.5,
+          "x2": 0.5,
+          "y": 0.8,
+          "y2": 0.2
+        },
+        "changed": false,
+        "provenance": [
+          "canonical_input"
+        ]
+      },
+      "control_plane_valid": true,
+      "intent_metadata": {
+        "display_length_codepoints": 29,
+        "display_max_codepoints": 256,
+        "display_truncated": false,
+        "display_value": "swipe up to reveal app drawer",
+        "metadata_normalized": false,
+        "normalized_length_codepoints": 29,
+        "provenance": [
+          "canonical_metadata"
+        ],
+        "raw_length_codepoints": 29,
+        "raw_sha256": "367b253ed5864588ed2c9923c0678b7372feed641fa3a6fc7c73f67eb4d2e1dd"
+      },
+      "live_evidence_eligible": false,
+      "raw_response_sha256": "c81851aca0e05d1e8c89c0ea9cdc5b42ebcbc172f84296faf9e10e1190672f62",
+      "role": "qualification_repair",
+      "semantic_action_category": "swipe"
+    }
+  ],
+  "schema_version": "eest_ac_v0_2_1_contaminated_envelope_replay.v0_2_2",
+  "status": "pass",
+  "zero_model_generation_calls": 0
+}

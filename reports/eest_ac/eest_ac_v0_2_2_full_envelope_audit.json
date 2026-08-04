@@ -1,0 +1,512 @@
+{
+  "action_schema_adapter_matrix": [
+    {
+      "adapter_actual": "click",
+      "adapter_conformant": true,
+      "adapter_expected": "click",
+      "optional": [],
+      "phase": "continue",
+      "required": [
+        "type",
+        "x",
+        "y"
+      ],
+      "schema_accepts_example": true,
+      "type": "tap"
+    },
+    {
+      "adapter_actual": "adb_long_press",
+      "adapter_conformant": true,
+      "adapter_expected": "adb_long_press",
+      "optional": [],
+      "phase": "continue",
+      "required": [
+        "type",
+        "x",
+        "y",
+        "duration_ms"
+      ],
+      "schema_accepts_example": true,
+      "type": "long_press"
+    },
+    {
+      "adapter_actual": "adb_swipe",
+      "adapter_conformant": true,
+      "adapter_expected": "adb_swipe",
+      "optional": [],
+      "phase": "continue",
+      "required": [
+        "type",
+        "x",
+        "y",
+        "x2",
+        "y2",
+        "duration_ms"
+      ],
+      "schema_accepts_example": true,
+      "type": "swipe"
+    },
+    {
+      "adapter_actual": "input_text",
+      "adapter_conformant": true,
+      "adapter_expected": "input_text",
+      "optional": [
+        "x",
+        "y"
+      ],
+      "phase": "continue",
+      "required": [
+        "type",
+        "text",
+        "clear_text"
+      ],
+      "schema_accepts_example": true,
+      "type": "type_text"
+    },
+    {
+      "adapter_actual": "navigate_back",
+      "adapter_conformant": true,
+      "adapter_expected": "navigate_back",
+      "optional": [],
+      "phase": "continue",
+      "required": [
+        "type"
+      ],
+      "schema_accepts_example": true,
+      "type": "press_back"
+    },
+    {
+      "adapter_actual": "navigate_home",
+      "adapter_conformant": true,
+      "adapter_expected": "navigate_home",
+      "optional": [],
+      "phase": "continue",
+      "required": [
+        "type"
+      ],
+      "schema_accepts_example": true,
+      "type": "press_home"
+    },
+    {
+      "adapter_actual": "keyboard_enter",
+      "adapter_conformant": true,
+      "adapter_expected": "keyboard_enter",
+      "optional": [],
+      "phase": "continue",
+      "required": [
+        "type"
+      ],
+      "schema_accepts_example": true,
+      "type": "press_enter"
+    },
+    {
+      "adapter_actual": "open_app",
+      "adapter_conformant": true,
+      "adapter_expected": "open_app",
+      "optional": [],
+      "phase": "continue",
+      "required": [
+        "type",
+        "app_name"
+      ],
+      "schema_accepts_example": true,
+      "type": "open_app"
+    },
+    {
+      "adapter_actual": "interaction_cache_answer",
+      "adapter_conformant": true,
+      "adapter_expected": "interaction_cache_answer",
+      "optional": [],
+      "phase": "done",
+      "required": [
+        "type",
+        "text"
+      ],
+      "schema_accepts_example": true,
+      "type": "answer"
+    },
+    {
+      "adapter_actual": "sleep",
+      "adapter_conformant": true,
+      "adapter_expected": "sleep",
+      "optional": [],
+      "phase": "continue",
+      "required": [
+        "type",
+        "duration_ms"
+      ],
+      "schema_accepts_example": true,
+      "type": "wait"
+    }
+  ],
+  "authority_matrix": [
+    {
+      "authority": "control_plane",
+      "conformant": true,
+      "field": "status",
+      "prompt_policy_present": true,
+      "repair_policy": "one_control_repair"
+    },
+    {
+      "authority": "control_plane",
+      "conformant": true,
+      "field": "action",
+      "prompt_policy_present": true,
+      "repair_policy": "one_control_repair"
+    },
+    {
+      "authority": "observability_plane",
+      "conformant": true,
+      "field": "intent",
+      "prompt_policy_present": true,
+      "repair_policy": "one_control_repair_only_for_missing_non_string_or_empty_after_normalization"
+    },
+    {
+      "authority": "control_plane",
+      "conformant": true,
+      "field": "evidence",
+      "prompt_policy_present": true,
+      "repair_policy": "one_control_repair"
+    },
+    {
+      "authority": "control_plane",
+      "conformant": true,
+      "field": "citations",
+      "prompt_policy_present": true,
+      "repair_policy": "one_control_repair"
+    }
+  ],
+  "evidence_citation_matrix": [
+    {
+      "accepted": false,
+      "case": "evidence_without_citation",
+      "failure_code": "DECISION_CONTROL_SCHEMA_INVALID"
+    },
+    {
+      "accepted": false,
+      "case": "unknown_citation",
+      "failure_code": "UNKNOWN_CITATION"
+    },
+    {
+      "accepted": true,
+      "case": "known_citation"
+    }
+  ],
+  "generated_artifacts_exact": true,
+  "hashes": {
+    "contract": "73a11ac4af070abfc54f3d2a1605f636db05f0d6ec68e46af1bbebe7bced1677",
+    "prompt": "6bd60f7495db0a223319f13fd152d1fc900bfa9a070e39b1da6b6c3e11ab8d69",
+    "schema": "5f6cb67d984dba2302c9067d4ffb153235aca1ced0de98cf54bd42d88ac863f3",
+    "tokenizer_json": "a5d85b6dcc535e6b93115a9ef287e6132fdbf30270da6218194ba742261173c7"
+  },
+  "intent_matrix": [
+    {
+      "accepted": true,
+      "case": "canonical",
+      "display_length_codepoints": 15,
+      "display_max_codepoints": 256,
+      "display_truncated": false,
+      "display_value": "observe command",
+      "metadata_normalized": false,
+      "normalized_length_codepoints": 15,
+      "provenance": [
+        "canonical_metadata"
+      ],
+      "raw_length_codepoints": 15,
+      "raw_sha256": "f8f90ad161cb708322cb2049a03b536922fa3e76fc254f3fe2cb519e40e3ae98"
+    },
+    {
+      "accepted": true,
+      "case": "unicode_whitespace",
+      "display_length_codepoints": 15,
+      "display_max_codepoints": 256,
+      "display_truncated": false,
+      "display_value": "observe command",
+      "metadata_normalized": true,
+      "normalized_length_codepoints": 15,
+      "provenance": [
+        "whitespace_normalized"
+      ],
+      "raw_length_codepoints": 20,
+      "raw_sha256": "01aa761a1e7ce5dde258f54d977541ba35336674061369336c375284703401cf"
+    },
+    {
+      "accepted": true,
+      "case": "long_display",
+      "display_length_codepoints": 256,
+      "display_max_codepoints": 256,
+      "display_truncated": true,
+      "display_value": "界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界",
+      "metadata_normalized": true,
+      "normalized_length_codepoints": 600,
+      "provenance": [
+        "display_truncated_256_codepoints"
+      ],
+      "raw_length_codepoints": 600,
+      "raw_sha256": "54bdc9d6e53798581329278b85f26aa968689e039f380b388f21c8aa426acf54"
+    },
+    {
+      "accepted": false,
+      "case": "empty",
+      "failure_code": "INTENT_EMPTY_AFTER_NORMALIZATION"
+    },
+    {
+      "accepted": false,
+      "case": "whitespace_only",
+      "failure_code": "INTENT_EMPTY_AFTER_NORMALIZATION"
+    },
+    {
+      "accepted": false,
+      "case": "non_string",
+      "failure_code": "INTENT_NOT_STRING"
+    }
+  ],
+  "metadata_only_repair_calls": 0,
+  "model_id": "Qwen/Qwen3-VL-32B-Instruct",
+  "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+  "phase_matrix": [
+    {
+      "status": "continue",
+      "valid": true
+    },
+    {
+      "status": "done_null",
+      "valid": true
+    },
+    {
+      "status": "done_answer",
+      "valid": true
+    },
+    {
+      "status": "fail_null",
+      "valid": true
+    },
+    {
+      "failure_code": "DECISION_CONTROL_SCHEMA_INVALID",
+      "status": "continue_answer",
+      "valid": false
+    },
+    {
+      "failure_code": "DECISION_CONTROL_SCHEMA_INVALID",
+      "status": "done_continue_action",
+      "valid": false
+    },
+    {
+      "failure_code": "DECISION_CONTROL_SCHEMA_INVALID",
+      "status": "fail_action",
+      "valid": false
+    }
+  ],
+  "prompt_action_matrix": [
+    {
+      "required_fields_present": true,
+      "syntax_example_present": true,
+      "type": "tap"
+    },
+    {
+      "required_fields_present": true,
+      "syntax_example_present": true,
+      "type": "long_press"
+    },
+    {
+      "required_fields_present": true,
+      "syntax_example_present": true,
+      "type": "swipe"
+    },
+    {
+      "required_fields_present": true,
+      "syntax_example_present": true,
+      "type": "type_text"
+    },
+    {
+      "required_fields_present": true,
+      "syntax_example_present": true,
+      "type": "press_back"
+    },
+    {
+      "required_fields_present": true,
+      "syntax_example_present": true,
+      "type": "press_home"
+    },
+    {
+      "required_fields_present": true,
+      "syntax_example_present": true,
+      "type": "press_enter"
+    },
+    {
+      "required_fields_present": true,
+      "syntax_example_present": true,
+      "type": "open_app"
+    },
+    {
+      "required_fields_present": true,
+      "syntax_example_present": true,
+      "type": "answer"
+    },
+    {
+      "required_fields_present": true,
+      "syntax_example_present": true,
+      "type": "wait"
+    }
+  ],
+  "qualification_observation_matrix": [
+    {
+      "conformant": true,
+      "contract": {
+        "delay_seconds": 1.0,
+        "maximum_post_observations": 4,
+        "terminal_window_observations": 2
+      },
+      "rule": "bounded_sampling"
+    },
+    {
+      "conformant": true,
+      "contract": [
+        "pixel_sha256",
+        "a11y_sha256",
+        "package_names"
+      ],
+      "require_a11y": true,
+      "rule": "terminal_modal_agreement"
+    },
+    {
+      "conformant": true,
+      "field": "state_signature",
+      "relation": "terminal_differs_from_pre",
+      "rule": "required_state_change"
+    },
+    {
+      "conformant": true,
+      "fallback_policy": "none",
+      "frozen_before_live_generation": true,
+      "rule": "no_runtime_fallback_and_pre_live_freeze"
+    }
+  ],
+  "schema_version": "eest_ac_full_envelope_audit.v0_2_2",
+  "status": "pass",
+  "token_certificate": {
+    "construction": "maximum bounded control-plane fields plus the longest deterministic high-entropy intent prefix whose complete JSON remains below the frozen 256-token cap",
+    "max_new_tokens": 256,
+    "maximum_certified_total_qwen_tokens": 255,
+    "maximum_control_shape_minimal_intent_tokens": 183,
+    "rows": [
+      {
+        "certified_intent_codepoints": 153,
+        "certified_total_qwen_tokens": 255,
+        "maximum_control_shape_minimal_intent_tokens": 135,
+        "serialized_sha256": "aebc0ed37d11c955e7add58ff50a41000179e75a0b6a6af40c2a83ee6b46f748",
+        "type": "tap",
+        "under_256": true,
+        "utf8_bytes": 430
+      },
+      {
+        "certified_intent_codepoints": 140,
+        "certified_total_qwen_tokens": 255,
+        "maximum_control_shape_minimal_intent_tokens": 144,
+        "serialized_sha256": "a8bee660308bdc6dd8c554e51cf5d1e1751934a1eff7ff82e3a131a88e7e73c5",
+        "type": "long_press",
+        "under_256": true,
+        "utf8_bytes": 443
+      },
+      {
+        "certified_intent_codepoints": 123,
+        "certified_total_qwen_tokens": 255,
+        "maximum_control_shape_minimal_intent_tokens": 158,
+        "serialized_sha256": "4e51a94ec15501475dee45613f0fb97d4f41f816193000164ab4c24a753803c2",
+        "type": "swipe",
+        "under_256": true,
+        "utf8_bytes": 438
+      },
+      {
+        "certified_intent_codepoints": 92,
+        "certified_total_qwen_tokens": 255,
+        "maximum_control_shape_minimal_intent_tokens": 183,
+        "serialized_sha256": "9b69a652f75973b768fcdf8f14a23ee7b0c6edb352de5daddcd25442e032db35",
+        "type": "type_text",
+        "under_256": true,
+        "utf8_bytes": 451
+      },
+      {
+        "certified_intent_codepoints": 166,
+        "certified_total_qwen_tokens": 255,
+        "maximum_control_shape_minimal_intent_tokens": 124,
+        "serialized_sha256": "9db78922f2b309b1c748cf3c86612a0d8516386d118ca7b5b0b2b9117f983942",
+        "type": "press_back",
+        "under_256": true,
+        "utf8_bytes": 434
+      },
+      {
+        "certified_intent_codepoints": 166,
+        "certified_total_qwen_tokens": 255,
+        "maximum_control_shape_minimal_intent_tokens": 124,
+        "serialized_sha256": "8008a6ed3a8d4eef4f2ce4253cfafd46eb19f639ecb4091b20df24fbedcaf0cb",
+        "type": "press_home",
+        "under_256": true,
+        "utf8_bytes": 434
+      },
+      {
+        "certified_intent_codepoints": 166,
+        "certified_total_qwen_tokens": 255,
+        "maximum_control_shape_minimal_intent_tokens": 124,
+        "serialized_sha256": "fa29d9b061b0a94287865dee0cf08683287d1e7c531d18ba5d0d57bb1b5ff3b0",
+        "type": "press_enter",
+        "under_256": true,
+        "utf8_bytes": 435
+      },
+      {
+        "certified_intent_codepoints": 108,
+        "certified_total_qwen_tokens": 255,
+        "maximum_control_shape_minimal_intent_tokens": 168,
+        "serialized_sha256": "5cfa668f9d57093266b9594e617900ad629c4cd7b8e8bbd8202c2536e3dc8d07",
+        "type": "open_app",
+        "under_256": true,
+        "utf8_bytes": 436
+      },
+      {
+        "certified_intent_codepoints": 99,
+        "certified_total_qwen_tokens": 255,
+        "maximum_control_shape_minimal_intent_tokens": 177,
+        "serialized_sha256": "bd477292160a4a31d2b548325fdfa7ce9a0941455bce9a48c6e801dbc83a1db1",
+        "type": "answer",
+        "under_256": true,
+        "utf8_bytes": 434
+      },
+      {
+        "certified_intent_codepoints": 157,
+        "certified_total_qwen_tokens": 255,
+        "maximum_control_shape_minimal_intent_tokens": 131,
+        "serialized_sha256": "973ec690308ce1bf95d8825d6433b3fd23951d2b7278db07a322e23acf1f0d5a",
+        "type": "wait",
+        "under_256": true,
+        "utf8_bytes": 438
+      }
+    ]
+  },
+  "top_level_matrix": [
+    {
+      "conformant": true,
+      "contract": [
+        "status",
+        "action",
+        "intent",
+        "evidence",
+        "citations"
+      ],
+      "rule": "required_fields",
+      "schema": [
+        "status",
+        "action",
+        "intent",
+        "evidence",
+        "citations"
+      ]
+    },
+    {
+      "conformant": true,
+      "contract": false,
+      "rule": "additional_properties",
+      "schema": false
+    }
+  ],
+  "zero_model_generation_calls": 0
+}

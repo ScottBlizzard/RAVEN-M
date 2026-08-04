@@ -72,6 +72,20 @@ All gates are conjunctive and must pass before live generation:
 
 Failure of any gate forbids live v0.2.2 probes.
 
+### 6.1 Pre-live measurement amendment: terminal settling window
+
+Zero-generation-call scene qualification showed that the inherited `post_observations_agree` flag was too coarse for the live PASS rule: it requires every post-action sample, including a legitimate transition frame, to be pixel-identical. Before any v0.2.2 live lock or model call, the stabilized-change definition is therefore frozen as follows:
+
+- capture exactly four bounded post-action observations: one immediate sample followed by three samples at one-second intervals;
+- use the final two observations as the terminal window;
+- require both terminal observations to have accessibility data;
+- require their screenshot SHA-256, accessibility SHA-256, and package-name set to match exactly;
+- require the terminal full state signature to differ from the pre-action state signature.
+
+This rule is task-agnostic and is part of the qualification measurement contract, not a task-specific guard. It must pass a stable scroll positive control and reject both a dynamic-pixel/static-a11y negative control and an a11y-missing negative control. The raw sample hashes are frozen in an offline report. The scenes used to qualify this measurement rule are development evidence only and do not count as live probes. The settling window cannot change after the live lock.
+
+This four-sample rule is the one-time `measurement-contract-v2` revision. The first three-sample scene batch is preserved verbatim with its report SHA-256 and raw transition hashes in the amendment audit: Settings changed semantically but the last pixel pair still captured scrollbar fade; Camera was correctly rejected as dynamically unsettled; the `y=0.01` notification gesture did not enter the system shade and therefore did not create the intended missing-a11y negative. The v2 negative begins at the true top edge (`y=0.0`). The entire three-case batch must be rerun after a dedicated commit/tag. If v2 does not simultaneously accept the stable Settings scroll and reject both Camera and missing-a11y controls, or if the explicit-port 5038 stress check fails, qualification stops at the measurement/infrastructure floor. No third settling policy and no live model probe are permitted in this round.
+
 ## 7. Frozen live qualification boundary
 
 Maximum: three new, non-scoring, reversible, single-command probes. They must not reuse the executed v0.2.1 Q-SWIPE home-to-app-drawer instruction, screenshot, or output. Before generation, a separate lock freezes exact order, model ID/revision/backend, seeds, prompt/schema/parser/adapter hashes, setup/reset policy, intended action category, and probe configuration.

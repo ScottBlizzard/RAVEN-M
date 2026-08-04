@@ -1,0 +1,184 @@
+{
+  "schema_version": "eest_ac_decision_envelope.v0_2_2",
+  "generation": {
+    "max_new_tokens": 256,
+    "do_sample": false
+  },
+  "coordinate_convention": {
+    "domain": [0.0, 1.0],
+    "left": "x decreases",
+    "right": "x increases",
+    "up": "y decreases",
+    "down": "y increases",
+    "clamp": false
+  },
+  "normalization": {
+    "default_swipe_duration_ms": 500,
+    "allowed_press_keys": {
+      "back": "press_back",
+      "home": "press_home",
+      "enter": "press_enter"
+    },
+    "unsupported_press_keys": ["recent_app"],
+    "swipe_aliases": ["direction_distance", "signed_delta"]
+  },
+  "qualification_observation_contract": {
+    "delay_seconds": 1.0,
+    "maximum_post_observations": 4,
+    "terminal_window_observations": 2,
+    "terminal_require_a11y": true,
+    "terminal_equal_fields": ["pixel_sha256", "a11y_sha256", "package_names"],
+    "required_change_field": "state_signature",
+    "required_change_relation": "terminal_differs_from_pre",
+    "fallback_policy": "none",
+    "frozen_before_live_generation": true
+  },
+  "envelope": {
+    "required": ["status", "action", "intent", "evidence", "citations"],
+    "additional_properties": false,
+    "fields": {
+      "status": {
+        "authority": "control_plane",
+        "type": "string",
+        "enum": ["continue", "done", "fail"],
+        "repair_policy": "one_control_repair"
+      },
+      "action": {
+        "authority": "control_plane",
+        "type": "canonical_action_or_null",
+        "repair_policy": "one_control_repair"
+      },
+      "intent": {
+        "authority": "observability_plane",
+        "type": "string",
+        "non_empty_after_unicode_whitespace_normalization": true,
+        "whitespace_policy": "strip_and_collapse_unicode_whitespace_to_ascii_space",
+        "raw_storage": ["sha256_utf8", "unicode_codepoint_length"],
+        "normalized_storage": ["unicode_codepoint_length", "display_value", "display_truncated"],
+        "display_max_codepoints": 256,
+        "length_validation": "fail_soft",
+        "metadata_only_repair_calls": 0,
+        "repair_policy": "one_control_repair_only_for_missing_non_string_or_empty_after_normalization"
+      },
+      "evidence": {
+        "authority": "control_plane",
+        "type": "array",
+        "max_items": 1,
+        "repair_policy": "one_control_repair",
+        "item": {
+          "additional_properties": false,
+          "required": ["entity", "field", "value", "scope"],
+          "fields": {
+            "entity": {"kind": "string", "minLength": 1, "maxLength": 16},
+            "field": {"kind": "string", "minLength": 1, "maxLength": 16},
+            "value": {"kind": "string", "minLength": 1, "maxLength": 40},
+            "scope": {"kind": "enum", "values": ["current_page", "cross_page", "episode"]}
+          }
+        }
+      },
+      "citations": {
+        "authority": "control_plane",
+        "type": "array",
+        "max_items": 1,
+        "unique_items": true,
+        "item": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 40,
+          "pattern": "^(ev:|task:)[A-Za-z0-9_.-]{1,35}$"
+        },
+        "known_reference_policy": "caller_allowlist",
+        "repair_policy": "one_control_repair"
+      }
+    },
+    "phase_relations": {
+      "continue": {"action_phases": ["continue"], "allow_null": false},
+      "done": {"action_phases": ["done"], "allow_null": true},
+      "fail": {"action_phases": [], "allow_null": true}
+    },
+    "authority_relations": {
+      "evidence_requires_known_citation": true,
+      "intent_authorizes_action": false,
+      "intent_authorizes_evidence": false,
+      "intent_authorizes_completion": false
+    }
+  },
+  "actions": [
+    {
+      "type": "tap", "phase": "continue",
+      "required": ["type", "x", "y"], "optional": [],
+      "fields": {"x": {"kind": "coordinate"}, "y": {"kind": "coordinate"}},
+      "example": {"type": "tap", "x": 0.5, "y": 0.5},
+      "adapter_operation": "click"
+    },
+    {
+      "type": "long_press", "phase": "continue",
+      "required": ["type", "x", "y", "duration_ms"], "optional": [],
+      "fields": {
+        "x": {"kind": "coordinate"}, "y": {"kind": "coordinate"},
+        "duration_ms": {"kind": "integer", "minimum": 300, "maximum": 3000}
+      },
+      "example": {"type": "long_press", "x": 0.5, "y": 0.5, "duration_ms": 800},
+      "adapter_operation": "adb_long_press"
+    },
+    {
+      "type": "swipe", "phase": "continue",
+      "required": ["type", "x", "y", "x2", "y2", "duration_ms"], "optional": [],
+      "fields": {
+        "x": {"kind": "coordinate"}, "y": {"kind": "coordinate"},
+        "x2": {"kind": "coordinate"}, "y2": {"kind": "coordinate"},
+        "duration_ms": {"kind": "integer", "minimum": 100, "maximum": 3000}
+      },
+      "example": {"type": "swipe", "x": 0.5, "y": 0.8, "x2": 0.5, "y2": 0.2, "duration_ms": 500},
+      "adapter_operation": "adb_swipe"
+    },
+    {
+      "type": "type_text", "phase": "continue",
+      "required": ["type", "text", "clear_text"], "optional": ["x", "y"],
+      "fields": {
+        "text": {"kind": "string", "minLength": 1, "maxLength": 64},
+        "clear_text": {"kind": "boolean"},
+        "x": {"kind": "coordinate"}, "y": {"kind": "coordinate"}
+      },
+      "dependent_required": {"x": ["y"], "y": ["x"]},
+      "example": {"type": "type_text", "text": "value", "clear_text": true},
+      "adapter_operation": "input_text"
+    },
+    {
+      "type": "press_back", "phase": "continue",
+      "required": ["type"], "optional": [], "fields": {},
+      "example": {"type": "press_back"}, "adapter_operation": "navigate_back"
+    },
+    {
+      "type": "press_home", "phase": "continue",
+      "required": ["type"], "optional": [], "fields": {},
+      "example": {"type": "press_home"}, "adapter_operation": "navigate_home"
+    },
+    {
+      "type": "press_enter", "phase": "continue",
+      "required": ["type"], "optional": [], "fields": {},
+      "example": {"type": "press_enter"}, "adapter_operation": "keyboard_enter"
+    },
+    {
+      "type": "open_app", "phase": "continue",
+      "required": ["type", "app_name"], "optional": [],
+      "fields": {"app_name": {"kind": "string", "minLength": 1, "maxLength": 48}},
+      "example": {"type": "open_app", "app_name": "ExampleApp"},
+      "adapter_operation": "open_app"
+    },
+    {
+      "type": "answer", "phase": "done",
+      "required": ["type", "text"], "optional": [],
+      "fields": {"text": {"kind": "string", "minLength": 1, "maxLength": 64}},
+      "example": {"type": "answer", "text": "observed answer"},
+      "adapter_operation": "interaction_cache_answer"
+    },
+    {
+      "type": "wait", "phase": "continue",
+      "required": ["type", "duration_ms"], "optional": [],
+      "fields": {"duration_ms": {"kind": "integer", "minimum": 250, "maximum": 3000}},
+      "example": {"type": "wait", "duration_ms": 1000},
+      "adapter_operation": "sleep"
+    }
+  ]
+}
