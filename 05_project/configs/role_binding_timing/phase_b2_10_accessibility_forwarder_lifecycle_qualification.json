@@ -1,0 +1,73 @@
+{
+  "protocol_version": "role_binding_timing.phase_b2_10.accessibility_forwarder_lifecycle_qualification.v0.2.10",
+  "development_contaminated": true,
+  "held_out_eligible": false,
+  "generation_eligible": false,
+  "generation_calls_authorized": 0,
+  "audit_commit": "532d202ae5594d31f7fc96a2447fb8638623de23",
+  "freeze_tag": "role-binding-timing-b2.10-lifecycle-qualification-freeze-20260805",
+  "runtime": {
+    "python": "06_local_runtime/envs/androidworld/Scripts/python.exe",
+    "python_sha256": "21bb438c0d4a6f1f164b9a646f6ee000340185e5871180aec06db8d3f07c0082",
+    "adb_binary": "06_local_runtime/android/sdk/platform-tools/adb.exe",
+    "adb_binary_sha256": "957e46b8615f7af5b7292a2ddabe98d2e61940c3fb2b0545756507f080613e71",
+    "adb_server_port": 5038,
+    "fallback_to_5037": false,
+    "device_serial": "emulator-5554",
+    "console_port": 5554,
+    "emulator_grpc_port": 8554,
+    "emulator_binary": "06_local_runtime/android/sdk/emulator/qemu/windows-x86_64/qemu-system-x86_64-headless.exe",
+    "emulator_binary_sha256": "b8e263a00f9151a494b480f38d39188e73dbf338b27015679311246c59c3dbec"
+  },
+  "accessibility_service": {
+    "package": "com.google.androidenv.accessibilityforwarder",
+    "component": "com.google.androidenv.accessibilityforwarder/com.google.androidenv.accessibilityforwarder.AccessibilityForwarder",
+    "receiver": "com.google.androidenv.accessibilityforwarder/com.google.androidenv.accessibilityforwarder.FlagsBroadcastReceiver",
+    "installed_apk_sha256": "97a56a544e44d79f9b3181fc7dbdd72cffa908efd3d53c82afad1773061a350a",
+    "rebind_attempts": 8,
+    "rebind_interval_seconds": 2.0
+  },
+  "sampling": {
+    "command_timeout_seconds": 25.0,
+    "foreground_attempts": 10,
+    "foreground_required_consecutive": 2,
+    "foreground_interval_seconds": 2.0,
+    "post_foreground_settle_seconds": 2.0,
+    "settings_observations": 3,
+    "expected_pixel_shape": [2400, 1080, 3],
+    "screen_width": 1080,
+    "screen_height": 2400,
+    "minimum_elements": 1,
+    "minimum_oracle_candidates": 1
+  },
+  "settings_scene": {
+    "dev_app_id": "B210Q-SETTINGS",
+    "package": "com.android.settings",
+    "component": "com.android.settings/com.android.settings.Settings"
+  },
+  "grid": {
+    "rounds": 3,
+    "apps": [
+      {"dev_app_id": "B210G-SETTINGS", "package": "com.android.settings", "component": "com.android.settings/com.android.settings.Settings"},
+      {"dev_app_id": "B210G-CLOCK", "package": "com.google.android.deskclock", "component": "com.google.android.deskclock/com.android.deskclock.DeskClock"},
+      {"dev_app_id": "B210G-TASKS", "package": "org.tasks", "component": "org.tasks/com.todoroo.astrid.activity.MainActivity"},
+      {"dev_app_id": "B210G-BROCCOLI", "package": "com.flauschcode.broccoli", "component": "com.flauschcode.broccoli/com.flauschcode.broccoli.MainActivity"}
+    ],
+    "required_cells": 12
+  },
+  "schema": "05_project/schemas/role_binding_timing_b2_10_lifecycle_completion.v0_2_10.schema.json",
+  "lock": "05_project/configs/role_binding_timing/phase_b2_10_accessibility_forwarder_lifecycle_qualification.lock.json",
+  "output_root": "05_project/artifacts/role_binding_timing/phase_b2_10_accessibility_forwarder_lifecycle_qualification",
+  "stop_rules": {
+    "rebind_failure": "STOP_FAIL_LIFECYCLE_NO_SETTINGS",
+    "settings_failure": "STOP_FAIL_SETTINGS_NO_GRID",
+    "grid_failure": "STOP_FAIL_GRID_NO_V0_3",
+    "identity_or_5037_failure": "STOP_IMMEDIATELY",
+    "success": "STOP_AFTER_12_CELLS_PREPARE_V0_3_ONLY"
+  },
+  "protected_wip": {
+    "05_project/src/raven_m/controller/episode_controller.py": "fc0e82e0fde90119365d4f685f080eb4519bf2f602e4bda58de5d4809a40fe33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "ff89d6b70be4b4738646d262beb67d7b7e932e9eb95956d940b1c5000a999d10",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5bb1f1e3de673a1072cfee62938b761a62fd69c187d5eadf54bc46b115a3fd0a"
+  }
+}

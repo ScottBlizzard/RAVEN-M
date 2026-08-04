@@ -1,0 +1,62 @@
+{
+  "schema_version": "role_binding_timing.phase_b2_10.accessibility_forwarder_lifecycle_qualification.lock.v0.2.10",
+  "predecessor_audit_commit": "532d202ae5594d31f7fc96a2447fb8638623de23",
+  "freeze_tag": "role-binding-timing-b2.10-lifecycle-qualification-freeze-20260805",
+  "generation_calls": 0,
+  "generation_eligible": false,
+  "held_out_captures": 0,
+  "held_out_eligible": false,
+  "androidenv_sessions_before_freeze": 0,
+  "device_mutations_before_freeze": 0,
+  "files": {
+    "04_protocols/role_binding_timing/PHASE_B2_10_ACCESSIBILITY_FORWARDER_LIFECYCLE_QUALIFICATION_V0_2_10.md": "d26842eeca558864f5cf3d4824766b56aac5a1a2fb0bfa251bcf3d4247edd4ef",
+    "05_project/configs/role_binding_timing/phase_b2_10_accessibility_forwarder_lifecycle_qualification.json": "c9d01ef24853ccdb14347221ddfc423e7a8f242914cce95b05587258b2be8f07",
+    "05_project/schemas/role_binding_timing_b2_10_lifecycle_completion.v0_2_10.schema.json": "1b9b3ca7b1eb1d64abcb9ea3d72733f98da571bf69ccd70077327e30522ee9a5",
+    "05_project/src/raven_m/role_binding_timing/androidenv_sidecar_runtime_v0_2_10.py": "0c3a7a1614eb3614afe07f752a06ede7b0cbae3676aed302d2f14ac53420feb8",
+    "05_project/src/raven_m/role_binding_timing/androidenv_sidecar_v0_2_8.py": "6493f3bbf9625aa18a25cfa1f46937c52b9440ab627912e474ecbef6d7e1ed6d",
+    "05_project/src/raven_m/role_binding_timing/infrastructure_v0_2_5.py": "f9893ebd6d94205fa090812a920ddeb86d2b274c2da444905c4ec8bb382a23a7",
+    "05_project/scripts/qualify_role_binding_timing_b2_10_a11y_lifecycle.py": "2727b73713acf33a09b4c75de318e24957e61adada53472c1e1574eb7427b3d5",
+    "05_project/scripts/run_role_binding_timing_b2_10_offline_gates.py": "f4868efcbe1becef1aafa774ce81b310ed113bb7b945e59dc8f2e5c7bbf28f42",
+    "05_project/scripts/diagnose_role_binding_timing_b2_9_androidenv_sidecar.py": "5b491d7f43d0bb873a30ee55e72ca76107457cf5981c0bab91265d439d53fff1",
+    "05_project/scripts/qualify_role_binding_timing_b2_5_infrastructure.py": "83a6037f784a03ea6d2012c845f46b9640d6cf6abe2d4e43d170f8c3303b81f2",
+    "05_project/tests/role_binding_timing/test_androidenv_sidecar_runtime_v0_2_10.py": "e71e9013ae6b77467453d5e3b2c4249b626817b3de4252f0323d5af0c3844591",
+    "06_local_runtime/envs/androidworld/Lib/site-packages/android_env/wrappers/a11y_grpc_wrapper.py": "2fec62f734a1e190376c572db99551f849d5d5d4366eeb4edcad8340cd5efc82",
+    "06_local_runtime/envs/androidworld/Lib/site-packages/android_env/components/adb_call_parser.py": "b3e51a04ac67af8767202f0188549c1e9bcff5cdfe72b997805eac0a6be83142",
+    "03_code/third_party/android_world/android_world/env/android_world_controller.py": "afb1315d0b945dcc3116bfa3b99dfc288c08799309efe1e1e7d472ce237f5602",
+    "03_code/third_party/android_world/android_world/env/interface.py": "3d3b5c1766458abb964f9d6e61d384763541cd1b63f131fa834607c489bb8c7e",
+    "05_project/artifacts/role_binding_timing/phase_b2_10_accessibility_forwarder_lifecycle_offline_gates_v2/offline_gate_result.json": "f0e9f3c862c63aaf09c6716d45bdabf7b7f26f1a6e44eab9d1ca9da674337100"
+  },
+  "offline_gates": {
+    "authoritative_result": "05_project/artifacts/role_binding_timing/phase_b2_10_accessibility_forwarder_lifecycle_offline_gates_v2/offline_gate_result.json",
+    "authoritative_result_sha256": "f0e9f3c862c63aaf09c6716d45bdabf7b7f26f1a6e44eab9d1ca9da674337100",
+    "focused": "17 passed",
+    "focused_stdout_sha256": "97538e3d72eb5a06c53c5a4df9c6cd936cbb683d452892ca7e38e8bf5ee27ee3",
+    "namespace": "all passed",
+    "namespace_stdout_sha256": "1ba0a28994adbd1a4c741597bb3ac88c8bed86549774691e0f434263a13d5bed",
+    "full_regression_stdout_sha256": "409fe373de306c9e93a21ba17065f1ae9a0cc0a0e1a6a1737562007b5fda1936",
+    "all_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "full_regression_expected_only_failure": "tests/scripts/test_protocol_v2_2_r78_h17_candidate.py::test_r78_candidate_static_manifest_validation_passes",
+    "superseded_result": "05_project/artifacts/role_binding_timing/phase_b2_10_accessibility_forwarder_lifecycle_offline_gates/offline_gate_result.json",
+    "superseded_reason": "runner freeze verification was corrected before live to avoid a self-referential future-commit field; v2 reran all gates on final source"
+  },
+  "runtime_preflight": {
+    "adb_5038_listener_pid": 29964,
+    "emulator_grpc_8554_listener_pid": 7172,
+    "fallback_5037_listener_pids": [],
+    "generation_calls": 0,
+    "androidenv_sessions_created": 0,
+    "device_mutations": 0
+  },
+  "protected_wip_sha256": {
+    "05_project/src/raven_m/controller/episode_controller.py": "fc0e82e0fde90119365d4f685f080eb4519bf2f602e4bda58de5d4809a40fe33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "ff89d6b70be4b4738646d262beb67d7b7e932e9eb95956d940b1c5000a999d10",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5bb1f1e3de673a1072cfee62938b761a62fd69c187d5eadf54bc46b115a3fd0a"
+  },
+  "live_order": ["rebind", "settings_observation_01", "settings_observation_02", "settings_observation_03", "grid_3_rounds_x_4_apps_if_authorized", "cleanup", "stop"],
+  "stop_rules": {
+    "rebind_failure": "stop_before_androidenv_or_settings",
+    "settings_failure": "stop_without_grid",
+    "grid_failure": "stop_without_v0_3_preparation",
+    "success": "stop_after_12_cells; v0_3 preparation only"
+  }
+}

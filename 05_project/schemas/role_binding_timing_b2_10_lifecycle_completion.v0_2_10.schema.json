@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "role_binding_timing_b2_10_lifecycle_completion.v0_2_10.schema.json",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["schema_version", "status", "generation_calls", "settings", "grid", "cleanup", "protected_wip_before", "protected_wip_after"],
+  "properties": {
+    "schema_version": {"const": "role_binding_timing.phase_b2_10.lifecycle_completion.v0.2.10"},
+    "status": {"enum": ["PASS_12_OF_12_DEV", "FAIL_LIFECYCLE_REBIND", "FAIL_SETTINGS_QUALIFICATION", "FAIL_DEV_GRID", "FAIL_CLEANUP"]},
+    "generation_calls": {"const": 0},
+    "settings": {
+      "type": "object",
+      "required": ["required", "completed", "passed", "records"],
+      "properties": {
+        "required": {"const": 3},
+        "completed": {"type": "integer", "minimum": 0, "maximum": 3},
+        "passed": {"type": "integer", "minimum": 0, "maximum": 3},
+        "records": {"type": "array", "maxItems": 3}
+      }
+    },
+    "grid": {
+      "type": "object",
+      "required": ["authorized", "required", "completed", "passed", "records"],
+      "properties": {
+        "authorized": {"type": "boolean"},
+        "required": {"const": 12},
+        "completed": {"type": "integer", "minimum": 0, "maximum": 12},
+        "passed": {"type": "integer", "minimum": 0, "maximum": 12},
+        "records": {"type": "array", "maxItems": 12}
+      }
+    },
+    "cleanup": {"type": "object"},
+    "protected_wip_before": {"type": "object"},
+    "protected_wip_after": {"type": "object"}
+  }
+}
