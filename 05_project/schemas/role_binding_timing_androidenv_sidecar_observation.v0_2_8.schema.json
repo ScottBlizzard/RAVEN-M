@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "role_binding_timing_androidenv_sidecar_observation.v0_2_8.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "route_label", "development_contaminated", "held_out_eligible",
+    "generation_calls", "same_get_state_observation", "expected_package", "foreground",
+    "identity_before", "identity_after", "screenshot", "accessibility", "qualification"
+  ],
+  "properties": {
+    "schema_version": {"const": "role_binding_timing.androidenv_sidecar.observation.v0.2.8"},
+    "route_label": {"const": "androidenv_accessibility_sidecar"},
+    "development_contaminated": {"const": true},
+    "held_out_eligible": {"const": false},
+    "generation_calls": {"const": 0},
+    "same_get_state_observation": {"const": true},
+    "expected_package": {"type": "string", "minLength": 1},
+    "foreground": {
+      "type": "object", "additionalProperties": true,
+      "required": ["activity_packages", "window_packages", "env_packages"],
+      "properties": {
+        "activity_packages": {"type": "array", "items": {"type": "string"}},
+        "window_packages": {"type": "array", "items": {"type": "string"}},
+        "env_packages": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "identity_before": {"$ref": "#/$defs/identity"},
+    "identity_after": {"$ref": "#/$defs/identity"},
+    "screenshot": {
+      "type": "object", "additionalProperties": true,
+      "required": ["shape", "dtype", "order", "raw_bytes", "raw_sha256", "raw_artifact", "png_artifact"],
+      "properties": {
+        "shape": {"type": "array", "prefixItems": [{"type": "integer"}, {"type": "integer"}, {"type": "integer"}], "minItems": 3, "maxItems": 3},
+        "dtype": {"const": "uint8"}, "order": {"const": "C"},
+        "raw_bytes": {"type": "integer", "minimum": 1}, "raw_sha256": {"$ref": "#/$defs/hash"},
+        "raw_artifact": {"$ref": "#/$defs/artifact"}, "png_artifact": {"$ref": "#/$defs/artifact"}
+      }
+    },
+    "accessibility": {
+      "type": "object", "additionalProperties": true,
+      "required": ["element_count", "element_field_count", "forest_artifact", "elements_artifact", "field_manifest_artifact", "protobuf_manifest_artifact", "forest_sha256", "elements_sha256", "oracle_candidates"],
+      "properties": {
+        "element_count": {"type": "integer", "minimum": 0},
+        "element_field_count": {"const": 22},
+        "forest_artifact": {"$ref": "#/$defs/artifact"}, "elements_artifact": {"$ref": "#/$defs/artifact"},
+        "field_manifest_artifact": {"$ref": "#/$defs/artifact"}, "protobuf_manifest_artifact": {"$ref": "#/$defs/artifact"},
+        "forest_sha256": {"$ref": "#/$defs/hash"}, "elements_sha256": {"$ref": "#/$defs/hash"},
+        "oracle_candidates": {"type": "array", "items": {"type": "object"}}
+      }
+    },
+    "qualification": {
+      "type": "object", "additionalProperties": false,
+      "required": ["passed", "issues"],
+      "properties": {"passed": {"type": "boolean"}, "issues": {"type": "array", "items": {"type": "string"}}}
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"qualification": {"properties": {"passed": {"const": true}}, "required": ["passed"]}}},
+      "then": {
+        "properties": {
+          "accessibility": {
+            "properties": {
+              "element_count": {"minimum": 1},
+              "oracle_candidates": {"minItems": 1}
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "artifact": {
+      "type": "object", "additionalProperties": false, "required": ["path", "sha256", "bytes"],
+      "properties": {"path": {"type": "string", "minLength": 1}, "sha256": {"$ref": "#/$defs/hash"}, "bytes": {"type": "integer", "minimum": 1}}
+    },
+    "identity": {
+      "type": "object", "additionalProperties": true,
+      "required": ["qualified", "adb_pid", "emulator_grpc_pid", "a11y_component", "a11y_apk_sha256", "sidecar_host_port", "sidecar_wrapper_id", "fallback_5037_listener_pids"],
+      "properties": {
+        "qualified": {"const": true}, "adb_pid": {"type": "integer", "minimum": 1}, "emulator_grpc_pid": {"type": "integer", "minimum": 1},
+        "a11y_component": {"type": "string", "minLength": 1}, "a11y_apk_sha256": {"$ref": "#/$defs/hash"},
+        "sidecar_host_port": {"type": "integer", "minimum": 1, "maximum": 65535}, "sidecar_wrapper_id": {"type": "integer", "minimum": 1},
+        "fallback_5037_listener_pids": {"type": "array", "maxItems": 0}
+      }
+    }
+  }
+}
