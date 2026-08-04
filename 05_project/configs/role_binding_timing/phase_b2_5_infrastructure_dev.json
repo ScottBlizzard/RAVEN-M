@@ -1,0 +1,61 @@
+{
+  "schema_version": "role_binding_timing.infrastructure_dev_config.v0_2_5",
+  "study_id": "role_binding_timing_phase_b2_5_dev_infrastructure",
+  "generation_eligible": false,
+  "generation_calls_authorized": 0,
+  "runtime": {
+    "adb_binary": "06_local_runtime/android/sdk/platform-tools/adb.exe",
+    "adb_binary_sha256": "957e46b8615f7af5b7292a2ddabe98d2e61940c3fb2b0545756507f080613e71",
+    "adb_server_port": 5038,
+    "device_serial": "emulator-5554",
+    "fallback_to_5037": false,
+    "implicit_restart_allowed": false,
+    "screen_size": [1080, 2400],
+    "framework_services": ["package", "window", "activity"]
+  },
+  "sampling": {
+    "rounds": 3,
+    "foreground_attempts": 3,
+    "foreground_gap_seconds": 1.0,
+    "ui_dump_attempts": 3,
+    "ui_dump_gap_seconds": 1.0,
+    "command_timeout_seconds": 20
+  },
+  "dev_contaminated": true,
+  "held_out_eligible": false,
+  "apps": [
+    {
+      "dev_app_id": "B25D-SETTINGS",
+      "app_name": "settings",
+      "package": "com.android.settings",
+      "component": "com.android.settings/com.android.settings.Settings"
+    },
+    {
+      "dev_app_id": "B25D-CLOCK",
+      "app_name": "clock",
+      "package": "com.google.android.deskclock",
+      "component": "com.google.android.deskclock/com.android.deskclock.DeskClock"
+    },
+    {
+      "dev_app_id": "B25D-TASKS",
+      "app_name": "tasks",
+      "package": "org.tasks",
+      "component": "org.tasks/com.todoroo.astrid.activity.MainActivity"
+    },
+    {
+      "dev_app_id": "B25D-BROCCOLI",
+      "app_name": "broccoli app",
+      "package": "com.flauschcode.broccoli",
+      "component": "com.flauschcode.broccoli/com.flauschcode.broccoli.MainActivity"
+    }
+  ],
+  "output_root": "05_project/artifacts/role_binding_timing/phase_b2_5_dev_infrastructure",
+  "pass_rules": {
+    "required_apps": 4,
+    "required_sequences": 12,
+    "all_sequences_pass": true,
+    "same_adb_pid_all_operations": true,
+    "zero_implicit_restarts": true,
+    "zero_generation_calls": true
+  }
+}

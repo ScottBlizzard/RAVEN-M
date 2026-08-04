@@ -1,0 +1,46 @@
+{
+  "schema_version": "role_binding_timing.collector_infrastructure_contract.v0_2_5",
+  "generation_calls_authorized": 0,
+  "adb": {
+    "server_port": 5038,
+    "fallback_to_5037": false,
+    "implicit_restart_allowed": false,
+    "identity_fields": ["listener_pid", "executable_path", "binary_sha256", "process_creation_time"]
+  },
+  "framework_services": ["package", "window", "activity"],
+  "operation_sequence": [
+    "server_identity",
+    "framework_before",
+    "reset_before",
+    "launch_raw",
+    "foreground_activity_raw",
+    "foreground_window_raw",
+    "ui_tree_raw",
+    "screenshot_raw",
+    "locator_provenance",
+    "framework_after_capture",
+    "reset_after",
+    "framework_after_reset",
+    "server_identity"
+  ],
+  "foreground": {
+    "activity_markers": ["topResumedActivity", "mResumedActivity", "ResumedActivity"],
+    "window_markers": ["mCurrentFocus", "mFocusedApp", "FocusedWindow"],
+    "required_witnesses": ["activity_package", "window_package", "ui_tree_package"],
+    "contradictory_witness_behavior": "fail_closed"
+  },
+  "locator_hierarchy": ["resource_id", "content_desc", "text", "nearest_enabled_clickable_ancestor"],
+  "locator_policy": {
+    "package_scoped": true,
+    "unique_authority_required": true,
+    "coordinates_forbidden": true,
+    "app_or_task_branches_forbidden": true,
+    "raw_candidate_provenance_required": true
+  },
+  "filesystem_count": {
+    "remote_shell_pipeline_forbidden": true,
+    "command": ["find", "<root>", "-maxdepth", "1", "-type", "f", "-print"],
+    "count_location": "host",
+    "escaped_root_behavior": "fail_closed"
+  }
+}

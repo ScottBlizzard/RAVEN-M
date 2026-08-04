@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "role_binding_timing_infrastructure_certificate.v0_2_5.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "study_id",
+    "verdict",
+    "generation_calls",
+    "generation_eligible",
+    "dev_contaminated",
+    "held_out_eligible",
+    "source_hashes",
+    "server_owner",
+    "sequences",
+    "metrics",
+    "terminal_audit"
+  ],
+  "properties": {
+    "schema_version": {"const": "role_binding_timing.infrastructure_certificate.v0_2_5"},
+    "study_id": {"const": "role_binding_timing_phase_b2_5_dev_infrastructure"},
+    "verdict": {"enum": ["PASS", "NOT_ELIGIBLE"]},
+    "generation_calls": {"const": 0},
+    "generation_eligible": {"const": false},
+    "dev_contaminated": {"const": true},
+    "held_out_eligible": {"const": false},
+    "source_hashes": {"type": "object", "minProperties": 3},
+    "server_owner": {
+      "type": "object",
+      "required": ["listener_pid", "binary_sha256", "port", "device_serial"],
+      "properties": {
+        "listener_pid": {"type": "integer", "minimum": 1},
+        "binary_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "port": {"const": 5038},
+        "device_serial": {"const": "emulator-5554"}
+      },
+      "additionalProperties": true
+    },
+    "sequences": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["sequence_id", "dev_app_id", "round", "passed", "issues", "artifacts"],
+        "properties": {
+          "sequence_id": {"type": "string"},
+          "dev_app_id": {"type": "string"},
+          "round": {"type": "integer", "minimum": 1},
+          "passed": {"type": "boolean"},
+          "issues": {"type": "array", "items": {"type": "string"}},
+          "artifacts": {"type": "object"}
+        },
+        "additionalProperties": true
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "required": ["planned_sequences", "completed_sequences", "passed_sequences", "implicit_restarts", "framework_failures", "generation_calls"],
+      "properties": {
+        "planned_sequences": {"type": "integer", "minimum": 1},
+        "completed_sequences": {"type": "integer", "minimum": 0},
+        "passed_sequences": {"type": "integer", "minimum": 0},
+        "implicit_restarts": {"type": "integer", "minimum": 0},
+        "framework_failures": {"type": "integer", "minimum": 0},
+        "generation_calls": {"const": 0}
+      },
+      "additionalProperties": true
+    },
+    "terminal_audit": {"type": "object"}
+  }
+}
