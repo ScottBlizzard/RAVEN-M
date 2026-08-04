@@ -1,0 +1,10 @@
+{
+  "artifacts": [
+    {
+      "bytes": 37294,
+      "path": "05_project/artifacts/role_binding_timing/infra_m6_display_observability_audit/display_observability_audit.json",
+      "sha256": "1825e0979f629239d7d38f01d3252ce9bc66dc82e055e7cbbcd4bde28b9a60f4"
+    }
+  ],
+  "schema_version": "role_binding_timing.infra_m6.audit_manifest.v1"
+}

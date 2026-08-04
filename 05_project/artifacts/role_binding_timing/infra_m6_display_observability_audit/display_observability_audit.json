@@ -1,0 +1,912 @@
+{
+  "attempts": [
+    {
+      "all_nonlegacy_markers_present": true,
+      "attempt": 1,
+      "direct_markers": {
+        "legacy_expected_marker_in_window_displays": false,
+        "policy_interactive_awake": true,
+        "policy_screen_state_on": true,
+        "power_display_suspend_blocker": true,
+        "power_hal_interactive": true,
+        "power_stay_on": true,
+        "power_wakefulness_awake": true,
+        "window_current_focus": true,
+        "window_display_geometry": true,
+        "window_screen_on_early": true,
+        "window_screen_on_fully": true,
+        "window_visible_task": true
+      },
+      "frozen_parser_result": {
+        "awake": true,
+        "display_on": false,
+        "interactive": true,
+        "keyguard_not_showing": true,
+        "no_dead_object": true
+      },
+      "raw": {
+        "displays": {
+          "bytes": 15723,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_01/raw/displays.stdout.bin",
+          "sha256": "03a91610b6a187de9c92e8c95b2a745c486f28ea2ae460c5fedbed03b29adb4d"
+        },
+        "policy": {
+          "bytes": 2894,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_01/raw/policy.stdout.bin",
+          "sha256": "17a24ab9581df9a87d6235cac156edc0ea8056679947a6f43ffdd9f7242957f3"
+        },
+        "power": {
+          "bytes": 18769,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_01/raw/power.stdout.bin",
+          "sha256": "57f7bbbededeb2e41985f5cffbee5df116c0eed1faed2fc3bcef6da1cf3179c1"
+        }
+      }
+    },
+    {
+      "all_nonlegacy_markers_present": true,
+      "attempt": 2,
+      "direct_markers": {
+        "legacy_expected_marker_in_window_displays": false,
+        "policy_interactive_awake": true,
+        "policy_screen_state_on": true,
+        "power_display_suspend_blocker": true,
+        "power_hal_interactive": true,
+        "power_stay_on": true,
+        "power_wakefulness_awake": true,
+        "window_current_focus": true,
+        "window_display_geometry": true,
+        "window_screen_on_early": true,
+        "window_screen_on_fully": true,
+        "window_visible_task": true
+      },
+      "frozen_parser_result": {
+        "awake": true,
+        "display_on": false,
+        "interactive": true,
+        "keyguard_not_showing": true,
+        "no_dead_object": true
+      },
+      "raw": {
+        "displays": {
+          "bytes": 15801,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_02/raw/displays.stdout.bin",
+          "sha256": "d9ce62122f741184526d53c472a78e778ff00b29e73765b7fb10dc6a9ed9b4bb"
+        },
+        "policy": {
+          "bytes": 2894,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_02/raw/policy.stdout.bin",
+          "sha256": "17a24ab9581df9a87d6235cac156edc0ea8056679947a6f43ffdd9f7242957f3"
+        },
+        "power": {
+          "bytes": 22207,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_02/raw/power.stdout.bin",
+          "sha256": "ea631a3f4851684a60e4d0424bc107b5530889776c17901fae9d7baa247da6f3"
+        }
+      }
+    },
+    {
+      "all_nonlegacy_markers_present": true,
+      "attempt": 3,
+      "direct_markers": {
+        "legacy_expected_marker_in_window_displays": false,
+        "policy_interactive_awake": true,
+        "policy_screen_state_on": true,
+        "power_display_suspend_blocker": true,
+        "power_hal_interactive": true,
+        "power_stay_on": true,
+        "power_wakefulness_awake": true,
+        "window_current_focus": true,
+        "window_display_geometry": true,
+        "window_screen_on_early": true,
+        "window_screen_on_fully": true,
+        "window_visible_task": true
+      },
+      "frozen_parser_result": {
+        "awake": true,
+        "display_on": false,
+        "interactive": true,
+        "keyguard_not_showing": true,
+        "no_dead_object": true
+      },
+      "raw": {
+        "displays": {
+          "bytes": 15715,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_03/raw/displays.stdout.bin",
+          "sha256": "0287b9fb7863457493467cdfd03dafd31288e82ac1ad6a77310920e404e63bc3"
+        },
+        "policy": {
+          "bytes": 2894,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_03/raw/policy.stdout.bin",
+          "sha256": "17a24ab9581df9a87d6235cac156edc0ea8056679947a6f43ffdd9f7242957f3"
+        },
+        "power": {
+          "bytes": 23462,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_03/raw/power.stdout.bin",
+          "sha256": "33f640028f30fd8479d0adc9e651f4b3188d6ea15a74f106ab39ce51208d3a8a"
+        }
+      }
+    },
+    {
+      "all_nonlegacy_markers_present": true,
+      "attempt": 4,
+      "direct_markers": {
+        "legacy_expected_marker_in_window_displays": false,
+        "policy_interactive_awake": true,
+        "policy_screen_state_on": true,
+        "power_display_suspend_blocker": true,
+        "power_hal_interactive": true,
+        "power_stay_on": true,
+        "power_wakefulness_awake": true,
+        "window_current_focus": true,
+        "window_display_geometry": true,
+        "window_screen_on_early": true,
+        "window_screen_on_fully": true,
+        "window_visible_task": true
+      },
+      "frozen_parser_result": {
+        "awake": true,
+        "display_on": false,
+        "interactive": true,
+        "keyguard_not_showing": true,
+        "no_dead_object": true
+      },
+      "raw": {
+        "displays": {
+          "bytes": 15658,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_04/raw/displays.stdout.bin",
+          "sha256": "9c45b4bb2ff33f0c8b5d2fb0ef29511096e307e48e0fb288647272bd1fe8d6a7"
+        },
+        "policy": {
+          "bytes": 3178,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_04/raw/policy.stdout.bin",
+          "sha256": "467b0c25c2b3c620b64e40c375e26d55e04174b25685e3efd59638a2aba9ef2f"
+        },
+        "power": {
+          "bytes": 27374,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_04/raw/power.stdout.bin",
+          "sha256": "e8bd9f3511e6c12a0129d7f90111aa3348097f1a0c3b40351ff80d8255defbc9"
+        }
+      }
+    },
+    {
+      "all_nonlegacy_markers_present": true,
+      "attempt": 5,
+      "direct_markers": {
+        "legacy_expected_marker_in_window_displays": false,
+        "policy_interactive_awake": true,
+        "policy_screen_state_on": true,
+        "power_display_suspend_blocker": true,
+        "power_hal_interactive": true,
+        "power_stay_on": true,
+        "power_wakefulness_awake": true,
+        "window_current_focus": true,
+        "window_display_geometry": true,
+        "window_screen_on_early": true,
+        "window_screen_on_fully": true,
+        "window_visible_task": true
+      },
+      "frozen_parser_result": {
+        "awake": true,
+        "display_on": false,
+        "interactive": true,
+        "keyguard_not_showing": true,
+        "no_dead_object": true
+      },
+      "raw": {
+        "displays": {
+          "bytes": 16002,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_05/raw/displays.stdout.bin",
+          "sha256": "989b3f72ccba0a5641c1fdcdc88410a94e4477f1e6cedf864cc04811d9dd6cd8"
+        },
+        "policy": {
+          "bytes": 2894,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_05/raw/policy.stdout.bin",
+          "sha256": "17a24ab9581df9a87d6235cac156edc0ea8056679947a6f43ffdd9f7242957f3"
+        },
+        "power": {
+          "bytes": 29749,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_05/raw/power.stdout.bin",
+          "sha256": "6ce9204e89d55c70982a735902b06f0e1a5b56ed84cffb21758c5210807261c4"
+        }
+      }
+    },
+    {
+      "all_nonlegacy_markers_present": true,
+      "attempt": 6,
+      "direct_markers": {
+        "legacy_expected_marker_in_window_displays": false,
+        "policy_interactive_awake": true,
+        "policy_screen_state_on": true,
+        "power_display_suspend_blocker": true,
+        "power_hal_interactive": true,
+        "power_stay_on": true,
+        "power_wakefulness_awake": true,
+        "window_current_focus": true,
+        "window_display_geometry": true,
+        "window_screen_on_early": true,
+        "window_screen_on_fully": true,
+        "window_visible_task": true
+      },
+      "frozen_parser_result": {
+        "awake": true,
+        "display_on": false,
+        "interactive": true,
+        "keyguard_not_showing": true,
+        "no_dead_object": true
+      },
+      "raw": {
+        "displays": {
+          "bytes": 15410,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_06/raw/displays.stdout.bin",
+          "sha256": "f56c4edb628535b2f8e3f73e25a8e7c3de9a4902e335c973caa2586b1cf12561"
+        },
+        "policy": {
+          "bytes": 3000,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_06/raw/policy.stdout.bin",
+          "sha256": "56fcd563c394d8507414a602b8448101fa6596a2920c93ab8dd044aaa021de96"
+        },
+        "power": {
+          "bytes": 36096,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_06/raw/power.stdout.bin",
+          "sha256": "8a0dc344d5136fe36bd20801b0060dff8e1c860b2387d8f4f1e13f1026b9247a"
+        }
+      }
+    },
+    {
+      "all_nonlegacy_markers_present": true,
+      "attempt": 7,
+      "direct_markers": {
+        "legacy_expected_marker_in_window_displays": false,
+        "policy_interactive_awake": true,
+        "policy_screen_state_on": true,
+        "power_display_suspend_blocker": true,
+        "power_hal_interactive": true,
+        "power_stay_on": true,
+        "power_wakefulness_awake": true,
+        "window_current_focus": true,
+        "window_display_geometry": true,
+        "window_screen_on_early": true,
+        "window_screen_on_fully": true,
+        "window_visible_task": true
+      },
+      "frozen_parser_result": {
+        "awake": true,
+        "display_on": false,
+        "interactive": true,
+        "keyguard_not_showing": true,
+        "no_dead_object": true
+      },
+      "raw": {
+        "displays": {
+          "bytes": 16271,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_07/raw/displays.stdout.bin",
+          "sha256": "69b4258c34206ff7413c8f9f61cfa674df64326f4894e84c027f4a391555db9a"
+        },
+        "policy": {
+          "bytes": 3343,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_07/raw/policy.stdout.bin",
+          "sha256": "0e865ecbd5b7c5ffb37af0e9449933d5217382709679897cf0dd6149f5dff256"
+        },
+        "power": {
+          "bytes": 38952,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_07/raw/power.stdout.bin",
+          "sha256": "00972d36adbf2cb049eb0e3b44c97c278434891b2224e3edd7f666f698a5d693"
+        }
+      }
+    },
+    {
+      "all_nonlegacy_markers_present": true,
+      "attempt": 8,
+      "direct_markers": {
+        "legacy_expected_marker_in_window_displays": false,
+        "policy_interactive_awake": true,
+        "policy_screen_state_on": true,
+        "power_display_suspend_blocker": true,
+        "power_hal_interactive": true,
+        "power_stay_on": true,
+        "power_wakefulness_awake": true,
+        "window_current_focus": true,
+        "window_display_geometry": true,
+        "window_screen_on_early": true,
+        "window_screen_on_fully": true,
+        "window_visible_task": true
+      },
+      "frozen_parser_result": {
+        "awake": true,
+        "display_on": false,
+        "interactive": true,
+        "keyguard_not_showing": true,
+        "no_dead_object": true
+      },
+      "raw": {
+        "displays": {
+          "bytes": 16064,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_08/raw/displays.stdout.bin",
+          "sha256": "ce6e7f1172153d4f78710bff3cd9d78c9cdd97ed7206f473cd6402cc8260a7bf"
+        },
+        "policy": {
+          "bytes": 2895,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_08/raw/policy.stdout.bin",
+          "sha256": "b5cd8c165c1c7dcfca28aff9caf5cf673d45a6f4d8a82d312964ee657ac63be0"
+        },
+        "power": {
+          "bytes": 42522,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_08/raw/power.stdout.bin",
+          "sha256": "f24567de69a2af9bbb3944fc3d50ae8a7c7aff101e6236f38cc084c1ddd86f69"
+        }
+      }
+    },
+    {
+      "all_nonlegacy_markers_present": true,
+      "attempt": 9,
+      "direct_markers": {
+        "legacy_expected_marker_in_window_displays": false,
+        "policy_interactive_awake": true,
+        "policy_screen_state_on": true,
+        "power_display_suspend_blocker": true,
+        "power_hal_interactive": true,
+        "power_stay_on": true,
+        "power_wakefulness_awake": true,
+        "window_current_focus": true,
+        "window_display_geometry": true,
+        "window_screen_on_early": true,
+        "window_screen_on_fully": true,
+        "window_visible_task": true
+      },
+      "frozen_parser_result": {
+        "awake": true,
+        "display_on": false,
+        "interactive": true,
+        "keyguard_not_showing": true,
+        "no_dead_object": true
+      },
+      "raw": {
+        "displays": {
+          "bytes": 16063,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_09/raw/displays.stdout.bin",
+          "sha256": "bfd2551bf9baba0bd07bdbd03079ecfdb838711d443f40ba401d567132441b12"
+        },
+        "policy": {
+          "bytes": 2895,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_09/raw/policy.stdout.bin",
+          "sha256": "b5cd8c165c1c7dcfca28aff9caf5cf673d45a6f4d8a82d312964ee657ac63be0"
+        },
+        "power": {
+          "bytes": 53350,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_09/raw/power.stdout.bin",
+          "sha256": "3acfc20ba0e021a46220dce79f493133804b7739319787b796d3abe9f87df0a4"
+        }
+      }
+    },
+    {
+      "all_nonlegacy_markers_present": true,
+      "attempt": 10,
+      "direct_markers": {
+        "legacy_expected_marker_in_window_displays": false,
+        "policy_interactive_awake": true,
+        "policy_screen_state_on": true,
+        "power_display_suspend_blocker": true,
+        "power_hal_interactive": true,
+        "power_stay_on": true,
+        "power_wakefulness_awake": true,
+        "window_current_focus": true,
+        "window_display_geometry": true,
+        "window_screen_on_early": true,
+        "window_screen_on_fully": true,
+        "window_visible_task": true
+      },
+      "frozen_parser_result": {
+        "awake": true,
+        "display_on": false,
+        "interactive": true,
+        "keyguard_not_showing": true,
+        "no_dead_object": true
+      },
+      "raw": {
+        "displays": {
+          "bytes": 16062,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_10/raw/displays.stdout.bin",
+          "sha256": "27abbdf8fea916cc61e133cc62fb3736717af038420bc4d705860cbce910c3b2"
+        },
+        "policy": {
+          "bytes": 2895,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_10/raw/policy.stdout.bin",
+          "sha256": "b5cd8c165c1c7dcfca28aff9caf5cf673d45a6f4d8a82d312964ee657ac63be0"
+        },
+        "power": {
+          "bytes": 59202,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_10/raw/power.stdout.bin",
+          "sha256": "bd5102efb733bc1e71b793743ad314890f244532845089dfb907f874d3c67e29"
+        }
+      }
+    },
+    {
+      "all_nonlegacy_markers_present": true,
+      "attempt": 11,
+      "direct_markers": {
+        "legacy_expected_marker_in_window_displays": false,
+        "policy_interactive_awake": true,
+        "policy_screen_state_on": true,
+        "power_display_suspend_blocker": true,
+        "power_hal_interactive": true,
+        "power_stay_on": true,
+        "power_wakefulness_awake": true,
+        "window_current_focus": true,
+        "window_display_geometry": true,
+        "window_screen_on_early": true,
+        "window_screen_on_fully": true,
+        "window_visible_task": true
+      },
+      "frozen_parser_result": {
+        "awake": true,
+        "display_on": false,
+        "interactive": true,
+        "keyguard_not_showing": true,
+        "no_dead_object": true
+      },
+      "raw": {
+        "displays": {
+          "bytes": 16063,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_11/raw/displays.stdout.bin",
+          "sha256": "826151da9cedf0483232899daead021bb4e3d93ca48539ae0cf0213c3342ec8c"
+        },
+        "policy": {
+          "bytes": 2895,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_11/raw/policy.stdout.bin",
+          "sha256": "b5cd8c165c1c7dcfca28aff9caf5cf673d45a6f4d8a82d312964ee657ac63be0"
+        },
+        "power": {
+          "bytes": 62552,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_11/raw/power.stdout.bin",
+          "sha256": "58d54bf397ef6a6c540e0a9fc388ff224885440078296bb57d539e3d34604fe2"
+        }
+      }
+    },
+    {
+      "all_nonlegacy_markers_present": true,
+      "attempt": 12,
+      "direct_markers": {
+        "legacy_expected_marker_in_window_displays": false,
+        "policy_interactive_awake": true,
+        "policy_screen_state_on": true,
+        "power_display_suspend_blocker": true,
+        "power_hal_interactive": true,
+        "power_stay_on": true,
+        "power_wakefulness_awake": true,
+        "window_current_focus": true,
+        "window_display_geometry": true,
+        "window_screen_on_early": true,
+        "window_screen_on_fully": true,
+        "window_visible_task": true
+      },
+      "frozen_parser_result": {
+        "awake": true,
+        "display_on": false,
+        "interactive": true,
+        "keyguard_not_showing": true,
+        "no_dead_object": true
+      },
+      "raw": {
+        "displays": {
+          "bytes": 16062,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_12/raw/displays.stdout.bin",
+          "sha256": "a5fd594c97b40557b5b48c69d49fd84df2836f1f140fdcfaa1f3d4132616a9fc"
+        },
+        "policy": {
+          "bytes": 2895,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_12/raw/policy.stdout.bin",
+          "sha256": "b5cd8c165c1c7dcfca28aff9caf5cf673d45a6f4d8a82d312964ee657ac63be0"
+        },
+        "power": {
+          "bytes": 64107,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_12/raw/power.stdout.bin",
+          "sha256": "e30a716975485fe1c9c52c9cc529562b786bb9fd42efa4688259d869e9b9be5a"
+        }
+      }
+    },
+    {
+      "all_nonlegacy_markers_present": true,
+      "attempt": 13,
+      "direct_markers": {
+        "legacy_expected_marker_in_window_displays": false,
+        "policy_interactive_awake": true,
+        "policy_screen_state_on": true,
+        "power_display_suspend_blocker": true,
+        "power_hal_interactive": true,
+        "power_stay_on": true,
+        "power_wakefulness_awake": true,
+        "window_current_focus": true,
+        "window_display_geometry": true,
+        "window_screen_on_early": true,
+        "window_screen_on_fully": true,
+        "window_visible_task": true
+      },
+      "frozen_parser_result": {
+        "awake": true,
+        "display_on": false,
+        "interactive": true,
+        "keyguard_not_showing": true,
+        "no_dead_object": true
+      },
+      "raw": {
+        "displays": {
+          "bytes": 16062,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_13/raw/displays.stdout.bin",
+          "sha256": "5d7d4cff950d28f1592293032f8cf1453ae30e42dd3c712ba2ffaa2a3918b37f"
+        },
+        "policy": {
+          "bytes": 2895,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_13/raw/policy.stdout.bin",
+          "sha256": "b5cd8c165c1c7dcfca28aff9caf5cf673d45a6f4d8a82d312964ee657ac63be0"
+        },
+        "power": {
+          "bytes": 64378,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_13/raw/power.stdout.bin",
+          "sha256": "d066a82dbb0f9b42c4cc41f473fc5e96947fa4e7a8cd7ca924de434a0001ab1c"
+        }
+      }
+    },
+    {
+      "all_nonlegacy_markers_present": true,
+      "attempt": 14,
+      "direct_markers": {
+        "legacy_expected_marker_in_window_displays": false,
+        "policy_interactive_awake": true,
+        "policy_screen_state_on": true,
+        "power_display_suspend_blocker": true,
+        "power_hal_interactive": true,
+        "power_stay_on": true,
+        "power_wakefulness_awake": true,
+        "window_current_focus": true,
+        "window_display_geometry": true,
+        "window_screen_on_early": true,
+        "window_screen_on_fully": true,
+        "window_visible_task": true
+      },
+      "frozen_parser_result": {
+        "awake": true,
+        "display_on": false,
+        "interactive": true,
+        "keyguard_not_showing": true,
+        "no_dead_object": true
+      },
+      "raw": {
+        "displays": {
+          "bytes": 16062,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_14/raw/displays.stdout.bin",
+          "sha256": "2ccc6e4cbd9bceda61a677550306ad3896901f5e6f24637cc375fea3a4643bcd"
+        },
+        "policy": {
+          "bytes": 2895,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_14/raw/policy.stdout.bin",
+          "sha256": "b5cd8c165c1c7dcfca28aff9caf5cf673d45a6f4d8a82d312964ee657ac63be0"
+        },
+        "power": {
+          "bytes": 69640,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_14/raw/power.stdout.bin",
+          "sha256": "3bec4493a508461177b4bf2b223bfe5fc8d52927eb5cab5b9e200d8a50ea1414"
+        }
+      }
+    },
+    {
+      "all_nonlegacy_markers_present": true,
+      "attempt": 15,
+      "direct_markers": {
+        "legacy_expected_marker_in_window_displays": false,
+        "policy_interactive_awake": true,
+        "policy_screen_state_on": true,
+        "power_display_suspend_blocker": true,
+        "power_hal_interactive": true,
+        "power_stay_on": true,
+        "power_wakefulness_awake": true,
+        "window_current_focus": true,
+        "window_display_geometry": true,
+        "window_screen_on_early": true,
+        "window_screen_on_fully": true,
+        "window_visible_task": true
+      },
+      "frozen_parser_result": {
+        "awake": true,
+        "display_on": false,
+        "interactive": true,
+        "keyguard_not_showing": true,
+        "no_dead_object": true
+      },
+      "raw": {
+        "displays": {
+          "bytes": 16063,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_15/raw/displays.stdout.bin",
+          "sha256": "e1bfddbf5045ffaf024c6158e449f8b4728705e352f8afff536dd546e1ead9e6"
+        },
+        "policy": {
+          "bytes": 2895,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_15/raw/policy.stdout.bin",
+          "sha256": "b5cd8c165c1c7dcfca28aff9caf5cf673d45a6f4d8a82d312964ee657ac63be0"
+        },
+        "power": {
+          "bytes": 73112,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_15/raw/power.stdout.bin",
+          "sha256": "85bbc50649f2a59eaa8c93ab129cf799002b18ed789c0b66a45ef0a815148c41"
+        }
+      }
+    },
+    {
+      "all_nonlegacy_markers_present": true,
+      "attempt": 16,
+      "direct_markers": {
+        "legacy_expected_marker_in_window_displays": false,
+        "policy_interactive_awake": true,
+        "policy_screen_state_on": true,
+        "power_display_suspend_blocker": true,
+        "power_hal_interactive": true,
+        "power_stay_on": true,
+        "power_wakefulness_awake": true,
+        "window_current_focus": true,
+        "window_display_geometry": true,
+        "window_screen_on_early": true,
+        "window_screen_on_fully": true,
+        "window_visible_task": true
+      },
+      "frozen_parser_result": {
+        "awake": true,
+        "display_on": false,
+        "interactive": true,
+        "keyguard_not_showing": true,
+        "no_dead_object": true
+      },
+      "raw": {
+        "displays": {
+          "bytes": 16063,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_16/raw/displays.stdout.bin",
+          "sha256": "f9ffc1a7b7273883b9a4335908713ff2181f30d2fb665ec1f6f60fcaaabb89c7"
+        },
+        "policy": {
+          "bytes": 2895,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_16/raw/policy.stdout.bin",
+          "sha256": "b5cd8c165c1c7dcfca28aff9caf5cf673d45a6f4d8a82d312964ee657ac63be0"
+        },
+        "power": {
+          "bytes": 74356,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_16/raw/power.stdout.bin",
+          "sha256": "0ca288bed155682bfa622b2a95a3370514b39dc000ac0cdbf48a46d5a0a1c46a"
+        }
+      }
+    },
+    {
+      "all_nonlegacy_markers_present": true,
+      "attempt": 17,
+      "direct_markers": {
+        "legacy_expected_marker_in_window_displays": false,
+        "policy_interactive_awake": true,
+        "policy_screen_state_on": true,
+        "power_display_suspend_blocker": true,
+        "power_hal_interactive": true,
+        "power_stay_on": true,
+        "power_wakefulness_awake": true,
+        "window_current_focus": true,
+        "window_display_geometry": true,
+        "window_screen_on_early": true,
+        "window_screen_on_fully": true,
+        "window_visible_task": true
+      },
+      "frozen_parser_result": {
+        "awake": true,
+        "display_on": false,
+        "interactive": true,
+        "keyguard_not_showing": true,
+        "no_dead_object": true
+      },
+      "raw": {
+        "displays": {
+          "bytes": 16063,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_17/raw/displays.stdout.bin",
+          "sha256": "01080d12a1e6e3b1eeb2c051fae27d685d1ce3c43771f59456deff05894f318e"
+        },
+        "policy": {
+          "bytes": 2895,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_17/raw/policy.stdout.bin",
+          "sha256": "b5cd8c165c1c7dcfca28aff9caf5cf673d45a6f4d8a82d312964ee657ac63be0"
+        },
+        "power": {
+          "bytes": 74453,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_17/raw/power.stdout.bin",
+          "sha256": "340d24db8e1295407a37e07b6d1bd580c96051ec1f2211127665da7b967ab5b5"
+        }
+      }
+    },
+    {
+      "all_nonlegacy_markers_present": true,
+      "attempt": 18,
+      "direct_markers": {
+        "legacy_expected_marker_in_window_displays": false,
+        "policy_interactive_awake": true,
+        "policy_screen_state_on": true,
+        "power_display_suspend_blocker": true,
+        "power_hal_interactive": true,
+        "power_stay_on": true,
+        "power_wakefulness_awake": true,
+        "window_current_focus": true,
+        "window_display_geometry": true,
+        "window_screen_on_early": true,
+        "window_screen_on_fully": true,
+        "window_visible_task": true
+      },
+      "frozen_parser_result": {
+        "awake": true,
+        "display_on": false,
+        "interactive": true,
+        "keyguard_not_showing": true,
+        "no_dead_object": true
+      },
+      "raw": {
+        "displays": {
+          "bytes": 16062,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_18/raw/displays.stdout.bin",
+          "sha256": "40ad5a03825a44a02e278123f9cb8ae6ece9d82fa823787b3a88d3fcf9b22011"
+        },
+        "policy": {
+          "bytes": 2895,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_18/raw/policy.stdout.bin",
+          "sha256": "b5cd8c165c1c7dcfca28aff9caf5cf673d45a6f4d8a82d312964ee657ac63be0"
+        },
+        "power": {
+          "bytes": 75837,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_18/raw/power.stdout.bin",
+          "sha256": "707e379f638c39a3a75b7994d1cd2d4fa35b9a4a98c168325543637e7f0f3e3f"
+        }
+      }
+    },
+    {
+      "all_nonlegacy_markers_present": true,
+      "attempt": 19,
+      "direct_markers": {
+        "legacy_expected_marker_in_window_displays": false,
+        "policy_interactive_awake": true,
+        "policy_screen_state_on": true,
+        "power_display_suspend_blocker": true,
+        "power_hal_interactive": true,
+        "power_stay_on": true,
+        "power_wakefulness_awake": true,
+        "window_current_focus": true,
+        "window_display_geometry": true,
+        "window_screen_on_early": true,
+        "window_screen_on_fully": true,
+        "window_visible_task": true
+      },
+      "frozen_parser_result": {
+        "awake": true,
+        "display_on": false,
+        "interactive": true,
+        "keyguard_not_showing": true,
+        "no_dead_object": true
+      },
+      "raw": {
+        "displays": {
+          "bytes": 16062,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_19/raw/displays.stdout.bin",
+          "sha256": "743e27a77dcf57af213a6ca4f70b64db536b3f44e289ea06af0d0030ba872045"
+        },
+        "policy": {
+          "bytes": 2895,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_19/raw/policy.stdout.bin",
+          "sha256": "b5cd8c165c1c7dcfca28aff9caf5cf673d45a6f4d8a82d312964ee657ac63be0"
+        },
+        "power": {
+          "bytes": 76217,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_19/raw/power.stdout.bin",
+          "sha256": "ffda2a16e30bdf315d4f46d4957ea3aaefc27c79dbc2e2a3847ab60979038962"
+        }
+      }
+    },
+    {
+      "all_nonlegacy_markers_present": true,
+      "attempt": 20,
+      "direct_markers": {
+        "legacy_expected_marker_in_window_displays": false,
+        "policy_interactive_awake": true,
+        "policy_screen_state_on": true,
+        "power_display_suspend_blocker": true,
+        "power_hal_interactive": true,
+        "power_stay_on": true,
+        "power_wakefulness_awake": true,
+        "window_current_focus": true,
+        "window_display_geometry": true,
+        "window_screen_on_early": true,
+        "window_screen_on_fully": true,
+        "window_visible_task": true
+      },
+      "frozen_parser_result": {
+        "awake": true,
+        "display_on": false,
+        "interactive": true,
+        "keyguard_not_showing": true,
+        "no_dead_object": true
+      },
+      "raw": {
+        "displays": {
+          "bytes": 16062,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_20/raw/displays.stdout.bin",
+          "sha256": "2cc6e8cc338c9ff4fe1e671da07ac1f78f5045b8461d0905f076032be5b08b4c"
+        },
+        "policy": {
+          "bytes": 2895,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_20/raw/policy.stdout.bin",
+          "sha256": "b5cd8c165c1c7dcfca28aff9caf5cf673d45a6f4d8a82d312964ee657ac63be0"
+        },
+        "power": {
+          "bytes": 77320,
+          "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/readiness/framework/attempt_20/raw/power.stdout.bin",
+          "sha256": "ac58a5302245cf3e00395baeabf4ea35bcba896413f518a9c89481281ffd6471"
+        }
+      }
+    }
+  ],
+  "audit_date": "2026-08-05",
+  "claim_boundary": {
+    "supported": "M5 display_on=false was a parser/command marker miss, not direct proof of OFF",
+    "unsupported": [
+      "M5 framebuffer was physically on",
+      "M5 produced a usable rendered frame",
+      "M5 would have passed a11y or the DEV grid",
+      "any role-binding or memory claim"
+    ]
+  },
+  "classification": {
+    "legacy_display_on_false": "MARKER_ABSENCE_OR_COMMAND_VERSION_MISMATCH",
+    "physical_display_off": "NOT_ESTABLISHED",
+    "reason": "The frozen parser searched window-display output for state/mState ON. All M5 samples instead expose screen-on and visible-window witnesses in window/policy, while the installed-build dumpsys-display format reference contains the expected state ON markers. M5 captured neither dumpsys display, SurfaceFlinger evidence, nor a framework screencap.",
+    "usable_rendered_frame": "UNKNOWN"
+  },
+  "device_mutations": 0,
+  "generation_calls": 0,
+  "m5_verdict_immutable": "RUNTIME_UNSTABLE:FRAMEWORK_NOT_STABLE",
+  "m6_required_evidence": [
+    "dumpsys display physical and logical device state",
+    "power wakefulness, HAL interactive mode, and display suspend blocker",
+    "window display geometry, focused/visible surface, and screen-on policy markers",
+    "SurfaceFlinger/display evidence when supported",
+    "PNG-decoded screencap with expected geometry, nontrivial bytes, and nonuniform pixels"
+  ],
+  "mode": "read_only_existing_evidence",
+  "schema_version": "role_binding_timing.infra_m6.display_observability_audit.v1",
+  "source_identity": {
+    "frozen_parser": {
+      "path": "05_project/src/raven_m/role_binding_timing/infra_m1_runtime.py",
+      "sha256": "af7b66ed6a4e35b61c23f196d0f7bb114ee228b16603acbdba9c2996f895d1b1"
+    },
+    "installed_build_display_format_reference": {
+      "bytes": 18624,
+      "development_contaminated": true,
+      "held_out_eligible": false,
+      "markers": {
+        "base_display_state_on": true,
+        "display_device_state_on": true,
+        "geometry_1080x2400": true,
+        "logical_display_mstate_on": true
+      },
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_7_ui_tree_export_diagnosis/preconditions/wake_dismiss_verified/verified.display.stdout.bin",
+      "sha256": "6f35b170b48e55ca55fa4ee0ad1c4a7fbde99ecb3531e95f8d8d7977d851eb7a"
+    },
+    "m5_completion_commit": "3493c09c928ad37b004f63314dba0e22f6327df7",
+    "m5_completion_sha256": "59a6be2775cf86fd099bc7d556a510b373a1ef82fee507f88c1882003abc817b"
+  },
+  "summary": {
+    "all_nonlegacy_markers_present": 20,
+    "attempts": 20,
+    "legacy_parser_display_on_true": 0,
+    "marker_true_counts": {
+      "legacy_expected_marker_in_window_displays": 0,
+      "policy_interactive_awake": 20,
+      "policy_screen_state_on": 20,
+      "power_display_suspend_blocker": 20,
+      "power_hal_interactive": 20,
+      "power_stay_on": 20,
+      "power_wakefulness_awake": 20,
+      "window_current_focus": 20,
+      "window_display_geometry": 20,
+      "window_screen_on_early": 20,
+      "window_screen_on_fully": 20,
+      "window_visible_task": 20
+    }
+  }
+}
