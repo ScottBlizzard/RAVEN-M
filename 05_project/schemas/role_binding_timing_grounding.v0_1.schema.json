@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["phase", "destination_target_id", "source_entity_id", "destination_entity_id", "confidence"],
+  "properties": {
+    "phase": {"const": "grounding"},
+    "destination_target_id": {"type": "string", "pattern": "^[A-H]$"},
+    "source_entity_id": {"type": "string", "pattern": "^E[1-8]$"},
+    "destination_entity_id": {"type": "string", "pattern": "^E[1-8]$"},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+  }
+}

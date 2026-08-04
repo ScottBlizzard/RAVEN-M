@@ -1,0 +1,204 @@
+{
+  "adb": {
+    "adb_binary_sha256": "957e46b8615f7af5b7292a2ddabe98d2e61940c3fb2b0545756507f080613e71",
+    "adb_server_port": 5038,
+    "boot_completed": "1",
+    "device_serial": "emulator-5554",
+    "fallback_to_5037": false
+  },
+  "blocking_gates": [
+    "fresh_snapshot_oracle_qualification"
+  ],
+  "claim_evidence": {
+    "exact_token_matching_on_held_out_instances": "untested",
+    "memory_efficacy": "untested_out_of_scope",
+    "prompt_schema_parser_tooling": "qualified_offline",
+    "snapshot_oracle_gate": "failed_empty_manifest",
+    "timing_effect": "untested"
+  },
+  "contamination_boundary": {
+    "fresh_held_out_base_families": 0,
+    "old_runs_used_as_held_out": false,
+    "phase_a_dev_screenshots_used_as_held_out": false
+  },
+  "finished_at": "2026-08-04T12:15:52.662252+00:00",
+  "gate_verdict": "NOT_ELIGIBLE_FOR_GENERATION",
+  "generation_calls_by_preflight": 0,
+  "generation_eligible": false,
+  "generation_endpoint_called": false,
+  "head": "9641177544929bf6613e2f1bdbbfc82b0f497608",
+  "lock": {
+    "frozen_source_parent_commit": "9641177544929bf6613e2f1bdbbfc82b0f497608",
+    "lock_sha256": "a7bdb1619bc13d1b99f002186142d05aed8f3d2b7d841f876943373a0a06f1b9",
+    "locked_files": [
+      {
+        "path": "04_protocols/role_binding_timing/stage1_diagnostic_v0_1.md",
+        "sha256": "13dcaf96079cfeb65f7eaf3a48e8e18dd1b99a65303dbde576301b6ede8992c6"
+      },
+      {
+        "path": "05_project/contracts/role_binding_timing_stage1.v0_1.json",
+        "sha256": "95a59c44bdbb72577c6cc6cd7437f586dcc0225d3bd68409a110e418b05b6f45"
+      },
+      {
+        "path": "05_project/schemas/role_binding_timing_grounding.v0_1.schema.json",
+        "sha256": "ba54c347a19cc527b50eb48cedd53073ef32e0b05f59a092ff3138160dff6b4a"
+      },
+      {
+        "path": "05_project/schemas/role_binding_timing_action.v0_1.schema.json",
+        "sha256": "cad70fffe76cc237f30a97a921d254dfb7ebcb5af72ba20a69cf165f228ff29b"
+      },
+      {
+        "path": "05_project/schemas/role_binding_timing_snapshot.v0_1.schema.json",
+        "sha256": "d842c5844a442a0ceda2f12808c769977559c44a5da1f7812a6e69b5d25a3bb4"
+      },
+      {
+        "path": "05_project/configs/role_binding_timing/stage1_v0_1.json",
+        "sha256": "52362e67e5a68c311e3d9f648e5f972ff79866bcef631d1636223cfdcb2b8777"
+      },
+      {
+        "path": "05_project/configs/role_binding_timing/stage1_snapshot_manifest.v0_1.json",
+        "sha256": "22593ad274eed250d766bdb417953339710015a26b6da92f5157f5079843cf4b"
+      },
+      {
+        "path": "05_project/src/raven_m/role_binding_timing/__init__.py",
+        "sha256": "0f66be1c44d865844824d8bfb809d3c0ae81a61ad3445365b58a0f20fca9088f"
+      },
+      {
+        "path": "05_project/src/raven_m/role_binding_timing/contract.py",
+        "sha256": "3df934fb792086f4d1dc3c0387214d74c8d9ea07aa9c92ef6ac025012c753c2d"
+      },
+      {
+        "path": "05_project/src/raven_m/role_binding_timing/token_audit.py",
+        "sha256": "dab7ba6efe73cfa3b162df539e4f7aff9116c25fdd3d0104edf0f380e879a06e"
+      },
+      {
+        "path": "05_project/src/raven_m/role_binding_timing/prompts.py",
+        "sha256": "fc7966b4447b21807eedf027ca3eb64c7f1986cf94fabc7997958b59b98623b6"
+      },
+      {
+        "path": "05_project/src/raven_m/role_binding_timing/parser.py",
+        "sha256": "39b591cf069222a8ffeb3282b429bd5a443e75faadf3b12664768415b4146bd7"
+      },
+      {
+        "path": "05_project/src/raven_m/role_binding_timing/snapshots.py",
+        "sha256": "15064a0b132ccc0d4ca8d22eff8f2ddb5ce28cf516567a726643e689d3fc5741"
+      },
+      {
+        "path": "05_project/src/raven_m/role_binding_timing/design.py",
+        "sha256": "f710b4de8fccdbb198f5a9d461104ddbcc5016e06ce78e58276f98c10ab40d5a"
+      },
+      {
+        "path": "05_project/src/raven_m/role_binding_timing/metrics.py",
+        "sha256": "68f3496126261159679852f550caf2dd51333db8ce949ca788430300509647b6"
+      },
+      {
+        "path": "05_project/scripts/preflight_role_binding_timing_stage1.py",
+        "sha256": "f8ba26dc74e143b71d66cabba93f14694e913fb5ace29f0f02d340c702e6bacf"
+      },
+      {
+        "path": "05_project/tests/role_binding_timing/test_contract_and_prompts.py",
+        "sha256": "3c4fd022eb4462cd8df8bce3fdb0b77426af92c3411e718e09afe5d4e204472e"
+      },
+      {
+        "path": "05_project/tests/role_binding_timing/test_parser_and_metrics.py",
+        "sha256": "fe7ebf4e8d103d505db281ae6ce5785734e5a1ae3c39b3e673a1dcaaa76b29f3"
+      },
+      {
+        "path": "05_project/tests/role_binding_timing/test_snapshot_and_blinding.py",
+        "sha256": "b542012c0889bb015241f07a3394ab2cc3cada6a00ad68a29c79b245f99d21b0"
+      }
+    ]
+  },
+  "model_health": {
+    "backend": "qwen3_vl_32b_transformers_bf16_4x4090_v1",
+    "generation_endpoint_called": false,
+    "health_method": "GET",
+    "loaded": true,
+    "mode": "transformers",
+    "model": "Qwen/Qwen3-VL-32B-Instruct",
+    "revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+    "status": "ok"
+  },
+  "namespace_isolation": {
+    "forbidden_imports": [],
+    "forbidden_legacy_literals": [],
+    "paths": [
+      "05_project/src/raven_m/role_binding_timing/__init__.py",
+      "05_project/src/raven_m/role_binding_timing/contract.py",
+      "05_project/src/raven_m/role_binding_timing/design.py",
+      "05_project/src/raven_m/role_binding_timing/metrics.py",
+      "05_project/src/raven_m/role_binding_timing/parser.py",
+      "05_project/src/raven_m/role_binding_timing/prompts.py",
+      "05_project/src/raven_m/role_binding_timing/snapshots.py",
+      "05_project/src/raven_m/role_binding_timing/token_audit.py"
+    ]
+  },
+  "novelty_status": "UNRESOLVED",
+  "offline_tooling_status": "pass",
+  "parser_smoke": {
+    "action_schema": "pass",
+    "grounding_schema": "pass"
+  },
+  "protected_legacy_wip": {
+    "05_project/src/raven_m/controller/episode_controller.py": "fc0e82e0fde90119365d4f685f080eb4519bf2f602e4bda58de5d4809a40fe33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "ff89d6b70be4b4738646d262beb67d7b7e932e9eb95956d940b1c5000a999d10",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5bb1f1e3de673a1072cfee62938b761a62fd69c187d5eadf54bc46b115a3fd0a"
+  },
+  "schema_conformance": {
+    "05_project/schemas/role_binding_timing_action.v0_1.schema.json": "cad70fffe76cc237f30a97a921d254dfb7ebcb5af72ba20a69cf165f228ff29b",
+    "05_project/schemas/role_binding_timing_grounding.v0_1.schema.json": "ba54c347a19cc527b50eb48cedd53073ef32e0b05f59a092ff3138160dff6b4a",
+    "05_project/schemas/role_binding_timing_snapshot.v0_1.schema.json": "d842c5844a442a0ceda2f12808c769977559c44a5da1f7812a6e69b5d25a3bb4"
+  },
+  "schema_version": "role_binding_timing.preflight.v0_1",
+  "snapshot_oracle": {
+    "issues": [],
+    "manifest_sha256": "22593ad274eed250d766bdb417953339710015a26b6da92f5157f5079843cf4b",
+    "qualification_rate": 0.0,
+    "qualified_variants": 0,
+    "required_base_families": 8,
+    "required_rate": 0.95,
+    "retained_base_families": 0,
+    "total_variants": 0
+  },
+  "started_at": "2026-08-04T12:15:18.739311+00:00",
+  "study_id": "role_binding_timing_stage1_v0_1",
+  "token_audit": {
+    "certificate_scope": "tooling_and_aliases_only_no_held_out_instances",
+    "entity_alias_token_counts": {
+      "E1": 2,
+      "E2": 2,
+      "E3": 2,
+      "E4": 2,
+      "E5": 2,
+      "E6": 2,
+      "E7": 2,
+      "E8": 2
+    },
+    "fact_block_tokens": 26,
+    "local_files_only": true,
+    "model": "Qwen/Qwen3-VL-32B-Instruct",
+    "neutral_block_tokens": 26,
+    "resolved_commit": null,
+    "revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+    "synthetic_prompt_pair_counts": {
+      "absolute_total_difference": 0,
+      "early_call_1": 309,
+      "early_call_2": 427,
+      "early_total": 736,
+      "late_call_1": 309,
+      "late_call_2": 427,
+      "late_total": 736
+    },
+    "target_alias_token_counts": {
+      "A": 1,
+      "B": 1,
+      "C": 1,
+      "D": 1,
+      "E": 1,
+      "F": 1,
+      "G": 1,
+      "H": 1
+    },
+    "tokenizer_class": "Qwen2Tokenizer"
+  }
+}

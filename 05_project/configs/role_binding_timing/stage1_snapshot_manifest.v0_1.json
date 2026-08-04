@@ -1,0 +1,6 @@
+{
+  "schema_version": "role_binding_timing.snapshot_manifest.v0_1",
+  "study_id": "role_binding_timing_stage1_v0_1",
+  "frozen_before_condition_assignment": true,
+  "base_families": []
+}

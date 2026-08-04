@@ -1,0 +1,92 @@
+{
+  "schema_version": "role_binding_timing.contract.v0_1",
+  "study_id": "role_binding_timing_stage1_v0_1",
+  "novelty_status": "UNRESOLVED",
+  "generation_eligible": false,
+  "model": {
+    "id": "Qwen/Qwen3-VL-32B-Instruct",
+    "revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+    "backend": "qwen3_vl_32b_transformers_bf16_4x4090_v1",
+    "temperature": 0,
+    "do_sample": false,
+    "max_new_tokens_per_call": 128,
+    "calls_per_cell": 2,
+    "action_proposals_per_cell": 1
+  },
+  "factorial": {
+    "fact_timing": ["early", "late"],
+    "role_ambiguity": ["low", "high"],
+    "condition_order": ["early_low", "late_low", "early_high", "late_high"]
+  },
+  "token_policy": {
+    "counter": "locked_qwen_chat_template",
+    "early_late_text_token_tolerance": 0,
+    "logical_fact_occurrences": 1,
+    "neutral_block_forbidden_content": "all source/destination entity labels, field labels, and fact values",
+    "raw_http_reserializes_prior_logical_turns": true
+  },
+  "target_alias_pattern": "^[A-H]$",
+  "entity_alias_pattern": "^E[1-8]$",
+  "system_prompt": "You are participating in a blinded mobile-GUI critical-decision study. Obey the requested phase. Use only the supplied blinded target and entity IDs. Do not invent targets, coordinates, facts, or actions. Return exactly one compact JSON object and no prose.",
+  "grounding_instruction": "PHASE=grounding. Identify the destination widget that the task intends to act on. Bind source and destination entity roles. Do not propose an action yet. Return the grounding schema.",
+  "action_instruction": "PHASE=action. Preserve the supplied canonical grounding commitment, recall the source fact exactly, and emit exactly one first target-bearing action. Return the action schema.",
+  "grounding_output_schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["phase", "destination_target_id", "source_entity_id", "destination_entity_id", "confidence"],
+    "properties": {
+      "phase": {"const": "grounding"},
+      "destination_target_id": {"type": "string", "pattern": "^[A-H]$"},
+      "source_entity_id": {"type": "string", "pattern": "^E[1-8]$"},
+      "destination_entity_id": {"type": "string", "pattern": "^E[1-8]$"},
+      "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+    }
+  },
+  "action_output_schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["phase", "grounded_destination_target_id", "recalled_value", "action", "confidence"],
+    "properties": {
+      "phase": {"const": "action"},
+      "grounded_destination_target_id": {"type": "string", "pattern": "^[A-H]$"},
+      "recalled_value": {"type": "string", "minLength": 1, "maxLength": 256},
+      "action": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "target_id", "text"],
+        "properties": {
+          "type": {"enum": ["tap", "type_text"]},
+          "target_id": {"type": "string", "pattern": "^[A-H]$"},
+          "text": {"type": ["string", "null"], "maxLength": 256}
+        },
+        "allOf": [
+          {"if": {"properties": {"type": {"const": "tap"}}}, "then": {"properties": {"text": {"type": "null"}}}},
+          {"if": {"properties": {"type": {"const": "type_text"}}}, "then": {"properties": {"text": {"type": "string", "minLength": 1}}}}
+        ]
+      },
+      "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+    }
+  },
+  "pilot_gates": {
+    "base_families": 8,
+    "cells_per_base_family": 4,
+    "exact_value_recall_min": 0.95,
+    "snapshot_oracle_qualification_min": 0.95,
+    "parser_schema_failure_max_exclusive": 0.05,
+    "pre_manipulation_infrastructure_failure_max_exclusive": 0.10,
+    "low_ambiguity_target_accuracy_min_exclusive": 0.80
+  },
+  "controls_staged": [
+    "task_literal_no_memory",
+    "irrelevant_same_format_fact",
+    "position_placebo",
+    "recency_placebo",
+    "source_destination_label_swap",
+    "destination_provided",
+    "no_commitment",
+    "delay_only",
+    "local_visible"
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "study_id", "frozen_before_condition_assignment", "base_families"],
+  "properties": {
+    "schema_version": {"const": "role_binding_timing.snapshot_manifest.v0_1"},
+    "study_id": {"const": "role_binding_timing_stage1_v0_1"},
+    "frozen_before_condition_assignment": {"const": true},
+    "base_families": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["base_family_id", "collection_batch", "development_contaminated", "held_out_eligible", "task_without_value", "fact", "variants"],
+        "properties": {
+          "base_family_id": {"type": "string", "pattern": "^BF-[0-9]{3}$"},
+          "collection_batch": {"type": "string", "minLength": 1},
+          "development_contaminated": {"const": false},
+          "held_out_eligible": {"const": true},
+          "task_without_value": {"type": "string", "minLength": 1},
+          "fact": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["source_entity_id", "field", "value"],
+            "properties": {
+              "source_entity_id": {"type": "string", "pattern": "^E[1-8]$"},
+              "field": {"type": "string", "minLength": 1},
+              "value": {"type": "string", "minLength": 1, "maxLength": 256}
+            }
+          },
+          "variants": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["low", "high"],
+            "properties": {
+              "low": {"$ref": "#/$defs/variant"},
+              "high": {"$ref": "#/$defs/variant"}
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "variant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role_ambiguity", "screenshot_path", "screenshot_sha256", "ui_tree_path", "ui_tree_sha256", "source_entity_id", "destination_entity_id", "destination_target_id", "destination_widget_role", "candidate_targets"],
+      "properties": {
+        "role_ambiguity": {"enum": ["low", "high"]},
+        "screenshot_path": {"type": "string", "minLength": 1},
+        "screenshot_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "ui_tree_path": {"type": "string", "minLength": 1},
+        "ui_tree_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "source_entity_id": {"type": "string", "pattern": "^E[1-8]$"},
+        "destination_entity_id": {"type": "string", "pattern": "^E[1-8]$"},
+        "source_target_id": {"type": ["string", "null"], "pattern": "^[A-H]$"},
+        "destination_target_id": {"type": "string", "pattern": "^[A-H]$"},
+        "destination_widget_role": {"type": "string", "minLength": 1},
+        "candidate_targets": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 8,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["target_id", "selector", "entity_id", "widget_role", "bounds", "ambiguity_group"],
+            "properties": {
+              "target_id": {"type": "string", "pattern": "^[A-H]$"},
+              "selector": {"type": "string", "minLength": 1},
+              "entity_id": {"type": "string", "pattern": "^E[1-8]$"},
+              "widget_role": {"type": "string", "minLength": 1},
+              "bounds": {"type": "array", "prefixItems": [{"type": "integer"}, {"type": "integer"}, {"type": "integer"}, {"type": "integer"}], "items": false, "minItems": 4, "maxItems": 4},
+              "ambiguity_group": {"type": "string", "minLength": 1}
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "schema_version": "role_binding_timing.lock.v0_1",
+  "study_id": "role_binding_timing_stage1_v0_1",
+  "frozen_at": "2026-08-04T20:00:00+08:00",
+  "frozen_before_generation_calls": true,
+  "frozen_source_parent_commit": "9641177544929bf6613e2f1bdbbfc82b0f497608",
+  "generation_calls_before_freeze": 0,
+  "generation_eligible": false,
+  "novelty_status": "UNRESOLVED",
+  "files": [
+    {"path": "04_protocols/role_binding_timing/stage1_diagnostic_v0_1.md", "sha256": "13dcaf96079cfeb65f7eaf3a48e8e18dd1b99a65303dbde576301b6ede8992c6"},
+    {"path": "05_project/contracts/role_binding_timing_stage1.v0_1.json", "sha256": "95a59c44bdbb72577c6cc6cd7437f586dcc0225d3bd68409a110e418b05b6f45"},
+    {"path": "05_project/schemas/role_binding_timing_grounding.v0_1.schema.json", "sha256": "ba54c347a19cc527b50eb48cedd53073ef32e0b05f59a092ff3138160dff6b4a"},
+    {"path": "05_project/schemas/role_binding_timing_action.v0_1.schema.json", "sha256": "cad70fffe76cc237f30a97a921d254dfb7ebcb5af72ba20a69cf165f228ff29b"},
+    {"path": "05_project/schemas/role_binding_timing_snapshot.v0_1.schema.json", "sha256": "d842c5844a442a0ceda2f12808c769977559c44a5da1f7812a6e69b5d25a3bb4"},
+    {"path": "05_project/configs/role_binding_timing/stage1_v0_1.json", "sha256": "52362e67e5a68c311e3d9f648e5f972ff79866bcef631d1636223cfdcb2b8777"},
+    {"path": "05_project/configs/role_binding_timing/stage1_snapshot_manifest.v0_1.json", "sha256": "22593ad274eed250d766bdb417953339710015a26b6da92f5157f5079843cf4b"},
+    {"path": "05_project/src/raven_m/role_binding_timing/__init__.py", "sha256": "0f66be1c44d865844824d8bfb809d3c0ae81a61ad3445365b58a0f20fca9088f"},
+    {"path": "05_project/src/raven_m/role_binding_timing/contract.py", "sha256": "3df934fb792086f4d1dc3c0387214d74c8d9ea07aa9c92ef6ac025012c753c2d"},
+    {"path": "05_project/src/raven_m/role_binding_timing/token_audit.py", "sha256": "dab7ba6efe73cfa3b162df539e4f7aff9116c25fdd3d0104edf0f380e879a06e"},
+    {"path": "05_project/src/raven_m/role_binding_timing/prompts.py", "sha256": "fc7966b4447b21807eedf027ca3eb64c7f1986cf94fabc7997958b59b98623b6"},
+    {"path": "05_project/src/raven_m/role_binding_timing/parser.py", "sha256": "39b591cf069222a8ffeb3282b429bd5a443e75faadf3b12664768415b4146bd7"},
+    {"path": "05_project/src/raven_m/role_binding_timing/snapshots.py", "sha256": "15064a0b132ccc0d4ca8d22eff8f2ddb5ce28cf516567a726643e689d3fc5741"},
+    {"path": "05_project/src/raven_m/role_binding_timing/design.py", "sha256": "f710b4de8fccdbb198f5a9d461104ddbcc5016e06ce78e58276f98c10ab40d5a"},
+    {"path": "05_project/src/raven_m/role_binding_timing/metrics.py", "sha256": "68f3496126261159679852f550caf2dd51333db8ce949ca788430300509647b6"},
+    {"path": "05_project/scripts/preflight_role_binding_timing_stage1.py", "sha256": "f8ba26dc74e143b71d66cabba93f14694e913fb5ace29f0f02d340c702e6bacf"},
+    {"path": "05_project/tests/role_binding_timing/test_contract_and_prompts.py", "sha256": "3c4fd022eb4462cd8df8bce3fdb0b77426af92c3411e718e09afe5d4e204472e"},
+    {"path": "05_project/tests/role_binding_timing/test_parser_and_metrics.py", "sha256": "fe7ebf4e8d103d505db281ae6ce5785734e5a1ae3c39b3e673a1dcaaa76b29f3"},
+    {"path": "05_project/tests/role_binding_timing/test_snapshot_and_blinding.py", "sha256": "b542012c0889bb015241f07a3394ab2cc3cada6a00ad68a29c79b245f99d21b0"}
+  ],
+  "stop_rules": {
+    "held_out_base_families_required": 8,
+    "snapshot_oracle_qualification_min": 0.95,
+    "empty_or_underqualified_manifest": "NOT_ELIGIBLE_FOR_GENERATION",
+    "pilot_launch_in_phase_b": false,
+    "selective_retry": false
+  }
+}

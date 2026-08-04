@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["phase", "grounded_destination_target_id", "recalled_value", "action", "confidence"],
+  "properties": {
+    "phase": {"const": "action"},
+    "grounded_destination_target_id": {"type": "string", "pattern": "^[A-H]$"},
+    "recalled_value": {"type": "string", "minLength": 1, "maxLength": 256},
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "target_id", "text"],
+      "properties": {
+        "type": {"enum": ["tap", "type_text"]},
+        "target_id": {"type": "string", "pattern": "^[A-H]$"},
+        "text": {"type": ["string", "null"], "maxLength": 256}
+      },
+      "allOf": [
+        {"if": {"properties": {"type": {"const": "tap"}}}, "then": {"properties": {"text": {"type": "null"}}}},
+        {"if": {"properties": {"type": {"const": "type_text"}}}, "then": {"properties": {"text": {"type": "string", "minLength": 1}}}}
+      ]
+    },
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+  }
+}

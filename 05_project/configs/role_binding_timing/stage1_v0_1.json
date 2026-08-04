@@ -1,0 +1,38 @@
+{
+  "schema_version": "role_binding_timing.config.v0_1",
+  "study_id": "role_binding_timing_stage1_v0_1",
+  "generation_eligible": false,
+  "qualification_pilot": {
+    "base_families": 8,
+    "cells_per_base_family": 4,
+    "calls_per_cell": 2,
+    "planned_cells": 32,
+    "planned_calls": 64,
+    "selective_retry": false,
+    "unblind_after_all_cells": true
+  },
+  "stage1_screening": {
+    "base_families": 48,
+    "cells_per_base_family": 4,
+    "planned_cells": 192,
+    "enabled_only_after_qualified_pilot": true
+  },
+  "runtime": {
+    "model_health_url": "http://127.0.0.1:18000/health",
+    "adb_server_port": 5038,
+    "device_serial": "emulator-5554",
+    "fallback_to_5037": false,
+    "adb_binary": "06_local_runtime/android/sdk/platform-tools/adb.exe",
+    "adb_binary_sha256": "957e46b8615f7af5b7292a2ddabe98d2e61940c3fb2b0545756507f080613e71"
+  },
+  "tokenizer": {
+    "model": "Qwen/Qwen3-VL-32B-Instruct",
+    "revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+    "trust_remote_code": false,
+    "local_files_only": true,
+    "early_late_text_token_tolerance": 0
+  },
+  "snapshot_manifest": "05_project/configs/role_binding_timing/stage1_snapshot_manifest.v0_1.json",
+  "contract": "05_project/contracts/role_binding_timing_stage1.v0_1.json",
+  "generation_calls_authorized": 0
+}
