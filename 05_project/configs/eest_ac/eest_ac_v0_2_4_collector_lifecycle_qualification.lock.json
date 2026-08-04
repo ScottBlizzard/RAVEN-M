@@ -1,0 +1,100 @@
+{
+  "schema_version": "eest_ac_collector_lifecycle_qualification_lock.v0_2_4",
+  "status": "preregistered",
+  "protocol_freeze_tag": "eest-ac-v0.2.4-collector-lifecycle-protocol-freeze-20260804",
+  "qualification_only": true,
+  "development_contaminated": true,
+  "held_out_eligible": false,
+  "generation_calls": 0,
+  "held_out_traces": 0,
+  "oracle_efficacy_evaluations": 0,
+  "readiness": {
+    "action_class": "scroll",
+    "max_attempts": 5,
+    "delay_seconds": 1.0,
+    "stable_consecutive_observations": 2,
+    "required_nonempty_fields": ["a11y_sha256", "page_content_sha256", "package_names", "activity", "route_signature"],
+    "fail_before_action": true
+  },
+  "sampling": {"post_observations": 4, "delay_seconds": 1.0},
+  "cleanup": {
+    "reverse_listener": "tcp:18765",
+    "success_statuses": ["removed", "already_absent", "already_absent_after_race"],
+    "other_errors_fail_closed": true,
+    "primary_error_precedence": true,
+    "owned_helper_pids": []
+  },
+  "completion": {
+    "schema": "05_project/schemas/eest_ac_collector_completion.v0_2_4.schema.json",
+    "file_name": "collection_complete.json",
+    "atomic_policy": "hardlink_publish_no_overwrite",
+    "required_records_per_attempted_run": 1
+  },
+  "runtime": {
+    "adb_server_port": 5038,
+    "device_serial": "emulator-5554",
+    "adb_binary_sha256": "957e46b8615f7af5b7292a2ddabe98d2e61940c3fb2b0545756507f080613e71",
+    "fallback_to_5037": false,
+    "bootstrap_start_attempts_if_absent": 1,
+    "bootstrap_timeout_seconds": 12,
+    "kill_or_restart_processes": false,
+    "abnormal_unowned_pid_to_record": 17716
+  },
+  "scene": {
+    "scene_id": "DEV-SETTINGS-SCROLL-LIFECYCLE",
+    "application": "Settings",
+    "test_action": {"type": "swipe", "x": 0.5, "y": 0.8, "x2": 0.5, "y2": 0.2, "duration_ms": 500},
+    "expected_action_execution_count": 1,
+    "reversible": true
+  },
+  "batch": {
+    "run_order": ["CLQ-RUN-01", "CLQ-RUN-02"],
+    "run_roots": [
+      "runs/eest_ac_v0_2_4_collector_lifecycle_qualification_20260804/01_CLQ-RUN-01",
+      "runs/eest_ac_v0_2_4_collector_lifecycle_qualification_20260804/02_CLQ-RUN-02"
+    ],
+    "fresh_roots_required": true,
+    "stop_on_first_failure": true,
+    "stop_after_runs": 2,
+    "patch_or_retry_after_start": false
+  },
+  "offline_gates": {
+    "focused": {
+      "passed": 131,
+      "failed": 0,
+      "stdout_sha256": "a5bc2277eae64339118c9e67b8e82d03a49a34df838cf9fb9fb11964c720808a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "full": {
+      "collected": 1134,
+      "passed": 1133,
+      "failed": 1,
+      "expected_only_failure": "tests/scripts/test_protocol_v2_2_r78_h17_candidate.py::test_r78_candidate_static_manifest_validation_passes",
+      "stdout_sha256": "11dd407cc97e5cf21441462c4a05dc20c92c3af93478094605650fdf49a0de07",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "frozen_artifacts": {
+    "04_protocols/eest_ac_v0_2_4_collector_lifecycle_qualification.md": "1adb5d916bb00bd0d20b4a6cb911414ec4298c7895a5067e0780429e93980467",
+    "05_project/contracts/eest_ac_collector_lifecycle.v0_2_4.json": "de9a8c3d78da7a3e04a5ddc7ac7efc72cd45501498af4a241264296ced75a189",
+    "05_project/schemas/eest_ac_collector_completion.v0_2_4.schema.json": "8e6cff5574ed2bae60a9e2531e975a0c9b26e59d7e34cb3ff9d101c044515b8d",
+    "05_project/configs/eest_ac/eest_ac_v0_2_4_collector_lifecycle_qualification.json": "d50f2ca92a902e63fa4060426a3175022a62ca15aaeceaa3de7137b5245344fe",
+    "05_project/src/raven_m/eest_ac/collector_lifecycle_v0_2_4.py": "f009f0f5c09fe9edc1ed34e33e607fd6dbba8759259dde3bd11d2499c038401a",
+    "05_project/scripts/generate_eest_ac_collector_lifecycle_v0_2_4.py": "db6c1e4f4b805ed78de06cd646ca5d0368344d78aa8e46ddbc2d11ee1f9a07b8",
+    "05_project/scripts/run_eest_ac_v0_2_4_collector_qualification.py": "148fed5d774f20c11ccf42fdae771902699457fe47cbc9fc49107cfdd8fd43a7",
+    "05_project/tests/eest_ac/test_v0_2_4_collector_lifecycle.py": "eed1fbf91ee5002ba6108a9ba14b41b709a27e91736f98fdf387224a22ecabfa",
+    "reports/eest_ac/claim_evidence_v0_2_4_preregistered.md": "8cb295e3bc530d203981b29628ecfba4f496f8f4cb20550974766d41419997dd",
+    "runs/eest_ac_v0_2_4_focused_gate.stdout.log": "a5bc2277eae64339118c9e67b8e82d03a49a34df838cf9fb9fb11964c720808a",
+    "runs/eest_ac_v0_2_4_focused_gate.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "runs/eest_ac_v0_2_4_full_gate_rerun.stdout.log": "11dd407cc97e5cf21441462c4a05dc20c92c3af93478094605650fdf49a0de07",
+    "runs/eest_ac_v0_2_4_full_gate_rerun.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "05_project/contracts/eest_ac_outcome_oracle.v0_2_3.json": "602c21188467700dcd6fcf1da3e1c8e21d956158105fa2ea2b36199f90487562",
+    "05_project/schemas/eest_ac_outcome_trace.v0_2_3.schema.json": "6c89fb4230702dc2ddef9d93865c5ab4968b78035f517e60496b7480990ae0f3",
+    "05_project/src/raven_m/eest_ac/outcome_oracle_v0_2_3.py": "096e15d7047fba5331e050403aee650ea2d8f9551f709ea050a920a9a6e0d7b0",
+    "05_project/configs/eest_ac/eest_ac_v0_2_3_outcome_oracle_trace.lock.json": "73f6a2d68f4f8e555bc277495bbb80f955a85bd0da63c4e3cabb395b756c6ecd",
+    "05_project/src/raven_m/controller/episode_controller.py": "fc0e82e0fde90119365d4f685f080eb4519bf2f602e4bda58de5d4809a40fe33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "ff89d6b70be4b4738646d262beb67d7b7e932e9eb95956d940b1c5000a999d10",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5bb1f1e3de673a1072cfee62938b761a62fd69c187d5eadf54bc46b115a3fd0a"
+  },
+  "stop_boundary": "Regardless of PASS or FAIL, stop after at most two contaminated Settings runs; never collect held-out traces or evaluate oracle efficacy in v0.2.4."
+}

@@ -1,0 +1,140 @@
+{
+  "schema_version": "eest_ac_collector_lifecycle.v0_2_4",
+  "qualification_only": true,
+  "generation_calls": 0,
+  "held_out_traces": 0,
+  "oracle_efficacy_evaluations": 0,
+  "readiness": {
+    "action_class": "scroll",
+    "max_attempts": 5,
+    "delay_seconds": 1.0,
+    "stable_consecutive_observations": 2,
+    "required_nonempty_fields": [
+      "a11y_sha256",
+      "page_content_sha256",
+      "package_names",
+      "activity",
+      "route_signature"
+    ],
+    "stable_fields": [
+      "a11y_sha256",
+      "page_content_sha256",
+      "package_names",
+      "activity",
+      "route_signature"
+    ],
+    "failure_behavior": "fail_before_action"
+  },
+  "cleanup": {
+    "adb_server_port": 5038,
+    "device_serial": "emulator-5554",
+    "reverse_listener": "tcp:18765",
+    "allowed_success_statuses": ["removed", "already_absent", "already_absent_after_race"],
+    "listener_not_found_behavior": "verify_absent_then_already_absent_after_race",
+    "other_error_behavior": "fail_closed",
+    "primary_error_precedence": true,
+    "fallback_to_5037": false
+  },
+  "completion": {
+    "file_name": "collection_complete.json",
+    "write_policy": "atomic_hardlink_publish_exactly_once",
+    "duplicate_behavior": "reject",
+    "required_terminal_records": 1
+  },
+  "completion_schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://eaglelab.example/eest-ac/collector-completion.v0_2_4.schema.json",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "schema_version",
+      "run_id",
+      "status",
+      "started_at_utc",
+      "completed_at_utc",
+      "generation_calls",
+      "held_out_traces",
+      "oracle_efficacy_evaluations",
+      "readiness",
+      "action_executed",
+      "action_execution_count",
+      "post_observation_count",
+      "collection_record_valid",
+      "primary_error",
+      "cleanup",
+      "isolation",
+      "artifact_hashes",
+      "terminal_record_ordinal"
+    ],
+    "properties": {
+      "schema_version": {"const": "eest_ac_collector_completion.v0_2_4"},
+      "run_id": {"type": "string", "pattern": "^[A-Za-z0-9_.-]{1,96}$"},
+      "status": {"enum": ["pass", "fail"]},
+      "started_at_utc": {"type": "string", "minLength": 1},
+      "completed_at_utc": {"type": "string", "minLength": 1},
+      "generation_calls": {"const": 0},
+      "held_out_traces": {"const": 0},
+      "oracle_efficacy_evaluations": {"const": 0},
+      "readiness": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["qualified", "attempt_count", "max_attempts", "delay_seconds", "stable_consecutive_required", "attempts"],
+        "properties": {
+          "qualified": {"type": "boolean"},
+          "attempt_count": {"type": "integer", "minimum": 0, "maximum": 5},
+          "max_attempts": {"const": 5},
+          "delay_seconds": {"const": 1.0},
+          "stable_consecutive_required": {"const": 2},
+          "attempts": {"type": "array", "maxItems": 5, "items": {"type": "object"}}
+        }
+      },
+      "action_executed": {"type": "boolean"},
+      "action_execution_count": {"type": "integer", "minimum": 0, "maximum": 1},
+      "post_observation_count": {"type": "integer", "minimum": 0, "maximum": 4},
+      "collection_record_valid": {"type": "boolean"},
+      "primary_error": {
+        "oneOf": [
+          {"type": "null"},
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["code", "message", "layer"],
+            "properties": {
+              "code": {"type": "string", "minLength": 1},
+              "message": {"type": "string"},
+              "layer": {"type": "string", "minLength": 1}
+            }
+          }
+        ]
+      },
+      "cleanup": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["reverse", "reset", "environment_close", "owned_helpers", "secondary_errors", "residue_free"],
+        "properties": {
+          "reverse": {"type": "object"},
+          "reset": {"type": "object"},
+          "environment_close": {"type": "object"},
+          "owned_helpers": {"type": "object"},
+          "secondary_errors": {"type": "array", "items": {"type": "object"}},
+          "residue_free": {"type": "boolean"}
+        }
+      },
+      "isolation": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["adb_server_port", "device_serial", "client_binary_sha256", "server_binary_sha256", "fallback_to_5037", "passed"],
+        "properties": {
+          "adb_server_port": {"const": 5038},
+          "device_serial": {"const": "emulator-5554"},
+          "client_binary_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+          "server_binary_sha256": {"oneOf": [{"type": "null"}, {"type": "string", "pattern": "^[a-f0-9]{64}$"}]},
+          "fallback_to_5037": {"const": false},
+          "passed": {"type": "boolean"}
+        }
+      },
+      "artifact_hashes": {"type": "array", "items": {"type": "object"}},
+      "terminal_record_ordinal": {"const": 1}
+    }
+  }
+}

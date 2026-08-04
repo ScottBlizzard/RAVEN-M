@@ -1,0 +1,226 @@
+{
+  "$id": "https://eaglelab.example/eest-ac/collector-completion.v0_2_4.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "action_executed": {
+      "type": "boolean"
+    },
+    "action_execution_count": {
+      "maximum": 1,
+      "minimum": 0,
+      "type": "integer"
+    },
+    "artifact_hashes": {
+      "items": {
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "cleanup": {
+      "additionalProperties": false,
+      "properties": {
+        "environment_close": {
+          "type": "object"
+        },
+        "owned_helpers": {
+          "type": "object"
+        },
+        "reset": {
+          "type": "object"
+        },
+        "residue_free": {
+          "type": "boolean"
+        },
+        "reverse": {
+          "type": "object"
+        },
+        "secondary_errors": {
+          "items": {
+            "type": "object"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "reverse",
+        "reset",
+        "environment_close",
+        "owned_helpers",
+        "secondary_errors",
+        "residue_free"
+      ],
+      "type": "object"
+    },
+    "collection_record_valid": {
+      "type": "boolean"
+    },
+    "completed_at_utc": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "generation_calls": {
+      "const": 0
+    },
+    "held_out_traces": {
+      "const": 0
+    },
+    "isolation": {
+      "additionalProperties": false,
+      "properties": {
+        "adb_server_port": {
+          "const": 5038
+        },
+        "client_binary_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "type": "string"
+        },
+        "device_serial": {
+          "const": "emulator-5554"
+        },
+        "fallback_to_5037": {
+          "const": false
+        },
+        "passed": {
+          "type": "boolean"
+        },
+        "server_binary_sha256": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "required": [
+        "adb_server_port",
+        "device_serial",
+        "client_binary_sha256",
+        "server_binary_sha256",
+        "fallback_to_5037",
+        "passed"
+      ],
+      "type": "object"
+    },
+    "oracle_efficacy_evaluations": {
+      "const": 0
+    },
+    "post_observation_count": {
+      "maximum": 4,
+      "minimum": 0,
+      "type": "integer"
+    },
+    "primary_error": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "code": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "layer": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "message": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "code",
+            "message",
+            "layer"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "readiness": {
+      "additionalProperties": false,
+      "properties": {
+        "attempt_count": {
+          "maximum": 5,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "attempts": {
+          "items": {
+            "type": "object"
+          },
+          "maxItems": 5,
+          "type": "array"
+        },
+        "delay_seconds": {
+          "const": 1.0
+        },
+        "max_attempts": {
+          "const": 5
+        },
+        "qualified": {
+          "type": "boolean"
+        },
+        "stable_consecutive_required": {
+          "const": 2
+        }
+      },
+      "required": [
+        "qualified",
+        "attempt_count",
+        "max_attempts",
+        "delay_seconds",
+        "stable_consecutive_required",
+        "attempts"
+      ],
+      "type": "object"
+    },
+    "run_id": {
+      "pattern": "^[A-Za-z0-9_.-]{1,96}$",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "eest_ac_collector_completion.v0_2_4"
+    },
+    "started_at_utc": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "pass",
+        "fail"
+      ]
+    },
+    "terminal_record_ordinal": {
+      "const": 1
+    }
+  },
+  "required": [
+    "schema_version",
+    "run_id",
+    "status",
+    "started_at_utc",
+    "completed_at_utc",
+    "generation_calls",
+    "held_out_traces",
+    "oracle_efficacy_evaluations",
+    "readiness",
+    "action_executed",
+    "action_execution_count",
+    "post_observation_count",
+    "collection_record_valid",
+    "primary_error",
+    "cleanup",
+    "isolation",
+    "artifact_hashes",
+    "terminal_record_ordinal"
+  ],
+  "type": "object"
+}
