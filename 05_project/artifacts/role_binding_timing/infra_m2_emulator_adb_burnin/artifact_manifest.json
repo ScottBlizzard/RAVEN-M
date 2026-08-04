@@ -1,0 +1,25 @@
+{
+  "artifacts": [
+    {
+      "bytes": 14,
+      "path": "05_project/artifacts/role_binding_timing/infra_m2_emulator_adb_burnin/.gitattributes",
+      "sha256": "412eaf7adc4a40324c6e36893a0822c42b2bf14a874b761b2203242ed278d307"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m2_emulator_adb_burnin/legacy_cleanup/emulator_clean_stop_via_5037.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 37,
+      "path": "05_project/artifacts/role_binding_timing/infra_m2_emulator_adb_burnin/legacy_cleanup/emulator_clean_stop_via_5037.stdout.bin",
+      "sha256": "2f2464ff20db7f0caaf9d7ea8b3e7d1356fb4e22dc58d0e17a15faf96bf41822"
+    },
+    {
+      "bytes": 11078,
+      "path": "05_project/artifacts/role_binding_timing/infra_m2_emulator_adb_burnin/maintenance_completion.json",
+      "sha256": "356a595f601eed238abe9b3d84b04b98b9282d43ba96dd6f9ac6d67ef5a1347c"
+    }
+  ],
+  "schema_version": "role_binding_timing.infra_m2.manifest.v1"
+}
