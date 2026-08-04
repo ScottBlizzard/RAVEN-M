@@ -1,0 +1,211 @@
+{
+  "after": {
+    "adb_pid": 32988,
+    "adb_process": {
+      "CommandLine": "adb -L tcp:5038 fork-server server --reply-fd 660",
+      "CreationDate": "/Date(1785869838823)/",
+      "ExecutablePath": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+      "Name": "adb.exe",
+      "ParentProcessId": 35532,
+      "ProcessId": 32988
+    },
+    "captured_at": "2026-08-04T18:57:57.811704+00:00",
+    "excluded_runtime_pids": [
+      11316,
+      17716
+    ],
+    "excluded_runtime_processes": {
+      "11316": {
+        "CommandLine": null,
+        "CreationDate": "/Date(1785848917050)/",
+        "ExecutablePath": null,
+        "Name": "adb.exe",
+        "ParentProcessId": 34868,
+        "ProcessId": 11316
+      },
+      "17716": {
+        "CommandLine": null,
+        "CreationDate": "/Date(1785810415620)/",
+        "ExecutablePath": null,
+        "Name": "adb.exe",
+        "ParentProcessId": 2244,
+        "ProcessId": 17716
+      }
+    },
+    "launcher_pid": 38304,
+    "launcher_process": {
+      "CommandLine": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\emulator\\emulator.exe -avd AndroidWorldAvd -port 5554 -no-snapshot -no-boot-anim -no-audio -grpc 8554 -no-window",
+      "CreationDate": "/Date(1785869840775)/",
+      "ExecutablePath": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\emulator\\emulator.exe",
+      "Name": "emulator.exe",
+      "ParentProcessId": 35396,
+      "ProcessId": 38304
+    },
+    "listeners": {
+      "5037": [],
+      "5038": [
+        32988
+      ],
+      "5554": [
+        6648
+      ],
+      "5555": [
+        6648
+      ],
+      "8554": [
+        6648
+      ]
+    },
+    "qemu_pid": 6648,
+    "qemu_process": {
+      "CommandLine": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\emulator\\qemu\\windows-x86_64\\qemu-system-x86_64-headless.exe -avd AndroidWorldAvd -port 5554 -no-snapshot -no-boot-anim -no-audio -grpc 8554 -no-window",
+      "CreationDate": "/Date(1785869841005)/",
+      "ExecutablePath": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\emulator\\qemu\\windows-x86_64\\qemu-system-x86_64-headless.exe",
+      "Name": "qemu-system-x86_64-headless.exe",
+      "ParentProcessId": 38304,
+      "ProcessId": 6648
+    }
+  },
+  "before": {
+    "adb_pid": 32988,
+    "adb_process": {
+      "CommandLine": "adb -L tcp:5038 fork-server server --reply-fd 660",
+      "CreationDate": "/Date(1785869838823)/",
+      "ExecutablePath": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+      "Name": "adb.exe",
+      "ParentProcessId": 35532,
+      "ProcessId": 32988
+    },
+    "captured_at": "2026-08-04T18:57:54.927448+00:00",
+    "excluded_runtime_pids": [
+      11316,
+      17716
+    ],
+    "excluded_runtime_processes": {
+      "11316": {
+        "CommandLine": null,
+        "CreationDate": "/Date(1785848917050)/",
+        "ExecutablePath": null,
+        "Name": "adb.exe",
+        "ParentProcessId": 34868,
+        "ProcessId": 11316
+      },
+      "17716": {
+        "CommandLine": null,
+        "CreationDate": "/Date(1785810415620)/",
+        "ExecutablePath": null,
+        "Name": "adb.exe",
+        "ParentProcessId": 2244,
+        "ProcessId": 17716
+      }
+    },
+    "launcher_pid": 38304,
+    "launcher_process": {
+      "CommandLine": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\emulator\\emulator.exe -avd AndroidWorldAvd -port 5554 -no-snapshot -no-boot-anim -no-audio -grpc 8554 -no-window",
+      "CreationDate": "/Date(1785869840775)/",
+      "ExecutablePath": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\emulator\\emulator.exe",
+      "Name": "emulator.exe",
+      "ParentProcessId": 35396,
+      "ProcessId": 38304
+    },
+    "listeners": {
+      "5037": [],
+      "5038": [
+        32988
+      ],
+      "5554": [
+        6648
+      ],
+      "5555": [
+        6648
+      ],
+      "8554": [
+        6648
+      ]
+    },
+    "qemu_pid": 6648,
+    "qemu_process": {
+      "CommandLine": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\emulator\\qemu\\windows-x86_64\\qemu-system-x86_64-headless.exe -avd AndroidWorldAvd -port 5554 -no-snapshot -no-boot-anim -no-audio -grpc 8554 -no-window",
+      "CreationDate": "/Date(1785869841005)/",
+      "ExecutablePath": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\emulator\\qemu\\windows-x86_64\\qemu-system-x86_64-headless.exe",
+      "Name": "qemu-system-x86_64-headless.exe",
+      "ParentProcessId": 38304,
+      "ProcessId": 6648
+    }
+  },
+  "index": 4,
+  "issues": [],
+  "passed": false,
+  "records": {
+    "boot_completed": {
+      "command": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "-P",
+        "5038",
+        "-s",
+        "emulator-5554",
+        "shell",
+        "getprop",
+        "sys.boot_completed"
+      ],
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_04/boot_completed.stderr.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 2,
+        "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_04/boot_completed.stdout.bin",
+        "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6"
+      },
+      "timed_out": false,
+      "wall_time_seconds": 0.34399999998277053
+    },
+    "devices": {
+      "command": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "-P",
+        "5038",
+        "devices",
+        "-l"
+      ],
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_04/devices.stderr.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 142,
+        "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_04/devices.stdout.bin",
+        "sha256": "fb191485151938516dc2e4cc4024d92caeff2c0ca7fdeaa809742ed2dc0336a1"
+      },
+      "timed_out": false,
+      "wall_time_seconds": 0.14000000001396984
+    },
+    "get_state": {
+      "command": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "-P",
+        "5038",
+        "-s",
+        "emulator-5554",
+        "get-state"
+      ],
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_04/get_state.stderr.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 8,
+        "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_04/get_state.stdout.bin",
+        "sha256": "5a49c5eb1807bf1dd12637504e6a6e49f1c9c4bce601ae34c9984843074b129c"
+      },
+      "timed_out": false,
+      "wall_time_seconds": 0.10899999999674037
+    }
+  }
+}

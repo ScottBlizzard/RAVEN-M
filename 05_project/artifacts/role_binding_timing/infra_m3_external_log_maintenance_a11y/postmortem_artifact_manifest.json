@@ -1,0 +1,356 @@
+{
+  "artifacts": [
+    {
+      "bytes": 16,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/.gitattributes",
+      "sha256": "5f098188d595641c34c309079424f0ba6c0525882b4a9337c4790d9d4f242eac"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/finalized_live_logs_postmortem/emulator.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 10029,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/finalized_live_logs_postmortem/emulator.stdout.bin",
+      "sha256": "05efdfe4c8d48e79cead9c3d72cccb5bc3a0593a543f5e2356c19ca286859847"
+    },
+    {
+      "bytes": 79,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/launch/adb_5038_start.stderr.bin",
+      "sha256": "3d73cb0410f7e3407acfff4b735cec718d7c67f41b10b2374a7dd175e8b618d8"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/launch/adb_5038_start.stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 5652,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/postmortem_result.json",
+      "sha256": "345fc0fd3ba9533314a4aaf27f63c0af43cd8f175dec321f134a62412949346d"
+    },
+    {
+      "bytes": 7486,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_01/attempt.json",
+      "sha256": "a1c73e94857da5f3010a16ea103e0febc651cfafc4e9467a0037c3c2bff7c6ba"
+    },
+    {
+      "bytes": 25,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_01/boot_completed.stderr.bin",
+      "sha256": "a788f5abadbd52445df2e6927ca7a32a1bde55d2873bf644420d808c767aa97e"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_01/boot_completed.stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_01/devices.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 75,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_01/devices.stdout.bin",
+      "sha256": "ef46b6a8b96dbb8266243cce30025e2c4a030f951ee8508460ea25bafc84f0ff"
+    },
+    {
+      "bytes": 23,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_01/get_state.stderr.bin",
+      "sha256": "faba18991a66c091c6cd8e5f54e4920ae9e6bd588ea0ffdbcce2a18813f9ab31"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_01/get_state.stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 7486,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_02/attempt.json",
+      "sha256": "e37fc6949dbb6d1a32a9dd1051bd92168dee0727d8ac9f014d3ec1f110efd644"
+    },
+    {
+      "bytes": 25,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_02/boot_completed.stderr.bin",
+      "sha256": "a788f5abadbd52445df2e6927ca7a32a1bde55d2873bf644420d808c767aa97e"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_02/boot_completed.stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_02/devices.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 75,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_02/devices.stdout.bin",
+      "sha256": "ef46b6a8b96dbb8266243cce30025e2c4a030f951ee8508460ea25bafc84f0ff"
+    },
+    {
+      "bytes": 23,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_02/get_state.stderr.bin",
+      "sha256": "faba18991a66c091c6cd8e5f54e4920ae9e6bd588ea0ffdbcce2a18813f9ab31"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_02/get_state.stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 7486,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_03/attempt.json",
+      "sha256": "5ce62de7653b9dc51c9f3c72f12d9f3a663f8173fb9ce1c5dbab4883a9f77da5"
+    },
+    {
+      "bytes": 25,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_03/boot_completed.stderr.bin",
+      "sha256": "a788f5abadbd52445df2e6927ca7a32a1bde55d2873bf644420d808c767aa97e"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_03/boot_completed.stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_03/devices.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 75,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_03/devices.stdout.bin",
+      "sha256": "ef46b6a8b96dbb8266243cce30025e2c4a030f951ee8508460ea25bafc84f0ff"
+    },
+    {
+      "bytes": 23,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_03/get_state.stderr.bin",
+      "sha256": "faba18991a66c091c6cd8e5f54e4920ae9e6bd588ea0ffdbcce2a18813f9ab31"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_03/get_state.stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 7485,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_04/attempt.json",
+      "sha256": "ede7f222250aaea4dd8e71e31ec1f818a52a844a57340cd2479e933bfce6e9a7"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_04/boot_completed.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 2,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_04/boot_completed.stdout.bin",
+      "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_04/devices.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 142,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_04/devices.stdout.bin",
+      "sha256": "fb191485151938516dc2e4cc4024d92caeff2c0ca7fdeaa809742ed2dc0336a1"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_04/get_state.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 8,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_04/get_state.stdout.bin",
+      "sha256": "5a49c5eb1807bf1dd12637504e6a6e49f1c9c4bce601ae34c9984843074b129c"
+    },
+    {
+      "bytes": 7484,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_05/attempt.json",
+      "sha256": "4ea21bf7da2259198bead88122e7b8625b14a9f857dac1bd47411c5c98d48745"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_05/boot_completed.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 2,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_05/boot_completed.stdout.bin",
+      "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_05/devices.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 142,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_05/devices.stdout.bin",
+      "sha256": "fb191485151938516dc2e4cc4024d92caeff2c0ca7fdeaa809742ed2dc0336a1"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_05/get_state.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 8,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_05/get_state.stdout.bin",
+      "sha256": "5a49c5eb1807bf1dd12637504e6a6e49f1c9c4bce601ae34c9984843074b129c"
+    },
+    {
+      "bytes": 7485,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_06/attempt.json",
+      "sha256": "fa3d4fa9e9475e4742cd89be076e9fa598853ea94486e644e41e75e53da51c76"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_06/boot_completed.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 2,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_06/boot_completed.stdout.bin",
+      "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_06/devices.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 142,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_06/devices.stdout.bin",
+      "sha256": "fb191485151938516dc2e4cc4024d92caeff2c0ca7fdeaa809742ed2dc0336a1"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_06/get_state.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 8,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_06/get_state.stdout.bin",
+      "sha256": "5a49c5eb1807bf1dd12637504e6a6e49f1c9c4bce601ae34c9984843074b129c"
+    },
+    {
+      "bytes": 7471,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_07/attempt.json",
+      "sha256": "5c2011312ee95d42de7ca76da50e52adcd5b186f87c68779c971e2c6a1b79d59"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_07/boot_completed.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 2,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_07/boot_completed.stdout.bin",
+      "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_07/devices.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 142,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_07/devices.stdout.bin",
+      "sha256": "fb191485151938516dc2e4cc4024d92caeff2c0ca7fdeaa809742ed2dc0336a1"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_07/get_state.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 8,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_07/get_state.stdout.bin",
+      "sha256": "5a49c5eb1807bf1dd12637504e6a6e49f1c9c4bce601ae34c9984843074b129c"
+    },
+    {
+      "bytes": 7483,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_08/attempt.json",
+      "sha256": "96f3d5a8f688138e22a5e5cf3b16aea1fd27392209d7c07e02f517456cb11cac"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_08/boot_completed.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_08/boot_completed.stdout.bin",
+      "sha256": "f1b2f662800122bed0ff255693df89c4487fbdcf453d3524a42d4ec20c3d9c04"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_08/devices.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 142,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_08/devices.stdout.bin",
+      "sha256": "fb191485151938516dc2e4cc4024d92caeff2c0ca7fdeaa809742ed2dc0336a1"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_08/get_state.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 8,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/readiness/boot/attempt_08/get_state.stdout.bin",
+      "sha256": "5a49c5eb1807bf1dd12637504e6a6e49f1c9c4bce601ae34c9984843074b129c"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/residual_cleanup/adb_5038_clean_stop.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/residual_cleanup/adb_5038_clean_stop.stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 528,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/runner_terminal_stderr.txt",
+      "sha256": "9af72ee17d60e3ba1dcc2b36aa7a24783319df40813d068be0fd4998e10d62ac"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/terminal_cleanup/adb_5038_clean_stop.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/terminal_cleanup/adb_5038_clean_stop.stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/terminal_cleanup/emulator_clean_stop.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 37,
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_external_log_maintenance_a11y/terminal_cleanup/emulator_clean_stop.stdout.bin",
+      "sha256": "2f2464ff20db7f0caaf9d7ea8b3e7d1356fb4e22dc58d0e17a15faf96bf41822"
+    },
+    {
+      "bytes": 4020,
+      "path": "reports/role_binding_timing/INFRA_M3_EXTERNAL_LOG_MAINTENANCE_RESULT_2026-08-05.md",
+      "sha256": "6fec214bbdd1a5c0cbd4ed416e2012630c38b91de9c931854a6b3b452e2c8c9a"
+    }
+  ],
+  "runner_manifest_missing": true,
+  "schema_version": "role_binding_timing.infra_m3.postmortem_manifest.v1"
+}

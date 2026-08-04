@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "D:\ZJU\Summer_Camp\RAVEN-M-Research\05_project\scripts\run_role_binding_timing_infra_m3.py", line 571, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "D:\ZJU\Summer_Camp\RAVEN-M-Research\05_project\scripts\run_role_binding_timing_infra_m3.py", line 552, in main
+    M1.write_json_atomic(output_root / "qualification_completion.json", completion)
+    ^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'frozen_infra_m1_runner' has no attribute 'write_json_atomic'
