@@ -1,0 +1,50 @@
+[
+    {
+        "ProcessId":  17716,
+        "ParentProcessId":  2244,
+        "Name":  "adb.exe",
+        "ExecutablePath":  null,
+        "CommandLine":  null,
+        "CreationDate":  "\/Date(1785810415620)\/"
+    },
+    {
+        "ProcessId":  11316,
+        "ParentProcessId":  34868,
+        "Name":  "adb.exe",
+        "ExecutablePath":  null,
+        "CommandLine":  null,
+        "CreationDate":  "\/Date(1785848917050)\/"
+    },
+    {
+        "ProcessId":  35452,
+        "ParentProcessId":  1068,
+        "Name":  "adb.exe",
+        "ExecutablePath":  "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "CommandLine":  "adb -L tcp:5038 fork-server server --reply-fd 744",
+        "CreationDate":  "\/Date(1785865430422)\/"
+    },
+    {
+        "ProcessId":  7616,
+        "ParentProcessId":  38776,
+        "Name":  "emulator.exe",
+        "ExecutablePath":  "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\emulator\\emulator.exe",
+        "CommandLine":  "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\emulator\\emulator.exe -avd AndroidWorldAvd -port 5554 -no-snapshot -no-boot-anim -no-audio -grpc 8554 -no-window",
+        "CreationDate":  "\/Date(1785865430922)\/"
+    },
+    {
+        "ProcessId":  37004,
+        "ParentProcessId":  7616,
+        "Name":  "qemu-system-x86_64-headless.exe",
+        "ExecutablePath":  "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\emulator\\qemu\\windows-x86_64\\qemu-system-x86_64-headless.exe",
+        "CommandLine":  "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\emulator\\qemu\\windows-x86_64\\qemu-system-x86_64-headless.exe -avd AndroidWorldAvd -port 5554 -no-snapshot -no-boot-anim -no-audio -grpc 8554 -no-window",
+        "CreationDate":  "\/Date(1785865431124)\/"
+    },
+    {
+        "ProcessId":  24580,
+        "ParentProcessId":  2308,
+        "Name":  "adb.exe",
+        "ExecutablePath":  "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "CommandLine":  "adb -L tcp:5037 fork-server server --reply-fd 748",
+        "CreationDate":  "\/Date(1785865527002)\/"
+    }
+]

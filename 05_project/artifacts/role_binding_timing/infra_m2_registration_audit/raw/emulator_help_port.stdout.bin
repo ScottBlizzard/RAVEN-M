@@ -1,0 +1,13 @@
+
+  at startup, the emulator tries to bind its control console at a free port
+  starting from 5554, in increments of two (i.e. 5554, then 5556, 5558, etc..)
+  this allows several emulator instances to run concurrently on the same
+  machine, each one using a different console port number.
+
+  use '-port <port>' to force an emulator instance to use a given console port
+
+  note that <port> must be an *even* integer between 5554 and 5584 included.
+  <port>+1 must also be free and will be reserved for ADB. if any of these
+  ports is already used, the emulator will fail to start.
+
+

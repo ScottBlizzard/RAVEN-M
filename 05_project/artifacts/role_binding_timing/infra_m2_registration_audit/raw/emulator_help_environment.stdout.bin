@@ -1,0 +1,24 @@
+
+  The Android emulator looks at various environment variables when it starts:
+
+  If ANDROID_LOG_TAGS is defined, it will be used as in '-logcat <tags>'.
+
+  If 'http_proxy' is defined, it will be used as in '-http-proxy <proxy>'.
+
+  If ANDROID_VERBOSE is defined, it can contain a comma-separated list of
+  verbose items. for example:
+
+      ANDROID_VERBOSE=socket,radio
+
+  is equivalent to using the '-verbose -verbose-socket -verbose-radio'
+  options together. unsupported items will be ignored.
+
+  If ANDROID_LOG_TAGS is defined, it will be used as in '-logcat <tags>'.
+
+  If ANDROID_EMULATOR_HOME is defined, it replaces the path of the '$HOME/.android'
+  directory which contains the emulator config data (key stores, etc.).
+
+  If ANDROID_SDK_ROOT is defined, it indicates the path of the SDK
+  installation directory.
+
+

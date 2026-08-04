@@ -1,0 +1,4 @@
+
+Set a customized adb path. Emulator will use the provided adb instead of automatically searching for an adb binary.
+
+

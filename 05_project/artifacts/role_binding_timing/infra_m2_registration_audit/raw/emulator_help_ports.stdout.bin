@@ -1,0 +1,17 @@
+
+  the '-ports <consoleport>,<adbport>' option allows you to explicitely set
+  the TCP ports used by the emulator to implement its control console and
+  communicate with the ADB tool.
+
+  This is a very special option that should probably *not* be used by typical
+  developers using the Android SDK (use '-port <port>' instead), because the
+  corresponding instance is probably not going to be seen from adb. 
+  It requires you to explicitly enable the gRPC port if you need it. Its
+  purpose is to use the emulator in very specific network configurations.
+
+    <consoleport> is the TCP port used to bind the control console
+    <adbport> is the TCP port used to bind the ADB local transport/tunnel.
+
+  If both ports aren't available on startup, the emulator will exit.
+
+

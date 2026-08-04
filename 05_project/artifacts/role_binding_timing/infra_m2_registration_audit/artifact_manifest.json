@@ -1,0 +1,135 @@
+{
+  "artifacts": [
+    {
+      "bytes": 14,
+      "path": "05_project/artifacts/role_binding_timing/infra_m2_registration_audit/.gitattributes",
+      "sha256": "412eaf7adc4a40324c6e36893a0822c42b2bf14a874b761b2203242ed278d307"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m2_registration_audit/raw/adb_help.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 8983,
+      "path": "05_project/artifacts/role_binding_timing/infra_m2_registration_audit/raw/adb_help.stdout.bin",
+      "sha256": "8d236e5ce1beb07ad52a165fa67a2ccd9da78d50ca18af45c5ee397b58c914bf"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m2_registration_audit/raw/adb_version.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 195,
+      "path": "05_project/artifacts/role_binding_timing/infra_m2_registration_audit/raw/adb_version.stdout.bin",
+      "sha256": "140d91862348c8022ed81c7ae15b29f500f9be3778d639f6a720426109c9abb6"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m2_registration_audit/raw/emulator_help_adb_path.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 123,
+      "path": "05_project/artifacts/role_binding_timing/infra_m2_registration_audit/raw/emulator_help_adb_path.stdout.bin",
+      "sha256": "b2d13f739eed624acaa30be8c4a79bc5a5517f5149820955a80bda2a28e8940f"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m2_registration_audit/raw/emulator_help_all.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 101803,
+      "path": "05_project/artifacts/role_binding_timing/infra_m2_registration_audit/raw/emulator_help_all.stdout.bin",
+      "sha256": "cabd7f6ed619550c9b6585dc8604177a89b866333daa4f07be62035ad382fc8f"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m2_registration_audit/raw/emulator_help_environment.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 850,
+      "path": "05_project/artifacts/role_binding_timing/infra_m2_registration_audit/raw/emulator_help_environment.stdout.bin",
+      "sha256": "d1c5119f2920169b30da52e00a07d25c1beb268972caec4c5354edb171034075"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m2_registration_audit/raw/emulator_help_no_direct_adb.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 73,
+      "path": "05_project/artifacts/role_binding_timing/infra_m2_registration_audit/raw/emulator_help_no_direct_adb.stdout.bin",
+      "sha256": "04c15d5b7dacdaa09f57263e7f017982c22d93bccabe4f258861c9903d21af8f"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m2_registration_audit/raw/emulator_help_port.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 594,
+      "path": "05_project/artifacts/role_binding_timing/infra_m2_registration_audit/raw/emulator_help_port.stdout.bin",
+      "sha256": "adf887c0828cf055901217a67bd926047b207e8b5b0ef701947484712fb1bd40"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m2_registration_audit/raw/emulator_help_ports.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 788,
+      "path": "05_project/artifacts/role_binding_timing/infra_m2_registration_audit/raw/emulator_help_ports.stdout.bin",
+      "sha256": "5a9c1196dfe60be884928563299f8cceeb9580cacd3ac5d1c88d7a8344fe8753"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m2_registration_audit/raw/emulator_version.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 792,
+      "path": "05_project/artifacts/role_binding_timing/infra_m2_registration_audit/raw/emulator_version.stdout.bin",
+      "sha256": "073a0bc50724aed951b9e359b8fb7b936c889a0ac993559ce188e4b086503529"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m2_registration_audit/raw/git_status.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 334,
+      "path": "05_project/artifacts/role_binding_timing/infra_m2_registration_audit/raw/git_status.stdout.bin",
+      "sha256": "809486fb2913729271bdcbe90a59af5712bfd846e0017cc81f66ba969670042f"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m2_registration_audit/raw/netstat.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 17280,
+      "path": "05_project/artifacts/role_binding_timing/infra_m2_registration_audit/raw/netstat.stdout.bin",
+      "sha256": "4b084cf1ab9bbfde6f2ec2fc415585faada5d1185b26b5e9e135ba23c93a49b2"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m2_registration_audit/raw/process_inventory.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 2303,
+      "path": "05_project/artifacts/role_binding_timing/infra_m2_registration_audit/raw/process_inventory.stdout.bin",
+      "sha256": "b1621752c9965737c453295ac0f6397365cfb40a41d2e1a488a0869dbe38d043"
+    },
+    {
+      "bytes": 27511,
+      "path": "05_project/artifacts/role_binding_timing/infra_m2_registration_audit/registration_audit.json",
+      "sha256": "fa806e79eb2a8ee699e41d74320e18bfd56a68748ca57eca065f1652d077edb1"
+    }
+  ],
+  "schema_version": "role_binding_timing.infra_m2.registration_audit_manifest.v1"
+}
