@@ -27,6 +27,11 @@ that is:
 The desired outcome is not a list of fashionable modules. It is one recommended
 research direction with a clear causal hypothesis and a decisive minimum test.
 
+The companion report
+[`ANDROIDWORLD_HARD_FAILURE_INFORMATION_CHAIN_AUDIT_2026-08-04.md`](ANDROIDWORLD_HARD_FAILURE_INFORMATION_CHAIN_AUDIT_2026-08-04.md)
+provides the task-by-task evidence audit for all 19 Hard instances. It should be
+read before treating any candidate construct in this brief as an empirical fact.
+
 ## 2. What RAVEN-M did, in plain terms
 
 RAVEN-M gave a mobile GUI agent a more explicit notebook, a dispatcher, and a

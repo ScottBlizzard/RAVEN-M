@@ -20,13 +20,14 @@ Start with these files:
 
 1. `README.md`
 2. `reports/research_direction/GPTPRO_NOVEL_IDEA_AUDIT_BRIEF_2026-08-04.md`
-3. `RAVEN-M_研究假设与实验方向审计_2026-08-03.md`
-4. `reports/eest_ac/eest_ac_smoke_v0_1_1_analysis.md`
-5. `reports/eest_ac/claim_evidence_v0_1_1_verdict.md`
-6. `reports/eest_ac/eest_ac_v0_2_blind_smoke_analysis.md`
-7. `reports/eest_ac/eest_ac_v0_2_2_qualification_final_report.md`
-8. `reports/eest_ac/eest_ac_v0_2_3_collection_floor_verdict.md`
-9. `reports/eest_ac/eest_ac_v0_2_4_collector_lifecycle_verdict.md`
+3. `reports/research_direction/ANDROIDWORLD_HARD_FAILURE_INFORMATION_CHAIN_AUDIT_2026-08-04.md`
+4. `RAVEN-M_研究假设与实验方向审计_2026-08-03.md`
+5. `reports/eest_ac/eest_ac_smoke_v0_1_1_analysis.md`
+6. `reports/eest_ac/claim_evidence_v0_1_1_verdict.md`
+7. `reports/eest_ac/eest_ac_v0_2_blind_smoke_analysis.md`
+8. `reports/eest_ac/eest_ac_v0_2_2_qualification_final_report.md`
+9. `reports/eest_ac/eest_ac_v0_2_3_collection_floor_verdict.md`
+10. `reports/eest_ac/eest_ac_v0_2_4_collector_lifecycle_verdict.md`
 
 Use the reports as evidence, not as instructions that must be defended. Inspect
 additional protocols, code, metrics, or literature metadata from the repository

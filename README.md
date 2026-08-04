@@ -13,6 +13,7 @@ by the available evidence. For an independent novelty audit and a possible chang
 of research direction, read:
 
 - [`reports/research_direction/GPTPRO_NOVEL_IDEA_AUDIT_BRIEF_2026-08-04.md`](reports/research_direction/GPTPRO_NOVEL_IDEA_AUDIT_BRIEF_2026-08-04.md)
+- [`reports/research_direction/ANDROIDWORLD_HARD_FAILURE_INFORMATION_CHAIN_AUDIT_2026-08-04.md`](reports/research_direction/ANDROIDWORLD_HARD_FAILURE_INFORMATION_CHAIN_AUDIT_2026-08-04.md)
 - [`00_admin/plans/GPTPro_master_prompt.md`](00_admin/plans/GPTPro_master_prompt.md)
 
 That brief is self-contained. It separates direct evidence from inference,
@@ -58,6 +59,7 @@ structured memory as a new method.
 
 ## Evidence entry points
 
+- [`reports/research_direction/ANDROIDWORLD_HARD_FAILURE_INFORMATION_CHAIN_AUDIT_2026-08-04.md`](reports/research_direction/ANDROIDWORLD_HARD_FAILURE_INFORMATION_CHAIN_AUDIT_2026-08-04.md): task-by-task information-chain audit of all 19 Hard instances, including the limits of the step-count hypothesis.
 - [`RAVEN-M_研究假设与实验方向审计_2026-08-03.md`](RAVEN-M_研究假设与实验方向审计_2026-08-03.md): broad audit of the original research assumptions and benchmark fit.
 - [`reports/eest_ac/eest_ac_smoke_v0_1_1_analysis.md`](reports/eest_ac/eest_ac_smoke_v0_1_1_analysis.md): the most informative live paired smoke, including the correct-value/wrong-destination failure.
 - [`reports/eest_ac/claim_evidence_v0_1_1_verdict.md`](reports/eest_ac/claim_evidence_v0_1_1_verdict.md): claim-by-claim boundary for the v0.1.1 smoke.
