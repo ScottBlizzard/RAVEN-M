@@ -1,0 +1,12 @@
+{
+  "details": {
+    "requested_status": "RUNTIME_UNSTABLE"
+  },
+  "event": "start",
+  "first_broken_edge": null,
+  "phase": "terminal",
+  "recorded_at": "2026-08-04T20:41:56.109080+00:00",
+  "schema_version": "role_binding_timing.infra_m4.phase_entry.v1",
+  "sequence": 11,
+  "status": "RUNNING"
+}

@@ -1,0 +1,7 @@
+{
+  "errors": [],
+  "first_broken_edge": "FRAMEWORK_NOT_STABLE",
+  "passed": true,
+  "schema_version": "role_binding_timing.infra_m5.terminal_validation.v1",
+  "terminal_mode": "rich"
+}

@@ -1,0 +1,14 @@
+{
+  "gate": "cleanup_before_adb_stop",
+  "helper_ancestry": {},
+  "issues": [],
+  "passed": true,
+  "phase": "cleanup",
+  "roles": {},
+  "snapshot": {
+    "bytes": 331045,
+    "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m5_process_identity_semantics\\process_identity\\snapshots\\0081_cleanup_before_adb_stop\\process_snapshot.json",
+    "sha256": "cacebcfcf8fff8f6a44e5190f3bb3fea1b5cb402016d358dfd81a94d3340276b"
+  },
+  "snapshot_sequence": 81
+}

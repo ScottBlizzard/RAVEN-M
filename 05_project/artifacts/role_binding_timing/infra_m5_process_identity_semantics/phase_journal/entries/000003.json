@@ -1,0 +1,10 @@
+{
+  "details": null,
+  "event": "start",
+  "first_broken_edge": null,
+  "phase": "boot",
+  "recorded_at": "2026-08-04T20:37:55.462110+00:00",
+  "schema_version": "role_binding_timing.infra_m4.phase_entry.v1",
+  "sequence": 3,
+  "status": "RUNNING"
+}

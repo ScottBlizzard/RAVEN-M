@@ -1,0 +1,28 @@
+{
+  "command": [
+    "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\envs\\androidworld\\Scripts\\python.exe",
+    "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\scripts\\finalize_role_binding_timing_infra_m5.py",
+    "--output-root",
+    "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m5_process_identity_semantics",
+    "--schema",
+    "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\schemas\\role_binding_timing_infra_m5_completion.v1.schema.json",
+    "--run-id",
+    "infra-m5-process-identity-20260805",
+    "--status",
+    "RUNTIME_UNSTABLE"
+  ],
+  "returncode": 0,
+  "stdout": "{\r\n  \"status\": \"RUNTIME_UNSTABLE\",\r\n  \"terminal_mode\": \"rich\",\r\n  \"first_broken_edge\": \"FRAMEWORK_NOT_STABLE\",\r\n  \"schema_errors\": []\r\n}\r\n",
+  "stderr": ""
+}
+{
+  "status": "RUNTIME_UNSTABLE",
+  "first_broken_edge": "FRAMEWORK_NOT_STABLE",
+  "process_snapshots": 83,
+  "burn_in": "0/24",
+  "settings": "0/3",
+  "grid": "0/12",
+  "cleanup": false,
+  "log_seal": false,
+  "terminal_valid": true
+}

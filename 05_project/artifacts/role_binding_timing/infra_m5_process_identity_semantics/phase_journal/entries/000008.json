@@ -1,0 +1,17 @@
+{
+  "details": {
+    "edge": "CLEANUP:RuntimeError:FINAL_PROCESS_IDENTITY:PROCESS:14608@1785876109.308491:HELPER_PARENT_CHAIN",
+    "evidence": {
+      "message": "FINAL_PROCESS_IDENTITY:PROCESS:14608@1785876109.308491:HELPER_PARENT_CHAIN",
+      "safe_type": "exception",
+      "type": "RuntimeError"
+    }
+  },
+  "event": "end",
+  "first_broken_edge": null,
+  "phase": "cleanup",
+  "recorded_at": "2026-08-04T20:41:54.857804+00:00",
+  "schema_version": "role_binding_timing.infra_m4.phase_entry.v1",
+  "sequence": 8,
+  "status": "SECONDARY_FAIL"
+}

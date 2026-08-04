@@ -1,0 +1,9 @@
+{
+  "canonical_path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m5_process_identity_semantics\\qualification_completion.json",
+  "canonical_sha256": "59a6be2775cf86fd099bc7d556a510b373a1ef82fee507f88c1882003abc817b",
+  "first_broken_edge": "FRAMEWORK_NOT_STABLE",
+  "journal_entry_count": 12,
+  "rich_error": null,
+  "schema_version": "role_binding_timing.infra_m5.terminal_receipt.v1",
+  "terminal_mode": "rich"
+}

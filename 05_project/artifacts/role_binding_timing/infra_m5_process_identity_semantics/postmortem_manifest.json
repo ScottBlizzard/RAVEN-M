@@ -1,0 +1,45 @@
+{
+  "schema_version": "role_binding_timing.infra_m5.postmortem_manifest.v1",
+  "original_manifest": {
+    "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/artifact_manifest.json",
+    "entries_verified": 667,
+    "sha256": "c35d1fd1cd22cabf37652cd7ce28e8296250ecd119596ba038fc0e443c389126"
+  },
+  "supplemental_artifacts": [
+    {
+      "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/postmortem_runner_console/.gitattributes",
+      "bytes": 12,
+      "sha256": "fd13dad2ecae9b5cdde18e56b396b87ce73a5e3d9c05455bb00a1afc2c424106"
+    },
+    {
+      "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/postmortem_audit.json",
+      "bytes": 5579,
+      "sha256": "43d4dafb672bd7f4ea92394b1ff39d296ee8d2688122b1adb6359da94be142ef"
+    },
+    {
+      "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/postmortem_external_logs/emulator.stdout.bin",
+      "bytes": 13788,
+      "sha256": "8f0751290bcb2a6a50509172f8978c45bd81dc3544ea9d4530cac0732aa7026d"
+    },
+    {
+      "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/postmortem_external_logs/emulator.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/postmortem_runner_console/infra_m5_runner_console.stdout.txt",
+      "bytes": 1100,
+      "sha256": "11a895d6f1a053f87d5cbb8f150c0f28a7e3a0ab2d61ef2d5f08b726d9a921b3"
+    },
+    {
+      "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/postmortem_runner_console/infra_m5_runner_console.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "reports/role_binding_timing/INFRA_M5_PROCESS_IDENTITY_SEMANTICS_RESULT_2026-08-05.md",
+      "bytes": 5699,
+      "sha256": "93fa9f12fc3e2dd6a93d453b8d423c0a858e114316941df8310cfb5f92b2a2fc"
+    }
+  ]
+}

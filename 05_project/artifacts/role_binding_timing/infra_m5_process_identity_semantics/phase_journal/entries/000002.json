@@ -1,0 +1,16 @@
+{
+  "details": {
+    "core": {
+      "adb_server": "21936@1785875869.017648",
+      "emulator_launcher": "6360@1785875870.573098",
+      "qemu": "36924@1785875870.856547"
+    }
+  },
+  "event": "end",
+  "first_broken_edge": null,
+  "phase": "launch",
+  "recorded_at": "2026-08-04T20:37:55.448545+00:00",
+  "schema_version": "role_binding_timing.infra_m4.phase_entry.v1",
+  "sequence": 2,
+  "status": "PASS"
+}

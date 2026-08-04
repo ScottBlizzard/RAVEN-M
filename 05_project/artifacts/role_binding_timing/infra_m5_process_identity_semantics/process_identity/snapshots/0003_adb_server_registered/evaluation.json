@@ -1,0 +1,25 @@
+{
+  "gate": "adb_server_registered",
+  "helper_ancestry": {
+    "13540@1785875866.793248": [
+      "21036@1785875855.008560"
+    ]
+  },
+  "issues": [],
+  "passed": true,
+  "phase": "launch",
+  "roles": {
+    "13540@1785875866.793248": "runner_adb_client",
+    "15540@1785729286.916473": "preexisting_unrelated_no_authority",
+    "20088@1785729293.750479": "preexisting_unrelated_no_authority",
+    "21748@1785729294.665356": "preexisting_unrelated_no_authority",
+    "21936@1785875869.017648": "adb_server",
+    "4584@1785729381.821991": "preexisting_unrelated_no_authority"
+  },
+  "snapshot": {
+    "bytes": 327771,
+    "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m5_process_identity_semantics\\process_identity\\snapshots\\0003_adb_server_registered\\process_snapshot.json",
+    "sha256": "f2d15160552dac8bd65049ecec906fb189490d505528b88436a6a5fb9449a3f6"
+  },
+  "snapshot_sequence": 3
+}

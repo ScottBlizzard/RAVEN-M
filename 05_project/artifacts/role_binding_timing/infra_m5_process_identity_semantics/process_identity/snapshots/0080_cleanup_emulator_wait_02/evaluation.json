@@ -1,0 +1,14 @@
+{
+  "gate": "cleanup_emulator_wait_02",
+  "helper_ancestry": {},
+  "issues": [],
+  "passed": true,
+  "phase": "cleanup",
+  "roles": {},
+  "snapshot": {
+    "bytes": 331046,
+    "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m5_process_identity_semantics\\process_identity\\snapshots\\0080_cleanup_emulator_wait_02\\process_snapshot.json",
+    "sha256": "540a7b52818a1747d9d5c13c9f4602e7f94abd848739cc4e45bd7063945fa301"
+  },
+  "snapshot_sequence": 80
+}

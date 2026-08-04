@@ -1,0 +1,136 @@
+{
+  "schema_version": "role_binding_timing.infra_m5.postmortem_audit.v1",
+  "run_id": "infra-m5-process-identity-20260805",
+  "development_contaminated": true,
+  "held_out_eligible": false,
+  "status": "RUNTIME_UNSTABLE",
+  "first_broken_edge": "FRAMEWORK_NOT_STABLE",
+  "first_broken_edge_detail": {
+    "framework_attempts": 20,
+    "required_consecutive": 3,
+    "maximum_consecutive_observed": 0,
+    "service_checks_passed": 20,
+    "process_identity_checks_passed": 20,
+    "runtime_state_true_counts": {
+      "awake": 20,
+      "display_on": 0,
+      "interactive": 20,
+      "keyguard_not_showing": 20,
+      "no_dead_object": 20
+    },
+    "diagnosis": "display_on remained false in every preregistered framework attempt"
+  },
+  "phase_accounting": {
+    "launch": {"passed": true, "discovery_attempts": 3},
+    "boot": {"passed": true, "attempts": 12},
+    "framework": {"passed": false, "attempts": 20},
+    "burn_in": {"run": false, "passed_cycles": 0, "required_cycles": 24},
+    "settings": {"run": false, "passed": 0, "required": 3},
+    "grid": {"run": false, "passed": 0, "required": 12}
+  },
+  "process_identity": {
+    "snapshots": 83,
+    "continuous_samples": 407,
+    "unique_history_records": 73,
+    "history_errors": [],
+    "core_identity_keys": {
+      "adb_server": "21936@1785875869.017648",
+      "emulator_launcher": "6360@1785875870.573098",
+      "qemu": "36924@1785875870.856547"
+    },
+    "unique_roles_at_terminal_evaluation": {
+      "preexisting_unrelated_no_authority": 4,
+      "runner_adb_client": 24,
+      "emulator_bootstrap_adb": 15,
+      "netsimd": 1,
+      "crashpad": 1
+    },
+    "failed_evaluations": [
+      {
+        "sequence": 83,
+        "gate": "cleanup_final",
+        "issue": "PROCESS:14608@1785876109.308491:HELPER_PARENT_CHAIN",
+        "authority": "secondary_only"
+      }
+    ]
+  },
+  "cleanup": {
+    "policy_verdict": "FAIL_SECONDARY",
+    "physical_emulator_exit": true,
+    "physical_adb_5038_exit": true,
+    "final_listeners": {"5037": [], "5038": [], "5554": [], "5555": [], "8554": []},
+    "secondary_issue": {
+      "child": "locked emulator.exe -kill 36924 -sleep 20",
+      "parent": "locked cmd.exe, parent qemu 36924",
+      "reason": "shutdown-wrapper ancestry was not authorized by the frozen generic wrapper policy"
+    }
+  },
+  "accounting": {
+    "started_at": "2026-08-04T20:37:38.444541+00:00",
+    "completed_at": "2026-08-04T20:41:56.141192+00:00",
+    "wall_time_seconds": 257.696651,
+    "generation_calls": 0,
+    "model_tokens": 0,
+    "held_out_captures": 0,
+    "terminal_records": 1,
+    "terminal_schema_valid": true,
+    "phase_journal_entries": 12,
+    "original_manifest_entries_verified": 667,
+    "original_manifest_sha256": "c35d1fd1cd22cabf37652cd7ce28e8296250ecd119596ba038fc0e443c389126",
+    "repository_transport_normalization": {
+      "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_semantics/.gitattributes",
+      "runtime_bytes": 16,
+      "runtime_sha256": "5f098188d595641c34c309079424f0ba6c0525882b4a9337c4790d9d4f242eac",
+      "repository_bytes": 15,
+      "repository_sha256": "ca20fe08bb641c9c7234cbaf5c994f56a3e660ae16e3231ddc35e47934959742",
+      "scope": "metadata newline normalization only; no raw command, process, observation, terminal, or experimental evidence changed"
+    }
+  },
+  "postmortem_log_seal": {
+    "terminal_log_seal_verdict_unchanged": "FAIL",
+    "purpose": "preserve closed external logs after the failed frozen chain without reinterpreting terminal status",
+    "external_sources_removed_after_verified_copy": true,
+    "files": [
+      {
+        "path": "postmortem_external_logs/emulator.stdout.bin",
+        "bytes": 13788,
+        "sha256": "8f0751290bcb2a6a50509172f8978c45bd81dc3544ea9d4530cac0732aa7026d"
+      },
+      {
+        "path": "postmortem_external_logs/emulator.stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "postmortem_runner_console/infra_m5_runner_console.stdout.txt",
+        "bytes": 1100,
+        "sha256": "11a895d6f1a053f87d5cbb8f150c0f28a7e3a0ab2d61ef2d5f08b726d9a921b3"
+      },
+      {
+        "path": "postmortem_runner_console/infra_m5_runner_console.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  },
+  "claim_evidence": {
+    "m4_static_pid_rule_was_overbroad": {
+      "verdict": "SUPPORTED_BOUNDED",
+      "evidence": "M5 structurally admitted 15 unique emulator bootstrap adb helpers plus official crashpad/netsimd and completed launch, boot, and all 20 framework identity checks without process drift",
+      "limitation": "M4 did not preserve its exact triggering snapshot, so the exact M4 offending PID cannot be reconstructed"
+    },
+    "m5_process_policy_qualified_end_to_end": {
+      "verdict": "FAIL",
+      "evidence": "cleanup-final rejected an official shutdown helper because the frozen wrapper ancestry grammar did not cover the qemu-to-cmd-to-emulator shutdown chain"
+    },
+    "runtime_qualified_for_burn_in": {
+      "verdict": "FAIL",
+      "evidence": "display_on was false in 20 of 20 framework attempts"
+    },
+    "a11y_or_grid_qualified": {"verdict": "UNTESTED"},
+    "v0_3_preparation_authorized": {"verdict": "NO"},
+    "role_binding_or_memory_hypothesis_tested": {"verdict": "NO"}
+  },
+  "protected_wip_unchanged": true,
+  "next_boundary": "Stop INFRA-M5. No retry, held-out capture, model generation, Phase C, or v0.3 preparation is authorized."
+}

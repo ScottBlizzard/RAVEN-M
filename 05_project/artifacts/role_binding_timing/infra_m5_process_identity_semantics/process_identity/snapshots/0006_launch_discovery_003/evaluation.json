@@ -1,0 +1,14 @@
+{
+  "gate": "launch_discovery_003",
+  "helper_ancestry": {},
+  "issues": [],
+  "passed": true,
+  "phase": "launch",
+  "roles": {},
+  "snapshot": {
+    "bytes": 337465,
+    "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m5_process_identity_semantics\\process_identity\\snapshots\\0006_launch_discovery_003\\process_snapshot.json",
+    "sha256": "2f01f8d842659dc7daa388b366b6df6f8b8b4b72787bb108763e1f6f1f0b7911"
+  },
+  "snapshot_sequence": 6
+}
