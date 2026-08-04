@@ -1,0 +1,30 @@
+{
+  "schema_version": "role_binding_timing.infra_m4.lock.v1",
+  "run_id": "infra-m4-terminal-accounting-20260805",
+  "predecessor_audit_commit": "c9036a302f8b0b2b34b0ca2f9850e472e28094e7",
+  "created_at": "2026-08-04T19:40:15.9464720Z",
+  "generation_calls": 0,
+  "held_out_captures": 0,
+  "runtime_logs_are_immutable_inputs": false,
+  "files": {
+    "04_protocols/role_binding_timing/INFRA_M4_TERMINAL_ACCOUNTING_HARDENING_V1.md": "c61962b539d6c328697612f0c349e5b404dc9ba4433592f62eb68918307d5811",
+    "05_project/configs/role_binding_timing/infra_m4_terminal_accounting_hardening.json": "de1f18016822759c2e769346df3addfd6c344e9ee85e22c1489ed8224ec2c2c2",
+    "05_project/schemas/role_binding_timing_infra_m4_completion.v1.schema.json": "70b2c5d2b2e786cdc3f600299045459d9ce6c653697bd0c192705c4af5eb0f6a",
+    "05_project/scripts/finalize_role_binding_timing_infra_m4.py": "e64f83a121aa4876da74992d6b5d1694ee41b07c85be7ce3326b5eebfda2807c",
+    "05_project/scripts/run_role_binding_timing_infra_m4.py": "622db9f6606026f49922da576d9a0e2905ebc67d711d14e34cfee49ed6a80ff4",
+    "05_project/scripts/run_role_binding_timing_infra_m4_offline_gates.py": "4b28d7857ebceca2262b2806ffe9f9ea82d02328cefcfde315db28ebb0457c2e",
+    "05_project/src/raven_m/role_binding_timing/infra_m4_terminal_accounting.py": "efc67a6a0bc6b7cfba792cfc9a8d0959686c8f9e2ed0c965cee517ee29482040",
+    "05_project/tests/role_binding_timing/test_infra_m4_terminal_accounting.py": "d789976f8666bb9a4574af202bb54885040b050ea996b4ac48d3babf34fda982",
+    "05_project/scripts/run_role_binding_timing_infra_m3.py": "669488551ea279ac3270dd50f4f5bf2d7826796ce07062685b1faaabae9b5f9a",
+    "05_project/scripts/run_role_binding_timing_infra_m2.py": "60cb10590d9cb67dcf4c4d3752394edeab900d9c9a339650879a77bdcef9feca",
+    "05_project/scripts/run_role_binding_timing_infra_m1_maintenance.py": "2dd9f8eba3f392c10868a09f41264ab9609f413a611b49988fcf47b281327f50",
+    "05_project/scripts/qualify_role_binding_timing_b2_10_a11y_lifecycle.py": "2727b73713acf33a09b4c75de318e24957e61adada53472c1e1574eb7427b3d5",
+    "05_project/scripts/qualify_role_binding_timing_b2_5_infrastructure.py": "83a6037f784a03ea6d2012c845f46b9640d6cf6abe2d4e43d170f8c3303b81f2",
+    "05_project/scripts/diagnose_role_binding_timing_b2_9_androidenv_sidecar.py": "5b491d7f43d0bb873a30ee55e72ca76107457cf5981c0bab91265d439d53fff1",
+    "05_project/src/raven_m/role_binding_timing/infra_m3_log_lifecycle.py": "c72534ec2628b47bfbbc69edba13d2c04d52d91a7fd528a3bb1fc1ac0df3277a",
+    "05_project/src/raven_m/role_binding_timing/infra_m2_runtime.py": "58f71c666efe61ba7ffc60d58e5a3109df5b99324d49e280af246462c9be899e",
+    "05_project/src/raven_m/role_binding_timing/infra_m1_runtime.py": "af7b66ed6a4e35b61c23f196d0f7bb114ee228b16603acbdba9c2996f895d1b1",
+    "05_project/src/raven_m/role_binding_timing/androidenv_sidecar_runtime_v0_2_10.py": "0c3a7a1614eb3614afe07f752a06ede7b0cbae3676aed302d2f14ac53420feb8",
+    "05_project/src/raven_m/role_binding_timing/androidenv_sidecar_v0_2_8.py": "6493f3bbf9625aa18a25cfa1f46937c52b9440ab627912e474ecbef6d7e1ed6d"
+  }
+}

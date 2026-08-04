@@ -1,0 +1,125 @@
+{
+  "protocol_version": "role_binding_timing.infra_m4.terminal_accounting_hardening.v1",
+  "run_id": "infra-m4-terminal-accounting-20260805",
+  "development_contaminated": true,
+  "held_out_eligible": false,
+  "generation_eligible": false,
+  "generation_calls_authorized": 0,
+  "audit_commit": "c9036a302f8b0b2b34b0ca2f9850e472e28094e7",
+  "freeze_tag": "role-binding-timing-infra-m4-freeze-20260805",
+  "runtime": {
+    "python": "06_local_runtime/envs/androidworld/Scripts/python.exe",
+    "python_sha256": "21bb438c0d4a6f1f164b9a646f6ee000340185e5871180aec06db8d3f07c0082",
+    "adb_binary": "06_local_runtime/android/sdk/platform-tools/adb.exe",
+    "adb_binary_sha256": "957e46b8615f7af5b7292a2ddabe98d2e61940c3fb2b0545756507f080613e71",
+    "adb_server_port": 5038,
+    "forbidden_adb_port": 5037,
+    "fallback_to_5037": false,
+    "device_serial": "emulator-5554",
+    "console_port": 5554,
+    "device_adb_port": 5555,
+    "emulator_grpc_port": 8554,
+    "emulator_launcher": "06_local_runtime/android/sdk/emulator/emulator.exe",
+    "emulator_launcher_sha256": "7f101ca769c15e8b6311801c1487f28583ce643fa87d19a9e0da4cc230be7653",
+    "emulator_binary": "06_local_runtime/android/sdk/emulator/qemu/windows-x86_64/qemu-system-x86_64-headless.exe",
+    "emulator_binary_sha256": "b8e263a00f9151a494b480f38d39188e73dbf338b27015679311246c59c3dbec",
+    "qemu_binary": "06_local_runtime/android/sdk/emulator/qemu/windows-x86_64/qemu-system-x86_64-headless.exe",
+    "qemu_binary_sha256": "b8e263a00f9151a494b480f38d39188e73dbf338b27015679311246c59c3dbec",
+    "avd_name": "AndroidWorldAvd",
+    "avd_home": "06_local_runtime/android/avd",
+    "avd_ini": "06_local_runtime/android/avd/AndroidWorldAvd.ini",
+    "avd_ini_sha256": "b2bff819d2aa981f406f133cb370165835b6146745cd23202fa1c7c1cc7c0330",
+    "avd_config": "06_local_runtime/android/avd/AndroidWorldAvd.avd/config.ini",
+    "avd_config_sha256": "8969b2840da971439b34010fb3c73942e484ed0e1bbd8d53b62fb9426fd3d2c4",
+    "emulator_args": ["-avd", "AndroidWorldAvd", "-port", "5554", "-no-snapshot", "-no-boot-anim", "-no-audio", "-grpc", "8554", "-no-window"],
+    "registration_environment": {"ANDROID_ADB_SERVER_PORT": "5038"},
+    "forbidden_inherited_environment": ["ADB_SERVER_SOCKET", "ANDROID_ADB_SERVER_ADDRESS"]
+  },
+  "pre_cleanup_identity": {
+    "adb_5037_pid": null,
+    "adb_5038_pid": null,
+    "launcher_pid": null,
+    "qemu_pid": null,
+    "excluded_runtime_pids": [11316, 17716]
+  },
+  "terminal_accounting": {
+    "phase_order": ["launch", "boot", "framework", "burn_in", "settings", "grid", "cleanup", "seal"],
+    "journal_subdir": "phase_journal",
+    "first_edge_write_once": true,
+    "independent_finalizer": "05_project/scripts/finalize_role_binding_timing_infra_m4.py",
+    "minimal_fallback_required": true,
+    "duplicate_completion_forbidden": true,
+    "fault_injection_required": ["launch", "boot", "framework", "burn_in", "settings", "grid", "cleanup", "seal", "missing_helper", "rich_json", "process_timeout", "cleanup_exception"]
+  },
+  "log_lifecycle": {
+    "temp_parent": "C:/Users/lenovo/AppData/Local/Temp/raven_m_role_binding_timing",
+    "temp_prefix": "infra_m4_live_",
+    "live_log_names": ["emulator.stdout.bin", "emulator.stderr.bin"],
+    "frozen_log_inputs": [],
+    "forbidden_roots": ["D:/ZJU/Summer_Camp/RAVEN-M-Research", "D:/ZJU/Summer_Camp/RAVEN-M-Research/05_project/artifacts"],
+    "sealed_result_subdir": "finalized_live_logs",
+    "remove_temp_after_seal": true
+  },
+  "maintenance": {
+    "command_timeout_seconds": 30.0,
+    "stop_wait_attempts": 30,
+    "stop_wait_interval_seconds": 2.0,
+    "launch_wait_attempts": 180,
+    "launch_wait_interval_seconds": 1.0,
+    "boot_wait_attempts": 90,
+    "boot_wait_interval_seconds": 4.0,
+    "framework_stable_required_consecutive": 3,
+    "framework_stable_attempts": 20,
+    "framework_stable_interval_seconds": 3.0,
+    "terminal_clean_attempts": 30,
+    "terminal_clean_interval_seconds": 2.0
+  },
+  "burn_in": {
+    "cycles": 24,
+    "minimum_elapsed_seconds": 180.0,
+    "cycle_interval_seconds": 8.0,
+    "command_timeout_seconds": 15.0,
+    "expected_screenshot_size": [1080, 2400],
+    "required_services": ["package", "window", "activity"]
+  },
+  "accessibility_service": {
+    "package": "com.google.androidenv.accessibilityforwarder",
+    "component": "com.google.androidenv.accessibilityforwarder/com.google.androidenv.accessibilityforwarder.AccessibilityForwarder",
+    "receiver": "com.google.androidenv.accessibilityforwarder/com.google.androidenv.accessibilityforwarder.FlagsBroadcastReceiver",
+    "installed_apk_sha256": "97a56a544e44d79f9b3181fc7dbdd72cffa908efd3d53c82afad1773061a350a",
+    "rebind_attempts": 8,
+    "rebind_interval_seconds": 2.0
+  },
+  "sampling": {
+    "command_timeout_seconds": 25.0,
+    "foreground_attempts": 10,
+    "foreground_required_consecutive": 2,
+    "foreground_interval_seconds": 2.0,
+    "post_foreground_settle_seconds": 2.0,
+    "settings_observations": 3,
+    "expected_pixel_shape": [2400, 1080, 3],
+    "screen_width": 1080,
+    "screen_height": 2400,
+    "minimum_elements": 1,
+    "minimum_oracle_candidates": 1
+  },
+  "settings_scene": {"dev_app_id": "M4Q-SETTINGS", "package": "com.android.settings", "component": "com.android.settings/com.android.settings.Settings"},
+  "grid": {
+    "rounds": 3,
+    "apps": [
+      {"dev_app_id": "M4G-SETTINGS", "package": "com.android.settings", "component": "com.android.settings/com.android.settings.Settings"},
+      {"dev_app_id": "M4G-CLOCK", "package": "com.google.android.deskclock", "component": "com.google.android.deskclock/com.android.deskclock.DeskClock"},
+      {"dev_app_id": "M4G-TASKS", "package": "org.tasks", "component": "org.tasks/com.todoroo.astrid.activity.MainActivity"},
+      {"dev_app_id": "M4G-BROCCOLI", "package": "com.flauschcode.broccoli", "component": "com.flauschcode.broccoli/com.flauschcode.broccoli.MainActivity"}
+    ],
+    "required_cells": 12
+  },
+  "schema": "05_project/schemas/role_binding_timing_infra_m4_completion.v1.schema.json",
+  "lock": "05_project/configs/role_binding_timing/infra_m4_terminal_accounting_hardening.lock.json",
+  "output_root": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening",
+  "protected_wip": {
+    "05_project/src/raven_m/controller/episode_controller.py": "fc0e82e0fde90119365d4f685f080eb4519bf2f602e4bda58de5d4809a40fe33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "ff89d6b70be4b4738646d262beb67d7b7e932e9eb95956d940b1c5000a999d10",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5bb1f1e3de673a1072cfee62938b761a62fd69c187d5eadf54bc46b115a3fd0a"
+  }
+}

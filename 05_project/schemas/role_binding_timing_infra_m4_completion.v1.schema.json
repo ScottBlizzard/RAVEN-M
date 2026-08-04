@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "role_binding_timing_infra_m4_completion.v1.schema.json",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version", "terminal_mode", "status", "run_id", "first_broken_edge",
+    "last_completed_phase", "journal_entry_count", "journal_terminal_event_present",
+    "generation_calls", "model_tokens", "held_out_captures", "runtime", "burn_in",
+    "a11y", "cleanup", "log_seal", "protected_wip_unchanged", "claim_evidence"
+  ],
+  "properties": {
+    "schema_version": {"const": "role_binding_timing.infra_m4.completion.v1"},
+    "terminal_mode": {"enum": ["rich", "minimal_fallback"]},
+    "status": {"enum": ["PASS_12_OF_12_DEV", "OWNERSHIP_NOT_QUALIFIED", "RUNTIME_UNSTABLE", "A11Y_QUALIFICATION_FAILED", "LOG_SEAL_FAILED", "TERMINAL_ACCOUNTING_FAILED", "FAULT_INJECTED"]},
+    "run_id": {"type": "string", "minLength": 1},
+    "first_broken_edge": {"type": ["string", "null"]},
+    "last_completed_phase": {"type": ["string", "null"]},
+    "journal_entry_count": {"type": "integer", "minimum": 1},
+    "journal_terminal_event_present": {"const": true},
+    "generation_calls": {"const": 0},
+    "model_tokens": {"const": 0},
+    "held_out_captures": {"const": 0},
+    "runtime": {"type": "object"},
+    "burn_in": {
+      "type": "object",
+      "required": ["passed", "required_cycles", "completed_cycles", "passed_cycles", "elapsed_seconds", "records"],
+      "properties": {
+        "passed": {"type": "boolean"},
+        "required_cycles": {"const": 24},
+        "completed_cycles": {"type": "integer", "minimum": 0, "maximum": 24},
+        "passed_cycles": {"type": "integer", "minimum": 0, "maximum": 24},
+        "elapsed_seconds": {"type": "number", "minimum": 0},
+        "records": {"type": "array", "maxItems": 24}
+      }
+    },
+    "a11y": {
+      "type": "object",
+      "required": ["authorized", "settings", "grid"]
+    },
+    "cleanup": {"type": "object"},
+    "log_seal": {"type": "object"},
+    "protected_wip_unchanged": {"const": true},
+    "claim_evidence": {
+      "type": "object",
+      "required": ["exclusive_5038_registration", "burn_in_qualified", "a11y_tested", "a11y_qualified", "v0_3_preparation_authorized", "held_out_tested", "role_binding_hypothesis_tested"]
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "PASS_12_OF_12_DEV"}}},
+      "then": {
+        "properties": {
+          "first_broken_edge": {"type": "null"},
+          "burn_in": {
+            "properties": {
+              "passed": {"const": true},
+              "completed_cycles": {"const": 24},
+              "passed_cycles": {"const": 24},
+              "elapsed_seconds": {"minimum": 180},
+              "records": {"minItems": 24, "maxItems": 24}
+            }
+          }
+        }
+      },
+      "else": {"properties": {"first_broken_edge": {"type": "string", "minLength": 1}}}
+    }
+  ]
+}
