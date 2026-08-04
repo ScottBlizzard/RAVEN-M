@@ -1,0 +1,28 @@
+{
+  "derived_process_views": {
+    "bytes": 311514,
+    "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m9_authorization_view_separation\\process_identity\\snapshots\\0002_adb_server_discovery\\derived_process_views.json",
+    "sha256": "b3a385e6c25d814207a09722d8224e5b3e5d5a19c86bf8f31e3b76c7cff9a79c"
+  },
+  "gate": "adb_server_discovery",
+  "helper_ancestry": {},
+  "issues": [],
+  "passed": true,
+  "phase": "launch",
+  "roles": {},
+  "runner_client_ledger": {},
+  "schema_version": "role_binding_timing.infra_m9.process_evaluation.v1",
+  "snapshot": {
+    "bytes": 649428,
+    "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m9_authorization_view_separation\\process_identity\\snapshots\\0002_adb_server_discovery\\process_snapshot.json",
+    "sha256": "181ee43fcc10554f90ee1bd3354c78d45973a296a22d2cf7d3022175713626d6"
+  },
+  "snapshot_sequence": 2,
+  "view_type_assertions": {
+    "support_has_no_controlled_port": true,
+    "support_role_authority": false,
+    "universe_covered": true,
+    "unrelated_role_authority": false,
+    "views_disjoint": true
+  }
+}

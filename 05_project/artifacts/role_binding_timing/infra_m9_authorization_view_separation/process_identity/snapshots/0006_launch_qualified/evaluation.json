@@ -1,0 +1,55 @@
+{
+  "derived_process_views": {
+    "bytes": 317092,
+    "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m9_authorization_view_separation\\process_identity\\snapshots\\0006_launch_qualified\\derived_process_views.json",
+    "sha256": "3d156dd1c9dbbdc73f856570a72a9f6a26a4a339a73830826e244c4ffa0e7aae"
+  },
+  "gate": "launch_qualified",
+  "helper_ancestry": {
+    "32240@1785886283.317361": [
+      "28756@1785886281.046097"
+    ],
+    "35452@1785886281.294948": [
+      "28756@1785886281.046097"
+    ],
+    "37672@1785886275.047038": [
+      "35592@1785886261.847484"
+    ]
+  },
+  "issues": [],
+  "passed": true,
+  "phase": "launch",
+  "roles": {
+    "11216@1785886280.815491": "emulator_launcher",
+    "28756@1785886281.046097": "qemu",
+    "32240@1785886283.317361": "netsimd",
+    "35452@1785886281.294948": "crashpad",
+    "37024@1785886277.241027": "adb_server",
+    "37672@1785886275.047038": "runner_adb_server_lifecycle_start"
+  },
+  "runner_client_ledger": {
+    "37672@1785886275.047038": {
+      "ancestry": [
+        "35592@1785886261.847484"
+      ],
+      "argv_sha256": "c1d7a8db939c711b04aadb990958d9c3d643baec857db24ce9d2c86f6ace8685",
+      "authorized_at_epoch": 1785886280.7898,
+      "authorized_phase": "launch",
+      "role": "runner_adb_server_lifecycle_start"
+    }
+  },
+  "schema_version": "role_binding_timing.infra_m9.process_evaluation.v1",
+  "snapshot": {
+    "bytes": 667710,
+    "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m9_authorization_view_separation\\process_identity\\snapshots\\0006_launch_qualified\\process_snapshot.json",
+    "sha256": "391c8e4215672f30ccebb4ab03c636bacb61adb71fbb83fa308f4351f268ea8e"
+  },
+  "snapshot_sequence": 6,
+  "view_type_assertions": {
+    "support_has_no_controlled_port": true,
+    "support_role_authority": false,
+    "universe_covered": true,
+    "unrelated_role_authority": false,
+    "views_disjoint": true
+  }
+}

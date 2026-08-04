@@ -1,0 +1,20 @@
+{
+  "artifacts": [
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m9_result_audit/postmortem_external_logs/emulator.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 10078,
+      "path": "05_project/artifacts/role_binding_timing/infra_m9_result_audit/postmortem_external_logs/emulator.stdout.bin",
+      "sha256": "e1be93d915daada9ac90d5eeb53e888b143f4505b24d976a488dc92719687874"
+    },
+    {
+      "bytes": 17136,
+      "path": "05_project/artifacts/role_binding_timing/infra_m9_result_audit/result_audit.json",
+      "sha256": "121b21d41b935c578d19e288e6ebe76e3616cc13e3e2727539d3e7ca46d1284f"
+    }
+  ],
+  "schema_version": "role_binding_timing.infra_m9.result_audit_manifest.v1"
+}

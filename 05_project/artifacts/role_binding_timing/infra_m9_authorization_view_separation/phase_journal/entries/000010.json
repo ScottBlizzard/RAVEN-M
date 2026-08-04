@@ -1,0 +1,17 @@
+{
+  "details": {
+    "edge": "LOG_SEAL:RuntimeError:RUNTIME_NOT_CLEAN_FOR_SEAL",
+    "evidence": {
+      "message": "RUNTIME_NOT_CLEAN_FOR_SEAL",
+      "safe_type": "exception",
+      "type": "RuntimeError"
+    }
+  },
+  "event": "end",
+  "first_broken_edge": null,
+  "phase": "seal",
+  "recorded_at": "2026-08-04T23:33:13.051231+00:00",
+  "schema_version": "role_binding_timing.infra_m4.phase_entry.v1",
+  "sequence": 10,
+  "status": "SECONDARY_FAIL"
+}

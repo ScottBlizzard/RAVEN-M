@@ -1,0 +1,391 @@
+{
+  "accounting": {
+    "artifact_manifest": {
+      "artifact_count": 236,
+      "failures": [],
+      "passed": true,
+      "path": "05_project/artifacts/role_binding_timing/infra_m9_authorization_view_separation/artifact_manifest.json",
+      "sha256": "336385e7ad6a38a09841d682f782cffbebc581617a6139c9647ce899c6018a2a"
+    },
+    "generation_calls": 0,
+    "held_out_captures": 0,
+    "history_samples": 97,
+    "input_lock": {
+      "failures": [],
+      "files": 188,
+      "passed": true,
+      "sha256": "7eaf2fcd0fdf294752773947245011762d0a1635058366e17aecbdb0e96f14c5"
+    },
+    "journal_entries": 12,
+    "model_tokens": 0,
+    "process_snapshot_directories": 34,
+    "terminal_completion_files": 1,
+    "terminal_receipt_matches": true,
+    "terminal_schema_passed": true
+  },
+  "audit_passed": true,
+  "claim_evidence": {
+    "a11y_tested": false,
+    "authorization_view_separation_qualified": false,
+    "boot_tested": true,
+    "burn_in_tested": false,
+    "dev_grid_tested": false,
+    "display_framework_completed": false,
+    "exclusive_5038_and_launch_tested": true,
+    "held_out_tested": false,
+    "m8_prelaunch_false_rejection_reproduced": false,
+    "role_binding_hypothesis_tested": false,
+    "temporal_support_attestation_qualified": false,
+    "v0_3_preparation_authorized": false
+  },
+  "cleanup_and_logs": {
+    "external_root_still_exists": true,
+    "frozen_cleanup_issues": [
+      "PRE_CLEANUP_IDENTITY:PROCESS:22504@1785886374.192433:HELPER_PARENT_CHAIN",
+      "FINAL_PROCESS_IDENTITY:PROCESS:22504@1785886374.192433:HELPER_PARENT_CHAIN"
+    ],
+    "frozen_cleanup_passed": false,
+    "frozen_log_seal_issues": [
+      "RuntimeError:RUNTIME_NOT_CLEAN_FOR_SEAL"
+    ],
+    "frozen_log_seal_passed": false,
+    "note": "Postmortem copies preserve bytes after verified host cleanup; they do not change the immutable frozen cleanup/log_seal FAIL verdict.",
+    "post_terminal_host_residue": {
+      "controlled_listeners": {},
+      "passed": true,
+      "project_processes": [],
+      "raw_netstat_sha256": "d0baf3e115ed7b82f456752009b7223a4ce044943e2f4dd3cddaf4db9949e512"
+    },
+    "postmortem_copy_complete": true,
+    "postmortem_external_logs": [
+      {
+        "bytes": 0,
+        "copy": "05_project/artifacts/role_binding_timing/infra_m9_result_audit/postmortem_external_logs/emulator.stderr.bin",
+        "copy_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "matched": true,
+        "source": "C:\\Users\\lenovo\\AppData\\Local\\Temp\\raven_m_role_binding_timing\\infra_m9_live_8g4qts_r\\emulator.stderr.bin",
+        "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 10078,
+        "copy": "05_project/artifacts/role_binding_timing/infra_m9_result_audit/postmortem_external_logs/emulator.stdout.bin",
+        "copy_sha256": "e1be93d915daada9ac90d5eeb53e888b143f4505b24d976a488dc92719687874",
+        "matched": true,
+        "source": "C:\\Users\\lenovo\\AppData\\Local\\Temp\\raven_m_role_binding_timing\\infra_m9_live_8g4qts_r\\emulator.stdout.bin",
+        "source_sha256": "e1be93d915daada9ac90d5eeb53e888b143f4505b24d976a488dc92719687874"
+      }
+    ],
+    "postmortem_preservation_only": true
+  },
+  "decision": "NOT_ELIGIBLE_FOR_V0_3_PREPARATION",
+  "failure_mechanism": {
+    "all_exact_locked_adb_binary": true,
+    "coobserved_parent_count": 13,
+    "current_issue_candidate_count": 1,
+    "current_support_hash_loss": [
+      {
+        "candidate_identity": "35132@1785886374.083373",
+        "parent_pid": 18524,
+        "source_record_sha256": "d349fa1972873a21610dbe601403d39a33357d8e675c6a5f1bec39e4917c70a3",
+        "structural_source_hash": "8dd1ebb0b969370c70a5ee7f7ee347949aa7046aa5e1a33fcd7b1e9415b21fc3",
+        "support_hash": null,
+        "support_view_sha256": "ffbf76881802ae09d260da99d9b08d5e3429810d43a115ca633886f786bfe2dc"
+      }
+    ],
+    "current_support_hash_loss_count": 1,
+    "direct_evidence_interpretation": "Every rejected transient ADB child had a co-observed parent in its history sample. Twelve child identities were absent at the trigger. The one current child had a current support parent whose hash existed in structural_processes but was omitted from the derived support view.",
+    "exited_before_trigger_count": 12,
+    "failed_candidate_count": 13,
+    "history_records_recovered": 13,
+    "inference": "M9 separated authority correctly but did not preserve a bounded co-observation attestation for later history evaluation, and it under-specified support evidence fields.",
+    "issue_records": [
+      {
+        "candidate_sha256": "2d23637db471948e3bf73006b7eab65d2560d80360312fd0bbf7f2b2548bf6dd",
+        "command_line": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe -s emulator-5554 shell cmd overlay enable-exclusive --user current --category com.android.systemui.emulation.pixel_6",
+        "identity_key": "22504@1785886374.192433",
+        "parent_identity_key": "35408@1785886373.913698",
+        "parent_view": "support_only_ancestry_nodes",
+        "pid": 22504,
+        "ppid": 35408,
+        "reason": "HELPER_PARENT_CHAIN",
+        "sample": 84,
+        "views_disjoint": true
+      },
+      {
+        "candidate_sha256": "2e34cdb3f2253d0ace7169f70ba47083383c2e1bb7484226f51d2dd4516402b1",
+        "command_line": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe -s emulator-5554 shell cmd overlay enable-exclusive --user 0 --category com.android.systemui.emulation.pixel_6",
+        "identity_key": "28160@1785886374.208184",
+        "parent_identity_key": "36756@1785886373.915735",
+        "parent_view": "support_only_ancestry_nodes",
+        "pid": 28160,
+        "ppid": 36756,
+        "reason": "HELPER_PARENT_CHAIN",
+        "sample": 84,
+        "views_disjoint": true
+      },
+      {
+        "candidate_sha256": "e809c6de3a0f952de8243b41983bf2dd60eb82aaa393e38c4b49462556d5a5e4",
+        "command_line": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe -s emulator-5554 shell cmd overlay enable-exclusive --user 0 --category com.android.systemui.emulation.pixel_6",
+        "identity_key": "31172@1785886374.158554",
+        "parent_identity_key": "30428@1785886373.914972",
+        "parent_view": "support_only_ancestry_nodes",
+        "pid": 31172,
+        "ppid": 30428,
+        "reason": "HELPER_PARENT_CHAIN",
+        "sample": 84,
+        "views_disjoint": true
+      },
+      {
+        "candidate_sha256": "ec8dcf5b430596a21d2a67f6f21b598fa6a8826a5d0d85a26447279734014dd2",
+        "command_line": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe -s emulator-5554 shell cmd overlay enable-exclusive --user current --category com.android.internal.emulation.pixel_6",
+        "identity_key": "33076@1785886374.091185",
+        "parent_identity_key": "9464@1785886373.893094",
+        "parent_view": "support_only_ancestry_nodes",
+        "pid": 33076,
+        "ppid": 9464,
+        "reason": "HELPER_PARENT_CHAIN",
+        "sample": 84,
+        "views_disjoint": true
+      },
+      {
+        "candidate_sha256": "499f9d12f92f52447cee023fa01dd2164d8e54e02a21cce341152a5af786289e",
+        "command_line": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe -s emulator-5554 shell cmd overlay enable-exclusive --user current --category com.android.systemui.emulation.pixel_6",
+        "identity_key": "33628@1785886374.122709",
+        "parent_identity_key": "36880@1785886373.913820",
+        "parent_view": "support_only_ancestry_nodes",
+        "pid": 33628,
+        "ppid": 36880,
+        "reason": "HELPER_PARENT_CHAIN",
+        "sample": 84,
+        "views_disjoint": true
+      },
+      {
+        "candidate_sha256": "90c0a259513229b8af479d3444ea77f2b35dafd6addea11a34083788c58ad339",
+        "command_line": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe -s emulator-5554 shell cmd overlay enable-exclusive --user 0 --category com.android.systemui.emulation.pixel_6",
+        "identity_key": "33876@1785886374.109873",
+        "parent_identity_key": "10024@1785886373.911025",
+        "parent_view": "support_only_ancestry_nodes",
+        "pid": 33876,
+        "ppid": 10024,
+        "reason": "HELPER_PARENT_CHAIN",
+        "sample": 84,
+        "views_disjoint": true
+      },
+      {
+        "candidate_sha256": "96dba4b6dbbf4ffd524572d8058eb10b69740a280d9a9c1376a496b40e5f718f",
+        "command_line": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe -s emulator-5554 shell cmd overlay enable-exclusive --user current --category com.android.internal.emulation.pixel_6",
+        "identity_key": "34620@1785886374.202054",
+        "parent_identity_key": "5988@1785886373.894575",
+        "parent_view": "support_only_ancestry_nodes",
+        "pid": 34620,
+        "ppid": 5988,
+        "reason": "HELPER_PARENT_CHAIN",
+        "sample": 84,
+        "views_disjoint": true
+      },
+      {
+        "candidate_sha256": "9b45dd086cfca7434659262f34208ebe5401a6b512f6750499d9b38268263463",
+        "command_line": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe -s emulator-5554 shell am broadcast -a com.android.emulator.multidisplay.START -n com.android.emulator.multidisplay/.MultiDisplayServiceReceiver --user 0",
+        "identity_key": "35132@1785886374.083373",
+        "parent_identity_key": "18524@1785886373.914845",
+        "parent_view": "support_only_ancestry_nodes",
+        "pid": 35132,
+        "ppid": 18524,
+        "reason": "HELPER_PARENT_CHAIN",
+        "sample": 84,
+        "views_disjoint": true
+      },
+      {
+        "candidate_sha256": "0576e4fd759b59a729f512e82fe65452794239067f7dd716cd236e496c12bd2d",
+        "command_line": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe -s emulator-5554 shell cmd overlay enable-exclusive --user 0 --category com.android.internal.emulation.pixel_6",
+        "identity_key": "35576@1785886374.208183",
+        "parent_identity_key": "544@1785886373.903474",
+        "parent_view": "support_only_ancestry_nodes",
+        "pid": 35576,
+        "ppid": 544,
+        "reason": "HELPER_PARENT_CHAIN",
+        "sample": 84,
+        "views_disjoint": true
+      },
+      {
+        "candidate_sha256": "1165064710033cdc5186499a509555208e0787fc8662a9f14324427a62049856",
+        "command_line": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe -s emulator-5554 shell cmd overlay enable-exclusive --user 0 --category com.android.internal.emulation.pixel_6",
+        "identity_key": "36712@1785886374.049228",
+        "parent_identity_key": "10112@1785886373.894261",
+        "parent_view": "support_only_ancestry_nodes",
+        "pid": 36712,
+        "ppid": 10112,
+        "reason": "HELPER_PARENT_CHAIN",
+        "sample": 84,
+        "views_disjoint": true
+      },
+      {
+        "candidate_sha256": "ec0ccebff12f7309a48dd9e0e8b41de76c43ed3f47f44331c0b011a1102c2937",
+        "command_line": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe -s emulator-5554 shell cmd overlay enable-exclusive --user current --category com.android.internal.emulation.pixel_6",
+        "identity_key": "37868@1785886374.038734",
+        "parent_identity_key": "33644@1785886373.887565",
+        "parent_view": "support_only_ancestry_nodes",
+        "pid": 37868,
+        "ppid": 33644,
+        "reason": "HELPER_PARENT_CHAIN",
+        "sample": 84,
+        "views_disjoint": true
+      },
+      {
+        "candidate_sha256": "c3595c83c7ace05b09a1adeab15e27a802e78ada9fd162d039a7bb2169cd0d25",
+        "command_line": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe -s emulator-5554 shell cmd overlay enable-exclusive --user current --category com.android.systemui.emulation.pixel_6",
+        "identity_key": "4528@1785886374.109197",
+        "parent_identity_key": "13268@1785886373.914148",
+        "parent_view": "support_only_ancestry_nodes",
+        "pid": 4528,
+        "ppid": 13268,
+        "reason": "HELPER_PARENT_CHAIN",
+        "sample": 84,
+        "views_disjoint": true
+      },
+      {
+        "candidate_sha256": "a9b8539373cbae551f960d7f1c6fbf98c887e40560b1624cf8d9fce9468d8418",
+        "command_line": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe -s emulator-5554 shell cmd overlay enable-exclusive --user 0 --category com.android.internal.emulation.pixel_6",
+        "identity_key": "5064@1785886374.039168",
+        "parent_identity_key": "33208@1785886373.890963",
+        "parent_view": "support_only_ancestry_nodes",
+        "pid": 5064,
+        "ppid": 33208,
+        "reason": "HELPER_PARENT_CHAIN",
+        "sample": 84,
+        "views_disjoint": true
+      }
+    ]
+  },
+  "first_broken_edge_immutable": "PROCESS_IDENTITY:PROCESS:22504@1785886374.192433:HELPER_PARENT_CHAIN",
+  "m9_status_immutable": "PROCESS_IDENTITY_FAILED",
+  "phase_journal": [
+    {
+      "event": "start",
+      "first_broken_edge": null,
+      "phase": "launch",
+      "sequence": 1,
+      "status": "RUNNING"
+    },
+    {
+      "event": "end",
+      "first_broken_edge": null,
+      "phase": "launch",
+      "sequence": 2,
+      "status": "PASS"
+    },
+    {
+      "event": "start",
+      "first_broken_edge": null,
+      "phase": "boot",
+      "sequence": 3,
+      "status": "RUNNING"
+    },
+    {
+      "event": "end",
+      "first_broken_edge": null,
+      "phase": "boot",
+      "sequence": 4,
+      "status": "PASS"
+    },
+    {
+      "event": "start",
+      "first_broken_edge": null,
+      "phase": "framework",
+      "sequence": 5,
+      "status": "RUNNING"
+    },
+    {
+      "event": "end",
+      "first_broken_edge": "PROCESS_IDENTITY:PROCESS:22504@1785886374.192433:HELPER_PARENT_CHAIN",
+      "phase": "framework",
+      "sequence": 6,
+      "status": "FAIL"
+    },
+    {
+      "event": "start",
+      "first_broken_edge": null,
+      "phase": "cleanup",
+      "sequence": 7,
+      "status": "RUNNING"
+    },
+    {
+      "event": "end",
+      "first_broken_edge": null,
+      "phase": "cleanup",
+      "sequence": 8,
+      "status": "SECONDARY_FAIL"
+    },
+    {
+      "event": "start",
+      "first_broken_edge": null,
+      "phase": "seal",
+      "sequence": 9,
+      "status": "RUNNING"
+    },
+    {
+      "event": "end",
+      "first_broken_edge": null,
+      "phase": "seal",
+      "sequence": 10,
+      "status": "SECONDARY_FAIL"
+    },
+    {
+      "event": "start",
+      "first_broken_edge": null,
+      "phase": "terminal",
+      "sequence": 11,
+      "status": "RUNNING"
+    },
+    {
+      "event": "end",
+      "first_broken_edge": null,
+      "phase": "terminal",
+      "sequence": 12,
+      "status": "PASS"
+    }
+  ],
+  "prestart_orchestration_deviation": {
+    "command_interpreter": "system Python instead of locked venv Python",
+    "counted_as_frozen_chain": false,
+    "error": "ModuleNotFoundError: android_env during import before M9 main",
+    "evidence_class": "RECONSTRUCTED_OPERATOR_RECORD_FROM_TOOL_OUTPUT",
+    "generation_calls": 0,
+    "note": "Recorded transparently; not raw runner evidence and not used to alter source/config.",
+    "project_resources_started": false,
+    "run_root_created": false
+  },
+  "protected_wip": {
+    "expected": {
+      "05_project/src/raven_m/controller/episode_controller.py": "fc0e82e0fde90119365d4f685f080eb4519bf2f602e4bda58de5d4809a40fe33",
+      "05_project/src/raven_m/controller/protocol_v2_guard.py": "ff89d6b70be4b4738646d262beb67d7b7e932e9eb95956d940b1c5000a999d10",
+      "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5bb1f1e3de673a1072cfee62938b761a62fd69c187d5eadf54bc46b115a3fd0a"
+    },
+    "observed": {
+      "05_project/src/raven_m/controller/episode_controller.py": "fc0e82e0fde90119365d4f685f080eb4519bf2f602e4bda58de5d4809a40fe33",
+      "05_project/src/raven_m/controller/protocol_v2_guard.py": "ff89d6b70be4b4738646d262beb67d7b7e932e9eb95956d940b1c5000a999d10",
+      "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5bb1f1e3de673a1072cfee62938b761a62fd69c187d5eadf54bc46b115a3fd0a"
+    },
+    "passed": true
+  },
+  "schema_version": "role_binding_timing.infra_m9.result_audit.v1",
+  "verdict": "FAIL_TEMPORAL_SUPPORT_ATTESTATION",
+  "view_evidence": {
+    "boot_passed": true,
+    "prelaunch_passed": true,
+    "trigger_counts": {
+      "observation_universe": 370,
+      "project_authorization_candidates": 6,
+      "support_only_ancestry_nodes": 1,
+      "trusted_runner_root": 1,
+      "unrelated_observed_processes": 362
+    },
+    "trigger_type_assertions": {
+      "support_has_no_controlled_port": true,
+      "support_role_authority": false,
+      "universe_covered": true,
+      "unrelated_role_authority": false,
+      "views_disjoint": true
+    }
+  }
+}

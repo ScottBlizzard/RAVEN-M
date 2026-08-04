@@ -1,0 +1,47 @@
+{
+  "derived_process_views": {
+    "bytes": 317360,
+    "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m9_authorization_view_separation\\process_identity\\snapshots\\0031_cleanup_emulator_wait_02\\derived_process_views.json",
+    "sha256": "8cf77f454a4e00390a50ea9ea06724eeb1ffc2c19a04dd95dfa95c104d6e563e"
+  },
+  "gate": "cleanup_emulator_wait_02",
+  "helper_ancestry": {},
+  "issues": [],
+  "passed": true,
+  "phase": "cleanup",
+  "roles": {},
+  "runner_client_ledger": {
+    "30392@1785886376.262319": {
+      "ancestry": [
+        "35592@1785886261.847484"
+      ],
+      "argv_sha256": "d7d45307f00496095333b4806d0e0d7a940a38463b9e06d6cbfba839984f9d24",
+      "authorized_at_epoch": 1785886380.7043407,
+      "authorized_phase": "framework",
+      "role": "runner_adb_client"
+    },
+    "37672@1785886275.047038": {
+      "ancestry": [
+        "35592@1785886261.847484"
+      ],
+      "argv_sha256": "c1d7a8db939c711b04aadb990958d9c3d643baec857db24ce9d2c86f6ace8685",
+      "authorized_at_epoch": 1785886280.7898,
+      "authorized_phase": "launch",
+      "role": "runner_adb_server_lifecycle_start"
+    }
+  },
+  "schema_version": "role_binding_timing.infra_m9.process_evaluation.v1",
+  "snapshot": {
+    "bytes": 662254,
+    "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m9_authorization_view_separation\\process_identity\\snapshots\\0031_cleanup_emulator_wait_02\\process_snapshot.json",
+    "sha256": "fa6bb0c89e0ebdd83f0fd7452da51277dc51e92bd823f41ff5b1cda38a65a15c"
+  },
+  "snapshot_sequence": 31,
+  "view_type_assertions": {
+    "support_has_no_controlled_port": true,
+    "support_role_authority": false,
+    "universe_covered": true,
+    "unrelated_role_authority": false,
+    "views_disjoint": true
+  }
+}

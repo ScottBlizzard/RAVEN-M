@@ -1,0 +1,9 @@
+{
+  "canonical_path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m9_authorization_view_separation\\qualification_completion.json",
+  "canonical_sha256": "31aed8e5b4b393f668e2ebd5542c2dd97cb8062422542bdc79e780e235c2423f",
+  "first_broken_edge": "PROCESS_IDENTITY:PROCESS:22504@1785886374.192433:HELPER_PARENT_CHAIN",
+  "journal_entry_count": 12,
+  "rich_error": null,
+  "schema_version": "role_binding_timing.infra_m9.terminal_receipt.v1",
+  "terminal_mode": "rich"
+}

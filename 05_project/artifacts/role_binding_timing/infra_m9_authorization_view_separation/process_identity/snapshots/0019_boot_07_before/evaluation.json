@@ -1,0 +1,55 @@
+{
+  "derived_process_views": {
+    "bytes": 322736,
+    "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m9_authorization_view_separation\\process_identity\\snapshots\\0019_boot_07_before\\derived_process_views.json",
+    "sha256": "293d7242268b87476c10f50846129623eab333ac836d432c6af56d8116c5416e"
+  },
+  "gate": "boot_07_before",
+  "helper_ancestry": {
+    "32240@1785886283.317361": [
+      "28756@1785886281.046097"
+    ],
+    "35452@1785886281.294948": [
+      "28756@1785886281.046097"
+    ],
+    "37672@1785886275.047038": [
+      "35592@1785886261.847484"
+    ]
+  },
+  "issues": [],
+  "passed": true,
+  "phase": "boot",
+  "roles": {
+    "11216@1785886280.815491": "emulator_launcher",
+    "28756@1785886281.046097": "qemu",
+    "32240@1785886283.317361": "netsimd",
+    "35452@1785886281.294948": "crashpad",
+    "37024@1785886277.241027": "adb_server",
+    "37672@1785886275.047038": "runner_adb_server_lifecycle_start"
+  },
+  "runner_client_ledger": {
+    "37672@1785886275.047038": {
+      "ancestry": [
+        "35592@1785886261.847484"
+      ],
+      "argv_sha256": "c1d7a8db939c711b04aadb990958d9c3d643baec857db24ce9d2c86f6ace8685",
+      "authorized_at_epoch": 1785886280.7898,
+      "authorized_phase": "launch",
+      "role": "runner_adb_server_lifecycle_start"
+    }
+  },
+  "schema_version": "role_binding_timing.infra_m9.process_evaluation.v1",
+  "snapshot": {
+    "bytes": 679118,
+    "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m9_authorization_view_separation\\process_identity\\snapshots\\0019_boot_07_before\\process_snapshot.json",
+    "sha256": "763f8bc231402554035163441711d2182277111d0b2021a351fdfd416018b6eb"
+  },
+  "snapshot_sequence": 19,
+  "view_type_assertions": {
+    "support_has_no_controlled_port": true,
+    "support_role_authority": false,
+    "universe_covered": true,
+    "unrelated_role_authority": false,
+    "views_disjoint": true
+  }
+}

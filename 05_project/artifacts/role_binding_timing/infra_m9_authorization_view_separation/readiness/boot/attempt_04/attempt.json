@@ -1,0 +1,187 @@
+{
+  "after_identity": {
+    "derived_process_views": {
+      "bytes": 322160,
+      "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m9_authorization_view_separation\\process_identity\\snapshots\\0014_boot_04_after\\derived_process_views.json",
+      "sha256": "3d85a003592b29c24b142e427a2534b71423915af5364241d87921ee22d4a059"
+    },
+    "gate": "boot_04_after",
+    "helper_ancestry": {
+      "32240@1785886283.317361": [
+        "28756@1785886281.046097"
+      ],
+      "35452@1785886281.294948": [
+        "28756@1785886281.046097"
+      ],
+      "37672@1785886275.047038": [
+        "35592@1785886261.847484"
+      ]
+    },
+    "issues": [],
+    "passed": true,
+    "phase": "boot",
+    "roles": {
+      "11216@1785886280.815491": "emulator_launcher",
+      "28756@1785886281.046097": "qemu",
+      "32240@1785886283.317361": "netsimd",
+      "35452@1785886281.294948": "crashpad",
+      "37024@1785886277.241027": "adb_server",
+      "37672@1785886275.047038": "runner_adb_server_lifecycle_start"
+    },
+    "runner_client_ledger": {
+      "37672@1785886275.047038": {
+        "ancestry": [
+          "35592@1785886261.847484"
+        ],
+        "argv_sha256": "c1d7a8db939c711b04aadb990958d9c3d643baec857db24ce9d2c86f6ace8685",
+        "authorized_at_epoch": 1785886280.7898,
+        "authorized_phase": "launch",
+        "role": "runner_adb_server_lifecycle_start"
+      }
+    },
+    "schema_version": "role_binding_timing.infra_m9.process_evaluation.v1",
+    "snapshot": {
+      "bytes": 677964,
+      "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m9_authorization_view_separation\\process_identity\\snapshots\\0014_boot_04_after\\process_snapshot.json",
+      "sha256": "a08a353a78e889296ecd346b758bee8d7fa057b744040f0c001bbdfd8e96e4ff"
+    },
+    "snapshot_sequence": 14,
+    "view_type_assertions": {
+      "support_has_no_controlled_port": true,
+      "support_role_authority": false,
+      "universe_covered": true,
+      "unrelated_role_authority": false,
+      "views_disjoint": true
+    }
+  },
+  "before_identity": {
+    "derived_process_views": {
+      "bytes": 319980,
+      "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m9_authorization_view_separation\\process_identity\\snapshots\\0013_boot_04_before\\derived_process_views.json",
+      "sha256": "64bba2f875de0aed1e37c93f168b56c2a96a297d9a82033e70f64e2f95ff0027"
+    },
+    "gate": "boot_04_before",
+    "helper_ancestry": {
+      "32240@1785886283.317361": [
+        "28756@1785886281.046097"
+      ],
+      "35452@1785886281.294948": [
+        "28756@1785886281.046097"
+      ],
+      "37672@1785886275.047038": [
+        "35592@1785886261.847484"
+      ]
+    },
+    "issues": [],
+    "passed": true,
+    "phase": "boot",
+    "roles": {
+      "11216@1785886280.815491": "emulator_launcher",
+      "28756@1785886281.046097": "qemu",
+      "32240@1785886283.317361": "netsimd",
+      "35452@1785886281.294948": "crashpad",
+      "37024@1785886277.241027": "adb_server",
+      "37672@1785886275.047038": "runner_adb_server_lifecycle_start"
+    },
+    "runner_client_ledger": {
+      "37672@1785886275.047038": {
+        "ancestry": [
+          "35592@1785886261.847484"
+        ],
+        "argv_sha256": "c1d7a8db939c711b04aadb990958d9c3d643baec857db24ce9d2c86f6ace8685",
+        "authorized_at_epoch": 1785886280.7898,
+        "authorized_phase": "launch",
+        "role": "runner_adb_server_lifecycle_start"
+      }
+    },
+    "schema_version": "role_binding_timing.infra_m9.process_evaluation.v1",
+    "snapshot": {
+      "bytes": 673616,
+      "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m9_authorization_view_separation\\process_identity\\snapshots\\0013_boot_04_before\\process_snapshot.json",
+      "sha256": "e581a0a0a09c39e31e32f3b368a79b438fe43f05b85249a3e974284ca22c21cb"
+    },
+    "snapshot_sequence": 13,
+    "view_type_assertions": {
+      "support_has_no_controlled_port": true,
+      "support_role_authority": false,
+      "universe_covered": true,
+      "unrelated_role_authority": false,
+      "views_disjoint": true
+    }
+  },
+  "index": 4,
+  "issues": [],
+  "passed": false,
+  "records": {
+    "boot_completed": {
+      "command": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "-P",
+        "5038",
+        "-s",
+        "emulator-5554",
+        "shell",
+        "getprop",
+        "sys.boot_completed"
+      ],
+      "returncode": 1,
+      "stderr": {
+        "bytes": 25,
+        "path": "05_project/artifacts/role_binding_timing/infra_m9_authorization_view_separation/readiness/boot/attempt_04/raw/boot_completed.stderr.bin",
+        "sha256": "a788f5abadbd52445df2e6927ca7a32a1bde55d2873bf644420d808c767aa97e"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/infra_m9_authorization_view_separation/readiness/boot/attempt_04/raw/boot_completed.stdout.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timed_out": false,
+      "wall_time_seconds": 0.20399999999790452
+    },
+    "devices": {
+      "command": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "-P",
+        "5038",
+        "devices",
+        "-l"
+      ],
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/infra_m9_authorization_view_separation/readiness/boot/attempt_04/raw/devices.stderr.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 75,
+        "path": "05_project/artifacts/role_binding_timing/infra_m9_authorization_view_separation/readiness/boot/attempt_04/raw/devices.stdout.bin",
+        "sha256": "ef46b6a8b96dbb8266243cce30025e2c4a030f951ee8508460ea25bafc84f0ff"
+      },
+      "timed_out": false,
+      "wall_time_seconds": 0.15600000001722947
+    },
+    "get_state": {
+      "command": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "-P",
+        "5038",
+        "-s",
+        "emulator-5554",
+        "get-state"
+      ],
+      "returncode": 1,
+      "stderr": {
+        "bytes": 23,
+        "path": "05_project/artifacts/role_binding_timing/infra_m9_authorization_view_separation/readiness/boot/attempt_04/raw/get_state.stderr.bin",
+        "sha256": "faba18991a66c091c6cd8e5f54e4920ae9e6bd588ea0ffdbcce2a18813f9ab31"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/infra_m9_authorization_view_separation/readiness/boot/attempt_04/raw/get_state.stdout.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timed_out": false,
+      "wall_time_seconds": 0.125
+    }
+  }
+}

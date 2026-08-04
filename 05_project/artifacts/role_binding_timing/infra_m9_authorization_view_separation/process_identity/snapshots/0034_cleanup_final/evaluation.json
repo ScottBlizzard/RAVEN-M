@@ -1,0 +1,123 @@
+{
+  "derived_process_views": {
+    "bytes": 316625,
+    "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m9_authorization_view_separation\\process_identity\\snapshots\\0034_cleanup_final\\derived_process_views.json",
+    "sha256": "8059df45849d8a2ad6431030f5cde7b4b3457273263ba099ee1e2712641b9e0f"
+  },
+  "gate": "cleanup_final",
+  "helper_ancestry": {
+    "22504@1785886374.192433": [
+      "35408@MISSING_CURRENT_UNIVERSE"
+    ],
+    "28160@1785886374.208184": [
+      "36756@MISSING_CURRENT_UNIVERSE"
+    ],
+    "30392@1785886376.262319": [
+      "35592@1785886261.847484"
+    ],
+    "31172@1785886374.158554": [
+      "30428@MISSING_CURRENT_UNIVERSE"
+    ],
+    "32240@1785886283.317361": [
+      "28756@MISSING_CURRENT_UNIVERSE"
+    ],
+    "33076@1785886374.091185": [
+      "9464@MISSING_CURRENT_UNIVERSE"
+    ],
+    "33628@1785886374.122709": [
+      "36880@MISSING_CURRENT_UNIVERSE"
+    ],
+    "33876@1785886374.109873": [
+      "10024@MISSING_CURRENT_UNIVERSE"
+    ],
+    "34620@1785886374.202054": [
+      "5988@MISSING_CURRENT_UNIVERSE"
+    ],
+    "35132@1785886374.083373": [
+      "18524@MISSING_CURRENT_UNIVERSE"
+    ],
+    "35452@1785886281.294948": [
+      "28756@MISSING_CURRENT_UNIVERSE"
+    ],
+    "35576@1785886374.208183": [
+      "544@MISSING_CURRENT_UNIVERSE"
+    ],
+    "36712@1785886374.049228": [
+      "10112@MISSING_CURRENT_UNIVERSE"
+    ],
+    "36976@1785886380.070628": [
+      "31972@MISSING_CURRENT_UNIVERSE"
+    ],
+    "37672@1785886275.047038": [
+      "35592@1785886261.847484"
+    ],
+    "37868@1785886374.038734": [
+      "33644@MISSING_CURRENT_UNIVERSE"
+    ],
+    "4528@1785886374.109197": [
+      "13268@MISSING_CURRENT_UNIVERSE"
+    ],
+    "5064@1785886374.039168": [
+      "33208@MISSING_CURRENT_UNIVERSE"
+    ]
+  },
+  "issues": [
+    "PROCESS:22504@1785886374.192433:HELPER_PARENT_CHAIN",
+    "PROCESS:28160@1785886374.208184:HELPER_PARENT_CHAIN",
+    "PROCESS:31172@1785886374.158554:HELPER_PARENT_CHAIN",
+    "PROCESS:32240@1785886283.317361:HELPER_PARENT_CHAIN",
+    "PROCESS:33076@1785886374.091185:HELPER_PARENT_CHAIN",
+    "PROCESS:33628@1785886374.122709:HELPER_PARENT_CHAIN",
+    "PROCESS:33876@1785886374.109873:HELPER_PARENT_CHAIN",
+    "PROCESS:34620@1785886374.202054:HELPER_PARENT_CHAIN",
+    "PROCESS:35132@1785886374.083373:HELPER_PARENT_CHAIN",
+    "PROCESS:35452@1785886281.294948:HELPER_PARENT_CHAIN",
+    "PROCESS:35576@1785886374.208183:HELPER_PARENT_CHAIN",
+    "PROCESS:36712@1785886374.049228:HELPER_PARENT_CHAIN",
+    "PROCESS:36976@1785886380.070628:HELPER_PARENT_CHAIN",
+    "PROCESS:37868@1785886374.038734:HELPER_PARENT_CHAIN",
+    "PROCESS:38684@1785886384.044606:SHUTDOWN_CMD_PARENT_MISSING",
+    "PROCESS:4528@1785886374.109197:HELPER_PARENT_CHAIN",
+    "PROCESS:5064@1785886374.039168:HELPER_PARENT_CHAIN"
+  ],
+  "passed": false,
+  "phase": "cleanup",
+  "roles": {
+    "30392@1785886376.262319": "runner_adb_client",
+    "37672@1785886275.047038": "runner_adb_server_lifecycle_start"
+  },
+  "runner_client_ledger": {
+    "30392@1785886376.262319": {
+      "ancestry": [
+        "35592@1785886261.847484"
+      ],
+      "argv_sha256": "d7d45307f00496095333b4806d0e0d7a940a38463b9e06d6cbfba839984f9d24",
+      "authorized_at_epoch": 1785886380.7043407,
+      "authorized_phase": "framework",
+      "role": "runner_adb_client"
+    },
+    "37672@1785886275.047038": {
+      "ancestry": [
+        "35592@1785886261.847484"
+      ],
+      "argv_sha256": "c1d7a8db939c711b04aadb990958d9c3d643baec857db24ce9d2c86f6ace8685",
+      "authorized_at_epoch": 1785886280.7898,
+      "authorized_phase": "launch",
+      "role": "runner_adb_server_lifecycle_start"
+    }
+  },
+  "schema_version": "role_binding_timing.infra_m9.process_evaluation.v1",
+  "snapshot": {
+    "bytes": 660472,
+    "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m9_authorization_view_separation\\process_identity\\snapshots\\0034_cleanup_final\\process_snapshot.json",
+    "sha256": "27cb736bad3bf84e10475c441dfebfcabbb768a3ab6ab9b6522c3c3a4deb1ea6"
+  },
+  "snapshot_sequence": 34,
+  "view_type_assertions": {
+    "support_has_no_controlled_port": true,
+    "support_role_authority": false,
+    "universe_covered": true,
+    "unrelated_role_authority": false,
+    "views_disjoint": true
+  }
+}

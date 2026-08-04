@@ -1,0 +1,55 @@
+{
+  "derived_process_views": {
+    "bytes": 318251,
+    "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m9_authorization_view_separation\\process_identity\\snapshots\\0020_boot_07_after\\derived_process_views.json",
+    "sha256": "a04e32167680e055229153ea2db98a4d936523fcaeaef77253bd452d7ebfa6ac"
+  },
+  "gate": "boot_07_after",
+  "helper_ancestry": {
+    "32240@1785886283.317361": [
+      "28756@1785886281.046097"
+    ],
+    "35452@1785886281.294948": [
+      "28756@1785886281.046097"
+    ],
+    "37672@1785886275.047038": [
+      "35592@1785886261.847484"
+    ]
+  },
+  "issues": [],
+  "passed": true,
+  "phase": "boot",
+  "roles": {
+    "11216@1785886280.815491": "emulator_launcher",
+    "28756@1785886281.046097": "qemu",
+    "32240@1785886283.317361": "netsimd",
+    "35452@1785886281.294948": "crashpad",
+    "37024@1785886277.241027": "adb_server",
+    "37672@1785886275.047038": "runner_adb_server_lifecycle_start"
+  },
+  "runner_client_ledger": {
+    "37672@1785886275.047038": {
+      "ancestry": [
+        "35592@1785886261.847484"
+      ],
+      "argv_sha256": "c1d7a8db939c711b04aadb990958d9c3d643baec857db24ce9d2c86f6ace8685",
+      "authorized_at_epoch": 1785886280.7898,
+      "authorized_phase": "launch",
+      "role": "runner_adb_server_lifecycle_start"
+    }
+  },
+  "schema_version": "role_binding_timing.infra_m9.process_evaluation.v1",
+  "snapshot": {
+    "bytes": 670064,
+    "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m9_authorization_view_separation\\process_identity\\snapshots\\0020_boot_07_after\\process_snapshot.json",
+    "sha256": "ee2a5e795b391b40b7311ee30a9e133d91276cfc2543480a0c52fc5fbef54833"
+  },
+  "snapshot_sequence": 20,
+  "view_type_assertions": {
+    "support_has_no_controlled_port": true,
+    "support_role_authority": false,
+    "universe_covered": true,
+    "unrelated_role_authority": false,
+    "views_disjoint": true
+  }
+}
