@@ -1,0 +1,170 @@
+{
+  "schema_version": "eest_ac_action_qualification_metrics.v0_2_1",
+  "study_id": "eest_ac_v0_2_1_action_qualification_20260804",
+  "verdict": "FAIL_CONTROLLER_FLOOR",
+  "stop_reason": "hard_failure_after_Q-SWIPE",
+  "scope": {
+    "non_scoring": true,
+    "memory_efficacy_experiment": false,
+    "efficacy_batch_started": false,
+    "m_risk_online": false,
+    "maximum_cells": 3,
+    "executed_cells": 1,
+    "unexecuted_cells": 2
+  },
+  "runtime": {
+    "model": "Qwen/Qwen3-VL-32B-Instruct",
+    "revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+    "backend": "qwen3_vl_32b_transformers_bf16_4x4090_v1",
+    "max_new_tokens": 256,
+    "preflight_generation_calls": 0,
+    "screen_shape": [2400, 1080, 3],
+    "a11y_available": true
+  },
+  "rates": {
+    "initial_full_decision_pass_observed": {"numerator": 0, "denominator": 1, "rate": 0.0},
+    "pass_after_at_most_one_repair_observed": {"numerator": 0, "denominator": 1, "rate": 0.0},
+    "qualification_canonical_within_one_repair": {"numerator": 0, "denominator": 3, "rate": 0.0},
+    "full_schema_adapter_execution_reset_observed": {"numerator": 0, "denominator": 1, "rate": 0.0},
+    "reset_pass_observed": {"numerator": 1, "denominator": 1, "rate": 1.0}
+  },
+  "accounting": {
+    "planned_initial_calls_if_no_early_stop": 3,
+    "planned_maximum_repair_calls_if_needed": 3,
+    "realized_initial_calls": 1,
+    "realized_repair_calls": 1,
+    "realized_raw_call_records": 2,
+    "realized_attempt_records": 2,
+    "reported_model_calls": 2,
+    "accounting_exact": true,
+    "prompt_tokens": 7065,
+    "completion_tokens": 130,
+    "total_tokens": 7195,
+    "max_token_hits": 0,
+    "schema_truncations": 0,
+    "model_latency_seconds": 16.945858207065612,
+    "executed_probe_wall_time_seconds": 72.8130000000092,
+    "batch_wall_time_seconds": 182.109609,
+    "plan_actual_divergence": "The frozen runner stopped after cell 1 because the one allowed repair remained schema-invalid; cells 2 and 3 and their calls were correctly not started."
+  },
+  "coverage": {
+    "required": ["swipe", "app_navigation", "navigation_press"],
+    "attempted": ["swipe"],
+    "achieved": [],
+    "complete": false,
+    "note": "A canonical-looking swipe action object was emitted twice, but coverage requires an accepted, adapter-mapped, environment-executed action."
+  },
+  "probes": [
+    {
+      "cell": 1,
+      "probe_id": "Q-SWIPE",
+      "status": "hard_failure",
+      "intended_category": "swipe",
+      "initial": {
+        "raw_output": "{\"status\":\"continue\",\"action\":{\"type\":\"swipe\",\"x\":0.5,\"y\":0.75,\"x2\":0.5,\"y2\":0.25,\"duration_ms\":500},\"intent\":\"swipe up to open app drawer\",\"evidence\":[],\"citations\":[]}",
+        "action_object_is_direct_canonical_shape": true,
+        "canonicalization_provenance": "direct_shape_but_full_decision_rejected_before_acceptance",
+        "intent_characters": 27,
+        "intent_max_characters": 24,
+        "schema_valid": false,
+        "failure_code": "DECISION_SCHEMA_INVALID",
+        "failure_message": "intent: 'swipe up to open app drawer' is too long",
+        "prompt_tokens": 3352,
+        "completion_tokens": 66,
+        "total_tokens": 3418,
+        "latency_seconds": 8.447095124050975
+      },
+      "repair": {
+        "used": true,
+        "raw_output": "{\"status\":\"continue\",\"action\":{\"duration_ms\":500,\"type\":\"swipe\",\"x\":0.5,\"x2\":0.5,\"y\":0.8,\"y2\":0.2},\"intent\":\"swipe up to reveal app drawer\",\"evidence\":[],\"citations\":[]}",
+        "action_object_is_direct_canonical_shape": true,
+        "canonicalization_provenance": "direct_shape_but_full_decision_rejected_before_acceptance",
+        "intent_characters": 29,
+        "intent_max_characters": 24,
+        "schema_valid": false,
+        "failure_code": "DECISION_SCHEMA_INVALID",
+        "failure_message": "intent: 'swipe up to reveal app drawer' is too long",
+        "identical_full_output": false,
+        "identical_action_object": false,
+        "prompt_tokens": 3713,
+        "completion_tokens": 64,
+        "total_tokens": 3777,
+        "latency_seconds": 8.498763083014637
+      },
+      "schema_pass": false,
+      "adapter_audit": "not_reached",
+      "environment_task_action_executed": false,
+      "state_changed_by_task_action": false,
+      "reset_pass": true,
+      "coverage_pass": false,
+      "model_call_accounting_valid": true,
+      "schema_truncation_count": 0,
+      "wall_time_seconds": 72.8130000000092
+    },
+    {
+      "cell": 2,
+      "probe_id": "Q-OPEN-APP",
+      "status": "not_run_due_pre_registered_hard_stop",
+      "model_calls": 0
+    },
+    {
+      "cell": 3,
+      "probe_id": "Q-PRESS-BACK",
+      "status": "not_run_due_pre_registered_hard_stop",
+      "model_calls": 0
+    }
+  ],
+  "v0_2_replay_confusion": {
+    "original_invalid": 18,
+    "safe_normalize": 8,
+    "must_repair": 10,
+    "canonical_direct": 0,
+    "repair_outputs_identical_to_initial_invalid_action": 9
+  },
+  "offline_conformance": {
+    "generated_artifacts_exact": true,
+    "canonical_action_types": 10,
+    "prompt_examples_present": 10,
+    "schema_examples_accepted": 10,
+    "adapter_mappings_conformant": 10,
+    "maximum_qwen_serialization_tokens": 200,
+    "under_256_token_cap": true,
+    "focused_tests": {"passed": 59, "failed": 0},
+    "full_regression": {"passed": 1059, "failed": 1, "expected_only_failure": "legacy r79/r78 frozen-manifest conflict"}
+  },
+  "failure_classification": {
+    "primary": "decision_envelope_schema_contract_not_closed",
+    "specific": "intent_max_length_not_satisfied_after_one_repair",
+    "not_schema_truncation": true,
+    "not_adapter_failure": true,
+    "not_environment_execution_failure": true,
+    "not_infrastructure_retry": true,
+    "interpretation": "The action payload was usable in shape and semantics, but the complete decision was invalid. Qualification is conjunctive, so no action may be passed to the adapter."
+  },
+  "claim_evidence_summary": {
+    "Q-C1": "FAIL_LIVE_BOUNDARY_GAP",
+    "Q-C2": "PASS_OFFLINE_ONLY",
+    "Q-C3": "PASS_BOUNDED_TRANSPARENT_WITH_EFFECTIVENESS_CAVEAT",
+    "Q-C4": "FAIL",
+    "Q-C5": "PASS",
+    "Q-C6": "PASS"
+  },
+  "next_boundary": {
+    "controller_floor": true,
+    "qualified_for_new_held_out_efficacy_design": false,
+    "may_start_48_cell": false,
+    "may_start_m_risk_online": false,
+    "allowed_next_work": "A separately frozen controller-contract repair round only; no reuse or rescoring of this qualification batch."
+  },
+  "evidence_sha256": {
+    "runtime_preflight": "a6c0a82b67bb1a9dd894a51782d84007196b647529d5d13d59c684a7460c39da",
+    "qualification_start": "298ac902d284a20a4289c4e72cfb9382767a90651102e9a4d4090d0fd13a3d57",
+    "home_reference": "e749a18e1d720d22c1cc05971e82c6a85b1ad70d16f045dbf7c79e0a237fee36",
+    "probe_spec_Q_SWIPE": "d97591bc9eca1a9b35f878cdcb674a3b95d911cb761da458ec4a128db5cc0dd7",
+    "before_Q_SWIPE": "17d71ea4a16a025e6a7174cae10ca1ab8aa45bc5d3f968fedbb151392949c7fa",
+    "raw_model_calls_Q_SWIPE": "63b08898e4434045c77a044ffdc6ae55e4b695b4b5dd59d63077666c580ad238",
+    "attempts_Q_SWIPE": "7dcb4b9b19e71f53a2966d21cfe6a06b30d99abcb839a4d9dab7a47926cf45f3",
+    "probe_result_Q_SWIPE": "eafa7d4be044c2354045316ce394284f155d58e5faa323945810ff19fe263053",
+    "qualification_complete": "d14fbbf61d82d671ec24f16d3ef9804e17c68b3ab5cf7db67b1260ac2d887c89"
+  }
+}
