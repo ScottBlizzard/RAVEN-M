@@ -1,0 +1,7 @@
+{
+  "first_broken_edge": "PROCESS_IDENTITY:adb_server_registered:PROCESS:1464@1785882456.172884:RUNNER_PARENT_IDENTITY_NOT_CURRENT",
+  "phase": "launch",
+  "recorded_at": "2026-08-04T22:27:39.977146+00:00",
+  "schema_version": "role_binding_timing.infra_m4.first_edge.v1",
+  "sequence": 2
+}

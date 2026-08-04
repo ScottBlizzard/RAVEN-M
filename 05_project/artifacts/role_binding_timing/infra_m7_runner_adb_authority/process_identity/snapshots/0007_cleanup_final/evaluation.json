@@ -1,0 +1,28 @@
+{
+  "gate": "cleanup_final",
+  "helper_ancestry": {
+    "1464@1785882456.172884": [
+      "1912@1785882444.609109"
+    ]
+  },
+  "issues": [
+    "PROCESS:1464@1785882456.172884:RUNNER_CLIENT_START_SERVER_PHASE:cleanup",
+    "PROCESS:1464@1785882456.172884:RUNNER_PARENT_IDENTITY_NOT_CURRENT"
+  ],
+  "passed": false,
+  "phase": "cleanup",
+  "roles": {
+    "15540@1785729286.916473": "preexisting_unrelated_no_authority",
+    "20088@1785729293.750479": "preexisting_unrelated_no_authority",
+    "21748@1785729294.665356": "preexisting_unrelated_no_authority",
+    "4584@1785729381.821991": "preexisting_unrelated_no_authority"
+  },
+  "runner_client_ledger": {},
+  "schema_version": "role_binding_timing.infra_m7.process_evaluation.v1",
+  "snapshot": {
+    "bytes": 332120,
+    "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m7_runner_adb_authority\\process_identity\\snapshots\\0007_cleanup_final\\process_snapshot.json",
+    "sha256": "019c20c38119b09e2d7d5f1aa258922dad75ad70f8b54889606de22066df3e2d"
+  },
+  "snapshot_sequence": 7
+}

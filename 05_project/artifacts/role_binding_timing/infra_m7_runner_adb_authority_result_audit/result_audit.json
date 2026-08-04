@@ -1,0 +1,368 @@
+{
+  "checks": {
+    "client_direct_runner_parent": true,
+    "client_exact_path_hash": true,
+    "client_explicit_5038": true,
+    "client_never_listened": true,
+    "controlled_ports_empty_after": true,
+    "exactly_one_completion": true,
+    "external_empty_root_removed": true,
+    "first_edge_consistent": true,
+    "journal_entries_eight": true,
+    "manifest_integrity": true,
+    "no_boot_or_later_stage": true,
+    "project_runtime_absent_after": true,
+    "protected_wip_unchanged": true,
+    "runner_absent_from_trigger_structural_subset": true,
+    "runner_present_in_history": true,
+    "runner_present_in_trigger_all_processes": true,
+    "status_process_identity_failed": true,
+    "terminal_schema_valid": true,
+    "zero_generation": true,
+    "zero_held_out": true
+  },
+  "claim_evidence": {
+    "a11y_tested": false,
+    "boot_tested": false,
+    "burn_in_tested": false,
+    "dev_grid_tested": false,
+    "display_quorum_tested": false,
+    "exclusive_5038_cleanup_observed": true,
+    "exclusive_5038_start_observed": true,
+    "held_out_tested": false,
+    "role_binding_hypothesis_tested": false,
+    "runner_adb_authority_qualified": false,
+    "v0_3_preparation_authorized": false
+  },
+  "created_at": "2026-08-04T22:30:33.818241+00:00",
+  "direct_evidence": {
+    "adb_server_identity": {
+      "access_error": null,
+      "cmdline_items": [
+        "adb",
+        "-L",
+        "tcp:5038",
+        "fork-server",
+        "server",
+        "--reply-fd",
+        "728"
+      ],
+      "command_line": "adb -L tcp:5038 fork-server server --reply-fd 728",
+      "create_time": 1785882458.3449244,
+      "exe": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+      "exe_sha256": "957e46b8615f7af5b7292a2ddabe98d2e61940c3fb2b0545756507f080613e71",
+      "identity_key": "32928@1785882458.344924",
+      "listener_evidence_complete": true,
+      "listener_ports": [
+        5038
+      ],
+      "name": "adb.exe",
+      "pid": 32928,
+      "ppid": 1464
+    },
+    "history": {
+      "path": "05_project/artifacts/role_binding_timing/infra_m7_runner_adb_authority/process_identity/continuous_history/process_history.ndjson",
+      "samples": [
+        {
+          "raw_netstat_sha256": "539b8221bcabdcad24cf6b919cc0c65aee4d2abb9bd26f3e7f9634104c90b25a",
+          "records": [
+            {
+              "access_error": null,
+              "cmdline_items": [
+                "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+                "-P",
+                "5038",
+                "start-server"
+              ],
+              "command_line": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe -P 5038 start-server",
+              "create_time": 1785882456.1728845,
+              "exe": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+              "exe_sha256": "957e46b8615f7af5b7292a2ddabe98d2e61940c3fb2b0545756507f080613e71",
+              "identity_key": "1464@1785882456.172884",
+              "listener_evidence_complete": true,
+              "listener_ports": [],
+              "name": "adb.exe",
+              "pid": 1464,
+              "ppid": 1912
+            },
+            {
+              "access_error": null,
+              "cmdline_items": [
+                "C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+                "05_project/scripts/run_role_binding_timing_infra_m7.py",
+                "--config",
+                "05_project/configs/role_binding_timing/infra_m7_runner_adb_authority.json"
+              ],
+              "command_line": "C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\python.exe 05_project/scripts/run_role_binding_timing_infra_m7.py --config 05_project/configs/role_binding_timing/infra_m7_runner_adb_authority.json",
+              "create_time": 1785882444.6091092,
+              "exe": "C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+              "exe_sha256": "5f7b89a612c9b8af1d6456cdfcd1dbe5ca630849e79aebced9bee9a6694952ec",
+              "identity_key": "1912@1785882444.609109",
+              "listener_evidence_complete": true,
+              "listener_ports": [],
+              "name": "python.exe",
+              "pid": 1912,
+              "ppid": 17216
+            }
+          ],
+          "sample": 1
+        },
+        {
+          "raw_netstat_sha256": "6bc6d8f2053ce867dfa5f8e1617aa8cc2f5b6867f027bbb01219114f1ba647dd",
+          "records": [
+            {
+              "access_error": null,
+              "cmdline_items": [
+                "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+                "-P",
+                "5038",
+                "start-server"
+              ],
+              "command_line": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe -P 5038 start-server",
+              "create_time": 1785882456.1728845,
+              "exe": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+              "exe_sha256": "957e46b8615f7af5b7292a2ddabe98d2e61940c3fb2b0545756507f080613e71",
+              "identity_key": "1464@1785882456.172884",
+              "listener_evidence_complete": true,
+              "listener_ports": [],
+              "name": "adb.exe",
+              "pid": 1464,
+              "ppid": 1912
+            },
+            {
+              "access_error": null,
+              "cmdline_items": [
+                "C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+                "05_project/scripts/run_role_binding_timing_infra_m7.py",
+                "--config",
+                "05_project/configs/role_binding_timing/infra_m7_runner_adb_authority.json"
+              ],
+              "command_line": "C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\python.exe 05_project/scripts/run_role_binding_timing_infra_m7.py --config 05_project/configs/role_binding_timing/infra_m7_runner_adb_authority.json",
+              "create_time": 1785882444.6091092,
+              "exe": "C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+              "exe_sha256": "5f7b89a612c9b8af1d6456cdfcd1dbe5ca630849e79aebced9bee9a6694952ec",
+              "identity_key": "1912@1785882444.609109",
+              "listener_evidence_complete": true,
+              "listener_ports": [],
+              "name": "python.exe",
+              "pid": 1912,
+              "ppid": 17216
+            }
+          ],
+          "sample": 2
+        }
+      ],
+      "sha256": "fb1b998000ba37a3c1e0a434d285ac6febc165f3c5c4b7ef1a7547f47aaed85b"
+    },
+    "runner_identity": {
+      "access_error": null,
+      "cmdline_items": [
+        "C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "05_project/scripts/run_role_binding_timing_infra_m7.py",
+        "--config",
+        "05_project/configs/role_binding_timing/infra_m7_runner_adb_authority.json"
+      ],
+      "command_line": "C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\python.exe 05_project/scripts/run_role_binding_timing_infra_m7.py --config 05_project/configs/role_binding_timing/infra_m7_runner_adb_authority.json",
+      "create_time": 1785882444.6091092,
+      "exe": "C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+      "exe_sha256": "5f7b89a612c9b8af1d6456cdfcd1dbe5ca630849e79aebced9bee9a6694952ec",
+      "identity_key": "1912@1785882444.609109",
+      "name": "python.exe",
+      "pid": 1912,
+      "ppid": 17216
+    },
+    "runner_in_trigger_all_processes": true,
+    "runner_in_trigger_structural_processes": false,
+    "transient_client_identity": "1464@1785882456.172884",
+    "trigger_snapshot_sha256": "1ca72adef2e3118cade3b90930669b3a94d7827f712ad0e6a9353018b8771bdc"
+  },
+  "generation_calls": 0,
+  "held_out_captures": 0,
+  "immutable_completion_status": "PROCESS_IDENTITY_FAILED",
+  "immutable_first_broken_edge": "PROCESS_IDENTITY:adb_server_registered:PROCESS:1464@1785882456.172884:RUNNER_PARENT_IDENTITY_NOT_CURRENT",
+  "inference": "The policy tested runner currentness against the structural subset. After the transient start-server client exited, the still-live runner was no longer an ancestor selected into that subset, although it remained in all_processes and in listener-bearing history. This created the false rejection and prevented the client ledger from being populated.",
+  "model_or_emulator_batch_started": false,
+  "overall_audit_pass": true,
+  "post_run_runtime": {
+    "listeners": {
+      "5037": [],
+      "5038": [],
+      "5554": [],
+      "5555": [],
+      "8554": []
+    },
+    "project_runtime_records": []
+  },
+  "protected_wip": {
+    "05_project/src/raven_m/controller/episode_controller.py": "fc0e82e0fde90119365d4f685f080eb4519bf2f602e4bda58de5d4809a40fe33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "ff89d6b70be4b4738646d262beb67d7b7e932e9eb95956d940b1c5000a999d10",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5bb1f1e3de673a1072cfee62938b761a62fd69c187d5eadf54bc46b115a3fd0a"
+  },
+  "root_cause_classification": "RUNNER_CURRENTNESS_EVIDENCE_SCOPE_MISMATCH",
+  "schema_version": "role_binding_timing.infra_m7.result_audit.v1",
+  "secondary_failures": {
+    "cleanup": {
+      "a11y": {
+        "not_created": true,
+        "passed": true
+      },
+      "exception": {
+        "message": "PRE_CLEANUP_IDENTITY:PROCESS:1464@1785882456.172884:RUNNER_CLIENT_START_SERVER_PHASE:cleanup",
+        "safe_type": "exception",
+        "type": "RuntimeError"
+      },
+      "final_identity": {
+        "gate": "cleanup_final",
+        "helper_ancestry": {
+          "1464@1785882456.172884": [
+            "1912@1785882444.609109"
+          ]
+        },
+        "issues": [
+          "PROCESS:1464@1785882456.172884:RUNNER_CLIENT_START_SERVER_PHASE:cleanup",
+          "PROCESS:1464@1785882456.172884:RUNNER_PARENT_IDENTITY_NOT_CURRENT"
+        ],
+        "passed": false,
+        "phase": "cleanup",
+        "roles": {
+          "15540@1785729286.916473": "preexisting_unrelated_no_authority",
+          "20088@1785729293.750479": "preexisting_unrelated_no_authority",
+          "21748@1785729294.665356": "preexisting_unrelated_no_authority",
+          "4584@1785729381.821991": "preexisting_unrelated_no_authority"
+        },
+        "runner_client_ledger": {},
+        "schema_version": "role_binding_timing.infra_m7.process_evaluation.v1",
+        "snapshot": {
+          "bytes": 332120,
+          "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m7_runner_adb_authority\\process_identity\\snapshots\\0007_cleanup_final\\process_snapshot.json",
+          "sha256": "019c20c38119b09e2d7d5f1aa258922dad75ad70f8b54889606de22066df3e2d"
+        },
+        "snapshot_sequence": 7
+      },
+      "history": {
+        "active": 10,
+        "errors": [],
+        "records": 17,
+        "samples": 7
+      },
+      "history_completion": {
+        "active": 10,
+        "errors": [],
+        "records": 17,
+        "samples": 7
+      },
+      "issues": [
+        "PRE_CLEANUP_IDENTITY:PROCESS:1464@1785882456.172884:RUNNER_CLIENT_START_SERVER_PHASE:cleanup",
+        "FINAL_PROCESS_IDENTITY:PROCESS:1464@1785882456.172884:RUNNER_CLIENT_START_SERVER_PHASE:cleanup"
+      ],
+      "passed": false,
+      "pre_identity": {
+        "gate": "cleanup_before_stop",
+        "helper_ancestry": {
+          "1464@1785882456.172884": [
+            "1912@1785882444.609109"
+          ]
+        },
+        "issues": [
+          "PROCESS:1464@1785882456.172884:RUNNER_CLIENT_START_SERVER_PHASE:cleanup",
+          "PROCESS:1464@1785882456.172884:RUNNER_PARENT_IDENTITY_NOT_CURRENT"
+        ],
+        "passed": false,
+        "phase": "cleanup",
+        "roles": {
+          "15540@1785729286.916473": "preexisting_unrelated_no_authority",
+          "20088@1785729293.750479": "preexisting_unrelated_no_authority",
+          "21748@1785729294.665356": "preexisting_unrelated_no_authority",
+          "32928@1785882458.344924": "adb_server",
+          "4584@1785729381.821991": "preexisting_unrelated_no_authority"
+        },
+        "runner_client_ledger": {},
+        "schema_version": "role_binding_timing.infra_m7.process_evaluation.v1",
+        "snapshot": {
+          "bytes": 333475,
+          "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m7_runner_adb_authority\\process_identity\\snapshots\\0004_cleanup_before_stop\\process_snapshot.json",
+          "sha256": "1e7f62e5afd43a021b8f78b4f1c11905483252d9a900ed1141b8e96e58a4c9d2"
+        },
+        "snapshot_sequence": 4
+      },
+      "steps": {
+        "adb_stop": {
+          "command": [
+            "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+            "-P",
+            "5038",
+            "kill-server"
+          ],
+          "returncode": 0,
+          "stderr": {
+            "bytes": 0,
+            "path": "05_project/artifacts/role_binding_timing/infra_m7_runner_adb_authority/terminal_cleanup/adb_5038_clean_stop.stderr.bin",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout": {
+            "bytes": 0,
+            "path": "05_project/artifacts/role_binding_timing/infra_m7_runner_adb_authority/terminal_cleanup/adb_5038_clean_stop.stdout.bin",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "timed_out": false,
+          "wall_time_seconds": 0.21900000001187436
+        },
+        "adb_wait": [
+          {
+            "gone": true,
+            "identity": {
+              "gate": "cleanup_adb_wait_01",
+              "helper_ancestry": {},
+              "issues": [],
+              "passed": true,
+              "phase": "cleanup",
+              "roles": {},
+              "runner_client_ledger": {},
+              "schema_version": "role_binding_timing.infra_m7.process_evaluation.v1",
+              "snapshot": {
+                "bytes": 332133,
+                "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m7_runner_adb_authority\\process_identity\\snapshots\\0006_cleanup_adb_wait_01\\process_snapshot.json",
+                "sha256": "cbb3e527e1356028040b8e876f9966efbd059c020639a15ec1f92faa3a0a4298"
+              },
+              "snapshot_sequence": 6
+            },
+            "index": 1
+          }
+        ],
+        "emulator_stop": {
+          "not_run": true,
+          "reason": "not_present"
+        },
+        "emulator_wait": []
+      }
+    },
+    "external_temp_cleanup": {
+      "entries_before": [],
+      "existed_before": true,
+      "exists_after": false,
+      "passed": true,
+      "path": "C:\\Users\\lenovo\\AppData\\Local\\Temp\\raven_m_role_binding_timing\\infra_m7_live_q4jab5s2",
+      "removed_as_empty_directory": true
+    },
+    "interpretation": "Because the launch client was never ledgered, cleanup reclassified its history record under the cleanup phase and added START_SERVER_PHASE:cleanup. The registered 5038 server was nevertheless killed; no controlled port remains."
+  },
+  "stop_decision": "STOP_INFRA_M7_NO_RETRY",
+  "terminal_accounting": {
+    "canonical_count": 1,
+    "journal_entries": 8,
+    "manifest": {
+      "entries": 43,
+      "issues": [],
+      "manifest_sha256": "27ad43735cdaa70276efddb69ff84095521eef519f9f3cb41d98017bd18fdda0",
+      "passed": true
+    },
+    "terminal_validation": {
+      "errors": [],
+      "first_broken_edge": "PROCESS_IDENTITY:adb_server_registered:PROCESS:1464@1785882456.172884:RUNNER_PARENT_IDENTITY_NOT_CURRENT",
+      "passed": true,
+      "schema_version": "role_binding_timing.infra_m7.terminal_validation.v1",
+      "terminal_mode": "rich"
+    }
+  },
+  "verdict": "FAIL_PROCESS_IDENTITY_FALSE_REJECTION"
+}

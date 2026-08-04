@@ -1,0 +1,12 @@
+{
+  "details": {
+    "requested_status": "PROCESS_IDENTITY_FAILED"
+  },
+  "event": "start",
+  "first_broken_edge": null,
+  "phase": "terminal",
+  "recorded_at": "2026-08-04T22:27:43.613523+00:00",
+  "schema_version": "role_binding_timing.infra_m4.phase_entry.v1",
+  "sequence": 7,
+  "status": "RUNNING"
+}

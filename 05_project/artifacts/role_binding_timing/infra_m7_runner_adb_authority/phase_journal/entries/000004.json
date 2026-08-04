@@ -1,0 +1,17 @@
+{
+  "details": {
+    "edge": "CLEANUP:RuntimeError:PRE_CLEANUP_IDENTITY:PROCESS:1464@1785882456.172884:RUNNER_CLIENT_START_SERVER_PHASE:cleanup",
+    "evidence": {
+      "message": "PRE_CLEANUP_IDENTITY:PROCESS:1464@1785882456.172884:RUNNER_CLIENT_START_SERVER_PHASE:cleanup",
+      "safe_type": "exception",
+      "type": "RuntimeError"
+    }
+  },
+  "event": "end",
+  "first_broken_edge": null,
+  "phase": "cleanup",
+  "recorded_at": "2026-08-04T22:27:42.488418+00:00",
+  "schema_version": "role_binding_timing.infra_m4.phase_entry.v1",
+  "sequence": 4,
+  "status": "SECONDARY_FAIL"
+}

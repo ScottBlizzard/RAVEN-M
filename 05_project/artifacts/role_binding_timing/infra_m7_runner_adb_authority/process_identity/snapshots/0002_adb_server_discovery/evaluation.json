@@ -1,0 +1,16 @@
+{
+  "gate": "adb_server_discovery",
+  "helper_ancestry": {},
+  "issues": [],
+  "passed": true,
+  "phase": "launch",
+  "roles": {},
+  "runner_client_ledger": {},
+  "schema_version": "role_binding_timing.infra_m7.process_evaluation.v1",
+  "snapshot": {
+    "bytes": 329728,
+    "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m7_runner_adb_authority\\process_identity\\snapshots\\0002_adb_server_discovery\\process_snapshot.json",
+    "sha256": "e42ec8351a4993cd56142fcd02eb860a42c97785b1069ca08857a8a9da2108b5"
+  },
+  "snapshot_sequence": 2
+}

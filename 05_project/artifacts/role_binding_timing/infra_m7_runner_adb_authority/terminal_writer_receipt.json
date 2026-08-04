@@ -1,0 +1,9 @@
+{
+  "canonical_path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m7_runner_adb_authority\\qualification_completion.json",
+  "canonical_sha256": "436e8d98a473e31c1c421b0ac81f2c90c6fcfdf451b44101f235f9b756aaf30a",
+  "first_broken_edge": "PROCESS_IDENTITY:adb_server_registered:PROCESS:1464@1785882456.172884:RUNNER_PARENT_IDENTITY_NOT_CURRENT",
+  "journal_entry_count": 8,
+  "rich_error": null,
+  "schema_version": "role_binding_timing.infra_m7.terminal_receipt.v1",
+  "terminal_mode": "rich"
+}

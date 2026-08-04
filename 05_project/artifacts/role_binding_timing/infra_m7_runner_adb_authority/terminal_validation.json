@@ -1,0 +1,7 @@
+{
+  "errors": [],
+  "first_broken_edge": "PROCESS_IDENTITY:adb_server_registered:PROCESS:1464@1785882456.172884:RUNNER_PARENT_IDENTITY_NOT_CURRENT",
+  "passed": true,
+  "schema_version": "role_binding_timing.infra_m7.terminal_validation.v1",
+  "terminal_mode": "rich"
+}

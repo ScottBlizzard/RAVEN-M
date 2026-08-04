@@ -1,0 +1,21 @@
+{
+  "gate": "prelaunch_baseline",
+  "helper_ancestry": {},
+  "issues": [],
+  "passed": true,
+  "phase": "launch",
+  "roles": {
+    "15540@1785729286.916473": "preexisting_unrelated_no_authority",
+    "20088@1785729293.750479": "preexisting_unrelated_no_authority",
+    "21748@1785729294.665356": "preexisting_unrelated_no_authority",
+    "4584@1785729381.821991": "preexisting_unrelated_no_authority"
+  },
+  "runner_client_ledger": {},
+  "schema_version": "role_binding_timing.infra_m7.process_evaluation.v1",
+  "snapshot": {
+    "bytes": 326024,
+    "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m7_runner_adb_authority\\process_identity\\snapshots\\0001_prelaunch_baseline\\process_snapshot.json",
+    "sha256": "7e2a20d7262a214720f45e40a9367ac3a48a2c5197f1f226b8e93655568c6db3"
+  },
+  "snapshot_sequence": 1
+}
