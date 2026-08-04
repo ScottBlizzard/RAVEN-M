@@ -1,0 +1,221 @@
+{
+  "a11y": {
+    "authorized": false,
+    "first_broken_edge": "NOT_AUTHORIZED",
+    "grid": {
+      "completed": 0,
+      "passed": 0,
+      "records": [],
+      "required": 12
+    },
+    "passed": false,
+    "settings": {
+      "completed": 0,
+      "passed": 0,
+      "records": [],
+      "required": 3
+    }
+  },
+  "burn_in": {
+    "completed_cycles": 0,
+    "elapsed_seconds": 0.0,
+    "first_broken_edge": "NOT_RUN",
+    "passed": false,
+    "passed_cycles": 0,
+    "records": [],
+    "required_cycles": 24
+  },
+  "claim_evidence": {
+    "a11y_qualified": false,
+    "a11y_tested": false,
+    "burn_in_qualified": false,
+    "display_quorum_qualified": false,
+    "exclusive_5038_registration": false,
+    "full_snapshot_ancestry_qualified": false,
+    "held_out_tested": false,
+    "process_identity_qualified": false,
+    "role_binding_hypothesis_tested": false,
+    "runner_adb_authority_qualified": false,
+    "v0_3_preparation_authorized": false
+  },
+  "cleanup": {
+    "a11y": {
+      "not_created": true,
+      "passed": true
+    },
+    "exception": {
+      "message": "PRE_CLEANUP_IDENTITY:AUTHORIZATION_CANDIDATE_IDENTITY_MISSING",
+      "safe_type": "exception",
+      "type": "RuntimeError"
+    },
+    "final_identity": {
+      "derived_authorization_view": {
+        "bytes": 16053,
+        "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m8_full_snapshot_ancestry\\process_identity\\snapshots\\0004_cleanup_final\\derived_authorization_view.json",
+        "sha256": "23f35d7f874ab9492cca253b3ecb00e5a0bc28338e80458c9a4b96366e916caf"
+      },
+      "gate": "cleanup_final",
+      "helper_ancestry": {},
+      "issues": [
+        "AUTHORIZATION_CANDIDATE_IDENTITY_MISSING"
+      ],
+      "passed": false,
+      "phase": "cleanup",
+      "roles": {},
+      "runner_client_ledger": {},
+      "schema_version": "role_binding_timing.infra_m8.process_evaluation.v1",
+      "snapshot": {
+        "bytes": 328125,
+        "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m8_full_snapshot_ancestry\\process_identity\\snapshots\\0004_cleanup_final\\process_snapshot.json",
+        "sha256": "04d5ce4205e87b057db4cb27366b11e4be12372f23e318201850ac25fa255f8a"
+      },
+      "snapshot_sequence": 4
+    },
+    "history": {
+      "errors": [],
+      "not_started": true,
+      "records": 0,
+      "samples": 0
+    },
+    "history_completion": {
+      "errors": [],
+      "not_started": true,
+      "records": 0,
+      "samples": 0
+    },
+    "issues": [
+      "PRE_CLEANUP_IDENTITY:AUTHORIZATION_CANDIDATE_IDENTITY_MISSING",
+      "FINAL_PROCESS_IDENTITY:AUTHORIZATION_CANDIDATE_IDENTITY_MISSING"
+    ],
+    "passed": false,
+    "pre_identity": {
+      "derived_authorization_view": {
+        "bytes": 16053,
+        "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m8_full_snapshot_ancestry\\process_identity\\snapshots\\0002_cleanup_before_stop\\derived_authorization_view.json",
+        "sha256": "23f35d7f874ab9492cca253b3ecb00e5a0bc28338e80458c9a4b96366e916caf"
+      },
+      "gate": "cleanup_before_stop",
+      "helper_ancestry": {},
+      "issues": [
+        "AUTHORIZATION_CANDIDATE_IDENTITY_MISSING"
+      ],
+      "passed": false,
+      "phase": "cleanup",
+      "roles": {},
+      "runner_client_ledger": {},
+      "schema_version": "role_binding_timing.infra_m8.process_evaluation.v1",
+      "snapshot": {
+        "bytes": 328137,
+        "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m8_full_snapshot_ancestry\\process_identity\\snapshots\\0002_cleanup_before_stop\\process_snapshot.json",
+        "sha256": "0f45c3cfe9baa20665ae0bf96cca8246e9e3fc010a4f0bbec1222319e507f932"
+      },
+      "snapshot_sequence": 2
+    },
+    "steps": {
+      "adb_stop": {
+        "not_run": true,
+        "reason": "not_present"
+      },
+      "adb_wait": [],
+      "emulator_stop": {
+        "not_run": true,
+        "reason": "not_present"
+      },
+      "emulator_wait": []
+    }
+  },
+  "completed_at": "2026-08-04T22:55:39.445843+00:00",
+  "development_contaminated": true,
+  "first_broken_edge": "PROCESS_IDENTITY:prelaunch_baseline:AUTHORIZATION_CANDIDATE_IDENTITY_MISSING",
+  "generation_calls": 0,
+  "held_out_captures": 0,
+  "held_out_eligible": false,
+  "journal_entry_count": 8,
+  "journal_terminal_event_present": true,
+  "last_completed_phase": "terminal",
+  "log_seal": {
+    "issues": [],
+    "no_live_logs_created": true,
+    "passed": true,
+    "records": [],
+    "temporary_root_removed": true
+  },
+  "model_tokens": 0,
+  "primary_error": {
+    "message": "PROCESS_IDENTITY:prelaunch_baseline:AUTHORIZATION_CANDIDATE_IDENTITY_MISSING",
+    "traceback": "Traceback (most recent call last):\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\scripts\\run_role_binding_timing_infra_m5.py\", line 466, in main\n    baseline = monitor.capture(gate=\"prelaunch_baseline\", phase=\"launch\", mode=\"baseline\"); runtime_record[\"baseline\"] = baseline; check_identity(baseline)\n                                                                                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\scripts\\run_role_binding_timing_infra_m5.py\", line 85, in check_identity\n    raise RuntimeError(f\"PROCESS_IDENTITY:{result['gate']}:{result['issues'][0]}\")\nRuntimeError: PROCESS_IDENTITY:prelaunch_baseline:AUTHORIZATION_CANDIDATE_IDENTITY_MISSING\n",
+    "type": "RuntimeError"
+  },
+  "process_identity": {
+    "baseline_count": 0,
+    "core": {},
+    "first_failure_path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m8_full_snapshot_ancestry\\process_identity\\first_process_identity_failure.json",
+    "history": {
+      "errors": [],
+      "not_started": true,
+      "records": 0,
+      "samples": 0
+    },
+    "qualified": false,
+    "snapshot_count": 4
+  },
+  "protected_wip_after": {
+    "05_project/src/raven_m/controller/episode_controller.py": "fc0e82e0fde90119365d4f685f080eb4519bf2f602e4bda58de5d4809a40fe33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "ff89d6b70be4b4738646d262beb67d7b7e932e9eb95956d940b1c5000a999d10",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5bb1f1e3de673a1072cfee62938b761a62fd69c187d5eadf54bc46b115a3fd0a"
+  },
+  "protected_wip_before": {
+    "05_project/src/raven_m/controller/episode_controller.py": "fc0e82e0fde90119365d4f685f080eb4519bf2f602e4bda58de5d4809a40fe33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "ff89d6b70be4b4738646d262beb67d7b7e932e9eb95956d940b1c5000a999d10",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5bb1f1e3de673a1072cfee62938b761a62fd69c187d5eadf54bc46b115a3fd0a"
+  },
+  "protected_wip_unchanged": true,
+  "run_id": "infra-m8-full-snapshot-ancestry-20260805",
+  "runtime": {
+    "baseline": {
+      "derived_authorization_view": {
+        "bytes": 16053,
+        "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m8_full_snapshot_ancestry\\process_identity\\snapshots\\0001_prelaunch_baseline\\derived_authorization_view.json",
+        "sha256": "25e139ed119664f22871b48a9c8d70cde71981bc3c3671fe0385a6a2d030fdd0"
+      },
+      "gate": "prelaunch_baseline",
+      "helper_ancestry": {},
+      "issues": [
+        "AUTHORIZATION_CANDIDATE_IDENTITY_MISSING"
+      ],
+      "passed": false,
+      "phase": "launch",
+      "roles": {},
+      "runner_client_ledger": {},
+      "schema_version": "role_binding_timing.infra_m8.process_evaluation.v1",
+      "snapshot": {
+        "bytes": 325194,
+        "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m8_full_snapshot_ancestry\\process_identity\\snapshots\\0001_prelaunch_baseline\\process_snapshot.json",
+        "sha256": "fb6c826d8800efaef63e77836109cfbeb6097a9303f19848aee9e76160f02193"
+      },
+      "snapshot_sequence": 1
+    },
+    "runner_identity": {
+      "access_error": null,
+      "cmdline_items": [
+        "C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "05_project/scripts/run_role_binding_timing_infra_m8.py",
+        "--config",
+        "05_project/configs/role_binding_timing/infra_m8_full_snapshot_ancestry.json"
+      ],
+      "command_line": "C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\python.exe 05_project/scripts/run_role_binding_timing_infra_m8.py --config 05_project/configs/role_binding_timing/infra_m8_full_snapshot_ancestry.json",
+      "create_time": 1785884125.1212366,
+      "exe": "C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+      "exe_sha256": "5f7b89a612c9b8af1d6456cdfcd1dbe5ca630849e79aebced9bee9a6694952ec",
+      "identity_key": "6820@1785884125.121237",
+      "name": "python.exe",
+      "pid": 6820,
+      "ppid": 33804
+    },
+    "steps": {}
+  },
+  "schema_version": "role_binding_timing.infra_m8.completion.v1",
+  "started_at": "2026-08-04T22:55:28.722393+00:00",
+  "status": "PROCESS_IDENTITY_FAILED",
+  "terminal_mode": "rich"
+}

@@ -1,0 +1,10 @@
+{
+  "artifacts": [
+    {
+      "bytes": 6634,
+      "path": "result_audit.json",
+      "sha256": "c691997ed0f72643f3c2509853242b60098f1a09efdebd00acbc48b34b4d11e3"
+    }
+  ],
+  "schema_version": "role_binding_timing.infra_m8.result_audit_manifest.v1"
+}

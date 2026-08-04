@@ -1,0 +1,9 @@
+{
+  "canonical_path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m8_full_snapshot_ancestry\\qualification_completion.json",
+  "canonical_sha256": "d82a443ff1efb2226f174ad8a73714b8ccfd7565e0e56109082ce81d902f6e91",
+  "first_broken_edge": "PROCESS_IDENTITY:prelaunch_baseline:AUTHORIZATION_CANDIDATE_IDENTITY_MISSING",
+  "journal_entry_count": 8,
+  "rich_error": null,
+  "schema_version": "role_binding_timing.infra_m8.terminal_receipt.v1",
+  "terminal_mode": "rich"
+}

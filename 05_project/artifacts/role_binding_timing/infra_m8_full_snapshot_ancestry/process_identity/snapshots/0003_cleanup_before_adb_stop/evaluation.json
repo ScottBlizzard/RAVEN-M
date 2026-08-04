@@ -1,0 +1,23 @@
+{
+  "derived_authorization_view": {
+    "bytes": 16053,
+    "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m8_full_snapshot_ancestry\\process_identity\\snapshots\\0003_cleanup_before_adb_stop\\derived_authorization_view.json",
+    "sha256": "23f35d7f874ab9492cca253b3ecb00e5a0bc28338e80458c9a4b96366e916caf"
+  },
+  "gate": "cleanup_before_adb_stop",
+  "helper_ancestry": {},
+  "issues": [
+    "AUTHORIZATION_CANDIDATE_IDENTITY_MISSING"
+  ],
+  "passed": false,
+  "phase": "cleanup",
+  "roles": {},
+  "runner_client_ledger": {},
+  "schema_version": "role_binding_timing.infra_m8.process_evaluation.v1",
+  "snapshot": {
+    "bytes": 328145,
+    "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m8_full_snapshot_ancestry\\process_identity\\snapshots\\0003_cleanup_before_adb_stop\\process_snapshot.json",
+    "sha256": "38ac0bc285bc84f19ed7ce1e20e134d34a6d1f88b3b7a69cda92c2772989d4e2"
+  },
+  "snapshot_sequence": 3
+}

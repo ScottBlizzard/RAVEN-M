@@ -1,0 +1,165 @@
+{
+  "artifacts": [
+    {
+      "bytes": 16,
+      "path": "05_project/artifacts/role_binding_timing/infra_m8_full_snapshot_ancestry/.gitattributes",
+      "sha256": "5f098188d595641c34c309079424f0ba6c0525882b4a9337c4790d9d4f242eac"
+    },
+    {
+      "bytes": 252,
+      "path": "05_project/artifacts/role_binding_timing/infra_m8_full_snapshot_ancestry/phase_journal/entries/000001.json",
+      "sha256": "fd9fe6f25429f66e726156c91292c161e65b35d71fc4d3b89bd8658c9b3c11c9"
+    },
+    {
+      "bytes": 1266,
+      "path": "05_project/artifacts/role_binding_timing/infra_m8_full_snapshot_ancestry/phase_journal/entries/000002.json",
+      "sha256": "d76aa04e4cf499d17538e36082d6986614a587d925847f5c54c163719442da1c"
+    },
+    {
+      "bytes": 253,
+      "path": "05_project/artifacts/role_binding_timing/infra_m8_full_snapshot_ancestry/phase_journal/entries/000003.json",
+      "sha256": "e306155e41963a6700d8ecf6ee4994075a5eecf23550d28854ebb3f5e807c3b2"
+    },
+    {
+      "bytes": 524,
+      "path": "05_project/artifacts/role_binding_timing/infra_m8_full_snapshot_ancestry/phase_journal/entries/000004.json",
+      "sha256": "f08fbbe376cb5db7c716df509ca175009fabeca053b17f24f25fc5000d8b7b8d"
+    },
+    {
+      "bytes": 250,
+      "path": "05_project/artifacts/role_binding_timing/infra_m8_full_snapshot_ancestry/phase_journal/entries/000005.json",
+      "sha256": "ddfded9f79b778c937261738cdf1c515c9182ab57520519c64870a8b695f6555"
+    },
+    {
+      "bytes": 245,
+      "path": "05_project/artifacts/role_binding_timing/infra_m8_full_snapshot_ancestry/phase_journal/entries/000006.json",
+      "sha256": "415e66d35b4a3047c7f06493d66a5e0b6048dbd3322c2c773d7086f03a983ed1"
+    },
+    {
+      "bytes": 305,
+      "path": "05_project/artifacts/role_binding_timing/infra_m8_full_snapshot_ancestry/phase_journal/entries/000007.json",
+      "sha256": "c89d2840f24f3cece0d5d20aef738e29f469f313645d83e03c08d8bc9adfa2aa"
+    },
+    {
+      "bytes": 302,
+      "path": "05_project/artifacts/role_binding_timing/infra_m8_full_snapshot_ancestry/phase_journal/entries/000008.json",
+      "sha256": "a62fe32baffd4f3bc04dea82e4324a73ff395b3f318bc48a557ed89789c815d1"
+    },
+    {
+      "bytes": 263,
+      "path": "05_project/artifacts/role_binding_timing/infra_m8_full_snapshot_ancestry/phase_journal/first_broken_edge.json",
+      "sha256": "b3492419da3892c255d815c92dc02ed35b3bd515f8481618bc04e17ea9961d01"
+    },
+    {
+      "bytes": 3181,
+      "path": "05_project/artifacts/role_binding_timing/infra_m8_full_snapshot_ancestry/phase_journal/journal.ndjson",
+      "sha256": "0079c48da26674646ac1f8467f473d4a2d238e05923e0f58e00d3e120885daf7"
+    },
+    {
+      "bytes": 354184,
+      "path": "05_project/artifacts/role_binding_timing/infra_m8_full_snapshot_ancestry/process_identity/first_process_identity_failure.json",
+      "sha256": "bf7f25f5207a69909163361a7cbdf23de0861b46ce4a5666973ad70d8b2ec336"
+    },
+    {
+      "bytes": 16053,
+      "path": "05_project/artifacts/role_binding_timing/infra_m8_full_snapshot_ancestry/process_identity/snapshots/0001_prelaunch_baseline/derived_authorization_view.json",
+      "sha256": "25e139ed119664f22871b48a9c8d70cde71981bc3c3671fe0385a6a2d030fdd0"
+    },
+    {
+      "bytes": 1000,
+      "path": "05_project/artifacts/role_binding_timing/infra_m8_full_snapshot_ancestry/process_identity/snapshots/0001_prelaunch_baseline/evaluation.json",
+      "sha256": "928f8a01646e0ca98aebbff6b29267c0528aa201103cfa75d6820b83e8b09e50"
+    },
+    {
+      "bytes": 17567,
+      "path": "05_project/artifacts/role_binding_timing/infra_m8_full_snapshot_ancestry/process_identity/snapshots/0001_prelaunch_baseline/netstat.stdout.bin",
+      "sha256": "288bd9b319e1bebf4eccbae57f2bda27cf97f311711bcab5077e2955a5249465"
+    },
+    {
+      "bytes": 325194,
+      "path": "05_project/artifacts/role_binding_timing/infra_m8_full_snapshot_ancestry/process_identity/snapshots/0001_prelaunch_baseline/process_snapshot.json",
+      "sha256": "fb6c826d8800efaef63e77836109cfbeb6097a9303f19848aee9e76160f02193"
+    },
+    {
+      "bytes": 16053,
+      "path": "05_project/artifacts/role_binding_timing/infra_m8_full_snapshot_ancestry/process_identity/snapshots/0002_cleanup_before_stop/derived_authorization_view.json",
+      "sha256": "23f35d7f874ab9492cca253b3ecb00e5a0bc28338e80458c9a4b96366e916caf"
+    },
+    {
+      "bytes": 1004,
+      "path": "05_project/artifacts/role_binding_timing/infra_m8_full_snapshot_ancestry/process_identity/snapshots/0002_cleanup_before_stop/evaluation.json",
+      "sha256": "e7e9c457c52edfca9e5f864504efb498e3eb8da014849e530b9ef113842252b6"
+    },
+    {
+      "bytes": 16955,
+      "path": "05_project/artifacts/role_binding_timing/infra_m8_full_snapshot_ancestry/process_identity/snapshots/0002_cleanup_before_stop/netstat.stdout.bin",
+      "sha256": "31c706665c2121671b2d17a9371bf35c5ad7cf71add5a8faa46478e1719a1e40"
+    },
+    {
+      "bytes": 328137,
+      "path": "05_project/artifacts/role_binding_timing/infra_m8_full_snapshot_ancestry/process_identity/snapshots/0002_cleanup_before_stop/process_snapshot.json",
+      "sha256": "0f45c3cfe9baa20665ae0bf96cca8246e9e3fc010a4f0bbec1222319e507f932"
+    },
+    {
+      "bytes": 16053,
+      "path": "05_project/artifacts/role_binding_timing/infra_m8_full_snapshot_ancestry/process_identity/snapshots/0003_cleanup_before_adb_stop/derived_authorization_view.json",
+      "sha256": "23f35d7f874ab9492cca253b3ecb00e5a0bc28338e80458c9a4b96366e916caf"
+    },
+    {
+      "bytes": 1016,
+      "path": "05_project/artifacts/role_binding_timing/infra_m8_full_snapshot_ancestry/process_identity/snapshots/0003_cleanup_before_adb_stop/evaluation.json",
+      "sha256": "fa33c869864d10f91320f46499b042896e84c4dd23b1e5df40e8ea1a00eb6915"
+    },
+    {
+      "bytes": 16955,
+      "path": "05_project/artifacts/role_binding_timing/infra_m8_full_snapshot_ancestry/process_identity/snapshots/0003_cleanup_before_adb_stop/netstat.stdout.bin",
+      "sha256": "31c706665c2121671b2d17a9371bf35c5ad7cf71add5a8faa46478e1719a1e40"
+    },
+    {
+      "bytes": 328145,
+      "path": "05_project/artifacts/role_binding_timing/infra_m8_full_snapshot_ancestry/process_identity/snapshots/0003_cleanup_before_adb_stop/process_snapshot.json",
+      "sha256": "38ac0bc285bc84f19ed7ce1e20e134d34a6d1f88b3b7a69cda92c2772989d4e2"
+    },
+    {
+      "bytes": 16053,
+      "path": "05_project/artifacts/role_binding_timing/infra_m8_full_snapshot_ancestry/process_identity/snapshots/0004_cleanup_final/derived_authorization_view.json",
+      "sha256": "23f35d7f874ab9492cca253b3ecb00e5a0bc28338e80458c9a4b96366e916caf"
+    },
+    {
+      "bytes": 986,
+      "path": "05_project/artifacts/role_binding_timing/infra_m8_full_snapshot_ancestry/process_identity/snapshots/0004_cleanup_final/evaluation.json",
+      "sha256": "7863a05bcadbc54d183ea100aaa581b7db91d4f2f98615a1bd56f6c784f7b297"
+    },
+    {
+      "bytes": 16955,
+      "path": "05_project/artifacts/role_binding_timing/infra_m8_full_snapshot_ancestry/process_identity/snapshots/0004_cleanup_final/netstat.stdout.bin",
+      "sha256": "31c706665c2121671b2d17a9371bf35c5ad7cf71add5a8faa46478e1719a1e40"
+    },
+    {
+      "bytes": 328125,
+      "path": "05_project/artifacts/role_binding_timing/infra_m8_full_snapshot_ancestry/process_identity/snapshots/0004_cleanup_final/process_snapshot.json",
+      "sha256": "04d5ce4205e87b057db4cb27366b11e4be12372f23e318201850ac25fa255f8a"
+    },
+    {
+      "bytes": 9258,
+      "path": "05_project/artifacts/role_binding_timing/infra_m8_full_snapshot_ancestry/qualification_completion.json",
+      "sha256": "d82a443ff1efb2226f174ad8a73714b8ccfd7565e0e56109082ce81d902f6e91"
+    },
+    {
+      "bytes": 8602,
+      "path": "05_project/artifacts/role_binding_timing/infra_m8_full_snapshot_ancestry/terminal_input.json",
+      "sha256": "91d9b7b648c7fe7dc48f7a7e961a671c564ebc55b6cb7ab05b2779c481298b26"
+    },
+    {
+      "bytes": 242,
+      "path": "05_project/artifacts/role_binding_timing/infra_m8_full_snapshot_ancestry/terminal_validation.json",
+      "sha256": "5e26188e27a42f350271f52e5e00933be9d72be3bae3f5f2337e875e7f5da3af"
+    },
+    {
+      "bytes": 515,
+      "path": "05_project/artifacts/role_binding_timing/infra_m8_full_snapshot_ancestry/terminal_writer_receipt.json",
+      "sha256": "1edbbf4586242f7f1be2c8035f766e76171459721f1d34ff3c00aba065c94392"
+    }
+  ],
+  "schema_version": "role_binding_timing.infra_m8.manifest.v1"
+}

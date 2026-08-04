@@ -1,0 +1,293 @@
+{
+  "authorization_candidate_count": 11,
+  "authorization_candidates": [
+    {
+      "access_error": null,
+      "cmdline_items": [
+        "C:\\Program Files\\Tencent\\Weixin\\4.1.11.55\\crashpad_handler.exe",
+        "--no-rate-limit",
+        "--database=C:\\Users\\lenovo\\AppData\\Roaming\\Tencent\\xwechat\\crashinfo",
+        "--annotation=ext_info={\"app_call_name\":\"Weixin\",\"app_name\":\"Weixin\",\"app_path\":\"C:\\\\Program Files\\\\Tencent\\\\Weixin\\\\Weixin.exe\",\"build_ver\":\"11\",\"crash_notify\":\"1\",\"input_action\":2,\"main_thread_id\":\"11536\",\"major_ver\":\"4\",\"minor_ver\":\"1\",\"module_name\":\"xwechat_win\",\"modules_dir\":\"C:\\\\Program Files\\\\Tencent\\\\Weixin\\\\4.1.11.55\",\"patch_ver\":\"55\",\"product\":\"Weixin\",\"report_type\":\"9999\",\"restart_app_cmd\":\"\\\"C:\\\\Program Files\\\\Tencent\\\\Weixin\\\\Weixin.exe\\\" --scene=taskbarpins\",\"version\":\"4065598263\"}",
+        "--annotation=product=Weixin",
+        "--initial-client-data=0x280,0x284,0x288,0x25c,0x28c,0x7ff66278fb48,0x7ff66278fb58,0x7ff66278fb68"
+      ],
+      "command_line": "C:\\Program Files\\Tencent\\Weixin\\4.1.11.55\\crashpad_handler.exe --no-rate-limit --database=C:\\Users\\lenovo\\AppData\\Roaming\\Tencent\\xwechat\\crashinfo --annotation=ext_info={\"app_call_name\":\"Weixin\",\"app_name\":\"Weixin\",\"app_path\":\"C:\\\\Program Files\\\\Tencent\\\\Weixin\\\\Weixin.exe\",\"build_ver\":\"11\",\"crash_notify\":\"1\",\"input_action\":2,\"main_thread_id\":\"11536\",\"major_ver\":\"4\",\"minor_ver\":\"1\",\"module_name\":\"xwechat_win\",\"modules_dir\":\"C:\\\\Program Files\\\\Tencent\\\\Weixin\\\\4.1.11.55\",\"patch_ver\":\"55\",\"product\":\"Weixin\",\"report_type\":\"9999\",\"restart_app_cmd\":\"\\\"C:\\\\Program Files\\\\Tencent\\\\Weixin\\\\Weixin.exe\\\" --scene=taskbarpins\",\"version\":\"4065598263\"} --annotation=product=Weixin --initial-client-data=0x280,0x284,0x288,0x25c,0x28c,0x7ff66278fb48,0x7ff66278fb58,0x7ff66278fb68",
+      "create_time": 1785729381.821991,
+      "exe": "D:\\电脑管家迁移文件\\weixin\\4.1.11.55\\crashpad_handler.exe",
+      "exe_sha256": "76353b92ffd16c20f796064a0cfd9b64026d3f5ba02632925f62e1b94350ec47",
+      "identity_key": "4584@1785729381.821991",
+      "listener_evidence_complete": true,
+      "listener_ports": [],
+      "name": "crashpad_handler.exe",
+      "pid": 4584,
+      "ppid": 18832
+    },
+    {
+      "access_error": null,
+      "cmdline_items": [
+        "C:\\WINDOWS\\Explorer.EXE"
+      ],
+      "command_line": "C:\\WINDOWS\\Explorer.EXE",
+      "create_time": 1785729282.8995287,
+      "exe": "C:\\Windows\\explorer.exe",
+      "exe_sha256": "6214a8c9fe2e9310522981cfacbbfbb99d58d9b6a7d473d5ee1d5092925b81ae",
+      "identity_key": "5340@1785729282.899529",
+      "listener_evidence_complete": true,
+      "listener_ports": [],
+      "name": "explorer.exe",
+      "pid": 5340,
+      "ppid": 1744
+    },
+    {
+      "access_error": "AccessDenied:(pid=5848, name='LenovoPcManagerService.exe')",
+      "cmdline_items": null,
+      "command_line": null,
+      "create_time": null,
+      "exe": null,
+      "exe_sha256": null,
+      "identity_key": null,
+      "listener_evidence_complete": true,
+      "listener_ports": [],
+      "name": null,
+      "pid": 5848,
+      "ppid": null
+    },
+    {
+      "access_error": null,
+      "cmdline_items": [
+        "C:\\Program Files (x86)\\Lenovo\\PCManager\\5.1.190.5202\\LenovoTray.exe",
+        "/service"
+      ],
+      "command_line": "C:\\Program Files (x86)\\Lenovo\\PCManager\\5.1.190.5202\\LenovoTray.exe /service",
+      "create_time": 1785729285.2682788,
+      "exe": "C:\\Program Files (x86)\\Lenovo\\PCManager\\5.1.190.5202\\LenovoTray.exe",
+      "exe_sha256": "fb1567d85492f726995bf75a8bc4dbe7d1c62ee1b29d9d08fb6fc6fa644129b6",
+      "identity_key": "14632@1785729285.268279",
+      "listener_evidence_complete": true,
+      "listener_ports": [],
+      "name": "LenovoTray.exe",
+      "pid": 14632,
+      "ppid": 5848
+    },
+    {
+      "access_error": null,
+      "cmdline_items": [
+        "C:\\Program Files (x86)\\Lenovo\\PCManager\\5.1.190.5202\\crashpad_handler.exe",
+        "--no-rate-limit",
+        "--database=C:\\ProgramData\\Lenovo\\devicecenter\\ExceptReport\\",
+        "--metrics-dir=C:\\ProgramData\\Lenovo\\devicecenter\\ExceptReport\\",
+        "--url=https://sentry-lb.lenovo.com.cn:443/api/27/minidump/?sentry_client=sentry.native/0.4.15&sentry_key=63d6dd3da6ff4f8ba32340ac649742a2",
+        "--attachment=C:\\ProgramData\\Lenovo\\devicecenter\\ExceptReport\\d18e4da5-e83d-4405-daf5-ac1feec18a38.run\\__sentry-event",
+        "--attachment=C:\\ProgramData\\Lenovo\\devicecenter\\ExceptReport\\d18e4da5-e83d-4405-daf5-ac1feec18a38.run\\__sentry-breadcrumb1",
+        "--attachment=C:\\ProgramData\\Lenovo\\devicecenter\\ExceptReport\\d18e4da5-e83d-4405-daf5-ac1feec18a38.run\\__sentry-breadcrumb2",
+        "--initial-client-data=0x500,0x4f8,0x504,0x4fc,0x508,0x6bbbbf94,0x6bbbbfa8,0x6bbbbfb8"
+      ],
+      "command_line": "C:\\Program Files (x86)\\Lenovo\\PCManager\\5.1.190.5202\\crashpad_handler.exe --no-rate-limit --database=C:\\ProgramData\\Lenovo\\devicecenter\\ExceptReport\\ --metrics-dir=C:\\ProgramData\\Lenovo\\devicecenter\\ExceptReport\\ --url=https://sentry-lb.lenovo.com.cn:443/api/27/minidump/?sentry_client=sentry.native/0.4.15&sentry_key=63d6dd3da6ff4f8ba32340ac649742a2 --attachment=C:\\ProgramData\\Lenovo\\devicecenter\\ExceptReport\\d18e4da5-e83d-4405-daf5-ac1feec18a38.run\\__sentry-event --attachment=C:\\ProgramData\\Lenovo\\devicecenter\\ExceptReport\\d18e4da5-e83d-4405-daf5-ac1feec18a38.run\\__sentry-breadcrumb1 --attachment=C:\\ProgramData\\Lenovo\\devicecenter\\ExceptReport\\d18e4da5-e83d-4405-daf5-ac1feec18a38.run\\__sentry-breadcrumb2 --initial-client-data=0x500,0x4f8,0x504,0x4fc,0x508,0x6bbbbf94,0x6bbbbfa8,0x6bbbbfb8",
+      "create_time": 1785729286.9164734,
+      "exe": "C:\\Program Files (x86)\\Lenovo\\PCManager\\5.1.190.5202\\crashpad_handler.exe",
+      "exe_sha256": "4ff9971bfa39ff98c3f2cc8d5a602921d3a1e94110ee44b4c0c14dc07c072fa9",
+      "identity_key": "15540@1785729286.916473",
+      "listener_evidence_complete": true,
+      "listener_ports": [],
+      "name": "crashpad_handler.exe",
+      "pid": 15540,
+      "ppid": 14632
+    },
+    {
+      "access_error": null,
+      "cmdline_items": [
+        "C:\\ProgramData\\Lenovo\\devicecenter\\extends\\modules\\desktopmainframe\\DesktopAssistant.exe",
+        "--from=tray"
+      ],
+      "command_line": "C:\\ProgramData\\Lenovo\\devicecenter\\extends\\modules\\desktopmainframe\\DesktopAssistant.exe --from=tray",
+      "create_time": 1785729288.3378382,
+      "exe": "C:\\ProgramData\\Lenovo\\devicecenter\\extends\\modules\\desktopmainframe\\DesktopAssistant.exe",
+      "exe_sha256": "5cec5368aeaf63c0ac1b5cefdb58ee45e8d88cd2229c4c608f0d09cb06f2fc82",
+      "identity_key": "16336@1785729288.337838",
+      "listener_evidence_complete": true,
+      "listener_ports": [],
+      "name": "DesktopAssistant.exe",
+      "pid": 16336,
+      "ppid": 16036
+    },
+    {
+      "access_error": null,
+      "cmdline_items": [
+        "C:\\Program Files (x86)\\Lenovo\\LeAppStore\\LeAppStoreTray.exe",
+        "-bysrv"
+      ],
+      "command_line": "C:\\Program Files (x86)\\Lenovo\\LeAppStore\\LeAppStoreTray.exe -bysrv",
+      "create_time": 1785729292.235921,
+      "exe": "C:\\Program Files (x86)\\Lenovo\\LeAppStore\\LeAppStoreTray.exe",
+      "exe_sha256": "14056da415a88f06a5b6fd230155f77bae6952c6fdfb70b83b9d036486e18807",
+      "identity_key": "18772@1785729292.235921",
+      "listener_evidence_complete": true,
+      "listener_ports": [],
+      "name": "LeAppStoreTray.exe",
+      "pid": 18772,
+      "ppid": 15072
+    },
+    {
+      "access_error": null,
+      "cmdline_items": [
+        "C:\\Program Files\\Tencent\\Weixin\\Weixin.exe",
+        "--scene=taskbarpins"
+      ],
+      "command_line": "C:\\Program Files\\Tencent\\Weixin\\Weixin.exe --scene=taskbarpins",
+      "create_time": 1785729380.5850456,
+      "exe": "D:\\电脑管家迁移文件\\weixin\\Weixin.exe",
+      "exe_sha256": "ac599744a7ce7b65640ebe18c939c0d4e4a06cd039d89cddee7f1e9afc56875d",
+      "identity_key": "18832@1785729380.585046",
+      "listener_evidence_complete": true,
+      "listener_ports": [
+        14013,
+        14016,
+        14019,
+        14022,
+        14023
+      ],
+      "name": "Weixin.exe",
+      "pid": 18832,
+      "ppid": 5340
+    },
+    {
+      "access_error": null,
+      "cmdline_items": [
+        "C:\\Program Files (x86)\\Lenovo\\LeAppStore\\LenovoAppStore.exe",
+        "/backgroundrun"
+      ],
+      "command_line": "C:\\Program Files (x86)\\Lenovo\\LeAppStore\\LenovoAppStore.exe /backgroundrun",
+      "create_time": 1785729293.1254756,
+      "exe": "C:\\Program Files (x86)\\Lenovo\\LeAppStore\\LenovoAppStore.exe",
+      "exe_sha256": "870cf9a8cb4a457fa5246568ce1eb2040793f19c6674a3cc515abe69d6dca7c1",
+      "identity_key": "19760@1785729293.125476",
+      "listener_evidence_complete": true,
+      "listener_ports": [],
+      "name": "LenovoAppStore.exe",
+      "pid": 19760,
+      "ppid": 18772
+    },
+    {
+      "access_error": null,
+      "cmdline_items": [
+        "C:\\Program Files (x86)\\Lenovo\\PCManager\\5.1.190.5202\\runtime\\crashpad_handler.exe",
+        "--no-rate-limit",
+        "--database=C:\\ProgramData\\Lenovo\\devicecenter\\ExceptReport\\",
+        "--metrics-dir=C:\\ProgramData\\Lenovo\\devicecenter\\ExceptReport\\",
+        "--url=https://sentry-lb.lenovo.com.cn:443/api/57/minidump/?sentry_client=sentry.native/0.4.15&sentry_key=5967438eb8c255fbab5b58edc89f3e57",
+        "--attachment=C:\\ProgramData\\Lenovo\\devicecenter\\ExceptReport\\50bd2b5a-1521-4a9a-cd51-73f8604128f7.run\\__sentry-event",
+        "--attachment=C:\\ProgramData\\Lenovo\\devicecenter\\ExceptReport\\50bd2b5a-1521-4a9a-cd51-73f8604128f7.run\\__sentry-breadcrumb1",
+        "--attachment=C:\\ProgramData\\Lenovo\\devicecenter\\ExceptReport\\50bd2b5a-1521-4a9a-cd51-73f8604128f7.run\\__sentry-breadcrumb2",
+        "--initial-client-data=0x6e8,0x6ec,0x6f0,0x6a4,0x6f4,0x7ffc7a4528b8,0x7ffc7a4528d8,0x7ffc7a4528f0"
+      ],
+      "command_line": "C:\\Program Files (x86)\\Lenovo\\PCManager\\5.1.190.5202\\runtime\\crashpad_handler.exe --no-rate-limit --database=C:\\ProgramData\\Lenovo\\devicecenter\\ExceptReport\\ --metrics-dir=C:\\ProgramData\\Lenovo\\devicecenter\\ExceptReport\\ --url=https://sentry-lb.lenovo.com.cn:443/api/57/minidump/?sentry_client=sentry.native/0.4.15&sentry_key=5967438eb8c255fbab5b58edc89f3e57 --attachment=C:\\ProgramData\\Lenovo\\devicecenter\\ExceptReport\\50bd2b5a-1521-4a9a-cd51-73f8604128f7.run\\__sentry-event --attachment=C:\\ProgramData\\Lenovo\\devicecenter\\ExceptReport\\50bd2b5a-1521-4a9a-cd51-73f8604128f7.run\\__sentry-breadcrumb1 --attachment=C:\\ProgramData\\Lenovo\\devicecenter\\ExceptReport\\50bd2b5a-1521-4a9a-cd51-73f8604128f7.run\\__sentry-breadcrumb2 --initial-client-data=0x6e8,0x6ec,0x6f0,0x6a4,0x6f4,0x7ffc7a4528b8,0x7ffc7a4528d8,0x7ffc7a4528f0",
+      "create_time": 1785729293.750479,
+      "exe": "C:\\Program Files (x86)\\Lenovo\\PCManager\\5.1.190.5202\\runtime\\crashpad_handler.exe",
+      "exe_sha256": "e6161da25f466ac637899e72753f937f5d486433194d7bd899e63fee9389c189",
+      "identity_key": "20088@1785729293.750479",
+      "listener_evidence_complete": true,
+      "listener_ports": [],
+      "name": "crashpad_handler.exe",
+      "pid": 20088,
+      "ppid": 16336
+    },
+    {
+      "access_error": null,
+      "cmdline_items": [
+        "C:\\Program Files (x86)\\Lenovo\\LeAppStore\\crashpad_handler.exe",
+        "--no-rate-limit",
+        "--database=C:\\ProgramData\\Lenovo\\LeAppStore\\dump\\LenovoAppStore\\",
+        "--metrics-dir=C:\\ProgramData\\Lenovo\\LeAppStore\\dump\\LenovoAppStore\\",
+        "--url=https://sentry-lb.lenovo.com.cn:443/api/37/minidump/?sentry_client=sentry.native/0.4.15&sentry_key=acc0257fbb344342835d55559936acb2",
+        "--attachment=C:\\ProgramData\\Lenovo\\LeAppStore\\dump\\LenovoAppStore\\450b130f-6833-4381-dfc7-2595401bce06.run\\__sentry-event",
+        "--attachment=C:\\ProgramData\\Lenovo\\LeAppStore\\dump\\LenovoAppStore\\450b130f-6833-4381-dfc7-2595401bce06.run\\__sentry-breadcrumb1",
+        "--attachment=C:\\ProgramData\\Lenovo\\LeAppStore\\dump\\LenovoAppStore\\450b130f-6833-4381-dfc7-2595401bce06.run\\__sentry-breadcrumb2",
+        "--initial-client-data=0x838,0x83c,0x840,0x834,0x844,0x7ffc74ef28b8,0x7ffc74ef28d8,0x7ffc74ef28f0"
+      ],
+      "command_line": "C:\\Program Files (x86)\\Lenovo\\LeAppStore\\crashpad_handler.exe --no-rate-limit --database=C:\\ProgramData\\Lenovo\\LeAppStore\\dump\\LenovoAppStore\\ --metrics-dir=C:\\ProgramData\\Lenovo\\LeAppStore\\dump\\LenovoAppStore\\ --url=https://sentry-lb.lenovo.com.cn:443/api/37/minidump/?sentry_client=sentry.native/0.4.15&sentry_key=acc0257fbb344342835d55559936acb2 --attachment=C:\\ProgramData\\Lenovo\\LeAppStore\\dump\\LenovoAppStore\\450b130f-6833-4381-dfc7-2595401bce06.run\\__sentry-event --attachment=C:\\ProgramData\\Lenovo\\LeAppStore\\dump\\LenovoAppStore\\450b130f-6833-4381-dfc7-2595401bce06.run\\__sentry-breadcrumb1 --attachment=C:\\ProgramData\\Lenovo\\LeAppStore\\dump\\LenovoAppStore\\450b130f-6833-4381-dfc7-2595401bce06.run\\__sentry-breadcrumb2 --initial-client-data=0x838,0x83c,0x840,0x834,0x844,0x7ffc74ef28b8,0x7ffc74ef28d8,0x7ffc74ef28f0",
+      "create_time": 1785729294.665356,
+      "exe": "C:\\Program Files (x86)\\Lenovo\\LeAppStore\\crashpad_handler.exe",
+      "exe_sha256": "e6161da25f466ac637899e72753f937f5d486433194d7bd899e63fee9389c189",
+      "identity_key": "21748@1785729294.665356",
+      "listener_evidence_complete": true,
+      "listener_ports": [],
+      "name": "crashpad_handler.exe",
+      "pid": 21748,
+      "ppid": 19760
+    }
+  ],
+  "candidate_links": [
+    {
+      "candidate_identity": "4584@1785729381.821991",
+      "matches": true,
+      "pid": 4584,
+      "universe_identity": "4584@1785729381.821991"
+    },
+    {
+      "candidate_identity": "5340@1785729282.899529",
+      "matches": true,
+      "pid": 5340,
+      "universe_identity": "5340@1785729282.899529"
+    },
+    {
+      "candidate_identity": "14632@1785729285.268279",
+      "matches": true,
+      "pid": 14632,
+      "universe_identity": "14632@1785729285.268279"
+    },
+    {
+      "candidate_identity": "15540@1785729286.916473",
+      "matches": true,
+      "pid": 15540,
+      "universe_identity": "15540@1785729286.916473"
+    },
+    {
+      "candidate_identity": "16336@1785729288.337838",
+      "matches": true,
+      "pid": 16336,
+      "universe_identity": "16336@1785729288.337838"
+    },
+    {
+      "candidate_identity": "18772@1785729292.235921",
+      "matches": true,
+      "pid": 18772,
+      "universe_identity": "18772@1785729292.235921"
+    },
+    {
+      "candidate_identity": "18832@1785729380.585046",
+      "matches": true,
+      "pid": 18832,
+      "universe_identity": "18832@1785729380.585046"
+    },
+    {
+      "candidate_identity": "19760@1785729293.125476",
+      "matches": true,
+      "pid": 19760,
+      "universe_identity": "19760@1785729293.125476"
+    },
+    {
+      "candidate_identity": "20088@1785729293.750479",
+      "matches": true,
+      "pid": 20088,
+      "universe_identity": "20088@1785729293.750479"
+    },
+    {
+      "candidate_identity": "21748@1785729294.665356",
+      "matches": true,
+      "pid": 21748,
+      "universe_identity": "21748@1785729294.665356"
+    }
+  ],
+  "issues": [
+    "AUTHORIZATION_CANDIDATE_IDENTITY_MISSING"
+  ],
+  "observation_universe_complete": true,
+  "observation_universe_count": 364,
+  "passed": false,
+  "runner_identity": "6820@1785884125.121237",
+  "runner_observed_identity": "6820@1785884125.121237",
+  "schema_version": "role_binding_timing.infra_m8.authorization_view.v1",
+  "source_candidate_sha256": "4156f402c4fa691ce736b6b5a3356a163cb4956effd767c067917e96c95b8a2b",
+  "source_snapshot_schema": "role_binding_timing.infra_m8.process_snapshot.v1",
+  "source_universe_sha256": "2853013f1bf9cb81c231e38694348f931eb3adfbe6dba0577df134cf0f95bd85"
+}

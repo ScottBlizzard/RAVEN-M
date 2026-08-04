@@ -1,0 +1,14 @@
+{
+  "details": {
+    "message": "PROCESS_IDENTITY:prelaunch_baseline:AUTHORIZATION_CANDIDATE_IDENTITY_MISSING",
+    "traceback": "Traceback (most recent call last):\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\scripts\\run_role_binding_timing_infra_m5.py\", line 466, in main\n    baseline = monitor.capture(gate=\"prelaunch_baseline\", phase=\"launch\", mode=\"baseline\"); runtime_record[\"baseline\"] = baseline; check_identity(baseline)\n                                                                                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\scripts\\run_role_binding_timing_infra_m5.py\", line 85, in check_identity\n    raise RuntimeError(f\"PROCESS_IDENTITY:{result['gate']}:{result['issues'][0]}\")\nRuntimeError: PROCESS_IDENTITY:prelaunch_baseline:AUTHORIZATION_CANDIDATE_IDENTITY_MISSING\n",
+    "type": "RuntimeError"
+  },
+  "event": "end",
+  "first_broken_edge": "PROCESS_IDENTITY:prelaunch_baseline:AUTHORIZATION_CANDIDATE_IDENTITY_MISSING",
+  "phase": "launch",
+  "recorded_at": "2026-08-04T22:55:36.796704+00:00",
+  "schema_version": "role_binding_timing.infra_m4.phase_entry.v1",
+  "sequence": 2,
+  "status": "FAIL"
+}

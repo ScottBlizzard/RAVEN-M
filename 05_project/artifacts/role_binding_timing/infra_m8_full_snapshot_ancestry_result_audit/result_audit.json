@@ -1,0 +1,155 @@
+{
+  "checks": {
+    "controlled_ports_empty": true,
+    "eight_journal_entries": true,
+    "exact_first_edge": true,
+    "full_and_derived_views_persisted": true,
+    "immutable_status": true,
+    "log_seal_passed": true,
+    "manifest": true,
+    "missing_identity_observed": true,
+    "missing_row_has_external_child": true,
+    "missing_rows_are_not_relevant_roles": true,
+    "no_runtime_stage": true,
+    "one_completion": true,
+    "project_runtime_absent": true,
+    "protected_unchanged": true,
+    "source_adds_ancestry_to_structural": true,
+    "terminal_schema": true,
+    "zero_generation_heldout": true
+  },
+  "claim_evidence": {
+    "a11y_tested": false,
+    "authorization_view_qualified": false,
+    "boot_tested": false,
+    "burn_in_tested": false,
+    "dev_grid_tested": false,
+    "display_tested": false,
+    "emulator_launch_tested": false,
+    "exclusive_5038_tested": false,
+    "full_snapshot_ancestry_qualified": false,
+    "held_out_tested": false,
+    "role_binding_hypothesis_tested": false,
+    "v0_3_preparation_authorized": false
+  },
+  "created_at": "2026-08-04T22:57:30.068567+00:00",
+  "direct_evidence": {
+    "ancestry_support_count": 7,
+    "children_of_missing_rows": [
+      {
+        "access_error": null,
+        "cmdline_items": [
+          "C:\\Program Files (x86)\\Lenovo\\PCManager\\5.1.190.5202\\LenovoTray.exe",
+          "/service"
+        ],
+        "command_line": "C:\\Program Files (x86)\\Lenovo\\PCManager\\5.1.190.5202\\LenovoTray.exe /service",
+        "create_time": 1785729285.2682788,
+        "exe": "C:\\Program Files (x86)\\Lenovo\\PCManager\\5.1.190.5202\\LenovoTray.exe",
+        "identity_key": "14632@1785729285.268279",
+        "name": "LenovoTray.exe",
+        "pid": 14632,
+        "ppid": 5848
+      },
+      {
+        "access_error": null,
+        "cmdline_items": [
+          "C:\\Program Files (x86)\\Lenovo\\PCManager\\5.1.190.5202\\WSPluginHost.exe",
+          "--type=ipc",
+          "--classname=JS_pcmscreencapture_WSPluginHost.exe",
+          "--peerClassName=IPCPCMANAGERMAIN_JS_pcmscreencapture_WSPluginHost.exe",
+          "--quiteventname=PCM_CEF_pcmscreencapture",
+          "--pcmparentprocessid=16336",
+          "--pcmservicepromote"
+        ],
+        "command_line": "C:\\Program Files (x86)\\Lenovo\\PCManager\\5.1.190.5202\\WSPluginHost.exe --type=ipc --classname=JS_pcmscreencapture_WSPluginHost.exe --peerClassName=IPCPCMANAGERMAIN_JS_pcmscreencapture_WSPluginHost.exe --quiteventname=PCM_CEF_pcmscreencapture --pcmparentprocessid=16336 --pcmservicepromote",
+        "create_time": 1785729294.032822,
+        "exe": "C:\\Program Files (x86)\\Lenovo\\PCManager\\5.1.190.5202\\WSPluginHost.exe",
+        "identity_key": "20784@1785729294.032822",
+        "name": "WSPluginHost.exe",
+        "pid": 20784,
+        "ppid": 5848
+      },
+      {
+        "access_error": null,
+        "cmdline_items": [
+          "C:\\Program Files (x86)\\Lenovo\\PCManager\\5.1.190.5202\\WSPluginHost64.exe",
+          "--type=ipc",
+          "--classname=JS_aistickhook_WSPluginHost64.exe",
+          "--peerClassName=IPCPCMANAGERMAIN_JS_aistickhook_WSPluginHost64.exe",
+          "--quiteventname=PCM_CEF_desktopmainframe",
+          "--pcmparentprocessid=16336",
+          "--pcmservicepromote"
+        ],
+        "command_line": "C:\\Program Files (x86)\\Lenovo\\PCManager\\5.1.190.5202\\WSPluginHost64.exe --type=ipc --classname=JS_aistickhook_WSPluginHost64.exe --peerClassName=IPCPCMANAGERMAIN_JS_aistickhook_WSPluginHost64.exe --quiteventname=PCM_CEF_desktopmainframe --pcmparentprocessid=16336 --pcmservicepromote",
+        "create_time": 1785729296.1833477,
+        "exe": "C:\\Program Files (x86)\\Lenovo\\PCManager\\5.1.190.5202\\WSPluginHost64.exe",
+        "identity_key": "22176@1785729296.183348",
+        "name": "WSPluginHost64.exe",
+        "pid": 22176,
+        "ppid": 5848
+      }
+    ],
+    "derived_view_sha256": "25e139ed119664f22871b48a9c8d70cde71981bc3c3671fe0385a6a2d030fdd0",
+    "m5_source_sha256": "8af10b07e0abc4645efdb2b6d0f14111e1671a9046a514b2c1363b3019da27e1",
+    "missing_identity_rows": [
+      {
+        "access_error": "AccessDenied:(pid=5848, name='LenovoPcManagerService.exe')",
+        "cmdline_items": null,
+        "command_line": null,
+        "create_time": null,
+        "exe": null,
+        "exe_sha256": null,
+        "identity_key": null,
+        "listener_evidence_complete": true,
+        "listener_ports": [],
+        "name": null,
+        "pid": 5848,
+        "ppid": null
+      }
+    ],
+    "relevant_role_candidate_count": 4,
+    "snapshot_sha256": "fb6c826d8800efaef63e77836109cfbeb6097a9303f19848aee9e76160f02193",
+    "structural_count": 11
+  },
+  "generation_calls": 0,
+  "held_out_captures": 0,
+  "immutable_completion_status": "PROCESS_IDENTITY_FAILED",
+  "immutable_first_broken_edge": "PROCESS_IDENTITY:prelaunch_baseline:AUTHORIZATION_CANDIDATE_IDENTITY_MISSING",
+  "inference": "M5 structural_processes contains relevant processes and selected ancestors. M8 treated every structural row as an authorization candidate, so an AccessDenied external ancestor with no identity failed candidate completeness even though it had no project role. The two-view contract was therefore not correctly derived.",
+  "overall_audit_pass": true,
+  "post_run_runtime": {
+    "listeners": {
+      "5037": [],
+      "5038": [],
+      "5554": [],
+      "5555": [],
+      "8554": []
+    },
+    "project_runtime_records": []
+  },
+  "protected_wip": {
+    "05_project/src/raven_m/controller/episode_controller.py": "fc0e82e0fde90119365d4f685f080eb4519bf2f602e4bda58de5d4809a40fe33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "ff89d6b70be4b4738646d262beb67d7b7e932e9eb95956d940b1c5000a999d10",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5bb1f1e3de673a1072cfee62938b761a62fd69c187d5eadf54bc46b115a3fd0a"
+  },
+  "root_cause_classification": "STRUCTURAL_VIEW_CONFLATES_ROLE_CANDIDATES_WITH_ANCESTRY_SUPPORT",
+  "schema_version": "role_binding_timing.infra_m8.result_audit.v1",
+  "stop_decision": "STOP_INFRA_M8_NO_RETRY",
+  "terminal": {
+    "manifest": {
+      "entries": 32,
+      "issues": [],
+      "passed": true,
+      "sha256": "c118761d5a1c1dda9789fff6bf4282ddd20d21aa8a54d2fb34f6f0f69d72e370"
+    },
+    "snapshots": 4,
+    "validation": {
+      "errors": [],
+      "first_broken_edge": "PROCESS_IDENTITY:prelaunch_baseline:AUTHORIZATION_CANDIDATE_IDENTITY_MISSING",
+      "passed": true,
+      "schema_version": "role_binding_timing.infra_m8.terminal_validation.v1",
+      "terminal_mode": "rich"
+    }
+  },
+  "verdict": "FAIL_AUTHORIZATION_VIEW_DERIVATION"
+}
