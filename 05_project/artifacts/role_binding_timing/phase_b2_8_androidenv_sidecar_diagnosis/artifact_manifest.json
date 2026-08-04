@@ -1,0 +1,48 @@
+{
+  "schema_version": "role_binding_timing.phase_b2_8.result_artifact_manifest.v0.2.8",
+  "status": "FAIL_SETTINGS_DIAGNOSTIC",
+  "development_contaminated": true,
+  "held_out_eligible": false,
+  "generation_calls": 0,
+  "androidenv_get_state_calls": 0,
+  "terminal_completion_records": 1,
+  "freeze_commit": "b988b2a39eef29e36df5a661c4dd9b3bde9c684a",
+  "freeze_tag": "role-binding-timing-b2.8-sidecar-diagnosis-freeze-20260804",
+  "artifacts": [
+    {
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_8_androidenv_sidecar_diagnosis/diagnosis_completion.json",
+      "sha256": "e6d16a94a0f12141482046bc05e73666cc48976df1bac74b78ee1775d926e3f8",
+      "bytes": 5865
+    },
+    {
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_8_androidenv_sidecar_diagnosis/preflight/framework_package.stdout.bin",
+      "sha256": "6646a4c4c5f32c1b42a810b8ccca7d503c94367ea9293d9d57c9c434d4194bba",
+      "bytes": 24
+    },
+    {
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_8_androidenv_sidecar_diagnosis/preflight/framework_package.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_8_androidenv_sidecar_diagnosis/cleanup/reset_after/press_home.stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_8_androidenv_sidecar_diagnosis/cleanup/reset_after/press_home.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_8_androidenv_sidecar_diagnosis/cleanup/reset_after/force_stop.stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_8_androidenv_sidecar_diagnosis/cleanup/reset_after/force_stop.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    }
+  ]
+}
