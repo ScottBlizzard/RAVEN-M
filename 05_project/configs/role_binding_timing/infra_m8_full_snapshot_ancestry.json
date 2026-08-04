@@ -1,0 +1,45 @@
+{
+  "schema_version": "role_binding_timing.infra_m8.config_overlay.v1",
+  "base_config": "05_project/configs/role_binding_timing/infra_m7_runner_adb_authority.json",
+  "base_config_sha256": "0850c291e272ef0917631e9118c6d4b02468554a4ca49388c161e1b1a3c11c46",
+  "overrides": {
+    "protocol_version": "role_binding_timing.infra_m8.full_snapshot_ancestry.v1",
+    "run_id": "infra-m8-full-snapshot-ancestry-20260805",
+    "audit_commit": "960a81817ebdcc6de5bec8b306778a6b077ce8fc",
+    "freeze_tag": "role-binding-timing-infra-m8-freeze-20260805",
+    "process_views": {
+      "observation_universe": "complete all_processes from one OS enumeration",
+      "observation_identity_fields": ["pid", "ppid", "create_time", "identity_key", "name", "exe", "access_error"],
+      "observation_authority": ["existence", "current identity", "PID reuse", "parent-chain traversal"],
+      "authorization_candidates": "hash/listener-enriched structural_processes",
+      "authorization_authority": ["project role", "binary/hash", "argv/port", "listener", "lifetime", "phase"],
+      "universe_only_parent_gets_project_role": false,
+      "truncated_or_ambiguous_behavior": "FAIL_CLOSED",
+      "persist_full_snapshot_each_gate": true,
+      "persist_derived_authorization_view_each_gate": true,
+      "history_compact_complete_identity_universe": true
+    },
+    "terminal_accounting": {
+      "independent_finalizer": "05_project/scripts/finalize_role_binding_timing_infra_m8.py"
+    },
+    "log_lifecycle": {"temp_prefix": "infra_m8_live_"},
+    "settings_scene": {
+      "dev_app_id": "M8Q-SETTINGS",
+      "package": "com.android.settings",
+      "component": "com.android.settings/com.android.settings.Settings"
+    },
+    "grid": {
+      "rounds": 3,
+      "apps": [
+        {"dev_app_id": "M8G-SETTINGS", "package": "com.android.settings", "component": "com.android.settings/com.android.settings.Settings"},
+        {"dev_app_id": "M8G-CLOCK", "package": "com.google.android.deskclock", "component": "com.google.android.deskclock/com.android.deskclock.DeskClock"},
+        {"dev_app_id": "M8G-TASKS", "package": "org.tasks", "component": "org.tasks/com.todoroo.astrid.activity.MainActivity"},
+        {"dev_app_id": "M8G-BROCCOLI", "package": "com.flauschcode.broccoli", "component": "com.flauschcode.broccoli/com.flauschcode.broccoli.MainActivity"}
+      ],
+      "required_cells": 12
+    },
+    "schema": "05_project/schemas/role_binding_timing_infra_m8_completion.v1.schema.json",
+    "lock": "05_project/configs/role_binding_timing/infra_m8_full_snapshot_ancestry.lock.json",
+    "output_root": "05_project/artifacts/role_binding_timing/infra_m8_full_snapshot_ancestry"
+  }
+}
