@@ -1,0 +1,42 @@
+{
+  "schema_version": "role_binding_timing.launch_diagnosis_config.v0_2_6",
+  "study_id": "role_binding_timing_phase_b2_6_launch_diagnosis",
+  "generation_eligible": false,
+  "generation_calls_authorized": 0,
+  "dev_contaminated": true,
+  "held_out_eligible": false,
+  "runtime": {
+    "adb_binary": "06_local_runtime/android/sdk/platform-tools/adb.exe",
+    "adb_binary_sha256": "957e46b8615f7af5b7292a2ddabe98d2e61940c3fb2b0545756507f080613e71",
+    "adb_server_port": 5038,
+    "device_serial": "emulator-5554",
+    "fallback_to_5037": false,
+    "implicit_restart_allowed": false,
+    "screen_size": [1080, 2400]
+  },
+  "scene": {
+    "dev_app_id": "B26D-SETTINGS-LAUNCH",
+    "package": "com.android.settings",
+    "component": "com.android.settings/com.android.settings.Settings"
+  },
+  "sampling": {
+    "pre_samples": 1,
+    "post_wait_samples": 3,
+    "post_nonwait_samples": 2,
+    "sample_gap_seconds": 1.0,
+    "command_timeout_seconds": 25,
+    "ui_dump_timeout_seconds": 15
+  },
+  "classification": {
+    "outcomes": [
+      "A_FALSE_NEGATIVE_LAUNCH_SIGNAL",
+      "B_RENDER_OR_UI_OBSERVABILITY_FLOOR",
+      "C_EMULATOR_OR_FRAMEWORK_LIFECYCLE_FLOOR"
+    ],
+    "a_minimum_independent_foreground_sources": 2,
+    "a_requires_consecutive_samples": 2,
+    "a_requires_usable_screenshot": true,
+    "a_requires_usable_ui_tree_with_expected_package": true
+  },
+  "output_root": "05_project/artifacts/role_binding_timing/phase_b2_6_launch_diagnosis"
+}
