@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "role_binding_timing_infra_m2_completion.v1.schema.json",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["schema_version", "status", "first_broken_edge", "generation_calls", "model_tokens", "legacy_cleanup", "launch", "burn_in", "protected_wip_unchanged", "claim_evidence"],
+  "properties": {
+    "schema_version": {"const": "role_binding_timing.infra_m2.completion.v1"},
+    "status": {"enum": ["RUNTIME_STABLE_24_OF_24", "RUNTIME_UNSTABLE", "OWNERSHIP_NOT_QUALIFIED"]},
+    "first_broken_edge": {"type": ["string", "null"]},
+    "generation_calls": {"const": 0},
+    "model_tokens": {"const": 0},
+    "legacy_cleanup": {"type": "object"},
+    "launch": {"type": "object"},
+    "burn_in": {
+      "type": "object",
+      "required": ["passed", "required_cycles", "completed_cycles", "passed_cycles", "elapsed_seconds", "records"],
+      "properties": {
+        "passed": {"type": "boolean"},
+        "required_cycles": {"const": 24},
+        "completed_cycles": {"type": "integer", "minimum": 0, "maximum": 24},
+        "passed_cycles": {"type": "integer", "minimum": 0, "maximum": 24},
+        "elapsed_seconds": {"type": "number", "minimum": 0},
+        "records": {"type": "array", "maxItems": 24}
+      }
+    },
+    "protected_wip_unchanged": {"const": true},
+    "claim_evidence": {
+      "type": "object",
+      "required": ["exclusive_5038_registration", "runtime_stable", "a11y_authorized", "a11y_tested", "held_out_tested", "role_binding_hypothesis_tested"]
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "RUNTIME_STABLE_24_OF_24"}}},
+      "then": {
+        "properties": {
+          "first_broken_edge": {"type": "null"},
+          "burn_in": {
+            "properties": {
+              "passed": {"const": true},
+              "completed_cycles": {"const": 24},
+              "passed_cycles": {"const": 24},
+              "elapsed_seconds": {"minimum": 180},
+              "records": {"minItems": 24, "maxItems": 24}
+            }
+          }
+        }
+      }
+    }
+  ]
+}

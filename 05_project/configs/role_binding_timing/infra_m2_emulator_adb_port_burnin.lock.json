@@ -1,0 +1,65 @@
+{
+  "schema_version": "role_binding_timing.infra_m2.emulator_adb_port_burnin.lock.v1",
+  "predecessor_audit_commit": "f392ddccbba51c79782ff3e0bc6781643f7eef01",
+  "freeze_tag": "role-binding-timing-infra-m2-port-freeze-20260805",
+  "development_contaminated": true,
+  "generation_calls": 0,
+  "generation_eligible": false,
+  "held_out_captures": 0,
+  "held_out_eligible": false,
+  "device_mutations_before_freeze": 0,
+  "restart_attempts_before_freeze": 0,
+  "files": {
+    "04_protocols/role_binding_timing/INFRA_M2_EMULATOR_ADB_PORT_BURNIN_V1.md": "a84007dc5edf6deaee0c6ead25926558696719ffb3dd666f2eb90f98191c9fc3",
+    "05_project/configs/role_binding_timing/infra_m2_emulator_adb_port_burnin.json": "9a85d4f38ee865bbe026597a718da6298d65a9f681ebbea1ba5a32923811af85",
+    "05_project/schemas/role_binding_timing_infra_m2_completion.v1.schema.json": "968b01d05338c65b64a40165b60267cee9b5ac879dfbb1e2a17b2c2daa7101cb",
+    "05_project/src/raven_m/role_binding_timing/infra_m2_runtime.py": "58f71c666efe61ba7ffc60d58e5a3109df5b99324d49e280af246462c9be899e",
+    "05_project/scripts/run_role_binding_timing_infra_m2.py": "60cb10590d9cb67dcf4c4d3752394edeab900d9c9a339650879a77bdcef9feca",
+    "05_project/scripts/run_role_binding_timing_infra_m2_offline_gates.py": "d4d20411e4662a92f31909c36bb5830f3240532b98af6f74a28dcce0409ce220",
+    "05_project/tests/role_binding_timing/test_infra_m2_runtime.py": "da85c93be06cb5b89f7a52ee5e40e8090ae5e784ed7319249d34ee4a4901516b",
+    "05_project/artifacts/role_binding_timing/infra_m2_registration_audit/registration_audit.json": "fa806e79eb2a8ee699e41d74320e18bfd56a68748ca57eca065f1652d077edb1",
+    "05_project/artifacts/role_binding_timing/infra_m2_registration_audit/artifact_manifest.json": "f00ad78c41d7838fa02035a981b542a59daf794119be59581352d780494819fd",
+    "05_project/artifacts/role_binding_timing/infra_m2_emulator_adb_offline_gates/offline_gate_result.json": "774ea39f36fdbfaa23e0e4399b4c4e46f4a3b4746da6e9453c422b104ad27335",
+    "05_project/scripts/run_role_binding_timing_infra_m1_maintenance.py": "2dd9f8eba3f392c10868a09f41264ab9609f413a611b49988fcf47b281327f50",
+    "05_project/src/raven_m/role_binding_timing/infra_m1_runtime.py": "af7b66ed6a4e35b61c23f196d0f7bb114ee228b16603acbdba9c2996f895d1b1"
+  },
+  "offline_gates": {
+    "result": "05_project/artifacts/role_binding_timing/infra_m2_emulator_adb_offline_gates/offline_gate_result.json",
+    "overall_pass": true,
+    "focused": "11 passed",
+    "focused_stdout_sha256": "7255adf025315c1f24770bfc734730c16ddc683771368dbbaa2a01145b9774b0",
+    "namespace_stdout_sha256": "e349abe22947da4e9c74448eb06c660c4408c14388838f20d233fb86f4383174",
+    "full_regression_stdout_sha256": "99a85849679f3ebd654ac6ff4dfc5c128a1dd674f3422a8f1aa5698dca0cdb3f",
+    "all_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "full_regression_expected_only_failure": "tests/scripts/test_protocol_v2_2_r78_h17_candidate.py::test_r78_candidate_static_manifest_validation_passes"
+  },
+  "registration_contract": {
+    "verified_child_environment": {
+      "ANDROID_ADB_SERVER_PORT": "5038"
+    },
+    "adb_server_port": 5038,
+    "forbidden_adb_port": 5037,
+    "fallback_to_5037": false,
+    "clean_baseline_required": true,
+    "legacy_cleanup_5037_command_count": 2,
+    "commands_addressing_5037_after_clean_baseline": 0
+  },
+  "runtime_contract": {
+    "emulator_avd": "AndroidWorldAvd",
+    "device_serial": "emulator-5554",
+    "emulator_ports": [5554, 5555, 8554],
+    "burn_in_cycles": 24,
+    "minimum_elapsed_seconds": 180,
+    "cycle_interval_seconds": 8,
+    "per_command_timeout_seconds": 15,
+    "stop_on_first_failure": true,
+    "legacy_frozen_log_sha256": "ffddf9d0862f8f3e58b424e1e8f774e546875634a0ba81f5e720333284b48b1c",
+    "legacy_frozen_log_bytes": 9590
+  },
+  "continuation_boundary": {
+    "runtime_unstable": "stop without a11y qualification",
+    "runtime_stable_24_of_24": "authorize a separately frozen a11y qualification only",
+    "held_out_collection": "forbidden",
+    "hypothesis_test": "forbidden"
+  }
+}

@@ -1,0 +1,217 @@
+{
+  "audit_manifest_errors": [],
+  "binary_hashes": {
+    "06_local_runtime/android/avd/AndroidWorldAvd.avd/config.ini": "8969b2840da971439b34010fb3c73942e484ed0e1bbd8d53b62fb9426fd3d2c4",
+    "06_local_runtime/android/avd/AndroidWorldAvd.ini": "b2bff819d2aa981f406f133cb370165835b6146745cd23202fa1c7c1cc7c0330",
+    "06_local_runtime/android/sdk/emulator/emulator.exe": "7f101ca769c15e8b6311801c1487f28583ce643fa87d19a9e0da4cc230be7653",
+    "06_local_runtime/android/sdk/emulator/qemu/windows-x86_64/qemu-system-x86_64-headless.exe": "b8e263a00f9151a494b480f38d39188e73dbf338b27015679311246c59c3dbec",
+    "06_local_runtime/android/sdk/platform-tools/adb.exe": "957e46b8615f7af5b7292a2ddabe98d2e61940c3fb2b0545756507f080613e71"
+  },
+  "binary_hashes_pass": true,
+  "compile_pass": true,
+  "created_at": "2026-08-04T18:26:34.930959+00:00",
+  "device_mutations": 0,
+  "focused_pass": true,
+  "full_regression_accepted": true,
+  "full_regression_expected_only_failure": "tests/scripts/test_protocol_v2_2_r78_h17_candidate.py::test_r78_candidate_static_manifest_validation_passes",
+  "full_regression_observed_failed_nodes": [
+    "tests/scripts/test_protocol_v2_2_r78_h17_candidate.py::test_r78_candidate_static_manifest_validation_passes"
+  ],
+  "gates": [
+    {
+      "command": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\envs\\androidworld\\Scripts\\python.exe",
+        "-m",
+        "py_compile",
+        "src/raven_m/role_binding_timing/infra_m2_runtime.py",
+        "scripts/run_role_binding_timing_infra_m2.py"
+      ],
+      "gate_id": "compile",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/infra_m2_emulator_adb_offline_gates/compile/stderr.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/infra_m2_emulator_adb_offline_gates/compile/stdout.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timed_out": false,
+      "wall_time_seconds": 0.5780000000086147
+    },
+    {
+      "command": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\envs\\androidworld\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "tests/role_binding_timing/test_infra_m2_runtime.py",
+        "-q",
+        "--color=no"
+      ],
+      "gate_id": "focused",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/infra_m2_emulator_adb_offline_gates/focused/stderr.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 81,
+        "path": "05_project/artifacts/role_binding_timing/infra_m2_emulator_adb_offline_gates/focused/stdout.bin",
+        "sha256": "7255adf025315c1f24770bfc734730c16ddc683771368dbbaa2a01145b9774b0"
+      },
+      "timed_out": false,
+      "wall_time_seconds": 3.9839999999967404
+    },
+    {
+      "command": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\envs\\androidworld\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "tests/role_binding_timing",
+        "-q",
+        "--color=no"
+      ],
+      "gate_id": "namespace",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/infra_m2_emulator_adb_offline_gates/namespace/stderr.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 162,
+        "path": "05_project/artifacts/role_binding_timing/infra_m2_emulator_adb_offline_gates/namespace/stdout.bin",
+        "sha256": "e349abe22947da4e9c74448eb06c660c4408c14388838f20d233fb86f4383174"
+      },
+      "timed_out": false,
+      "wall_time_seconds": 7.155999999988126
+    },
+    {
+      "command": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\envs\\androidworld\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "tests",
+        "-q",
+        "--color=no"
+      ],
+      "gate_id": "full_regression",
+      "returncode": 1,
+      "stderr": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/infra_m2_emulator_adb_offline_gates/full_regression/stderr.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 13112,
+        "path": "05_project/artifacts/role_binding_timing/infra_m2_emulator_adb_offline_gates/full_regression/stdout.bin",
+        "sha256": "99a85849679f3ebd654ac6ff4dfc5c128a1dd674f3422a8f1aa5698dca0cdb3f"
+      },
+      "timed_out": false,
+      "wall_time_seconds": 266.36000000001513
+    }
+  ],
+  "generation_calls": 0,
+  "held_out_captures": 0,
+  "legacy_frozen_log_gate": {
+    "bytes": 9590,
+    "passed": true,
+    "path": "05_project/artifacts/role_binding_timing/infra_m1_maintenance_burnin/maintenance/start/emulator.stdout.bin",
+    "sha256": "ffddf9d0862f8f3e58b424e1e8f774e546875634a0ba81f5e720333284b48b1c"
+  },
+  "namespace_pass": true,
+  "overall_pass": true,
+  "protected_wip": {
+    "05_project/src/raven_m/controller/episode_controller.py": "fc0e82e0fde90119365d4f685f080eb4519bf2f602e4bda58de5d4809a40fe33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "ff89d6b70be4b4738646d262beb67d7b7e932e9eb95956d940b1c5000a999d10",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5bb1f1e3de673a1072cfee62938b761a62fd69c187d5eadf54bc46b115a3fd0a"
+  },
+  "protected_wip_pass": true,
+  "restart_attempts": 0,
+  "runtime_preflight": {
+    "device_mutations": 0,
+    "generation_calls": 0,
+    "listeners": {
+      "5037": [
+        24580
+      ],
+      "5038": [
+        35452
+      ],
+      "5554": [
+        37004
+      ],
+      "5555": [
+        37004
+      ],
+      "8554": [
+        37004
+      ]
+    },
+    "output_root_exists": false,
+    "passed": true,
+    "processes": {
+      "11316": {
+        "CommandLine": null,
+        "ExecutablePath": null,
+        "Name": "adb.exe",
+        "ParentProcessId": 34868,
+        "ProcessId": 11316
+      },
+      "17716": {
+        "CommandLine": null,
+        "ExecutablePath": null,
+        "Name": "adb.exe",
+        "ParentProcessId": 2244,
+        "ProcessId": 17716
+      },
+      "24580": {
+        "CommandLine": "adb -L tcp:5037 fork-server server --reply-fd 748",
+        "ExecutablePath": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "Name": "adb.exe",
+        "ParentProcessId": 2308,
+        "ProcessId": 24580
+      },
+      "35452": {
+        "CommandLine": "adb -L tcp:5038 fork-server server --reply-fd 744",
+        "ExecutablePath": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "Name": "adb.exe",
+        "ParentProcessId": 1068,
+        "ProcessId": 35452
+      },
+      "37004": {
+        "CommandLine": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\emulator\\qemu\\windows-x86_64\\qemu-system-x86_64-headless.exe -avd AndroidWorldAvd -port 5554 -no-snapshot -no-boot-anim -no-audio -grpc 8554 -no-window",
+        "ExecutablePath": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\emulator\\qemu\\windows-x86_64\\qemu-system-x86_64-headless.exe",
+        "Name": "qemu-system-x86_64-headless.exe",
+        "ParentProcessId": 7616,
+        "ProcessId": 37004
+      },
+      "7616": {
+        "CommandLine": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\emulator\\emulator.exe -avd AndroidWorldAvd -port 5554 -no-snapshot -no-boot-anim -no-audio -grpc 8554 -no-window",
+        "ExecutablePath": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\emulator\\emulator.exe",
+        "Name": "emulator.exe",
+        "ParentProcessId": 38776,
+        "ProcessId": 7616
+      }
+    },
+    "restart_attempts": 0,
+    "runtime_log_root_exists": false
+  },
+  "schema_gate": {
+    "corruption_detected": true,
+    "passed": true,
+    "stable_errors": []
+  },
+  "schema_version": "role_binding_timing.infra_m2.offline_gates.v1",
+  "source_gate": {
+    "forbidden_app_hits": [],
+    "has_launch_5037_stop": true,
+    "has_legacy_log_guard": true,
+    "legacy_5037_command_sites": 2,
+    "passed": true,
+    "uses_verified_environment_builder": true
+  }
+}
