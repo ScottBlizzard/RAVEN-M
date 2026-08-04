@@ -1,0 +1,58 @@
+{
+  "schema_version": "role_binding_timing.infra_m4.terminal_accounting_audit.v1",
+  "created_date": "2026-08-05",
+  "development_contaminated": true,
+  "generation_calls": 0,
+  "held_out_captures": 0,
+  "source_commit": "151a28299d0738bc9c5f86704c166ad5b32677f4",
+  "root_cause": {
+    "classification": "SINGLE_LATE_TERMINAL_WRITER_WITH_UNVERIFIED_FOREIGN_DEPENDENCY",
+    "direct_evidence": [
+      "M3 held first_broken_edge, cleanup, seal, and rich completion state only in process memory until the end of main().",
+      "M3 line 552 called frozen_infra_m1_runner.write_json_atomic, but the imported M1 module does not define that function.",
+      "M3 line 557 repeated the same nonexistent dependency for the artifact manifest.",
+      "The resulting AttributeError occurred after terminal cleanup and prevented both the formal completion and runner manifest.",
+      "Eight durable boot attempts show attempt 8 passed, but no framework artifact exists, so the earlier in-memory edge cannot be reconstructed."
+    ],
+    "not_root_causes": [
+      "model generation",
+      "held-out data",
+      "role-binding method",
+      "5038 emulator registration",
+      "legacy M1 log mutation"
+    ]
+  },
+  "required_hardening": {
+    "local_atomic_writer": true,
+    "foreign_writer_dependency_forbidden": true,
+    "append_only_phase_journal": true,
+    "checkpoint_before_and_after_each_phase": [
+      "launch", "boot", "framework", "burn_in", "settings", "grid", "cleanup", "seal"
+    ],
+    "first_broken_edge_write_once": true,
+    "independent_terminal_writer": true,
+    "minimal_fallback_completion": true,
+    "rich_serialization_failure_must_not_remove_fallback": true,
+    "external_live_logs_until_owner_exit": true,
+    "old_artifact_paths_opened_for_append": 0
+  },
+  "fault_injection_matrix_required": [
+    "launch", "boot", "framework", "burn_in", "settings", "grid", "cleanup", "seal",
+    "missing_helper_attribute_error", "rich_json_serialization_failure", "process_timeout", "cleanup_exception"
+  ],
+  "current_baseline": {
+    "listeners_5037_5038_5554_5555_8554": [],
+    "project_emulator_processes": [],
+    "excluded_unknown_adb_pids": [11316, 17716],
+    "legacy_m1_log_bytes": 9590,
+    "legacy_m1_log_sha256": "ffddf9d0862f8f3e58b424e1e8f774e546875634a0ba81f5e720333284b48b1c"
+  },
+  "claim_evidence": {
+    "m3_failure_chain_identified": "SUPPORTED",
+    "m4_hardening_implemented": "NO",
+    "m4_live_qualified": "NO",
+    "a11y_qualified": "NO",
+    "v0_3_authorized": "NO",
+    "role_binding_hypothesis_tested": "NO"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": "role_binding_timing.infra_m4.terminal_accounting_audit_manifest.v1",
+  "artifacts": [
+    {
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_audit/terminal_accounting_audit.json",
+      "bytes": 2559,
+      "sha256": "a74b8d009e438531981580af1d1fbcdf68ac78c7d9f047374ddfe733c2a79bc6"
+    },
+    {
+      "path": "reports/role_binding_timing/INFRA_M4_TERMINAL_ACCOUNTING_HARDENING_AUDIT_2026-08-05.md",
+      "bytes": 3072,
+      "sha256": "285f2c09e31672027139d089f2b858a826489c856e44bc7cec4a1d4c7f3303be"
+    }
+  ]
+}
