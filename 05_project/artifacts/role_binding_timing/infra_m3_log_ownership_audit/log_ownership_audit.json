@@ -1,0 +1,75 @@
+{
+  "schema_version": "role_binding_timing.infra_m3.log_ownership_audit.v1",
+  "created_date": "2026-08-05",
+  "development_contaminated": true,
+  "generation_calls": 0,
+  "held_out_captures": 0,
+  "source_commits": {
+    "infra_m2_audit": "f392ddccbba51c79782ff3e0bc6781643f7eef01",
+    "infra_m2_freeze": "6781948ecb4aea12d9467a5c90c6ec83047a11e8",
+    "infra_m2_result": "4b9c0ffc81266f478ba9087f75019298ff46d89d"
+  },
+  "affected_path": "05_project/artifacts/role_binding_timing/infra_m1_maintenance_burnin/maintenance/start/emulator.stdout.bin",
+  "frozen_identity": {
+    "git_blob": "f9edacd191d3a5e65a307afe1588528c7faacd9f",
+    "bytes": 9590,
+    "sha256": "ffddf9d0862f8f3e58b424e1e8f774e546875634a0ba81f5e720333284b48b1c"
+  },
+  "shutdown_append": {
+    "recorded_by": "05_project/artifacts/role_binding_timing/infra_m2_emulator_adb_burnin/maintenance_completion.json",
+    "bytes": 13912,
+    "sha256": "343e0e8f5f101700bc6e933819921e9296592b5c751874d094f3f0090770b5d5",
+    "appended_bytes": 4322,
+    "m2_first_broken_edge": "LEGACY_FROZEN_LOG_DRIFT_ON_SHUTDOWN"
+  },
+  "handle_diagnosis": {
+    "method": "Windows Restart Manager RmRegisterResources/RmGetList on the exact absolute file path",
+    "owners": [
+      {
+        "pid": 24580,
+        "application": "adb.exe",
+        "application_type": "console",
+        "executable_path": "D:/ZJU/Summer_Camp/RAVEN-M-Research/06_local_runtime/android/sdk/platform-tools/adb.exe",
+        "command_line": "adb -L tcp:5037 fork-server server --reply-fd 748",
+        "binary_sha256": "957e46b8615f7af5b7292a2ddabe98d2e61940c3fb2b0545756507f080613e71",
+        "project_owned": true
+      }
+    ],
+    "unrelated_excluded_adb_pids": [11316, 17716]
+  },
+  "bounded_remediation": {
+    "command": "locked adb.exe -P 5037 kill-server",
+    "returncode": 0,
+    "target_pid_gone": true,
+    "unrelated_processes_targeted": false,
+    "restore_command_scope": "git restore --source=HEAD --worktree -- <affected_path>",
+    "restored_git_blob": "f9edacd191d3a5e65a307afe1588528c7faacd9f",
+    "restored_bytes": 9590,
+    "restored_sha256": "ffddf9d0862f8f3e58b424e1e8f774e546875634a0ba81f5e720333284b48b1c",
+    "appended_version_staged": false
+  },
+  "post_remediation_runtime": {
+    "port_5037_listener": null,
+    "port_5038_listener_pid": 35452,
+    "emulator_listener_ports_present": [],
+    "emulator_process_present": false
+  },
+  "root_cause": {
+    "classification": "ACTIVE_LOG_INCLUDED_IN_IMMUTABLE_ARTIFACT_ROOT",
+    "direct_evidence": [
+      "INFRA-M1 opened emulator stdout/stderr directly under its result artifact root before the emulator lifecycle completed.",
+      "The descendant ADB 5037 server inherited a handle to emulator.stdout.bin and retained it after the emulator exited.",
+      "Natural shutdown appended 4322 bytes after the path had already been committed as frozen evidence.",
+      "INFRA-M2 correctly detected the mutation but could not test registration because its frozen-input design treated the actively written path as immutable."
+    ],
+    "corrective_invariant": "Live process logs reside in a fresh temporary directory outside the repository and every artifact root; only after all owning processes exit and handles close may logs be copied once into a result root and hashed."
+  },
+  "claim_evidence": {
+    "handle_owner_identified": "SUPPORTED",
+    "contamination_safely_restored": "SUPPORTED",
+    "m2_registration_tested": "NO",
+    "m3_logging_correction_tested": "NO",
+    "a11y_tested": "NO",
+    "role_binding_hypothesis_tested": "NO"
+  }
+}

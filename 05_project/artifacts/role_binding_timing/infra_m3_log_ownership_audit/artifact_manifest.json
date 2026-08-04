@@ -1,0 +1,15 @@
+{
+  "schema_version": "role_binding_timing.infra_m3.log_ownership_audit_manifest.v1",
+  "artifacts": [
+    {
+      "path": "05_project/artifacts/role_binding_timing/infra_m3_log_ownership_audit/log_ownership_audit.json",
+      "bytes": 3557,
+      "sha256": "b4b82b22d6b70abef719fbc2a7634258f1c643dbd14b2a17ff2dd810d5e81b9f"
+    },
+    {
+      "path": "reports/role_binding_timing/INFRA_M3_LOG_OWNERSHIP_AUDIT_2026-08-05.md",
+      "bytes": 3855,
+      "sha256": "063a5bca7bfed7ca5c54d438c674956d2685993ddc647d8b7c508f3d964dceed"
+    }
+  ]
+}
