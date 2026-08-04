@@ -1,0 +1,58 @@
+{
+  "schema_version": "role_binding_timing.infra_m7.config_overlay.v1",
+  "base_config": "05_project/configs/role_binding_timing/infra_m6_display_observability.json",
+  "base_config_sha256": "507946133ec2aac81401f1da7e6d7dcd96fd327d3546e096cc2e75e25f8b44db",
+  "overrides": {
+    "protocol_version": "role_binding_timing.infra_m7.runner_adb_authority.v1",
+    "run_id": "infra-m7-runner-adb-authority-20260805",
+    "audit_commit": "d9276246402e23b2347bb69777d2a8782b58e895",
+    "freeze_tag": "role-binding-timing-infra-m7-freeze-20260805",
+    "runner_adb_client": {
+      "authority": "direct_frozen_runner_process",
+      "required_executable": "locked_adb_binary",
+      "required_global_argv_prefix": ["-P", "5038"],
+      "required_parent": "current_runner_identity",
+      "creation_window": "not_before_runner_start",
+      "max_active_lifetime_seconds": 45.0,
+      "listener_policy": "no_tcp_listener_at_any_observed_sample",
+      "wrapper_policy": "direct_only_fail_closed",
+      "ordinary_subcommand_allowlist": null,
+      "lifecycle": {
+        "start-server": ["launch"],
+        "kill-server": ["cleanup"],
+        "nodaemon_server": [],
+        "fork-server": [],
+        "server": []
+      }
+    },
+    "terminal_accounting": {
+      "independent_finalizer": "05_project/scripts/finalize_role_binding_timing_infra_m7.py"
+    },
+    "log_lifecycle": {
+      "temp_prefix": "infra_m7_live_"
+    },
+    "prelaunch_identity": {
+      "listeners": {"5037": [], "5038": [], "5554": [], "5555": [], "8554": []},
+      "known_unqualified_pids": [],
+      "note": "All identities are captured live. No preexisting process is adopted or killed."
+    },
+    "settings_scene": {
+      "dev_app_id": "M7Q-SETTINGS",
+      "package": "com.android.settings",
+      "component": "com.android.settings/com.android.settings.Settings"
+    },
+    "grid": {
+      "rounds": 3,
+      "apps": [
+        {"dev_app_id": "M7G-SETTINGS", "package": "com.android.settings", "component": "com.android.settings/com.android.settings.Settings"},
+        {"dev_app_id": "M7G-CLOCK", "package": "com.google.android.deskclock", "component": "com.google.android.deskclock/com.android.deskclock.DeskClock"},
+        {"dev_app_id": "M7G-TASKS", "package": "org.tasks", "component": "org.tasks/com.todoroo.astrid.activity.MainActivity"},
+        {"dev_app_id": "M7G-BROCCOLI", "package": "com.flauschcode.broccoli", "component": "com.flauschcode.broccoli/com.flauschcode.broccoli.MainActivity"}
+      ],
+      "required_cells": 12
+    },
+    "schema": "05_project/schemas/role_binding_timing_infra_m7_completion.v1.schema.json",
+    "lock": "05_project/configs/role_binding_timing/infra_m7_runner_adb_authority.lock.json",
+    "output_root": "05_project/artifacts/role_binding_timing/infra_m7_runner_adb_authority"
+  }
+}

@@ -1,0 +1,366 @@
+........................................................................ [  5%]
+........................................................................ [ 10%]
+........................................................................ [ 15%]
+........................................................................ [ 21%]
+........................................................................ [ 26%]
+........................................................................ [ 31%]
+........................................................................ [ 37%]
+........................................................................ [ 42%]
+................................FFFFF.........FFF....................... [ 47%]
+........................................................................ [ 52%]
+........................................................................ [ 58%]
+........................................................................ [ 63%]
+........................................................................ [ 68%]
+........................................................................ [ 74%]
+........................................................................ [ 79%]
+........................................................................ [ 84%]
+........................................................................ [ 90%]
+........................................................................ [ 95%]
+.....F..........................................................         [100%]
+================================== FAILURES ===================================
+_ test_generic_direct_runner_clients_do_not_enumerate_harmless_subcommands[args0] _
+
+args = ['devices', '-l']
+
+    @pytest.mark.parametrize("args", [
+        ["devices", "-l"],
+        ["-s", "emulator-5554", "get-state"],
+        ["-s", "emulator-5554", "shell", "dumpsys", "power"],
+        ["-s", "emulator-5554", "shell", "getprop", "sys.boot_completed"],
+        ["-s", "emulator-5554", "exec-out", "screencap", "-p"],
+    ])
+    def test_generic_direct_runner_clients_do_not_enumerate_harmless_subcommands(args) -> None:
+        client = adb(args=args)
+        result = policy().evaluate(snapshot([RUNNER, client]), phase="boot")
+>       assert result.passed, result.issues
+E       AssertionError: ['PROCESS:50@1785881602.639317:RUNNER_CLIENT_LIFETIME_EXCEEDED']
+E       assert False
+E        +  where False = Evaluation(passed=False, issues=['PROCESS:50@1785881602.639317:RUNNER_CLIENT_LIFETIME_EXCEEDED'], roles={}, helper_ancestry={'50@1785881602.639317': ['10@1785881503.639317']}).passed
+
+tests\role_binding_timing\test_infra_m7_adb_authority.py:90: AssertionError
+_ test_generic_direct_runner_clients_do_not_enumerate_harmless_subcommands[args1] _
+
+args = ['-s', 'emulator-5554', 'get-state']
+
+    @pytest.mark.parametrize("args", [
+        ["devices", "-l"],
+        ["-s", "emulator-5554", "get-state"],
+        ["-s", "emulator-5554", "shell", "dumpsys", "power"],
+        ["-s", "emulator-5554", "shell", "getprop", "sys.boot_completed"],
+        ["-s", "emulator-5554", "exec-out", "screencap", "-p"],
+    ])
+    def test_generic_direct_runner_clients_do_not_enumerate_harmless_subcommands(args) -> None:
+        client = adb(args=args)
+        result = policy().evaluate(snapshot([RUNNER, client]), phase="boot")
+>       assert result.passed, result.issues
+E       AssertionError: ['PROCESS:50@1785881602.639317:RUNNER_CLIENT_LIFETIME_EXCEEDED']
+E       assert False
+E        +  where False = Evaluation(passed=False, issues=['PROCESS:50@1785881602.639317:RUNNER_CLIENT_LIFETIME_EXCEEDED'], roles={}, helper_ancestry={'50@1785881602.639317': ['10@1785881503.639317']}).passed
+
+tests\role_binding_timing\test_infra_m7_adb_authority.py:90: AssertionError
+_ test_generic_direct_runner_clients_do_not_enumerate_harmless_subcommands[args2] _
+
+args = ['-s', 'emulator-5554', 'shell', 'dumpsys', 'power']
+
+    @pytest.mark.parametrize("args", [
+        ["devices", "-l"],
+        ["-s", "emulator-5554", "get-state"],
+        ["-s", "emulator-5554", "shell", "dumpsys", "power"],
+        ["-s", "emulator-5554", "shell", "getprop", "sys.boot_completed"],
+        ["-s", "emulator-5554", "exec-out", "screencap", "-p"],
+    ])
+    def test_generic_direct_runner_clients_do_not_enumerate_harmless_subcommands(args) -> None:
+        client = adb(args=args)
+        result = policy().evaluate(snapshot([RUNNER, client]), phase="boot")
+>       assert result.passed, result.issues
+E       AssertionError: ['PROCESS:50@1785881602.639317:RUNNER_CLIENT_LIFETIME_EXCEEDED']
+E       assert False
+E        +  where False = Evaluation(passed=False, issues=['PROCESS:50@1785881602.639317:RUNNER_CLIENT_LIFETIME_EXCEEDED'], roles={}, helper_ancestry={'50@1785881602.639317': ['10@1785881503.639317']}).passed
+
+tests\role_binding_timing\test_infra_m7_adb_authority.py:90: AssertionError
+_ test_generic_direct_runner_clients_do_not_enumerate_harmless_subcommands[args3] _
+
+args = ['-s', 'emulator-5554', 'shell', 'getprop', 'sys.boot_completed']
+
+    @pytest.mark.parametrize("args", [
+        ["devices", "-l"],
+        ["-s", "emulator-5554", "get-state"],
+        ["-s", "emulator-5554", "shell", "dumpsys", "power"],
+        ["-s", "emulator-5554", "shell", "getprop", "sys.boot_completed"],
+        ["-s", "emulator-5554", "exec-out", "screencap", "-p"],
+    ])
+    def test_generic_direct_runner_clients_do_not_enumerate_harmless_subcommands(args) -> None:
+        client = adb(args=args)
+        result = policy().evaluate(snapshot([RUNNER, client]), phase="boot")
+>       assert result.passed, result.issues
+E       AssertionError: ['PROCESS:50@1785881602.639317:RUNNER_CLIENT_LIFETIME_EXCEEDED']
+E       assert False
+E        +  where False = Evaluation(passed=False, issues=['PROCESS:50@1785881602.639317:RUNNER_CLIENT_LIFETIME_EXCEEDED'], roles={}, helper_ancestry={'50@1785881602.639317': ['10@1785881503.639317']}).passed
+
+tests\role_binding_timing\test_infra_m7_adb_authority.py:90: AssertionError
+_ test_generic_direct_runner_clients_do_not_enumerate_harmless_subcommands[args4] _
+
+args = ['-s', 'emulator-5554', 'exec-out', 'screencap', '-p']
+
+    @pytest.mark.parametrize("args", [
+        ["devices", "-l"],
+        ["-s", "emulator-5554", "get-state"],
+        ["-s", "emulator-5554", "shell", "dumpsys", "power"],
+        ["-s", "emulator-5554", "shell", "getprop", "sys.boot_completed"],
+        ["-s", "emulator-5554", "exec-out", "screencap", "-p"],
+    ])
+    def test_generic_direct_runner_clients_do_not_enumerate_harmless_subcommands(args) -> None:
+        client = adb(args=args)
+        result = policy().evaluate(snapshot([RUNNER, client]), phase="boot")
+>       assert result.passed, result.issues
+E       AssertionError: ['PROCESS:50@1785881602.639317:RUNNER_CLIENT_LIFETIME_EXCEEDED']
+E       assert False
+E        +  where False = Evaluation(passed=False, issues=['PROCESS:50@1785881602.639317:RUNNER_CLIENT_LIFETIME_EXCEEDED'], roles={}, helper_ancestry={'50@1785881602.639317': ['10@1785881503.639317']}).passed
+
+tests\role_binding_timing\test_infra_m7_adb_authority.py:90: AssertionError
+_____ test_completed_authorized_client_does_not_age_into_cleanup_failure ______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000145251BF4D0>
+
+    def test_completed_authorized_client_does_not_age_into_cleanup_failure(monkeypatch) -> None:
+        client = adb()
+        value = policy()
+        initial = value.evaluate(snapshot([RUNNER, client]), phase="boot")
+>       assert initial.passed
+E       AssertionError: assert False
+E        +  where False = Evaluation(passed=False, issues=['PROCESS:50@1785881602.639317:RUNNER_CLIENT_LIFETIME_EXCEEDED'], roles={}, helper_ancestry={'50@1785881602.639317': ['10@1785881503.639317']}).passed
+
+tests\role_binding_timing\test_infra_m7_adb_authority.py:131: AssertionError
+_ test_authorized_client_still_active_past_bound_or_later_listening_is_rejected _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001452508B350>
+
+    def test_authorized_client_still_active_past_bound_or_later_listening_is_rejected(monkeypatch) -> None:
+        client = adb()
+        value = policy()
+>       assert value.evaluate(snapshot([RUNNER, client]), phase="boot").passed
+E       AssertionError: assert False
+E        +  where False = Evaluation(passed=False, issues=['PROCESS:50@1785881602.639317:RUNNER_CLIENT_LIFETIME_EXCEEDED'], roles={}, helper_ancestry={'50@1785881602.639317': ['10@1785881503.639317']}).passed
+E        +    where Evaluation(passed=False, issues=['PROCESS:50@1785881602.639317:RUNNER_CLIENT_LIFETIME_EXCEEDED'], roles={}, helper_ancestry={'50@1785881602.639317': ['10@1785881503.639317']}) = evaluate({'schema_version': 'role_binding_timing.infra_m7.process_snapshot.v1', 'sequence': 1, 'captured_at': '2026-08-05T00:00:00+00:00', 'captured_monotonic': 1.0, ...}, phase='boot')
+E        +      where evaluate = <raven_m.role_binding_timing.infra_m7_adb_authority.M7StructuralIdentityPolicy object at 0x000001452508A4D0>.evaluate
+E        +      and   {'schema_version': 'role_binding_timing.infra_m7.process_snapshot.v1', 'sequence': 1, 'captured_at': '2026-08-05T00:00:00+00:00', 'captured_monotonic': 1.0, ...} = snapshot([{'pid': 10, 'ppid': 1, 'name': 'python.exe', 'exe': 'C:/Python/python.exe', ...}, {'pid': 50, 'ppid': 10, 'name': 'adb.exe', 'exe': 'C:/locked/adb.exe', ...}])
+
+tests\role_binding_timing\test_infra_m7_adb_authority.py:141: AssertionError
+___________ test_server_lifecycle_is_separate_and_phase_authorized ____________
+
+    def test_server_lifecycle_is_separate_and_phase_authorized() -> None:
+        start = adb(args=["start-server"])
+        kill = adb(pid=51, args=["kill-server"])
+        nodaemon = adb(pid=52, args=["nodaemon", "server"])
+>       assert policy().evaluate(snapshot([RUNNER, start]), phase="launch").passed
+E       AssertionError: assert False
+E        +  where False = Evaluation(passed=False, issues=['PROCESS:50@1785881602.639317:RUNNER_CLIENT_LIFETIME_EXCEEDED'], roles={}, helper_ancestry={'50@1785881602.639317': ['10@1785881503.639317']}).passed
+E        +    where Evaluation(passed=False, issues=['PROCESS:50@1785881602.639317:RUNNER_CLIENT_LIFETIME_EXCEEDED'], roles={}, helper_ancestry={'50@1785881602.639317': ['10@1785881503.639317']}) = evaluate({'schema_version': 'role_binding_timing.infra_m7.process_snapshot.v1', 'sequence': 1, 'captured_at': '2026-08-05T00:00:00+00:00', 'captured_monotonic': 1.0, ...}, phase='launch')
+E        +      where evaluate = <raven_m.role_binding_timing.infra_m7_adb_authority.M7StructuralIdentityPolicy object at 0x000001452507F250>.evaluate
+E        +        where <raven_m.role_binding_timing.infra_m7_adb_authority.M7StructuralIdentityPolicy object at 0x000001452507F250> = policy()
+E        +      and   {'schema_version': 'role_binding_timing.infra_m7.process_snapshot.v1', 'sequence': 1, 'captured_at': '2026-08-05T00:00:00+00:00', 'captured_monotonic': 1.0, ...} = snapshot([{'pid': 10, 'ppid': 1, 'name': 'python.exe', 'exe': 'C:/Python/python.exe', ...}, {'pid': 50, 'ppid': 10, 'name': 'adb.exe', 'exe': 'C:/locked/adb.exe', ...}])
+
+tests\role_binding_timing\test_infra_m7_adb_authority.py:159: AssertionError
+____________ test_r78_candidate_static_manifest_validation_passes _____________
+
+    def test_r78_candidate_static_manifest_validation_passes() -> None:
+        wrapper = load_wrapper("r78_candidate_static_wrapper")
+        runner = load_module(RUNNER, "r78_candidate_static_runner")
+        manifest = json.loads(
+            wrapper.build_candidate_manifest().read_text(encoding="utf-8")
+        )
+>       audit = runner.validate_manifest(
+            manifest,
+            expected_source_tag=wrapper.SOURCE_TAG,
+            expected_source_commit=wrapper.SOURCE_COMMIT,
+            expected_prerequisite_commit=wrapper.PARENT_GATE_E_COMMIT,
+        )
+
+tests\scripts\test_protocol_v2_2_r78_h17_candidate.py:107: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+manifest = {'schema_version': 'protocol_v2_2_h17_candidate_r78.v1', 'manifest_id': 'protocol_v2_2_h17_candidate_seed20260730_r78', 'protocol': 'androidworld_protocol_v2_2_exploratory', 'source_tag': 'protocol-v2-2-r78-local-candidate', ...}
+expected_source_tag = 'protocol-v2-2-r78-local-candidate'
+expected_source_commit = '69ab866b08f3af13f304bdc99f2af0a985cff0cf'
+expected_prerequisite_commit = '24ddb7a34c0e873218cbac6b081d7d24ecd7d61e'
+
+    def validate_manifest(
+        manifest: dict[str, Any],
+        *,
+        expected_source_tag: str = EXPECTED_SOURCE_TAG,
+        expected_source_commit: str = EXPECTED_SOURCE_COMMIT,
+        expected_prerequisite_commit: str | None = None,
+    ) -> dict[str, Any]:
+        if manifest["source_tag"] != expected_source_tag:
+            raise RuntimeError("Gate-F source tag is not the Gate-E pass.")
+        if manifest["source_commit"] != expected_source_commit:
+            raise RuntimeError("Gate-F source commit is not the Gate-E pass.")
+        if manifest["instance_seed"] != 20260730:
+            raise RuntimeError("Gate-F instance seed drifted.")
+        if manifest["blocked_order_seed"] != 2026073001:
+            raise RuntimeError("Gate-F blocked-order seed drifted.")
+        if len(manifest["schedule"]) != 12:
+            raise RuntimeError("Gate F requires exactly twelve frozen cells.")
+        if [item["sequence"] for item in manifest["schedule"]] != list(
+            range(1, 13)
+        ):
+            raise RuntimeError("Gate-F sequence must be exactly 1 through 12.")
+        if set(manifest["variants"]) != {"B3", "M0"}:
+            raise RuntimeError("Gate F is restricted to B3 and M0.")
+        batches = {item["batch"] for item in manifest["schedule"]}
+        if batches != {1, 2, 3}:
+            raise RuntimeError("Gate F requires exactly three batches.")
+        for batch in batches:
+            rows = [
+                item for item in manifest["schedule"] if item["batch"] == batch
+            ]
+            if len(rows) != 4:
+                raise RuntimeError("Every Gate-F batch must contain four cells.")
+            if sum(item["variant"] == "B3" for item in rows) != 2:
+                raise RuntimeError("Every Gate-F batch must contain two B3 cells.")
+            if len({item["task"] for item in rows}) != 4:
+                raise RuntimeError("Paired variants may not share a batch.")
+        schedule = manifest["schedule"]
+        if any(
+            left["task"] == right["task"]
+            for left, right in zip(schedule, schedule[1:])
+        ):
+            raise RuntimeError("Paired variants may not be adjacent.")
+        expected = {
+            "H01": ("BrowserMultiply", 22),
+            "H03": ("ExpenseAddMultipleFromMarkor", 60),
+            "H05": ("MarkorCreateNoteAndSms", 18),
+            "H15": ("SaveCopyOfReceiptTaskEval", 16),
+            "H16": ("SimpleCalendarAddOneEvent", 34),
+            "H17": ("SportsTrackerActivitiesOnDate", 20),
+        }
+        hard = json.loads(HARD_MANIFEST.read_text(encoding="utf-8"))
+        frozen_hard = {
+            item["id"]: (item["class_name"], item["native_max_steps"])
+            for item in hard["tasks"]
+        }
+        if any(frozen_hard.get(key) != value for key, value in expected.items()):
+            raise RuntimeError("Gate-F task subset drifted from the Hard manifest.")
+        for task_id, (task, max_steps) in expected.items():
+            rows = [
+                item for item in manifest["schedule"]
+                if item["task_id"] == task_id
+            ]
+            if (
+                len(rows) != 2
+                or {item["variant"] for item in rows} != {"B3", "M0"}
+                or any(item["task"] != task for item in rows)
+                or any(item["max_steps"] != max_steps for item in rows)
+            ):
+                raise RuntimeError(f"Gate-F pair mismatch for {task_id}.")
+        freeze_checks = []
+        prerequisite_checks = []
+        candidate_prerequisite_checks = []
+        if manifest["protocol"] in VERSIONED_PROTOCOLS:
+            if _git_output("rev-list", "-n", "1", manifest["source_tag"]) != (
+                expected_source_commit
+            ):
+                raise RuntimeError("Gate-F source tag does not resolve to source.")
+            ancestor = subprocess.run(
+                [
+                    "git",
+                    "merge-base",
+                    "--is-ancestor",
+                    expected_source_commit,
+                    "HEAD",
+                ],
+                cwd=REPOSITORY_ROOT,
+                check=False,
+                capture_output=True,
+                timeout=30,
+            )
+            if ancestor.returncode != 0:
+                raise RuntimeError("Gate-F source is not an ancestor of HEAD.")
+            records = manifest.get("freeze_files", [])
+            if not records:
+                raise RuntimeError("Versioned Gate-F freeze file list is empty.")
+            for record in records:
+                path = REPOSITORY_ROOT / record["path"]
+                actual = (
+                    sha256(path.read_bytes()).hexdigest()
+                    if path.is_file()
+                    else None
+                )
+                passed = actual == record["sha256"]
+                freeze_checks.append(
+                    {
+                        "path": record["path"],
+                        "expected_sha256": record["sha256"],
+                        "actual_sha256": actual,
+                        "passed": passed,
+                    }
+                )
+            if not all(item["passed"] for item in freeze_checks):
+>               raise RuntimeError("Versioned Gate-F freeze file hash mismatch.")
+E               RuntimeError: Versioned Gate-F freeze file hash mismatch.
+
+scripts\run_protocol_v2_gate_f.py:544: RuntimeError
+============================== warnings summary ===============================
+..\06_local_runtime\envs\androidworld\Lib\site-packages\matplotlib\_fontconfig_pattern.py:66
+  D:\ZJU\Summer_Camp\RAVEN-M-Research\06_local_runtime\envs\androidworld\Lib\site-packages\matplotlib\_fontconfig_pattern.py:66: PyparsingDeprecationWarning: 'setParseAction' deprecated - use 'set_parse_action'
+    ).setParseAction(self._family)
+
+..\06_local_runtime\envs\androidworld\Lib\site-packages\matplotlib\_fontconfig_pattern.py:70
+  D:\ZJU\Summer_Camp\RAVEN-M-Research\06_local_runtime\envs\androidworld\Lib\site-packages\matplotlib\_fontconfig_pattern.py:70: PyparsingDeprecationWarning: 'setParseAction' deprecated - use 'set_parse_action'
+    ).setParseAction(self._size)
+
+..\06_local_runtime\envs\androidworld\Lib\site-packages\matplotlib\_fontconfig_pattern.py:74
+  D:\ZJU\Summer_Camp\RAVEN-M-Research\06_local_runtime\envs\androidworld\Lib\site-packages\matplotlib\_fontconfig_pattern.py:74: PyparsingDeprecationWarning: 'setParseAction' deprecated - use 'set_parse_action'
+    ).setParseAction(self._name)
+
+..\06_local_runtime\envs\androidworld\Lib\site-packages\matplotlib\_fontconfig_pattern.py:78
+  D:\ZJU\Summer_Camp\RAVEN-M-Research\06_local_runtime\envs\androidworld\Lib\site-packages\matplotlib\_fontconfig_pattern.py:78: PyparsingDeprecationWarning: 'setParseAction' deprecated - use 'set_parse_action'
+    ).setParseAction(self._value)
+
+..\06_local_runtime\envs\androidworld\Lib\site-packages\matplotlib\_fontconfig_pattern.py:85
+  D:\ZJU\Summer_Camp\RAVEN-M-Research\06_local_runtime\envs\androidworld\Lib\site-packages\matplotlib\_fontconfig_pattern.py:85: PyparsingDeprecationWarning: 'setParseAction' deprecated - use 'set_parse_action'
+    ).setParseAction(self._families)
+
+..\06_local_runtime\envs\androidworld\Lib\site-packages\matplotlib\_fontconfig_pattern.py:92
+  D:\ZJU\Summer_Camp\RAVEN-M-Research\06_local_runtime\envs\androidworld\Lib\site-packages\matplotlib\_fontconfig_pattern.py:92: PyparsingDeprecationWarning: 'setParseAction' deprecated - use 'set_parse_action'
+    ).setParseAction(self._point_sizes)
+
+..\06_local_runtime\envs\androidworld\Lib\site-packages\matplotlib\_fontconfig_pattern.py:102
+  D:\ZJU\Summer_Camp\RAVEN-M-Research\06_local_runtime\envs\androidworld\Lib\site-packages\matplotlib\_fontconfig_pattern.py:102: PyparsingDeprecationWarning: 'setParseAction' deprecated - use 'set_parse_action'
+    ).setParseAction(self._property)
+
+..\06_local_runtime\envs\androidworld\Lib\site-packages\matplotlib\_fontconfig_pattern.py:127
+..\06_local_runtime\envs\androidworld\Lib\site-packages\matplotlib\_fontconfig_pattern.py:127
+..\06_local_runtime\envs\androidworld\Lib\site-packages\matplotlib\_fontconfig_pattern.py:127
+..\06_local_runtime\envs\androidworld\Lib\site-packages\matplotlib\_fontconfig_pattern.py:127
+..\06_local_runtime\envs\androidworld\Lib\site-packages\matplotlib\_fontconfig_pattern.py:127
+  D:\ZJU\Summer_Camp\RAVEN-M-Research\06_local_runtime\envs\androidworld\Lib\site-packages\matplotlib\_fontconfig_pattern.py:127: PyparsingDeprecationWarning: 'parseString' deprecated - use 'parse_string'
+    self._parser.parseString(pattern)
+
+..\06_local_runtime\envs\androidworld\Lib\site-packages\matplotlib\_fontconfig_pattern.py:134
+..\06_local_runtime\envs\androidworld\Lib\site-packages\matplotlib\_fontconfig_pattern.py:134
+..\06_local_runtime\envs\androidworld\Lib\site-packages\matplotlib\_fontconfig_pattern.py:134
+..\06_local_runtime\envs\androidworld\Lib\site-packages\matplotlib\_fontconfig_pattern.py:134
+..\06_local_runtime\envs\androidworld\Lib\site-packages\matplotlib\_fontconfig_pattern.py:134
+  D:\ZJU\Summer_Camp\RAVEN-M-Research\06_local_runtime\envs\androidworld\Lib\site-packages\matplotlib\_fontconfig_pattern.py:134: PyparsingDeprecationWarning: 'resetCache' deprecated - use 'reset_cache'
+    self._parser.resetCache()
+
+..\06_local_runtime\envs\androidworld\Lib\site-packages\matplotlib\_mathtext.py:29
+  D:\ZJU\Summer_Camp\RAVEN-M-Research\06_local_runtime\envs\androidworld\Lib\site-packages\matplotlib\_mathtext.py:29: PyparsingDeprecationWarning: 'enablePackrat' deprecated - use 'enable_packrat'
+    ParserElement.enablePackrat()
+
+..\06_local_runtime\envs\androidworld\Lib\site-packages\pydub\utils.py:14
+  D:\ZJU\Summer_Camp\RAVEN-M-Research\06_local_runtime\envs\androidworld\Lib\site-packages\pydub\utils.py:14: DeprecationWarning: 'audioop' is deprecated and slated for removal in Python 3.13
+    import audioop
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/role_binding_timing/test_infra_m7_adb_authority.py::test_generic_direct_runner_clients_do_not_enumerate_harmless_subcommands[args0]
+FAILED tests/role_binding_timing/test_infra_m7_adb_authority.py::test_generic_direct_runner_clients_do_not_enumerate_harmless_subcommands[args1]
+FAILED tests/role_binding_timing/test_infra_m7_adb_authority.py::test_generic_direct_runner_clients_do_not_enumerate_harmless_subcommands[args2]
+FAILED tests/role_binding_timing/test_infra_m7_adb_authority.py::test_generic_direct_runner_clients_do_not_enumerate_harmless_subcommands[args3]
+FAILED tests/role_binding_timing/test_infra_m7_adb_authority.py::test_generic_direct_runner_clients_do_not_enumerate_harmless_subcommands[args4]
+FAILED tests/role_binding_timing/test_infra_m7_adb_authority.py::test_completed_authorized_client_does_not_age_into_cleanup_failure
+FAILED tests/role_binding_timing/test_infra_m7_adb_authority.py::test_authorized_client_still_active_past_bound_or_later_listening_is_rejected
+FAILED tests/role_binding_timing/test_infra_m7_adb_authority.py::test_server_lifecycle_is_separate_and_phase_authorized
+FAILED tests/scripts/test_protocol_v2_2_r78_h17_candidate.py::test_r78_candidate_static_manifest_validation_passes

@@ -1,0 +1,16 @@
+{
+  "schema_version": "role_binding_timing.infra_m7.offline_incomplete.v1",
+  "attempt": 1,
+  "overall_verdict": "INCOMPLETE_NOT_PASS_OR_FAIL",
+  "generation_calls": 0,
+  "device_mutations": 0,
+  "restart_attempts": 0,
+  "terminal_result_written": false,
+  "exception": {
+    "type": "KeyError",
+    "message": "unique_invocations",
+    "location": "invocation_audit_gate"
+  },
+  "preservation": "All subprocess stdout/stderr artifacts from the incomplete attempt are retained and will be hashed in the M7 lock. No result is inferred from their existence alone.",
+  "correction": "Read classifications from the frozen audit field observed_m6_adb_argv and use a fresh attempt_02 root."
+}
