@@ -1,61 +1,101 @@
-# RAVEN-M Research Starter Repository
+# RAVEN-M Research Repository
 
-当前资料准备完成度与未闭合项见 [`RESOURCE_STATUS.md`](RESOURCE_STATUS.md)。
+This repository records a summer-camp research project on memory management for
+MLLM-driven mobile GUI agents. It contains the implemented baselines, RAVEN-M
+prototypes, frozen protocols, tests, audit reports, and negative results. It is
+not a repository in which every implemented component has been shown to improve
+task success.
 
-这是课题三“MLLM 驱动的 Mobile-use Agent 的记忆管理研究”的完整实验仓库。
+## Start here: research redirection
 
-资料底座、Qwen3-VL-32B 精确版本后端、AndroidWorld 本地环境、
-B0/B1/B2/B3 baseline、RAVEN-M Strict/Full、协议审计、统计脚本与
-消融控制均已实现。当前正在执行最终非 Hard G7 门；在
-`protocol-v1` 预注册与 Git tag 生成之前，代码会机械阻止任何正式
-Hard episode。
+The project has reached a point where adding more memory modules is not justified
+by the available evidence. For an independent novelty audit and a possible change
+of research direction, read:
 
-## 仓库结构
+- [`reports/research_direction/GPTPRO_NOVEL_IDEA_AUDIT_BRIEF_2026-08-04.md`](reports/research_direction/GPTPRO_NOVEL_IDEA_AUDIT_BRIEF_2026-08-04.md)
+- [`00_admin/plans/GPTPro_master_prompt.md`](00_admin/plans/GPTPro_master_prompt.md)
+
+That brief is self-contained. It separates direct evidence from inference,
+summarizes the strongest negative and mechanism-level results, identifies ideas
+that are already covered by prior work, and defines the standard that a genuinely
+interesting next direction must meet.
+
+## Current evidence boundary
+
+The main empirical finding is not that RAVEN-M has succeeded. It is that the
+original research question was too broad and was not well matched to the dominant
+failure modes observed in AndroidWorld.
+
+| Stage | Direct result | Valid conclusion |
+|---|---|---|
+| Legacy non-Hard paired check | Simple summary B3 completed 4/4; full RAVEN-M M0 completed 3/4 and used more calls, tokens, and actions | A heavier memory/controller framework was not automatically better |
+| EEST-AC v0.1.1, 8 cells | All four arms completed 1/2 tasks; typed memory captured 4/4 source bindings but produced no paired task win | Structured capture showed a mechanism signal, not a success-rate gain |
+| EEST-AC v0.2, 9 blind cells | All cells stopped before an environment action because the action interface was incompatible | Controller floor; no memory comparison was possible |
+| v0.2.1 qualification | The first real-model decision still violated the frozen decision schema after one repair | Prompt/schema contract remained unqualified |
+| v0.2.2 qualification | Three commands were schema-valid and executable; one of three failed the overly strict terminal-pixel rule | Action contract improved, while outcome measurement remained unresolved |
+| v0.2.3 collection | No valid completed held-out trace corpus was collected | The action-conditioned oracle remained an offline candidate |
+| v0.2.4 lifecycle qualification | AndroidEnv failed because the device exposed no `settings` service; readiness and action counts were zero | Infrastructure failure, not evidence for or against memory efficacy |
+
+The strongest positive signal is narrow: explicit records can preserve a
+cross-page `source entity -> field -> value` binding. The strongest counter-signal
+is equally important: preserving the value did not make the agent reach the
+correct destination entity or finish the task. Perception, grounding, transition
+measurement, action contracts, recovery, and completion verification can dominate
+the memory effect.
+
+## Candidate research shift
+
+The current candidate hypothesis is:
+
+> Task length is not the same as memory difficulty. Memory difficulty may be
+> better predicted by the information-dependency structure between observing a
+> fact and using it: dependency distance, interference among similar entities or
+> fields, and the observability gap of the final outcome.
+
+This is a hypothesis to audit, not a novelty claim. The next step is to analyze
+real failed tasks and compare matched tasks. It is not to rename ordinary
+structured memory as a new method.
+
+## Evidence entry points
+
+- [`RAVEN-M_研究假设与实验方向审计_2026-08-03.md`](RAVEN-M_研究假设与实验方向审计_2026-08-03.md): broad audit of the original research assumptions and benchmark fit.
+- [`reports/eest_ac/eest_ac_smoke_v0_1_1_analysis.md`](reports/eest_ac/eest_ac_smoke_v0_1_1_analysis.md): the most informative live paired smoke, including the correct-value/wrong-destination failure.
+- [`reports/eest_ac/claim_evidence_v0_1_1_verdict.md`](reports/eest_ac/claim_evidence_v0_1_1_verdict.md): claim-by-claim boundary for the v0.1.1 smoke.
+- [`reports/eest_ac/eest_ac_v0_2_blind_smoke_analysis.md`](reports/eest_ac/eest_ac_v0_2_blind_smoke_analysis.md): blind controller-floor diagnosis.
+- [`reports/eest_ac/eest_ac_v0_2_2_qualification_final_report.md`](reports/eest_ac/eest_ac_v0_2_2_qualification_final_report.md): action-contract and terminal-state measurement evidence.
+- [`reports/eest_ac/eest_ac_v0_2_3_collection_floor_verdict.md`](reports/eest_ac/eest_ac_v0_2_3_collection_floor_verdict.md): trace-collection failure and oracle boundary.
+- [`reports/eest_ac/eest_ac_v0_2_4_collector_lifecycle_verdict.md`](reports/eest_ac/eest_ac_v0_2_4_collector_lifecycle_verdict.md): latest frozen infrastructure verdict.
+
+## Repository map
 
 ```text
 RAVEN-M-Research/
-├── 00_admin/                 # 考核原文、研究计划、决策记录
-├── 01_sources/               # benchmark/model/作者与实验室官方来源
-├── 02_literature/            # 论文 PDF、题录、BibTeX、阅读笔记、检索记录
-├── 03_code/                  # 第三方代码克隆目录与 commit 锁
-├── 04_protocols/             # 后续冻结的 benchmark/实验协议
-├── 05_project/               # RAVEN-M、baseline、runner、schema、tests
-├── reports/                  # 门禁报告与最终自动生成结果
-├── runs/                     # 本地原始轨迹（不进入 Git）
-├── checksums/                # 本地资料 SHA-256
-└── scripts/                  # 下载、克隆、快照和校验脚本
+├── 00_admin/                 # plans, requirement trace, and decisions
+├── 01_sources/               # source ledger and provenance policy
+├── 02_literature/            # metadata, notes, search logs, and local manifests
+├── 03_code/                  # third-party repository manifests
+├── 04_protocols/             # frozen and amended experiment protocols
+├── 05_project/               # agent implementations, schemas, configs, and tests
+├── reports/                  # analyses, claim-evidence verdicts, and direction audits
+├── runs/                     # local raw traces; most are intentionally not in Git
+└── checksums/                # local integrity records
 ```
 
-## 当前资料层级
+## Interpretation rules
 
-- `P0_must_read`：开始方法设计前必须全文阅读，优先覆盖 AndroidWorld、周晟老师/Eagle Lab 直接相关工作以及最接近的 2026 memory 方法。
-- `P1_core`：用于补齐 baseline、规划/反思、压缩与程序性记忆的核心邻域。
-- `P2_extended`：PDF 已全部在本地，但按实验问题选读，不应阻塞第一周环境与 baseline。
+- A passing unit test is implementation evidence, not task-efficacy evidence.
+- A valid memory record is capture evidence, not proof that the agent used it
+  correctly.
+- A blocked unsafe or invented action is a local guard success, not necessarily a
+  task-level success.
+- All-failure ties are not equivalence evidence.
+- Development-contaminated tasks and repeatedly debugged seeds must not be reported
+  as held-out generalization.
+- Frozen negative results must not be rewritten after the fact.
 
-完整清单见：
+## Working-tree boundary
 
-- `02_literature/metadata/papers.csv`
-- `03_code/manifests/repositories.csv`
-- `01_sources/source_ledger.csv`
-- `00_admin/requirements_trace.md`
-
-## 实验顺序
-
-1. 阅读考核原文和 master plan，但以考核原文为最高优先级。
-2. P0/P1/P2 论文与官方开源实现已全部落地并锁定来源、SHA-256/commit。
-3. G3/G4/G6 已通过；完成 v15、50 条人工 route 审计和组件 smoke 后关闭 G7。
-4. G7 通过后生成最终 preregistration commit 与 `protocol-v1` tag。
-5. 按物化的 364-episode blocked schedule 依次执行 breadth、S0、
-   confirmatory 和 ablation/control。
-6. 只使用冻结的分析脚本生成统计、表格和图。
-
-完整复现命令与门禁见
-[`reports/reproduction_guide.md`](reports/reproduction_guide.md)。
-
-## 资料纪律
-
-- 论文 venue/status 只以 proceedings、出版社、OpenReview 或作者官方页面为依据。
-- GitHub 仓库必须由论文、作者主页或正式项目页反向确认，名称相同不等于官方实现。
-- 每次下载和克隆都记录 URL、访问日期、commit 或 SHA-256。
-- 精确 revision 的模型权重已下载到 4090 服务器专用缓存，但不进入 Git。
-- `third_party` 与论文 PDF 在本地保留，但父仓库只追踪清单、锁文件与校验和，避免 Git 历史膨胀。
+Three legacy r79 files may remain intentionally modified or untracked in the local
+working tree. Their hashes are protected by the later frozen protocols. They are
+not part of the new research-direction document and must not be overwritten,
+silently staged, or used to repair a later result.
