@@ -1,0 +1,52 @@
+{
+  "schema_version": "role_binding_timing.snapshot_collection_contract.v0_2",
+  "study_id": "role_binding_timing_phase_b2_v0_2",
+  "phase": "B2",
+  "generation_eligible": false,
+  "generation_calls_authorized": 0,
+  "structural_family": {
+    "definition": "distinct_task_semantics_plus_destination_app_layout_widget_family",
+    "required_families": 8,
+    "minimum_apps": 4,
+    "minimum_widget_families": 4,
+    "maximum_families_per_app": 2,
+    "name_or_value_replication_is_new_family": false
+  },
+  "candidate_pool": {
+    "variants": ["low", "high"],
+    "replacement_after_freeze": false,
+    "same_version_recapture": false
+  },
+  "stable_frame": {
+    "samples": 3,
+    "gap_seconds": 0.75,
+    "bracket_order": ["screenshot_before", "uiautomator_xml", "screenshot_after"],
+    "require_bracket_pixel_equality": true,
+    "require_cross_sample_pixel_equality": true,
+    "require_cross_sample_semantic_equality": true
+  },
+  "oracle": {
+    "source": "deterministic_raw_ui_tree",
+    "exact_item_anchor_count": 1,
+    "clickable_ancestor_count": 1,
+    "high_required_same_role_candidates": 2,
+    "low_source_anchor_count": 0,
+    "allowed_target_aliases": ["A", "B", "C", "D", "E", "F", "G", "H"],
+    "allowed_entity_aliases": ["E1", "E2", "E3", "E4", "E5", "E6", "E7", "E8"]
+  },
+  "qualification": {
+    "minimum_complete_families": 8,
+    "minimum_family_rate": 0.95,
+    "qualification_runs": 1,
+    "verdict_pass": "ELIGIBLE_FOR_PHASE_C_PREREGISTRATION",
+    "verdict_fail": "NOT_ELIGIBLE"
+  },
+  "non_claims": [
+    "no_timing_effect",
+    "no_role_binding_effect",
+    "no_memory_efficacy",
+    "no_controller_efficacy",
+    "no_model_generation",
+    "no_phase_c_launch"
+  ]
+}

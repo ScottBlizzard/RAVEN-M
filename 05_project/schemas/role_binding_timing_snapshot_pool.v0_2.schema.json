@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "study_id",
+    "generation_calls",
+    "frozen_before_qualification",
+    "protocol_freeze_commit",
+    "collection",
+    "runtime",
+    "families"
+  ],
+  "properties": {
+    "schema_version": {"const": "role_binding_timing.snapshot_pool.v0_2"},
+    "study_id": {"const": "role_binding_timing_phase_b2_v0_2"},
+    "generation_calls": {"const": 0},
+    "frozen_before_qualification": {"const": true},
+    "protocol_freeze_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "collection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["started_at", "finished_at", "wall_time_seconds", "capture_attempts", "model_endpoint_called", "candidate_replacements"],
+      "properties": {
+        "started_at": {"type": "string", "minLength": 1},
+        "finished_at": {"type": "string", "minLength": 1},
+        "wall_time_seconds": {"type": "number", "minimum": 0},
+        "capture_attempts": {"type": "integer", "minimum": 0, "maximum": 16},
+        "model_endpoint_called": {"const": false},
+        "candidate_replacements": {"const": 0}
+      }
+    },
+    "runtime": {"type": "object", "minProperties": 8},
+    "families": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "items": {"$ref": "#/$defs/family"}
+    }
+  },
+  "$defs": {
+    "family": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["base_family_id", "app_id", "app_name", "expected_package", "driver", "task_semantics_id", "destination_widget_family", "task_without_value", "fact", "collection_order", "variants"],
+      "properties": {
+        "base_family_id": {"type": "string", "pattern": "^B2F-[0-9]{3}$"},
+        "app_id": {"type": "string", "minLength": 1},
+        "app_name": {"type": "string", "minLength": 1},
+        "expected_package": {"type": "string", "minLength": 1},
+        "driver": {"type": "string", "minLength": 1},
+        "task_semantics_id": {"type": "string", "minLength": 1},
+        "destination_widget_family": {"type": "string", "minLength": 1},
+        "task_without_value": {"type": "string", "minLength": 1},
+        "fact": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["field", "value", "source_entity_id", "destination_entity_id", "source_label", "destination_label"],
+          "properties": {
+            "field": {"type": "string", "minLength": 1},
+            "value": {"type": "string", "minLength": 1},
+            "source_entity_id": {"type": "string", "pattern": "^E[1-8]$"},
+            "destination_entity_id": {"type": "string", "pattern": "^E[1-8]$"},
+            "source_label": {"type": "string", "minLength": 1},
+            "destination_label": {"type": "string", "minLength": 1}
+          }
+        },
+        "collection_order": {"type": "array", "prefixItems": [{"enum": ["low", "high"]}, {"enum": ["low", "high"]}], "items": false, "minItems": 2, "maxItems": 2},
+        "variants": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["low", "high"],
+          "properties": {
+            "low": {"$ref": "#/$defs/variant"},
+            "high": {"$ref": "#/$defs/variant"}
+          }
+        }
+      }
+    },
+    "variant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role_ambiguity",
+        "capture_status",
+        "error",
+        "development_contaminated",
+        "held_out_eligible",
+        "artifact_root",
+        "screenshot_path",
+        "screenshot_sha256",
+        "raw_ui_tree_path",
+        "raw_ui_tree_sha256",
+        "setup_trace_path",
+        "setup_trace_sha256",
+        "sample_records",
+        "stability",
+        "provenance",
+        "reset_before",
+        "reset_after",
+        "source_target_id",
+        "destination_target_id",
+        "destination_widget_id",
+        "candidate_targets",
+        "oracle_rationale"
+      ],
+      "properties": {
+        "role_ambiguity": {"enum": ["low", "high"]},
+        "capture_status": {"enum": ["captured", "failed"]},
+        "error": {"type": ["object", "null"]},
+        "development_contaminated": {"const": false},
+        "held_out_eligible": {"const": false},
+        "artifact_root": {"type": "string", "minLength": 1},
+        "screenshot_path": {"type": ["string", "null"]},
+        "screenshot_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+        "raw_ui_tree_path": {"type": ["string", "null"]},
+        "raw_ui_tree_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+        "setup_trace_path": {"type": "string", "minLength": 1},
+        "setup_trace_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "sample_records": {"type": "array", "maxItems": 3, "items": {"type": "object"}},
+        "stability": {"type": "object"},
+        "provenance": {"type": "object"},
+        "reset_before": {"type": "object"},
+        "reset_after": {"type": "object"},
+        "source_target_id": {"type": ["string", "null"], "pattern": "^[A-H]$"},
+        "destination_target_id": {"type": "string", "pattern": "^[A-H]$"},
+        "destination_widget_id": {"type": "string", "pattern": "^[A-H]$"},
+        "candidate_targets": {"type": "array", "minItems": 0, "maxItems": 3, "items": {"$ref": "#/$defs/target"}},
+        "oracle_rationale": {"type": "object"}
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["target_id", "entity_id", "widget_role", "widget_family", "selector", "bounds", "ambiguity_group"],
+      "properties": {
+        "target_id": {"type": "string", "pattern": "^[A-H]$"},
+        "entity_id": {"type": ["string", "null"], "pattern": "^E[1-8]$"},
+        "widget_role": {"type": "string", "minLength": 1},
+        "widget_family": {"type": "string", "minLength": 1},
+        "selector": {"type": "object", "minProperties": 4},
+        "bounds": {"type": "array", "prefixItems": [{"type": "integer"}, {"type": "integer"}, {"type": "integer"}, {"type": "integer"}], "items": false, "minItems": 4, "maxItems": 4},
+        "ambiguity_group": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

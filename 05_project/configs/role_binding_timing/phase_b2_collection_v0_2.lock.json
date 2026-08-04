@@ -1,0 +1,61 @@
+{
+  "candidate_pool_version": "v0.2",
+  "candidate_replacement_after_freeze": false,
+  "files": [
+    {
+      "path": "04_protocols/role_binding_timing/phase_b2_snapshot_collection_v0_2.md",
+      "sha256": "67e797309f778338e557c3d6a668b4485cccca276c3378b427b28ec3f4ba4122"
+    },
+    {
+      "path": "05_project/contracts/role_binding_timing_snapshot_collection.v0_2.json",
+      "sha256": "7def1ce6aca7b6af353680efc49fb0d4febcade315b84dc2c3886c5953e1d453"
+    },
+    {
+      "path": "05_project/schemas/role_binding_timing_snapshot_pool.v0_2.schema.json",
+      "sha256": "6829f17214668bf587b9f9002f06fbc946b09e88ec4549cf29aa1157f1dcaeff"
+    },
+    {
+      "path": "05_project/configs/role_binding_timing/phase_b2_collection_v0_2.json",
+      "sha256": "1a89460d3679f58884c29426489aba94f4ee894b308078540db31141b49b95af"
+    },
+    {
+      "path": "05_project/src/raven_m/role_binding_timing/collection_v0_2.py",
+      "sha256": "41dbe104fad423030b5e7c9952ce2a42629dda85eb5cbf78c362bcb8a47ff19c"
+    },
+    {
+      "path": "05_project/scripts/collect_role_binding_timing_phase_b2_v0_2.py",
+      "sha256": "f336591a7ff61cf2a31e110afe5777555a88832ffdc67ca1d781c9409d11ffcc"
+    },
+    {
+      "path": "05_project/scripts/qualify_role_binding_timing_phase_b2_v0_2.py",
+      "sha256": "99cebb324ad61ebd2847a1de297f5a6fd7f5ecdeda7646b9ff9a5dbaeaf6e04d"
+    },
+    {
+      "path": "05_project/scripts/generate_role_binding_timing_phase_b2_lock.py",
+      "sha256": "419052afe8289b6654ec09e7d0d6b1c040154f3715c0ba4c4320d66a93f2d873"
+    },
+    {
+      "path": "05_project/tests/role_binding_timing/test_phase_b2_collection.py",
+      "sha256": "0715ba8c36c2ce71c7bc7c03480ad16e5d03dbb6fd1b1b4b5b4580297a9abc01"
+    }
+  ],
+  "frozen_at": "2026-08-04T13:01:16.112789+00:00",
+  "frozen_before_any_candidate_capture": true,
+  "frozen_source_parent_commit": "99b342563061c9bb4bebbb72aa80ba91f4fa7a23",
+  "generation_calls_authorized": 0,
+  "generation_calls_before_freeze": 0,
+  "generation_eligible": false,
+  "phase": "B2",
+  "schema_version": "role_binding_timing.phase_b2_collection_lock.v0_2",
+  "stop_rules": {
+    "failed_pool_repair_requires_new_version": true,
+    "launch_generation": false,
+    "launch_phase_c": false,
+    "maximum_families_per_app": 2,
+    "minimum_apps": 4,
+    "minimum_family_qualification_rate": 0.95,
+    "minimum_widget_families": 4,
+    "required_complete_families": 8
+  },
+  "study_id": "role_binding_timing_phase_b2_v0_2"
+}
