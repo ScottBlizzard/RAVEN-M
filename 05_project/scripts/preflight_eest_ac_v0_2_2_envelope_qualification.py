@@ -221,10 +221,12 @@ def _verify_offline_reports(
     audit_path: Path,
     replay_path: Path,
     settling_path: Path,
+    adb_stress_path: Path,
 ) -> dict[str, Any]:
     audit = json.loads(audit_path.read_text(encoding="utf-8"))
     replay = json.loads(replay_path.read_text(encoding="utf-8"))
     settling = json.loads(settling_path.read_text(encoding="utf-8"))
+    adb_stress = json.loads(adb_stress_path.read_text(encoding="utf-8"))
     if (
         audit.get("status") != "pass"
         or audit.get("zero_model_generation_calls") != 0
@@ -257,14 +259,31 @@ def _verify_offline_reports(
         or not all(item.get("passed") for item in settling.get("cases", []))
     ):
         raise RuntimeError("Terminal settling-window qualification did not pass.")
+    if (
+        adb_stress.get("status") != "pass"
+        or adb_stress.get("zero_model_generation_calls") != 0
+        or adb_stress.get("commands_planned") != 100
+        or adb_stress.get("commands_completed") != 100
+        or adb_stress.get("fallback_to_5037_rejected") is not True
+        or adb_stress.get("server_before", {}).get("port") != 5038
+        or adb_stress.get("server_after", {}).get("port") != 5038
+        or adb_stress.get("server_before", {}).get("binary_sha256")
+        != "957e46b8615f7af5b7292a2ddabe98d2e61940c3fb2b0545756507f080613e71"
+        or adb_stress.get("server_after", {}).get("binary_sha256")
+        != "957e46b8615f7af5b7292a2ddabe98d2e61940c3fb2b0545756507f080613e71"
+        or any(item.get("explicit_port") != 5038 or not item.get("passed") for item in adb_stress.get("records", []))
+    ):
+        raise RuntimeError("Frozen ADB 5038 stress audit did not pass.")
     return {
         "full_envelope_audit_sha256": _hash(audit_path),
         "contaminated_replay_sha256": _hash(replay_path),
         "settling_window_qualification_sha256": _hash(settling_path),
+        "adb_5038_stress_sha256": _hash(adb_stress_path),
         "maximum_certified_total_qwen_tokens": audit["token_certificate"]["maximum_certified_total_qwen_tokens"],
         "metadata_only_repair_calls": 0,
         "contaminated_replay_confusion": expected,
         "settling_window_cases": actual_settling_cases,
+        "adb_5038_stress_commands": adb_stress["commands_completed"],
     }
 
 
@@ -371,6 +390,7 @@ def main() -> None:
     parser.add_argument("--contract-audit", type=Path, required=True)
     parser.add_argument("--contaminated-replay", type=Path, required=True)
     parser.add_argument("--settling-window-report", type=Path, required=True)
+    parser.add_argument("--adb-stress-report", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--check-runtime", action="store_true")
     parser.add_argument("--url", default="http://127.0.0.1:8000")
@@ -387,6 +407,7 @@ def main() -> None:
         args.contract_audit,
         args.contaminated_replay,
         args.settling_window_report,
+        args.adb_stress_report,
     )
     lock_records = _verify_lock(args.lock, config)
     run_root = REPOSITORY_ROOT / config["run_root"]
