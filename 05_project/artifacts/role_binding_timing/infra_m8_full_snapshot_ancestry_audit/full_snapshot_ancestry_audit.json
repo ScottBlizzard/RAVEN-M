@@ -1,0 +1,241 @@
+{
+  "claim_evidence": {
+    "domain_mismatch_verified": true,
+    "held_out_tested": false,
+    "m8_implementation_tested": false,
+    "m8_runtime_tested": false,
+    "role_binding_hypothesis_tested": false
+  },
+  "decision": "ELIGIBLE_FOR_M8_OFFLINE_IMPLEMENTATION_ONLY",
+  "device_mutations": 0,
+  "direct_trigger_evidence": {
+    "authorization_candidate_count": 12,
+    "failure_sha256": "1ca72adef2e3118cade3b90930669b3a94d7827f712ad0e6a9353018b8771bdc",
+    "full_process_count": 369,
+    "history_sha256": "fb1b998000ba37a3c1e0a434d285ac6febc165f3c5c4b7ef1a7547f47aaed85b",
+    "runner_full_identity_matches": true,
+    "runner_identity_key": "1912@1785882444.609109",
+    "runner_pid": 1912,
+    "runner_present_in_full_snapshot": true,
+    "runner_present_in_structural_subset": false
+  },
+  "filter_join_ledger": [
+    {
+      "classification": "CORRECT_DUAL_DATA_EXISTS_BUT_AUTHORITY_NOT_EXPLICIT",
+      "join_id": "J1_snapshot_derivation",
+      "location": "build_snapshot/build_m7_snapshot",
+      "observed": "all_processes is complete raw enumeration; structural_processes is a filtered relevant+ancestry projection."
+    },
+    {
+      "classification": "DOMAIN_MISMATCH",
+      "join_id": "J2_current_index",
+      "location": "StructuralIdentityPolicy.evaluate",
+      "observed": "current = process_index(snapshot['structural_processes']) is used for both core-role state and parent existence."
+    },
+    {
+      "classification": "CORRECT_AUTHORIZATION_VIEW",
+      "join_id": "J3_candidate_union",
+      "location": "StructuralIdentityPolicy.evaluate",
+      "observed": "combined includes current structural candidates plus relevant recent records; this is appropriate for role-policy candidates only."
+    },
+    {
+      "classification": "CORRECT_AUTHORIZATION_VIEW",
+      "join_id": "J4_core_presence",
+      "location": "StructuralIdentityPolicy.evaluate",
+      "observed": "Core processes are checked in structural_processes, where exact hash-bearing project roles belong."
+    },
+    {
+      "classification": "PARTIAL_DOMAIN_MISMATCH",
+      "join_id": "J5_baseline_pid_reuse",
+      "location": "StructuralIdentityPolicy.freeze_baseline/evaluate",
+      "observed": "Baseline role-candidate PID reuse is checked only for project-relevant candidates; parent/runner PID reuse is not separately checked in the full universe."
+    },
+    {
+      "classification": "DOMAIN_MISMATCH",
+      "join_id": "J6_helper_ancestry",
+      "location": "_ancestry_to_core(record, current)",
+      "observed": "Parent-chain traversal receives the filtered current index. It can lose a legitimate non-role parent after a transient descendant exits."
+    },
+    {
+      "classification": "DOMAIN_MISMATCH_DIRECT_CAUSE",
+      "join_id": "J7_runner_currentness",
+      "location": "M7 _common_client_issues",
+      "observed": "runner_current is looked up in the same filtered current map, causing the frozen M7 false rejection."
+    },
+    {
+      "classification": "DOMAIN_MISMATCH_FALSE_ACCEPT_RISK",
+      "join_id": "J8_continuing_client",
+      "location": "M7 _continuing_client_issues",
+      "observed": "A synthetic map containing only self.runner_record bypasses live full-snapshot currentness for already-ledgered clients."
+    },
+    {
+      "classification": "OBSERVABILITY_GAP",
+      "join_id": "J9_continuous_history",
+      "location": "M7ContinuousProcessHistory",
+      "observed": "History persists authorization candidates and their selected ancestry, but not a complete identity universe for every sample."
+    },
+    {
+      "classification": "PROVENANCE_GAP",
+      "join_id": "J10_failure_persistence",
+      "location": "M7ProcessIdentityMonitor.capture",
+      "observed": "The complete trigger snapshot is persisted, but the derived authorization view is not separately named/hashed in the failure record."
+    }
+  ],
+  "generation_calls": 0,
+  "m7_commits": [
+    "d927624",
+    "8a8ddb0",
+    "d5d0247"
+  ],
+  "m7_first_edge_immutable": "PROCESS_IDENTITY:adb_server_registered:PROCESS:1464@1785882456.172884:RUNNER_PARENT_IDENTITY_NOT_CURRENT",
+  "m7_verdict_immutable": "PROCESS_IDENTITY_FAILED",
+  "mode": "read_only_frozen_m7_evidence",
+  "protected_wip": {
+    "05_project/src/raven_m/controller/episode_controller.py": "fc0e82e0fde90119365d4f685f080eb4519bf2f602e4bda58de5d4809a40fe33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "ff89d6b70be4b4738646d262beb67d7b7e932e9eb95956d940b1c5000a999d10",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5bb1f1e3de673a1072cfee62938b761a62fd69c187d5eadf54bc46b115a3fd0a"
+  },
+  "required_m8_contract": {
+    "authorization_candidates": "Hash-enriched structural_processes plus bounded relevant history; role policies apply only here.",
+    "failure_persistence": [
+      "full triggering process_snapshot.json",
+      "separate derived_authorization_view.json",
+      "hash/provenance link between them"
+    ],
+    "history": "Retain every sampled PID/PPID/create-time identity in a compact complete identity universe plus hash/listener-bearing authorization candidates.",
+    "observation_universe": "Complete current all_processes identity view; used only for PID existence, identity equality, PID reuse and ancestry traversal.",
+    "view_conformance": [
+      "universe_complete flag",
+      "unique PID identity",
+      "each current candidate maps to exactly one equal universe identity",
+      "runner identity present and current"
+    ]
+  },
+  "schema_version": "role_binding_timing.infra_m8.full_snapshot_ancestry_audit.v1",
+  "source_evidence": [
+    {
+      "hits": [
+        {
+          "line": 213,
+          "text": "\"all_processes\": processes,"
+        },
+        {
+          "line": 214,
+          "text": "\"structural_processes\": structural,"
+        },
+        {
+          "line": 295,
+          "text": "self.baseline_by_pid: dict[int, str] = {}"
+        },
+        {
+          "line": 308,
+          "text": "for record in snapshot[\"structural_processes\"]:"
+        },
+        {
+          "line": 315,
+          "text": "self.baseline_by_pid[int(record[\"pid\"])] = key"
+        },
+        {
+          "line": 316,
+          "text": "self.add_history(snapshot[\"structural_processes\"])"
+        },
+        {
+          "line": 357,
+          "text": "def _ancestry_to_core("
+        },
+        {
+          "line": 419,
+          "text": "ancestry_ok, chain = self._ancestry_to_core(record, current)"
+        },
+        {
+          "line": 430,
+          "text": "ancestry_ok, chain = self._ancestry_to_core(record, current)"
+        },
+        {
+          "line": 438,
+          "text": "ancestry_ok, chain = self._ancestry_to_core(record, current)"
+        },
+        {
+          "line": 468,
+          "text": "current = process_index(snapshot[\"structural_processes\"])"
+        },
+        {
+          "line": 469,
+          "text": "combined: dict[str, dict[str, Any]] = {}"
+        },
+        {
+          "line": 470,
+          "text": "for record in [*snapshot[\"structural_processes\"], *recent_records]:"
+        },
+        {
+          "line": 474,
+          "text": "self.add_history(snapshot[\"structural_processes\"])"
+        },
+        {
+          "line": 509,
+          "text": "baseline_key = self.baseline_by_pid.get(pid)"
+        },
+        {
+          "line": 556,
+          "text": "\"structural_processes\": structural,"
+        },
+        {
+          "line": 639,
+          "text": "self.policy.add_history(snapshot[\"structural_processes\"])"
+        },
+        {
+          "line": 682,
+          "text": "record = process_index(snapshot[\"structural_processes\"]).get(pid)"
+        }
+      ],
+      "path": "05_project/src/raven_m/role_binding_timing/infra_m5_process_identity.py",
+      "sha256": "8af10b07e0abc4645efdb2b6d0f14111e1671a9046a514b2c1363b3019da27e1"
+    },
+    {
+      "hits": [
+        {
+          "line": 20,
+          "text": "enrich_structural_records,"
+        },
+        {
+          "line": 101,
+          "text": "observed = current.get(int(record[\"pid\"]))"
+        },
+        {
+          "line": 105,
+          "text": "issues = self._continuing_client_issues(record, current_same=current_same)"
+        },
+        {
+          "line": 147,
+          "text": "runner_current = current.get(int(self.runner_record[\"pid\"]))"
+        },
+        {
+          "line": 215,
+          "text": "def _continuing_client_issues(self, record: dict[str, Any], *, current_same: bool) -> list[str]:"
+        },
+        {
+          "line": 256,
+          "text": "enrich_structural_records(snapshot_processes(), self.cache), network,"
+        },
+        {
+          "line": 349,
+          "text": "self.policy.add_history(self.history.records())"
+        },
+        {
+          "line": 352,
+          "text": "evaluation = self.policy.evaluate(snapshot, phase=phase, recent_records=self.history.records(), allow_core_exit=True)"
+        },
+        {
+          "line": 354,
+          "text": "evaluation = self.policy.evaluate(snapshot, phase=phase, recent_records=self.history.records())"
+        },
+        {
+          "line": 371,
+          "text": "\"triggering_snapshot\": snapshot,"
+        }
+      ],
+      "path": "05_project/src/raven_m/role_binding_timing/infra_m7_adb_authority.py",
+      "sha256": "0b41408fcc2cbc93d90bf5225c5628fd8944243ac8004942857bde147a465348"
+    }
+  ]
+}

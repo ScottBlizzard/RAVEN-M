@@ -1,0 +1,10 @@
+{
+  "artifacts": [
+    {
+      "bytes": 9383,
+      "path": "full_snapshot_ancestry_audit.json",
+      "sha256": "feef90256850092c378ea15468ac5c2ed67ebce5ce0a5e61d2d4bd50170a8787"
+    }
+  ],
+  "schema_version": "role_binding_timing.infra_m8.audit_manifest.v1"
+}
