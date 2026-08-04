@@ -1,0 +1,653 @@
+{
+  "all_processes": [
+    {
+      "CommandLine": null,
+      "CreationDate": "/Date(1785810415620)/",
+      "ExecutablePath": null,
+      "Name": "adb.exe",
+      "ParentProcessId": 2244,
+      "ProcessId": 17716
+    },
+    {
+      "CommandLine": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\emulator\\emulator.exe -avd AndroidWorldAvd -port 5554 -no-snapshot -no-boot-anim -no-audio -grpc 8554 -no-window",
+      "CreationDate": "/Date(1785848542019)/",
+      "ExecutablePath": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\emulator\\emulator.exe",
+      "Name": "emulator.exe",
+      "ParentProcessId": 33696,
+      "ProcessId": 35116
+    },
+    {
+      "CommandLine": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\emulator\\qemu\\windows-x86_64\\qemu-system-x86_64-headless.exe -avd AndroidWorldAvd -port 5554 -no-snapshot -no-boot-anim -no-audio -grpc 8554 -no-window",
+      "CreationDate": "/Date(1785848544246)/",
+      "ExecutablePath": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\emulator\\qemu\\windows-x86_64\\qemu-system-x86_64-headless.exe",
+      "Name": "qemu-system-x86_64-headless.exe",
+      "ParentProcessId": 35116,
+      "ProcessId": 7172
+    },
+    {
+      "CommandLine": null,
+      "CreationDate": "/Date(1785848917050)/",
+      "ExecutablePath": null,
+      "Name": "adb.exe",
+      "ParentProcessId": 34868,
+      "ProcessId": 11316
+    },
+    {
+      "CommandLine": "adb -L tcp:5038 fork-server server --reply-fd 732",
+      "CreationDate": "/Date(1785849508752)/",
+      "ExecutablePath": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+      "Name": "adb.exe",
+      "ParentProcessId": 1864,
+      "ProcessId": 29964
+    },
+    {
+      "CommandLine": "\"D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\envs\\androidworld\\Scripts\\python.exe\" 05_project/scripts/capture_role_binding_timing_infra_m1_pre_inventory.py --config 05_project/configs/role_binding_timing/infra_m1_maintenance_burnin.json",
+      "CreationDate": "/Date(1785864283795)/",
+      "ExecutablePath": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\envs\\androidworld\\Scripts\\python.exe",
+      "Name": "python.exe",
+      "ParentProcessId": 35040,
+      "ProcessId": 20732
+    },
+    {
+      "CommandLine": "\"C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\python.exe\" 05_project/scripts/capture_role_binding_timing_infra_m1_pre_inventory.py --config 05_project/configs/role_binding_timing/infra_m1_maintenance_burnin.json",
+      "CreationDate": "/Date(1785864283882)/",
+      "ExecutablePath": "C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+      "Name": "python.exe",
+      "ParentProcessId": 20732,
+      "ProcessId": 28312
+    }
+  ],
+  "avd_files": {
+    "06_local_runtime/android/avd/AndroidWorldAvd.avd/config.ini": {
+      "bytes": 3567,
+      "sha256": "8969b2840da971439b34010fb3c73942e484ed0e1bbd8d53b62fb9426fd3d2c4"
+    },
+    "06_local_runtime/android/avd/AndroidWorldAvd.avd/emu-launch-params.txt": {
+      "bytes": 329,
+      "sha256": "34dad085f0669ae689012a85a316b2da0473253f78996fceb08eb21a859a5f1c"
+    },
+    "06_local_runtime/android/avd/AndroidWorldAvd.avd/hardware-qemu.ini": {
+      "bytes": 4680,
+      "sha256": "d99294d04a4c3e60405f9190571909253c520d6b65d1b8212fd0d641ecc62c77"
+    },
+    "06_local_runtime/android/avd/AndroidWorldAvd.ini": {
+      "bytes": 131,
+      "sha256": "b2bff819d2aa981f406f133cb370165835b6146745cd23202fa1c7c1cc7c0330"
+    }
+  },
+  "binary_files": {
+    "06_local_runtime/android/sdk/emulator/emulator.exe": {
+      "bytes": 1532568,
+      "sha256": "7f101ca769c15e8b6311801c1487f28583ce643fa87d19a9e0da4cc230be7653"
+    },
+    "06_local_runtime/android/sdk/emulator/qemu/windows-x86_64/qemu-system-x86_64-headless.exe": {
+      "bytes": 52582552,
+      "sha256": "b8e263a00f9151a494b480f38d39188e73dbf338b27015679311246c59c3dbec"
+    },
+    "06_local_runtime/android/sdk/platform-tools/adb.exe": {
+      "bytes": 8485016,
+      "sha256": "957e46b8615f7af5b7292a2ddabe98d2e61940c3fb2b0545756507f080613e71"
+    }
+  },
+  "captured_at": "2026-08-04T17:25:15.686142+00:00",
+  "degraded_markers": {
+    "activity_activities": {
+      "dead_object": false,
+      "returncode": 0,
+      "service_error": false,
+      "service_missing": true,
+      "stderr_nonempty": true,
+      "stdout_empty": true,
+      "timed_out": false
+    },
+    "power": {
+      "dead_object": false,
+      "returncode": 0,
+      "service_error": false,
+      "service_missing": true,
+      "stderr_nonempty": true,
+      "stdout_empty": true,
+      "timed_out": false
+    },
+    "window_displays": {
+      "dead_object": false,
+      "returncode": 0,
+      "service_error": false,
+      "service_missing": true,
+      "stderr_nonempty": true,
+      "stdout_empty": true,
+      "timed_out": false
+    },
+    "window_policy": {
+      "dead_object": false,
+      "returncode": 0,
+      "service_error": false,
+      "service_missing": true,
+      "stderr_nonempty": true,
+      "stdout_empty": true,
+      "timed_out": false
+    }
+  },
+  "development_contaminated": true,
+  "device_mutations": 0,
+  "excluded_process_pids": [
+    11316,
+    17716
+  ],
+  "generation_calls": 0,
+  "head": "9bf5722b2122cf99ddcde50868048cae7eec6a54",
+  "project_owned": {
+    "adb_pid": 29964,
+    "adb_process": {
+      "CommandLine": "adb -L tcp:5038 fork-server server --reply-fd 732",
+      "CreationDate": "/Date(1785849508752)/",
+      "ExecutablePath": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+      "Name": "adb.exe",
+      "ParentProcessId": 1864,
+      "ProcessId": 29964
+    },
+    "launcher_pid": 35116,
+    "launcher_process": {
+      "CommandLine": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\emulator\\emulator.exe -avd AndroidWorldAvd -port 5554 -no-snapshot -no-boot-anim -no-audio -grpc 8554 -no-window",
+      "CreationDate": "/Date(1785848542019)/",
+      "ExecutablePath": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\emulator\\emulator.exe",
+      "Name": "emulator.exe",
+      "ParentProcessId": 33696,
+      "ProcessId": 35116
+    },
+    "listeners": {
+      "5037": [],
+      "5038": [
+        29964
+      ],
+      "5554": [
+        7172
+      ],
+      "5555": [
+        7172
+      ],
+      "8554": [
+        7172
+      ]
+    },
+    "qemu_pid": 7172,
+    "qemu_process": {
+      "CommandLine": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\emulator\\qemu\\windows-x86_64\\qemu-system-x86_64-headless.exe -avd AndroidWorldAvd -port 5554 -no-snapshot -no-boot-anim -no-audio -grpc 8554 -no-window",
+      "CreationDate": "/Date(1785848544246)/",
+      "ExecutablePath": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\emulator\\qemu\\windows-x86_64\\qemu-system-x86_64-headless.exe",
+      "Name": "qemu-system-x86_64-headless.exe",
+      "ParentProcessId": 35116,
+      "ProcessId": 7172
+    }
+  },
+  "protected_wip": {
+    "05_project/src/raven_m/controller/episode_controller.py": "fc0e82e0fde90119365d4f685f080eb4519bf2f602e4bda58de5d4809a40fe33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "ff89d6b70be4b4738646d262beb67d7b7e932e9eb95956d940b1c5000a999d10",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5bb1f1e3de673a1072cfee62938b761a62fd69c187d5eadf54bc46b115a3fd0a"
+  },
+  "records": {
+    "accessibility": {
+      "command": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "-P",
+        "5038",
+        "-s",
+        "emulator-5554",
+        "shell",
+        "dumpsys",
+        "accessibility"
+      ],
+      "returncode": 0,
+      "stderr": {
+        "bytes": 35,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/accessibility.stderr.bin",
+        "sha256": "750d34787e5b1e236df8d9f1c30b2a256ab42862063f9e865480dd7def694fd9"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/accessibility.stdout.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timed_out": false,
+      "wall_time_seconds": 1.2030000000086147
+    },
+    "activity_activities": {
+      "command": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "-P",
+        "5038",
+        "-s",
+        "emulator-5554",
+        "shell",
+        "dumpsys",
+        "activity",
+        "activities"
+      ],
+      "returncode": 0,
+      "stderr": {
+        "bytes": 30,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/activity_activities.stderr.bin",
+        "sha256": "fa1bbd3453044d311f820dd46fc668dcf4dae976cac1bfa03c6d4847937e9ac0"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/activity_activities.stdout.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timed_out": false,
+      "wall_time_seconds": 0.9530000000086147
+    },
+    "adb_devices": {
+      "command": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "-P",
+        "5038",
+        "devices",
+        "-l"
+      ],
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/adb_devices.stderr.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 142,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/adb_devices.stdout.bin",
+        "sha256": "fb191485151938516dc2e4cc4024d92caeff2c0ca7fdeaa809742ed2dc0336a1"
+      },
+      "timed_out": false,
+      "wall_time_seconds": 0.15600000001722947
+    },
+    "adb_version": {
+      "command": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "version"
+      ],
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/adb_version.stderr.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 195,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/adb_version.stdout.bin",
+        "sha256": "140d91862348c8022ed81c7ae15b29f500f9be3778d639f6a720426109c9abb6"
+      },
+      "timed_out": false,
+      "wall_time_seconds": 0.20300000000861473
+    },
+    "boot_completed": {
+      "command": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "-P",
+        "5038",
+        "-s",
+        "emulator-5554",
+        "shell",
+        "getprop",
+        "sys.boot_completed"
+      ],
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/boot_completed.stderr.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 3,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/boot_completed.stdout.bin",
+        "sha256": "f1b2f662800122bed0ff255693df89c4487fbdcf453d3524a42d4ec20c3d9c04"
+      },
+      "timed_out": false,
+      "wall_time_seconds": 1.5
+    },
+    "build_fingerprint": {
+      "command": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "-P",
+        "5038",
+        "-s",
+        "emulator-5554",
+        "shell",
+        "getprop",
+        "ro.build.fingerprint"
+      ],
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/build_fingerprint.stderr.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 82,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/build_fingerprint.stdout.bin",
+        "sha256": "4dd2ff4eab96946f666d1904599a170f308724f90d725e3d1c4632b27fb5ba76"
+      },
+      "timed_out": false,
+      "wall_time_seconds": 1.0309999999881256
+    },
+    "get_state": {
+      "command": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "-P",
+        "5038",
+        "-s",
+        "emulator-5554",
+        "get-state"
+      ],
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/get_state.stderr.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 8,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/get_state.stdout.bin",
+        "sha256": "5a49c5eb1807bf1dd12637504e6a6e49f1c9c4bce601ae34c9984843074b129c"
+      },
+      "timed_out": false,
+      "wall_time_seconds": 0.2029999999795109
+    },
+    "git_status": {
+      "command": [
+        "git",
+        "status",
+        "--porcelain=v1"
+      ],
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/git_status.stderr.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 780,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/git_status.stdout.bin",
+        "sha256": "a70cfdbcefab84e20f4177f01ec78c27ab170947b5b6b51be6d1a98b9aa380d8"
+      },
+      "timed_out": false,
+      "wall_time_seconds": 0.5629999999946449
+    },
+    "logcat": {
+      "command": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "-P",
+        "5038",
+        "-s",
+        "emulator-5554",
+        "logcat",
+        "-d",
+        "-b",
+        "all",
+        "-v",
+        "threadtime",
+        "-t",
+        "5000"
+      ],
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/logcat.stderr.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 976460,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/logcat.stdout.bin",
+        "sha256": "36691b312a0126607b2b4f07e60b047278fe8622e17d344a64fc1936cd00ba28"
+      },
+      "timed_out": false,
+      "wall_time_seconds": 1.125
+    },
+    "netstat": {
+      "command": [
+        "netstat",
+        "-ano",
+        "-p",
+        "tcp"
+      ],
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/netstat.stderr.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 19738,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/netstat.stdout.bin",
+        "sha256": "b7392a4dc1d8c79d593fac770478cd5efb0d7969689ad8fc5cc9a8d621973a2a"
+      },
+      "timed_out": false,
+      "wall_time_seconds": 0.25
+    },
+    "power": {
+      "command": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "-P",
+        "5038",
+        "-s",
+        "emulator-5554",
+        "shell",
+        "dumpsys",
+        "power"
+      ],
+      "returncode": 0,
+      "stderr": {
+        "bytes": 27,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/power.stderr.bin",
+        "sha256": "a508359c156ea9eb3979901887a47cf0e6db56acef2a8611b83641f13677d8a6"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/power.stdout.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timed_out": false,
+      "wall_time_seconds": 1.5780000000086147
+    },
+    "process_inventory": {
+      "command": [
+        "powershell",
+        "-NoProfile",
+        "-Command",
+        "Get-CimInstance Win32_Process | Where-Object {$_.Name -match 'adb|qemu|emulator|python'} | Select-Object ProcessId,ParentProcessId,Name,ExecutablePath,CommandLine,CreationDate | ConvertTo-Json -Depth 3"
+      ],
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/process_inventory.stderr.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 3048,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/process_inventory.stdout.bin",
+        "sha256": "75b81651c751e7a82bb8120826a1dcf499f73c0e0cd430c4d1fca66d5638d922"
+      },
+      "timed_out": false,
+      "wall_time_seconds": 2.702999999979511
+    },
+    "product_model": {
+      "command": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "-P",
+        "5038",
+        "-s",
+        "emulator-5554",
+        "shell",
+        "getprop",
+        "ro.product.model"
+      ],
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/product_model.stderr.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 21,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/product_model.stdout.bin",
+        "sha256": "96964b3abc9b33bfea5d72a869a9c6246526a2bdcaecb6357965e0d923f79852"
+      },
+      "timed_out": false,
+      "wall_time_seconds": 1.562999999994645
+    },
+    "screenshot": {
+      "command": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "-P",
+        "5038",
+        "-s",
+        "emulator-5554",
+        "exec-out",
+        "screencap",
+        "-p"
+      ],
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/screenshot.stderr.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 15580,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/screenshot.stdout.bin",
+        "sha256": "c35bacdb98b522206335afa5b9baffd2e4e3352a40749bb747e469cd403af514"
+      },
+      "timed_out": false,
+      "wall_time_seconds": 7.827999999979511
+    },
+    "service_activity": {
+      "command": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "-P",
+        "5038",
+        "-s",
+        "emulator-5554",
+        "shell",
+        "service",
+        "check",
+        "activity"
+      ],
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/service_activity.stderr.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 29,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/service_activity.stdout.bin",
+        "sha256": "3558b96992b16fb476a1b78d563d5b85d70c2a24010cb9e69b1b688477ea310f"
+      },
+      "timed_out": false,
+      "wall_time_seconds": 2.6089999999967404
+    },
+    "service_package": {
+      "command": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "-P",
+        "5038",
+        "-s",
+        "emulator-5554",
+        "shell",
+        "service",
+        "check",
+        "package"
+      ],
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/service_package.stderr.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 28,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/service_package.stdout.bin",
+        "sha256": "e6c3ee44f231be3fa11aef0c3b2a983f381af7dcfae99295ea8d41f81969bbe3"
+      },
+      "timed_out": false,
+      "wall_time_seconds": 2.4690000000118744
+    },
+    "service_window": {
+      "command": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "-P",
+        "5038",
+        "-s",
+        "emulator-5554",
+        "shell",
+        "service",
+        "check",
+        "window"
+      ],
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/service_window.stderr.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 27,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/service_window.stdout.bin",
+        "sha256": "288023be1aa00c5248e957908e59fd1537fa1295effc2019de29d3389cb54238"
+      },
+      "timed_out": false,
+      "wall_time_seconds": 2.625
+    },
+    "window_displays": {
+      "command": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "-P",
+        "5038",
+        "-s",
+        "emulator-5554",
+        "shell",
+        "dumpsys",
+        "window",
+        "displays"
+      ],
+      "returncode": 0,
+      "stderr": {
+        "bytes": 28,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/window_displays.stderr.bin",
+        "sha256": "860eba4f2b1b46ff566ff22e7531b8f39df85a7d4aa059ebf11bbbd583ed306a"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/window_displays.stdout.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timed_out": false,
+      "wall_time_seconds": 1.1089999999967404
+    },
+    "window_policy": {
+      "command": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "-P",
+        "5038",
+        "-s",
+        "emulator-5554",
+        "shell",
+        "dumpsys",
+        "window",
+        "policy"
+      ],
+      "returncode": 0,
+      "stderr": {
+        "bytes": 28,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/window_policy.stderr.bin",
+        "sha256": "860eba4f2b1b46ff566ff22e7531b8f39df85a7d4aa059ebf11bbbd583ed306a"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/raw/window_policy.stdout.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timed_out": false,
+      "wall_time_seconds": 0.7809999999881256
+    }
+  },
+  "schema_version": "role_binding_timing.infra_m1.pre_inventory.v1"
+}

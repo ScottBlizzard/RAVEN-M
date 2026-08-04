@@ -1,0 +1,10 @@
+ M 05_project/src/raven_m/controller/episode_controller.py
+ M 05_project/src/raven_m/controller/protocol_v2_guard.py
+?? 04_protocols/role_binding_timing/INFRA_M1_MAINTENANCE_BURNIN_V1.md
+?? 05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/
+?? 05_project/configs/role_binding_timing/infra_m1_maintenance_burnin.json
+?? 05_project/schemas/role_binding_timing_infra_m1_completion.v1.schema.json
+?? 05_project/scripts/capture_role_binding_timing_infra_m1_pre_inventory.py
+?? 05_project/src/raven_m/role_binding_timing/infra_m1_runtime.py
+?? 05_project/tests/role_binding_timing/test_infra_m1_runtime.py
+?? 05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py

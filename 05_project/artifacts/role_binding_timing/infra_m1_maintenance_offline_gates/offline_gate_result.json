@@ -1,0 +1,200 @@
+{
+  "androidenv_sessions_created": 0,
+  "binary_hashes": {
+    "06_local_runtime/android/avd/AndroidWorldAvd.avd/config.ini": "8969b2840da971439b34010fb3c73942e484ed0e1bbd8d53b62fb9426fd3d2c4",
+    "06_local_runtime/android/avd/AndroidWorldAvd.ini": "b2bff819d2aa981f406f133cb370165835b6146745cd23202fa1c7c1cc7c0330",
+    "06_local_runtime/android/sdk/emulator/emulator.exe": "7f101ca769c15e8b6311801c1487f28583ce643fa87d19a9e0da4cc230be7653",
+    "06_local_runtime/android/sdk/emulator/qemu/windows-x86_64/qemu-system-x86_64-headless.exe": "b8e263a00f9151a494b480f38d39188e73dbf338b27015679311246c59c3dbec",
+    "06_local_runtime/android/sdk/platform-tools/adb.exe": "957e46b8615f7af5b7292a2ddabe98d2e61940c3fb2b0545756507f080613e71"
+  },
+  "binary_hashes_pass": true,
+  "compile_pass": true,
+  "created_at": "2026-08-04T17:39:15.948467+00:00",
+  "device_mutations": 0,
+  "focused_pass": true,
+  "full_regression_accepted": true,
+  "full_regression_expected_only_failure": "tests/scripts/test_protocol_v2_2_r78_h17_candidate.py::test_r78_candidate_static_manifest_validation_passes",
+  "full_regression_observed_failed_nodes": [
+    "tests/scripts/test_protocol_v2_2_r78_h17_candidate.py::test_r78_candidate_static_manifest_validation_passes"
+  ],
+  "gates": [
+    {
+      "command": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\envs\\androidworld\\Scripts\\python.exe",
+        "-m",
+        "py_compile",
+        "src/raven_m/role_binding_timing/infra_m1_runtime.py",
+        "scripts/capture_role_binding_timing_infra_m1_pre_inventory.py",
+        "scripts/run_role_binding_timing_infra_m1_maintenance.py"
+      ],
+      "cwd": "05_project",
+      "gate_id": "compile",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_maintenance_offline_gates/compile/stderr.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_maintenance_offline_gates/compile/stdout.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timed_out": false,
+      "wall_time_seconds": 0.5789999999979045
+    },
+    {
+      "command": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\envs\\androidworld\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "tests/role_binding_timing/test_infra_m1_runtime.py",
+        "-q",
+        "--color=no"
+      ],
+      "cwd": "05_project",
+      "gate_id": "focused",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_maintenance_offline_gates/focused/stderr.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 81,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_maintenance_offline_gates/focused/stdout.bin",
+        "sha256": "a0a9c94c3aa6a5c8144de200e346beee793f582a57e91d6761d5bec0c8884660"
+      },
+      "timed_out": false,
+      "wall_time_seconds": 3.2179999999934807
+    },
+    {
+      "command": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\envs\\androidworld\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "tests/role_binding_timing",
+        "-q",
+        "--color=no"
+      ],
+      "cwd": "05_project",
+      "gate_id": "namespace",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_maintenance_offline_gates/namespace/stderr.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 162,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_maintenance_offline_gates/namespace/stdout.bin",
+        "sha256": "003d566a5d460da3e83c3d8dba3fd2ce4174ab760530b5b400f158f6d6465ac4"
+      },
+      "timed_out": false,
+      "wall_time_seconds": 9.594000000011874
+    },
+    {
+      "command": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\envs\\androidworld\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "tests",
+        "-q",
+        "--color=no"
+      ],
+      "cwd": "05_project",
+      "gate_id": "full_regression",
+      "returncode": 1,
+      "stderr": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_maintenance_offline_gates/full_regression/stderr.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 13112,
+        "path": "05_project/artifacts/role_binding_timing/infra_m1_maintenance_offline_gates/full_regression/stdout.bin",
+        "sha256": "0f8bcf890db6aeb52982e8e59f39243d33be9e3a4febbab014f24e24bcd33daa"
+      },
+      "timed_out": false,
+      "wall_time_seconds": 301.25
+    }
+  ],
+  "generation_calls": 0,
+  "held_out_captures": 0,
+  "namespace_pass": true,
+  "overall_pass": true,
+  "pre_inventory_manifest_errors": [],
+  "protected_wip_hashes": {
+    "05_project/src/raven_m/controller/episode_controller.py": "fc0e82e0fde90119365d4f685f080eb4519bf2f602e4bda58de5d4809a40fe33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "ff89d6b70be4b4738646d262beb67d7b7e932e9eb95956d940b1c5000a999d10",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5bb1f1e3de673a1072cfee62938b761a62fd69c187d5eadf54bc46b115a3fd0a"
+  },
+  "protected_wip_pass": true,
+  "runtime_preflight": {
+    "androidenv_sessions_created": 0,
+    "current_owned_processes": {
+      "adb_pid": {
+        "CommandLine": "adb -L tcp:5038 fork-server server --reply-fd 732",
+        "ExecutablePath": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "Name": "adb.exe",
+        "ParentProcessId": 1864,
+        "ProcessId": 29964
+      },
+      "launcher_pid": {
+        "CommandLine": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\emulator\\emulator.exe -avd AndroidWorldAvd -port 5554 -no-snapshot -no-boot-anim -no-audio -grpc 8554 -no-window",
+        "ExecutablePath": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\emulator\\emulator.exe",
+        "Name": "emulator.exe",
+        "ParentProcessId": 33696,
+        "ProcessId": 35116
+      },
+      "qemu_pid": {
+        "CommandLine": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\emulator\\qemu\\windows-x86_64\\qemu-system-x86_64-headless.exe -avd AndroidWorldAvd -port 5554 -no-snapshot -no-boot-anim -no-audio -grpc 8554 -no-window",
+        "ExecutablePath": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\emulator\\qemu\\windows-x86_64\\qemu-system-x86_64-headless.exe",
+        "Name": "qemu-system-x86_64-headless.exe",
+        "ParentProcessId": 35116,
+        "ProcessId": 7172
+      }
+    },
+    "device_mutations": 0,
+    "expected_owned_pids": {
+      "adb_pid": 29964,
+      "launcher_pid": 35116,
+      "qemu_pid": 7172
+    },
+    "generation_calls": 0,
+    "listeners": {
+      "5037": [],
+      "5038": [
+        29964
+      ],
+      "5554": [
+        7172
+      ],
+      "5555": [
+        7172
+      ],
+      "8554": [
+        7172
+      ]
+    },
+    "passed": true
+  },
+  "schema_gate": {
+    "corruption_detected": true,
+    "passed": true,
+    "stable_errors": []
+  },
+  "schema_version": "role_binding_timing.infra_m1.offline_gates.v1",
+  "source_isolation": {
+    "forbidden_hits": [],
+    "passed": true,
+    "required_hits": {
+      "emu": true,
+      "excluded_runtime_pids": true,
+      "generation_calls": true,
+      "kill-server": true,
+      "start-server": true
+    },
+    "unsafe_5037_invocations": []
+  }
+}

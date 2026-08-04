@@ -1,0 +1,63 @@
+{
+  "schema_version": "role_binding_timing.infra_m1.maintenance_burnin.lock.v1",
+  "predecessor_commit": "9bf5722b2122cf99ddcde50868048cae7eec6a54",
+  "freeze_tag": "role-binding-timing-infra-m1-maintenance-freeze-20260805",
+  "development_contaminated": true,
+  "generation_calls": 0,
+  "generation_eligible": false,
+  "held_out_captures": 0,
+  "held_out_eligible": false,
+  "androidenv_sessions_before_freeze": 0,
+  "device_mutations_before_freeze": 0,
+  "files": {
+    "04_protocols/role_binding_timing/INFRA_M1_MAINTENANCE_BURNIN_V1.md": "6f1ae8278345bbc85309032d532e83a7cd656e1fec2c5e03fc2687f2275c6226",
+    "05_project/configs/role_binding_timing/infra_m1_maintenance_burnin.json": "deb46cb950345fb9faf45ac5492b45ce7490ed4d671dafe0952093489575b7a1",
+    "05_project/schemas/role_binding_timing_infra_m1_completion.v1.schema.json": "d2cb88bef5894f21a7683602c449978ef118639aae68d26a41724a42dad68f1d",
+    "05_project/src/raven_m/role_binding_timing/infra_m1_runtime.py": "af7b66ed6a4e35b61c23f196d0f7bb114ee228b16603acbdba9c2996f895d1b1",
+    "05_project/scripts/capture_role_binding_timing_infra_m1_pre_inventory.py": "bf09d4358c6c801fb25bef15305d20b20a085a097cf3d72a40b1f0396be5943e",
+    "05_project/scripts/run_role_binding_timing_infra_m1_maintenance.py": "2dd9f8eba3f392c10868a09f41264ab9609f413a611b49988fcf47b281327f50",
+    "05_project/scripts/run_role_binding_timing_infra_m1_offline_gates.py": "1832fbee393ef270799915b6d8d004580ac288070239a61be1db3c47da0b180f",
+    "05_project/tests/role_binding_timing/test_infra_m1_runtime.py": "dedc40dcd39897e349583d91cbb434b953531ab4e3737c88c1f54ad80196d981",
+    "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/pre_maintenance_inventory.json": "a5f5cb53e3036f731a56f616e121045746f3a017a4833df64c547caacff69e56",
+    "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/artifact_manifest.json": "9cd364cdb22d4f6718aa68e77924ec6573fdbb9d9f23d49fb48479a2f622f305",
+    "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/pre_maintenance_inventory.json": "431516b28a503047485fe0bae4ed35fc31020904c63d8cd055ca78c4e1d294e3",
+    "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/artifact_manifest.json": "8e6fe470fb798867ffee6ff7c082afd3ade6276a8ee8803c48cc3a36381713b9",
+    "05_project/artifacts/role_binding_timing/infra_m1_maintenance_offline_gates/offline_gate_result.json": "093b8d3a90889b43fd0ca18aa33c13560df79ba354bb700b8b208f0015985533"
+  },
+  "pre_inventory": {
+    "authoritative": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/pre_maintenance_inventory.json",
+    "authoritative_manifest": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory_v2/artifact_manifest.json",
+    "superseded": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/pre_maintenance_inventory.json",
+    "superseded_reason": "v1 derived degradation flags from stdout only; v2 inspects preserved stdout and stderr without runtime mutation",
+    "project_owned_pids": {"adb_5038": 29964, "emulator_launcher": 35116, "emulator_qemu": 7172},
+    "excluded_runtime_pids": [11316, 17716],
+    "degraded_framework_services": ["power", "window", "activity"]
+  },
+  "offline_gates": {
+    "result": "05_project/artifacts/role_binding_timing/infra_m1_maintenance_offline_gates/offline_gate_result.json",
+    "overall_pass": true,
+    "focused": "21 passed",
+    "focused_stdout_sha256": "a0a9c94c3aa6a5c8144de200e346beee793f582a57e91d6761d5bec0c8884660",
+    "namespace_stdout_sha256": "003d566a5d460da3e83c3d8dba3fd2ce4174ab760530b5b400f158f6d6465ac4",
+    "full_regression_stdout_sha256": "0f8bcf890db6aeb52982e8e59f39243d33be9e3a4febbab014f24e24bcd33daa",
+    "all_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "full_regression_expected_only_failure": "tests/scripts/test_protocol_v2_2_r78_h17_candidate.py::test_r78_candidate_static_manifest_validation_passes"
+  },
+  "maintenance_contract": {
+    "clean_restart_only_verified_owned_resources": true,
+    "adb_port": 5038,
+    "fallback_5037": false,
+    "emulator_ports": [5554, 5555, 8554],
+    "burn_in_cycles": 24,
+    "minimum_elapsed_seconds": 180,
+    "cycle_interval_seconds": 8,
+    "per_command_timeout_seconds": 15,
+    "stop_on_first_failure": true
+  },
+  "continuation_boundary": {
+    "runtime_unstable": "stop without a11y qualification",
+    "runtime_stable_24_of_24": "authorize a separate a11y freeze only",
+    "held_out_collection": "forbidden",
+    "hypothesis_test": "forbidden"
+  }
+}

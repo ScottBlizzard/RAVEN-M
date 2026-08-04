@@ -1,0 +1,205 @@
+{
+  "artifacts": [
+    {
+      "bytes": 13,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/.gitattributes",
+      "sha256": "c7c6541111ee53947140bac154f1275c6b1b244c40c045b190662f23226509c9"
+    },
+    {
+      "bytes": 25207,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/pre_maintenance_inventory.json",
+      "sha256": "a5f5cb53e3036f731a56f616e121045746f3a017a4833df64c547caacff69e56"
+    },
+    {
+      "bytes": 35,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/accessibility.stderr.bin",
+      "sha256": "750d34787e5b1e236df8d9f1c30b2a256ab42862063f9e865480dd7def694fd9"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/accessibility.stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 30,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/activity_activities.stderr.bin",
+      "sha256": "fa1bbd3453044d311f820dd46fc668dcf4dae976cac1bfa03c6d4847937e9ac0"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/activity_activities.stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/adb_devices.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 142,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/adb_devices.stdout.bin",
+      "sha256": "fb191485151938516dc2e4cc4024d92caeff2c0ca7fdeaa809742ed2dc0336a1"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/adb_version.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 195,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/adb_version.stdout.bin",
+      "sha256": "140d91862348c8022ed81c7ae15b29f500f9be3778d639f6a720426109c9abb6"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/boot_completed.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/boot_completed.stdout.bin",
+      "sha256": "f1b2f662800122bed0ff255693df89c4487fbdcf453d3524a42d4ec20c3d9c04"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/build_fingerprint.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 82,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/build_fingerprint.stdout.bin",
+      "sha256": "4dd2ff4eab96946f666d1904599a170f308724f90d725e3d1c4632b27fb5ba76"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/get_state.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 8,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/get_state.stdout.bin",
+      "sha256": "5a49c5eb1807bf1dd12637504e6a6e49f1c9c4bce601ae34c9984843074b129c"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/git_status.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 697,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/git_status.stdout.bin",
+      "sha256": "71ba46df461ad9068314e73b22ba547bd63a9b4f3e3f3afd8556d693e4364220"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/logcat.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 970915,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/logcat.stdout.bin",
+      "sha256": "b9f795913110d1fbfb1cc9dfe042d02e00b3a94895114f01d11fb157a1fdecc4"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/netstat.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 18241,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/netstat.stdout.bin",
+      "sha256": "3cbb9b895e40be8116ba634530112d80313fefb08a9478edfc01dfc912e39ff1"
+    },
+    {
+      "bytes": 27,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/power.stderr.bin",
+      "sha256": "a508359c156ea9eb3979901887a47cf0e6db56acef2a8611b83641f13677d8a6"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/power.stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/process_inventory.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3659,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/process_inventory.stdout.bin",
+      "sha256": "9b8c1dde50cfeda3f051bb98f767333e1c510186ee60112ba13efb9a5f1a2964"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/product_model.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 21,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/product_model.stdout.bin",
+      "sha256": "96964b3abc9b33bfea5d72a869a9c6246526a2bdcaecb6357965e0d923f79852"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/screenshot.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 15580,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/screenshot.stdout.bin",
+      "sha256": "c35bacdb98b522206335afa5b9baffd2e4e3352a40749bb747e469cd403af514"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/service_activity.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 29,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/service_activity.stdout.bin",
+      "sha256": "3558b96992b16fb476a1b78d563d5b85d70c2a24010cb9e69b1b688477ea310f"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/service_package.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 28,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/service_package.stdout.bin",
+      "sha256": "e6c3ee44f231be3fa11aef0c3b2a983f381af7dcfae99295ea8d41f81969bbe3"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/service_window.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 27,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/service_window.stdout.bin",
+      "sha256": "288023be1aa00c5248e957908e59fd1537fa1295effc2019de29d3389cb54238"
+    },
+    {
+      "bytes": 28,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/window_displays.stderr.bin",
+      "sha256": "860eba4f2b1b46ff566ff22e7531b8f39df85a7d4aa059ebf11bbbd583ed306a"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/window_displays.stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 28,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/window_policy.stderr.bin",
+      "sha256": "860eba4f2b1b46ff566ff22e7531b8f39df85a7d4aa059ebf11bbbd583ed306a"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m1_pre_maintenance_inventory/raw/window_policy.stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "schema_version": "role_binding_timing.infra_m1.pre_inventory_manifest.v1"
+}

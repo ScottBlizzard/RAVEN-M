@@ -1,0 +1,58 @@
+[
+    {
+        "ProcessId":  17716,
+        "ParentProcessId":  2244,
+        "Name":  "adb.exe",
+        "ExecutablePath":  null,
+        "CommandLine":  null,
+        "CreationDate":  "\/Date(1785810415620)\/"
+    },
+    {
+        "ProcessId":  35116,
+        "ParentProcessId":  33696,
+        "Name":  "emulator.exe",
+        "ExecutablePath":  "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\emulator\\emulator.exe",
+        "CommandLine":  "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\emulator\\emulator.exe -avd AndroidWorldAvd -port 5554 -no-snapshot -no-boot-anim -no-audio -grpc 8554 -no-window",
+        "CreationDate":  "\/Date(1785848542019)\/"
+    },
+    {
+        "ProcessId":  7172,
+        "ParentProcessId":  35116,
+        "Name":  "qemu-system-x86_64-headless.exe",
+        "ExecutablePath":  "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\emulator\\qemu\\windows-x86_64\\qemu-system-x86_64-headless.exe",
+        "CommandLine":  "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\emulator\\qemu\\windows-x86_64\\qemu-system-x86_64-headless.exe -avd AndroidWorldAvd -port 5554 -no-snapshot -no-boot-anim -no-audio -grpc 8554 -no-window",
+        "CreationDate":  "\/Date(1785848544246)\/"
+    },
+    {
+        "ProcessId":  11316,
+        "ParentProcessId":  34868,
+        "Name":  "adb.exe",
+        "ExecutablePath":  null,
+        "CommandLine":  null,
+        "CreationDate":  "\/Date(1785848917050)\/"
+    },
+    {
+        "ProcessId":  29964,
+        "ParentProcessId":  1864,
+        "Name":  "adb.exe",
+        "ExecutablePath":  "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "CommandLine":  "adb -L tcp:5038 fork-server server --reply-fd 732",
+        "CreationDate":  "\/Date(1785849508752)\/"
+    },
+    {
+        "ProcessId":  20732,
+        "ParentProcessId":  35040,
+        "Name":  "python.exe",
+        "ExecutablePath":  "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\envs\\androidworld\\Scripts\\python.exe",
+        "CommandLine":  "\"D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\envs\\androidworld\\Scripts\\python.exe\" 05_project/scripts/capture_role_binding_timing_infra_m1_pre_inventory.py --config 05_project/configs/role_binding_timing/infra_m1_maintenance_burnin.json",
+        "CreationDate":  "\/Date(1785864283795)\/"
+    },
+    {
+        "ProcessId":  28312,
+        "ParentProcessId":  20732,
+        "Name":  "python.exe",
+        "ExecutablePath":  "C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "CommandLine":  "\"C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\python.exe\" 05_project/scripts/capture_role_binding_timing_infra_m1_pre_inventory.py --config 05_project/configs/role_binding_timing/infra_m1_maintenance_burnin.json",
+        "CreationDate":  "\/Date(1785864283882)\/"
+    }
+]
