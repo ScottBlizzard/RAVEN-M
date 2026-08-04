@@ -1,0 +1,64 @@
+ACTIVITY MANAGER SERVICES (dumpsys activity services)
+  Last ANR service:
+ServiceRecord{76f6eab u0 com.google.android.apps.photos/.dbprocessor.impl.DatabaseProcessorJobService}
+    intent={cmp=com.google.android.apps.photos/.dbprocessor.impl.DatabaseProcessorJobService}
+    packageName=com.google.android.apps.photos
+    processName=com.google.android.apps.photos
+    permission=android.permission.BIND_JOB_SERVICE
+    baseDir=/product/app/Photos/Photos.apk
+    dataDir=/data/user/0/com.google.android.apps.photos
+    app=ProcessRecord{238f71c 16173:com.google.android.apps.photos/u0a143}
+    allowWhileInUsePermissionInFgs=false
+    recentCallingPackage=android
+    recentCallingUid=1000
+    allowStartForeground=DENIED
+    startForegroundCount=0
+    infoAllowStartForeground=null
+    createTime=-41s276ms startingBgTimeout=--
+    lastActivity=-40s569ms restartTime=-- createdFromFg=true
+    executeNesting=4 executeFg=true executingStart=-20s35ms
+    destroying=true destroyTime=-20s35ms
+
+  User 0 active services:
+  * ServiceRecord{93b2a38 u0 com.google.androidenv.accessibilityforwarder/.AccessibilityForwarder}
+    intent={cmp=com.google.androidenv.accessibilityforwarder/.AccessibilityForwarder}
+    packageName=com.google.androidenv.accessibilityforwarder
+    processName=com.google.androidenv.accessibilityforwarder
+    permission=android.permission.BIND_ACCESSIBILITY_SERVICE
+    baseDir=/data/app/~~VGcDsjkAi0wIWGVGJ0cPwA==/com.google.androidenv.accessibilityforwarder-RXzgJ9T7IL_yfqBCeX4h-Q==/base.apk
+    dataDir=/data/user/0/com.google.androidenv.accessibilityforwarder
+    app=ProcessRecord{1c034d3 4909:com.google.androidenv.accessibilityforwarder/u0a174}
+    mIsAllowedBgActivityStartsByBinding=true
+    allowWhileInUsePermissionInFgs=true
+    recentCallingPackage=android
+    recentCallingUid=1000
+    allowStartForeground=PROC_STATE_PERSISTENT
+    startForegroundCount=0
+    infoAllowStartForeground=[callingPackage: android; callingUid: 1000; uidState: PER ; intent: Intent { cmp=com.google.androidenv.accessibilityforwarder/.AccessibilityForwarder }; code:PROC_STATE_PERSISTENT; tempAllowListReason:<broadcast:1000:android.intent.action.TIMEZONE_CHANGED,reason:,reasonCode:TIMEZONE_CHANGED,duration:20000,callingUid:1000>; targetSdkVersion:24; callerTargetSdkVersion:33; startForegroundCount:0; bindFromPackage:null]
+    createTime=-3h17m37s324ms startingBgTimeout=--
+    lastActivity=-3h17m33s965ms restartTime=-3h17m33s965ms createdFromFg=false
+    executeNesting=-2 executeFg=false executingStart=-3h17m33s964ms
+    restartCount=0 restartDelay=-3h17m26s975ms nextRestartTime=-3h17m26s975ms crashCount=1
+    Bindings:
+    * IntentBindRecord{8b52395 CREATE}:
+      intent={cmp=com.google.androidenv.accessibilityforwarder/.AccessibilityForwarder}
+      binder=android.os.BinderProxy@35bcaa
+      requested=true received=true hasBound=false doRebind=false
+      * Client AppBindRecord{bd9509b ProcessRecord{9531b82 531:system/1000}}
+        Per-process Connections:
+          ConnectionRecord{308b69b u0 CR FGSA CAPS com.google.androidenv.accessibilityforwarder/.AccessibilityForwarder:@e8afaaa}
+          ConnectionRecord{4452ec2 u0 CR FGSA CAPS com.google.androidenv.accessibilityforwarder/.AccessibilityForwarder:@3e12f0d}
+    All Connections:
+      ConnectionRecord{4452ec2 u0 CR FGSA CAPS com.google.androidenv.accessibilityforwarder/.AccessibilityForwarder:@3e12f0d}
+      ConnectionRecord{308b69b u0 CR FGSA CAPS com.google.androidenv.accessibilityforwarder/.AccessibilityForwarder:@e8afaaa}
+
+  Connection bindings to services:
+  * ConnectionRecord{193f6c0 u0 CR FGSA CAPS DEAD com.google.androidenv.accessibilityforwarder/.AccessibilityForwarder:@1a4043}
+    binding=AppBindRecord{4f8bc38 com.google.androidenv.accessibilityforwarder/.AccessibilityForwarder:system}
+    conn=android.app.LoadedApk$ServiceDispatcher$InnerConnection@1a4043 flags=0x2101001
+  * ConnectionRecord{4452ec2 u0 CR FGSA CAPS com.google.androidenv.accessibilityforwarder/.AccessibilityForwarder:@3e12f0d}
+    binding=AppBindRecord{bd9509b com.google.androidenv.accessibilityforwarder/.AccessibilityForwarder:system}
+    conn=android.app.LoadedApk$ServiceDispatcher$InnerConnection@3e12f0d flags=0x2101001
+  * ConnectionRecord{308b69b u0 CR FGSA CAPS com.google.androidenv.accessibilityforwarder/.AccessibilityForwarder:@e8afaaa}
+    binding=AppBindRecord{bd9509b com.google.androidenv.accessibilityforwarder/.AccessibilityForwarder:system}
+    conn=android.app.LoadedApk$ServiceDispatcher$InnerConnection@e8afaaa flags=0x2101001

@@ -1,0 +1,123 @@
+Receiver Resolver Table:
+  Non-Data Actions:
+      accessibility_forwarder.intent.action.SET_GRPC:
+        4cae923 com.google.androidenv.accessibilityforwarder/.FlagsBroadcastReceiver filter 1801e20
+          Action: "accessibility_forwarder.intent.action.ENABLE_ACCESSIBILITY_TREE_LOGS"
+          Action: "accessibility_forwarder.intent.action.DISABLE_ACCESSIBILITY_TREE_LOGS"
+          Action: "accessibility_forwarder.intent.action.SET_GRPC"
+      accessibility_forwarder.intent.action.ENABLE_ACCESSIBILITY_TREE_LOGS:
+        4cae923 com.google.androidenv.accessibilityforwarder/.FlagsBroadcastReceiver filter 1801e20
+          Action: "accessibility_forwarder.intent.action.ENABLE_ACCESSIBILITY_TREE_LOGS"
+          Action: "accessibility_forwarder.intent.action.DISABLE_ACCESSIBILITY_TREE_LOGS"
+          Action: "accessibility_forwarder.intent.action.SET_GRPC"
+      accessibility_forwarder.intent.action.DISABLE_ACCESSIBILITY_TREE_LOGS:
+        4cae923 com.google.androidenv.accessibilityforwarder/.FlagsBroadcastReceiver filter 1801e20
+          Action: "accessibility_forwarder.intent.action.ENABLE_ACCESSIBILITY_TREE_LOGS"
+          Action: "accessibility_forwarder.intent.action.DISABLE_ACCESSIBILITY_TREE_LOGS"
+          Action: "accessibility_forwarder.intent.action.SET_GRPC"
+
+Service Resolver Table:
+  Non-Data Actions:
+      com.google.android.build.data.Properties:
+        258f47f com.google.androidenv.accessibilityforwarder/com.google.android.build.data.PropertiesServiceHolder filter 398fc4c
+          Action: "com.google.android.build.data.Properties"
+      android.accessibilityservice.AccessibilityService:
+        97ac3d9 com.google.androidenv.accessibilityforwarder/.AccessibilityForwarder filter 3c7b19e permission android.permission.BIND_ACCESSIBILITY_SERVICE
+          Action: "android.accessibilityservice.AccessibilityService"
+
+Domain verification status:
+
+Key Set Manager:
+  [com.google.androidenv.accessibilityforwarder]
+      Signing KeySets: 53
+
+Packages:
+  Package [com.google.androidenv.accessibilityforwarder] (eb14252):
+    userId=10174
+    pkg=Package{11a6923 com.google.androidenv.accessibilityforwarder}
+    codePath=/data/app/~~VGcDsjkAi0wIWGVGJ0cPwA==/com.google.androidenv.accessibilityforwarder-RXzgJ9T7IL_yfqBCeX4h-Q==
+    resourcePath=/data/app/~~VGcDsjkAi0wIWGVGJ0cPwA==/com.google.androidenv.accessibilityforwarder-RXzgJ9T7IL_yfqBCeX4h-Q==
+    legacyNativeLibraryDir=/data/app/~~VGcDsjkAi0wIWGVGJ0cPwA==/com.google.androidenv.accessibilityforwarder-RXzgJ9T7IL_yfqBCeX4h-Q==/lib
+    extractNativeLibs=true
+    primaryCpuAbi=null
+    secondaryCpuAbi=null
+    cpuAbiOverride=null
+    versionCode=0 minSdk=28 targetSdk=24
+    minExtensionVersions=[]
+    versionName=null
+    usesNonSdkApi=false
+    splits=[base]
+    apkSigningVersion=3
+    flags=[ HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP ]
+    privateFlags=[ PRIVATE_FLAG_ACTIVITIES_RESIZE_MODE_RESIZEABLE_VIA_SDK_VERSION PRIVATE_FLAG_REQUEST_LEGACY_EXTERNAL_STORAGE PRIVATE_FLAG_ALLOW_NATIVE_HEAP_POINTER_TAGGING ]
+    forceQueryable=false
+    dataDir=/data/user/0/com.google.androidenv.accessibilityforwarder
+    supportsScreens=[small, medium, large, xlarge, resizeable, anyDensity]
+    usesLibraries:
+      android.test.base
+      org.apache.http.legacy
+    usesLibraryFiles:
+      /system/framework/android.test.base.jar
+      /system/framework/org.apache.http.legacy.jar
+    timeStamp=2026-08-04 13:04:13
+    lastUpdateTime=2026-08-04 13:04:51
+    packageSource=0
+    signatures=PackageSignatures{8599e20 version:3, signatures:[9e7a741c], past signatures:[]}
+    installPermissionsFixed=true
+    pkgFlags=[ HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP ]
+    requested permissions:
+      android.permission.INTERNET
+      android.permission.ACCESS_NETWORK_STATE
+      android.permission.POST_NOTIFICATIONS
+    install permissions:
+      android.permission.INTERNET: granted=true
+      android.permission.ACCESS_NETWORK_STATE: granted=true
+    User 0: ceDataInode=132217 installed=true hidden=false suspended=false distractionFlags=0 stopped=false notLaunched=false enabled=0 instant=false virtual=false
+      installReason=0
+      firstInstallTime=2026-07-22 17:02:34
+      uninstallReason=0
+      overlay paths:
+        /product/overlay/EmulationPixel6/EmulationPixel6Overlay.apk
+        /product/overlay/NavigationBarModeGestural/NavigationBarModeGesturalOverlay.apk
+        /data/resource-cache/com.android.systemui-neutral-AStp.frro
+        /data/resource-cache/com.android.systemui-accent-FLeG.frro
+      legacy overlay paths:
+        /product/overlay/EmulationPixel6/EmulationPixel6Overlay.apk
+        /product/overlay/NavigationBarModeGestural/NavigationBarModeGesturalOverlay.apk
+      gids=[3003]
+      runtime permissions:
+        android.permission.POST_NOTIFICATIONS: granted=true, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+
+Queries:
+  system apps queryable: false
+  queries via forceQueryable:
+  queries via package name:
+  queries via component:
+  queryable via interaction:
+    User 0:
+      com.google.androidenv.accessibilityforwarder:
+        [com.android.wallpaperbackup,com.android.emulator.multidisplay,com.android.keychain,com.android.localtransport,com.android.server.telecom,com.android.inputdevices,com.android.location.fused,com.android.settings,android,com.android.dynsystem,com.android.providers.settings]
+  queryable via uses-library:
+
+Dexopt state:
+  [com.google.androidenv.accessibilityforwarder]
+    path: /data/app/~~VGcDsjkAi0wIWGVGJ0cPwA==/com.google.androidenv.accessibilityforwarder-RXzgJ9T7IL_yfqBCeX4h-Q==/base.apk
+      x86_64: [status=verify] [reason=install]
+  BgDexopt state:
+    enabled:true
+    mDexOptThread:null
+    mDexOptCancellingThread:null
+    mFinishedPostBootUpdate:false
+    mLastExecutionStatus:0
+    mLastExecutionStartTimeMs:0
+    mLastExecutionDurationIncludingSleepMs:0
+    mLastExecutionStartUptimeMs:0
+    mLastExecutionDurationMs:0
+    now:12088306
+    mLastCancelledPackages:
+    mFailedPackageNamesPrimary:
+    mFailedPackageNamesSecondary:
+
+Compiler stats:
+  [com.google.androidenv.accessibilityforwarder]
+     base.apk - 17005
