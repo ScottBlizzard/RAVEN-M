@@ -1,0 +1,60 @@
+{
+  "schema_version": "role_binding_timing.phase_b2_9.androidenv_sidecar_diagnosis.lock.v0.2.9",
+  "predecessor_result_commit": "b557b609ffc4d7a2eb561c0e2ff05eefaf36e7d9",
+  "freeze_tag": "role-binding-timing-b2.9-sidecar-diagnosis-freeze-20260804",
+  "generation_calls": 0,
+  "generation_eligible": false,
+  "held_out_captures": 0,
+  "held_out_eligible": false,
+  "androidenv_get_state_calls_before_freeze": 0,
+  "authorized_change": "strict bytes-to-utf8 command-output normalization for generic framework service preflight only",
+  "locked_files": {
+    "04_protocols/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis.md": "6647c290730c41ba92fb0fb1f3854c576842096621ebbe403696adc5a64cea7f",
+    "05_project/configs/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis.json": "99860e50cb786d8cb6923eaa1db90e2e74432819cc8a67b8e46398de3420c7f0",
+    "05_project/schemas/role_binding_timing_androidenv_sidecar_observation.v0_2_8.schema.json": "bdedf53acc53df1ee620e5f19b7eeb306fd29e2764a2133b662346626671e935",
+    "05_project/src/raven_m/role_binding_timing/androidenv_sidecar_v0_2_8.py": "6493f3bbf9625aa18a25cfa1f46937c52b9440ab627912e474ecbef6d7e1ed6d",
+    "05_project/src/raven_m/role_binding_timing/androidenv_sidecar_runtime_v0_2_8.py": "37e8cf008bfa9d4f5f9fb760cb02f2b482b5e998334c4c460f5352e0b75d0187",
+    "05_project/src/raven_m/role_binding_timing/command_output_v0_2_9.py": "88ee5ce76746955c47a44765a1ed6cf3d96ce67622f023d50da28ddfc51ae63a",
+    "05_project/scripts/diagnose_role_binding_timing_b2_9_androidenv_sidecar.py": "5b491d7f43d0bb873a30ee55e72ca76107457cf5981c0bab91265d439d53fff1",
+    "05_project/scripts/run_role_binding_timing_b2_9_offline_gates.py": "6e1d1943ae6ceec1e743d94c1af69a1e1cb28a670b06fb6f25e75bdd4110573c",
+    "05_project/tests/role_binding_timing/test_command_output_v0_2_9.py": "000a676fe63606f520dea91ed8bf0a7a985f10a5df8383dc3705e47f91d58bd4"
+  },
+  "offline_gates": {
+    "result_path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_offline_gates/offline_gate_result.json",
+    "result_sha256": "0e67d5d9e506cb2c307af20cc6bc5a4cb07bf7e94e0084a38c32c987e7c34d25",
+    "overall_pass": true,
+    "focused": "14 passed",
+    "namespace": "all passed",
+    "full_regression_expected_only_failure": "tests/scripts/test_protocol_v2_2_r78_h17_candidate.py::test_r78_candidate_static_manifest_validation_passes",
+    "focused_stdout_sha256": "bed26e89ce926907ff81f8bf894550030d1350ddc701a9795ff380af82dba174",
+    "namespace_stdout_sha256": "3855e10b45ab26386c1495c460550e2e6d9132bd9129afdfdcf80df6fd51baf9",
+    "full_regression_stdout_sha256": "a3955801fc896b6ad4c59a7720d75e905d657417e930ad7b7dd151b3438781da",
+    "all_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "runtime_preflight": {
+    "adb_5038_listener_pid": 29964,
+    "adb_5038_binary_sha256": "957e46b8615f7af5b7292a2ddabe98d2e61940c3fb2b0545756507f080613e71",
+    "emulator_grpc_8554_listener_pid": 7172,
+    "emulator_binary_sha256": "b8e263a00f9151a494b480f38d39188e73dbf338b27015679311246c59c3dbec",
+    "fallback_5037_listener_pids": [],
+    "enabled_accessibility_service": "com.google.androidenv.accessibilityforwarder/com.google.androidenv.accessibilityforwarder.AccessibilityForwarder",
+    "accessibility_enabled": "1",
+    "adb_reverse_list_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "diagnosis_output_root_exists": false,
+    "generation_calls": 0,
+    "androidenv_get_state_calls": 0
+  },
+  "protected_wip_sha256": {
+    "05_project/src/raven_m/controller/episode_controller.py": "fc0e82e0fde90119365d4f685f080eb4519bf2f602e4bda58de5d4809a40fe33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "ff89d6b70be4b4738646d262beb67d7b7e932e9eb95956d940b1c5000a999d10",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5bb1f1e3de673a1072cfee62938b761a62fd69c187d5eadf54bc46b115a3fd0a"
+  },
+  "stop_rules": {
+    "settings_failure": "stop_without_grid_freeze",
+    "identity_drift": "stop",
+    "schema_or_serialization_failure": "stop",
+    "empty_or_package_mismatched_elements": "stop",
+    "implicit_refresh_or_5037_fallback": "stop",
+    "settings_success": "authorize_separate_grid_freeze_only"
+  }
+}
