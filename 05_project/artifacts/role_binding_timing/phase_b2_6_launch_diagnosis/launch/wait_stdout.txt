@@ -1,0 +1,6 @@
+Starting: Intent { cmp=com.android.settings/.Settings }
+Status: timeout
+LaunchState: UNKNOWN (-1)
+Activity: com.android.settings/.homepage.SettingsHomepageActivity
+WaitTime: 12447
+Complete

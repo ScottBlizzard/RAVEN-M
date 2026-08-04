@@ -1,0 +1,7 @@
+--------- beginning of system
+08-04 14:11:00.372   531  1963 I ActivityTaskManager: START u0 {flg=0x10000000 cmp=com.android.settings/.Settings} from uid 0
+08-04 14:11:10.950   531   566 W ActivityTaskManager: Launch timeout has expired, giving up wake lock!
+--------- beginning of main
+08-04 14:11:32.480   531   563 I ActivityTaskManager: Displayed com.android.settings/.Settings: +31s584ms
+08-04 14:11:32.494   531   563 I ActivityTaskManager: Fully drawn com.android.settings/.Settings: +31s584ms
+08-04 14:12:18.207   531  1655 I ActivityTaskManager: START u0 {flg=0x10000000 cmp=com.android.settings/.Settings} from uid 0
