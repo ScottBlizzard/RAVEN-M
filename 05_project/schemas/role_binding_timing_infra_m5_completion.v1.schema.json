@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "role_binding_timing_infra_m5_completion.v1.schema.json",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version", "terminal_mode", "status", "run_id", "first_broken_edge",
+    "last_completed_phase", "journal_entry_count", "journal_terminal_event_present",
+    "generation_calls", "model_tokens", "held_out_captures", "process_identity",
+    "runtime", "burn_in", "a11y", "cleanup", "log_seal",
+    "protected_wip_unchanged", "claim_evidence"
+  ],
+  "properties": {
+    "schema_version": {"const": "role_binding_timing.infra_m5.completion.v1"},
+    "terminal_mode": {"enum": ["rich", "minimal_fallback"]},
+    "status": {"enum": ["PASS_12_OF_12_DEV", "OWNERSHIP_NOT_QUALIFIED", "PROCESS_IDENTITY_FAILED", "RUNTIME_UNSTABLE", "A11Y_QUALIFICATION_FAILED", "LOG_SEAL_FAILED", "TERMINAL_ACCOUNTING_FAILED"]},
+    "run_id": {"type": "string", "minLength": 1},
+    "first_broken_edge": {"type": ["string", "null"]},
+    "last_completed_phase": {"type": ["string", "null"]},
+    "journal_entry_count": {"type": "integer", "minimum": 1},
+    "journal_terminal_event_present": {"const": true},
+    "generation_calls": {"const": 0},
+    "model_tokens": {"const": 0},
+    "held_out_captures": {"const": 0},
+    "process_identity": {"type": "object"},
+    "runtime": {"type": "object"},
+    "burn_in": {
+      "type": "object",
+      "required": ["passed", "required_cycles", "completed_cycles", "passed_cycles", "elapsed_seconds", "records"],
+      "properties": {
+        "passed": {"type": "boolean"},
+        "required_cycles": {"const": 24},
+        "completed_cycles": {"type": "integer", "minimum": 0, "maximum": 24},
+        "passed_cycles": {"type": "integer", "minimum": 0, "maximum": 24},
+        "elapsed_seconds": {"type": "number", "minimum": 0},
+        "records": {"type": "array", "maxItems": 24}
+      }
+    },
+    "a11y": {
+      "type": "object",
+      "required": ["authorized", "settings", "grid"],
+      "properties": {
+        "authorized": {"type": "boolean"},
+        "passed": {"type": "boolean"},
+        "settings": {
+          "type": "object",
+          "required": ["required", "completed", "passed"],
+          "properties": {
+            "required": {"const": 3},
+            "completed": {"type": "integer", "minimum": 0, "maximum": 3},
+            "passed": {"type": "integer", "minimum": 0, "maximum": 3}
+          }
+        },
+        "grid": {
+          "type": "object",
+          "required": ["required", "completed", "passed"],
+          "properties": {
+            "required": {"const": 12},
+            "completed": {"type": "integer", "minimum": 0, "maximum": 12},
+            "passed": {"type": "integer", "minimum": 0, "maximum": 12}
+          }
+        }
+      }
+    },
+    "cleanup": {"type": "object"},
+    "log_seal": {"type": "object"},
+    "protected_wip_unchanged": {"const": true},
+    "claim_evidence": {
+      "type": "object",
+      "required": ["process_identity_qualified", "exclusive_5038_registration", "burn_in_qualified", "a11y_tested", "a11y_qualified", "v0_3_preparation_authorized", "held_out_tested", "role_binding_hypothesis_tested"],
+      "properties": {
+        "process_identity_qualified": {"type": "boolean"},
+        "exclusive_5038_registration": {"type": "boolean"},
+        "burn_in_qualified": {"type": "boolean"},
+        "a11y_tested": {"type": "boolean"},
+        "a11y_qualified": {"type": "boolean"},
+        "v0_3_preparation_authorized": {"type": "boolean"},
+        "held_out_tested": {"const": false},
+        "role_binding_hypothesis_tested": {"const": false}
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "PASS_12_OF_12_DEV"}}},
+      "then": {
+        "properties": {
+          "first_broken_edge": {"type": "null"},
+          "burn_in": {
+            "properties": {
+              "passed": {"const": true},
+              "completed_cycles": {"const": 24},
+              "passed_cycles": {"const": 24},
+              "elapsed_seconds": {"minimum": 180},
+              "records": {"minItems": 24, "maxItems": 24}
+            }
+          },
+          "process_identity": {
+            "required": ["qualified"],
+            "properties": {"qualified": {"const": true}}
+          },
+          "a11y": {
+            "required": ["passed"],
+            "properties": {
+              "authorized": {"const": true},
+              "passed": {"const": true},
+              "settings": {
+                "properties": {"completed": {"const": 3}, "passed": {"const": 3}}
+              },
+              "grid": {
+                "properties": {"completed": {"const": 12}, "passed": {"const": 12}}
+              }
+            }
+          },
+          "cleanup": {"required": ["passed"], "properties": {"passed": {"const": true}}},
+          "log_seal": {"required": ["passed"], "properties": {"passed": {"const": true}}},
+          "claim_evidence": {
+            "properties": {
+              "process_identity_qualified": {"const": true},
+              "exclusive_5038_registration": {"const": true},
+              "burn_in_qualified": {"const": true},
+              "a11y_tested": {"const": true},
+              "a11y_qualified": {"const": true},
+              "v0_3_preparation_authorized": {"const": true}
+            }
+          }
+        }
+      },
+      "else": {"properties": {"first_broken_edge": {"type": "string", "minLength": 1}}}
+    }
+  ]
+}
