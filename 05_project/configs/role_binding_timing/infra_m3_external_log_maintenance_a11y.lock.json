@@ -1,0 +1,81 @@
+{
+  "schema_version": "role_binding_timing.infra_m3.external_log_maintenance_a11y.lock.v1",
+  "audit_commit": "50b50ca94e1aaa299c16574b1d14e5a9ddca458d",
+  "freeze_tag": "role-binding-timing-infra-m3-freeze-20260805",
+  "development_contaminated": true,
+  "generation_calls": 0,
+  "generation_eligible": false,
+  "held_out_captures": 0,
+  "held_out_eligible": false,
+  "m3_offline_device_mutations": 0,
+  "m3_restart_attempts_before_freeze": 0,
+  "pre_m3_contamination_remediation": {
+    "project_adb_5037_clean_stop_commands": 1,
+    "single_frozen_blob_restores": 1,
+    "recorded_by_audit_commit": "50b50ca94e1aaa299c16574b1d14e5a9ddca458d"
+  },
+  "lock_scope": "code_config_protocol_schema_tests_and_runtime_code_dependencies_only",
+  "runtime_logs_are_lock_inputs": false,
+  "files": {
+    "04_protocols/role_binding_timing/INFRA_M3_EXTERNAL_LOG_MAINTENANCE_AND_A11Y_V1.md": "d7bf11d5797ffefb40c410776a26213922af269b393e12edb0344f313a787690",
+    "05_project/configs/role_binding_timing/infra_m3_external_log_maintenance_a11y.json": "75d07fe3ea698b25a5b6570f2de4756012c1b312f0c575b66e78434d27fbd5dd",
+    "05_project/schemas/role_binding_timing_infra_m3_completion.v1.schema.json": "82793b6733f67ef53fc8e98a85fc951b47ad16bc45626864db7f586419a7e8ca",
+    "05_project/scripts/run_role_binding_timing_infra_m3.py": "669488551ea279ac3270dd50f4f5bf2d7826796ce07062685b1faaabae9b5f9a",
+    "05_project/scripts/run_role_binding_timing_infra_m3_offline_gates.py": "f24a3f298b8b84639ad0673f4ff29ef058b41fcb7d03a287b942d76bc1b48502",
+    "05_project/src/raven_m/role_binding_timing/infra_m3_log_lifecycle.py": "c72534ec2628b47bfbbc69edba13d2c04d52d91a7fd528a3bb1fc1ac0df3277a",
+    "05_project/tests/role_binding_timing/test_infra_m3_log_lifecycle.py": "a788088f96469cab7ae7a8a14562447d69904d55785a4a24aa93006970697ea4",
+    "05_project/scripts/run_role_binding_timing_infra_m2.py": "60cb10590d9cb67dcf4c4d3752394edeab900d9c9a339650879a77bdcef9feca",
+    "05_project/src/raven_m/role_binding_timing/infra_m2_runtime.py": "58f71c666efe61ba7ffc60d58e5a3109df5b99324d49e280af246462c9be899e",
+    "05_project/scripts/run_role_binding_timing_infra_m1_maintenance.py": "2dd9f8eba3f392c10868a09f41264ab9609f413a611b49988fcf47b281327f50",
+    "05_project/src/raven_m/role_binding_timing/infra_m1_runtime.py": "af7b66ed6a4e35b61c23f196d0f7bb114ee228b16603acbdba9c2996f895d1b1",
+    "05_project/scripts/qualify_role_binding_timing_b2_10_a11y_lifecycle.py": "2727b73713acf33a09b4c75de318e24957e61adada53472c1e1574eb7427b3d5",
+    "05_project/scripts/qualify_role_binding_timing_b2_5_infrastructure.py": "83a6037f784a03ea6d2012c845f46b9640d6cf6abe2d4e43d170f8c3303b81f2",
+    "05_project/scripts/diagnose_role_binding_timing_b2_9_androidenv_sidecar.py": "5b491d7f43d0bb873a30ee55e72ca76107457cf5981c0bab91265d439d53fff1",
+    "05_project/src/raven_m/role_binding_timing/androidenv_sidecar_runtime_v0_2_10.py": "0c3a7a1614eb3614afe07f752a06ede7b0cbae3676aed302d2f14ac53420feb8",
+    "05_project/src/raven_m/role_binding_timing/androidenv_sidecar_runtime_v0_2_8.py": "37e8cf008bfa9d4f5f9fb760cb02f2b482b5e998334c4c460f5352e0b75d0187",
+    "05_project/src/raven_m/role_binding_timing/androidenv_sidecar_v0_2_8.py": "6493f3bbf9625aa18a25cfa1f46937c52b9440ab627912e474ecbef6d7e1ed6d",
+    "05_project/src/raven_m/role_binding_timing/command_output_v0_2_9.py": "88ee5ce76746955c47a44765a1ed6cf3d96ce67622f023d50da28ddfc51ae63a",
+    "05_project/src/raven_m/role_binding_timing/infrastructure_v0_2_5.py": "f9893ebd6d94205fa090812a920ddeb86d2b274c2da444905c4ec8bb382a23a7"
+  },
+  "offline_gates": {
+    "result": "05_project/artifacts/role_binding_timing/infra_m3_offline_gates/offline_gate_result.json",
+    "result_sha256": "60d32c384b8bf74edae613bf54569662b224e5a15922c76a971d1fe7051c5d19",
+    "overall_pass": true,
+    "focused": "8 passed",
+    "focused_stdout_sha256": "b3f363fc61420f83576b0b639aab5a098ce98c454c3e4a81afd953f4bc98ad23",
+    "namespace_stdout_sha256": "f79f82d0b4f39812bc411a8e8ea564008a5180dad891c843f96959828707c5a3",
+    "full_regression_stdout_sha256": "78b16811b70a326cdd6f0fb05b3fe939a531eb89a133cb47aeb1e364c99625e0",
+    "all_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "full_regression_expected_only_failure": "tests/scripts/test_protocol_v2_2_r78_h17_candidate.py::test_r78_candidate_static_manifest_validation_passes"
+  },
+  "logging_contract": {
+    "live_root": "fresh child of C:/Users/lenovo/AppData/Local/Temp/raven_m_role_binding_timing",
+    "inside_repository": false,
+    "inside_artifact_root": false,
+    "immutable_input": false,
+    "parent_handles_close_after_popen": true,
+    "owners_exit_before_seal": true,
+    "rename_round_trip_before_copy": true,
+    "sealed_copy_count": 1,
+    "prior_frozen_log_paths_opened": 0
+  },
+  "runtime_contract": {
+    "residual_5038_pid": 35452,
+    "residual_5037_pid": null,
+    "excluded_pids": [11316, 17716],
+    "registration_environment": {"ANDROID_ADB_SERVER_PORT": "5038"},
+    "fallback_to_5037": false,
+    "burn_in_cycles": 24,
+    "minimum_elapsed_seconds": 180,
+    "settings_observations": 3,
+    "dev_grid_cells": 12,
+    "stop_on_first_failure": true
+  },
+  "continuation_boundary": {
+    "pass_12_of_12_dev": "authorize preparation only of v0.3",
+    "any_failure": "stop without retry or held-out capture",
+    "held_out_collection": "forbidden",
+    "generation": "forbidden",
+    "hypothesis_test": "forbidden"
+  }
+}

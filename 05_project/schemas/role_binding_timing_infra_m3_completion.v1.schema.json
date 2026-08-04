@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "role_binding_timing_infra_m3_completion.v1.schema.json",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version", "status", "first_broken_edge", "generation_calls",
+    "model_tokens", "runtime", "burn_in", "a11y", "cleanup", "log_seal",
+    "protected_wip_unchanged", "claim_evidence"
+  ],
+  "properties": {
+    "schema_version": {"const": "role_binding_timing.infra_m3.completion.v1"},
+    "status": {"enum": ["PASS_12_OF_12_DEV", "OWNERSHIP_NOT_QUALIFIED", "RUNTIME_UNSTABLE", "A11Y_QUALIFICATION_FAILED", "LOG_SEAL_FAILED"]},
+    "first_broken_edge": {"type": ["string", "null"]},
+    "generation_calls": {"const": 0},
+    "model_tokens": {"const": 0},
+    "runtime": {"type": "object"},
+    "burn_in": {
+      "type": "object",
+      "required": ["passed", "required_cycles", "completed_cycles", "passed_cycles", "elapsed_seconds", "records"],
+      "properties": {
+        "passed": {"type": "boolean"},
+        "required_cycles": {"const": 24},
+        "completed_cycles": {"type": "integer", "minimum": 0, "maximum": 24},
+        "passed_cycles": {"type": "integer", "minimum": 0, "maximum": 24},
+        "elapsed_seconds": {"type": "number", "minimum": 0},
+        "records": {"type": "array", "maxItems": 24}
+      }
+    },
+    "a11y": {
+      "type": "object",
+      "required": ["authorized", "settings", "grid"]
+    },
+    "cleanup": {"type": "object"},
+    "log_seal": {
+      "type": "object",
+      "required": ["passed", "records", "temporary_root_removed"],
+      "properties": {
+        "passed": {"type": "boolean"},
+        "records": {"type": "array", "maxItems": 2},
+        "temporary_root_removed": {"type": "boolean"}
+      }
+    },
+    "protected_wip_unchanged": {"const": true},
+    "claim_evidence": {
+      "type": "object",
+      "required": ["exclusive_5038_registration", "burn_in_qualified", "a11y_tested", "a11y_qualified", "v0_3_preparation_authorized", "held_out_tested", "role_binding_hypothesis_tested"]
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "PASS_12_OF_12_DEV"}}},
+      "then": {
+        "properties": {
+          "first_broken_edge": {"type": "null"},
+          "burn_in": {
+            "properties": {
+              "passed": {"const": true},
+              "completed_cycles": {"const": 24},
+              "passed_cycles": {"const": 24},
+              "elapsed_seconds": {"minimum": 180},
+              "records": {"minItems": 24, "maxItems": 24}
+            }
+          },
+          "log_seal": {
+            "properties": {
+              "passed": {"const": true},
+              "records": {"minItems": 2, "maxItems": 2},
+              "temporary_root_removed": {"const": true}
+            }
+          }
+        }
+      }
+    }
+  ]
+}
