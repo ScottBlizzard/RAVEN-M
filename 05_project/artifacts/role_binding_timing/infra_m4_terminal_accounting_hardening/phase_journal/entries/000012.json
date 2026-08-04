@@ -1,0 +1,13 @@
+{
+  "details": {
+    "rich_error": null,
+    "terminal_mode": "rich"
+  },
+  "event": "end",
+  "first_broken_edge": null,
+  "phase": "terminal",
+  "recorded_at": "2026-08-04T19:44:52.120496+00:00",
+  "schema_version": "role_binding_timing.infra_m4.phase_entry.v1",
+  "sequence": 12,
+  "status": "PASS"
+}

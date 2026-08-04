@@ -1,0 +1,420 @@
+{
+  "artifacts": [
+    {
+      "bytes": 16,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/.gitattributes",
+      "sha256": "5f098188d595641c34c309079424f0ba6c0525882b4a9337c4790d9d4f242eac"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/finalized_live_logs/emulator.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 13900,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/finalized_live_logs/emulator.stdout.bin",
+      "sha256": "1800b0a6c332139aefccbde85e31359d1683c2fb54b514e515d36c0dda1375a7"
+    },
+    {
+      "bytes": 79,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/launch/adb_5038_start.stderr.bin",
+      "sha256": "3d73cb0410f7e3407acfff4b735cec718d7c67f41b10b2374a7dd175e8b618d8"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/launch/adb_5038_start.stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 252,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/phase_journal/entries/000001.json",
+      "sha256": "fb7fcd8824712f891273cb4b309e05af43e76250d97fa0a808395514b3b9dfac"
+    },
+    {
+      "bytes": 348,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/phase_journal/entries/000002.json",
+      "sha256": "9df3cc6316d2420167c921bdbf5985cc92b3a13124d7a69ffc221362a1d276db"
+    },
+    {
+      "bytes": 250,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/phase_journal/entries/000003.json",
+      "sha256": "4417131eac0310ddbc5188603a05359479f7410550d855f6336c8da60a633e82"
+    },
+    {
+      "bytes": 245,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/phase_journal/entries/000004.json",
+      "sha256": "76ba57ce82cad14a71939b74deac96a3066284b1d8c0cd4a44c34d966a6d49eb"
+    },
+    {
+      "bytes": 255,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/phase_journal/entries/000005.json",
+      "sha256": "611c586d0dde665cad66b6d0a78dc7f30f62da34cae8cfe19ad5638d263fe22f"
+    },
+    {
+      "bytes": 662,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/phase_journal/entries/000006.json",
+      "sha256": "502b325cdefdeea337fae3b30def69967c1f23a242d44d0ce1e2ad1fe4d7f0fa"
+    },
+    {
+      "bytes": 253,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/phase_journal/entries/000007.json",
+      "sha256": "2d3545a4b66bd0aeaeeec39f5a240ec2919e5abe729cd8a57767810ea4a16862"
+    },
+    {
+      "bytes": 248,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/phase_journal/entries/000008.json",
+      "sha256": "87d1ee02a126c1bbbe3bd0094dec92d6b05ea471c21d6c6016d4d5cc27bb05c0"
+    },
+    {
+      "bytes": 250,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/phase_journal/entries/000009.json",
+      "sha256": "179996650902a41aa236ddb1bbb653d9f7d9c9101aacdfdede0effb4557a38c0"
+    },
+    {
+      "bytes": 246,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/phase_journal/entries/000010.json",
+      "sha256": "9f42efe8f3c70a3c0fb7a9cf3843c85d3eab84f02c29c9d7599a05e638885ee1"
+    },
+    {
+      "bytes": 299,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/phase_journal/entries/000011.json",
+      "sha256": "c7be082cc236345a04a0f7d90528533f2f985f822208b42d781a1eb75555baf0"
+    },
+    {
+      "bytes": 303,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/phase_journal/entries/000012.json",
+      "sha256": "98e5b81055e451cc14484e4398cf58098e43216498d39b163b42714fa97b6c2f"
+    },
+    {
+      "bytes": 226,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/phase_journal/first_broken_edge.json",
+      "sha256": "fc09c5d706240f152e0cb76d565e90e4ea51c92bffac659e7bf25d216d21d168"
+    },
+    {
+      "bytes": 3327,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/phase_journal/journal.ndjson",
+      "sha256": "a6b8ca19de4ddc89ff89dbcc1bfc1492bec2a9e4dd7709132ad2fc7efa1ae359"
+    },
+    {
+      "bytes": 113409,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/qualification_completion.json",
+      "sha256": "9409b6af6214f58994a301697146ee162e7dfabd7a901d946d4f7d46039a2e8b"
+    },
+    {
+      "bytes": 7490,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_01/attempt.json",
+      "sha256": "9fb1945799c214d22b269bef3d5d42c183dfd0b7b4c6e16b150bb6f4c55d2858"
+    },
+    {
+      "bytes": 25,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_01/boot_completed.stderr.bin",
+      "sha256": "a788f5abadbd52445df2e6927ca7a32a1bde55d2873bf644420d808c767aa97e"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_01/boot_completed.stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_01/devices.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 75,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_01/devices.stdout.bin",
+      "sha256": "ef46b6a8b96dbb8266243cce30025e2c4a030f951ee8508460ea25bafc84f0ff"
+    },
+    {
+      "bytes": 23,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_01/get_state.stderr.bin",
+      "sha256": "faba18991a66c091c6cd8e5f54e4920ae9e6bd588ea0ffdbcce2a18813f9ab31"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_01/get_state.stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 7490,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_02/attempt.json",
+      "sha256": "d100680330df8761c64bbd333088508aaa36ba3625d027dab1739c324a3e7d5e"
+    },
+    {
+      "bytes": 25,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_02/boot_completed.stderr.bin",
+      "sha256": "a788f5abadbd52445df2e6927ca7a32a1bde55d2873bf644420d808c767aa97e"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_02/boot_completed.stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_02/devices.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 75,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_02/devices.stdout.bin",
+      "sha256": "ef46b6a8b96dbb8266243cce30025e2c4a030f951ee8508460ea25bafc84f0ff"
+    },
+    {
+      "bytes": 23,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_02/get_state.stderr.bin",
+      "sha256": "faba18991a66c091c6cd8e5f54e4920ae9e6bd588ea0ffdbcce2a18813f9ab31"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_02/get_state.stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 7490,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_03/attempt.json",
+      "sha256": "500c76b8e4e5fd47d2f4db4bbe0595c974e20acf9776a6af5b34a19195e44819"
+    },
+    {
+      "bytes": 25,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_03/boot_completed.stderr.bin",
+      "sha256": "a788f5abadbd52445df2e6927ca7a32a1bde55d2873bf644420d808c767aa97e"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_03/boot_completed.stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_03/devices.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 75,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_03/devices.stdout.bin",
+      "sha256": "ef46b6a8b96dbb8266243cce30025e2c4a030f951ee8508460ea25bafc84f0ff"
+    },
+    {
+      "bytes": 23,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_03/get_state.stderr.bin",
+      "sha256": "faba18991a66c091c6cd8e5f54e4920ae9e6bd588ea0ffdbcce2a18813f9ab31"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_03/get_state.stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 7488,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_04/attempt.json",
+      "sha256": "488b9ed080034d1ffdf30153fbeaa72ec0527b9327f1403169ed7754ae147163"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_04/boot_completed.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 2,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_04/boot_completed.stdout.bin",
+      "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_04/devices.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 142,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_04/devices.stdout.bin",
+      "sha256": "fb191485151938516dc2e4cc4024d92caeff2c0ca7fdeaa809742ed2dc0336a1"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_04/get_state.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 8,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_04/get_state.stdout.bin",
+      "sha256": "5a49c5eb1807bf1dd12637504e6a6e49f1c9c4bce601ae34c9984843074b129c"
+    },
+    {
+      "bytes": 7474,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_05/attempt.json",
+      "sha256": "c099f20be95e183112d5e36f476a20cc9b76f0bbf418dd16f6617c941aba4d75"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_05/boot_completed.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 2,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_05/boot_completed.stdout.bin",
+      "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_05/devices.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 142,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_05/devices.stdout.bin",
+      "sha256": "fb191485151938516dc2e4cc4024d92caeff2c0ca7fdeaa809742ed2dc0336a1"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_05/get_state.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 8,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_05/get_state.stdout.bin",
+      "sha256": "5a49c5eb1807bf1dd12637504e6a6e49f1c9c4bce601ae34c9984843074b129c"
+    },
+    {
+      "bytes": 7489,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_06/attempt.json",
+      "sha256": "beb454b3faeb273499d2971c3b97aab7ac4c5b8db55016005de1afc99ddad2d9"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_06/boot_completed.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 2,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_06/boot_completed.stdout.bin",
+      "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_06/devices.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 142,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_06/devices.stdout.bin",
+      "sha256": "fb191485151938516dc2e4cc4024d92caeff2c0ca7fdeaa809742ed2dc0336a1"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_06/get_state.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 8,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_06/get_state.stdout.bin",
+      "sha256": "5a49c5eb1807bf1dd12637504e6a6e49f1c9c4bce601ae34c9984843074b129c"
+    },
+    {
+      "bytes": 7474,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_07/attempt.json",
+      "sha256": "f4a42570bf7c5a9fb62bdaec6ff1ffea3aff2406ae13d6085a5b81ff9971ea42"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_07/boot_completed.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 2,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_07/boot_completed.stdout.bin",
+      "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_07/devices.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 142,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_07/devices.stdout.bin",
+      "sha256": "fb191485151938516dc2e4cc4024d92caeff2c0ca7fdeaa809742ed2dc0336a1"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_07/get_state.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 8,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_07/get_state.stdout.bin",
+      "sha256": "5a49c5eb1807bf1dd12637504e6a6e49f1c9c4bce601ae34c9984843074b129c"
+    },
+    {
+      "bytes": 7488,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_08/attempt.json",
+      "sha256": "2699b10775160a9fcc67f734a72001336975dd4541a5978b777185c2c58d8ba5"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_08/boot_completed.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_08/boot_completed.stdout.bin",
+      "sha256": "f1b2f662800122bed0ff255693df89c4487fbdcf453d3524a42d4ec20c3d9c04"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_08/devices.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 142,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_08/devices.stdout.bin",
+      "sha256": "fb191485151938516dc2e4cc4024d92caeff2c0ca7fdeaa809742ed2dc0336a1"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_08/get_state.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 8,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/readiness/boot/attempt_08/get_state.stdout.bin",
+      "sha256": "5a49c5eb1807bf1dd12637504e6a6e49f1c9c4bce601ae34c9984843074b129c"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/terminal_cleanup/adb_5038_clean_stop.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/terminal_cleanup/adb_5038_clean_stop.stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/terminal_cleanup/emulator_clean_stop.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 37,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/terminal_cleanup/emulator_clean_stop.stdout.bin",
+      "sha256": "2f2464ff20db7f0caaf9d7ea8b3e7d1356fb4e22dc58d0e17a15faf96bf41822"
+    },
+    {
+      "bytes": 112937,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/terminal_input.json",
+      "sha256": "bce88ead2687d515912a069f551f93c27cd9ba01d2ada1d13ed4bbbed25bceb2"
+    },
+    {
+      "bytes": 202,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/terminal_validation.json",
+      "sha256": "b99f495c70230288de614912ee0380d4266bab652448d7913da395f779c87875"
+    },
+    {
+      "bytes": 483,
+      "path": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/terminal_writer_receipt.json",
+      "sha256": "26784243b2e8816d410a66330381f017ba18e54a48d84c0a390e8b92387a52d9"
+    }
+  ],
+  "schema_version": "role_binding_timing.infra_m4.manifest.v1"
+}

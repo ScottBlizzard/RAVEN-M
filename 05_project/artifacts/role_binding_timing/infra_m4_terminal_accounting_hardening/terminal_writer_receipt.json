@@ -1,0 +1,9 @@
+{
+  "canonical_path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m4_terminal_accounting_hardening\\qualification_completion.json",
+  "canonical_sha256": "9409b6af6214f58994a301697146ee162e7dfabd7a901d946d4f7d46039a2e8b",
+  "first_broken_edge": "FRAMEWORK_RUNTIME:EXCLUDED_PID_DRIFT",
+  "journal_entry_count": 12,
+  "rich_error": null,
+  "schema_version": "role_binding_timing.infra_m4.terminal_receipt.v1",
+  "terminal_mode": "rich"
+}
