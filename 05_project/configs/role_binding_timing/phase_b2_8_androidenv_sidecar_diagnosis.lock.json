@@ -1,0 +1,72 @@
+{
+  "schema_version": "role_binding_timing.phase_b2_8.androidenv_sidecar_diagnosis.lock.v0.2.8",
+  "diagnosis_commit": "6a135047eb25b3ca6aef9812f6a398242e37fc7f",
+  "freeze_tag": "role-binding-timing-b2.8-sidecar-diagnosis-freeze-20260804",
+  "generation_calls": 0,
+  "generation_eligible": false,
+  "held_out_captures": 0,
+  "held_out_eligible": false,
+  "androidenv_get_state_calls_before_freeze": 0,
+  "locked_files": {
+    "04_protocols/role_binding_timing/phase_b2_8_androidenv_sidecar_diagnosis.md": "af77705681345d4b1ee90bbe9d16fedda54a3332bb6ed230c62bbb58c94932f1",
+    "05_project/configs/role_binding_timing/phase_b2_8_androidenv_sidecar_diagnosis.json": "71badd5533e3896deb8c3a6358b7baa7c3ca24cdf26304a4a4afd6d759c192bb",
+    "05_project/schemas/role_binding_timing_androidenv_sidecar_observation.v0_2_8.schema.json": "bdedf53acc53df1ee620e5f19b7eeb306fd29e2764a2133b662346626671e935",
+    "05_project/src/raven_m/role_binding_timing/androidenv_sidecar_v0_2_8.py": "6493f3bbf9625aa18a25cfa1f46937c52b9440ab627912e474ecbef6d7e1ed6d",
+    "05_project/src/raven_m/role_binding_timing/androidenv_sidecar_runtime_v0_2_8.py": "37e8cf008bfa9d4f5f9fb760cb02f2b482b5e998334c4c460f5352e0b75d0187",
+    "05_project/scripts/diagnose_role_binding_timing_b2_8_androidenv_sidecar.py": "dcf6c867e11061861f1ba921c63162cf2e593b3ad1a018200db76f814c30e1ff",
+    "05_project/scripts/run_role_binding_timing_b2_8_offline_gates.py": "bd20d58fd4f0aa82eef66494dace7676e90191c13619104474bf836dab079538",
+    "05_project/tests/role_binding_timing/test_androidenv_sidecar_v0_2_8.py": "9a5a69689f4c7707e13dcf392358bbadbab95d9a5580c9ea7e8e5702ff06abc6"
+  },
+  "offline_gates": {
+    "authoritative_result": {
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_8_androidenv_sidecar_offline_gates_v2/offline_gate_result.json",
+      "sha256": "ea4517ff7a5e5c1ddf702c1df13ab1e548e47f919a5270efb461e6ea2b9b7368",
+      "overall_pass": true,
+      "focused": "13 passed",
+      "namespace": "all passed",
+      "full_regression_expected_only_failure": "tests/scripts/test_protocol_v2_2_r78_h17_candidate.py::test_r78_candidate_static_manifest_validation_passes"
+    },
+    "superseded_pre_freeze_result": {
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_8_androidenv_sidecar_offline_gates/offline_gate_result.json",
+      "sha256": "6b17aeb8ff69d5e399837af9de7b18cb55a7475e25104ce1e0bde6e56ff08b60",
+      "overall_pass": false,
+      "reason": "repository-root cwd made one legacy EEST relative schema path unavailable; raw evidence retained and not counted"
+    },
+    "authoritative_raw_streams": {
+      "focused_stdout_sha256": "7fbe072bd6c74a7b0b55ddd2583fc288534b9dfe428b8a0f002c2ecdfb8dc490",
+      "focused_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "namespace_stdout_sha256": "873a159d9f7264f16efdf9843df318b746fd989f45092c411f024d52fd32bed9",
+      "namespace_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "full_regression_stdout_sha256": "af61768ff9d88c4243cdb72569545e4940c4039a658ff6b71aea5536be705efa",
+      "full_regression_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "runtime_preflight": {
+    "adb_5038_listener_pid": 29964,
+    "adb_5038_binary_sha256": "957e46b8615f7af5b7292a2ddabe98d2e61940c3fb2b0545756507f080613e71",
+    "emulator_grpc_8554_listener_pid": 7172,
+    "emulator_binary_sha256": "b8e263a00f9151a494b480f38d39188e73dbf338b27015679311246c59c3dbec",
+    "fallback_5037_listener_pids": [],
+    "nonlistener_stale_adb_candidates_not_mutated": [11316, 17716],
+    "enabled_accessibility_service": "com.google.androidenv.accessibilityforwarder/com.google.androidenv.accessibilityforwarder.AccessibilityForwarder",
+    "accessibility_enabled": "1",
+    "accessibility_dumpsys_state": "enabled_and_binding_not_yet_bound_before_host_sidecar_creation",
+    "adb_reverse_list_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "diagnosis_output_root_exists": false,
+    "generation_calls": 0,
+    "androidenv_get_state_calls": 0
+  },
+  "protected_wip_sha256": {
+    "05_project/src/raven_m/controller/episode_controller.py": "fc0e82e0fde90119365d4f685f080eb4519bf2f602e4bda58de5d4809a40fe33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "ff89d6b70be4b4738646d262beb67d7b7e932e9eb95956d940b1c5000a999d10",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5bb1f1e3de673a1072cfee62938b761a62fd69c187d5eadf54bc46b115a3fd0a"
+  },
+  "stop_rules": {
+    "settings_failure": "stop_without_grid_freeze",
+    "identity_drift": "stop",
+    "schema_or_serialization_failure": "stop",
+    "empty_or_package_mismatched_elements": "stop",
+    "implicit_refresh_or_5037_fallback": "stop",
+    "success": "authorize_separate_grid_freeze_only"
+  }
+}

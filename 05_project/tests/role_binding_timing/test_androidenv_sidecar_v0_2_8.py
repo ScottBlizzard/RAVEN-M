@@ -225,3 +225,29 @@ def test_protocol_config_and_schema_boundaries() -> None:
     assert config["runtime"]["fallback_to_5037"] is False
     assert config["diagnostic"]["explicit_get_state_calls"] == 1
     Draft202012Validator.check_schema(schema)
+
+
+def test_runner_is_zero_model_explicit_port_and_single_observation() -> None:
+    source = (ROOT / "scripts/diagnose_role_binding_timing_b2_8_androidenv_sidecar.py").read_text(
+        encoding="utf-8"
+    )
+    assert "generation_calls\": 0" in source
+    assert "state_calls += 1" in source
+    assert source.count("env.get_state(") == 1
+    assert 'listener_pids(5037)' in source
+    assert '"-P", str(self.managed.port)' in source
+    assert "uiautomator" not in source.casefold()
+    assert "openai" not in source.casefold()
+    assert "requests.post" not in source.casefold()
+    assert "from raven_m.controller" not in source
+    assert "import raven_m.controller" not in source
+
+
+def test_offline_gate_runner_forbids_live_observation_and_accepts_only_known_failure() -> None:
+    source = (ROOT / "scripts/run_role_binding_timing_b2_8_offline_gates.py").read_text(encoding="utf-8")
+    assert "env.get_state" not in source
+    assert '"generation_calls": 0' in source
+    assert "test_r78_candidate_static_manifest_validation_passes" in source
+    assert "failed_nodes == [EXPECTED_FULL_FAILURE]" in source
+    assert 'cwd=PROJECT_ROOT' not in source
+    assert 'item.replace("\\\\", "/")' in source
