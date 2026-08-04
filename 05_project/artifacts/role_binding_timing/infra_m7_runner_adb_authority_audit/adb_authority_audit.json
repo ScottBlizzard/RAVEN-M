@@ -1,0 +1,437 @@
+{
+  "continue_decision": "ELIGIBLE_FOR_M7_OFFLINE_IMPLEMENTATION_ONLY",
+  "device_mutations": 0,
+  "generation_calls": 0,
+  "m6_completion_commit": "f17f18ec595588de98e244920845d97f97c20407",
+  "m6_first_broken_edge_immutable": "PROCESS_IDENTITY:PROCESS:496@1785880048.227501:ADB_COMMAND_ROLE",
+  "m6_verdict_immutable": "PROCESS_IDENTITY_FAILED",
+  "m7_required_predicate": {
+    "completed_client_ledger": "Once admitted while current or independently bounded by a listener-bearing history sample plus a later absence snapshot, a completed identity remains auditable without aging into a false failure.",
+    "ordinary_client": [
+      "exact locked adb.exe path and SHA-256",
+      "argv begins with the locked executable and contains exactly one `-P 5038`",
+      "direct frozen-runner parent identity; no cmd.exe or PowerShell wrapper",
+      "created after runner and no older than 45 seconds at first authorization",
+      "no listening socket on any local TCP port at every observed sample",
+      "bounded active lifetime of at most 45 seconds",
+      "not a server lifecycle/server-mode argv"
+    ],
+    "permanent_vetoes": [
+      "missing or other port",
+      "path/hash mismatch",
+      "parent/ancestry mismatch",
+      "PID reuse",
+      "listener ownership",
+      "active age above 45 seconds",
+      "wrapper ambiguity",
+      "server-mode argv"
+    ],
+    "server_lifecycle": {
+      "kill-server": "cleanup only",
+      "nodaemon/fork-server/server mode": "forbidden as runner client",
+      "start-server": "launch only"
+    }
+  },
+  "mode": "read_only_frozen_m6_evidence",
+  "observation_gap": {
+    "m5_snapshot_limitation": "Only selected ports were mapped to PIDs and continuous history did not retain listener evidence per transient process.",
+    "m7_requirement": "Every structural snapshot/history sample must attach the full local TCP listener-port set for each process identity and persist it in the triggering snapshot."
+  },
+  "observed_m6_adb_argv": [
+    {
+      "argv": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "-P",
+        "5038",
+        "-s",
+        "emulator-5554",
+        "emu",
+        "kill"
+      ],
+      "artifact_occurrences": 2,
+      "artifact_sources": [
+        "qualification_completion.json",
+        "terminal_input.json"
+      ],
+      "classification": "GENERIC_RUNNER_OWNED_CLIENT",
+      "explicit_single_5038": true,
+      "locked_binary_path": true
+    },
+    {
+      "argv": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "-P",
+        "5038",
+        "-s",
+        "emulator-5554",
+        "get-state"
+      ],
+      "artifact_occurrences": 18,
+      "artifact_sources": [
+        "qualification_completion.json",
+        "readiness/boot/attempt_01/attempt.json",
+        "readiness/boot/attempt_02/attempt.json",
+        "readiness/boot/attempt_03/attempt.json",
+        "readiness/boot/attempt_04/attempt.json",
+        "readiness/boot/attempt_05/attempt.json",
+        "readiness/boot/attempt_06/attempt.json",
+        "readiness/boot/attempt_07/attempt.json",
+        "readiness/boot/attempt_08/attempt.json",
+        "readiness/boot/attempt_09/attempt.json",
+        "readiness/boot/attempt_10/attempt.json",
+        "readiness/boot/attempt_11/attempt.json",
+        "readiness/boot/attempt_12/attempt.json",
+        "readiness/boot/attempt_13/attempt.json",
+        "readiness/boot/attempt_14/attempt.json",
+        "readiness/boot/attempt_15/attempt.json",
+        "readiness/boot/attempt_16/attempt.json",
+        "terminal_input.json"
+      ],
+      "classification": "GENERIC_RUNNER_OWNED_CLIENT",
+      "explicit_single_5038": true,
+      "locked_binary_path": true
+    },
+    {
+      "argv": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "-P",
+        "5038",
+        "-s",
+        "emulator-5554",
+        "shell",
+        "getprop",
+        "sys.boot_completed"
+      ],
+      "artifact_occurrences": 18,
+      "artifact_sources": [
+        "qualification_completion.json",
+        "readiness/boot/attempt_01/attempt.json",
+        "readiness/boot/attempt_02/attempt.json",
+        "readiness/boot/attempt_03/attempt.json",
+        "readiness/boot/attempt_04/attempt.json",
+        "readiness/boot/attempt_05/attempt.json",
+        "readiness/boot/attempt_06/attempt.json",
+        "readiness/boot/attempt_07/attempt.json",
+        "readiness/boot/attempt_08/attempt.json",
+        "readiness/boot/attempt_09/attempt.json",
+        "readiness/boot/attempt_10/attempt.json",
+        "readiness/boot/attempt_11/attempt.json",
+        "readiness/boot/attempt_12/attempt.json",
+        "readiness/boot/attempt_13/attempt.json",
+        "readiness/boot/attempt_14/attempt.json",
+        "readiness/boot/attempt_15/attempt.json",
+        "readiness/boot/attempt_16/attempt.json",
+        "terminal_input.json"
+      ],
+      "classification": "GENERIC_RUNNER_OWNED_CLIENT",
+      "explicit_single_5038": true,
+      "locked_binary_path": true
+    },
+    {
+      "argv": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "-P",
+        "5038",
+        "devices",
+        "-l"
+      ],
+      "artifact_occurrences": 18,
+      "artifact_sources": [
+        "qualification_completion.json",
+        "readiness/boot/attempt_01/attempt.json",
+        "readiness/boot/attempt_02/attempt.json",
+        "readiness/boot/attempt_03/attempt.json",
+        "readiness/boot/attempt_04/attempt.json",
+        "readiness/boot/attempt_05/attempt.json",
+        "readiness/boot/attempt_06/attempt.json",
+        "readiness/boot/attempt_07/attempt.json",
+        "readiness/boot/attempt_08/attempt.json",
+        "readiness/boot/attempt_09/attempt.json",
+        "readiness/boot/attempt_10/attempt.json",
+        "readiness/boot/attempt_11/attempt.json",
+        "readiness/boot/attempt_12/attempt.json",
+        "readiness/boot/attempt_13/attempt.json",
+        "readiness/boot/attempt_14/attempt.json",
+        "readiness/boot/attempt_15/attempt.json",
+        "readiness/boot/attempt_16/attempt.json",
+        "terminal_input.json"
+      ],
+      "classification": "GENERIC_RUNNER_OWNED_CLIENT",
+      "explicit_single_5038": true,
+      "locked_binary_path": true
+    },
+    {
+      "argv": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "-P",
+        "5038",
+        "kill-server"
+      ],
+      "artifact_occurrences": 2,
+      "artifact_sources": [
+        "qualification_completion.json",
+        "terminal_input.json"
+      ],
+      "classification": "SERVER_LIFECYCLE_STOP_CLEANUP_ONLY",
+      "explicit_single_5038": true,
+      "locked_binary_path": true
+    },
+    {
+      "argv": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "-P",
+        "5038",
+        "start-server"
+      ],
+      "artifact_occurrences": 2,
+      "artifact_sources": [
+        "qualification_completion.json",
+        "terminal_input.json"
+      ],
+      "classification": "SERVER_LIFECYCLE_START_LAUNCH_ONLY",
+      "explicit_single_5038": true,
+      "locked_binary_path": true
+    }
+  ],
+  "observed_summary": {
+    "all_explicit_single_5038": true,
+    "all_locked_binary_path": true,
+    "forbidden_server_mode": 0,
+    "generic_clients": 4,
+    "server_lifecycle": 2,
+    "unique_argv": 6
+  },
+  "root_cause": {
+    "direct_evidence": "M6 rejected a locked, direct-runner, explicit-5038 `devices -l` client because M5 enumerated allowed argv classes.",
+    "non_claims": [
+      "M6 display quorum would have passed",
+      "boot would have qualified",
+      "AndroidEnv a11y is stable",
+      "any role-binding or memory hypothesis"
+    ],
+    "policy_defect": "OWNERSHIP_POLICY_COUPLED_TO_HARMLESS_SUBCOMMAND_ENUMERATION"
+  },
+  "schema_version": "role_binding_timing.infra_m7.adb_authority_audit.v1",
+  "source_identity": [
+    {
+      "path": "05_project/scripts/run_role_binding_timing_infra_m6.py",
+      "relevant_lines": [
+        {
+          "line": 104,
+          "text": "prefix = M5.M2.adb_prefix(config, 5038)"
+        },
+        {
+          "line": 114,
+          "text": "record, _, stderr = M5.M1.run_raw(prefix + args, root=root / \"setup\", name=name, timeout=15)"
+        },
+        {
+          "line": 157,
+          "text": "prefix = M5.M2.adb_prefix(config, 5038)"
+        }
+      ],
+      "sha256": "cf823f307dffdd534bb65fef2c8a228aa48d858852ee0986fd8ff00de2817eb6"
+    },
+    {
+      "path": "05_project/scripts/run_role_binding_timing_infra_m5.py",
+      "relevant_lines": [
+        {
+          "line": 101,
+          "text": "record, stdout, stderr = M1.run_raw(command, root=root, name=name, timeout=timeout)"
+        },
+        {
+          "line": 109,
+          "text": "prefix = M2.adb_prefix(config, 5038)"
+        },
+        {
+          "line": 120,
+          "text": "\"devices\": M2.adb_prefix(config, 5038, include_serial=False) + [\"devices\", \"-l\"],"
+        },
+        {
+          "line": 147,
+          "text": "prefix = M2.adb_prefix(config, 5038)"
+        },
+        {
+          "line": 157,
+          "text": "record, _, stderr = M1.run_raw(prefix + args, root=root / \"setup\", name=name, timeout=15)"
+        },
+        {
+          "line": 207,
+          "text": "prefix = M2.adb_prefix(config, 5038)"
+        },
+        {
+          "line": 272,
+          "text": "raw_adb = B210.RawAdb(managed); session[\"raw_adb\"] = raw_adb; session[\"adb_pid\"] = managed.owner_pid"
+        },
+        {
+          "line": 369,
+          "text": "record, _, _ = M1.run_raw(M2.adb_prefix(config, 5038) + [\"emu\", \"kill\"], root=root, name=\"emulator_clean_stop\", timeout=config[\"maintenance\"][\"command_timeout_seconds\"])"
+        },
+        {
+          "line": 401,
+          "text": "record, _, _ = M1.run_raw(M2.adb_prefix(config, 5038, include_serial=False) + [\"kill-server\"], root=root, name=\"adb_5038_clean_stop\", timeout=config[\"maintenance\"][\"command_timeout_seconds\"])"
+        },
+        {
+          "line": 470,
+          "text": "record, _, _ = M1.run_raw(M2.adb_prefix(config, 5038, include_serial=False) + [\"start-server\"], root=output_root / \"launch\", name=\"adb_5038_start\", timeout=config[\"maintenance\"][\"command_timeout_seconds\"]); runtime_record[\"steps\"][\"adb_start\"] = record"
+        }
+      ],
+      "sha256": "be639f0d913c54c55538ab096d43238fa553712c14b097c6bed4422c21bb27bc"
+    },
+    {
+      "path": "05_project/scripts/run_role_binding_timing_infra_m4.py",
+      "relevant_lines": [
+        {
+          "line": 126,
+          "text": "raw_adb = B210.RawAdb(managed)"
+        },
+        {
+          "line": 294,
+          "text": "record, _, _ = M1.run_raw("
+        },
+        {
+          "line": 295,
+          "text": "M2.adb_prefix(config, 5038) + [\"emu\", \"kill\"],"
+        },
+        {
+          "line": 316,
+          "text": "record, _, _ = M1.run_raw("
+        },
+        {
+          "line": 317,
+          "text": "M2.adb_prefix(config, 5038, include_serial=False) + [\"kill-server\"],"
+        },
+        {
+          "line": 429,
+          "text": "record, _, _ = M1.run_raw("
+        },
+        {
+          "line": 430,
+          "text": "M2.adb_prefix(config, 5038, include_serial=False) + [\"start-server\"],"
+        }
+      ],
+      "sha256": "622db9f6606026f49922da576d9a0e2905ebc67d711d14e34cfee49ed6a80ff4"
+    },
+    {
+      "path": "05_project/scripts/run_role_binding_timing_infra_m2.py",
+      "relevant_lines": [
+        {
+          "line": 62,
+          "text": "def adb_prefix(config: dict[str, Any], port: int, *, include_serial: bool = True) -> list[str]:"
+        },
+        {
+          "line": 143,
+          "text": "prefix = adb_prefix(config, 5038)"
+        },
+        {
+          "line": 158,
+          "text": "\"devices\": adb_prefix(config, 5038, include_serial=False) + [\"devices\", \"-l\"],"
+        },
+        {
+          "line": 163,
+          "text": "record, stdout, stderr = M1.run_raw(command, root=attempt_root, name=name, timeout=15)"
+        },
+        {
+          "line": 188,
+          "text": "prefix = adb_prefix(config, 5038)"
+        },
+        {
+          "line": 200,
+          "text": "record, _, stderr = M1.run_raw(prefix + args, root=root / \"setup\", name=name, timeout=15)"
+        },
+        {
+          "line": 226,
+          "text": "record, stdout, stderr = M1.run_raw(prefix + args, root=attempt_root, name=name, timeout=15)"
+        },
+        {
+          "line": 272,
+          "text": "prefix = adb_prefix(config, 5038)"
+        },
+        {
+          "line": 299,
+          "text": "record, stdout, stderr = M1.run_raw(prefix + args, root=cycle_root / \"raw\", name=name, timeout=burn[\"command_timeout_seconds\"])"
+        },
+        {
+          "line": 400,
+          "text": "record, _, stderr = M1.run_raw("
+        },
+        {
+          "line": 401,
+          "text": "adb_prefix(config, 5037) + [\"emu\", \"kill\"],"
+        },
+        {
+          "line": 419,
+          "text": "record, _, stderr = M1.run_raw("
+        },
+        {
+          "line": 420,
+          "text": "adb_prefix(config, 5037, include_serial=False) + [\"kill-server\"],"
+        },
+        {
+          "line": 433,
+          "text": "record, _, stderr = M1.run_raw("
+        },
+        {
+          "line": 434,
+          "text": "adb_prefix(config, 5038, include_serial=False) + [\"kill-server\"],"
+        },
+        {
+          "line": 454,
+          "text": "record, _, stderr = M1.run_raw("
+        },
+        {
+          "line": 455,
+          "text": "adb_prefix(config, 5038, include_serial=False) + [\"start-server\"],"
+        }
+      ],
+      "sha256": "60cb10590d9cb67dcf4c4d3752394edeab900d9c9a339650879a77bdcef9feca"
+    },
+    {
+      "path": "05_project/scripts/qualify_role_binding_timing_b2_10_a11y_lifecycle.py",
+      "relevant_lines": [
+        {
+          "line": 35,
+          "text": "RawAdb,"
+        },
+        {
+          "line": 122,
+          "text": "*, raw_adb: RawAdb, root: Path, config: dict[str, Any], expected_adb_pid: int,"
+        },
+        {
+          "line": 178,
+          "text": "*, raw_adb: RawAdb, root: Path, app: dict[str, Any], config: dict[str, Any],"
+        },
+        {
+          "line": 204,
+          "text": "*, env: Any, raw_adb: RawAdb, root: Path, config: dict[str, Any],"
+        },
+        {
+          "line": 258,
+          "text": "*, env: Any, raw_adb: RawAdb, root: Path, config: dict[str, Any], app: dict[str, Any],"
+        },
+        {
+          "line": 355,
+          "text": "*, env: Any | None, raw_adb: RawAdb | None, root: Path, config: dict[str, Any],"
+        },
+        {
+          "line": 416,
+          "text": "raw_adb: RawAdb | None = None"
+        },
+        {
+          "line": 436,
+          "text": "raw_adb = RawAdb(managed)"
+        }
+      ],
+      "sha256": "2727b73713acf33a09b4c75de318e24957e61adada53472c1e1574eb7427b3d5"
+    },
+    {
+      "path": "05_project/src/raven_m/role_binding_timing/infra_m5_process_identity.py",
+      "relevant_lines": [
+        {
+          "line": 276,
+          "text": "and (f\" -s {serial.casefold()} \" in value or \" start-server\" in value or \" kill-server\" in value)"
+        }
+      ],
+      "sha256": "8af10b07e0abc4645efdb2b6d0f14111e1671a9046a514b2c1363b3019da27e1"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "artifacts": [
+    {
+      "bytes": 15524,
+      "path": "05_project/artifacts/role_binding_timing/infra_m7_runner_adb_authority_audit/adb_authority_audit.json",
+      "sha256": "19968da1eb72e9544768bf8cdb5b9625e731f1b6bc5c9118fd3a4cb57c9c0ef0"
+    }
+  ],
+  "schema_version": "role_binding_timing.infra_m7.audit_manifest.v1"
+}
