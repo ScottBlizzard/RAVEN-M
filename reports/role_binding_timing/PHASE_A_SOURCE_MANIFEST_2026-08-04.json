@@ -1,0 +1,59 @@
+{
+  "schema_version": "role_binding_timing.phase_a_sources.v1",
+  "created_at": "2026-08-04T19:00:00+08:00",
+  "generation_calls": 0,
+  "starting_head": "3d97abfe58773c2db48d75f7cdc264791079b8da",
+  "research_direction": {
+    "path": "D:/ZJU/Summer_Camp/RAVEN-M_GPTPro_answer.md",
+    "sha256": "BC251ACD4A781B43D1858CF857FD75776CF244AEEC76F776535A7BDA5071B020"
+  },
+  "protected_legacy_wip": [
+    {
+      "path": "05_project/src/raven_m/controller/episode_controller.py",
+      "sha256": "FC0E82E0FDE90119365D4F685F080EB4519BF2F602E4BDA58DE5D4809A40FE33"
+    },
+    {
+      "path": "05_project/src/raven_m/controller/protocol_v2_guard.py",
+      "sha256": "FF89D6B70BE4B4738646D262BEB67D7B7E932E9EB95956D940B1C5000A999D10"
+    },
+    {
+      "path": "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py",
+      "sha256": "5BB1F1E3DE673A1072CFEE62938B761A62FD69C187D5EADF54BC46B115A3FD0A"
+    }
+  ],
+  "papers": [
+    {"arxiv_id": "2606.31612", "title": "ATMem", "pdf_sha256": "CDD01F44574D677BB9ED43C588E9C037159CC7D54EAB15392B42806780F69BB8", "text_sha256": "47ACB18CBB39D108E08C828F9C8410F78309A9EB71B2BE0F7BA0E6081EF91B71"},
+    {"arxiv_id": "2606.30531", "title": "Entity Binding Failures in Tool-Augmented Agents", "pdf_sha256": "54F38F53E05F59CE7CCE5F3B27A51A2764CD8E017BB0807097E5AE14762C2ACA", "text_sha256": "CAA57EF38AFD39FF19DD225ABFF19A8572248A5CDDA72D0686660637CBC6CFF0"},
+    {"arxiv_id": "2607.18316", "title": "Binding Drift in Multi-Step Tool-Augmented Agents", "pdf_sha256": "F4002DBB8BCA2A2A0C507CAE54890DE8A3939898A97F18EC7828A39DAD753916", "text_sha256": "4B63E2E89ACDD2D50D9E4E42C2F3D4D7DD6F9D8DDCD36E0E2F4B4DCBCD00D972"},
+    {"arxiv_id": "2607.17535", "title": "Salience Induction", "pdf_sha256": "874CE39E96AC977282B0CBF6ECCFE36D110739EDB2734CD736AB88730E39FE03", "text_sha256": "3450D8D4F463D2E035D4DC343AECA406AF75C5B529640A4DCF59DDF4713EE9B8"},
+    {"arxiv_id": "2606.14106", "title": "Naive Visual Memory Is Not Enough", "pdf_sha256": "DC0B4DF3B5AB79805D8C53884799BE3916AB6A187F85C9E29904981AF9501C47", "text_sha256": "D4CE54E36FDBEBC436E8F173F6D851C364620EB1CF465EF6AD987EF1588FD96"},
+    {"arxiv_id": "2603.18429", "title": "AndroTMem", "pdf_sha256": "9A45AE8A299165309CDA24E605121AC991F526B30A6BA3507BF76A1A1F9C7727", "text_sha256": "9CF5618D23833370CC4870E24DF7B845DC9ADBB5A5F870E3FFC0EC128D85A6C6"},
+    {"arxiv_id": "2512.10371", "title": "AgentProg", "pdf_sha256": "0A582B6A37938F3D724CA6FE27862FB2FFCBD47953FECAB292E53F5AAC8A371E", "text_sha256": "A8A1B54F43BBCC8A3E18DF9F9AC62534CF6CEA67512FD819B07D7DC4E3963F95"},
+    {"arxiv_id": "2606.22936", "title": "When Agents Commit Too Soon", "pdf_sha256": "C312710F3DE6EBEFEDF91671F1A99AE78CCBB1DEC1AA1FB9D568B260B51EED53", "text_sha256": "C12CE9E8780A83A7328E0A825A57BB06BC9BC46A4564DAC6AE64C8F278377989"},
+    {"arxiv_id": "2607.28815", "title": "Preventing Premature Commitment in Coding Agents with an Evidence-Conditioned Execution Layer", "pdf_sha256": "82715F764511FBA53B3A0C2391552146FFECE549936013430F1ADB170447379F", "text_sha256": "38DCF5FFEFD18FA882B7BBF4E76506BED60007772F41A219CFB5C3D01293C735"}
+  ],
+  "official_repositories": [
+    {"name": "EntityBindingFailures", "url": "https://github.com/R-Suresh/EntityBindingFailures", "head": "af311d10f52680576d83cdaf3d05d5b090445de4", "core_file": "code/run_entity_binding_experiment.py", "core_file_sha256": "D9FE303985CB1F5D1CF4D87400F66C01DB02462540E1077B8F4E345C07A22D5B"},
+    {"name": "binding-drift", "url": "https://github.com/shashank-indukuri/binding-drift", "head": "0e040e0954b18d4621a6f9b16f6e6e9591c822e1", "core_file": "code/run_drift_experiment.py", "core_file_sha256": "455730DAE1C2F155673C5F154EBC51C5C26A87B012127638981737577BAEE000"},
+    {"name": "AndroTMem", "url": "https://github.com/CVC2233/AndroTMem", "head": "a0e56d089fab53edf5ef1feda46fdf689f805537", "core_file": "evaluation/prompts.py", "core_file_sha256": "ED655FC1A0C28C9F640C0A253B5975EB02EBCDBB3AB791B9B0B4E40B8067339C"},
+    {"name": "AgentProg", "url": "https://github.com/MobileLLM/AgentProg", "head": "ef5e2998ac2defa86e0dc4c13e7e00d595e1e7cf", "prompt_files": [{"path": "agentprog/plan/code_exec/general_prompts/workflow_prompt.py", "sha256": "015DEA2C7677004656E51F02E76BE1044EBFA1657323657E4F7562D61CAE8FE1"}, {"path": "agentprog/plan/code_exec/general_prompts/framework_prompts/mobile_prompt.py", "sha256": "5D6EAB7301B711BB9B7F08B9940427A07C2BE3A8A6781A5E51C79AFBDC8A2E9F"}]},
+    {"name": "salience-induction-rag", "url": "https://github.com/ZXFqwert/salience-induction-rag", "head": "9a6a2213e0083bea1e841b676df92b869c3c953f", "checkout_note": "Official repository identity/head verified; PDF appendix prompts were the authoritative prompt source for this phase."}
+  ],
+  "development_contaminated_snapshots": [
+    {"candidate": "H05_SMS_RECIPIENT", "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/069_H05-s20260720_B3_MarkorCreateNoteAndSms/attempt_01/step_014_before.png", "sha256": "1C8D91C7603DE19ABBFD03F061C825D483D3CB5693022142575C3937EAB0C940", "raw_ui_tree_sidecar": false},
+    {"candidate": "H11_RECIPE_FORM", "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/064_H11-s20260720_B3_RecipeAddMultipleRecipesFromMarkor/attempt_02/step_022_before.png", "sha256": "05563F646F404550A460860238B4D3BD0DEF27B254207EFDF1951EA301279392", "raw_ui_tree_sidecar": false},
+    {"candidate": "H15_FOLDER_CHOOSER", "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/021_H15-s20260720_B3_SaveCopyOfReceiptTaskEval/attempt_01/step_006_before.png", "sha256": "E4F904C6ACC28FDB9E2C4EB5FD426FA4BCD8A2FFC26850AE30E3D3068796E470", "raw_ui_tree_sidecar": false},
+    {"candidate": "H04_EXPENSE_LIST", "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/001_H04-s20260720_B1_ExpenseDeleteMultiple2/attempt_01/step_008_before.png", "sha256": "4E65967D8500383E577947F82947FB6E18E399E6F121E0AED6C764570210021F", "raw_ui_tree_sidecar": false},
+    {"candidate": "H13_RECIPE_LIST", "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/049_H13-s20260720_B3_RecipeDeleteMultipleRecipesWithConstraint/attempt_01/step_001_before.png", "sha256": "3825AA5AB96F2A297EDC446A85774E081F19F5CAF74A11D67B51EC1EDE143789", "raw_ui_tree_sidecar": false},
+    {"candidate": "H16_CALENDAR_FORM", "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/042_H16-s20260720_B3_SimpleCalendarAddOneEvent/attempt_01/step_004_before.png", "sha256": "7D578B55AFE3AC4041DAB1891420DFC5E3C0C81F60F00B12EE865D11ADC89D67", "raw_ui_tree_sidecar": false},
+    {"candidate": "H06_MARKOR_FILE_LIST", "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/037_H06-s20260720_B3_MarkorMergeNotes/attempt_01/step_020_before.png", "sha256": "02900F33F559F4BDBE1D8F57E044E1C85BF95B083E731F20345170DC049766B3", "raw_ui_tree_sidecar": false},
+    {"candidate": "H14_PLAYLIST_PAGE", "path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/009_H14-s20260720_B3_RetroSavePlaylist/attempt_01/step_005_before.png", "sha256": "36A294E18E8649F3CE5B8D2BD21BDAF488151B294938B6AD762ADD85E589378F", "raw_ui_tree_sidecar": false}
+  ],
+  "phase_verdict": {
+    "literature": "PASS_WITH_BOUNDED_CORPUS",
+    "development_snapshot_count": 8,
+    "held_out_qualified_snapshot_count": 0,
+    "overall": "CONDITIONAL_PASS_PHASE_B_ONLY",
+    "generation_eligible": false
+  }
+}
