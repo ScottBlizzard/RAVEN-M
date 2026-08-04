@@ -1,0 +1,73 @@
+{
+  "schema_version": "role_binding_timing.ui_tree_export_diagnosis_config.v0_2_7",
+  "study_id": "role_binding_timing_phase_b2_7_ui_tree_export_diagnosis",
+  "generation_eligible": false,
+  "generation_calls_authorized": 0,
+  "dev_contaminated": true,
+  "held_out_eligible": false,
+  "runtime": {
+    "adb_binary": "06_local_runtime/android/sdk/platform-tools/adb.exe",
+    "adb_binary_sha256": "957e46b8615f7af5b7292a2ddabe98d2e61940c3fb2b0545756507f080613e71",
+    "adb_server_port": 5038,
+    "device_serial": "emulator-5554",
+    "fallback_to_5037": false,
+    "implicit_restart_allowed": false,
+    "screen_size": [1080, 2400]
+  },
+  "scene": {
+    "dev_app_id": "B27D-SETTINGS-UI-TREE",
+    "package": "com.android.settings",
+    "component": "com.android.settings/com.android.settings.Settings"
+  },
+  "setup": {
+    "readiness_attempts": 8,
+    "readiness_consecutive": 2,
+    "readiness_gap_seconds": 2.0,
+    "launch_settle_seconds": 3.0,
+    "wake_commands": [
+      ["shell", "input", "keyevent", "224"],
+      ["shell", "wm", "dismiss-keyguard"]
+    ]
+  },
+  "matrix": {
+    "preconditions": [
+      {"id": "observed", "apply_wake": false},
+      {"id": "wake_dismiss_verified", "apply_wake": true}
+    ],
+    "forms": [
+      {"id": "file_normal", "transport": "remote_file", "compressed": false},
+      {"id": "file_compressed", "transport": "remote_file", "compressed": true},
+      {"id": "stdout_normal", "transport": "direct_stdout", "compressed": false},
+      {"id": "stdout_compressed", "transport": "direct_stdout", "compressed": true}
+    ],
+    "repeats": 2,
+    "attempt_gap_seconds": 0.5,
+    "command_timeout_seconds": 20,
+    "remote_root": "/sdcard",
+    "direct_target": "/dev/tty"
+  },
+  "diagnostics": {
+    "logcat_tail_lines": 5000,
+    "logcat_tags": [
+      "UiAutomator",
+      "UiAutomation",
+      "AccessibilityManager",
+      "AccessibilityInteractionController",
+      "ActivityTaskManager",
+      "WindowManager"
+    ]
+  },
+  "classification": {
+    "labels": [
+      "DEVICE_NON_INTERACTIVE_OR_IDLE_STATE_FAILURE",
+      "REMOTE_PATH_OR_FILE_CREATION_FAILURE",
+      "UIAUTOMATOR_TOOL_FAILURE",
+      "PARSER_OR_CAPTURE_BUG",
+      "UNRESOLVED"
+    ],
+    "requires_all_repeats": true,
+    "requires_same_adb_pid": true,
+    "requires_verified_interactive": true
+  },
+  "output_root": "05_project/artifacts/role_binding_timing/phase_b2_7_ui_tree_export_diagnosis"
+}

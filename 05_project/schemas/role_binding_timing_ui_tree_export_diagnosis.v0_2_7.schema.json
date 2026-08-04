@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "role_binding_timing_ui_tree_export_diagnosis.v0_2_7.schema.json",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "study_id",
+    "diagnosis_freeze_commit",
+    "generation_calls",
+    "dev_contaminated",
+    "held_out_eligible",
+    "source_hashes",
+    "server_owner",
+    "scene_readiness",
+    "attempts",
+    "classification",
+    "cleanup",
+    "terminal_audit"
+  ],
+  "properties": {
+    "schema_version": {"const": "role_binding_timing.ui_tree_export_diagnosis.v0_2_7"},
+    "study_id": {"type": "string", "minLength": 1},
+    "diagnosis_freeze_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "generation_calls": {"const": 0},
+    "generation_eligible": {"const": false},
+    "dev_contaminated": {"const": true},
+    "held_out_eligible": {"const": false},
+    "source_hashes": {"type": "object"},
+    "server_owner": {
+      "type": "object",
+      "required": ["listener_pid", "binary_sha256", "port", "device_serial", "fallback_to_5037"],
+      "properties": {
+        "listener_pid": {"type": "integer", "minimum": 1},
+        "binary_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "port": {"const": 5038},
+        "device_serial": {"type": "string", "minLength": 1},
+        "fallback_to_5037": {"const": false}
+      }
+    },
+    "scene_readiness": {"type": ["object", "null"]},
+    "attempts": {"type": "array", "maxItems": 16},
+    "classification": {
+      "type": "object",
+      "required": ["root_cause", "task_agnostic_acquisition_authorized", "qualified_paths"],
+      "properties": {
+        "root_cause": {
+          "enum": [
+            "DEVICE_NON_INTERACTIVE_OR_IDLE_STATE_FAILURE",
+            "REMOTE_PATH_OR_FILE_CREATION_FAILURE",
+            "UIAUTOMATOR_TOOL_FAILURE",
+            "PARSER_OR_CAPTURE_BUG",
+            "UNRESOLVED"
+          ]
+        },
+        "task_agnostic_acquisition_authorized": {"type": "boolean"},
+        "qualified_paths": {"type": "array"}
+      }
+    },
+    "cleanup": {"type": ["object", "null"]},
+    "terminal_audit": {
+      "type": "object",
+      "required": ["primary_error", "schema_errors", "planned_attempts", "completed_attempts", "final_listener_pids", "generation_calls"],
+      "properties": {
+        "planned_attempts": {"const": 16},
+        "completed_attempts": {"type": "integer", "minimum": 0, "maximum": 16},
+        "generation_calls": {"const": 0}
+      }
+    }
+  }
+}

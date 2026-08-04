@@ -1,0 +1,56 @@
+{
+  "schema_version": "role_binding_timing.ui_tree_export_diagnosis_lock.v0_2_7",
+  "study_id": "role_binding_timing_phase_b2_7_ui_tree_export_diagnosis",
+  "generation_calls_authorized": 0,
+  "generation_eligible": false,
+  "dev_contaminated": true,
+  "held_out_eligible": false,
+  "source_sha256": {
+    "protocol": "4f0d13e51275f3ede94aa8ce2c24af3e543fd05d3e698df6484f4d514b5182b6",
+    "config": "f6251e1c67c22e249b1b2247c53ddfdbf2b61b7cf456b5741cebe1c201d07111",
+    "schema": "253726ee82eb2b0522c437357739b7bfe1841220507da992c5d55e33300c0334",
+    "logic": "292938e3eb79c0e1f43582eddc1d2b1040b6e8c69744ae1df44e48ed3e43ef44",
+    "runner": "cb6d38eab713c848f713747d06f5680238a67d29988bd78a5942c5c171d58f9e",
+    "tests": "8d8d30893608fc5a929d86aa4576c7847a925368a21d418cd4bb2ae3d4ec4b67"
+  },
+  "matrix": {
+    "preconditions": 2,
+    "forms": 4,
+    "repeats": 2,
+    "planned_attempts": 16,
+    "post_freeze_source_or_config_change_allowed": false,
+    "replacement_or_extra_cells_allowed": false
+  },
+  "offline_gates": {
+    "focused_and_adjacent_tests": {"passed": 32, "failed": 0},
+    "full_role_binding_timing_tests": {"passed": 59, "failed": 0},
+    "python_compile": "PASS",
+    "cli_help": "PASS",
+    "diff_check": "PASS"
+  },
+  "runtime_preflight": {
+    "adb_binary_sha256": "957e46b8615f7af5b7292a2ddabe98d2e61940c3fb2b0545756507f080613e71",
+    "adb_server_port": 5038,
+    "adb_listener_pid_before": 29964,
+    "adb_listener_pid_after": 29964,
+    "listener_on_5037": false,
+    "device_serial": "emulator-5554",
+    "device_state": "device",
+    "boot_complete": "1",
+    "framework_services": ["package", "window", "activity"],
+    "framework_services_present": true,
+    "output_root_fresh": true,
+    "generation_or_experiment_processes": 0
+  },
+  "protected_wip_sha256": {
+    "05_project/src/raven_m/controller/episode_controller.py": "fc0e82e0fde90119365d4f685f080eb4519bf2f602e4bda58de5d4809a40fe33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "ff89d6b70be4b4738646d262beb67d7b7e932e9eb95956d940b1c5000a999d10",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5bb1f1e3de673a1072cfee62938b761a62fd69c187d5eadf54bc46b115a3fd0a"
+  },
+  "stop_rules": {
+    "no_qualified_path": "STOP_AFTER_DIAGNOSIS",
+    "qualified_path": "ALLOW_SEPARATE_DEV_COLLECTOR_IMPLEMENTATION_FREEZE_ONLY",
+    "grid_run_before_implementation_freeze": false,
+    "held_out_or_model_work": false
+  }
+}
