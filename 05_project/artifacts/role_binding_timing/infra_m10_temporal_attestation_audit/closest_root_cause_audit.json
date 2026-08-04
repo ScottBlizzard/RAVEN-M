@@ -1,0 +1,159 @@
+{
+  "audit_passed": true,
+  "claim_evidence": {
+    "held_out_tested": false,
+    "m10_implementation_tested": false,
+    "m10_root_cause_bounded": true,
+    "m10_runtime_tested": false,
+    "m9_failure_reinterpreted": false,
+    "role_binding_hypothesis_tested": false
+  },
+  "closest_root_causes": [
+    {
+      "closest_code_path": "derive_process_views builds candidates with rich overlay, then builds support from full_index without the rich overlay.",
+      "count": 1,
+      "direct_evidence": "The one current failed candidate had a current support parent. The frozen structural source contained the official cmd.exe hash, while the derived support row omitted exe_sha256.",
+      "id": "RC1_SUPPORT_PROJECTION_HASH_LOSS"
+    },
+    {
+      "closest_code_path": "M9ContinuousProcessHistory stores compact support rows instead of lossless proof rows.",
+      "count": 13,
+      "direct_evidence": "Continuous history serializes support through compact_identity_universe, which excludes exe_sha256 and command_line.",
+      "id": "RC2_HISTORY_SUPPORT_PROOF_LOSS"
+    },
+    {
+      "closest_code_path": "evaluate merges recent_records while inherited _ancestry_to_core traverses only current all_processes.",
+      "count": 12,
+      "direct_evidence": "All 13 children and parents were co-observed in history; 12 children were absent at the later trigger, but recent candidates were evaluated against the later current universe.",
+      "id": "RC3_TEMPORAL_JOIN_DOMAIN_MISMATCH"
+    }
+  ],
+  "decision": "ELIGIBLE_FOR_M10_OFFLINE_IMPLEMENTATION_ONLY",
+  "device_mutations": 0,
+  "direct_counts": {
+    "all_exact_locked_adb": true,
+    "coobserved_parents": 13,
+    "current_at_trigger": 1,
+    "current_support_hash_loss": 1,
+    "exited_before_trigger": 12,
+    "failed_candidates": 13
+  },
+  "generation_calls": 0,
+  "m9_immutable": {
+    "completion_sha256": "31aed8e5b4b393f668e2ebd5542c2dd97cb8062422542bdc79e780e235c2423f",
+    "failure_sha256": "00f3f1cc2d323127ff219be78df1806eda9a24da203af250e6b32c5a3451dac7",
+    "first_broken_edge": "PROCESS_IDENTITY:PROCESS:22504@1785886374.192433:HELPER_PARENT_CHAIN",
+    "manifest_artifacts": 236,
+    "manifest_failures": [],
+    "manifest_passed": true,
+    "manifest_sha256": "336385e7ad6a38a09841d682f782cffbebc581617a6139c9647ce899c6018a2a",
+    "result_audit_sha256": "121b21d41b935c578d19e288e6ebe76e3616cc13e3e2727539d3e7ca46d1284f",
+    "status": "PROCESS_IDENTITY_FAILED",
+    "tag_evidence": {
+      "freeze": {
+        "commit": "d9e812b3bacd2d06da890086a106af94c95c5347",
+        "object": "51f0d80e654e85060205b65e719587ad43ebffdc",
+        "tag": "role-binding-timing-infra-m9-freeze-20260805"
+      },
+      "result": {
+        "commit": "613b338fce1eab5ecf8c29e6a95702dcfd04eca6",
+        "object": "e716392e774560075b143ead3cfcd430f68cfa0f",
+        "tag": "role-binding-timing-infra-m9-result-20260805"
+      }
+    }
+  },
+  "mode": "READ_ONLY_FROZEN_M9_EVIDENCE",
+  "protected_wip": {
+    "expected": {
+      "05_project/src/raven_m/controller/episode_controller.py": "fc0e82e0fde90119365d4f685f080eb4519bf2f602e4bda58de5d4809a40fe33",
+      "05_project/src/raven_m/controller/protocol_v2_guard.py": "ff89d6b70be4b4738646d262beb67d7b7e932e9eb95956d940b1c5000a999d10",
+      "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5bb1f1e3de673a1072cfee62938b761a62fd69c187d5eadf54bc46b115a3fd0a"
+    },
+    "observed": {
+      "05_project/src/raven_m/controller/episode_controller.py": "fc0e82e0fde90119365d4f685f080eb4519bf2f602e4bda58de5d4809a40fe33",
+      "05_project/src/raven_m/controller/protocol_v2_guard.py": "ff89d6b70be4b4738646d262beb67d7b7e932e9eb95956d940b1c5000a999d10",
+      "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5bb1f1e3de673a1072cfee62938b761a62fd69c187d5eadf54bc46b115a3fd0a"
+    },
+    "passed": true
+  },
+  "required_m10_contract": {
+    "cross_run_replay_forbidden": true,
+    "cross_sample_join_forbidden": true,
+    "current_evidence_priority": true,
+    "current_history_conflict": "FAIL_CLOSED",
+    "exited_candidate_effect": "historical legality only; never current authority",
+    "live_candidate_effect": "birth provenance only after exact current identity/hash/cmdline and complete same-sample chain",
+    "pid_only_or_path_only_authority_forbidden": true,
+    "same_run_only": true,
+    "same_sample_only": true,
+    "source_boundary": "M9 complete per-sample snapshot remains the only raw source; M10 stores derived attestations with source hashes rather than inventing evidence.",
+    "support_adopt_kill_cleanup_forbidden": true,
+    "support_controlled_port_forbidden": true,
+    "support_role_authority": false,
+    "support_row_required_fields": [
+      "identity_key(pid+create_time)",
+      "pid",
+      "create_time",
+      "ppid",
+      "parent_identity_key",
+      "exe",
+      "exe_sha256",
+      "command_line",
+      "cmdline_items",
+      "sample_sequence",
+      "sample_time",
+      "source_record_sha256",
+      "snapshot_sha256",
+      "partition_sha256",
+      "access_error"
+    ],
+    "terminal_expiry_required": true
+  },
+  "schema_version": "role_binding_timing.infra_m10.closest_root_cause_audit.v1",
+  "source_evidence": [
+    {
+      "hits": [
+        {
+          "line": 145,
+          "text": "source = {**full_index[pid], **rich.get(pid, {})}"
+        },
+        {
+          "line": 192,
+          "text": "support = [dict(full_index[pid]) for pid in sorted(support_pids - candidate_pids) if pid != runner_pid]"
+        },
+        {
+          "line": 484,
+          "text": "\"support_only_ancestry_nodes\": compact_identity_universe(view[\"support_only_ancestry_nodes\"]),"
+        },
+        {
+          "line": 599,
+          "text": "snapshot, phase=phase, recent_records=self.history.records(), allow_core_exit=True,"
+        },
+        {
+          "line": 603,
+          "text": "snapshot, phase=phase, recent_records=self.history.records(),"
+        }
+      ],
+      "path": "05_project/src/raven_m/role_binding_timing/infra_m9_authorization_views.py",
+      "sha256": "d380553211e677a4465dce1f851781149b6dfb158067466b29e4c27654354e00"
+    },
+    {
+      "hits": [
+        {
+          "line": 186,
+          "text": "def _ancestry_to_core("
+        },
+        {
+          "line": 189,
+          "text": "\"\"\"Traverse only the current complete universe; stale history grants no ancestry.\"\"\""
+        },
+        {
+          "line": 198,
+          "text": "chain.append(f\"{parent_pid}@MISSING_CURRENT_UNIVERSE\"); return False, chain"
+        }
+      ],
+      "path": "05_project/src/raven_m/role_binding_timing/infra_m8_full_snapshot_ancestry.py",
+      "sha256": "97a62aeb93883cac3ac634bdfb07e8a9f5a0a5fc1ef9644baa4974eec7dcf88f"
+    }
+  ]
+}

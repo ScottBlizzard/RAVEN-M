@@ -1,0 +1,10 @@
+{
+  "artifacts": [
+    {
+      "bytes": 6744,
+      "path": "closest_root_cause_audit.json",
+      "sha256": "f648077e841407e116c0a255996c434d31c59513d6896660702547d0c4a80300"
+    }
+  ],
+  "schema_version": "role_binding_timing.infra_m10.audit_manifest.v1"
+}
