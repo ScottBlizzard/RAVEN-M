@@ -1,3 +1,4 @@
 role_binding_timing/phase_b2_v0_2/** -text -diff
 role_binding_timing/phase_b2_5_dev_infrastructure/** -text -diff
 role_binding_timing/phase_b2_6_launch_diagnosis/** -text -diff
+role_binding_timing/phase_b2_7_ui_tree_export_diagnosis/** -text -diff

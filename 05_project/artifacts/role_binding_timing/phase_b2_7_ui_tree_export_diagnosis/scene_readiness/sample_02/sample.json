@@ -1,0 +1,178 @@
+{
+  "passed": true,
+  "process_stdout": "14332",
+  "records": {
+    "activity": {
+      "adb_identity_continuous": true,
+      "adb_listener_pids_after": [
+        29964
+      ],
+      "adb_listener_pids_before": [
+        29964
+      ],
+      "command": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "-P",
+        "5038",
+        "-s",
+        "emulator-5554",
+        "shell",
+        "dumpsys",
+        "activity",
+        "activities"
+      ],
+      "returncode": 0,
+      "stderr_artifact": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/phase_b2_7_ui_tree_export_diagnosis/scene_readiness/sample_02/activity_activities.stderr.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_artifact": {
+        "bytes": 27593,
+        "path": "05_project/artifacts/role_binding_timing/phase_b2_7_ui_tree_export_diagnosis/scene_readiness/sample_02/activity_activities.stdout.bin",
+        "sha256": "c90e476cb9c7816cf36fb39fb3c1c0db1670c94407ccf617268bbbcb0af7a3ec"
+      },
+      "stdout_bytes": 27593,
+      "stdout_sha256": "c90e476cb9c7816cf36fb39fb3c1c0db1670c94407ccf617268bbbcb0af7a3ec",
+      "timed_out": false,
+      "wall_time_seconds": 1.3439999999973224
+    },
+    "process": {
+      "adb_identity_continuous": true,
+      "adb_listener_pids_after": [
+        29964
+      ],
+      "adb_listener_pids_before": [
+        29964
+      ],
+      "command": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "-P",
+        "5038",
+        "-s",
+        "emulator-5554",
+        "shell",
+        "pidof",
+        "com.android.settings"
+      ],
+      "returncode": 0,
+      "stderr_artifact": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/phase_b2_7_ui_tree_export_diagnosis/scene_readiness/sample_02/process.stderr.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_artifact": {
+        "bytes": 7,
+        "path": "05_project/artifacts/role_binding_timing/phase_b2_7_ui_tree_export_diagnosis/scene_readiness/sample_02/process.stdout.bin",
+        "sha256": "1c993b66da661ba15e63ea1bc18b7fd66968caa1b9f144932bfb17a08aec71b5"
+      },
+      "stdout_bytes": 7,
+      "stdout_sha256": "1c993b66da661ba15e63ea1bc18b7fd66968caa1b9f144932bfb17a08aec71b5",
+      "timed_out": false,
+      "wall_time_seconds": 0.5469999999913853
+    },
+    "screenshot": {
+      "adb_identity_continuous": true,
+      "adb_listener_pids_after": [
+        29964
+      ],
+      "adb_listener_pids_before": [
+        29964
+      ],
+      "command": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "-P",
+        "5038",
+        "-s",
+        "emulator-5554",
+        "exec-out",
+        "screencap",
+        "-p"
+      ],
+      "returncode": 0,
+      "stderr_artifact": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/phase_b2_7_ui_tree_export_diagnosis/scene_readiness/sample_02/screenshot.stderr.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_artifact": {
+        "bytes": 104748,
+        "path": "05_project/artifacts/role_binding_timing/phase_b2_7_ui_tree_export_diagnosis/scene_readiness/sample_02/screenshot.stdout.bin",
+        "sha256": "c9c7f4b48cd9383726687bf6fd8e0646103d87b5155fa611dcc094243c56ee1f"
+      },
+      "stdout_bytes": 104748,
+      "stdout_sha256": "c9c7f4b48cd9383726687bf6fd8e0646103d87b5155fa611dcc094243c56ee1f",
+      "timed_out": false,
+      "wall_time_seconds": 9.468999999997322
+    },
+    "window": {
+      "adb_identity_continuous": true,
+      "adb_listener_pids_after": [
+        29964
+      ],
+      "adb_listener_pids_before": [
+        29964
+      ],
+      "command": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "-P",
+        "5038",
+        "-s",
+        "emulator-5554",
+        "shell",
+        "dumpsys",
+        "window",
+        "displays"
+      ],
+      "returncode": 0,
+      "stderr_artifact": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/phase_b2_7_ui_tree_export_diagnosis/scene_readiness/sample_02/window_displays.stderr.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_artifact": {
+        "bytes": 16065,
+        "path": "05_project/artifacts/role_binding_timing/phase_b2_7_ui_tree_export_diagnosis/scene_readiness/sample_02/window_displays.stdout.bin",
+        "sha256": "cc6a214f7550fcf4b1a8a6cf39266c488d55e9e7f0a9c7d63608fa6ea26c239e"
+      },
+      "stdout_bytes": 16065,
+      "stdout_sha256": "cc6a214f7550fcf4b1a8a6cf39266c488d55e9e7f0a9c7d63608fa6ea26c239e",
+      "timed_out": false,
+      "wall_time_seconds": 1.3439999999973224
+    }
+  },
+  "sample": 2,
+  "screenshot_error": null,
+  "screenshot_validation": {
+    "bytes": 104748,
+    "sha256": "c9c7f4b48cd9383726687bf6fd8e0646103d87b5155fa611dcc094243c56ee1f",
+    "size": [
+      1080,
+      2400
+    ]
+  },
+  "witnesses": {
+    "activity_components": [
+      "com.android.settings/.Settings"
+    ],
+    "activity_packages": [
+      "com.android.settings"
+    ],
+    "activity_raw_sha256": "c90e476cb9c7816cf36fb39fb3c1c0db1670c94407ccf617268bbbcb0af7a3ec",
+    "window_components": [
+      "com.android.settings/.Settings"
+    ],
+    "window_packages": [
+      "com.android.settings"
+    ],
+    "window_raw_sha256": "cc6a214f7550fcf4b1a8a6cf39266c488d55e9e7f0a9c7d63608fa6ea26c239e"
+  }
+}

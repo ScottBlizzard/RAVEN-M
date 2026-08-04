@@ -1,0 +1,4 @@
+/system/bin/sh: %Y: inaccessible or not found
+/system/bin/sh: %f: inaccessible or not found
+/system/bin/sh: %s: inaccessible or not found
+stat: Needs 1 argument (see "stat --help")
