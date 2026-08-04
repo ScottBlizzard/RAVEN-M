@@ -27,3 +27,9 @@ Before measurement-contract v2 is allowed to pass, the same official client must
 ADB server port selection is a local transport parameter below the decision envelope, parser, action adapter semantics, and model endpoint. It neither changes screenshots nor rewrites model output, canonical actions, evidence/citations, intent metadata, state-change criteria, or reset criteria. The model service remains independently pinned by ID, revision, and backend on its existing endpoint. Using one frozen port for the complete preflight/execute/reset chain avoids cross-port trajectory differences.
 
 The qualification can support a controller-contract claim only if all three live cells use the frozen 5038 path and the final process audit confirms no fallback. If 5038 cannot stably expose the device, the study stops as an infrastructure failure and produces no live controller verdict.
+
+## Preflight identity-query timeout audit
+
+The first locked runtime preflight made zero generation calls and failed before environment creation because its Windows `Get-NetTCPConnection` subprocess had a 20-second timeout. Two direct repetitions of the same read-only listener query completed correctly in 24.117 and 24.886 seconds; the returned listener was port 5038, official ADB PID 5476, and the frozen binary hash. In parallel, ten additional explicit-port serial/state rounds passed in 0.207–0.322 seconds each. Thus the failure was the Windows process-enumeration bound, not ADB transport or device discovery.
+
+Before any generation call, the generic identity-query timeout is revised once from 20 to 35 seconds and the candidate/lock are reissued. No model, prompt, action contract, adapter, probe, measurement window, device, port, or fallback rule changes. If the complete runtime preflight still fails under the 35-second bound, the round stops at the infrastructure floor; the timeout will not be extended again.

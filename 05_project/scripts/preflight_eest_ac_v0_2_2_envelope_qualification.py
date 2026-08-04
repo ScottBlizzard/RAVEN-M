@@ -297,7 +297,7 @@ def _powershell_server_binary(port: int) -> Path:
         capture_output=True,
         text=True,
         check=False,
-        timeout=20,
+        timeout=35,
     )
     if result.returncode or not result.stdout.strip():
         raise RuntimeError(f"No ADB server is listening on frozen port {port}.")
