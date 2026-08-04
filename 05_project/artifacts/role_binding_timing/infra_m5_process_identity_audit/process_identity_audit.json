@@ -1,0 +1,119 @@
+{
+  "schema_version": "role_binding_timing.infra_m5.process_identity_audit.v1",
+  "created_at": "2026-08-05T04:05:00+08:00",
+  "source_head": "b8477e0a8886e9d9d278092dc4edb55aba5a9708",
+  "development_contaminated": true,
+  "held_out_eligible": false,
+  "generation_calls": 0,
+  "model_tokens": 0,
+  "held_out_captures": 0,
+  "m4_verdict_immutable": {
+    "status": "RUNTIME_UNSTABLE",
+    "first_broken_edge": "FRAMEWORK_RUNTIME:EXCLUDED_PID_DRIFT",
+    "reinterpreted": false
+  },
+  "protected_wip": {
+    "05_project/src/raven_m/controller/episode_controller.py": "fc0e82e0fde90119365d4f685f080eb4519bf2f602e4bda58de5d4809a40fe33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "ff89d6b70be4b4738646d262beb67d7b7e932e9eb95956d940b1c5000a999d10",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5bb1f1e3de673a1072cfee62938b761a62fd69c187d5eadf54bc46b115a3fd0a"
+  },
+  "locked_binaries": {
+    "adb": {
+      "path": "06_local_runtime/android/sdk/platform-tools/adb.exe",
+      "sha256": "957e46b8615f7af5b7292a2ddabe98d2e61940c3fb2b0545756507f080613e71"
+    },
+    "emulator_launcher": {
+      "path": "06_local_runtime/android/sdk/emulator/emulator.exe",
+      "sha256": "7f101ca769c15e8b6311801c1487f28583ce643fa87d19a9e0da4cc230be7653"
+    },
+    "qemu": {
+      "path": "06_local_runtime/android/sdk/emulator/qemu/windows-x86_64/qemu-system-x86_64-headless.exe",
+      "sha256": "b8e263a00f9151a494b480f38d39188e73dbf338b27015679311246c59c3dbec"
+    },
+    "crashpad": {
+      "path": "06_local_runtime/android/sdk/emulator/crashpad_handler.exe",
+      "sha256": "fd9fcc132e02009338b0c2f7495161178b55211a3e365b0a5e718e178e229222"
+    },
+    "netsimd": {
+      "path": "06_local_runtime/android/sdk/emulator/netsimd.exe",
+      "sha256": "0a53095313c52319a88a34ca9c78f434a8902d1e0f38a6781c4aedb276cdd59b"
+    }
+  },
+  "direct_evidence": {
+    "static_rule": {
+      "source": "05_project/scripts/run_role_binding_timing_infra_m2.py:expected_runtime_issues",
+      "condition": "snapshot.excluded_runtime_pids must equal config.pre_cleanup_identity.excluded_runtime_pids",
+      "upstream_definition": "runtime_snapshot classifies every adb.exe/emulator.exe/qemu-system-x86_64-headless.exe PID other than the three listener-derived core PIDs as excluded",
+      "finding": "STATIC_PID_SET_IS_NOT_A_STRUCTURAL_IDENTITY_POLICY"
+    },
+    "m4_missing_trigger_snapshot": {
+      "source": "05_project/artifacts/role_binding_timing/infra_m4_terminal_accounting_hardening/qualification_completion.json",
+      "framework_setup_records": 0,
+      "framework_attempt_records": 0,
+      "first_edge_persisted": true,
+      "triggering_snapshot_persisted": false
+    },
+    "m4_boot_history": {
+      "attempts": 8,
+      "all_before_excluded_pids": [11316, 17716],
+      "all_after_excluded_pids": [11316, 17716],
+      "final_attempt_passed": true
+    },
+    "m4_post_failure_snapshot": {
+      "captured_after_first_edge": true,
+      "baseline_abnormal_pids": [11316, 17716],
+      "additional_locked_adb_clients": 13,
+      "command_roles": [
+        "overlay_enable_exclusive_internal",
+        "overlay_enable_exclusive_systemui",
+        "multidisplay_start_broadcast"
+      ],
+      "forbidden_5037_listener_present": false,
+      "note": "This snapshot is temporally adjacent evidence, not the missing trigger snapshot."
+    },
+    "pinned_qemu_strings": {
+      "sources": [
+        "C:/buildbot/src/googleplex-android/emu-36-6-release/external/qemu/android/android-emu/android/emulation/QemuMiscPipe.cpp",
+        "C:/buildbot/src/googleplex-android/emu-36-6-release/external/qemu/android/android-emu/android/emulation/MultiDisplay.cpp",
+        "C:/buildbot/src/googleplex-android/emu-36-6-release/external/qemu/android/emu/crashreport/src/android/crashreport/CrashSytemInit.cpp"
+      ],
+      "matched_strings": [
+        "enable-exclusive",
+        "--category",
+        "--user",
+        "com.android.emulator.multidisplay.START",
+        "com.android.emulator.multidisplay/.MultiDisplayServiceReceiver",
+        "crashpad_handler",
+        "netsimd"
+      ]
+    }
+  },
+  "audit_verdict": {
+    "can_static_rule_confuse_expected_helpers": "YES",
+    "was_exact_m4_trigger_process_identified": "NO",
+    "reason_exact_trigger_unresolved": "The inherited early-return path did not persist the process snapshot that produced EXCLUDED_PID_DRIFT.",
+    "m4_status_unchanged": true
+  },
+  "required_structural_identity": [
+    "pid_plus_creation_time",
+    "executable_absolute_path",
+    "executable_sha256",
+    "full_command_line",
+    "parent_pid_and_parent_identity",
+    "process_start_time",
+    "owned_listening_ports",
+    "role",
+    "first_seen_gate",
+    "last_seen_gate"
+  ],
+  "required_policy_boundaries": {
+    "preexisting_unrelated": "record exact identity; never adopt or kill; disappearance is allowed; PID reuse is a new process",
+    "adb_server": "locked path/hash/command, owns 5038, start identity immutable, zero 5037",
+    "emulator_launcher": "locked path/hash/frozen args, exact Popen PID and start identity",
+    "qemu": "locked path/hash/frozen args, launcher parent, owns 5554/5555/8554",
+    "official_helper": "locked binary role plus exact command grammar, bounded start interval, and recorded ancestry to launcher/qemu; missing ancestry fails closed",
+    "unknown_new_process": "fail closed and persist full triggering snapshot",
+    "cleanup": "only structurally qualified owned core processes may be stopped; preexisting and unqualified processes are never killed"
+  },
+  "next_gate": "ELIGIBLE_FOR_M5_POLICY_IMPLEMENTATION_AND_OFFLINE_TESTS_ONLY"
+}

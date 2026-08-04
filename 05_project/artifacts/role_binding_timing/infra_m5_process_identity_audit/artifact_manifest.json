@@ -1,0 +1,15 @@
+{
+  "schema_version": "role_binding_timing.infra_m5.process_identity_audit_manifest.v1",
+  "artifacts": [
+    {
+      "path": "05_project/artifacts/role_binding_timing/infra_m5_process_identity_audit/process_identity_audit.json",
+      "bytes": 5639,
+      "sha256": "f4bc12647af7fc3e9cb663804ab17a89cee2417d88c221ca8ec534f26e09a266"
+    },
+    {
+      "path": "reports/role_binding_timing/INFRA_M5_PROCESS_IDENTITY_SEMANTICS_AUDIT_2026-08-05.md",
+      "bytes": 4970,
+      "sha256": "3df712615e29e3a1a57c4d239b2d01f7cc00cbf66f4a0a89999983841affada4"
+    }
+  ]
+}
