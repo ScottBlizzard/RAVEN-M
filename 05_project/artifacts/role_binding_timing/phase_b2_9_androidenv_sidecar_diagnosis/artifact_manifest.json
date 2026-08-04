@@ -1,0 +1,241 @@
+{
+  "androidenv_get_state_calls": 1,
+  "artifacts": [
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/cleanup/reset_after/force_stop.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/cleanup/reset_after/force_stop.stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/cleanup/reset_after/press_home.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/cleanup/reset_after/press_home.stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 12561,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/diagnosis_completion.json",
+      "sha256": "e81e391dd4d39d882fb3a35cc0c9d572777ecc1df99d9c70b4d458f486b2fc7e"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/foreground_readiness/sample_01/activity_activities.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 28633,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/foreground_readiness/sample_01/activity_activities.stdout.bin",
+      "sha256": "6e21865db219b899acebcce2c4a2038a7d1478285dd53eeb94f6f281f437be11"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/foreground_readiness/sample_01/process.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 7,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/foreground_readiness/sample_01/process.stdout.bin",
+      "sha256": "503e01199f4b1fbc2ca5623b5ea3584ffeedab2db41711b249e30a12e7f31a38"
+    },
+    {
+      "bytes": 4832,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/foreground_readiness/sample_01/sample.json",
+      "sha256": "3b0448b039d58fde8315d00fef666d98f1ffae42a7c998c3807f6520c3383ef7"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/foreground_readiness/sample_01/window_displays.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 16890,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/foreground_readiness/sample_01/window_displays.stdout.bin",
+      "sha256": "bf83d023a858f52fcdb41b8ce71e5a0d492a43e81d5ac5cad4e8b7af89e6fa45"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/foreground_readiness/sample_02/activity_activities.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 27997,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/foreground_readiness/sample_02/activity_activities.stdout.bin",
+      "sha256": "1033110cd45929a5dcc03de08fa3a7f3a8ea1c19203a509e55653ae464b1a6f0"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/foreground_readiness/sample_02/process.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 7,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/foreground_readiness/sample_02/process.stdout.bin",
+      "sha256": "503e01199f4b1fbc2ca5623b5ea3584ffeedab2db41711b249e30a12e7f31a38"
+    },
+    {
+      "bytes": 4847,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/foreground_readiness/sample_02/sample.json",
+      "sha256": "3044e2394417f9da742cba25566e6b6770de7933eaeb4d81bd4d2d79ae83e23d"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/foreground_readiness/sample_02/window_displays.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 16069,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/foreground_readiness/sample_02/window_displays.stdout.bin",
+      "sha256": "9b467179603a0dcc0bed02bae19c53de40d669d12c62345fdd3cf74b214047b2"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/observation/identity_before/accessibility_dump.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 2139,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/observation/identity_before/accessibility_dump.stdout.bin",
+      "sha256": "23abbb4cbcbb1b45a3532684dfe3297da42fa681f8bb4f7720bedd5ba36abd91"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/observation/identity_before/accessibility_enabled.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/observation/identity_before/accessibility_enabled.stdout.bin",
+      "sha256": "f1b2f662800122bed0ff255693df89c4487fbdcf453d3524a42d4ec20c3d9c04"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/observation/identity_before/activity_activities.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 27597,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/observation/identity_before/activity_activities.stdout.bin",
+      "sha256": "83af85010204beb7671ef566a9c7d14d20dca5bee58a62b6a95d4e1f5d926307"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/observation/identity_before/enabled_services.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 114,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/observation/identity_before/enabled_services.stdout.bin",
+      "sha256": "634fb1926978175f267128a324693a5393a615e436a85cc74751586b709306ee"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/observation/identity_before/forwarder_apk_sha256sum.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 183,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/observation/identity_before/forwarder_apk_sha256sum.stdout.bin",
+      "sha256": "37880138a5bbff735e3a97c6b80ba9e65ec92448e5367dd70ad91e1ab4bc61ec"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/observation/identity_before/forwarder_pm_path.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 125,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/observation/identity_before/forwarder_pm_path.stdout.bin",
+      "sha256": "0f8797c3d4fa0dd2f75e20bac6784d584a458b3bc06aae43a7ff02ddca1cbfd9"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/observation/identity_before/window_displays.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 16068,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/observation/identity_before/window_displays.stdout.bin",
+      "sha256": "8e8f1be50f6c680421db15bd2cfdc907516fce40b4ea0498315fb51cf3dd41c5"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/preflight/framework_activity.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 25,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/preflight/framework_activity.stdout.bin",
+      "sha256": "88dc2a597b785dc736b62490e756e4660639b0a5f07ddf9d2ee88707d87f069d"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/preflight/framework_package.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 24,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/preflight/framework_package.stdout.bin",
+      "sha256": "6646a4c4c5f32c1b42a810b8ccca7d503c94367ea9293d9d57c9c434d4194bba"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/preflight/framework_window.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 23,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/preflight/framework_window.stdout.bin",
+      "sha256": "4d449f9920b233753658019f894f39c14580133aaa762e5c929f59a41db62a6a"
+    },
+    {
+      "bytes": 2300,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/result_summary.json",
+      "sha256": "bd8f5a5d66614d3322de57cd64baff56559c7df2b1c1fec28d5f4bc01b2d6ca6"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/setup/launch_nonwait.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 57,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/setup/launch_nonwait.stdout.bin",
+      "sha256": "662b2e6d4bd6ea5f740ceda7b125428d535c354e474882f94553516c466bfed7"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/setup/reset_before/force_stop.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/setup/reset_before/force_stop.stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/setup/reset_before/press_home.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/setup/reset_before/press_home.stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "canonical_inventory_sha256": "96477f23d825239fe078f2b3d78175111f0410692e4edf27257d0bbbde8d0c89",
+  "file_count_excluding_manifest": 46,
+  "generation_calls": 0,
+  "schema_version": "role_binding_timing.phase_b2_9.result_artifact_manifest.v0.2.9",
+  "status": "FAIL_SETTINGS_DIAGNOSTIC",
+  "total_bytes_excluding_manifest": 160501
+}

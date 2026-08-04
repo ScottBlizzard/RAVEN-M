@@ -1,0 +1,66 @@
+{
+  "schema_version": "role_binding_timing.phase_b2_9.result_summary.v0.2.9",
+  "status": "FAIL_SETTINGS_DIAGNOSTIC",
+  "first_broken_edge": "A11Y_FOREST_DELIVERY_UNAVAILABLE",
+  "development_contaminated": true,
+  "held_out_eligible": false,
+  "generation_calls": 0,
+  "androidenv_get_state_calls": 1,
+  "framework_service_preflight": {
+    "package": "passed",
+    "window": "passed",
+    "activity": "passed",
+    "bytes_text_contract": "passed"
+  },
+  "settings_scene": {
+    "launch_command": "passed",
+    "foreground_readiness_samples": 2,
+    "foreground_readiness_passed": 2,
+    "activity_window_process_agreement": true
+  },
+  "sidecar": {
+    "androidenv_created": true,
+    "host_port": 50069,
+    "identity_before_qualified": true,
+    "accessibility_component_enabled": true,
+    "accessibility_component_bound": false,
+    "accessibility_component_binding": true,
+    "forwarder_apk_sha256": "97a56a544e44d79f9b3181fc7dbdd72cffa908efd3d53c82afad1773061a350a",
+    "tree_fetch_result": "five_bounded_fetches_no_accessibility_tree_then_runtime_error",
+    "implicit_refresh_attempted": false,
+    "implicit_reconnect_attempted": false
+  },
+  "observation": {
+    "state_returned": false,
+    "observation_record_written": false,
+    "same_state_screenshot_saved": false,
+    "forest_saved": false,
+    "ui_elements_saved": false,
+    "lossless_serialization_live_tested": false
+  },
+  "isolation_cleanup": {
+    "adb_5038_pid_before_after": 29964,
+    "emulator_grpc_8554_pid_before_after": 7172,
+    "fallback_5037_listeners_after": [],
+    "environment_closed": true,
+    "reset_after_passed": true,
+    "protected_wip_hashes_unchanged": true
+  },
+  "cost": {
+    "wall_time_seconds": 127.844,
+    "model_calls": 0,
+    "model_tokens": 0
+  },
+  "evidence_boundary": {
+    "binding_not_bound_is_direct_concurrent_evidence": true,
+    "binding_not_bound_is_proven_root_cause": false,
+    "androidenv_sidecar_route_qualified": false,
+    "grid_authorized": false,
+    "v0_3_preparation_authorized": false,
+    "role_binding_hypothesis_tested": false
+  },
+  "terminal_record": {
+    "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/diagnosis_completion.json",
+    "sha256": "e81e391dd4d39d882fb3a35cc0c9d572777ecc1df99d9c70b4d458f486b2fc7e"
+  }
+}

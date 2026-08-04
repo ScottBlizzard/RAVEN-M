@@ -1,0 +1,31 @@
+ACCESSIBILITY MANAGER (dumpsys accessibility)
+
+currentUserId=0
+hasWindowMagnificationConnection=false
+Magnifier on display#0
+    MagnificationConfig[mode: 1, scale: 1.0, centerX: 540.0, centerY: 1200.0] 
+    Magnification region=SkRegion((5,5,1075,2395))
+    IdOfLastServiceToMagnify=-1
+    SupportWindowMagnification=false
+    WindowMagnificationConnectionState=DISCONNECTED
+User state[
+     attributes:{id=0, touchExplorationEnabled=false, serviceHandlesDoubleTap=false, requestMultiFingerGestures=false, requestTwoFingerPassthrough=false, sendMotionEventsEnabledfalse, displayMagnificationEnabled=false, autoclickEnabled=false, nonInteractiveUiTimeout=0, interactiveUiTimeout=0, installedServiceCount=4, magnificationModes={0=1}, magnificationCapabilities=3, audioDescriptionByDefaultEnabled=false, magnificationFollowTypingEnabled=true}
+     shortcut key:{}
+     button:{}
+     button target:{null}
+     Bound services:{}
+     Enabled services:{{com.google.androidenv.accessibilityforwarder/com.google.androidenv.accessibilityforwarder.AccessibilityForwarder}}
+     Binding services:{{com.google.androidenv.accessibilityforwarder/com.google.androidenv.accessibilityforwarder.AccessibilityForwarder}}
+     Crashed services:{}
+     Client list info:{
+          Client list callbacks: 6
+          Client list killed: false
+          Client list broadcasts count: -1
+          Registered clients:{
+[com.google.android.apps.nexuslauncher][com.google.android.googlequicksearchbox][com.google.android.as][com.google.android.inputmethod.latin][com.google.android.contacts][com.google.androidenv.accessibilityforwarder]}]
+Global client list info:{
+    Client list callbacks: 3
+    Client list killed: false
+    Client list broadcasts count: -1
+    Registered clients:{
+[com.android.inputdevices, com.android.dynsystem, com.android.wallpaperbackup, com.android.server.telecom, com.android.emulator.multidisplay, com.android.settings, android, com.android.keychain, com.android.location.fused, com.android.localtransport, com.android.providers.settings][com.android.systemui][com.google.android.permissioncontroller]

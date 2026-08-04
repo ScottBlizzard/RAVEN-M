@@ -1,0 +1,261 @@
+{
+  "claim_evidence": {
+    "androidenv_sidecar_settings_route_qualified": false,
+    "held_out_capture_tested": false,
+    "memory_or_controller_efficacy_tested": false,
+    "oracle_efficacy_tested": false,
+    "role_binding_hypothesis_tested": false,
+    "xml_equivalence_tested": false
+  },
+  "cleanup": {
+    "adb_5037_listener_pids_after": [],
+    "adb_5038_listener_pids_after": [
+      29964
+    ],
+    "emulator_grpc_8554_listener_pids_after": [
+      7172
+    ],
+    "env_close": "closed",
+    "reset_after": {
+      "issues": [],
+      "passed": true,
+      "records": {
+        "force_stop": {
+          "adb_identity_continuous": true,
+          "adb_listener_pids_after": [
+            29964
+          ],
+          "adb_listener_pids_before": [
+            29964
+          ],
+          "command": [
+            "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+            "-P",
+            "5038",
+            "-s",
+            "emulator-5554",
+            "shell",
+            "am",
+            "force-stop",
+            "com.android.settings"
+          ],
+          "returncode": 0,
+          "stderr_artifact": {
+            "bytes": 0,
+            "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/cleanup/reset_after/force_stop.stderr.bin",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_artifact": {
+            "bytes": 0,
+            "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/cleanup/reset_after/force_stop.stdout.bin",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout_bytes": 0,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "timed_out": false,
+          "wall_time_seconds": 16.077999999994063
+        },
+        "press_home": {
+          "adb_identity_continuous": true,
+          "adb_listener_pids_after": [
+            29964
+          ],
+          "adb_listener_pids_before": [
+            29964
+          ],
+          "command": [
+            "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+            "-P",
+            "5038",
+            "-s",
+            "emulator-5554",
+            "shell",
+            "input",
+            "keyevent",
+            "3"
+          ],
+          "returncode": 0,
+          "stderr_artifact": {
+            "bytes": 0,
+            "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/cleanup/reset_after/press_home.stderr.bin",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_artifact": {
+            "bytes": 0,
+            "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/cleanup/reset_after/press_home.stdout.bin",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout_bytes": 0,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "timed_out": false,
+          "wall_time_seconds": 3.561999999990803
+        }
+      }
+    }
+  },
+  "development_contaminated": true,
+  "explicit_get_state_calls": 1,
+  "freeze_commit": "e7ef0f456025a95de7659e012cbb2fc2d5ea440b",
+  "freeze_tag": "role-binding-timing-b2.9-sidecar-diagnosis-freeze-20260804",
+  "generation_calls": 0,
+  "generation_eligible": false,
+  "held_out_eligible": false,
+  "identity_after_qualified": null,
+  "identity_before_qualified": true,
+  "observation_record_written": false,
+  "primary_error": {
+    "message": "Could not get a11y tree.",
+    "traceback": "Traceback (most recent call last):\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\scripts\\diagnose_role_binding_timing_b2_9_androidenv_sidecar.py\", line 468, in main\n    state = env.get_state(wait_to_stabilize=config[\"diagnostic\"][\"wait_to_stabilize\"])\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\03_code\\third_party\\android_world\\android_world\\env\\interface.py\", line 295, in get_state\n    return self._get_state()\n           ^^^^^^^^^^^^^^^^^\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\03_code\\third_party\\android_world\\android_world\\env\\interface.py\", line 241, in _get_state\n    return _process_timestep(self.controller.step(_get_no_op_action()))\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\envs\\androidworld\\Lib\\site-packages\\android_env\\wrappers\\base_wrapper.py\", line 43, in step\n    return self._process_timestep(self._env.step(action))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\03_code\\third_party\\android_world\\android_world\\env\\android_world_controller.py\", line 244, in _process_timestep\n    forest = self.get_a11y_forest()\n             ^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\src\\raven_m\\role_binding_timing\\androidenv_sidecar_runtime_v0_2_8.py\", line 20, in get_a11y_forest\n    return self._get_a11y_forest()  # noqa: SLF001\n           ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\03_code\\third_party\\android_world\\android_world\\env\\android_world_controller.py\", line 211, in _get_a11y_forest\n    return get_a11y_tree(self._env)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\03_code\\third_party\\android_world\\android_world\\env\\android_world_controller.py\", line 102, in get_a11y_tree\n    raise RuntimeError('Could not get a11y tree.')\nRuntimeError: Could not get a11y tree.\n",
+    "type": "RuntimeError"
+  },
+  "protected_wip_after": {
+    "05_project/src/raven_m/controller/episode_controller.py": "fc0e82e0fde90119365d4f685f080eb4519bf2f602e4bda58de5d4809a40fe33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "ff89d6b70be4b4738646d262beb67d7b7e932e9eb95956d940b1c5000a999d10",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5bb1f1e3de673a1072cfee62938b761a62fd69c187d5eadf54bc46b115a3fd0a"
+  },
+  "protected_wip_before": {
+    "05_project/src/raven_m/controller/episode_controller.py": "fc0e82e0fde90119365d4f685f080eb4519bf2f602e4bda58de5d4809a40fe33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "ff89d6b70be4b4738646d262beb67d7b7e932e9eb95956d940b1c5000a999d10",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5bb1f1e3de673a1072cfee62938b761a62fd69c187d5eadf54bc46b115a3fd0a"
+  },
+  "readiness_pass_sequence": [
+    true,
+    true
+  ],
+  "readiness_sample_count": 2,
+  "route_label": "androidenv_accessibility_sidecar",
+  "schema_version": "role_binding_timing.phase_b2_9.diagnosis_completion.v0.2.9",
+  "setup": {
+    "launch": {
+      "adb_identity_continuous": true,
+      "adb_listener_pids_after": [
+        29964
+      ],
+      "adb_listener_pids_before": [
+        29964
+      ],
+      "command": [
+        "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+        "-P",
+        "5038",
+        "-s",
+        "emulator-5554",
+        "shell",
+        "am",
+        "start",
+        "-n",
+        "com.android.settings/com.android.settings.Settings"
+      ],
+      "returncode": 0,
+      "stderr_artifact": {
+        "bytes": 0,
+        "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/setup/launch_nonwait.stderr.bin",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_artifact": {
+        "bytes": 57,
+        "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/setup/launch_nonwait.stdout.bin",
+        "sha256": "662b2e6d4bd6ea5f740ceda7b125428d535c354e474882f94553516c466bfed7"
+      },
+      "stdout_bytes": 57,
+      "stdout_sha256": "662b2e6d4bd6ea5f740ceda7b125428d535c354e474882f94553516c466bfed7",
+      "timed_out": false,
+      "wall_time_seconds": 11.28200000000652
+    },
+    "reset_before": {
+      "issues": [],
+      "passed": true,
+      "records": {
+        "force_stop": {
+          "adb_identity_continuous": true,
+          "adb_listener_pids_after": [
+            29964
+          ],
+          "adb_listener_pids_before": [
+            29964
+          ],
+          "command": [
+            "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+            "-P",
+            "5038",
+            "-s",
+            "emulator-5554",
+            "shell",
+            "am",
+            "force-stop",
+            "com.android.settings"
+          ],
+          "returncode": 0,
+          "stderr_artifact": {
+            "bytes": 0,
+            "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/setup/reset_before/force_stop.stderr.bin",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_artifact": {
+            "bytes": 0,
+            "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/setup/reset_before/force_stop.stdout.bin",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout_bytes": 0,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "timed_out": false,
+          "wall_time_seconds": 6.109000000011292
+        },
+        "press_home": {
+          "adb_identity_continuous": true,
+          "adb_listener_pids_after": [
+            29964
+          ],
+          "adb_listener_pids_before": [
+            29964
+          ],
+          "command": [
+            "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+            "-P",
+            "5038",
+            "-s",
+            "emulator-5554",
+            "shell",
+            "input",
+            "keyevent",
+            "3"
+          ],
+          "returncode": 0,
+          "stderr_artifact": {
+            "bytes": 0,
+            "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/setup/reset_before/press_home.stderr.bin",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_artifact": {
+            "bytes": 0,
+            "path": "05_project/artifacts/role_binding_timing/phase_b2_9_androidenv_sidecar_diagnosis/setup/reset_before/press_home.stdout.bin",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stdout_bytes": 0,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "timed_out": false,
+          "wall_time_seconds": 1.9060000000026776
+        }
+      }
+    },
+    "sidecar": {
+      "controller_class": "raven_m.role_binding_timing.androidenv_sidecar_runtime_v0_2_8.FailClosedA11yController",
+      "sidecar_host_port": 50069,
+      "sidecar_wrapper_class": "android_env.wrappers.a11y_grpc_wrapper.A11yGrpcWrapper",
+      "sidecar_wrapper_id": 1880860021840
+    }
+  },
+  "started_at": "2026-08-04T16:07:55.819044+00:00",
+  "status": "FAIL_SETTINGS_DIAGNOSTIC",
+  "wall_time_seconds": 127.84399999999732
+}
