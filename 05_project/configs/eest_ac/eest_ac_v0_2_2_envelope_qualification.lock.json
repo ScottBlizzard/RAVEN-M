@@ -1,11 +1,13 @@
 {
   "schema_version": "eest_ac_envelope_qualification_lock.v0_2_2",
   "study_id": "eest_ac_v0_2_2_envelope_qualification_20260804",
-  "frozen_at_utc": "2026-08-04T03:36:46.0505333Z",
+  "frozen_at_utc": "2026-08-04T03:41:00Z",
   "frozen_before_model_calls": true,
   "generation_calls_at_freeze": 0,
-  "source_commit": "bcbb2195be47b0c23247bae08c8b8fd3f02d2d73",
-  "source_tag": "eest-ac-v0.2.2-envelope-candidate-20260804",
+  "source_commit": "f86c992a3ecb28cf796b6578ccbfde58de14d76b",
+  "source_tag": "eest-ac-v0.2.2-envelope-candidate-r2-20260804",
+  "supersedes_lock_commit": "5bd30e77a4120f422d0980d3c978e49250cfc226",
+  "superseded_lock_runtime_result": "zero-call preflight failed only because the 20-second Windows listener identity query bound was below two observed 24-25 second completions",
   "measurement_contract_commit": "6723b9d1f96e5314e92df9a834b102ac9d1f52aa",
   "measurement_contract_tag": "eest-ac-v0.2.2-measurement-contract-v2-20260804",
   "measurement_contract_revision_count": 1,
@@ -33,7 +35,9 @@
     "device_serial": "emulator-5554",
     "adb_client_server_sha256": "957e46b8615f7af5b7292a2ddabe98d2e61940c3fb2b0545756507f080613e71",
     "stress_commands": 100,
-    "stress_status": "pass"
+    "stress_status": "pass",
+    "windows_listener_query_timeout_seconds": 35,
+    "windows_listener_timeout_revision_count": 1
   },
   "observation": {
     "post_observations": 4,
@@ -63,7 +67,7 @@
   "files": [
     {"path": "04_protocols/eest_ac_v0_2_2_decision_envelope_qualification.md", "sha256": "70c4633864492d1e6eacfb6aaad3acc14a127673d8ce1f43534fc82e67dfe739"},
     {"path": "reports/eest_ac/claim_evidence_v0_2_2_preregistered.md", "sha256": "41a4296e4c654b29e78b1cd500060379b4bd7cc8dbdeab3faa24b2cf73943620"},
-    {"path": "reports/eest_ac/eest_ac_v0_2_2_infrastructure_deviation.md", "sha256": "7b1611639ab66f38771c20810a9eb69464a5a9d468ac34545a4afed383b2eda0"},
+    {"path": "reports/eest_ac/eest_ac_v0_2_2_infrastructure_deviation.md", "sha256": "08d17a40f0553aa4bcdbbe3b93e3089fffa8c293f683c80caf7145114fdf1f8e"},
     {"path": "reports/eest_ac/eest_ac_v0_2_2_measurement_contract_v2_amendment.md", "sha256": "125f4ef88345c6381fac587cf5c887915724db0ad439e80d8bb4b17fd09de3f4"},
     {"path": "reports/eest_ac/eest_ac_v0_2_2_full_envelope_audit.json", "sha256": "719146166636005c43d912aa2e40bda07937caa8c1a25627b3fe7cbafb67fbb9"},
     {"path": "reports/eest_ac/eest_ac_v0_2_2_v0_2_1_contaminated_replay.json", "sha256": "d939af9667166b026a05e635e6ade1b556d9a33dc426639daf53ca1984b28c38"},
@@ -90,7 +94,7 @@
     {"path": "05_project/scripts/replay_eest_ac_v0_2_1_envelope_v0_2_2.py", "sha256": "68e42909e1a491ca642c29de38743db5421379820dbe93d811f7ed17193d7102"},
     {"path": "05_project/scripts/qualify_eest_ac_v0_2_2_settling_window.py", "sha256": "86889bdc6db256d09a6dbcb2f145d01c32971199abf9359a309bc4262327c0cd"},
     {"path": "05_project/scripts/stress_eest_ac_v0_2_2_adb_5038.py", "sha256": "34821f8a35e54d6122df9c2596328989eadd78d56b66171afe98d42d9113d94e"},
-    {"path": "05_project/scripts/preflight_eest_ac_v0_2_2_envelope_qualification.py", "sha256": "221c39c35331789fab799287ed10e3002e20c90c19f89853591b66fe62bc09df"},
+    {"path": "05_project/scripts/preflight_eest_ac_v0_2_2_envelope_qualification.py", "sha256": "1b913b984d41758b1af85cbed3c71aa691a3f04805e570045bc126aed4fbb555"},
     {"path": "05_project/scripts/run_eest_ac_v0_2_2_envelope_qualification.py", "sha256": "ef6e90f964ad0636849d1a0c402e5e6829bea7aae018b64e88824e036de3ea95"},
     {"path": "05_project/tests/eest_ac/test_v0_2_2_decision_envelope.py", "sha256": "96c117b0460f72f38052f67dab331de7165ac482b0085ee06f50264cf6ecc6d4"},
     {"path": "05_project/tests/eest_ac/test_v0_2_2_qualification.py", "sha256": "32d2d0cf1ff4ea9046cda9d321cf38d757cc4349ff67461947ca59397930f530"}
