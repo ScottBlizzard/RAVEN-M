@@ -1,0 +1,47 @@
+{
+  "schema_version": "role_binding_timing.infra_m9.config_overlay.v1",
+  "base_config": "05_project/configs/role_binding_timing/infra_m8_full_snapshot_ancestry.json",
+  "base_config_sha256": "fc267c559b29d51da1933a4e8a70ae494cf7593e77da8cea3ea106f31a041dcf",
+  "overrides": {
+    "protocol_version": "role_binding_timing.infra_m9.authorization_view_separation.v1",
+    "run_id": "infra-m9-authorization-view-separation-20260805",
+    "audit_commit": "1c7aeea",
+    "freeze_tag": "role-binding-timing-infra-m9-freeze-20260805",
+    "process_views": {
+      "observation_universe": "complete all_processes from one OS enumeration",
+      "trusted_runner_root": "exact PID+creation_time+path+command frozen at runner start",
+      "project_authorization_candidates": "locked direct project binary path, controlled-port owner, or a separately admitted descendant role",
+      "support_only_ancestry_nodes": "evidence-only parent-chain nodes",
+      "unrelated_observed_processes": "all remaining full-snapshot rows",
+      "role_policy_input": "project_authorization_candidates_only",
+      "support_role_authority": false,
+      "unrelated_role_authority": false,
+      "controlled_ports": [5037, 5038, 5554, 5555, 8554],
+      "views_disjoint": true,
+      "full_trigger_and_views_persisted": true,
+      "missing_or_ambiguous_chain_behavior": "FAIL_CLOSED"
+    },
+    "terminal_accounting": {
+      "independent_finalizer": "05_project/scripts/finalize_role_binding_timing_infra_m9.py"
+    },
+    "log_lifecycle": {"temp_prefix": "infra_m9_live_"},
+    "settings_scene": {
+      "dev_app_id": "M9Q-SETTINGS",
+      "package": "com.android.settings",
+      "component": "com.android.settings/com.android.settings.Settings"
+    },
+    "grid": {
+      "rounds": 3,
+      "apps": [
+        {"dev_app_id": "M9G-SETTINGS", "package": "com.android.settings", "component": "com.android.settings/com.android.settings.Settings"},
+        {"dev_app_id": "M9G-CLOCK", "package": "com.google.android.deskclock", "component": "com.google.android.deskclock/com.android.deskclock.DeskClock"},
+        {"dev_app_id": "M9G-TASKS", "package": "org.tasks", "component": "org.tasks/com.todoroo.astrid.activity.MainActivity"},
+        {"dev_app_id": "M9G-BROCCOLI", "package": "com.flauschcode.broccoli", "component": "com.flauschcode.broccoli/com.flauschcode.broccoli.MainActivity"}
+      ],
+      "required_cells": 12
+    },
+    "schema": "05_project/schemas/role_binding_timing_infra_m9_completion.v1.schema.json",
+    "lock": "05_project/configs/role_binding_timing/infra_m9_authorization_view_separation.lock.json",
+    "output_root": "05_project/artifacts/role_binding_timing/infra_m9_authorization_view_separation"
+  }
+}
