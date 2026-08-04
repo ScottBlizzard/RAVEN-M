@@ -1,0 +1,14 @@
+{
+  "gate": "adb_server_discovery",
+  "helper_ancestry": {},
+  "issues": [],
+  "passed": true,
+  "phase": "launch",
+  "roles": {},
+  "snapshot": {
+    "bytes": 324976,
+    "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m6_display_observability\\process_identity\\snapshots\\0002_adb_server_discovery\\process_snapshot.json",
+    "sha256": "3daeb6c7e0dc9564de6b7877c08b49778d7e5cfa6acf3940c81e034d2fa2ac97"
+  },
+  "snapshot_sequence": 2
+}

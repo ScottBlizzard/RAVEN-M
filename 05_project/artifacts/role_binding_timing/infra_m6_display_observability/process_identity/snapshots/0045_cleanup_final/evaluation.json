@@ -1,0 +1,43 @@
+{
+  "gate": "cleanup_final",
+  "helper_ancestry": {
+    "27284@1785880052.555506": [
+      "28944@1785880052.368120",
+      "16280@1785879948.255162"
+    ],
+    "32928@1785879950.589019": [
+      "16280@1785879948.255162"
+    ],
+    "37796@1785879948.516430": [
+      "16280@1785879948.255162"
+    ],
+    "4712@1785879995.792824": [
+      "37272@1785879932.837174"
+    ],
+    "5504@1785879944.359613": [
+      "37272@1785879932.837174"
+    ]
+  },
+  "issues": [
+    "PROCESS:496@1785880048.227501:ADB_COMMAND_ROLE"
+  ],
+  "passed": false,
+  "phase": "cleanup",
+  "roles": {
+    "15540@1785729286.916473": "preexisting_unrelated_no_authority",
+    "20088@1785729293.750479": "preexisting_unrelated_no_authority",
+    "21748@1785729294.665356": "preexisting_unrelated_no_authority",
+    "27284@1785880052.555506": "emulator_shutdown_helper",
+    "32928@1785879950.589019": "netsimd",
+    "37796@1785879948.516430": "crashpad",
+    "4584@1785729381.821991": "preexisting_unrelated_no_authority",
+    "4712@1785879995.792824": "runner_adb_client",
+    "5504@1785879944.359613": "runner_adb_client"
+  },
+  "snapshot": {
+    "bytes": 325194,
+    "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m6_display_observability\\process_identity\\snapshots\\0045_cleanup_final\\process_snapshot.json",
+    "sha256": "85afeff9e245b78150c68af8e9b98c62bbbdacda00ec95d537c2ac9df4600b73"
+  },
+  "snapshot_sequence": 45
+}

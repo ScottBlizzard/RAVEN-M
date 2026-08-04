@@ -1,0 +1,17 @@
+{
+  "details": {
+    "edge": "CLEANUP:RuntimeError:PRE_CLEANUP_IDENTITY:PROCESS:496@1785880048.227501:ADB_COMMAND_ROLE",
+    "evidence": {
+      "message": "PRE_CLEANUP_IDENTITY:PROCESS:496@1785880048.227501:ADB_COMMAND_ROLE",
+      "safe_type": "exception",
+      "type": "RuntimeError"
+    }
+  },
+  "event": "end",
+  "first_broken_edge": null,
+  "phase": "cleanup",
+  "recorded_at": "2026-08-04T21:47:38.125635+00:00",
+  "schema_version": "role_binding_timing.infra_m4.phase_entry.v1",
+  "sequence": 6,
+  "status": "SECONDARY_FAIL"
+}

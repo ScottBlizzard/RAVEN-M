@@ -1,0 +1,7 @@
+{
+  "first_broken_edge": "PROCESS_IDENTITY:PROCESS:496@1785880048.227501:ADB_COMMAND_ROLE",
+  "phase": "boot",
+  "recorded_at": "2026-08-04T21:47:31.096908+00:00",
+  "schema_version": "role_binding_timing.infra_m4.first_edge.v1",
+  "sequence": 4
+}

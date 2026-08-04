@@ -1,0 +1,19 @@
+{
+  "gate": "prelaunch_baseline",
+  "helper_ancestry": {},
+  "issues": [],
+  "passed": true,
+  "phase": "launch",
+  "roles": {
+    "15540@1785729286.916473": "preexisting_unrelated_no_authority",
+    "20088@1785729293.750479": "preexisting_unrelated_no_authority",
+    "21748@1785729294.665356": "preexisting_unrelated_no_authority",
+    "4584@1785729381.821991": "preexisting_unrelated_no_authority"
+  },
+  "snapshot": {
+    "bytes": 320763,
+    "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m6_display_observability\\process_identity\\snapshots\\0001_prelaunch_baseline\\process_snapshot.json",
+    "sha256": "f08c3484e88e86025b4e95c2b227328e723e7ba93d97465e3e0b279461696aec"
+  },
+  "snapshot_sequence": 1
+}

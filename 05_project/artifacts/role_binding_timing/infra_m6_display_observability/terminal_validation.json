@@ -1,0 +1,7 @@
+{
+  "errors": [],
+  "first_broken_edge": "PROCESS_IDENTITY:PROCESS:496@1785880048.227501:ADB_COMMAND_ROLE",
+  "passed": true,
+  "schema_version": "role_binding_timing.infra_m6.terminal_validation.v1",
+  "terminal_mode": "rich"
+}

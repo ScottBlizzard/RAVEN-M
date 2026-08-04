@@ -1,0 +1,39 @@
+{
+  "gate": "boot_14_before",
+  "helper_ancestry": {
+    "32928@1785879950.589019": [
+      "16280@1785879948.255162"
+    ],
+    "37796@1785879948.516430": [
+      "16280@1785879948.255162"
+    ],
+    "4712@1785879995.792824": [
+      "37272@1785879932.837174"
+    ],
+    "5504@1785879944.359613": [
+      "37272@1785879932.837174"
+    ]
+  },
+  "issues": [],
+  "passed": true,
+  "phase": "boot",
+  "roles": {
+    "15540@1785729286.916473": "preexisting_unrelated_no_authority",
+    "16108@1785879946.516972": "adb_server",
+    "16280@1785879948.255162": "qemu",
+    "20088@1785729293.750479": "preexisting_unrelated_no_authority",
+    "21748@1785729294.665356": "preexisting_unrelated_no_authority",
+    "32928@1785879950.589019": "netsimd",
+    "33720@1785879948.040931": "emulator_launcher",
+    "37796@1785879948.516430": "crashpad",
+    "4584@1785729381.821991": "preexisting_unrelated_no_authority",
+    "4712@1785879995.792824": "runner_adb_client",
+    "5504@1785879944.359613": "runner_adb_client"
+  },
+  "snapshot": {
+    "bytes": 340657,
+    "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m6_display_observability\\process_identity\\snapshots\\0034_boot_14_before\\process_snapshot.json",
+    "sha256": "c0eaf8a1c8122f083b8d9957cf3105a0e9c7b66957d1cb8bfb44bd425076e352"
+  },
+  "snapshot_sequence": 34
+}

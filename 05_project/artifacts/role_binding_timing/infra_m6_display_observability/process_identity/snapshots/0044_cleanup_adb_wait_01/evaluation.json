@@ -1,0 +1,14 @@
+{
+  "gate": "cleanup_adb_wait_01",
+  "helper_ancestry": {},
+  "issues": [],
+  "passed": true,
+  "phase": "cleanup",
+  "roles": {},
+  "snapshot": {
+    "bytes": 324029,
+    "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m6_display_observability\\process_identity\\snapshots\\0044_cleanup_adb_wait_01\\process_snapshot.json",
+    "sha256": "bf2189d6434b2083c9b0d1c809108201d62c7da76fe7a8b9794a71a07bcb0d5f"
+  },
+  "snapshot_sequence": 44
+}

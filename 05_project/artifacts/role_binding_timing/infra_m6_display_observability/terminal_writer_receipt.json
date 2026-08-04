@@ -1,0 +1,9 @@
+{
+  "canonical_path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\artifacts\\role_binding_timing\\infra_m6_display_observability\\qualification_completion.json",
+  "canonical_sha256": "762490bfda84cf75fbdc9b309dd82fd76a2225eddfbf87bfbb1983dcde390af3",
+  "first_broken_edge": "PROCESS_IDENTITY:PROCESS:496@1785880048.227501:ADB_COMMAND_ROLE",
+  "journal_entry_count": 10,
+  "rich_error": null,
+  "schema_version": "role_binding_timing.infra_m6.terminal_receipt.v1",
+  "terminal_mode": "rich"
+}
