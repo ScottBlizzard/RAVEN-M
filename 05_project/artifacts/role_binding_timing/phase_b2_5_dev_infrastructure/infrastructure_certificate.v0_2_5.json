@@ -1,0 +1,64 @@
+{
+  "dev_contaminated": true,
+  "generation_calls": 0,
+  "generation_eligible": false,
+  "held_out_eligible": false,
+  "metrics": {
+    "completed_sequences": 1,
+    "framework_failures": 0,
+    "generation_calls": 0,
+    "implicit_restarts": 0,
+    "passed_sequences": 0,
+    "planned_sequences": 12,
+    "wall_time_seconds": 21.672000000005937
+  },
+  "schema_version": "role_binding_timing.infrastructure_certificate.v0_2_5",
+  "sequences": [
+    {
+      "artifacts": {
+        "trace_path": "05_project/artifacts/role_binding_timing/phase_b2_5_dev_infrastructure/round_01/B25D-SETTINGS/sequence.json",
+        "trace_sha256": "9610bdf6bbbbd14ad32b5f752a2b0fcbf69cf0d13238a69f6e5a536b1c7378a0"
+      },
+      "dev_app_id": "B25D-SETTINGS",
+      "issues": [
+        "RuntimeError:LAUNCH_FAILED:['LAUNCH_STATUS_NOT_OK']"
+      ],
+      "passed": false,
+      "round": 1,
+      "sequence_id": "R01-B25D-SETTINGS",
+      "wall_time_seconds": 18.797000000005937
+    }
+  ],
+  "server_owner": {
+    "binary_sha256": "957e46b8615f7af5b7292a2ddabe98d2e61940c3fb2b0545756507f080613e71",
+    "command_line": "adb -L tcp:5038 fork-server server --reply-fd 732",
+    "device_serial": "emulator-5554",
+    "executable_path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+    "fallback_to_5037": false,
+    "listener_pid": 29964,
+    "port": 5038,
+    "process_creation_time": "08/04/2026 21:18:28"
+  },
+  "source_hashes": {
+    "config": "7bee65997b4427f75033488f67aec35bc523bd57870b24f2f4403098aac84d0b",
+    "contract": "f410c4ba4520048c6892e3f52d6bea4bcd662a419a0a4520fcd144f10915d52a",
+    "implementation_commit": "e277055c8167a0b58655af6dc543448fa049c821",
+    "primitives": "f9893ebd6d94205fa090812a920ddeb86d2b274c2da444905c4ec8bb382a23a7",
+    "runner": "83a6037f784a03ea6d2012c845f46b9640d6cf6abe2d4e43d170f8c3303b81f2",
+    "schema": "44c5cbb33896df66217f1fbe69ec236352380bb8843d74f2db4b97d06fede1d3"
+  },
+  "study_id": "role_binding_timing_phase_b2_5_dev_infrastructure",
+  "terminal_audit": {
+    "certificate_write_policy": "atomic_exactly_once",
+    "final_listener_pids": [
+      29964
+    ],
+    "primary_error": {
+      "message": "SEQUENCE_FAILED:R01-B25D-SETTINGS",
+      "traceback_sha256": "2d0942389abe27b8ef69b971a878f702e857f2e5af9363bccf13ede7a91d586f",
+      "type": "RuntimeError"
+    },
+    "v0_3_freeze_authorized": false
+  },
+  "verdict": "NOT_ELIGIBLE"
+}

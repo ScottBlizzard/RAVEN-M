@@ -1,0 +1,199 @@
+{
+  "artifacts": {
+    "launch_stderr": {
+      "bytes": 0,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_5_dev_infrastructure/round_01/B25D-SETTINGS/launch_stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "launch_stdout": {
+      "bytes": 195,
+      "path": "05_project/artifacts/role_binding_timing/phase_b2_5_dev_infrastructure/round_01/B25D-SETTINGS/launch_stdout.txt",
+      "sha256": "2474e4a98bb525f714925d9342aa176d75bdd25ddf457da03fdab1981eaa614b"
+    }
+  },
+  "component": "com.android.settings/com.android.settings.Settings",
+  "dev_app_id": "B25D-SETTINGS",
+  "dev_contaminated": true,
+  "events": [
+    {
+      "event": "framework_before",
+      "passed": true,
+      "records": [
+        {
+          "present": true,
+          "result": {
+            "adb_server_pid_after": 29964,
+            "adb_server_pid_before": 29964,
+            "command": [
+              "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+              "-P",
+              "5038",
+              "-s",
+              "emulator-5554",
+              "shell",
+              "service",
+              "check",
+              "package"
+            ],
+            "returncode": 0,
+            "stderr": "",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout": "Service package: found\n",
+            "stdout_sha256": "5598fd9db814b7d972569280c6e31130f002df86c6b9ea983e023754f63843d1",
+            "timed_out": false,
+            "wall_time_seconds": 0.28099999998812564
+          },
+          "service": "package"
+        },
+        {
+          "present": true,
+          "result": {
+            "adb_server_pid_after": 29964,
+            "adb_server_pid_before": 29964,
+            "command": [
+              "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+              "-P",
+              "5038",
+              "-s",
+              "emulator-5554",
+              "shell",
+              "service",
+              "check",
+              "window"
+            ],
+            "returncode": 0,
+            "stderr": "",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout": "Service window: found\n",
+            "stdout_sha256": "70210c4a75114f6f2c5db818e40285d7b90777f154770a3dd5d8ed135381c7c0",
+            "timed_out": false,
+            "wall_time_seconds": 0.28200000000651926
+          },
+          "service": "window"
+        },
+        {
+          "present": true,
+          "result": {
+            "adb_server_pid_after": 29964,
+            "adb_server_pid_before": 29964,
+            "command": [
+              "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+              "-P",
+              "5038",
+              "-s",
+              "emulator-5554",
+              "shell",
+              "service",
+              "check",
+              "activity"
+            ],
+            "returncode": 0,
+            "stderr": "",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout": "Service activity: found\n",
+            "stdout_sha256": "31ace82959c4828f90008df4ae03b5261dd868182b482f43d7bb83b3a4d87233",
+            "timed_out": false,
+            "wall_time_seconds": 0.35899999999674037
+          },
+          "service": "activity"
+        }
+      ]
+    },
+    {
+      "event": "reset_before",
+      "force_stop": {
+        "adb_server_pid_after": 29964,
+        "adb_server_pid_before": 29964,
+        "command": [
+          "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+          "-P",
+          "5038",
+          "-s",
+          "emulator-5554",
+          "shell",
+          "am",
+          "force-stop",
+          "com.android.settings"
+        ],
+        "returncode": 0,
+        "stderr": "",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "timed_out": false,
+        "wall_time_seconds": 1.5460000000020955
+      },
+      "home": {
+        "adb_server_pid_after": 29964,
+        "adb_server_pid_before": 29964,
+        "command": [
+          "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+          "-P",
+          "5038",
+          "-s",
+          "emulator-5554",
+          "shell",
+          "input",
+          "keyevent",
+          "3"
+        ],
+        "returncode": 0,
+        "stderr": "",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "timed_out": false,
+        "wall_time_seconds": 0.5470000000059372
+      },
+      "issues": [],
+      "passed": true
+    },
+    {
+      "event": "launch",
+      "issues": [
+        "LAUNCH_STATUS_NOT_OK"
+      ],
+      "result": {
+        "adb_server_pid_after": 29964,
+        "adb_server_pid_before": 29964,
+        "command": [
+          "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+          "-P",
+          "5038",
+          "-s",
+          "emulator-5554",
+          "shell",
+          "am",
+          "start",
+          "-W",
+          "-n",
+          "com.android.settings/com.android.settings.Settings"
+        ],
+        "returncode": 0,
+        "stderr": "",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "Starting: Intent { cmp=com.android.settings/.Settings }\nStatus: timeout\nLaunchState: UNKNOWN (-1)\nActivity: com.android.settings/.homepage.SettingsHomepageActivity\nWaitTime: 13590\nComplete\n",
+        "stdout_sha256": "e033c700b3bbaf881ae5947030ae6b5753ecf203af4f3fdcbb6086ea66763062",
+        "timed_out": false,
+        "wall_time_seconds": 14.156999999991967
+      }
+    },
+    {
+      "event": "primary_error",
+      "message": "LAUNCH_FAILED:['LAUNCH_STATUS_NOT_OK']",
+      "traceback_sha256": "6b53028e6bc22fbe42eb2ee26cab4567c0ae101f6d6abc57f508328243b87e57",
+      "type": "RuntimeError"
+    }
+  ],
+  "generation_calls": 0,
+  "held_out_eligible": false,
+  "issues": [
+    "RuntimeError:LAUNCH_FAILED:['LAUNCH_STATUS_NOT_OK']"
+  ],
+  "package": "com.android.settings",
+  "passed": false,
+  "round": 1,
+  "schema_version": "role_binding_timing.infrastructure_sequence.v0_2_5",
+  "sequence_id": "R01-B25D-SETTINGS",
+  "wall_time_seconds": 18.797000000005937
+}
