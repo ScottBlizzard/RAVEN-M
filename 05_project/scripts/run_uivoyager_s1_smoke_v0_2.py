@@ -84,6 +84,13 @@ def empty_event() -> dict[str, Any]:
 
 
 def main() -> None:
+    # AndroidWorld prints Unicode status symbols.  Force a reproducible UTF-8
+    # console on Windows so successful episodes cannot be invalidated while
+    # merely reporting their result.
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="backslashreplace")
+
     parser = argparse.ArgumentParser()
     parser.add_argument("--source-root", type=Path, required=True)
     parser.add_argument("--authorization", type=Path, required=True)
