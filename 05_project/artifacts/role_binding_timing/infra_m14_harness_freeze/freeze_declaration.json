@@ -1,0 +1,165 @@
+{
+  "schema": "role_binding_timing.infra_m14.trusted_initializer_harness_freeze.v1",
+  "protocol_id": "INFRA-M14-HARNESS-FREEZE-ONLY-V1",
+  "status": "HARNESS_FROZEN_NOT_EXECUTED",
+  "scope": "OFFLINE_DEV_TESTS_ONLY",
+  "freeze_parent_commit": "7fb2aee39f0ec327fc1cd9437637ff25d4152c6d",
+  "freeze_tag": "role-binding-timing-infra-m14-harness-freeze-20260805",
+  "immutable_m14_freeze": {
+    "commit": "7fb2aee39f0ec327fc1cd9437637ff25d4152c6d",
+    "tag": "role-binding-timing-infra-m14-freeze-20260805",
+    "tag_object_oid": "f08a189129218e70d61bed21bea7b1eb6d76a974",
+    "artifacts_modified": false
+  },
+  "m14_implementation": {
+    "path": "05_project/src/raven_m/role_binding_timing/infra_m14_authority_context_attestation.py",
+    "exists_at_harness_freeze": false,
+    "implementation_authorized": false
+  },
+  "plugin_contract": {
+    "path": "05_project/tests/role_binding_timing/infra_m14_trusted_initializer_harness.py",
+    "pytest_fixture_names": ["trusted_initializer_factory"],
+    "fixture_scope": "session",
+    "eager_m14_import_permitted": false,
+    "lazy_module": "raven_m.role_binding_timing.infra_m14_authority_context_attestation",
+    "private_registration_entry": "_dev_register_trusted_initializer_harness",
+    "private_initializer_entry": "_dev_create_trusted_runner_initializer",
+    "capability_claim_callback": "_claim_capability_for_m14_private_bootstrap",
+    "capability_validation_callback": "_validate_active_capability_for_m14_private_bootstrap",
+    "allowed_factory_output_exact_type_name": "TrustedRunnerInitializer",
+    "direct_context_seal_ledger_or_attestation_output_permitted": false,
+    "validation_bypass_permitted": false
+  },
+  "immutable_expectations": {
+    "config_sha256": "8421E4985DEF834F84D5B22FFC0B2D22FF2A063473861213A64C4990C694C661",
+    "input_lock_sha256": "11BA21E3DAF4D8ED4BD0D2633E5D2EE9FD9583FB7060169FC3950AE777ADF4A6",
+    "exact_controlled_ports": [5037, 5038, 5554, 5555, 8554],
+    "negative_tests_may_supply_malformed_values": true,
+    "malformed_supplied_values_replace_expectations": false
+  },
+  "capability_boundary": {
+    "process_local": true,
+    "ordinary_constructor_forbidden": true,
+    "ordinary_dict_or_other_object_registration": "REJECT",
+    "other_plugin_instance_capability": "REJECT",
+    "copy_deepcopy_pickle": "REJECT",
+    "second_registration": "REJECT",
+    "second_fixture_factory": "REJECT",
+    "registration_receipt_exact_identity_required": true
+  },
+  "trust_assumption": {
+    "assumes_no_malicious_same_process_code_before_first_registration": true,
+    "resists_ordinary_parameter_substitution_and_accidental_copy": true,
+    "claims_resistance_to_arbitrary_python_reflection": false,
+    "claims_resistance_to_private_member_monkey_patch": false,
+    "claims_resistance_to_debugger_or_native_memory_access": false,
+    "production_security_boundary": false,
+    "production_or_live_bootstrap": false
+  },
+  "conftest_registration": {
+    "path": "05_project/tests/conftest.py",
+    "original_blob_oid": "92860d6ac209bd0843646d1554983b4f0ebf7a9e",
+    "original_sha256": "CDF5B6DF6F7605CA14D7C05613A2A5FD33FBA56681797EB20FB080FDEC3CD908",
+    "frozen_prospective_blob_oid": "3f3f08b6f276d4aac413c530524cc7a5dbced3e9",
+    "frozen_sha256": "D12C1BCE097AE8FA2EA641A493E6E9B8EE42853E7F5116B6834A6968E1AD754E",
+    "added_line_count": 2,
+    "removed_line_count": 0,
+    "added_lines_exact": [
+      "",
+      "pytest_plugins = (\"role_binding_timing.infra_m14_trusted_initializer_harness\",)"
+    ],
+    "other_existing_test_files_modified": false
+  },
+  "frozen_artifacts": [
+    {
+      "path": "04_protocols/role_binding_timing/INFRA_M14_TRUSTED_INITIALIZER_HARNESS_FREEZE_V1.md",
+      "sha256": "D9716C2434C286276A71CCD7112E8C43F2E5854416CA5BB495794044AEEDB6F0",
+      "prospective_blob_oid": "a3e8e858d3fe0d739b0bd18edd97e1f60582f47a",
+      "role": "protocol"
+    },
+    {
+      "path": "05_project/tests/conftest.py",
+      "sha256": "D12C1BCE097AE8FA2EA641A493E6E9B8EE42853E7F5116B6834A6968E1AD754E",
+      "prospective_blob_oid": "3f3f08b6f276d4aac413c530524cc7a5dbced3e9",
+      "role": "pytest_plugin_registration"
+    },
+    {
+      "path": "05_project/tests/role_binding_timing/infra_m14_trusted_initializer_harness.py",
+      "sha256": "2ACB3866F172B140FDC1490C3A4D0DDCDA88D5DE21D182101681E367187D08C7",
+      "prospective_blob_oid": "614d02d89df3fe512cd8a961f7b5d2373ad73c4d",
+      "role": "offline_dev_pytest_plugin"
+    },
+    {
+      "path": "05_project/tests/role_binding_timing/test_infra_m14_trusted_initializer_harness_contract.py",
+      "sha256": "D9C98F1700960BF9C6020E01D5B8EB767BD02F58BF6B0914C0BBC2FC282F1AB9",
+      "prospective_blob_oid": "7c356f7b230cba7a8a9296917365d5b09d579453",
+      "role": "prewritten_not_run_contract_tests"
+    },
+    {
+      "path": "reports/role_binding_timing/INFRA_M14_TRUSTED_INITIALIZER_HARNESS_FREEZE_2026-08-05.md",
+      "sha256": "195C4B3124558FF532270D96AFEF0DC453B9E8BC71A17332E284DE6AEE9CAC14",
+      "prospective_blob_oid": "d5f009f8c4b365e1c30bc449c3570762db123886",
+      "role": "human_freeze_report"
+    }
+  ],
+  "prewritten_not_run_test_matrix": [
+    "PLUGIN_IMPORT_DOES_NOT_LOAD_M14",
+    "UNIQUE_FIXTURE_NAME",
+    "ORDINARY_DICT_OR_OBJECT_REJECTED",
+    "OTHER_PLUGIN_CAPABILITY_REJECTED",
+    "SECOND_REGISTRATION_REJECTED",
+    "SECOND_FACTORY_REJECTED",
+    "CAPABILITY_RECEIPT_FACTORY_COPY_AND_PICKLE_REJECTED",
+    "ONLY_TRUSTED_RUNNER_INITIALIZER_RETURNED",
+    "DIRECT_CONTEXT_SEAL_LEDGER_ATTESTATION_RETURN_REJECTED",
+    "FIXED_EXPECTATIONS_NOT_REPLACED_BY_MALFORMED_SUPPLIED_VALUES",
+    "NO_VALIDATION_BYPASS_PARAMETER",
+    "CONFTEST_EXACT_MINIMAL_DIFF",
+    "M14_IMPLEMENTATION_ABSENT"
+  ],
+  "execution_status": {
+    "harness_contract_tests": "NOT_RUN",
+    "frozen_m14_tests": "NOT_RUN",
+    "static_or_contamination_gates": "NOT_RUN",
+    "m9_replay": "NOT_RUN",
+    "offline_behavior": "NOT_RUN",
+    "full_regression": "NOT_RUN",
+    "live": "NOT_RUN"
+  },
+  "zero_accounting": {
+    "generation_calls": 0,
+    "generation_tokens": 0,
+    "held_out_captures": 0,
+    "offline_behavior_executions": 0,
+    "live_chains": 0,
+    "stage1_runs": 0,
+    "destination_first_gate_runs": 0
+  },
+  "protected_wip_sha256": {
+    "05_project/src/raven_m/controller/episode_controller.py": "FC0E82E0FDE90119365D4F685F080EB4519BF2F602E4BDA58DE5D4809A40FE33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "FF89D6B70BE4B4738646D262BEB67D7B7E932E9EB95956D940B1C5000A999D10",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5BB1F1E3DE673A1072CFEE62938B761A62FD69C187D5EADF54BC46B115A3FD0A"
+  },
+  "contamination_boundary": {
+    "m10_untracked_leak_access": "GIT_STATUS_PRESENCE_ONLY",
+    "protected_wip_modified_or_staged_by_this_freeze": false,
+    "latex_modified": false,
+    "pushed": false
+  },
+  "claim_evidence_boundary": {
+    "supported": [
+      "The offline DEV harness interface and limitations were frozen before M14 implementation.",
+      "The conftest registration is exactly bounded by original and post-change hashes.",
+      "The harness fault matrix exists but was not executed."
+    ],
+    "unsupported": [
+      "Harness behavioral correctness",
+      "M14 implementation correctness",
+      "Offline or live qualification",
+      "Production security",
+      "Role-binding or memory efficacy",
+      "Held-out evidence"
+    ]
+  },
+  "stop_rule": "STOP_AFTER_HARNESS_FREEZE_COMMIT_AND_ANNOTATED_TAG"
+}
