@@ -1,6 +1,8 @@
 param(
     [switch]$Visible,
-    [int]$BootTimeoutSeconds = 300
+    [int]$BootTimeoutSeconds = 300,
+    [ValidateSet("swiftshader_indirect", "auto")]
+    [string]$GpuMode = "swiftshader_indirect"
 )
 
 $ErrorActionPreference = "Stop"
@@ -23,6 +25,7 @@ if (-not $running) {
         "-no-snapshot",
         "-no-boot-anim",
         "-no-audio",
+        "-gpu", $GpuMode,
         "-grpc", "8554"
     )
     if (-not $Visible) {
