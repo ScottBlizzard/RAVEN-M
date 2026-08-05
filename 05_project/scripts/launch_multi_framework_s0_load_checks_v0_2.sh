@@ -90,4 +90,14 @@ launch_and_check \
   1 \
   8102
 
+launch_and_check \
+  scalecua \
+  mf_scalecua_py311 \
+  "${MODEL_META}/scalecua.checkpoint_manifest.json" \
+  ScaleCUA-32B \
+  0,1,2,3 \
+  4 \
+  8103 \
+  --max-model-len 32768
+
 echo "multi_framework_s0_model_load_checks_v0_2=complete"

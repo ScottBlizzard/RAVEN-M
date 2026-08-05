@@ -97,9 +97,12 @@ build_env() {
 
 MOBILEAGENT_REQUIREMENTS="${SOURCE_ROOT}/MobileAgent/Mobile-Agent-v3.5/android_world_v3.5/requirements.txt"
 UIVOYAGER_REQUIREMENTS="${SOURCE_ROOT}/UI-Voyager/androidworld/requirements.txt"
+SCALECUA_REQUIREMENTS="${SOURCE_ROOT}/ScaleCUA/evaluation/AndroidWorld/requirements.txt"
 MOBILEAGENT_WHEELHOUSE="$(prepare_wheelhouse mobileagent "${MOBILEAGENT_REQUIREMENTS}")"
 UIVOYAGER_WHEELHOUSE="$(prepare_wheelhouse uivoyager "${UIVOYAGER_REQUIREMENTS}")"
+SCALECUA_WHEELHOUSE="$(prepare_wheelhouse scalecua "${SCALECUA_REQUIREMENTS}")"
 
 build_env mf_mobileagent_py311 "${MOBILEAGENT_REQUIREMENTS}" "${MOBILEAGENT_WHEELHOUSE}"
 build_env mf_uivoyager_py311 "${UIVOYAGER_REQUIREMENTS}" "${UIVOYAGER_WHEELHOUSE}"
+build_env mf_scalecua_py311 "${SCALECUA_REQUIREMENTS}" "${SCALECUA_WHEELHOUSE}"
 echo "multi_framework_vllm_env_bootstrap_v0_2=complete"
