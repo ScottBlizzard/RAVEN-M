@@ -48,7 +48,8 @@ prepare_wheelhouse() {
       --extra-index-url "${TORCH_INDEX}" \
       --dest "${wheelhouse}" \
       -r "${requirements}" \
-      "vllm==${VLLM_VERSION}"
+      "vllm==${VLLM_VERSION}" \
+      >"${evidence}/dependency_resolution.log" 2>&1
     local manifest_tmp="${evidence}/wheelhouse.manifest.sha256.tmp"
     find "${wheelhouse}" -maxdepth 1 -type f ! -name 'manifest.sha256' -printf '%f\n' \
       | sort \
