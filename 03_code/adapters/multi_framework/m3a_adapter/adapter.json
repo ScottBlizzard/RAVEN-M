@@ -1,0 +1,1 @@
+{"adapter_id":"m3a_qwen_v0_2","arms":["CB-ST-M3A"],"source_commit":"3e50888527ef9f29b9157ecd537e408008bb1c85","observation":"screenshot_plus_som_ui_elements","controller_mutation":false,"prompt_rewrite":false,"policy_repair":false,"environment":"mf_androidworld_core_py311"}

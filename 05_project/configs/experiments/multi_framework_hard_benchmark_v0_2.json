@@ -1,0 +1,66 @@
+{
+  "schema_version": "multi_framework_hard_benchmark.v0.2",
+  "protocol_id": "MULTI_FRAMEWORK_HARD_BENCHMARK_V0_2",
+  "decision": "GO_WITH_REVISIONS",
+  "binding_source": {
+    "path": "2026_08_05_20_14.md",
+    "sha256": "6edb43edb9727d7744716ab9ea52496f39601c371a4f813e6a67592775f019cd"
+  },
+  "authorization": {
+    "s0_static_checks": true,
+    "s1_model_generation": "after_s0_minimum_potential_set_only",
+    "hard_model_calls_now": false,
+    "hard_model_calls_when": [
+      "S0_ALL_GLOBAL_GATES_PASS",
+      "S1_ARM_GATES_PASS",
+      "MINIMUM_LAUNCH_SET_PASS",
+      "PROTECTED_HASHES_UNCHANGED",
+      "FIRST_CALL_MANIFEST_FROZEN"
+    ],
+    "old_frozen_results_edit": false,
+    "new_mechanism_implementation": false
+  },
+  "sources": {
+    "raven_snapshot": "08b21d06db165d1fb6908c457f955988061b10ca",
+    "androidworld_commit": "3e50888527ef9f29b9157ecd537e408008bb1c85",
+    "hard_manifest": "05_project/configs/task_manifests/androidworld_hard_v1.json",
+    "hard_manifest_sha256": "e651aedeb18f112be3a06562328618d19e9d33eaea94187b1edec51cb00f6ca7",
+    "candidate_manifest": "03_code/manifests/multi_framework_candidates_v0_2.csv",
+    "instance_manifest": "05_project/configs/task_manifests/androidworld_hard_v2_instances.json"
+  },
+  "arms": {
+    "tier_A_core": ["CB-PX-B3", "CB-PX-M0", "NS-PX-GO15", "NS-PX-MA35", "NS-PX-SCUA32", "NS-PX-UIV4"],
+    "tier_B_diagnostic": ["CB-PX-B0", "CB-ST-M3A", "CB-PX-MU"],
+    "s3_eligible": ["CB-PX-B3", "CB-PX-M0", "NS-PX-GO15", "NS-PX-MA35", "NS-PX-SCUA32", "NS-PX-UIV4"]
+  },
+  "runtime": {
+    "android": {"host_os": "Windows", "python": "3.11.9", "api": 33, "avd": "AndroidWorldAvd", "device": "Pixel_6", "grpc_port": 8554, "live_episode_concurrency": 1},
+    "common_qwen": {"runtime_id": "R-COMMON-QWEN32-v1", "checkpoint": "Qwen/Qwen3-VL-32B-Instruct", "revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb", "python": "3.11.15", "torch": "2.8.0", "transformers": "5.10.2", "cuda": "12.8", "dtype": "bfloat16", "gpus": 4, "context_length": 8192, "max_new_tokens": 256, "temperature": 0.0, "do_sample": false, "screenshot_long_side": 1280},
+    "gui_owl": {"runtime_id": "R-XPLUG-GUIOWL8-v1", "checkpoint": "mPLUG/GUI-Owl-1.5-8B-Think", "revision": "afe3707fc84caebc4d7046118b34493ecf8bb060", "python": "3.11", "server": "vLLM_OpenAI_compatible", "gpus": 2, "dtype": "bfloat16", "context_ceiling": 32768, "max_new_tokens": 4096, "temperature": 0.0, "top_p": 1.0, "sampling": false},
+    "scalecua": {"runtime_id": "R-SCALECUA32-v1", "checkpoint": "OpenGVLab/ScaleCUA-32B", "revision": "9a91c80690b34f2a962203c5ed896ef845b6149c", "python": "3.11", "server": "vLLM_OpenAI_compatible", "mode": "native_agentic_model", "planner_grounder_hybrid": false, "gpus": 4, "dtype": "bfloat16", "context_ceiling": 32768, "max_new_tokens": 4096, "temperature": 0.0, "top_p": 1.0, "sampling": false},
+    "ui_voyager": {"runtime_id": "R-UIVOYAGER4-v1", "checkpoint": "MarsXL/UI-Voyager", "revision": "c262b85f18f1c669b19bca544e0ee2eb71225ff3", "python": "3.11", "server": "vLLM_OpenAI_compatible", "gpus": 1, "dtype": "bfloat16", "temperature": 0.7, "top_p": 0.8, "max_new_tokens": 16384, "official_internal_retry_limit": 3, "history_len": 30, "history_images": 0, "use_som": false, "post_action_wait_seconds": 1.5}
+  },
+  "stages": {
+    "S0": {"generation_calls": 0, "android_actions": 0, "max_hours_per_arm": 4, "max_total_calendar_days": 2, "dependency_resolution_attempts_per_arm": 1, "bounded_adapter_patch_rounds_per_arm": 1, "task_specific_patches": 0},
+    "S1": {"classification": "DEV_ONLY", "tasks": ["ContactsAddContact", "ClockStopWatchRunning"], "task_seed": 20260805, "max_actions_per_task": 8, "scientific_failure_reruns": 0, "infrastructure_reruns": 1},
+    "S2": {"classification": "DEVELOPMENTAL_EXPLORATORY", "task_seed": 20260806, "task_ids": "H01-H19", "first_integrity_pulse": ["H01", "H06", "H09", "H17"], "scientific_failure_reruns": 0, "wall_clock_hours": 72},
+    "S3": {"classification": "FRESH_INSTANCE_CONFIRMATION_UNDER_SEEN_TASK_CLASSES", "task_seeds": [20260807, 20260808], "task_ids": "H01-H19", "held_out_task_family_claim": false, "wall_clock_hours": 96}
+  },
+  "minimum_hard_launch_set": {"required_internal_arms": ["CB-PX-B3", "CB-PX-M0"], "minimum_external_native_arms": 2, "minimum_external_code_checkpoint_families": 2, "minimum_total_core_arms": 4},
+  "budget_formulas": {"step_multiplier": 1.0, "model_calls": "min(4*B,240)", "input_tokens": "min(20000*B,1000000)", "output_tokens": "min(2048*B,131072)", "wall_seconds": "max(1800,min(7200,90*B))", "task_failure_reruns": 0, "infrastructure_reruns": 1},
+  "randomization": {"common_backbone_order_seed": 2026080601, "native_block_order_seed": 2026080602, "per_arm_task_order": "shuffle(H01-H19, seed=integer(SHA256(arm_id|task_seed)))", "model_seed": "CRC32(arm_id|task_id|task_seed|attempt_id)"},
+  "s0_gate_names": ["source_pin", "checkpoint_pin", "shard_integrity", "code_license", "model_license", "runtime_lock", "runner_support", "task_class_support_19_of_19", "answer_support_3_of_3", "coordinate_fixtures", "observation_declaration", "evaluator_isolation", "budget_enforcement", "logger_schema", "protected_hashes"],
+  "required_event_schema": "05_project/configs/schemas/multi_framework_event_v0_2.schema.json",
+  "capability_schema": "05_project/configs/schemas/multi_framework_capability_v0_2.schema.json",
+  "protected_paths": {
+    "05_project/src/raven_m/controller/episode_controller.py": "fc0e82e0fde90119365d4f685f080eb4519bf2f602e4bda58de5d4809a40fe33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "ff89d6b70be4b4738646d262beb67d7b7e932e9eb95956d940b1c5000a999d10",
+    "05_project/src/raven_m/role_binding_timing/infra_m10_temporal_attestation.py": "d5c0439a39ecd271625502e64f6ebd0bc018f262b9256f6095f44358f90c4bba",
+    "05_project/src/raven_m/role_binding_timing/infra_m14_authority_context_attestation.py": "bfb2581ddd187b613a77ff4fd64469dd6abbc93e00ca810149f13d09d32aca50",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5bb1f1e3de673a1072cfee62938b761a62fd69c187d5eadf54bc46b115a3fd0a",
+    "2026_08_05_17_36.md": "5e8fb154aae23d96876a69aea87c72a69af6bdfe3245c9166f0c7de68fa03501",
+    "RAVEN-M_GPTPro_full_plan_2026-08-05.md": "25f1f2c77f33fbedee01f761d32427d1f38998181dc65034a1429fea289ccdf3"
+  },
+  "old_frozen_roots": ["runs/frozen_hard_v1", "05_project/artifacts/role_binding_timing"],
+  "return_to_gpt_pro_when": ["minimum_launch_set_fails", "protected_hash_changes", "old_artifact_changes", "evaluator_leakage_detected", "answer_contract_fails", "shared_contract_invalid_after_first_hard_call", "task_specific_patch_is_needed", "model_prompt_runtime_or_metric_hash_drifts", "stage_wall_clock_ceiling_prevents_required_completion", "unanticipated_scientific_interpretation_is_required"]
+}

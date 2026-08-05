@@ -1,0 +1,1 @@
+{"adapter_id":"raven_v0_2","arms":["CB-PX-B0","CB-PX-B3","CB-PX-M0"],"source_commit":"08b21d06db165d1fb6908c457f955988061b10ca","observation":"screenshot_only","controller_mutation":false,"prompt_rewrite":false,"policy_repair":false,"environment":"mf_raven_qwen_py311"}

@@ -1,0 +1,1 @@
+{"adapter_id":"scalecua_v0_2","arms":["NS-PX-SCUA32"],"source_commit":"5d92feea9f1e14b8303ce37da45b286fb1f4d3aa","observation":"screenshot_only","controller_mutation":false,"prompt_rewrite":false,"policy_repair":false,"planner_grounder_hybrid":false,"environment":"mf_scalecua_py311"}

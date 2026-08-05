@@ -1,0 +1,1 @@
+{"adapter_id":"uivoyager_v0_2","arms":["NS-PX-UIV4"],"source_commit":"67b65e2be093753ecaa2964f48739339b870813e","observation":"screenshot_only","controller_mutation":false,"prompt_rewrite":false,"policy_repair":false,"use_som":false,"official_internal_retry_limit":3,"environment":"mf_uivoyager_py311"}

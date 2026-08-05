@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "multi_framework_capability_v0_2.schema.json",
+  "title": "Multi-framework S0 capability manifest v0.2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "arm_id", "source_commit", "checkpoint_revision", "external_family", "observation_privileges", "gates", "qualified"],
+  "properties": {
+    "schema_version": {"const": "multi_framework_capability.v0.2"},
+    "arm_id": {"type": "string"},
+    "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "checkpoint_revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "external_family": {"type": ["string", "null"]},
+    "observation_privileges": {"type": "array", "items": {"type": "string"}, "minItems": 1, "uniqueItems": true},
+    "gates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_pin", "checkpoint_pin", "shard_integrity", "code_license", "model_license", "runtime_lock", "runner_support", "task_class_support_19_of_19", "answer_support_3_of_3", "coordinate_fixtures", "observation_declaration", "evaluator_isolation", "budget_enforcement", "logger_schema", "protected_hashes"],
+      "properties": {
+        "source_pin": {"type": "boolean"}, "checkpoint_pin": {"type": "boolean"}, "shard_integrity": {"type": "boolean"}, "code_license": {"type": "boolean"}, "model_license": {"type": "boolean"}, "runtime_lock": {"type": "boolean"}, "runner_support": {"type": "boolean"}, "task_class_support_19_of_19": {"type": "boolean"}, "answer_support_3_of_3": {"type": "boolean"}, "coordinate_fixtures": {"type": "boolean"}, "observation_declaration": {"type": "boolean"}, "evaluator_isolation": {"type": "boolean"}, "budget_enforcement": {"type": "boolean"}, "logger_schema": {"type": "boolean"}, "protected_hashes": {"type": "boolean"}
+      }
+    },
+    "qualified": {"type": "boolean"},
+    "evidence": {"type": "object"}
+  }
+}

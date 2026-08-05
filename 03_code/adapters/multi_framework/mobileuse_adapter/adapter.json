@@ -1,0 +1,1 @@
+{"adapter_id":"mobileuse_v0_2","arms":["CB-PX-MU"],"source_commit":"babec07fd0e5faa7e7bcc7d3d0ee2320f6b83347","observation":"screenshot_only","controller_mutation":false,"prompt_rewrite":false,"policy_repair":false,"external_tools":false,"rag":false,"search":false,"environment":"mf_mobileuse_py312"}
