@@ -27,7 +27,7 @@ fetch_exact_archive() {
     return 1
   fi
 
-  curl --fail --location --retry 3 --retry-all-errors --continue-at - \
+  curl --fail --location --retry 3 --continue-at - \
     --output "${archive}" "${url}"
 
   local temp
