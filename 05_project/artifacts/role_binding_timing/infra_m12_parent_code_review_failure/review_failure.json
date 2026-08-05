@@ -1,0 +1,92 @@
+{
+  "schema": "role_binding_timing.infra_m12.parent_code_review_failure.v1",
+  "protocol_id": "INFRA-M12-DEV-ENGINEERING-ROLE-DERIVATION-ATTESTATION-V1",
+  "date": "2026-08-05",
+  "verdict": "NOT_AUTHORIZED_FOR_OFFLINE_GATES",
+  "review_result": "FAIL_PROOF_BINDING_AND_ISSUER_AUTHORITY",
+  "immutable_subject": {
+    "freeze_commit": "08aa4182e1fe7fdff0def2b19193b4b3f7b69266",
+    "freeze_tag": "role-binding-timing-infra-m12-freeze-20260805",
+    "freeze_tag_object": "696d0ba571c34cd0099337ff2cc62641d9063835",
+    "implementation_commit": "a8d3a831eea53fbf075eea6b8e5c3401e435fdf8",
+    "implementation_path": "05_project/src/raven_m/role_binding_timing/infra_m12_sealed_role_derivation.py",
+    "implementation_blob_oid": "922222aeec7bdb690d225b2018da0288604eb0bb",
+    "implementation_sha256": "73D8138F9ECEFA5B31F975968257FA779AFCD466CE93F67808C42A05544A336C",
+    "implementation_lock_commit": "889788c21eca08f23eed5afcfb41fdb432d34667",
+    "implementation_lock_tag": "role-binding-timing-infra-m12-implementation-lock-20260805",
+    "implementation_lock_tag_object": "a05e89ab619ffb48962cc717c4db724ec9448943",
+    "mutation_after_review": false
+  },
+  "findings": [
+    {
+      "id": "M12-RF-01",
+      "locked_blob_lines": "682-691",
+      "component": "_validate_supplied_views",
+      "direct_evidence": "The function compares candidate identity sets, candidate-reason maps, and identity sets for the other views; it does not compare each supplied canonical row with its recomputed expected row.",
+      "security_consequence": "Non-identity fields and proof fields in supplied rows are not comprehensively bound to recomputation.",
+      "severity": "CONTRACT_BREAKING"
+    },
+    {
+      "id": "M12-RF-02",
+      "locked_blob_lines": "772-781, 846-887",
+      "component": "_proof_mismatch_code and sealed-view hash verification",
+      "direct_evidence": "The proof check compares stored source_record_sha256 and raw_snapshot_sha256 strings with expected strings but does not recompute source_record_sha256 from the stored row. Partition, complete-view, and seal checks are ordinary caller-recomputable SHA-256 values.",
+      "security_consequence": "A caller can modify fields such as exe, command line, or proof flags and recompute the public hashes unless exact recomputed row equality rejects the mutation first; M12 lacks that complete equality check.",
+      "severity": "CONTRACT_BREAKING"
+    },
+    {
+      "id": "M12-RF-03",
+      "locked_blob_lines": "953-997, 1038-1069",
+      "component": "issue_temporal_attestation and verify_temporal_attestation",
+      "direct_evidence": "Verification checks birth_candidate_record only by identity and birth_chain only by minimum length plus sample sequence/time. It does not deterministically extract the birth candidate from the verified sealed view or rebuild and exactly compare the chain from candidate_ancestry and sealed records.",
+      "security_consequence": "Birth candidate fields or chain membership/order/content can be altered and the ordinary attestation SHA-256 recomputed without an independent authority root rejecting the object.",
+      "severity": "CONTRACT_BREAKING"
+    },
+    {
+      "id": "M12-RF-04",
+      "locked_blob_lines": "891-905, 984-998, 1025-1028",
+      "component": "run epoch and attestation issuance authority",
+      "direct_evidence": "_RUN_EPOCHS is an in-process dictionary. Issuance adds run_id and the current integer epoch to a caller-readable object, while verification checks only equality with the current dictionary value. No unpredictable run nonce, attestation ID, or current-process issuer-ledger membership is required.",
+      "security_consequence": "A manually constructed object can claim a current run_id/epoch, and serialized proof from a prior process is not rejected through issuer-membership absence. The frozen terminal test exercises only same-process epoch increment.",
+      "severity": "CONTRACT_BREAKING"
+    }
+  ],
+  "test_sufficiency_verdict": {
+    "frozen_role_tests": "NOT_RUN",
+    "frozen_temporal_tests": "NOT_RUN",
+    "offline_runner": "NOT_RUN",
+    "reason_not_to_execute": "The frozen matrices do not establish complete canonical row equality, deterministic sealed-view birth reconstruction, or live issuer-ledger membership. Passing them would therefore not prove the frozen contract semantics.",
+    "future_pass_would_authorize_m12": false
+  },
+  "claim_evidence_boundary": {
+    "supported": [
+      "The four defects are present in the exact locked M12 implementation blob.",
+      "M12 is not authorized to enter offline behavior gates or live execution.",
+      "No M12 frozen behavior test or runner was executed during this review-failure phase."
+    ],
+    "unsupported": [
+      "Any claim that M12 sealed-view or temporal-attestation semantics are secure or correct.",
+      "Any inference about infrastructure, controller, memory efficacy, role binding, held-out behavior, novelty, or generalization."
+    ]
+  },
+  "accounting": {
+    "generation_calls": 0,
+    "generation_tokens": 0,
+    "held_out_captures": 0,
+    "stage1_runs": 0,
+    "destination_first_gate_runs": 0,
+    "offline_behavior_tests": 0,
+    "live_chains": 0
+  },
+  "protected_wip_sha256": {
+    "05_project/src/raven_m/controller/episode_controller.py": "FC0E82E0FDE90119365D4F685F080EB4519BF2F602E4BDA58DE5D4809A40FE33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "FF89D6B70BE4B4738646D262BEB67D7B7E932E9EB95956D940B1C5000A999D10",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5BB1F1E3DE673A1072CFEE62938B761A62FD69C187D5EADF54BC46B115A3FD0A"
+  },
+  "contamination_boundary": {
+    "m10_untracked_leak_access": "GIT_STATUS_PRESENCE_ONLY",
+    "m11_v1_access": "NOT_READ_NOT_REUSED",
+    "latex_modified": false,
+    "push_performed": false
+  }
+}
