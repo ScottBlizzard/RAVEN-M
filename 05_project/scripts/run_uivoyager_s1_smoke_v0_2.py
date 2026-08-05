@@ -216,8 +216,13 @@ def main() -> None:
     (args.output_root / "frozen_runtime_config.json").write_text(
         json.dumps(config, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
+    # The frozen client appends ``/v1/chat/completions`` itself.  Normalize a
+    # discovery-style URL ending in ``/v1`` to avoid ``/v1/v1/...`` 404s.
+    client_base_url = args.base_url.rstrip("/")
+    if client_base_url.endswith("/v1"):
+        client_base_url = client_base_url[:-3]
     client = OpenAIClient(
-        base_url=args.base_url,
+        base_url=client_base_url,
         model="UI-Voyager",
         api_key="EMPTY",
         temperature=0.7,
@@ -258,6 +263,9 @@ def main() -> None:
                 call_start = len(call_records)
                 result = runner._run_task(task, demo_mode=False)
                 call_end = len(call_records)
+                successful_calls = [
+                    row for row in call_records[call_start:call_end] if row.get("ok")
+                ]
                 data = result.get(constants.EpisodeConstants.EPISODE_DATA)
                 step_rows = episode_runner.transpose_dol_to_lod(data) if isinstance(data, dict) and data else []
                 reward = result.get(constants.EpisodeConstants.IS_SUCCESSFUL)
@@ -273,7 +281,7 @@ def main() -> None:
                     response_text = row.get("model_response") or ""
                     response_file = step_dir / "model_response.txt"
                     response_file.write_text(str(response_text), encoding="utf-8")
-                    call = call_records[call_start + step_index] if call_start + step_index < call_end else {}
+                    call = successful_calls[step_index] if step_index < len(successful_calls) else {}
                     action_type = action.get("action_type") if isinstance(action, dict) else None
                     event = empty_event()
                     event.update({
@@ -319,6 +327,7 @@ def main() -> None:
                         and bool(row.get("success")) for row in step_rows),
                     "screen_changes": sum(array_hash(row.get("before_screenshot")) != array_hash(row.get("after_screenshot")) for row in step_rows),
                     "model_calls": call_end - call_start,
+                    "successful_model_calls": len(successful_calls),
                     "lifecycle": counts,
                 })
     finally:
@@ -342,6 +351,7 @@ def main() -> None:
             and row["steps"] <= max_actions
             and row["parseable_decisions"] >= 1
             and row["nonterminal_actions"] >= 1
+            and row["successful_model_calls"] >= row["steps"]
             and row["lifecycle"] == {"initialize": 1, "evaluator": 1, "tear_down": 1}
             for row in task_results
         ) and sum(row["screen_changes"] for row in task_results) >= 1,
