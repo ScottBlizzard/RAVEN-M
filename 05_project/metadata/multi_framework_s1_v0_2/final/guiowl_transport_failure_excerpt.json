@@ -1,0 +1,26 @@
+{
+  "arm_id": "NS-PX-GUIOWL",
+  "classification": "PRE_GENERATION_TRANSPORT_CONTRACT_FAILURE",
+  "exception_excerpt": "The URL must be either a HTTP, data or file URL.",
+  "first_request": {
+    "image_payload_length_characters": 658336,
+    "image_payload_prefix": "iVBORw0KGgoAAAANSUhEUgAA",
+    "recognized_url_scheme_present": false,
+    "sha256": "a22a4692cffac573d89f11ac354c4268dcd2169c9005666938dfbe6022416c91"
+  },
+  "model_call_log_sha256": "a66cf0773d6f76bf30529577fb471cd754279b6739204ca6cce70769842d7983",
+  "observed": {
+    "attempted_transport_calls": 20,
+    "evaluator_calls": 0,
+    "input_tokens": 0,
+    "model_generations": 0,
+    "output_tokens": 0,
+    "parseable_actions": 0,
+    "successful_transport_calls": 0
+  },
+  "score_interpretation": "NO_VALID_SCORE_NOT_ZERO_OF_TWO",
+  "source_paths_local_only": [
+    "05_project/outputs/multi_framework_s1_v0_2/03_guiowl/model_calls.json",
+    "05_project/outputs/multi_framework_s1_v0_2/03_guiowl/model_calls/call_0000.request.json"
+  ]
+}

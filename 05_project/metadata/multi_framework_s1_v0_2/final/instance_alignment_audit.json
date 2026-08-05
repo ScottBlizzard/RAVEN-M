@@ -1,0 +1,38 @@
+{
+  "schema_version": "multi_framework_s1_instance_alignment_audit.v0.2",
+  "status": "CROSS_FAMILY_INSTANCE_MISMATCH",
+  "classification": "DEV_ONLY_QUALIFICATION_NOT_EFFICACY",
+  "nominal_task_seed": 20260805,
+  "task_classes": [
+    "ContactsAddContact",
+    "ClockStopWatchRunning"
+  ],
+  "matched_groups": {
+    "CB-PX": {
+      "arms": [
+        "CB-PX-B3",
+        "CB-PX-M0"
+      ],
+      "contacts_goal": "Create a new contact for Valentina Muller. Their number is +12287421975.",
+      "contacts_goal_sha256": "af1e29cbeb5a09e679c65567b953a417eaad9755c289b882650c2e18fd94d644",
+      "stopwatch_goal_sha256": "d19e223c9dfcc150cdccac3737ec6d176f7974934bfdc2d0cab143e2594e1d0b"
+    },
+    "NS-PX": {
+      "arms": [
+        "NS-PX-GO15",
+        "NS-PX-UIV4"
+      ],
+      "contacts_goal": "Create a new contact for Hugo da Silva. Their number is +10084047858.",
+      "contacts_goal_sha256": "a9c9c5303f2fa017b1ce6d4c1414689729a3b2eab399d9dec1881229c1a62bb4",
+      "stopwatch_goal_sha256": "d19e223c9dfcc150cdccac3737ec6d176f7974934bfdc2d0cab143e2594e1d0b"
+    }
+  },
+  "cause": "The Raven and external official runners initialized task classes in different orders, so the same nominal seed did not freeze an identical ContactsAddContact parameter instance across families.",
+  "impact": {
+    "s1_runtime_qualification": "UNCHANGED",
+    "b3_vs_m0_paired_observation": "ELIGIBLE_DEV_ONLY",
+    "cross_family_efficacy_ranking": "INELIGIBLE",
+    "hard_expansion": "ALREADY_UNAUTHORIZED_BY_S1_MINIMUM_SET_FAILURE"
+  },
+  "required_future_fix": "Freeze per-task instantiated parameters or goal hashes before any cross-framework efficacy call; task class plus nominal seed is insufficient."
+}

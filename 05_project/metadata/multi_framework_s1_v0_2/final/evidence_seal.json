@@ -1,0 +1,11 @@
+{
+  "hard_model_calls_authorized": false,
+  "guiowl_transport_failure_excerpt": "05_project/metadata/multi_framework_s1_v0_2/final/guiowl_transport_failure_excerpt.json",
+  "guiowl_transport_failure_excerpt_sha256": "4a29f7539af79cd189a4a6a2c549426a54c0f03cace7752a9154ce458422010f",
+  "instance_alignment_audit": "05_project/metadata/multi_framework_s1_v0_2/final/instance_alignment_audit.json",
+  "instance_alignment_audit_sha256": "ea735d6a1e1eb8862fe362c72d888ae8d952434a199720f7bfe492c9246cf874",
+  "s1_qualification": "05_project\\metadata\\multi_framework_s1_v0_2\\final\\s1_qualification.json",
+  "s1_qualification_sha256": "e88afe2ff3db824187d394496ef633aefb5e5159da32852937410abd8d7db79d",
+  "schema_version": "multi_framework_s1_evidence_seal.v0.2",
+  "status": "FAIL"
+}

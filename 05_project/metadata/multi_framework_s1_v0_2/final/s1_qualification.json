@@ -1,0 +1,289 @@
+{
+  "all_four_preregistered_arms_pass": false,
+  "arms": {
+    "CB-PX-B3": {
+      "arm_id": "CB-PX-B3",
+      "gates": {
+        "answer_fixtures_3_of_3": true,
+        "evaluator_exactly_1_per_task": true,
+        "executed_nonterminal_action_at_least_1_per_task": true,
+        "fixed_two_tasks": true,
+        "hard_task_leakage_zero": true,
+        "observed_state_change_at_least_1_total": true,
+        "parseable_decisions_at_least_2_total": true,
+        "protected_hash_changes_zero": true,
+        "required_logs_100_percent": true,
+        "task_initialization_teardown_reset_2_of_2": true,
+        "task_reruns_zero": true,
+        "unresolved_infrastructure_errors_zero": true
+      },
+      "protected_hashes_verified": true,
+      "qualified": true,
+      "required_logs_complete": true,
+      "source_report": "05_project\\outputs\\multi_framework_s1_v0_2\\01_b3\\s1_report.json",
+      "source_report_sha256": "9b2d6480e91aeccc9f98c6ef4f6b8f1d79c6633e1e7278e14bb09e3a3ed671da",
+      "task_rerun_count": 0,
+      "tasks": [
+        {
+          "failure_code": "TASK_UNSUCCESSFUL_AT_BUDGET",
+          "lifecycle": {
+            "evaluator": 1,
+            "initialize": 1,
+            "post_episode_reset": 1,
+            "tear_down": 1
+          },
+          "model_calls": 9,
+          "nonterminal_actions": 8,
+          "parseable_decisions": 8,
+          "reward": 0.0,
+          "screen_changes": 8,
+          "steps": 8,
+          "success": false,
+          "task": "ContactsAddContact",
+          "unresolved_error": null
+        },
+        {
+          "failure_code": null,
+          "lifecycle": {
+            "evaluator": 1,
+            "initialize": 1,
+            "post_episode_reset": 1,
+            "tear_down": 1
+          },
+          "model_calls": 7,
+          "nonterminal_actions": 5,
+          "parseable_decisions": 6,
+          "reward": 1.0,
+          "screen_changes": 5,
+          "steps": 6,
+          "success": true,
+          "task": "ClockStopWatchRunning",
+          "unresolved_error": null
+        }
+      ]
+    },
+    "CB-PX-M0": {
+      "arm_id": "CB-PX-M0",
+      "gates": {
+        "answer_fixtures_3_of_3": true,
+        "evaluator_exactly_1_per_task": true,
+        "executed_nonterminal_action_at_least_1_per_task": true,
+        "fixed_two_tasks": true,
+        "hard_task_leakage_zero": true,
+        "observed_state_change_at_least_1_total": true,
+        "parseable_decisions_at_least_2_total": true,
+        "protected_hash_changes_zero": true,
+        "required_logs_100_percent": true,
+        "task_initialization_teardown_reset_2_of_2": true,
+        "task_reruns_zero": true,
+        "unresolved_infrastructure_errors_zero": true
+      },
+      "protected_hashes_verified": true,
+      "qualified": true,
+      "required_logs_complete": true,
+      "source_report": "05_project\\outputs\\multi_framework_s1_v0_2\\02_m0\\s1_report.json",
+      "source_report_sha256": "85066bea9865aaf8863ed4a6a87e9060691f086464b7451e2b376a9290a9c46e",
+      "task_rerun_count": 0,
+      "tasks": [
+        {
+          "failure_code": null,
+          "lifecycle": {
+            "evaluator": 1,
+            "initialize": 1,
+            "post_episode_reset": 1,
+            "tear_down": 1
+          },
+          "model_calls": 11,
+          "nonterminal_actions": 8,
+          "parseable_decisions": 8,
+          "reward": 1.0,
+          "screen_changes": 8,
+          "steps": 8,
+          "success": true,
+          "task": "ContactsAddContact",
+          "unresolved_error": null
+        },
+        {
+          "failure_code": null,
+          "lifecycle": {
+            "evaluator": 1,
+            "initialize": 1,
+            "post_episode_reset": 1,
+            "tear_down": 1
+          },
+          "model_calls": 17,
+          "nonterminal_actions": 8,
+          "parseable_decisions": 8,
+          "reward": 1.0,
+          "screen_changes": 8,
+          "steps": 8,
+          "success": true,
+          "task": "ClockStopWatchRunning",
+          "unresolved_error": null
+        }
+      ]
+    },
+    "NS-PX-GO15": {
+      "arm_id": "NS-PX-GO15",
+      "failed_transport_calls": 20,
+      "gates": {
+        "answer_fixtures_3_of_3": true,
+        "evaluator_exactly_1_per_task": false,
+        "executed_nonterminal_action_at_least_1_per_task": false,
+        "fixed_two_tasks": true,
+        "hard_task_leakage_zero": true,
+        "observed_state_change_at_least_1_total": false,
+        "parseable_decisions_at_least_2_total": false,
+        "protected_hash_changes_zero": true,
+        "required_logs_100_percent": true,
+        "task_initialization_teardown_reset_2_of_2": false,
+        "task_reruns_zero": true,
+        "unresolved_infrastructure_errors_zero": false
+      },
+      "model_call_log": "05_project\\outputs\\multi_framework_s1_v0_2\\03_guiowl\\model_calls.json",
+      "model_call_log_sha256": "a66cf0773d6f76bf30529577fb471cd754279b6739204ca6cce70769842d7983",
+      "protected_hashes_verified": true,
+      "qualified": false,
+      "required_logs_complete": true,
+      "source_report": "05_project\\outputs\\multi_framework_s1_v0_2\\03_guiowl\\summary.json",
+      "source_report_sha256": "f5d5ae8c8460ee8fe17cbbb12cac1f050a529e408c7ef7572abb6a0b6f2af1bb",
+      "successful_transport_calls": 0,
+      "task_rerun_count": 0,
+      "tasks": [
+        {
+          "lifecycle": {
+            "evaluator": 0,
+            "initialize": 1,
+            "tear_down": 0
+          },
+          "model_calls": 10,
+          "nonterminal_actions": 0,
+          "parseable_decisions": 0,
+          "reward": null,
+          "screen_changes": 0,
+          "steps": 0,
+          "success": false,
+          "task": "ClockStopWatchRunning",
+          "unresolved_error": "Traceback (most recent call last):\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-Research_external_v0_2\\MobileAgent\\Mobile-Agent-v3.5\\android_world_v3.5\\android_world\\suite_utils.py\", line 247, in _run_task\n    interaction_results = run_episode(task)\n                          ^^^^^^^^^^^^^^^^^\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\scripts\\run_guiowl_s1_smoke_v0_2.py\", line 202, in fixed_episode\n    return episode_runner.run_episode(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-Research_external_v0_2\\MobileAgent\\Mobile-Agent-v3.5\\android_world_v3.5\\android_world\\episode_runner.py\", line 81, in run_episode\n    result = agent.step(goal)\n             ^^^^^^^^^^^^^^^^\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-Research_external_v0_2\\MobileAgent\\Mobile-Agent-v3.5\\android_world_v3.5\\android_world\\agents\\gui_owl.py\", line 316, in step\n    dummy_action = json.loads(dummy_action)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\json\\__init__.py\", line 346, in loads\n    return _default_decoder.decode(s)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\json\\decoder.py\", line 337, in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\json\\decoder.py\", line 355, in raw_decode\n    raise JSONDecodeError(\"Expecting value\", s, err.value) from None\njson.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)\n"
+        },
+        {
+          "lifecycle": {
+            "evaluator": 0,
+            "initialize": 1,
+            "tear_down": 0
+          },
+          "model_calls": 10,
+          "nonterminal_actions": 0,
+          "parseable_decisions": 0,
+          "reward": null,
+          "screen_changes": 0,
+          "steps": 0,
+          "success": false,
+          "task": "ContactsAddContact",
+          "unresolved_error": "Traceback (most recent call last):\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-Research_external_v0_2\\MobileAgent\\Mobile-Agent-v3.5\\android_world_v3.5\\android_world\\suite_utils.py\", line 247, in _run_task\n    interaction_results = run_episode(task)\n                          ^^^^^^^^^^^^^^^^^\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\scripts\\run_guiowl_s1_smoke_v0_2.py\", line 202, in fixed_episode\n    return episode_runner.run_episode(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-Research_external_v0_2\\MobileAgent\\Mobile-Agent-v3.5\\android_world_v3.5\\android_world\\episode_runner.py\", line 81, in run_episode\n    result = agent.step(goal)\n             ^^^^^^^^^^^^^^^^\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-Research_external_v0_2\\MobileAgent\\Mobile-Agent-v3.5\\android_world_v3.5\\android_world\\agents\\gui_owl.py\", line 316, in step\n    dummy_action = json.loads(dummy_action)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\json\\__init__.py\", line 346, in loads\n    return _default_decoder.decode(s)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\json\\decoder.py\", line 337, in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\json\\decoder.py\", line 355, in raw_decode\n    raise JSONDecodeError(\"Expecting value\", s, err.value) from None\njson.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)\n"
+        }
+      ]
+    },
+    "NS-PX-UIV4": {
+      "arm_id": "NS-PX-UIV4",
+      "failed_transport_calls": 0,
+      "gates": {
+        "answer_fixtures_3_of_3": true,
+        "evaluator_exactly_1_per_task": true,
+        "executed_nonterminal_action_at_least_1_per_task": true,
+        "fixed_two_tasks": true,
+        "hard_task_leakage_zero": true,
+        "observed_state_change_at_least_1_total": true,
+        "parseable_decisions_at_least_2_total": true,
+        "protected_hash_changes_zero": true,
+        "required_logs_100_percent": true,
+        "task_initialization_teardown_reset_2_of_2": true,
+        "task_reruns_zero": true,
+        "unresolved_infrastructure_errors_zero": true
+      },
+      "model_call_log": "05_project\\outputs\\multi_framework_s1_v0_2\\04_uivoyager\\model_calls.json",
+      "model_call_log_sha256": "e7585a8adc5582553e999aec95f5dcb7b281045eab6551d20b0e12690bc82b68",
+      "protected_hashes_verified": true,
+      "qualified": true,
+      "required_logs_complete": true,
+      "source_report": "05_project\\outputs\\multi_framework_s1_v0_2\\04_uivoyager\\summary.json",
+      "source_report_sha256": "3eae265af7c6ec944d6380f595b953e1e59492618a92a3b2347156cd8c97ced0",
+      "successful_transport_calls": 14,
+      "task_rerun_count": 0,
+      "tasks": [
+        {
+          "lifecycle": {
+            "evaluator": 1,
+            "initialize": 1,
+            "tear_down": 1
+          },
+          "model_calls": 6,
+          "nonterminal_actions": 5,
+          "parseable_decisions": 6,
+          "reward": 1.0,
+          "screen_changes": 6,
+          "steps": 6,
+          "success": true,
+          "task": "ClockStopWatchRunning",
+          "unresolved_error": null
+        },
+        {
+          "lifecycle": {
+            "evaluator": 1,
+            "initialize": 1,
+            "tear_down": 1
+          },
+          "model_calls": 8,
+          "nonterminal_actions": 8,
+          "parseable_decisions": 8,
+          "reward": 0.0,
+          "screen_changes": 8,
+          "steps": 8,
+          "success": false,
+          "task": "ContactsAddContact",
+          "unresolved_error": null
+        }
+      ]
+    }
+  },
+  "attempt_accounting": {
+    "CB-PX-B3": {
+      "discarded_infrastructure_attempts": 1,
+      "preserved_path": "05_project/outputs/multi_framework_s1_v0_2/01_b3.infra_timeout_120s_20260805",
+      "reason": "outer_shell_timeout_120s"
+    },
+    "CB-PX-M0": {
+      "discarded_infrastructure_attempts": 0
+    },
+    "NS-PX-GO15": {
+      "discarded_infrastructure_attempts": 1,
+      "final_failure": "image_url_transport_contract_rejected_before_generation",
+      "preserved_path": "05_project/outputs/multi_framework_s1_v0_2/03_guiowl.infra_temp_apk_windows_20260805",
+      "reason": "windows_named_temporary_apk_lifetime"
+    },
+    "NS-PX-UIV4": {
+      "discarded_infrastructure_attempts": 0
+    }
+  },
+  "classification": "DEV_ONLY",
+  "created_at": "2026-08-05T16:20:28.435962+00:00",
+  "failed_arms": [
+    "NS-PX-GO15"
+  ],
+  "hard_model_calls_authorized": false,
+  "hard_task_leaked_classes": [],
+  "minimum_launch_set_pass": false,
+  "minimum_launch_set_reasons": [
+    "fewer than two external native arms",
+    "fewer than two external code/checkpoint families",
+    "fewer than four core arms"
+  ],
+  "next_action": "RETURN_TO_GPT_PRO_FOR_PREREGISTERED_REPLACEMENT_OR_NEW_DEV_ROUND",
+  "qualified_arms": [
+    "CB-PX-B3",
+    "CB-PX-M0",
+    "NS-PX-UIV4"
+  ],
+  "schema_version": "multi_framework_s1_qualification.v0.2",
+  "status": "FAIL"
+}
