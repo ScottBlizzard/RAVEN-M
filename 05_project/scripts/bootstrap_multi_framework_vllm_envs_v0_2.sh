@@ -9,6 +9,7 @@ DOWNLOAD_ROOT="${ROOT}/05_project/downloads/multi_framework_v0_2"
 META="${ROOT}/05_project/metadata/multi_framework_s0_v0_2/environments"
 VLLM_VERSION="0.12.0"
 TORCH_INDEX="https://download.pytorch.org/whl/cu128"
+INCLUDE_SCALECUA="${MF_INCLUDE_SCALECUA:-1}"
 mkdir -p "${ENV_ROOT}" "${DOWNLOAD_ROOT}" "${META}"
 
 [[ -x "${BASE_PYTHON}" ]]
@@ -101,9 +102,14 @@ UIVOYAGER_REQUIREMENTS="${SOURCE_ROOT}/UI-Voyager/androidworld/requirements.txt"
 SCALECUA_REQUIREMENTS="${SOURCE_ROOT}/ScaleCUA/evaluation/AndroidWorld/requirements.txt"
 MOBILEAGENT_WHEELHOUSE="$(prepare_wheelhouse mobileagent "${MOBILEAGENT_REQUIREMENTS}")"
 UIVOYAGER_WHEELHOUSE="$(prepare_wheelhouse uivoyager "${UIVOYAGER_REQUIREMENTS}")"
-SCALECUA_WHEELHOUSE="$(prepare_wheelhouse scalecua "${SCALECUA_REQUIREMENTS}")"
 
 build_env mf_mobileagent_py311 "${MOBILEAGENT_REQUIREMENTS}" "${MOBILEAGENT_WHEELHOUSE}"
 build_env mf_uivoyager_py311 "${UIVOYAGER_REQUIREMENTS}" "${UIVOYAGER_WHEELHOUSE}"
-build_env mf_scalecua_py311 "${SCALECUA_REQUIREMENTS}" "${SCALECUA_WHEELHOUSE}"
+if [[ "${INCLUDE_SCALECUA}" == "1" ]]; then
+  SCALECUA_WHEELHOUSE="$(prepare_wheelhouse scalecua "${SCALECUA_REQUIREMENTS}")"
+  build_env mf_scalecua_py311 "${SCALECUA_REQUIREMENTS}" "${SCALECUA_WHEELHOUSE}"
+elif [[ "${INCLUDE_SCALECUA}" != "0" ]]; then
+  echo "MF_INCLUDE_SCALECUA must be 0 or 1" >&2
+  exit 1
+fi
 echo "multi_framework_vllm_env_bootstrap_v0_2=complete"
