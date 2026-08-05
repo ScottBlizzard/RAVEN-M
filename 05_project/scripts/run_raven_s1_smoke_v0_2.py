@@ -39,9 +39,16 @@ def digest_json(value: Any) -> str:
 
 
 def instantiate_frozen_task(registered: dict[str, Any], spec: dict[str, Any]) -> Any:
-    """Build the exact JSON-native S1b instance before any model call."""
+    """Build and verify a direct S1b or seed-generated Hard instance."""
     task_type = registered[str(spec["task_class"])]
-    task = task_type(spec["params"])
+    if "params" in spec:
+        params = spec["params"]
+    else:
+        task_seed = int(spec["task_seed"])
+        random.seed(task_seed)
+        np.random.seed(task_seed)
+        params = task_type.generate_random_params()
+    task = task_type(params)
     actual_params = digest_json(task.params)
     actual_goal = sha256(str(task.goal).encode("utf-8")).hexdigest()
     if actual_params != str(spec["task_params_hash"]):
