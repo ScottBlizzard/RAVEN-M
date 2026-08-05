@@ -1,0 +1,35 @@
+{
+  "schema": "role_binding_timing.infra_m11_v1.status.v1",
+  "protocol_id": "INFRA-M11-PREREG-FIRST-TEMPORAL-SUPPORT-ATTESTATION-RECOVERY-V1",
+  "status": "NOT_AUTHORIZED_FOR_IMPLEMENTATION",
+  "effective_date": "2026-08-05",
+  "freeze_commit": "a9b287a58ba61e96c88e6b14eaa56abbdc52d22c",
+  "freeze_tag": "role-binding-timing-infra-m11-freeze-20260805",
+  "freeze_tag_object_oid": "8216d241ec51601de7afda5ea65b9e45cf30bd1b",
+  "freeze_object_modified": false,
+  "implementation_allowed": false,
+  "test_execution_allowed": false,
+  "live_allowed": false,
+  "reasons": [
+    "M11 V1 protocol and tests were authored by the same task after that task had already produced an invalid pre-freeze implementation, so clean independent preregistration cannot be claimed.",
+    "A later parent-supervision read-only search crossed the prohibited leaked-file path boundary.",
+    "The V1 contract did not machine-freeze the provenance and recomputation of authorization roles and could allow caller-supplied labels to be trusted."
+  ],
+  "permitted_use": "contamination_and_boundary_record_only",
+  "forbidden_use": [
+    "implementation_contract",
+    "test_reuse",
+    "code_import",
+    "copy_source",
+    "held_out_evidence",
+    "empirical_claim"
+  ],
+  "successor": "INFRA-M12-DEV-ENGINEERING-CONTRACT",
+  "accounting": {
+    "generation_calls": 0,
+    "generation_tokens": 0,
+    "held_out_captures": 0,
+    "live_chains": 0,
+    "tests_executed": 0
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "schema": "role_binding_timing.infra_m11_v1.supervision_incident.v1",
+  "incident_id": "INFRA-M11-V1-INCIDENT-20260805",
+  "recorded_date": "2026-08-05",
+  "verdict": "READ_BOUNDARY_VIOLATION_RECORDED",
+  "target_freeze": {
+    "commit": "a9b287a58ba61e96c88e6b14eaa56abbdc52d22c",
+    "tag": "role-binding-timing-infra-m11-freeze-20260805",
+    "tag_object_oid": "8216d241ec51601de7afda5ea65b9e45cf30bd1b",
+    "object_modified": false
+  },
+  "events": [
+    {
+      "event_type": "AUTHORING_EXPOSURE_CONTAMINATION",
+      "direct_evidence": "The same task that had written the invalid pre-freeze implementation subsequently authored the M11 V1 protocol and tests.",
+      "consequence": "M11 V1 cannot claim independence from all prior implementation ideas. Its tests are at most a DEV engineering contract, not a clean or independent preregistration.",
+      "files_modified_by_event": false
+    },
+    {
+      "event_type": "READ_BOUNDARY_VIOLATION",
+      "actor_scope": "parent_supervision_thread",
+      "timing": "after_M11_V1_freeze",
+      "operation": "overbroad_read_only_rg_search",
+      "patterns": [
+        "support_only_ancestry_nodes",
+        "project_authorization_candidates",
+        "observed_class",
+        "runner_owned_adb_client"
+      ],
+      "boundary_failure": "The search scope unintentionally included the prohibited untracked leaked implementation path and returned several matching line fragments.",
+      "full_file_opened": false,
+      "file_modified": false,
+      "file_copied": false,
+      "file_moved": false,
+      "file_staged": false,
+      "file_committed": false,
+      "fragments_forwarded_to_current_task": false,
+      "fragments_permitted_as_design_input": false,
+      "consequence": "The incident is a READ_BOUNDARY_VIOLATION even though it was read-only and partial. No fragment content may be used in subsequent design."
+    }
+  ],
+  "excluded_scene_evidence": {
+    "path": "05_project/src/raven_m/role_binding_timing/infra_m10_temporal_attestation.py",
+    "git_status": "untracked",
+    "previously_known_size_bytes": 47681,
+    "previously_known_line_count": 882,
+    "previously_known_sha256": "D5C0439A39ECD271625502E64F6EBD0BC018F262B9256F6095F44358F90C4BBA",
+    "read_during_incident_record_creation": false,
+    "handling": "Preserve untouched; do not read, import, copy, move, delete, format, stage, commit, reuse, or use returned fragments."
+  },
+  "m11_v1_status": "NOT_AUTHORIZED_FOR_IMPLEMENTATION",
+  "accounting": {
+    "generation_calls": 0,
+    "generation_tokens": 0,
+    "held_out_captures": 0,
+    "live_chains": 0,
+    "tests_executed": 0
+  },
+  "protected_wip_sha256": {
+    "05_project/src/raven_m/controller/episode_controller.py": "FC0E82E0FDE90119365D4F685F080EB4519BF2F602E4BDA58DE5D4809A40FE33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "FF89D6B70BE4B4738646D262BEB67D7B7E932E9EB95956D940B1C5000A999D10",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5BB1F1E3DE673A1072CFEE62938B761A62FD69C187D5EADF54BC46B115A3FD0A"
+  },
+  "claim_evidence_boundary": {
+    "supported": [
+      "M11 V1 authoring was exposed to the existence of a prior invalid implementation effort.",
+      "A parent-supervision read-only search crossed the prohibited path boundary and returned partial matching fragments.",
+      "M11 V1 is not authorized for implementation."
+    ],
+    "unsupported": [
+      "The leaked implementation was correct, copied, reused, or incorporated into M11/M12.",
+      "The partial fragments establish any process-attestation behavior.",
+      "M11 V1 is an independent or clean preregistration."
+    ]
+  }
+}
