@@ -65,6 +65,12 @@ do {
             Start-Sleep -Seconds 3
             continue
         }
+        $focusOutput = & $adb shell dumpsys activity activities 2>&1
+        $focusText = ($focusOutput | Select-String "ResumedActivity" | Select-Object -First 1 | Out-String)
+        if ($focusText -notmatch "nexuslauncher") {
+            Start-Sleep -Seconds 3
+            continue
+        }
         Write-Host "AndroidWorldAvd is ready."
         return
     }
