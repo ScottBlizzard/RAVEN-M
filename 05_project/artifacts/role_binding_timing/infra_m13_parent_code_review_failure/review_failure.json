@@ -1,0 +1,95 @@
+{
+  "schema": "role_binding_timing.infra_m13.parent_code_review_failure.v1",
+  "protocol_id": "INFRA-M13-POST-DIAGNOSIS-PROOF-BINDING-ISSUER-LEDGER-V1",
+  "date": "2026-08-05",
+  "verdict": "NOT_AUTHORIZED_FOR_OFFLINE_GATES",
+  "review_result": "FAIL_CALLER_SUBSTITUTABLE_AUTHORITY_CONTEXT_AND_INCOMPLETE_ANCESTRY",
+  "immutable_subject": {
+    "freeze_commit": "fb697c67a724e75c602a65ed2713b75b750c1834",
+    "freeze_tag": "role-binding-timing-infra-m13-freeze-20260805",
+    "freeze_tag_object": "28c1bd26d80e23578fbcaa5a30f42063f8d930ce",
+    "implementation_commit": "3c739b66c41f5a20073cfeb0ecc55650be017ee9",
+    "implementation_path": "05_project/src/raven_m/role_binding_timing/infra_m13_proof_bound_attestation.py",
+    "implementation_blob_oid": "153df3036797771b2efd24bb60c3e22a166bef5e",
+    "implementation_sha256": "8257123377AFBD9328F13CCA6B1C3C8749A9B8D72B3888CA022F63B4E7C7CA8F",
+    "implementation_lock_commit": "dc48ef630a71528458291a9ad5e851f09c047b17",
+    "implementation_lock_tag": "role-binding-timing-infra-m13-implementation-lock-20260805",
+    "implementation_lock_tag_object": "c80066c12e2f10f75812c8ebce4a7d1dd477c67f",
+    "mutation_after_review": false
+  },
+  "findings": [
+    {
+      "id": "M13-RF-01",
+      "locked_blob_lines": "348-374, 452-469, 784-819, 887-905",
+      "component": "runner authority and call boundary",
+      "direct_evidence": "_runner_match proves only that a raw observed row equals the locked_runner_record supplied on that call. derive and sealed verification accept runner, paths, and ports as ordinary caller arguments. begin_issuer_run accepts only ledger and run_id, so the ledger session is not bound to an independently initialized runner authority context.",
+      "security_consequence": "A caller can select another real row and supply matching runner fields, then recompute under that substituted root. The frozen fake-runner test does not establish an authority source independent of the caller.",
+      "severity": "CONTRACT_BREAKING"
+    },
+    {
+      "id": "M13-RF-02",
+      "locked_blob_lines": "336-345",
+      "component": "controlled-port lock",
+      "direct_evidence": "_canonical_ports accepts any unique caller list whose set is a subset of CONTROLLED_PORT_UNIVERSE. It does not require exact equality with all five controlled ports.",
+      "security_consequence": "An empty or reduced port set can remove 5038, 5554, or other protected ownership evidence and weaken candidate or veto derivation.",
+      "severity": "CONTRACT_BREAKING"
+    },
+    {
+      "id": "M13-RF-03",
+      "locked_blob_lines": "183-204, 465-473",
+      "component": "listener-owner evidence",
+      "direct_evidence": "_listener_map validates PID and port value syntax but does not require every listener owner PID to resolve to exactly one identity in the fused process universe.",
+      "security_consequence": "An unknown, reused, or ambiguous owner of a controlled port may be retained in the listener map and then silently ignored during per-row candidate derivation.",
+      "severity": "CONTRACT_BREAKING"
+    },
+    {
+      "id": "M13-RF-04",
+      "locked_blob_lines": "478-518, 530-552",
+      "component": "candidate ancestry and support projection",
+      "direct_evidence": "Candidate reasons are collected before ancestry is checked. For every candidate-like row, observed ancestry nodes are added to support_identities regardless of the complete flag, and all candidate_set identities are emitted into project_authorization_candidates regardless of whether the chain reaches the selected runner.",
+      "security_consequence": "A candidate-like row with an incomplete or wrong-root chain remains in the authorization candidate view, while partial ancestors can be misclassified as support and cause false authority or false veto behavior.",
+      "severity": "CONTRACT_BREAKING"
+    }
+  ],
+  "test_sufficiency_verdict": {
+    "frozen_canonical_tests": "NOT_RUN",
+    "frozen_issuer_ledger_tests": "NOT_RUN",
+    "m9_replay": "NOT_RUN",
+    "offline_runner": "NOT_RUN",
+    "reason_not_to_execute": "The frozen matrices do not establish a non-caller-substitutable authority root, exact full controlled-port lock, listener-owner membership in the fused universe, or complete-root ancestry as a prerequisite for candidate/support projection.",
+    "future_pass_would_authorize_m13": false
+  },
+  "claim_evidence_boundary": {
+    "supported": [
+      "The four findings are present in the exact locked M13 implementation blob.",
+      "M13 is not authorized for frozen offline gates or live execution.",
+      "No frozen M13 behavior test, replay, offline runner, or live chain was executed in this review-failure phase."
+    ],
+    "unsupported": [
+      "Any claim that M13 authority context, port ownership, process ancestry, sealed views, or temporal attestations are correct or secure.",
+      "Any infrastructure, controller, memory-efficacy, role-binding, held-out, novelty, or generalization claim."
+    ]
+  },
+  "accounting": {
+    "generation_calls": 0,
+    "generation_tokens": 0,
+    "held_out_captures": 0,
+    "stage1_runs": 0,
+    "destination_first_gate_runs": 0,
+    "frozen_test_runs": 0,
+    "m9_replays": 0,
+    "offline_behavior_runs": 0,
+    "live_chains": 0
+  },
+  "protected_wip_sha256": {
+    "05_project/src/raven_m/controller/episode_controller.py": "FC0E82E0FDE90119365D4F685F080EB4519BF2F602E4BDA58DE5D4809A40FE33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "FF89D6B70BE4B4738646D262BEB67D7B7E932E9EB95956D940B1C5000A999D10",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5BB1F1E3DE673A1072CFEE62938B761A62FD69C187D5EADF54BC46B115A3FD0A"
+  },
+  "contamination_boundary": {
+    "m10_untracked_leak_access": "GIT_STATUS_PRESENCE_ONLY",
+    "m11_access": "NOT_READ_NOT_REUSED",
+    "latex_modified": false,
+    "push_performed": false
+  }
+}
