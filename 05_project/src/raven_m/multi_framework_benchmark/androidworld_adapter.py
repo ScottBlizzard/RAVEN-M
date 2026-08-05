@@ -43,12 +43,15 @@ class BudgetedAndroidWorldAdapter:
         return self._execute(canonical)
 
 
-def write_answer_contract(interaction_cache: Any, answer: str) -> None:
+def write_answer_contract(target: Any, answer: str) -> None:
     """Mechanically write an answer into common AndroidWorld cache shapes."""
-    if hasattr(interaction_cache, "answer"):
-        interaction_cache.answer = answer
+    if hasattr(target, "interaction_cache"):
+        target.interaction_cache = answer
         return
-    if isinstance(interaction_cache, dict):
-        interaction_cache["answer"] = answer
+    if hasattr(target, "answer"):
+        target.answer = answer
+        return
+    if isinstance(target, dict):
+        target["answer"] = answer
         return
     raise TypeError("Unsupported AndroidWorld interaction_cache answer contract")

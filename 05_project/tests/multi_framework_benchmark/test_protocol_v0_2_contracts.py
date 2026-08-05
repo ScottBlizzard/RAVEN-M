@@ -49,6 +49,9 @@ def test_03_answer_contract(answer: str) -> None:
     cache: dict[str, str] = {}
     write_answer_contract(cache, answer)
     assert cache["answer"] == answer
+    env = type("Env", (), {"interaction_cache": ""})()
+    write_answer_contract(env, answer)
+    assert env.interaction_cache == answer
 
 
 # 4. finish claim cannot override evaluator

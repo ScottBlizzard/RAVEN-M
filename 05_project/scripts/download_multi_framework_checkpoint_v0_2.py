@@ -64,16 +64,20 @@ def main() -> None:
         raise RuntimeError("Downloaded snapshot contains no files")
     license_paths = [row["path"] for row in records
                      if Path(row["path"]).name.casefold().startswith("license")]
+    card_license = (getattr(info.card_data, "license", None)
+                    if info.card_data is not None else None)
     manifest = {
         "schema_version": "multi_framework_checkpoint.v0.2",
         "created_at": datetime.now(timezone.utc).isoformat(),
         "repo_id": args.repo_id,
         "revision": args.revision,
         "resolved_hub_sha": info.sha,
+        "transfer_endpoint": os.environ.get("HF_ENDPOINT", "https://huggingface.co"),
         "snapshot_path": str(snapshot),
         "file_count": len(records),
         "total_bytes": sum(row["bytes"] for row in records),
         "license_paths": license_paths,
+        "model_card_license": card_license,
         "files": records,
     }
     args.manifest.parent.mkdir(parents=True, exist_ok=True)
