@@ -204,7 +204,14 @@ def main() -> None:
     if args.task_manifest:
         suite = suite_utils.Suite()
         for task_spec in task_specs:
-            suite[task_spec["task_class"]] = [instantiate_verified(registered, task_spec)]
+            task = instantiate_verified(registered, task_spec)
+            # create_suite() normally adds this bookkeeping field only after
+            # task construction.  Direct frozen instances bypass create_suite,
+            # while the official result serializer still requires the field.
+            # Add it after hash verification so it cannot alter the frozen
+            # task parameters or goal.
+            task.params[constants.EpisodeConstants.SEED] = int(task_spec["task_seed"])
+            suite[task_spec["task_class"]] = [task]
     else:
         suite = suite_utils.create_suite(
             registered, n_task_combinations=1, seed=TASK_SEED,
@@ -263,7 +270,10 @@ def main() -> None:
                         "dependency_lock_hash": dependency_hash, "prompt_hash": prompt_hash,
                         "task_id": task_name, "task_class": task_name,
                         "task_seed": next((int(row["task_seed"]) for row in task_specs if row["task_class"] == task_name), TASK_SEED),
-                        "task_params_hash": value_hash(task.params), "attempt_id": f"{run_id}:{task_name}",
+                        "task_params_hash": next(
+                            (str(item["task_params_hash"]) for item in task_specs if item["task_class"] == task_name),
+                            value_hash(task.params),
+                        ), "attempt_id": f"{run_id}:{task_name}",
                         "rerun_of": None, "step_index": step_index,
                         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
                         "observation_privileges": ["screenshot"],

@@ -236,7 +236,12 @@ def main() -> None:
             registered = registry.TaskRegistry().get_registry(registry.TaskRegistry.ANDROID_WORLD_FAMILY)
             suite = suite_utils.Suite()
             for task_spec in task_specs:
-                suite[task_spec["task_class"]] = [instantiate_verified(registered, task_spec)]
+                task = instantiate_verified(registered, task_spec)
+                # Match AndroidWorld create_suite(): the seed is serializer
+                # metadata added after construction, not part of the frozen
+                # task parameter hash or goal.
+                task.params[constants.EpisodeConstants.SEED] = int(task_spec["task_seed"])
+                suite[task_spec["task_class"]] = [task]
             suite.suite_family = registry.TaskRegistry.ANDROID_WORLD_FAMILY
         else:
             suite = runner.create_suite()
@@ -280,7 +285,10 @@ def main() -> None:
                         "dependency_lock_hash": dependency_hash, "prompt_hash": prompt_hash,
                         "task_id": task_name, "task_class": task_name,
                         "task_seed": next((int(item["task_seed"]) for item in task_specs if item["task_class"] == task_name), TASK_SEED),
-                        "task_params_hash": value_hash(task.params), "attempt_id": f"{run_id}:{task_name}",
+                        "task_params_hash": next(
+                            (str(item["task_params_hash"]) for item in task_specs if item["task_class"] == task_name),
+                            value_hash(task.params),
+                        ), "attempt_id": f"{run_id}:{task_name}",
                         "rerun_of": None, "step_index": step_index,
                         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
                         "observation_privileges": ["screenshot"],
