@@ -1,0 +1,58 @@
+{
+  "schema": "role_binding_timing.infra_m11_prereg_first_recovery.freeze_declaration.v1",
+  "protocol_id": "INFRA-M11-PREREG-FIRST-TEMPORAL-SUPPORT-ATTESTATION-RECOVERY-V1",
+  "freeze_tag": "role-binding-timing-infra-m11-freeze-20260805",
+  "date": "2026-08-05",
+  "decision": "FROZEN_NOT_IMPLEMENTED_NOT_LIVE_ELIGIBLE",
+  "implementation_present": false,
+  "tests_executed": false,
+  "test_expected_state": "NOT_RUN_EXPECTED_FAIL_MISSING_IMPLEMENTATION",
+  "frozen_artifacts": [
+    "04_protocols/role_binding_timing/INFRA_M11_PREREG_FIRST_TEMPORAL_SUPPORT_ATTESTATION_RECOVERY_V1.md",
+    "05_project/configs/role_binding_timing/infra_m11_prereg_first_temporal_support_attestation_recovery.json",
+    "05_project/configs/role_binding_timing/infra_m11_prereg_first_temporal_support_attestation_recovery.lock.json",
+    "05_project/schemas/role_binding_timing_infra_m11_completion.v1.schema.json",
+    "05_project/scripts/check_role_binding_timing_infra_m11_contamination.py",
+    "05_project/tests/role_binding_timing/test_infra_m11_prereg_first_recovery_contract.py",
+    "05_project/artifacts/role_binding_timing/infra_m11_prereg_first_recovery_freeze/freeze_declaration.json",
+    "reports/role_binding_timing/INFRA_M11_PREREGISTRATION_FREEZE_2026-08-05.md"
+  ],
+  "future_implementation_path": "05_project/src/raven_m/role_binding_timing/infra_m11_prereg_first_recovery.py",
+  "future_implementation_created": false,
+  "fault_injection_matrix": [
+    "lossless_support_projection",
+    "replay_12_exited_1_current",
+    "same_frame_accept",
+    "cross_frame_stitch_reject",
+    "parent_pid_reuse_reject",
+    "child_pid_reuse_reject",
+    "missing_create_time_reject",
+    "missing_exe_sha256_reject",
+    "missing_cmdline_reject",
+    "access_denied_critical_field_reject",
+    "source_record_hash_tamper_reject",
+    "snapshot_hash_tamper_reject",
+    "partition_hash_tamper_reject",
+    "cross_run_replay_reject",
+    "current_history_conflict_reject",
+    "support_owns_5038_reject",
+    "support_role_authority_reject",
+    "support_kill_or_cleanup_target_reject",
+    "candidate_masquerades_as_support_reject",
+    "missing_parent_chain_reject",
+    "runner_pid_reuse_reject",
+    "terminal_expiry_reject",
+    "static_contamination_gate"
+  ],
+  "live_chain": {
+    "executed": false,
+    "maximum_future_attempts": 1,
+    "eligible_now": false
+  },
+  "accounting": {
+    "generation_calls": 0,
+    "generation_tokens": 0,
+    "held_out_captures": 0,
+    "live_chains": 0
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "schema": "role_binding_timing.infra_m11_prereg_first_recovery.input_lock.v1",
+  "protocol_id": "INFRA-M11-PREREG-FIRST-TEMPORAL-SUPPORT-ATTESTATION-RECOVERY-V1",
+  "freeze_tag": "role-binding-timing-infra-m11-freeze-20260805",
+  "lock_purpose": "preregistration_inputs_only",
+  "generation_eligible": false,
+  "implementation_in_lock": false,
+  "historical_inputs": {
+    "m9_freeze": {
+      "commit": "d9e812b3bacd2d06da890086a106af94c95c5347",
+      "tree_oid": "2b3f059c3f3ec4ac62753692076cfa78bff089d5",
+      "tag": "role-binding-timing-infra-m9-freeze-20260805",
+      "tag_object_oid": "51f0d80e654e85060205b65e719587ad43ebffdc"
+    },
+    "m9_result": {
+      "commit": "613b338fce1eab5ecf8c29e6a95702dcfd04eca6",
+      "tree_oid": "8ee9d2b5825989bfa3d1bcf79fe8ff7dfd9ae9ac",
+      "tag": "role-binding-timing-infra-m9-result-20260805",
+      "tag_object_oid": "e716392e774560075b143ead3cfcd430f68cfa0f",
+      "raw_result_root_tree_oid": "19a11bead0f5e2952279813c8abf29e6b8143e38",
+      "artifact_manifest_blob_oid": "36013f25d8330dd7efaa4d375c0002bb283bba38",
+      "result_audit_blob_oid": "8400c12b8f9c22dbc09d05db256bba4d5a423032",
+      "result_report_blob_oid": "bc26f7ec324e2be4582eaca59ea7123fef87c147"
+    },
+    "closest_root_cause_audit": {
+      "commit": "db5f4d3bd6113a6e4f889bf32eec2f2789bd82e3",
+      "tree_oid": "a6cc62338307052844add37ff3076dcf11fee625",
+      "audit_json_blob_oid": "e11fb8400896fb6527a4bda4aa3b5b4255f2f7d8",
+      "audit_report_blob_oid": "bf19400a5c3726b6a69df6079f8941e2f4939680"
+    },
+    "m10_invalid_boundary": {
+      "commit": "154c1fb293b2184e790f0c7a2840c2d1e5c1e765",
+      "tree_oid": "4772b47255c4e71668dc25271ea2b7ac9c27fec4",
+      "tag": "role-binding-timing-infra-m10-invalid-20260805",
+      "tag_object_oid": "16d0eead451e2cbdc4c4bd60ae1d73b6b3721177",
+      "deviation_record_blob_oid": "ce6ebbd621eaaca9215e7e64f51c0334947c9672",
+      "use": "boundary_only_not_implementation_input"
+    }
+  },
+  "raw_source_policy": {
+    "offline_replay": "Only full raw process snapshots committed in the locked M9 result may be historical replay inputs.",
+    "future_live": "Only a full raw process snapshot captured atomically in the same future M11 run may source that sample's derived views or attestation.",
+    "historical_authority_in_live": false
+  },
+  "contamination_boundary": {
+    "known_leaks": [
+      {
+        "path": "05_project/src/raven_m/role_binding_timing/infra_m10_temporal_attestation.py",
+        "module_identifier": "infra_m10_temporal_attestation",
+        "filename": "infra_m10_temporal_attestation.py",
+        "known_size_bytes": 47681,
+        "known_line_count": 882,
+        "known_sha256": "D5C0439A39ECD271625502E64F6EBD0BC018F262B9256F6095F44358F90C4BBA",
+        "is_m11_input": false,
+        "permitted_access": "git_status_presence_only",
+        "forbidden": [
+          "open",
+          "read",
+          "import",
+          "copy",
+          "move",
+          "delete",
+          "format",
+          "stage",
+          "commit",
+          "reuse"
+        ]
+      }
+    ]
+  },
+  "protected_wip_sha256": {
+    "05_project/src/raven_m/controller/episode_controller.py": "FC0E82E0FDE90119365D4F685F080EB4519BF2F602E4BDA58DE5D4809A40FE33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "FF89D6B70BE4B4738646D262BEB67D7B7E932E9EB95956D940B1C5000A999D10",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5BB1F1E3DE673A1072CFEE62938B761A62FD69C187D5EADF54BC46B115A3FD0A"
+  },
+  "future_namespace": {
+    "implementation": "05_project/src/raven_m/role_binding_timing/infra_m11_prereg_first_recovery.py",
+    "test": "05_project/tests/role_binding_timing/test_infra_m11_prereg_first_recovery_contract.py",
+    "result_root": "05_project/artifacts/role_binding_timing/infra_m11_prereg_first_recovery",
+    "offline_gate_root": "05_project/artifacts/role_binding_timing/infra_m11_prereg_first_recovery_offline_gates"
+  },
+  "frozen_zero_accounting": {
+    "generation_calls": 0,
+    "generation_tokens": 0,
+    "held_out_captures": 0,
+    "live_chains": 0
+  },
+  "test_execution": {
+    "executed_during_freeze": false,
+    "expected_state": "NOT_RUN_EXPECTED_FAIL_MISSING_IMPLEMENTATION"
+  }
+}

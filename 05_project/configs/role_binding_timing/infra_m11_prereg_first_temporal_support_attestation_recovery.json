@@ -1,0 +1,82 @@
+{
+  "schema": "role_binding_timing.infra_m11_prereg_first_recovery.config.v1",
+  "protocol_id": "INFRA-M11-PREREG-FIRST-TEMPORAL-SUPPORT-ATTESTATION-RECOVERY-V1",
+  "freeze_tag": "role-binding-timing-infra-m11-freeze-20260805",
+  "phase": "freeze_only",
+  "implementation_present": false,
+  "generation_eligible": false,
+  "live_eligible": false,
+  "future_paths": {
+    "implementation": "05_project/src/raven_m/role_binding_timing/infra_m11_prereg_first_recovery.py",
+    "test": "05_project/tests/role_binding_timing/test_infra_m11_prereg_first_recovery_contract.py",
+    "result_root": "05_project/artifacts/role_binding_timing/infra_m11_prereg_first_recovery",
+    "offline_gate_root": "05_project/artifacts/role_binding_timing/infra_m11_prereg_first_recovery_offline_gates"
+  },
+  "attestation": {
+    "scope": "same_run_same_atomic_sample",
+    "allow_cross_sample_stitching": false,
+    "allow_cross_run_replay": false,
+    "allow_pid_only": false,
+    "allow_path_only": false,
+    "current_evidence_priority": true,
+    "conflict_policy": "fail_closed",
+    "terminal_expiry_required": true,
+    "required_fields": [
+      "identity_key",
+      "pid",
+      "create_time",
+      "ppid",
+      "parent_identity_key",
+      "exe",
+      "exe_sha256",
+      "cmdline",
+      "sample_sequence",
+      "sample_time_utc",
+      "source_record_sha256",
+      "source_snapshot_sha256",
+      "partition_sha256",
+      "accessibility_status",
+      "access_error",
+      "listening_ports"
+    ]
+  },
+  "support_invariants": {
+    "role_authority": false,
+    "adoptable": false,
+    "kill_target": false,
+    "cleanup_target": false,
+    "may_own_controlled_port": false,
+    "may_independently_authorize_candidate": false
+  },
+  "controlled_ports": [5038, 5554, 5555, 8554],
+  "live_chain": {
+    "maximum_runs": 1,
+    "stop_on_first_failure": true,
+    "same_protocol_retry": false,
+    "phases": [
+      "exclusive_5038",
+      "launch",
+      "boot",
+      "display_framework",
+      "burn_in",
+      "settings_a11y",
+      "dev_grid",
+      "cleanup",
+      "seal"
+    ],
+    "burn_in_cycles": 24,
+    "burn_in_minimum_elapsed_seconds_exclusive": 180,
+    "settings_a11y_required_successes": 3,
+    "dev_grid_apps": 4,
+    "dev_grid_rounds_per_app": 3,
+    "dev_grid_required_successes": 12
+  },
+  "accounting": {
+    "generation_calls": 0,
+    "generation_tokens": 0,
+    "held_out_captures": 0,
+    "stage1_runs": 0,
+    "destination_first_runs": 0
+  },
+  "preimplementation_test_state": "NOT_RUN_EXPECTED_FAIL_MISSING_IMPLEMENTATION"
+}
