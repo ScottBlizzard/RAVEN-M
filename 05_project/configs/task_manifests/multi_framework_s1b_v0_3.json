@@ -1,0 +1,36 @@
+{
+  "classification": "FRESH_MATCHED_DEV_QUALIFICATION",
+  "manifest_id": "multi_framework_s1b_v0_3",
+  "maximum_actions_per_task": 12,
+  "model_calls_before_hash_verification": 0,
+  "nominal_seed": 20260809,
+  "protocol_id": "MULTI_FRAMEWORK_HARD_BENCHMARK_V0_3",
+  "scientific_failure_reruns": 0,
+  "tasks": [
+    {
+      "goal": "Create a timer with 2 hours, 54 minutes, and 24 seconds. Do not start the timer.",
+      "goal_hash": "ae94f09f48928e8a06e3ba3579b6fed473caa3ff80986144264bbe0164827ebf",
+      "params": {
+        "hours": 2,
+        "minutes": 54,
+        "seconds": 24
+      },
+      "task_class": "ClockTimerEntry",
+      "task_id": "S1B-01",
+      "task_params_hash": "0caa6ad8c352d9141c8786a0b757f9f4944a679d9ffe9d78c7bbe6cd8e5228ec",
+      "task_seed": 20260809
+    },
+    {
+      "goal": "Create a new note in Markor named 2023_09_11_clever_yacht.txt with the following text: Cleanliness is next to godliness.",
+      "goal_hash": "a1abad8b78712f05ef4d75ac08e558eab15b4dd5e71497e575756b6d71850066",
+      "params": {
+        "file_name": "2023_09_11_clever_yacht.txt",
+        "text": "Cleanliness is next to godliness."
+      },
+      "task_class": "MarkorCreateNote",
+      "task_id": "S1B-02",
+      "task_params_hash": "0e35f530f31ddba97d93b3f473ea7a0986bd66ab89ff400eecf79f76a4214dcc",
+      "task_seed": 20260809
+    }
+  ]
+}

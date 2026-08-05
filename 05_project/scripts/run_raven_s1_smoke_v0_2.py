@@ -73,6 +73,8 @@ def main() -> None:
     parser.add_argument("--console-port", type=int, default=5554)
     parser.add_argument("--grpc-port", type=int, default=8554)
     parser.add_argument("--output-root", type=Path, required=True)
+    parser.add_argument("--task-manifest", type=Path)
+    parser.add_argument("--stage-label", default="multi_framework_s1_v0_2_dev_only")
     args = parser.parse_args()
 
     authorization = require_authorization(args.authorization, args.arm_id)
@@ -100,7 +102,17 @@ def main() -> None:
     from android_world.env import env_launcher
     from raven_m.controller.episode_controller import EpisodeController
     from raven_m.history.policies import make_history_policy
+    from raven_m.multi_framework_benchmark.task_instances import (
+        instantiate_verified,
+        load_frozen_instances,
+    )
     from raven_m.models.transformers_client import TransformersClient
+
+    manifest = json.loads(args.task_manifest.read_text(encoding="utf-8")) if args.task_manifest else None
+    task_specs = load_frozen_instances(args.task_manifest) if args.task_manifest else [
+        {"task_class": task, "task_seed": TASK_SEED} for task in TASKS
+    ]
+    max_actions = int(manifest.get("maximum_actions_per_task", MAX_ACTIONS)) if manifest else MAX_ACTIONS
 
     variant = ARM_TO_VARIANT[args.arm_id]
     client = TransformersClient(args.url)
@@ -119,7 +131,7 @@ def main() -> None:
         policy = make_history_policy("B3", client=client, summary_system_prompt=prompts["summary"])
         system_prompt = prompts["executor"]
         schema_path = None
-        max_calls = 2 * MAX_ACTIONS + 2 * math.ceil(MAX_ACTIONS / 5)
+        max_calls = 2 * max_actions + 2 * math.ceil(max_actions / 5)
     else:
         policy = make_history_policy(
             "M0", client=client, summary_system_prompt="",
@@ -127,7 +139,7 @@ def main() -> None:
         )
         system_prompt = prompts["executor_raven"]
         schema_path = source_project / "schemas/action.raven.v1.schema.json"
-        max_calls = 3 * MAX_ACTIONS + 4
+        max_calls = 3 * max_actions + 4
 
     registered = registry.TaskRegistry().get_registry(registry.TaskRegistry.ANDROID_WORLD_FAMILY)
     env = env_launcher.load_and_setup_env(
@@ -138,16 +150,21 @@ def main() -> None:
     run_id = f"s1-{args.arm_id.casefold()}-{uuid.uuid4().hex[:12]}"
     arm_capability = authorization["capabilities"][args.arm_id]
     try:
-        for task_index, task_class in enumerate(TASKS):
-            random.seed(TASK_SEED)
-            np.random.seed(TASK_SEED)
-            task_type = registered[task_class]
-            task = task_type(task_type.generate_random_params())
+        for task_index, task_spec in enumerate(task_specs):
+            task_class = task_spec["task_class"]
+            task_seed = int(task_spec["task_seed"])
+            if args.task_manifest:
+                task = instantiate_verified(registered, task_spec)
+            else:
+                random.seed(task_seed)
+                np.random.seed(task_seed)
+                task_type = registered[task_class]
+                task = task_type(task_type.generate_random_params())
             episode_dir = output / f"{task_index + 1:02d}_{task_class}"
             controller = EpisodeController(
                 client=client,
                 system_prompt=system_prompt,
-                max_steps=MAX_ACTIONS,
+                max_steps=max_actions,
                 max_model_calls=max_calls,
                 history_policy=policy,
                 action_schema_path=schema_path,
@@ -156,8 +173,8 @@ def main() -> None:
                 env=env, task=task,
                 episode_id=f"{run_id}-{task_index + 1}",
                 episode_dir=episode_dir,
-                seed=TASK_SEED,
-                protocol="multi_framework_s1_v0_2_dev_only",
+                seed=task_seed,
+                protocol=args.stage_label,
                 variant=variant,
             )
             raw_events = read_events(episode_dir / "events.jsonl")
@@ -195,9 +212,9 @@ def main() -> None:
                     "runtime_hash": arm_capability["runtime_hash"],
                     "dependency_lock_hash": arm_capability["dependency_lock_hash"],
                     "prompt_hash": sha256((system_prompt + "\n\0\n" + row.get("user_prompt", "")).encode("utf-8")).hexdigest(),
-                    "task_id": f"S1-{task_index + 1:02d}",
+                    "task_id": task_spec.get("task_id", f"S1-{task_index + 1:02d}"),
                     "task_class": task_class,
-                    "task_seed": TASK_SEED,
+                    "task_seed": task_seed,
                     "task_params_hash": digest_json(summary.get("task_params")),
                     "attempt_id": "a1",
                     "rerun_of": None,
@@ -253,8 +270,10 @@ def main() -> None:
         "run_id": run_id,
         "arm_id": args.arm_id,
         "variant": variant,
-        "task_seed": TASK_SEED,
-        "max_actions_per_task": MAX_ACTIONS,
+        "task_seed": manifest.get("nominal_seed", TASK_SEED) if manifest else TASK_SEED,
+        "task_manifest": str(args.task_manifest) if args.task_manifest else None,
+        "task_manifest_sha256": digest_file(args.task_manifest) if args.task_manifest else None,
+        "max_actions_per_task": max_actions,
         "rerun_count": 0,
         "results": results,
     }

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import base64
 import json
 from pathlib import Path
 
@@ -9,7 +10,7 @@ import pytest
 from jsonschema import validate
 
 from raven_m.multi_framework_benchmark.action_normalizer import ScreenTransform, maximum_run, normalize_action
-from raven_m.multi_framework_benchmark.androidworld_adapter import ActionBudget, ActionBudgetExceeded, BudgetedAndroidWorldAdapter, write_answer_contract
+from raven_m.multi_framework_benchmark.androidworld_adapter import ActionBudget, ActionBudgetExceeded, BudgetedAndroidWorldAdapter, normalize_guiowl_image_urls, write_answer_contract
 from raven_m.multi_framework_benchmark.arm_registry import ARM_REGISTRY
 from raven_m.multi_framework_benchmark.capability_manifest import S0_GATES, validate_capability, verify_protected
 from raven_m.multi_framework_benchmark.evaluator_bridge import EvaluatorBridge
@@ -18,6 +19,7 @@ from raven_m.multi_framework_benchmark.model_usage_logger import BudgetExceeded,
 from raven_m.multi_framework_benchmark.observation_audit import audit_observation, pixel_effect_class
 from raven_m.multi_framework_benchmark.reset_guard import LIFECYCLE, ResetGuard
 from raven_m.multi_framework_benchmark.runner import CellLimits, HashFreezeGuard, assert_output_root_is_new, validate_rerun, validate_task_hash_equality
+from raven_m.multi_framework_benchmark.task_instances import instantiate_verified, goal_digest
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -191,3 +193,37 @@ def test_capability_schema_and_conjunction() -> None:
     validate_capability(value)
     schema = json.loads((PROJECT_ROOT / "configs/schemas/multi_framework_capability_v0_2.schema.json").read_text(encoding="utf-8"))
     validate(value, schema)
+
+
+def test_guiowl_raw_png_is_wrapped_once() -> None:
+    raw = base64.b64encode(b"\x89PNG\r\n\x1a\nfixture").decode("ascii")
+    payload = {"messages": [{"content": [{"type": "image_url", "image_url": {"url": raw}}]}]}
+    normalized, count = normalize_guiowl_image_urls(payload)
+    assert count == 1
+    url = normalized["messages"][0]["content"][0]["image_url"]["url"]
+    assert url == "data:image/png;base64," + raw
+    normalized_again, second_count = normalize_guiowl_image_urls(normalized)
+    assert second_count == 0
+    assert normalized_again == normalized
+
+
+def test_frozen_task_params_and_goal_are_verified_before_use() -> None:
+    class FakeTask:
+        @staticmethod
+        def generate_random_params():
+            return {"value": "generated"}
+
+        def __init__(self, params):
+            self.params = params
+            self.goal = f"Use {params['value']}"
+
+    params = {"value": "frozen"}
+    params_hash = "1a350788e99ad460a7a64cc0fd4ab5355a5947d217123f05e662e1434f73f196"
+    spec = {
+        "task_class": "FakeTask", "task_seed": 7, "params": params,
+        "task_params_hash": params_hash, "goal_hash": goal_digest("Use frozen"),
+    }
+    task = instantiate_verified({"FakeTask": FakeTask}, spec)
+    assert task.params == params
+    with pytest.raises(RuntimeError, match="goal drift"):
+        instantiate_verified({"FakeTask": FakeTask}, spec | {"goal_hash": "0" * 64})

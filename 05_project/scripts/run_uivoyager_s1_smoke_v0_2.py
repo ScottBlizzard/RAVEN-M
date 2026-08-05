@@ -29,6 +29,10 @@ from raven_m.multi_framework_benchmark.event_schema import (  # noqa: E402
     canonical_json,
 )
 from raven_m.multi_framework_benchmark.runner import assert_output_root_is_new  # noqa: E402
+from raven_m.multi_framework_benchmark.task_instances import (  # noqa: E402
+    instantiate_verified,
+    load_frozen_instances,
+)
 
 
 ARM_ID = "NS-PX-UIV4"
@@ -87,6 +91,8 @@ def main() -> None:
     parser.add_argument("--adb-path", type=Path, required=True)
     parser.add_argument("--base-url", required=True)
     parser.add_argument("--output-root", type=Path, required=True)
+    parser.add_argument("--task-manifest", type=Path)
+    parser.add_argument("--stage-label", default="DEV_S1")
     args = parser.parse_args()
 
     authorization = require_authorization(args.authorization)
@@ -104,16 +110,22 @@ def main() -> None:
     sys.path[:0] = [str(androidworld), str(androidworld / "eval")]
     import androidworld_compat  # noqa: F401
     import requests
-    from android_world import constants, episode_runner
+    from android_world import constants, episode_runner, registry, suite_utils
     from eval.clients.openai_client import OpenAIClient
     from eval.runner import EvalRunner
+
+    manifest = json.loads(args.task_manifest.read_text(encoding="utf-8")) if args.task_manifest else None
+    task_specs = load_frozen_instances(args.task_manifest) if args.task_manifest else [
+        {"task_class": task, "task_seed": TASK_SEED} for task in TASKS
+    ]
+    max_actions = int(manifest.get("maximum_actions_per_task", MAX_ACTIONS)) if manifest else MAX_ACTIONS
 
     class FixedBudgetRunner(EvalRunner):
         def _run_episode(self, task):
             return episode_runner.run_episode(
                 goal=task.goal,
                 agent=self.agent,
-                max_n_steps=MAX_ACTIONS,
+                max_n_steps=max_actions,
                 start_on_home_screen=False,
                 termination_fn=None,
                 task_name=task.name,
@@ -186,10 +198,13 @@ def main() -> None:
             "sft_data_dir": None, "n_history_image": 0,
         },
         "eval": {
-            "suite_family": "android_world", "tasks": list(TASKS),
-            "n_task_combinations": 1, "task_random_seed": TASK_SEED,
+            "suite_family": "android_world", "tasks": [row["task_class"] for row in task_specs],
+            "n_task_combinations": 1,
+            "task_random_seed": manifest.get("nominal_seed", TASK_SEED) if manifest else TASK_SEED,
             "checkpoint_dir": "", "output_path": str(args.output_root / "official"),
         },
+        "task_manifest": str(args.task_manifest) if args.task_manifest else None,
+        "task_manifest_sha256": sha256_file(args.task_manifest) if args.task_manifest else None,
     }
     (args.output_root / "frozen_runtime_config.json").write_text(
         json.dumps(config, indent=2, sort_keys=True) + "\n", encoding="utf-8")
@@ -210,7 +225,14 @@ def main() -> None:
     try:
         runner.setup_env()
         runner.setup_agent(client)
-        suite = runner.create_suite()
+        if args.task_manifest:
+            registered = registry.TaskRegistry().get_registry(registry.TaskRegistry.ANDROID_WORLD_FAMILY)
+            suite = suite_utils.Suite()
+            for task_spec in task_specs:
+                suite[task_spec["task_class"]] = [instantiate_verified(registered, task_spec)]
+            suite.suite_family = registry.TaskRegistry.ANDROID_WORLD_FAMILY
+        else:
+            suite = runner.create_suite()
         for task_name, instances in suite.items():
             for task in instances:
                 counts = {"initialize": 0, "evaluator": 0, "tear_down": 0}
@@ -249,7 +271,8 @@ def main() -> None:
                         "checkpoint_id": spec.checkpoint_id, "checkpoint_revision": spec.checkpoint_revision,
                         "code_license": "MIT", "model_license": "MIT", "runtime_hash": runtime_hash,
                         "dependency_lock_hash": dependency_hash, "prompt_hash": prompt_hash,
-                        "task_id": task_name, "task_class": task_name, "task_seed": TASK_SEED,
+                        "task_id": task_name, "task_class": task_name,
+                        "task_seed": next((int(item["task_seed"]) for item in task_specs if item["task_class"] == task_name), TASK_SEED),
                         "task_params_hash": value_hash(task.params), "attempt_id": f"{run_id}:{task_name}",
                         "rerun_of": None, "step_index": step_index,
                         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
@@ -265,7 +288,7 @@ def main() -> None:
                         "action_canonical": action, "action_execute_status": "EXECUTED" if row.get("success") else "NOT_EXECUTED",
                         "pixel_effect_class": "CHANGED" if array_hash(before) != array_hash(after) else "NO_CHANGE",
                         "tree_effect_class": None, "finish_claim": action_type in {"status", "answer"},
-                        "evaluator_reward": reward, "validity_class": "DEV_S1",
+                        "evaluator_reward": reward, "validity_class": args.stage_label,
                         "failure_edge": None if row.get("success") else "controller_or_parse",
                     })
                     append_event(events_path, event)
@@ -295,13 +318,13 @@ def main() -> None:
         "authorization_manifest": str(args.authorization),
         "authorization_manifest_sha256": sha256_file(args.authorization),
         "generation_calls": len(call_records),
-        "android_action_ceiling_per_task": MAX_ACTIONS,
+        "android_action_ceiling_per_task": max_actions,
         "tasks": task_results,
         "lifecycle": lifecycle,
         "protected_hashes_verified": True,
         "qualified": all(
             row["exception"] is None
-            and row["steps"] <= MAX_ACTIONS
+            and row["steps"] <= max_actions
             and row["parseable_decisions"] >= 1
             and row["nonterminal_actions"] >= 1
             and row["lifecycle"] == {"initialize": 1, "evaluator": 1, "tear_down": 1}

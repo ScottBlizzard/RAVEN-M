@@ -34,6 +34,57 @@ def _digest(value: Any) -> str:
     return sha256(payload.encode("utf-8")).hexdigest()
 
 
+def goal_digest(goal: Any) -> str:
+    """Hash the exact user-visible goal text used by AndroidWorld."""
+    return sha256(str(goal).encode("utf-8")).hexdigest()
+
+
+def load_frozen_instances(path: Path) -> list[dict[str, Any]]:
+    """Load either a small ``tasks`` manifest or the Hard ``instances`` list."""
+    value = json.loads(path.read_text(encoding="utf-8"))
+    rows = value.get("tasks", value.get("instances"))
+    if not isinstance(rows, list) or not rows:
+        raise ValueError(f"Frozen task manifest has no instances: {path}")
+    return rows
+
+
+def instantiate_verified(
+    registered: dict[str, Any],
+    spec: dict[str, Any],
+) -> Any:
+    """Instantiate one task and abort before generation on any instance drift.
+
+    Small smoke manifests may carry JSON-native parameters directly.  Hard
+    manifests carry hashes only, so each task independently resets both RNGs
+    before calling the native AndroidWorld parameter generator.
+    """
+    import numpy as np
+
+    task_class = str(spec["task_class"])
+    seed = int(spec["task_seed"])
+    task_type = registered[task_class]
+    if "params" in spec:
+        params = spec["params"]
+    else:
+        random.seed(seed)
+        np.random.seed(seed)
+        params = task_type.generate_random_params()
+    instance = task_type(params)
+    actual_params = _digest(instance.params)
+    actual_goal = goal_digest(instance.goal)
+    if actual_params != str(spec["task_params_hash"]):
+        raise RuntimeError(
+            f"Frozen params drift for {task_class}: "
+            f"{actual_params} != {spec['task_params_hash']}"
+        )
+    if actual_goal != str(spec["goal_hash"]):
+        raise RuntimeError(
+            f"Frozen goal drift for {task_class}: "
+            f"{actual_goal} != {spec['goal_hash']}"
+        )
+    return instance
+
+
 def _order(arm_id: str, seed: int, task_ids: list[str]) -> list[str]:
     permutation = list(task_ids)
     order_seed = int(sha256(f"{arm_id}|{seed}".encode()).hexdigest(), 16)

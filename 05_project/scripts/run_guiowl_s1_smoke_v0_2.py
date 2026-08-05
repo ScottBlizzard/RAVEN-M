@@ -18,9 +18,14 @@ PROJECT_ROOT = REPO_ROOT / "05_project"
 sys.path[:0] = [str(PROJECT_ROOT / "src"), str(REPO_ROOT / "06_local_runtime" / "scripts")]
 
 from raven_m.multi_framework_benchmark.arm_registry import get_arm  # noqa: E402
+from raven_m.multi_framework_benchmark.androidworld_adapter import normalize_guiowl_image_urls  # noqa: E402
 from raven_m.multi_framework_benchmark.capability_manifest import sha256_file, verify_protected  # noqa: E402
 from raven_m.multi_framework_benchmark.event_schema import REQUIRED_EVENT_FIELDS, SCHEMA_VERSION, append_event, canonical_json  # noqa: E402
 from raven_m.multi_framework_benchmark.runner import assert_output_root_is_new  # noqa: E402
+from raven_m.multi_framework_benchmark.task_instances import (  # noqa: E402
+    instantiate_verified,
+    load_frozen_instances,
+)
 
 
 ARM_ID = "NS-PX-GO15"
@@ -73,6 +78,8 @@ def main() -> None:
     parser.add_argument("--adb-path", type=Path, required=True)
     parser.add_argument("--base-url", required=True)
     parser.add_argument("--output-root", type=Path, required=True)
+    parser.add_argument("--task-manifest", type=Path)
+    parser.add_argument("--stage-label", default="multi_framework_s1_v0_2_dev_only")
     args = parser.parse_args()
 
     require_authorization(args.authorization)
@@ -108,6 +115,7 @@ def main() -> None:
             create_kwargs.setdefault("temperature", 0.0)
             create_kwargs.setdefault("top_p", 1.0)
             create_kwargs.setdefault("max_tokens", 4096)
+            create_kwargs, normalized_image_urls = normalize_guiowl_image_urls(create_kwargs)
             call_index = len(call_records)
             call_dir = args.output_root / "model_calls"
             call_dir.mkdir(parents=True, exist_ok=True)
@@ -119,6 +127,8 @@ def main() -> None:
                 "call_id": str(uuid.uuid4()), "request_path": str(request_path),
                 "request_hash": sha256_file(request_path),
                 "started_utc": datetime.now(timezone.utc).isoformat(),
+                "transport_adapter": "raw_png_base64_to_data_url.v1",
+                "normalized_image_urls": normalized_image_urls,
             }
             try:
                 response = original_create(*create_args, **create_kwargs)
@@ -145,18 +155,27 @@ def main() -> None:
         chat = ChatProxy()
 
     model.bot = BotProxy()
-    spec = get_arm(ARM_ID)
+    arm_spec = get_arm(ARM_ID)
     env_manifest = PROJECT_ROOT / "metadata/multi_framework_s0_v0_2/controller_environments/mobileagent/environment.manifest.sha256"
     runtime_hash = sha256_file(env_manifest)
     dependency_hash = sha256_file(PROJECT_ROOT / "metadata/multi_framework_s0_v0_2/controller_environments/mobileagent/pip.freeze.txt")
     prompt_hash = sha256_file(source / "android_world/agents/gui_owl.py")
     run_id = f"s1_guiowl_{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')}"
 
+    manifest = json.loads(args.task_manifest.read_text(encoding="utf-8")) if args.task_manifest else None
+    task_specs = load_frozen_instances(args.task_manifest) if args.task_manifest else [
+        {"task_class": task, "task_seed": TASK_SEED} for task in TASKS
+    ]
+    max_actions = int(manifest.get("maximum_actions_per_task", MAX_ACTIONS)) if manifest else MAX_ACTIONS
     frozen = {
-        "arm_id": ARM_ID, "tasks": list(TASKS), "task_seed": TASK_SEED,
-        "maximum_actions_per_task": MAX_ACTIONS, "base_url": args.base_url,
+        "arm_id": ARM_ID, "tasks": [row["task_class"] for row in task_specs],
+        "task_seed": manifest.get("nominal_seed", TASK_SEED) if manifest else TASK_SEED,
+        "task_manifest": str(args.task_manifest) if args.task_manifest else None,
+        "task_manifest_sha256": sha256_file(args.task_manifest) if args.task_manifest else None,
+        "maximum_actions_per_task": max_actions, "base_url": args.base_url,
         "model": "GUI-Owl-1.5-8B-Think", "temperature": 0.0,
         "official_internal_retry_limit": 10,
+        "transport_adapter": "raw_png_base64_to_data_url.v1",
     }
     (args.output_root / "frozen_runtime_config.json").write_text(json.dumps(frozen, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
@@ -174,13 +193,16 @@ def main() -> None:
     agent.name = "gui_owl"
     agent.transition_pause = None
     task_registry = registry.TaskRegistry()
-    suite = suite_utils.create_suite(
-        task_registry.get_registry(family=registry.TaskRegistry.ANDROID_WORLD_FAMILY),
-        n_task_combinations=1,
-        seed=TASK_SEED,
-        tasks=list(TASKS),
-        use_identical_params=True,
-    )
+    registered = task_registry.get_registry(family=registry.TaskRegistry.ANDROID_WORLD_FAMILY)
+    if args.task_manifest:
+        suite = suite_utils.Suite()
+        for task_spec in task_specs:
+            suite[task_spec["task_class"]] = [instantiate_verified(registered, task_spec)]
+    else:
+        suite = suite_utils.create_suite(
+            registered, n_task_combinations=1, seed=TASK_SEED,
+            tasks=list(TASKS), use_identical_params=True,
+        )
     suite.suite_family = registry.TaskRegistry.ANDROID_WORLD_FAMILY
     agent.get_task_name(suite)
     task_results: list[dict[str, Any]] = []
@@ -202,7 +224,7 @@ def main() -> None:
                     return episode_runner.run_episode(
                         goal=current_task.goal,
                         agent=agent,
-                        max_n_steps=MAX_ACTIONS,
+                        max_n_steps=max_actions,
                         start_on_home_screen=current_task.start_on_home_screen,
                         termination_fn=None,
                     )
@@ -227,12 +249,13 @@ def main() -> None:
                     event = empty_event()
                     event.update({
                         "schema_version": SCHEMA_VERSION, "run_id": run_id, "arm_id": ARM_ID,
-                        "lane": spec.lane, "reproduction_label": spec.reproduction_label,
-                        "source_repo": spec.source_repo, "source_commit": spec.source_commit,
-                        "checkpoint_id": spec.checkpoint_id, "checkpoint_revision": spec.checkpoint_revision,
+                        "lane": arm_spec.lane, "reproduction_label": arm_spec.reproduction_label,
+                        "source_repo": arm_spec.source_repo, "source_commit": arm_spec.source_commit,
+                        "checkpoint_id": arm_spec.checkpoint_id, "checkpoint_revision": arm_spec.checkpoint_revision,
                         "code_license": "MIT", "model_license": "MIT", "runtime_hash": runtime_hash,
                         "dependency_lock_hash": dependency_hash, "prompt_hash": prompt_hash,
-                        "task_id": task_name, "task_class": task_name, "task_seed": TASK_SEED,
+                        "task_id": task_name, "task_class": task_name,
+                        "task_seed": next((int(row["task_seed"]) for row in task_specs if row["task_class"] == task_name), TASK_SEED),
                         "task_params_hash": value_hash(task.params), "attempt_id": f"{run_id}:{task_name}",
                         "rerun_of": None, "step_index": step_index,
                         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
@@ -250,7 +273,7 @@ def main() -> None:
                         "action_execute_status": "EXECUTED" if action_type not in {None, "unknown", "status"} else "NOT_EXECUTED",
                         "pixel_effect_class": "CHANGED" if next_hash and next_hash != screenshot_hashes[step_index] else "UNOBSERVED_OR_NO_CHANGE",
                         "tree_effect_class": None, "finish_claim": action_type == "status",
-                        "evaluator_reward": reward, "validity_class": "DEV_S1",
+                        "evaluator_reward": reward, "validity_class": args.stage_label,
                         "failure_edge": None if action_type not in {None, "unknown"} else "parse",
                     })
                     append_event(args.output_root / "events.jsonl", event)
@@ -281,10 +304,10 @@ def main() -> None:
         "arm_id": ARM_ID, "classification": "DEV_ONLY",
         "authorization_manifest": str(args.authorization),
         "authorization_manifest_sha256": sha256_file(args.authorization),
-        "generation_calls": len(call_records), "android_action_ceiling_per_task": MAX_ACTIONS,
+        "generation_calls": len(call_records), "android_action_ceiling_per_task": max_actions,
         "tasks": task_results, "lifecycle": lifecycle, "protected_hashes_verified": True,
         "qualified": all(
-            row["exception"] is None and row["steps"] <= MAX_ACTIONS
+            row["exception"] is None and row["steps"] <= max_actions
             and row["parseable_decisions"] >= 1 and row["nonterminal_actions"] >= 1
             and row["lifecycle"] == {"initialize": 1, "evaluator": 1, "tear_down": 1}
             for row in task_results

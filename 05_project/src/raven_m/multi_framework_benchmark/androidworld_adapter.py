@@ -2,10 +2,42 @@
 
 from __future__ import annotations
 
+import base64
 from dataclasses import dataclass
 from typing import Any, Callable
 
 from .action_normalizer import normalize_action
+
+
+def normalize_guiowl_image_urls(value: Any) -> tuple[Any, int]:
+    """Wrap the official GUI-Owl raw PNG base64 as OpenAI data URLs."""
+    if isinstance(value, list):
+        converted = [normalize_guiowl_image_urls(item) for item in value]
+        return [item for item, _ in converted], sum(count for _, count in converted)
+    if isinstance(value, tuple):
+        converted = [normalize_guiowl_image_urls(item) for item in value]
+        return tuple(item for item, _ in converted), sum(count for _, count in converted)
+    if not isinstance(value, dict):
+        return value, 0
+    result = {}
+    count = 0
+    for key, item in value.items():
+        normalized, child_count = normalize_guiowl_image_urls(item)
+        result[key] = normalized
+        count += child_count
+    image_url = result.get("image_url")
+    if isinstance(image_url, dict) and isinstance(image_url.get("url"), str):
+        url = image_url["url"]
+        if not url.startswith(("data:", "http://", "https://", "file:")):
+            try:
+                decoded = base64.b64decode(url, validate=True)
+            except Exception as exc:
+                raise ValueError("GUI-Owl supplied an invalid raw image payload") from exc
+            if not decoded.startswith(b"\x89PNG\r\n\x1a\n"):
+                raise ValueError("GUI-Owl raw image payload is not PNG")
+            image_url["url"] = "data:image/png;base64," + url
+            count += 1
+    return result, count
 
 
 class ActionBudgetExceeded(RuntimeError):
