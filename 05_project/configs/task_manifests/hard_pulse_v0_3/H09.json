@@ -1,0 +1,20 @@
+{
+  "classification": "FROZEN_HARD_PULSE",
+  "manifest_id": "hard_pulse_v0_3_H09",
+  "maximum_actions_per_task": 120,
+  "model_calls_before_hash_verification": 0,
+  "nominal_seed": 20260806,
+  "protocol_id": "MULTI_FRAMEWORK_HARD_PULSE_V0_3",
+  "scientific_failure_reruns": 0,
+  "source_manifest": "05_project\\configs\\task_manifests\\androidworld_hard_v2_instances.json",
+  "tasks": [
+    {
+      "goal_hash": "7c744894d0ab2c8a404402b3313f2df7d8ad031f9c00ca52d5165d6f6cbe19d9",
+      "native_max_steps": 120,
+      "task_class": "OsmAndTrack",
+      "task_id": "H09",
+      "task_params_hash": "7311b605a9bb160833e05ae8a697547d9f34975efa6d3954179a946efe2f1877",
+      "task_seed": 20260806
+    }
+  ]
+}

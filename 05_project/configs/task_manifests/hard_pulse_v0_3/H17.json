@@ -1,0 +1,20 @@
+{
+  "classification": "FROZEN_HARD_PULSE",
+  "manifest_id": "hard_pulse_v0_3_H17",
+  "maximum_actions_per_task": 20,
+  "model_calls_before_hash_verification": 0,
+  "nominal_seed": 20260806,
+  "protocol_id": "MULTI_FRAMEWORK_HARD_PULSE_V0_3",
+  "scientific_failure_reruns": 0,
+  "source_manifest": "05_project\\configs\\task_manifests\\androidworld_hard_v2_instances.json",
+  "tasks": [
+    {
+      "goal_hash": "4c8417449efd496afc0ca2ef517c3f7dd21ce1618cca5a30e180920c8e54595c",
+      "native_max_steps": 20,
+      "task_class": "SportsTrackerActivitiesOnDate",
+      "task_id": "H17",
+      "task_params_hash": "e0d6780263ecc3dc899e311a1d94072ac2ca725ea19403004684e380b6ba73b1",
+      "task_seed": 20260806
+    }
+  ]
+}

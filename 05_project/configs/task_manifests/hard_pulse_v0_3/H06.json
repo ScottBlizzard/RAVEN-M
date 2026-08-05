@@ -1,0 +1,20 @@
+{
+  "classification": "FROZEN_HARD_PULSE",
+  "manifest_id": "hard_pulse_v0_3_H06",
+  "maximum_actions_per_task": 78,
+  "model_calls_before_hash_verification": 0,
+  "nominal_seed": 20260806,
+  "protocol_id": "MULTI_FRAMEWORK_HARD_PULSE_V0_3",
+  "scientific_failure_reruns": 0,
+  "source_manifest": "05_project\\configs\\task_manifests\\androidworld_hard_v2_instances.json",
+  "tasks": [
+    {
+      "goal_hash": "688e7483fb44b00e00962c6adc541a2babd67afc39b6e8108d75666fb1a453fd",
+      "native_max_steps": 78,
+      "task_class": "MarkorMergeNotes",
+      "task_id": "H06",
+      "task_params_hash": "add69e1713a8633bb97cc8594c6150035036165c574bf036015f308f08ae76f9",
+      "task_seed": 20260806
+    }
+  ]
+}

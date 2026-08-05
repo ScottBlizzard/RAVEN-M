@@ -1,0 +1,20 @@
+{
+  "classification": "FROZEN_HARD_PULSE",
+  "manifest_id": "hard_pulse_v0_3_H01",
+  "maximum_actions_per_task": 22,
+  "model_calls_before_hash_verification": 0,
+  "nominal_seed": 20260806,
+  "protocol_id": "MULTI_FRAMEWORK_HARD_PULSE_V0_3",
+  "scientific_failure_reruns": 0,
+  "source_manifest": "05_project\\configs\\task_manifests\\androidworld_hard_v2_instances.json",
+  "tasks": [
+    {
+      "goal_hash": "3a848f7058fc4f68d01926f5cb8eb5dae66cb17f63579b88f28a53a974c3d383",
+      "native_max_steps": 22,
+      "task_class": "BrowserMultiply",
+      "task_id": "H01",
+      "task_params_hash": "325eee9a7085b1d618af713b8b667836321b8c3d4deda8b6cf341957087eb1f3",
+      "task_seed": 20260806
+    }
+  ]
+}

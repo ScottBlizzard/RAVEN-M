@@ -1,0 +1,224 @@
+{
+  "arms": {
+    "CB-PX-B3": {
+      "arm_id": "CB-PX-B3",
+      "qualified": true,
+      "report": "05_project\\outputs\\multi_framework_s1b_v0_3\\01_b3\\s1_report.json",
+      "report_sha256": "4e4159b3b77c085d80e3198fcefdd0915c8c3ac26af2f1de6d65168046ccb6de",
+      "rows": [
+        {
+          "actions": 3,
+          "changes": 3,
+          "error": null,
+          "goal_hash_ok": true,
+          "lifecycle": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "model_calls": 5,
+          "parseable": 4,
+          "reward": 0.0,
+          "steps": 4,
+          "task": "ClockTimerEntry"
+        },
+        {
+          "actions": 11,
+          "changes": 10,
+          "error": null,
+          "goal_hash_ok": true,
+          "lifecycle": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "model_calls": 15,
+          "parseable": 12,
+          "reward": 0.0,
+          "steps": 12,
+          "task": "MarkorCreateNote"
+        }
+      ]
+    },
+    "CB-PX-M0": {
+      "arm_id": "CB-PX-M0",
+      "qualified": true,
+      "report": "05_project\\outputs\\multi_framework_s1b_v0_3\\02_m0\\s1_report.json",
+      "report_sha256": "adbd5c39ce81b0774b223f2a0e9e5497f8935fe7944c6d722a6a76f1b98b8f10",
+      "rows": [
+        {
+          "actions": 12,
+          "changes": 12,
+          "error": null,
+          "goal_hash_ok": true,
+          "lifecycle": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "model_calls": 19,
+          "parseable": 12,
+          "reward": 0.0,
+          "steps": 12,
+          "task": "ClockTimerEntry"
+        },
+        {
+          "actions": 12,
+          "changes": 11,
+          "error": null,
+          "goal_hash_ok": true,
+          "lifecycle": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "model_calls": 21,
+          "parseable": 12,
+          "reward": 0.0,
+          "steps": 12,
+          "task": "MarkorCreateNote"
+        }
+      ]
+    },
+    "NS-PX-GO15": {
+      "arm_id": "NS-PX-GO15",
+      "failed_transport_calls": 0,
+      "qualified": true,
+      "report": "05_project\\outputs\\multi_framework_s1b_v0_3\\03_guiowl\\summary.json",
+      "report_sha256": "efcaa2522519e5978575ff3503f632e512ee62c764913cb087ebcc16f30694e2",
+      "rows": [
+        {
+          "actions": 12,
+          "changes": 11,
+          "error": null,
+          "lifecycle": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "model_calls": 12,
+          "parseable": 12,
+          "reward": 0.0,
+          "steps": 12,
+          "successful_calls_cover_steps": true,
+          "task": "ClockTimerEntry",
+          "task_hash_ok": true
+        },
+        {
+          "actions": 8,
+          "changes": 8,
+          "error": null,
+          "lifecycle": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "model_calls": 9,
+          "parseable": 9,
+          "reward": 1.0,
+          "steps": 9,
+          "successful_calls_cover_steps": true,
+          "task": "MarkorCreateNote",
+          "task_hash_ok": true
+        }
+      ],
+      "successful_transport_calls": 21
+    },
+    "NS-PX-UIV4": {
+      "arm_id": "NS-PX-UIV4",
+      "failed_transport_calls": 0,
+      "qualified": true,
+      "report": "05_project\\outputs\\multi_framework_s1b_v0_3\\04_uivoyager\\summary.json",
+      "report_sha256": "1a1e8bddf01bf7d56f9fc1dfd2e47f927993a4f7abbbbc26076b70b26def9988",
+      "rows": [
+        {
+          "actions": 12,
+          "changes": 10,
+          "error": null,
+          "lifecycle": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "model_calls": 12,
+          "parseable": 12,
+          "reward": 0.0,
+          "steps": 12,
+          "successful_calls_cover_steps": true,
+          "task": "ClockTimerEntry",
+          "task_hash_ok": true
+        },
+        {
+          "actions": 10,
+          "changes": 11,
+          "error": null,
+          "lifecycle": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "model_calls": 11,
+          "parseable": 11,
+          "reward": 0.0,
+          "steps": 11,
+          "successful_calls_cover_steps": true,
+          "task": "MarkorCreateNote",
+          "task_hash_ok": true
+        }
+      ],
+      "successful_transport_calls": 23
+    }
+  },
+  "classification": "MATCHED_DEV_QUALIFICATION",
+  "created_at": "2026-08-05T18:49:11.267525+00:00",
+  "hard_model_calls_authorized": true,
+  "hard_pulse_manifests": {
+    "H01": {
+      "path": "05_project\\configs\\task_manifests\\hard_pulse_v0_3\\H01.json",
+      "sha256": "e48953ed9d947a2afa19aa28c2918142d69789a5469055dd8a2ef8fe8580b502"
+    },
+    "H06": {
+      "path": "05_project\\configs\\task_manifests\\hard_pulse_v0_3\\H06.json",
+      "sha256": "7f6d60b28f7c45599c77dc1383141896cc37081bc782a9ab0270b8637c7d280b"
+    },
+    "H09": {
+      "path": "05_project\\configs\\task_manifests\\hard_pulse_v0_3\\H09.json",
+      "sha256": "09cf53cf11fd1c5d1ecbc38861d6b292126c739d80baea31f007faaec4edfe22"
+    },
+    "H17": {
+      "path": "05_project\\configs\\task_manifests\\hard_pulse_v0_3\\H17.json",
+      "sha256": "74a0ea54de6c9c4eb0c05cc55ce2cf3f1762b44c88a46ddf7623c61bee9b14aa"
+    }
+  },
+  "invalid_infrastructure_attempts_preserved": {
+    "CB-PX-B3": [
+      "01_b3.infra_black_frame_20260806"
+    ],
+    "CB-PX-M0": [],
+    "NS-PX-GO15": [
+      "03_guiowl.infra_gbk_stdout_20260806",
+      "03_guiowl.infra_missing_suite_seed_20260806"
+    ],
+    "NS-PX-UIV4": [
+      "04_uivoyager.infra_double_v1_20260806"
+    ]
+  },
+  "qualified_arms": [
+    "CB-PX-B3",
+    "CB-PX-M0",
+    "NS-PX-GO15",
+    "NS-PX-UIV4"
+  ],
+  "schema_version": "multi_framework_s1b_qualification.v0.3",
+  "status": "PASS",
+  "task_manifest": "05_project\\configs\\task_manifests\\multi_framework_s1b_v0_3.json",
+  "task_manifest_sha256": "66aea7da9ea7d4e0e3fe77c4e62300a76da0e7a520a04a96cad3d61170a6e740"
+}
