@@ -13,6 +13,7 @@ from huggingface_hub import HfApi, snapshot_download
 
 
 ALLOWED = {
+    ("Qwen/Qwen3-VL-32B-Instruct", "0cfaf48183f594c314753d30a4c4974bc75f3ccb"),
     ("mPLUG/GUI-Owl-1.5-8B-Think", "afe3707fc84caebc4d7046118b34493ecf8bb060"),
     ("OpenGVLab/ScaleCUA-32B", "9a91c80690b34f2a962203c5ed896ef845b6149c"),
     ("MarsXL/UI-Voyager", "c262b85f18f1c669b19bca544e0ee2eb71225ff3"),
