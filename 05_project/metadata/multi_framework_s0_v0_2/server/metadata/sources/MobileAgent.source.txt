@@ -1,0 +1,8 @@
+repo=https://github.com/X-PLUG/MobileAgent.git
+revision=11cea575561fb7800b5fb6b6cafa56f7a91de11f
+transport_url=https://codeload.github.com/X-PLUG/MobileAgent/tar.gz/11cea575561fb7800b5fb6b6cafa56f7a91de11f
+archive_path=03_code/third_party_v0_2/archives/MobileAgent-11cea575561fb7800b5fb6b6cafa56f7a91de11f.tar.gz
+archive_sha256=9ccc4f1616400383382d84b834aff150fca39a3af9c95922754ef97ec5c5241d
+license_path=03_code/third_party_v0_2/MobileAgent/LICENSE
+license_sha256=961819a89dacd1f4f161e1d2ebf616b538bf095a2eecfa3ef40b7ccec633fac4
+regular_files=1775

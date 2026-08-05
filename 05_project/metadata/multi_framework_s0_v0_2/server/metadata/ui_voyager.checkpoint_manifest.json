@@ -1,0 +1,111 @@
+{
+  "created_at": "2026-08-05T13:42:32.933267+00:00",
+  "file_count": 16,
+  "files": [
+    {
+      "bytes": 1570,
+      "path": ".gitattributes",
+      "sha256": "34448b82c17d60fec9b65b1f093c115ddbaadc04beb1b0140b6bfed2e012a930",
+      "symlink": true
+    },
+    {
+      "bytes": 2991,
+      "path": "README.md",
+      "sha256": "59a2d1e7fff36df9826d8d7f1f2b8ebd1c9fc55000eb733904cc9144e0dec009",
+      "symlink": true
+    },
+    {
+      "bytes": 707,
+      "path": "added_tokens.json",
+      "sha256": "c0284b582e14987fbd3d5a2cb2bd139084371ed9acbae488829a1c900833c680",
+      "symlink": true
+    },
+    {
+      "bytes": 5292,
+      "path": "chat_template.jinja",
+      "sha256": "3636d0f0bd6bef02654cdffdc447b79cb2cef8ab02cc75267345946291a489e4",
+      "symlink": true
+    },
+    {
+      "bytes": 1644,
+      "path": "config.json",
+      "sha256": "49e0901016d753ff8a54d24109bd9907919efa03fa1472c880a30c07a0e20cfb",
+      "symlink": true
+    },
+    {
+      "bytes": 199,
+      "path": "generation_config.json",
+      "sha256": "b01f000f2f8e830f6298063b50e8d5db447bbbfadf9f0131c3594e284ac95ca1",
+      "symlink": true
+    },
+    {
+      "bytes": 1671853,
+      "path": "merges.txt",
+      "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5",
+      "symlink": true
+    },
+    {
+      "bytes": 4990497880,
+      "path": "model-00001-of-00002.safetensors",
+      "sha256": "2014e842b9be5dfa14f64a76f127b72d824b4e5c3eac602706dda9f40932919c",
+      "symlink": true
+    },
+    {
+      "bytes": 3885221448,
+      "path": "model-00002-of-00002.safetensors",
+      "sha256": "13babe8fb060dfbfb1e9a6f5ef34fd32a4503553a97e13390987cac87853e297",
+      "symlink": true
+    },
+    {
+      "bytes": 64774,
+      "path": "model.safetensors.index.json",
+      "sha256": "9c7edb1ea2595593e6e0adbefe8815dee0d82675578a4a478c2fc87c8428c482",
+      "symlink": true
+    },
+    {
+      "bytes": 782,
+      "path": "preprocessor_config.json",
+      "sha256": "93585062a80db5e8ca038efc7726a3e6411d9db948472d81d63c6303993be8c5",
+      "symlink": true
+    },
+    {
+      "bytes": 613,
+      "path": "special_tokens_map.json",
+      "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd",
+      "symlink": true
+    },
+    {
+      "bytes": 11422776,
+      "path": "tokenizer.json",
+      "sha256": "9aa803b36beaf43c54f4b2ab0635fdf86bf07f13221b4ec71ad1f67867394f40",
+      "symlink": true
+    },
+    {
+      "bytes": 5501,
+      "path": "tokenizer_config.json",
+      "sha256": "c31c8148ebf9ffa0d7358e720ab5042be2e013378fd01a8b6ba672b5c9cd95c7",
+      "symlink": true
+    },
+    {
+      "bytes": 817,
+      "path": "video_preprocessor_config.json",
+      "sha256": "59c5c9eb52182eb14c06ffb10ca9effd29adce5f238a95de23ca14a38dbd2cb1",
+      "symlink": true
+    },
+    {
+      "bytes": 2776833,
+      "path": "vocab.json",
+      "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+      "symlink": true
+    }
+  ],
+  "license_paths": [],
+  "model_card_license": "mit",
+  "repo_id": "MarsXL/UI-Voyager",
+  "resolved_hub_sha": "c262b85f18f1c669b19bca544e0ee2eb71225ff3",
+  "revision": "c262b85f18f1c669b19bca544e0ee2eb71225ff3",
+  "schema_version": "multi_framework_checkpoint.v0.2",
+  "snapshot_path": "/mnt/sdb/ccj/raven_m_research/05_project/model_cache/huggingface/models--MarsXL--UI-Voyager/snapshots/c262b85f18f1c669b19bca544e0ee2eb71225ff3",
+  "total_bytes": 8891675680,
+  "transfer_endpoint": "https://hf-mirror.com"
+}

@@ -1,0 +1,5 @@
+key=common_qwen
+endpoint_checked=/health
+expected_revision=0cfaf48183f594c314753d30a4c4974bc75f3ccb
+generation_calls=0
+health_sha256_file=common_qwen.health.sha256

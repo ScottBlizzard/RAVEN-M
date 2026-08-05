@@ -1,0 +1,89 @@
+{
+  "android_actions": 0,
+  "generation_calls": 0,
+  "schema_version": "multi_framework_source_contract_audit.v0.2",
+  "sources": {
+    "MobileAgent": {
+      "archive_sha256": "9ccc4f1616400383382d84b834aff150fca39a3af9c95922754ef97ec5c5241d",
+      "available": true,
+      "code_license": true,
+      "expected_revision": "11cea575561fb7800b5fb6b6cafa56f7a91de11f",
+      "gui_owl_branch_present": true,
+      "license_sha256": "961819a89dacd1f4f161e1d2ebf616b538bf095a2eecfa3ef40b7ccec633fac4",
+      "minimal_adapter_entrypoint": "run_ma35.py",
+      "minimal_adapter_entrypoint_sha256": "32c5774c05dcf1d826b986939fe97fe23a48ddf02573a81123e420cdad87bc09",
+      "missing_paths": [],
+      "mobile_agent_v3_branch_present": true,
+      "official_gui_shell_target": "run_ma3.py",
+      "official_gui_shell_target_exists": false,
+      "qualified_static_source": true,
+      "required_paths": [
+        "LICENSE",
+        "Mobile-Agent-v3.5/android_world_v3.5/requirements.txt",
+        "Mobile-Agent-v3.5/android_world_v3.5/run_ma35.py",
+        "Mobile-Agent-v3.5/android_world_v3.5/run_ma35.sh",
+        "Mobile-Agent-v3.5/android_world_v3.5/run_guiowl15.sh",
+        "Mobile-Agent-v3.5/android_world_v3.5/android_world/agents/gui_owl.py",
+        "Mobile-Agent-v3.5/android_world_v3.5/android_world/agents/mobile_agent_v3.py",
+        "Mobile-Agent-v3.5/android_world_v3.5/android_world/agents/function_call_mobile_answer.py",
+        "Mobile-Agent-v3.5/android_world_v3.5/android_world/agents/coordinate_resize.py"
+      ],
+      "resolved_revision": "11cea575561fb7800b5fb6b6cafa56f7a91de11f",
+      "shell_mismatch_recorded": true,
+      "source_pin": true,
+      "task_filter_present": true,
+      "task_seed_present": true
+    },
+    "ScaleCUA": {
+      "archive_sha256": "2c3b6433c34a259506e282c8c75222bae595052e294e1bae8c7a782cf0ddf89c",
+      "available": true,
+      "code_license": true,
+      "expected_revision": "5d92feea9f1e14b8303ce37da45b286fb1f4d3aa",
+      "license_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "missing_paths": [],
+      "native_agent_mode_present": true,
+      "qualified_static_source": true,
+      "required_paths": [
+        "LICENSE",
+        "evaluation/AndroidWorld/requirements.txt",
+        "evaluation/AndroidWorld/run.py",
+        "evaluation/AndroidWorld/android_world/agents/seeact_v.py"
+      ],
+      "resolved_revision": "5d92feea9f1e14b8303ce37da45b286fb1f4d3aa",
+      "source_pin": true,
+      "task_filter_present": true,
+      "task_seed_present": true
+    },
+    "UI-Voyager": {
+      "archive_sha256": "ad650efe307848e965f1f42a36d50c19faaa6b71dd33c8a89343f0d7c173b724",
+      "available": true,
+      "code_license": true,
+      "expected_revision": "67b65e2be093753ecaa2964f48739339b870813e",
+      "license_sha256": "f7b20aa3079a1779f35284655a65e2f8e95833f6e2412601a6edcda05153b059",
+      "missing_paths": [],
+      "official_config": {
+        "history_len": 30,
+        "max_retry": 3,
+        "max_tokens": 16384,
+        "n_history_image": 0,
+        "temperature": 0.7,
+        "top_p": 0.8,
+        "use_som": false
+      },
+      "official_evaluator_present": true,
+      "pixel_only_config": true,
+      "qualified_static_source": true,
+      "required_paths": [
+        "LICENSE",
+        "run_android_world.sh",
+        "androidworld/requirements.txt",
+        "androidworld/eval/runner.py",
+        "androidworld/eval/configs/UI-Voyager.yaml"
+      ],
+      "resolved_revision": "67b65e2be093753ecaa2964f48739339b870813e",
+      "source_pin": true,
+      "task_filter_present": true,
+      "task_seed_present": true
+    }
+  }
+}

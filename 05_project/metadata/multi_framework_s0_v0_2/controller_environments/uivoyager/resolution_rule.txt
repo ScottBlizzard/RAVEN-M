@@ -1,0 +1,8 @@
+﻿source_root=D:\ZJU\Summer_Camp\RAVEN-M-Research_external_v0_2\UI-Voyager
+python=C:\Users\lenovo\AppData\Local\Programs\Python\Python311\python.exe
+runtime_env_root=D:\ZJU\Summer_Camp\RAVEN-M-Research\06_local_runtime\envs\multi_framework_v0_2
+dependency_resolution_attempt=1
+bounded_adapter_patch_round=1
+bounded_adapter_patch_scope=dependency_closure_only
+extra_requirements=PyYAML==6.0.3,fastapi,uvicorn
+finalize_existing=True

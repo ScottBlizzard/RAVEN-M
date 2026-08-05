@@ -1,0 +1,71 @@
+{
+  "arm_order": [
+    "CB-PX-B3",
+    "CB-PX-M0",
+    "NS-PX-GO15",
+    "NS-PX-UIV4"
+  ],
+  "capabilities": {
+    "CB-PX-B3": {
+      "dependency_lock_hash": "b0d53cd84359e16cb0f61941c740bd9e5939d866f6c9c9ce7b080bc29a7edd62",
+      "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\metadata\\multi_framework_s0_v0_2\\final\\capabilities\\CB-PX-B3.json",
+      "qualified": true,
+      "runtime_hash": "a7d26bc683c9418a48ba27a910852929ccbc5698017de2afb39ecc36663a59bd",
+      "sha256": "0452251a43df585e7beca08e4377eaf7a35993fd084b25916fc9fc1db3b1229b"
+    },
+    "CB-PX-M0": {
+      "dependency_lock_hash": "b0d53cd84359e16cb0f61941c740bd9e5939d866f6c9c9ce7b080bc29a7edd62",
+      "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\metadata\\multi_framework_s0_v0_2\\final\\capabilities\\CB-PX-M0.json",
+      "qualified": true,
+      "runtime_hash": "a7d26bc683c9418a48ba27a910852929ccbc5698017de2afb39ecc36663a59bd",
+      "sha256": "a576d87d214a0ca48575d9802f7a3acd9a45def16c790df70e8c31dc4dffaa18"
+    },
+    "NS-PX-GO15": {
+      "dependency_lock_hash": "4e7819de8230017c9ab5e6ea4c530798c22ffbefd7440f9ef281c22d2c323a78",
+      "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\metadata\\multi_framework_s0_v0_2\\final\\capabilities\\NS-PX-GO15.json",
+      "qualified": true,
+      "runtime_hash": "fe877e23c18cdc70005f4e7f992e5eb5a22ed4a3b505cf722024fc4d8633b147",
+      "sha256": "19d705784eb915c4e2daab5a5fbe09ac21de8e70dbbff5641ae2d54cbe2afd6a"
+    },
+    "NS-PX-UIV4": {
+      "dependency_lock_hash": "0a13447916d6e3c290133e7954fb31eab1cb2ce113b24ce6a007e80878927ce7",
+      "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\metadata\\multi_framework_s0_v0_2\\final\\capabilities\\NS-PX-UIV4.json",
+      "qualified": true,
+      "runtime_hash": "feadf7d2ce851a1b9661ae09a13b2a85a22a6d931c0b41e792c6b09e9210d26e",
+      "sha256": "50739ebbb3d83c40697e6229c3a5a0d0e40bb757bcf92182d404b2b7598faddc"
+    }
+  },
+  "classification": "DEV_ONLY",
+  "created_at": "2026-08-05T15:28:34.610515+00:00",
+  "endpoints": {
+    "CB-PX-B3": "http://127.0.0.1:18000",
+    "CB-PX-M0": "http://127.0.0.1:18000",
+    "NS-PX-GO15": "http://127.0.0.1:18101/v1",
+    "NS-PX-UIV4": "http://127.0.0.1:18102"
+  },
+  "hard_model_calls_authorized": false,
+  "infrastructure_reruns": 1,
+  "max_actions_per_task": 8,
+  "output_root": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\outputs\\multi_framework_s1_v0_2",
+  "protected_hashes": {
+    "05_project/src/raven_m/controller/episode_controller.py": "fc0e82e0fde90119365d4f685f080eb4519bf2f602e4bda58de5d4809a40fe33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "ff89d6b70be4b4738646d262beb67d7b7e932e9eb95956d940b1c5000a999d10",
+    "05_project/src/raven_m/role_binding_timing/infra_m10_temporal_attestation.py": "d5c0439a39ecd271625502e64f6ebd0bc018f262b9256f6095f44358f90c4bba",
+    "05_project/src/raven_m/role_binding_timing/infra_m14_authority_context_attestation.py": "bfb2581ddd187b613a77ff4fd64469dd6abbc93e00ca810149f13d09d32aca50",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5bb1f1e3de673a1072cfee62938b761a62fd69c187d5eadf54bc46b115a3fd0a",
+    "2026_08_05_17_36.md": "5e8fb154aae23d96876a69aea87c72a69af6bdfe3245c9166f0c7de68fa03501",
+    "RAVEN-M_GPTPro_full_plan_2026-08-05.md": "25f1f2c77f33fbedee01f761d32427d1f38998181dc65034a1429fea289ccdf3"
+  },
+  "schema_version": "multi_framework_s1_first_call.v0.2",
+  "script_hashes": {
+    "05_project\\scripts\\run_guiowl_s1_smoke_v0_2.py": "f486b71511b7288aa7af1ed738fef0353003389dc115171942021841ca1505c9",
+    "05_project\\scripts\\run_raven_s1_smoke_v0_2.py": "86eb7dcc2d0e2a9eff5b2160d2b760136028abfe792d071c69879f189d484f58",
+    "05_project\\scripts\\run_uivoyager_s1_smoke_v0_2.py": "fafe9ec17344a0ac904faeb9c7d84c829edd328202b54ddaf387b31078d5f41f"
+  },
+  "task_failure_reruns": 0,
+  "task_seed": 20260805,
+  "tasks": [
+    "ContactsAddContact",
+    "ClockStopWatchRunning"
+  ]
+}

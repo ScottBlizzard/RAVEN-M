@@ -1,0 +1,48 @@
+{
+  "capabilities": {
+    "CB-PX-B3": {
+      "dependency_lock_hash": "b0d53cd84359e16cb0f61941c740bd9e5939d866f6c9c9ce7b080bc29a7edd62",
+      "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\metadata\\multi_framework_s0_v0_2\\final\\capabilities\\CB-PX-B3.json",
+      "qualified": true,
+      "runtime_hash": "a7d26bc683c9418a48ba27a910852929ccbc5698017de2afb39ecc36663a59bd",
+      "sha256": "0452251a43df585e7beca08e4377eaf7a35993fd084b25916fc9fc1db3b1229b"
+    },
+    "CB-PX-M0": {
+      "dependency_lock_hash": "b0d53cd84359e16cb0f61941c740bd9e5939d866f6c9c9ce7b080bc29a7edd62",
+      "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\metadata\\multi_framework_s0_v0_2\\final\\capabilities\\CB-PX-M0.json",
+      "qualified": true,
+      "runtime_hash": "a7d26bc683c9418a48ba27a910852929ccbc5698017de2afb39ecc36663a59bd",
+      "sha256": "a576d87d214a0ca48575d9802f7a3acd9a45def16c790df70e8c31dc4dffaa18"
+    },
+    "NS-PX-GO15": {
+      "dependency_lock_hash": "4e7819de8230017c9ab5e6ea4c530798c22ffbefd7440f9ef281c22d2c323a78",
+      "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\metadata\\multi_framework_s0_v0_2\\final\\capabilities\\NS-PX-GO15.json",
+      "qualified": true,
+      "runtime_hash": "fe877e23c18cdc70005f4e7f992e5eb5a22ed4a3b505cf722024fc4d8633b147",
+      "sha256": "19d705784eb915c4e2daab5a5fbe09ac21de8e70dbbff5641ae2d54cbe2afd6a"
+    },
+    "NS-PX-UIV4": {
+      "dependency_lock_hash": "0a13447916d6e3c290133e7954fb31eab1cb2ce113b24ce6a007e80878927ce7",
+      "path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\metadata\\multi_framework_s0_v0_2\\final\\capabilities\\NS-PX-UIV4.json",
+      "qualified": true,
+      "runtime_hash": "feadf7d2ce851a1b9661ae09a13b2a85a22a6d931c0b41e792c6b09e9210d26e",
+      "sha256": "50739ebbb3d83c40697e6229c3a5a0d0e40bb757bcf92182d404b2b7598faddc"
+    }
+  },
+  "created_at": "2026-08-05T15:28:34.705323+00:00",
+  "hard_model_calls_authorized": false,
+  "minimum_potential_launch_set_pass": true,
+  "minimum_set_reasons": [],
+  "qualified_arms": [
+    "CB-PX-B3",
+    "CB-PX-M0",
+    "NS-PX-GO15",
+    "NS-PX-UIV4"
+  ],
+  "s0_all_global_gates_pass": true,
+  "s1_first_call_manifest": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\metadata\\multi_framework_s0_v0_2\\final\\s1_first_call_manifest.json",
+  "s1_first_call_manifest_frozen": true,
+  "s1_first_call_manifest_sha256": "414db6a1a6cd6ba943bd23adcdd857d8af5fd51d82ee2e8c8c6340832e691639",
+  "s1_generation_authorized": true,
+  "schema_version": "multi_framework_s1_authorization.v0.2"
+}

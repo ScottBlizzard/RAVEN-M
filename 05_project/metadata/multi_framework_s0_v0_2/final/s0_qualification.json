@@ -1,0 +1,16 @@
+{
+  "android_actions": 0,
+  "generation_calls": 0,
+  "hard_model_calls_authorized": false,
+  "minimum_potential_launch_set_pass": true,
+  "qualified_arms": [
+    "CB-PX-B3",
+    "CB-PX-M0",
+    "NS-PX-GO15",
+    "NS-PX-UIV4"
+  ],
+  "s1_authorization": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\metadata\\multi_framework_s0_v0_2\\final\\s1_authorization.json",
+  "s1_authorization_sha256": "4a30f509e53a62f14d4486571598d6491f6861c830bf1f951648b9c67577eae9",
+  "schema_version": "multi_framework_s0_qualification.v0.2",
+  "status": "PASS"
+}

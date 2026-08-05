@@ -1,0 +1,73 @@
+{
+  "android_actions": 0,
+  "answer_fixture": {
+    "cases": [
+      {
+        "action_type": "answer",
+        "input": "one",
+        "interaction_cache": "one",
+        "passed": true
+      },
+      {
+        "action_type": "answer",
+        "input": "12.5",
+        "interaction_cache": "12.5",
+        "passed": true
+      },
+      {
+        "action_type": "answer",
+        "input": "Monday",
+        "interaction_cache": "Monday",
+        "passed": true
+      }
+    ],
+    "passed": true
+  },
+  "arm": "uivoyager",
+  "client_import": true,
+  "coordinate_fixture": {
+    "expected": [
+      1080,
+      2400
+    ],
+    "input": [
+      999,
+      999
+    ],
+    "output": [
+      1080,
+      2400
+    ],
+    "passed": true
+  },
+  "expected_hard_task_classes": [
+    "BrowserMultiply",
+    "ExpenseAddMultipleFromGallery",
+    "ExpenseAddMultipleFromMarkor",
+    "ExpenseDeleteMultiple2",
+    "MarkorCreateNoteAndSms",
+    "MarkorMergeNotes",
+    "MarkorTranscribeVideo",
+    "OsmAndMarker",
+    "OsmAndTrack",
+    "RecipeAddMultipleRecipesFromImage",
+    "RecipeAddMultipleRecipesFromMarkor",
+    "RecipeAddMultipleRecipesFromMarkor2",
+    "RecipeDeleteMultipleRecipesWithConstraint",
+    "RetroSavePlaylist",
+    "SaveCopyOfReceiptTaskEval",
+    "SimpleCalendarAddOneEvent",
+    "SportsTrackerActivitiesOnDate",
+    "SportsTrackerTotalDistanceForCategoryOverInterval",
+    "SportsTrackerTotalDurationForCategoryThisWeek"
+  ],
+  "generation_calls": 0,
+  "missing_hard_task_classes": [],
+  "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "qualified": true,
+  "runner_entrypoint": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research_external_v0_2\\UI-Voyager\\androidworld\\eval\\runner.py",
+  "runner_entrypoint_sha256": "b41935edd37d7013eb5ac70441bb569be7d1bae2dc13fef3946110cf1a6e1281",
+  "runner_import": true,
+  "schema_version": "external_controller_runtime_audit.v0.2",
+  "task_class_support_19_of_19": true
+}

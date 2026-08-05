@@ -1,0 +1,8 @@
+repo=https://github.com/ui-voyager/UI-Voyager.git
+revision=67b65e2be093753ecaa2964f48739339b870813e
+transport_url=https://codeload.github.com/ui-voyager/UI-Voyager/tar.gz/67b65e2be093753ecaa2964f48739339b870813e
+archive_path=03_code/third_party_v0_2/archives/UI-Voyager-67b65e2be093753ecaa2964f48739339b870813e.tar.gz
+archive_sha256=ad650efe307848e965f1f42a36d50c19faaa6b71dd33c8a89343f0d7c173b724
+license_path=03_code/third_party_v0_2/UI-Voyager/LICENSE
+license_sha256=f7b20aa3079a1779f35284655a65e2f8e95833f6e2412601a6edcda05153b059
+regular_files=926

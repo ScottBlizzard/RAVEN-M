@@ -1,0 +1,47 @@
+{
+  "arm_id": "CB-PX-B3",
+  "checkpoint_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+  "evidence": {
+    "answer_fixture": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\metadata\\multi_framework_s0_v0_2\\answer_fixtures.json",
+    "checkpoint_manifest": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\metadata\\multi_framework_s0_v0_2\\server\\metadata\\common_qwen.checkpoint_manifest.json",
+    "dependency_lock_hash": "b0d53cd84359e16cb0f61941c740bd9e5939d866f6c9c9ce7b080bc29a7edd62",
+    "fixture_junit": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\metadata\\multi_framework_s0_v0_2\\protocol_fixture_tests.junit.xml",
+    "model_load_qualification": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\metadata\\multi_framework_s0_v0_2\\server\\model_load_checks\\common_qwen.qualification.txt",
+    "runtime_audit": {
+      "config_path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research_source_08b21d06\\05_project\\configs\\agents\\b3.yaml",
+      "config_sha256": "746b1f0a2a3cc09f38d8eefbdd90a58484b99337510e0513182c69a0684260b7",
+      "missing_hard_task_classes": [],
+      "qualified": true,
+      "runner_import": true,
+      "screenshot_only": true,
+      "task_class_support_19_of_19": true,
+      "variant": "B3",
+      "variant_matches": true
+    },
+    "runtime_hash": "a7d26bc683c9418a48ba27a910852929ccbc5698017de2afb39ecc36663a59bd"
+  },
+  "external_family": null,
+  "gates": {
+    "answer_support_3_of_3": true,
+    "budget_enforcement": true,
+    "checkpoint_pin": true,
+    "code_license": true,
+    "coordinate_fixtures": true,
+    "evaluator_isolation": true,
+    "logger_schema": true,
+    "model_license": true,
+    "observation_declaration": true,
+    "protected_hashes": true,
+    "runner_support": true,
+    "runtime_lock": true,
+    "shard_integrity": true,
+    "source_pin": true,
+    "task_class_support_19_of_19": true
+  },
+  "observation_privileges": [
+    "screenshot"
+  ],
+  "qualified": true,
+  "schema_version": "multi_framework_capability.v0.2",
+  "source_commit": "08b21d06db165d1fb6908c457f955988061b10ca"
+}

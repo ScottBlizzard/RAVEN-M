@@ -1,0 +1,11 @@
+key=ui_voyager
+env_name=mf_uivoyager_py311
+checkpoint_manifest=/mnt/sdb/ccj/raven_m_research/05_project/metadata/multi_framework_s0_v0_2/ui_voyager.checkpoint_manifest.json
+checkpoint_snapshot=/mnt/sdb/ccj/raven_m_research/05_project/model_cache/huggingface/models--MarsXL--UI-Voyager/snapshots/c262b85f18f1c669b19bca544e0ee2eb71225ff3
+served_model_name=UI-Voyager
+cuda_visible_devices=6
+tensor_parallel_size=1
+port=8102
+generation_calls=0
+endpoint_checked=/v1/models
+models_response_sha256=f0afd282ba37cdd1a9120b8d80ac47b27ff0be0ce204e10769b1addd95140ed9

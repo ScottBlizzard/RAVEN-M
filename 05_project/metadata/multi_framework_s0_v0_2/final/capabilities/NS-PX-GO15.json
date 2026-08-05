@@ -1,0 +1,107 @@
+{
+  "arm_id": "NS-PX-GO15",
+  "checkpoint_revision": "afe3707fc84caebc4d7046118b34493ecf8bb060",
+  "evidence": {
+    "answer_fixture": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\metadata\\multi_framework_s0_v0_2\\answer_fixtures.json",
+    "checkpoint_manifest": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\metadata\\multi_framework_s0_v0_2\\server\\metadata\\gui_owl.checkpoint_manifest.json",
+    "dependency_lock_hash": "4e7819de8230017c9ab5e6ea4c530798c22ffbefd7440f9ef281c22d2c323a78",
+    "fixture_junit": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\metadata\\multi_framework_s0_v0_2\\protocol_fixture_tests.junit.xml",
+    "model_load_qualification": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\05_project\\metadata\\multi_framework_s0_v0_2\\server\\model_load_checks\\gui_owl.qualification.txt",
+    "runtime_audit": {
+      "android_actions": 0,
+      "answer_fixture": {
+        "cases": [
+          {
+            "action_type": "answer",
+            "input": "one",
+            "interaction_cache": "one",
+            "passed": true
+          },
+          {
+            "action_type": "answer",
+            "input": "12.5",
+            "interaction_cache": "12.5",
+            "passed": true
+          },
+          {
+            "action_type": "answer",
+            "input": "Monday",
+            "interaction_cache": "Monday",
+            "passed": true
+          }
+        ],
+        "passed": true
+      },
+      "arm": "mobileagent",
+      "coordinate_fixture": {
+        "input": [
+          1080,
+          2400
+        ],
+        "passed": true,
+        "resized": [
+          1092,
+          2408
+        ]
+      },
+      "expected_hard_task_classes": [
+        "BrowserMultiply",
+        "ExpenseAddMultipleFromGallery",
+        "ExpenseAddMultipleFromMarkor",
+        "ExpenseDeleteMultiple2",
+        "MarkorCreateNoteAndSms",
+        "MarkorMergeNotes",
+        "MarkorTranscribeVideo",
+        "OsmAndMarker",
+        "OsmAndTrack",
+        "RecipeAddMultipleRecipesFromImage",
+        "RecipeAddMultipleRecipesFromMarkor",
+        "RecipeAddMultipleRecipesFromMarkor2",
+        "RecipeDeleteMultipleRecipesWithConstraint",
+        "RetroSavePlaylist",
+        "SaveCopyOfReceiptTaskEval",
+        "SimpleCalendarAddOneEvent",
+        "SportsTrackerActivitiesOnDate",
+        "SportsTrackerTotalDistanceForCategoryOverInterval",
+        "SportsTrackerTotalDurationForCategoryThisWeek"
+      ],
+      "generation_calls": 0,
+      "gui_owl_import": true,
+      "inference_wrapper_import": true,
+      "missing_hard_task_classes": [],
+      "mobile_agent_v3_import": true,
+      "official_gui_shell_target_missing_recorded": true,
+      "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+      "qualified": true,
+      "runner_entrypoint": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research_external_v0_2\\MobileAgent\\Mobile-Agent-v3.5\\android_world_v3.5\\run_ma35.py",
+      "runner_entrypoint_sha256": "32c5774c05dcf1d826b986939fe97fe23a48ddf02573a81123e420cdad87bc09",
+      "schema_version": "external_controller_runtime_audit.v0.2",
+      "task_class_support_19_of_19": true
+    },
+    "runtime_hash": "fe877e23c18cdc70005f4e7f992e5eb5a22ed4a3b505cf722024fc4d8633b147"
+  },
+  "external_family": "XPLUG_GUIOWL8",
+  "gates": {
+    "answer_support_3_of_3": true,
+    "budget_enforcement": true,
+    "checkpoint_pin": true,
+    "code_license": true,
+    "coordinate_fixtures": true,
+    "evaluator_isolation": true,
+    "logger_schema": true,
+    "model_license": true,
+    "observation_declaration": true,
+    "protected_hashes": true,
+    "runner_support": true,
+    "runtime_lock": true,
+    "shard_integrity": true,
+    "source_pin": true,
+    "task_class_support_19_of_19": true
+  },
+  "observation_privileges": [
+    "screenshot"
+  ],
+  "qualified": true,
+  "schema_version": "multi_framework_capability.v0.2",
+  "source_commit": "11cea575561fb7800b5fb6b6cafa56f7a91de11f"
+}

@@ -1,0 +1,37 @@
+{
+  "android_actions": 0,
+  "arms": {
+    "CB-PX-B3": {
+      "config_path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research_source_08b21d06\\05_project\\configs\\agents\\b3.yaml",
+      "config_sha256": "746b1f0a2a3cc09f38d8eefbdd90a58484b99337510e0513182c69a0684260b7",
+      "missing_hard_task_classes": [],
+      "qualified": true,
+      "runner_import": true,
+      "screenshot_only": true,
+      "task_class_support_19_of_19": true,
+      "variant": "B3",
+      "variant_matches": true
+    },
+    "CB-PX-M0": {
+      "config_path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research_source_08b21d06\\05_project\\configs\\agents\\m0.yaml",
+      "config_sha256": "11935bc7a74da3b2f49c3672eba72a627b1fb1367220b8f8412ec103d77a50e5",
+      "missing_hard_task_classes": [],
+      "qualified": true,
+      "runner_import": true,
+      "screenshot_only": true,
+      "task_class_support_19_of_19": true,
+      "variant": "M0",
+      "variant_matches": true
+    }
+  },
+  "expected_commit": "08b21d06db165d1fb6908c457f955988061b10ca",
+  "generation_calls": 0,
+  "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "qualified": true,
+  "resolved_commit": "08b21d06db165d1fb6908c457f955988061b10ca",
+  "runner_path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research_source_08b21d06\\05_project\\src\\raven_m\\controller\\episode_controller.py",
+  "runner_sha256": "0dc095a56060989652bd79b74c7773ec31daee7cb304d1409dea5419f09fcf69",
+  "schema_version": "raven_controller_runtime_audit.v0.2",
+  "source_pin": true,
+  "source_root": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research_source_08b21d06"
+}

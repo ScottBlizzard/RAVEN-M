@@ -1,0 +1,8 @@
+repo=https://github.com/OpenGVLab/ScaleCUA.git
+revision=5d92feea9f1e14b8303ce37da45b286fb1f4d3aa
+transport_url=https://codeload.github.com/OpenGVLab/ScaleCUA/tar.gz/5d92feea9f1e14b8303ce37da45b286fb1f4d3aa
+archive_path=03_code/third_party_v0_2/archives/ScaleCUA-5d92feea9f1e14b8303ce37da45b286fb1f4d3aa.tar.gz
+archive_sha256=2c3b6433c34a259506e282c8c75222bae595052e294e1bae8c7a782cf0ddf89c
+license_path=03_code/third_party_v0_2/ScaleCUA/LICENSE
+license_sha256=c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4
+regular_files=2441

@@ -1,0 +1,8 @@
+﻿source_root=D:\ZJU\Summer_Camp\RAVEN-M-Research_external_v0_2\MobileAgent\Mobile-Agent-v3.5\android_world_v3.5
+python=C:\Users\lenovo\AppData\Local\Programs\Python\Python311\python.exe
+runtime_env_root=D:\mf_v02
+dependency_resolution_attempt=1
+bounded_adapter_patch_round=1
+bounded_adapter_patch_scope=dependency_closure_only
+extra_requirements=
+finalize_existing=True

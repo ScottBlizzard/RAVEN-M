@@ -1,0 +1,1 @@
+failure_class=INFRA_CONTEXT_CAPACITYnobserved_model_max_len=262144nrequired_kv_gib=36.00navailable_kv_gib=7.84ndeterministic_retry_max_model_len=32768ngeneration_calls=0nandroid_actions=0n

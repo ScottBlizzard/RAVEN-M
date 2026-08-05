@@ -1,0 +1,71 @@
+{
+  "android_actions": 0,
+  "answer_fixture": {
+    "cases": [
+      {
+        "action_type": "answer",
+        "input": "one",
+        "interaction_cache": "one",
+        "passed": true
+      },
+      {
+        "action_type": "answer",
+        "input": "12.5",
+        "interaction_cache": "12.5",
+        "passed": true
+      },
+      {
+        "action_type": "answer",
+        "input": "Monday",
+        "interaction_cache": "Monday",
+        "passed": true
+      }
+    ],
+    "passed": true
+  },
+  "arm": "mobileagent",
+  "coordinate_fixture": {
+    "input": [
+      1080,
+      2400
+    ],
+    "passed": true,
+    "resized": [
+      1092,
+      2408
+    ]
+  },
+  "expected_hard_task_classes": [
+    "BrowserMultiply",
+    "ExpenseAddMultipleFromGallery",
+    "ExpenseAddMultipleFromMarkor",
+    "ExpenseDeleteMultiple2",
+    "MarkorCreateNoteAndSms",
+    "MarkorMergeNotes",
+    "MarkorTranscribeVideo",
+    "OsmAndMarker",
+    "OsmAndTrack",
+    "RecipeAddMultipleRecipesFromImage",
+    "RecipeAddMultipleRecipesFromMarkor",
+    "RecipeAddMultipleRecipesFromMarkor2",
+    "RecipeDeleteMultipleRecipesWithConstraint",
+    "RetroSavePlaylist",
+    "SaveCopyOfReceiptTaskEval",
+    "SimpleCalendarAddOneEvent",
+    "SportsTrackerActivitiesOnDate",
+    "SportsTrackerTotalDistanceForCategoryOverInterval",
+    "SportsTrackerTotalDurationForCategoryThisWeek"
+  ],
+  "generation_calls": 0,
+  "gui_owl_import": true,
+  "inference_wrapper_import": true,
+  "missing_hard_task_classes": [],
+  "mobile_agent_v3_import": true,
+  "official_gui_shell_target_missing_recorded": true,
+  "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "qualified": true,
+  "runner_entrypoint": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research_external_v0_2\\MobileAgent\\Mobile-Agent-v3.5\\android_world_v3.5\\run_ma35.py",
+  "runner_entrypoint_sha256": "32c5774c05dcf1d826b986939fe97fe23a48ddf02573a81123e420cdad87bc09",
+  "schema_version": "external_controller_runtime_audit.v0.2",
+  "task_class_support_19_of_19": true
+}

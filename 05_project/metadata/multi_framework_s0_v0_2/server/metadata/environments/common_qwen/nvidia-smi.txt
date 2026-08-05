@@ -1,0 +1,71 @@
+Wed Aug  5 21:38:10 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 570.144                Driver Version: 570.144        CUDA Version: 12.8     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA GeForce RTX 4090        Off |   00000000:01:00.0 Off |                  Off |
+| 30%   37C    P8             13W /  450W |   19337MiB /  24564MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+|   1  NVIDIA GeForce RTX 4090        Off |   00000000:21:00.0 Off |                  Off |
+| 30%   37C    P8              7W /  450W |   20758MiB /  24564MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+|   2  NVIDIA GeForce RTX 4090        Off |   00000000:41:00.0 Off |                  Off |
+| 31%   37C    P8             22W /  450W |   20758MiB /  24564MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+|   3  NVIDIA GeForce RTX 4090        Off |   00000000:61:00.0 Off |                  Off |
+| 31%   36C    P8             25W /  450W |   19334MiB /  24564MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+|   4  NVIDIA GeForce RTX 4090        Off |   00000000:81:00.0 Off |                  Off |
+| 31%   38C    P8             18W /  450W |     225MiB /  24564MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+|   5  NVIDIA GeForce RTX 4090        Off |   00000000:A1:00.0 Off |                  Off |
+| 31%   39C    P8             18W /  450W |     225MiB /  24564MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+|   6  NVIDIA GeForce RTX 4090        Off |   00000000:C1:00.0 Off |                  Off |
+| 30%   36C    P8             23W /  450W |     225MiB /  24564MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+|   7  NVIDIA GeForce RTX 4090        Off |   00000000:E1:00.0 Off |                  Off |
+| 30%   37C    P5             36W /  450W |    3119MiB /  24564MiB |     37%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|    0   N/A  N/A            5336      G   /usr/lib/xorg/Xorg                        4MiB |
+|    0   N/A  N/A         1227984      C   ...aacsim/kit/python/bin/python3        224MiB |
+|    0   N/A  N/A         4060763      G   /usr/lib/xorg/Xorg                        4MiB |
+|    1   N/A  N/A            5336      G   /usr/lib/xorg/Xorg                        4MiB |
+|    1   N/A  N/A         1227984      C   ...aacsim/kit/python/bin/python3        192MiB |
+|    1   N/A  N/A         4060763      G   /usr/lib/xorg/Xorg                        4MiB |
+|    2   N/A  N/A            5336      G   /usr/lib/xorg/Xorg                        4MiB |
+|    2   N/A  N/A         1227984      C   ...aacsim/kit/python/bin/python3        192MiB |
+|    2   N/A  N/A         4060763      G   /usr/lib/xorg/Xorg                        4MiB |
+|    3   N/A  N/A            5336      G   /usr/lib/xorg/Xorg                        4MiB |
+|    3   N/A  N/A         1227984    C+G   ...aacsim/kit/python/bin/python3        198MiB |
+|    3   N/A  N/A         4060763      G   /usr/lib/xorg/Xorg                        4MiB |
+|    4   N/A  N/A            5336      G   /usr/lib/xorg/Xorg                        4MiB |
+|    4   N/A  N/A         1227984      C   ...aacsim/kit/python/bin/python3        192MiB |
+|    4   N/A  N/A         4060763      G   /usr/lib/xorg/Xorg                        4MiB |
+|    5   N/A  N/A            5336      G   /usr/lib/xorg/Xorg                        4MiB |
+|    5   N/A  N/A         1227984      C   ...aacsim/kit/python/bin/python3        192MiB |
+|    5   N/A  N/A         4060763      G   /usr/lib/xorg/Xorg                        4MiB |
+|    6   N/A  N/A            5336      G   /usr/lib/xorg/Xorg                        4MiB |
+|    6   N/A  N/A         1227984      C   ...aacsim/kit/python/bin/python3        192MiB |
+|    6   N/A  N/A         4060763      G   /usr/lib/xorg/Xorg                        4MiB |
+|    7   N/A  N/A            5336      G   /usr/lib/xorg/Xorg                        4MiB |
+|    7   N/A  N/A         1227984    C+G   ...aacsim/kit/python/bin/python3       3052MiB |
+|    7   N/A  N/A         4060763      G   /usr/lib/xorg/Xorg                        4MiB |
++-----------------------------------------------------------------------------------------+

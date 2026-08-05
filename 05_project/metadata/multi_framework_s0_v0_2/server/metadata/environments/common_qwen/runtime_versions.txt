@@ -1,0 +1,4 @@
+python=3.11.15
+torch=2.8.0+cu128
+torch_cuda=12.8
+transformers=5.10.2

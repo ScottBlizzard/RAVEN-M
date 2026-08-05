@@ -27,6 +27,11 @@ aborted_preflight_wheelhouse=${DOWNLOAD_ROOT}/vllm_0_26_0_cp311
 aborted_preflight_reason=vllm_0_26_0_default_binary_targets_cuda_13_but_server_driver_supports_cuda_12_8
 aborted_preflight_environment_created=false
 aborted_preflight_model_load_attempted=false
+bounded_patch_round=1
+bounded_patch_reason=official_controller_requirements_pin_jsonschema_4_17_3_while_vllm_requires_mistral_common_with_jsonschema_gte_4_21_1
+bounded_patch_scope=separate_model_server_environment_from_controller_environment_without_changing_model_controller_or_decoding
+model_server_environment_contents=vllm_and_its_resolved_dependencies_only
+controller_environment_contents=official_source_requirements_installed_separately_on_android_host
 EOF
 
 prepare_wheelhouse() {
@@ -44,13 +49,19 @@ prepare_wheelhouse() {
       return 1
     fi
     mkdir -p "${wheelhouse}"
-    "${BASE_PYTHON}" -m pip download \
+    if ! "${BASE_PYTHON}" -m pip download \
       --disable-pip-version-check \
       --extra-index-url "${TORCH_INDEX}" \
       --dest "${wheelhouse}" \
-      -r "${requirements}" \
       "vllm==${VLLM_VERSION}" \
-      >"${evidence}/dependency_resolution.log" 2>&1
+      >"${evidence}/dependency_resolution.log" 2>&1; then
+      echo "Deterministic dependency resolution failed for ${key}" >&2
+      return 1
+    fi
+    if ! find "${wheelhouse}" -maxdepth 1 -type f -iname 'vllm*.whl' | grep -q .; then
+      echo "Resolved wheelhouse lacks a vLLM wheel: ${wheelhouse}" >&2
+      return 1
+    fi
     local manifest_tmp="${evidence}/wheelhouse.manifest.sha256.tmp"
     find "${wheelhouse}" -maxdepth 1 -type f ! -name 'manifest.sha256' -printf '%f\n' \
       | sort \
@@ -58,13 +69,16 @@ prepare_wheelhouse() {
       >"${manifest_tmp}"
     mv "${manifest_tmp}" "${wheelhouse}/manifest.sha256"
   fi
+  if [[ ! -s "${wheelhouse}/manifest.sha256" ]]; then
+    echo "Refusing empty wheelhouse manifest: ${wheelhouse}/manifest.sha256" >&2
+    return 1
+  fi
   printf '%s\n' "${wheelhouse}"
 }
 
 build_env() {
   local name="$1"
-  local requirements="$2"
-  local wheelhouse="$3"
+  local wheelhouse="$2"
   local target="${ENV_ROOT}/${name}"
   local evidence="${META}/${name}"
   mkdir -p "${evidence}"
@@ -78,7 +92,6 @@ build_env() {
       --disable-pip-version-check \
       --no-index \
       --find-links "${wheelhouse}" \
-      -r "${requirements}" \
       "vllm==${VLLM_VERSION}"
     "${target}/bin/python" -m pip check
     "${target}/bin/python" -m pip freeze --all | LC_ALL=C sort >"${evidence}/pip.freeze.txt"
@@ -103,11 +116,11 @@ SCALECUA_REQUIREMENTS="${SOURCE_ROOT}/ScaleCUA/evaluation/AndroidWorld/requireme
 MOBILEAGENT_WHEELHOUSE="$(prepare_wheelhouse mobileagent "${MOBILEAGENT_REQUIREMENTS}")"
 UIVOYAGER_WHEELHOUSE="$(prepare_wheelhouse uivoyager "${UIVOYAGER_REQUIREMENTS}")"
 
-build_env mf_mobileagent_py311 "${MOBILEAGENT_REQUIREMENTS}" "${MOBILEAGENT_WHEELHOUSE}"
-build_env mf_uivoyager_py311 "${UIVOYAGER_REQUIREMENTS}" "${UIVOYAGER_WHEELHOUSE}"
+build_env mf_mobileagent_py311 "${MOBILEAGENT_WHEELHOUSE}"
+build_env mf_uivoyager_py311 "${UIVOYAGER_WHEELHOUSE}"
 if [[ "${INCLUDE_SCALECUA}" == "1" ]]; then
   SCALECUA_WHEELHOUSE="$(prepare_wheelhouse scalecua "${SCALECUA_REQUIREMENTS}")"
-  build_env mf_scalecua_py311 "${SCALECUA_REQUIREMENTS}" "${SCALECUA_WHEELHOUSE}"
+  build_env mf_scalecua_py311 "${SCALECUA_WHEELHOUSE}"
 elif [[ "${INCLUDE_SCALECUA}" != "0" ]]; then
   echo "MF_INCLUDE_SCALECUA must be 0 or 1" >&2
   exit 1

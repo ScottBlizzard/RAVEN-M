@@ -1,0 +1,36 @@
+{
+  "android_actions": 0,
+  "created_at": "2026-08-05T14:59:41.356561+00:00",
+  "model_calls": 0,
+  "passed": true,
+  "schema_version": "multi_framework_answer_fixture.v0.2",
+  "tasks": [
+    {
+      "correct_score": 1.0,
+      "empty_score": 0.0,
+      "expected_answer_sha256": "6394db6c11e34fdf97bc2cbd69ae0f541eeea99457e23cf49aa068c762815321",
+      "passed": true,
+      "seed": 2026080600,
+      "task_class": "SportsTrackerActivitiesOnDate",
+      "wrong_score": 0.0
+    },
+    {
+      "correct_score": 1.0,
+      "empty_score": 0.0,
+      "expected_answer_sha256": "564bda3f2e5333f216c4a194366ac05e3218717d5a3d44e955b5979151a4cf22",
+      "passed": true,
+      "seed": 2026080601,
+      "task_class": "SportsTrackerTotalDistanceForCategoryOverInterval",
+      "wrong_score": 0.0
+    },
+    {
+      "correct_score": 1.0,
+      "empty_score": 0.0,
+      "expected_answer_sha256": "412bff4681bf16c1bb793b5694538fc85f5130ae73a9f04b7b63490f9c7fdaab",
+      "passed": true,
+      "seed": 2026080602,
+      "task_class": "SportsTrackerTotalDurationForCategoryThisWeek",
+      "wrong_score": 0.0
+    }
+  ]
+}

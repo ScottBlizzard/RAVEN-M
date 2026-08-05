@@ -6,7 +6,13 @@ PROJECT="${ROOT}/05_project"
 ENV_ROOT="${PROJECT}/envs/multi_framework_v0_2"
 MODEL_META="${PROJECT}/metadata/multi_framework_s0_v0_2"
 OUT="${PROJECT}/outputs/multi_framework_s0_v0_2/model_load_checks"
+INCLUDE_SCALECUA="${MF_INCLUDE_SCALECUA:-1}"
+ARM_FILTER=",${MF_S0_ARMS:-gui_owl,ui_voyager,scalecua},"
 mkdir -p "${OUT}"
+
+selected() {
+  [[ "${ARM_FILTER}" == *",$1,"* ]]
+}
 
 snapshot_path() {
   local manifest="$1"
@@ -71,33 +77,44 @@ launch_and_check() {
   } >"${OUT}/${key}.qualification.txt"
 }
 
-launch_and_check \
-  gui_owl \
-  mf_mobileagent_py311 \
-  "${MODEL_META}/gui_owl.checkpoint_manifest.json" \
-  GUI-Owl-1.5-8B-Think \
-  4,5 \
-  2 \
-  8101 \
-  --max-model-len 32768
+if selected gui_owl; then
+  launch_and_check \
+    gui_owl \
+    mf_mobileagent_py311 \
+    "${MODEL_META}/gui_owl.checkpoint_manifest.json" \
+    GUI-Owl-1.5-8B-Think \
+    4,5 \
+    2 \
+    8101 \
+    --max-model-len 32768
+fi
 
-launch_and_check \
-  ui_voyager \
-  mf_uivoyager_py311 \
-  "${MODEL_META}/ui_voyager.checkpoint_manifest.json" \
-  UI-Voyager \
-  6 \
-  1 \
-  8102
+if selected ui_voyager; then
+  launch_and_check \
+    ui_voyager \
+    mf_uivoyager_py311 \
+    "${MODEL_META}/ui_voyager.checkpoint_manifest.json" \
+    UI-Voyager \
+    6 \
+    1 \
+    8102 \
+    --max-model-len 32768
+fi
 
-launch_and_check \
-  scalecua \
-  mf_scalecua_py311 \
-  "${MODEL_META}/scalecua.checkpoint_manifest.json" \
-  ScaleCUA-32B \
-  0,1,2,3 \
-  4 \
-  8103 \
-  --max-model-len 32768
+if [[ "${INCLUDE_SCALECUA}" != "0" && "${INCLUDE_SCALECUA}" != "1" ]]; then
+  echo "MF_INCLUDE_SCALECUA must be 0 or 1" >&2
+  exit 1
+fi
+if [[ "${INCLUDE_SCALECUA}" == "1" ]] && selected scalecua; then
+  launch_and_check \
+    scalecua \
+    mf_scalecua_py311 \
+    "${MODEL_META}/scalecua.checkpoint_manifest.json" \
+    ScaleCUA-32B \
+    0,1,2,3 \
+    4 \
+    8103 \
+    --max-model-len 32768
+fi
 
 echo "multi_framework_s0_model_load_checks_v0_2=complete"

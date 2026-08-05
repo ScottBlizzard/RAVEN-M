@@ -1,0 +1,111 @@
+{
+  "created_at": "2026-08-05T13:35:28.449454+00:00",
+  "file_count": 16,
+  "files": [
+    {
+      "bytes": 1519,
+      "path": ".gitattributes",
+      "sha256": "11ad7efa24975ee4b0c3c3a38ed18737f0658a5f75a0a96787b576a78a023361",
+      "symlink": true
+    },
+    {
+      "bytes": 3539,
+      "path": "README.md",
+      "sha256": "8520a786d7a9d411e45466c2b7e7786d062ec03f2778acecc4a45991a803d8d8",
+      "symlink": true
+    },
+    {
+      "bytes": 5499,
+      "path": "chat_template.json",
+      "sha256": "5c72a170d2a4a1a3bc5adad2e689ae28138a9700e5b8c96c0266331e86c0acce",
+      "symlink": true
+    },
+    {
+      "bytes": 1468,
+      "path": "config.json",
+      "sha256": "e36c10d2850778887b13b6874174c669773be7e1f024e9d1d04f02315674ad0a",
+      "symlink": true
+    },
+    {
+      "bytes": 214,
+      "path": "generation_config.json",
+      "sha256": "29d2f9cebb08e5a8d0312d42f20018c4cda80dc3f53feb0989f6fabe0319eed9",
+      "symlink": true
+    },
+    {
+      "bytes": 1671839,
+      "path": "merges.txt",
+      "sha256": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+      "symlink": true
+    },
+    {
+      "bytes": 4902275944,
+      "path": "model-00001-of-00004.safetensors",
+      "sha256": "98f9e07fbee5846afaf3c0371e538f74c3a4f4dc21aaaf85a4d276bb31b84280",
+      "symlink": true
+    },
+    {
+      "bytes": 4915962496,
+      "path": "model-00002-of-00004.safetensors",
+      "sha256": "29e299ebd1184ae71029cedbe65d08929fd8132215868fad968501bee2183d2e",
+      "symlink": true
+    },
+    {
+      "bytes": 4999831048,
+      "path": "model-00003-of-00004.safetensors",
+      "sha256": "87034d24189890bd9449cb674d709a050c4093c97978a1bc0f3323635ccef346",
+      "symlink": true
+    },
+    {
+      "bytes": 2716270024,
+      "path": "model-00004-of-00004.safetensors",
+      "sha256": "afb3ecbf02e3eaa860c2c1843ec64cb5c8dbdafe810f4f55d2da79ba59a0c3d9",
+      "symlink": true
+    },
+    {
+      "bytes": 67759,
+      "path": "model.safetensors.index.json",
+      "sha256": "520b2e05079402e9468a8701d03d1154d14b2599593afb6effa7fb60c1bff070",
+      "symlink": true
+    },
+    {
+      "bytes": 390,
+      "path": "preprocessor_config.json",
+      "sha256": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516",
+      "symlink": true
+    },
+    {
+      "bytes": 7032403,
+      "path": "tokenizer.json",
+      "sha256": "a5d85b6dcc535e6b93115a9ef287e6132fdbf30270da6218194ba742261173c7",
+      "symlink": true
+    },
+    {
+      "bytes": 10868,
+      "path": "tokenizer_config.json",
+      "sha256": "c2da771801886ad9ae98181793ffd3dfb7f1af30f6f7c6a4e15d7dbba52e2399",
+      "symlink": true
+    },
+    {
+      "bytes": 386,
+      "path": "video_preprocessor_config.json",
+      "sha256": "f38c890c32e0c037969b33be7693b2a51464695378b223418db5262a6da43fa0",
+      "symlink": true
+    },
+    {
+      "bytes": 2776833,
+      "path": "vocab.json",
+      "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+      "symlink": true
+    }
+  ],
+  "license_paths": [],
+  "model_card_license": "mit",
+  "repo_id": "mPLUG/GUI-Owl-1.5-8B-Think",
+  "resolved_hub_sha": "afe3707fc84caebc4d7046118b34493ecf8bb060",
+  "revision": "afe3707fc84caebc4d7046118b34493ecf8bb060",
+  "schema_version": "multi_framework_checkpoint.v0.2",
+  "snapshot_path": "/mnt/sdb/ccj/raven_m_research/05_project/model_cache/huggingface/models--mPLUG--GUI-Owl-1.5-8B-Think/snapshots/afe3707fc84caebc4d7046118b34493ecf8bb060",
+  "total_bytes": 17545912229,
+  "transfer_endpoint": "https://hf-mirror.com"
+}
