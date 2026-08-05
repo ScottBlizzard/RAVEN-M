@@ -1,0 +1,124 @@
+{
+  "schema": "role_binding_timing.infra_m13.post_diagnosis_dev_contract.config.v1",
+  "protocol_id": "INFRA-M13-POST-DIAGNOSIS-PROOF-BINDING-ISSUER-LEDGER-V1",
+  "contract_kind": "POST_DIAGNOSIS_DEV_ENGINEERING_CONTRACT",
+  "phase": "freeze_only",
+  "freeze_tag": "role-binding-timing-infra-m13-freeze-20260805",
+  "implementation_present": false,
+  "tests_executed": false,
+  "gates_executed": false,
+  "generation_eligible": false,
+  "offline_gate_eligible": false,
+  "live_eligible": false,
+  "classifier": {
+    "version": "infra-m13-proof-bound-role-views-v1",
+    "raw_authority_labels_permitted": false,
+    "fusion_identity": ["pid", "create_time"],
+    "require_complete_all_processes": true,
+    "require_complete_structural_processes": true,
+    "require_complete_listener_evidence": true,
+    "candidate_reason_sources": [
+      "LOCKED_PROJECT_BINARY_PATH_AND_HASH",
+      "CONTROLLED_PORT_OWNER"
+    ],
+    "recompute_before_authorization": true,
+    "exact_canonical_view_equality": true,
+    "exact_candidate_ancestry_equality": true,
+    "extra_or_missing_fields": "FAIL_CLOSED"
+  },
+  "api_contract": {
+    "derive": "derive_authorization_views(raw_snapshot, locked_runner_record, locked_known_paths, controlled_ports, contract_version, contract_sha256, implementation_sha256)",
+    "seal": "seal_authorization_views(raw_snapshot, derived_views, candidate_ancestry, locked_inputs, implementation_binding)",
+    "verify_seal": "verify_sealed_authorization_views(raw_snapshot, supplied_sealed_view, locked_inputs, implementation_binding)",
+    "create_ledger": "create_run_local_issuer_ledger()",
+    "begin_run": "begin_issuer_run(ledger, run_id)",
+    "issue": "issue_temporal_attestation(verified_sealed_view, candidate_identity_key, ledger, issuer_session)",
+    "verify_attestation": "verify_temporal_attestation(attestation, current_raw_snapshot, locked_inputs, ledger, issuer_session)",
+    "terminal": "terminate_issuer_run(ledger, issuer_session)"
+  },
+  "sealed_view_contract": {
+    "partitions": [
+      "trusted_runner_root",
+      "project_authorization_candidates",
+      "support_only_ancestry_nodes",
+      "unrelated_observed_processes"
+    ],
+    "recompute_complete_canonical_partitions": true,
+    "compare_every_row_and_field": true,
+    "compare_candidate_ancestry_exactly": true,
+    "reject_additional_properties": true,
+    "verify_content_hashes_after_canonical_equality": true,
+    "public_sha256_role": "CONTENT_ADDRESSING_ONLY_NOT_AUTHORIZATION_ROOT"
+  },
+  "birth_evidence_contract": {
+    "candidate_source": "EXTRACT_FROM_VERIFIED_SEALED_VIEW_BY_EXACT_IDENTITY",
+    "chain_source": "DETERMINISTIC_REBUILD_FROM_VERIFIED_CANDIDATE_ANCESTRY_AND_SEALED_RECORDS",
+    "caller_copy_is_authority": false,
+    "exact_compare_observability_copy": true,
+    "compare_order_length_identity_exe_hash_cmdline_sample_source_hash": true
+  },
+  "issuer_ledger_contract": {
+    "run_nonce": "UNPREDICTABLE_OS_CSPRNG_MINIMUM_128_BITS",
+    "attestation_id": "UNPREDICTABLE_OS_CSPRNG_MINIMUM_128_BITS",
+    "membership_required": true,
+    "entry_fields": [
+      "run_id",
+      "run_nonce",
+      "epoch",
+      "attestation_id",
+      "canonical_attestation_digest",
+      "active"
+    ],
+    "caller_recomputed_hash_authorizes": false,
+    "new_process_empty_ledger_rejects_old_objects": true,
+    "cross_process_persistent_trust": false,
+    "terminal_atomic_revoke_all": true,
+    "terminal_irreversible_tombstone": true
+  },
+  "support_invariants": {
+    "role_authority": false,
+    "adoptable": false,
+    "kill_target": false,
+    "cleanup_target": false,
+    "controlled_port_owner": false,
+    "ledger_candidate": false,
+    "independent_candidate_authority": false
+  },
+  "gate_order": [
+    "static_contamination",
+    "canonical_view_binding_contract",
+    "issuer_ledger_temporal_contract",
+    "full_regression",
+    "input_and_object_lock"
+  ],
+  "stop_on_first_failure": true,
+  "same_version_patch_and_rerun": false,
+  "future_paths": {
+    "implementation": "05_project/src/raven_m/role_binding_timing/infra_m13_proof_bound_attestation.py",
+    "canonical_view_tests": "05_project/tests/role_binding_timing/test_infra_m13_canonical_view_binding_contract.py",
+    "issuer_ledger_tests": "05_project/tests/role_binding_timing/test_infra_m13_issuer_ledger_contract.py",
+    "offline_root": "05_project/artifacts/role_binding_timing/infra_m13_proof_binding_issuer_ledger_offline_gates",
+    "result_root": "05_project/artifacts/role_binding_timing/infra_m13_proof_binding_issuer_ledger"
+  },
+  "future_live_chain": {
+    "authorized_now": false,
+    "maximum_runs_after_separate_review": 1,
+    "same_version_retry": false,
+    "burn_in_cycles": 24,
+    "burn_in_elapsed_seconds_must_exceed": 180,
+    "settings_a11y_required": 3,
+    "dev_grid_apps": 4,
+    "dev_grid_rounds": 3,
+    "dev_grid_required": 12
+  },
+  "accounting": {
+    "generation_calls": 0,
+    "generation_tokens": 0,
+    "held_out_captures": 0,
+    "stage1_runs": 0,
+    "destination_first_gate_runs": 0,
+    "offline_behavior_executions": 0,
+    "live_chains": 0
+  },
+  "frozen_test_state": "NOT_RUN_EXPECTED_FAIL_MISSING_IMPLEMENTATION"
+}

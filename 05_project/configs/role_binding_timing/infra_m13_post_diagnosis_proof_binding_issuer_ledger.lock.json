@@ -1,0 +1,125 @@
+{
+  "schema": "role_binding_timing.infra_m13.post_diagnosis_dev_contract.input_lock.v1",
+  "protocol_id": "INFRA-M13-POST-DIAGNOSIS-PROOF-BINDING-ISSUER-LEDGER-V1",
+  "contract_kind": "POST_DIAGNOSIS_DEV_ENGINEERING_CONTRACT",
+  "freeze_tag": "role-binding-timing-infra-m13-freeze-20260805",
+  "freeze_parent_commit": "a8367b25b41be6174a088aa79bd4934bf3ee5ef3",
+  "implementation_in_lock": false,
+  "generation_eligible": false,
+  "offline_gate_eligible": false,
+  "live_eligible": false,
+  "contract_bindings": {
+    "protocol": {
+      "path": "04_protocols/role_binding_timing/INFRA_M13_POST_DIAGNOSIS_PROOF_BINDING_ISSUER_LEDGER_V1.md",
+      "sha256": "3760B472E96D9BB610E8A8BF68838FC0618AC085DBBC4EA7AA5959AF37BBB3FA",
+      "prospective_blob_oid": "38427b742a1da2fbf44304e52f87f220355a23ae"
+    },
+    "config": {
+      "path": "05_project/configs/role_binding_timing/infra_m13_post_diagnosis_proof_binding_issuer_ledger.json",
+      "sha256": "52A2914DCB4152B30CDBA50F5F0E8E3CF8EF1C614694E5544ABE7EB253418519",
+      "prospective_blob_oid": "6411449b3fd8571cf0096dc0c905b28110d11a6e",
+      "classifier_version": "infra-m13-proof-bound-role-views-v1"
+    }
+  },
+  "legitimate_inputs": {
+    "m9_freeze": {
+      "commit": "d9e812b3bacd2d06da890086a106af94c95c5347",
+      "tree_oid": "2b3f059c3f3ec4ac62753692076cfa78bff089d5",
+      "tag": "role-binding-timing-infra-m9-freeze-20260805",
+      "tag_object_oid": "51f0d80e654e85060205b65e719587ad43ebffdc"
+    },
+    "m9_result": {
+      "commit": "613b338fce1eab5ecf8c29e6a95702dcfd04eca6",
+      "tree_oid": "8ee9d2b5825989bfa3d1bcf79fe8ff7dfd9ae9ac",
+      "tag": "role-binding-timing-infra-m9-result-20260805",
+      "tag_object_oid": "e716392e774560075b143ead3cfcd430f68cfa0f",
+      "snapshot_tree_oid": "d273b1e8afba0047b0624c8593d58015ae2f9d4f",
+      "authorization_deriver_blob_oid": "417884bbd9c1ebf127b439dd4077c1de4b356704",
+      "authorization_deriver_sha256": "D380553211E677A4465DCE1F851781149B6DFB158067466B29E4C27654354E00",
+      "config_blob_oid": "9aa2b52d374f6fd0bb643793d085ec27a205b2c4",
+      "config_sha256": "9EEEB36E9021F8330BA03ED09D18879ED8644C6A0FDFC6CD7EAA006F4EC28494",
+      "lock_blob_oid": "35c1a3e16e6e2ee5f2fa3a9a227551d3cbcedf38",
+      "use": "LOCKED_DERIVATION_COMPATIBILITY_INPUT_ONLY"
+    },
+    "m12_freeze_contract": {
+      "commit": "08aa4182e1fe7fdff0def2b19193b4b3f7b69266",
+      "tag": "role-binding-timing-infra-m12-freeze-20260805",
+      "tag_object_oid": "696d0ba571c34cd0099337ff2cc62641d9063835",
+      "role_test_blob_oid": "04a84fc3c0c2f609b3a0e36974bc0b7cadc9c0c2",
+      "role_test_sha256": "DBAB39A382357A95ECC49A167548E10EC3CFF9E7FECF7E592FA7691733EE092C",
+      "temporal_test_blob_oid": "e2fccaf63644c1fe2f1bebcf5e933bff9c38cb9b",
+      "temporal_test_sha256": "28265C7694F873B49801103A1D6DBAA8050385F80C04E7646DF69684D7462075",
+      "use": "DEV_MATRIX_BASELINE_ONLY_NO_RUNTIME_IMPORT"
+    },
+    "m12_locked_implementation_audit": {
+      "commit": "a8d3a831eea53fbf075eea6b8e5c3401e435fdf8",
+      "blob_oid": "922222aeec7bdb690d225b2018da0288604eb0bb",
+      "sha256": "73D8138F9ECEFA5B31F975968257FA779AFCD466CE93F67808C42A05544A336C",
+      "use": "VULNERABILITY_AUDIT_ONLY",
+      "runtime_import_permitted": false,
+      "copy_permitted": false
+    },
+    "m12_review_failure": {
+      "commit": "a8367b25b41be6174a088aa79bd4934bf3ee5ef3",
+      "tree_oid": "ec9525884e273c5165e8591f162e4ce5c5da5a4e",
+      "json_blob_oid": "c1b2826da49a6fe6c9c70b85148735f876bb1e53",
+      "report_blob_oid": "a8a8165109f5a06fa0fe960da3552fd1c4b49e31",
+      "verdict": "NOT_AUTHORIZED_FOR_OFFLINE_GATES"
+    }
+  },
+  "contamination_boundary": {
+    "excluded_untracked_leak": {
+      "path": "05_project/src/raven_m/role_binding_timing/infra_m10_temporal_attestation.py",
+      "module_identifier": "infra_m10_temporal_attestation",
+      "known_size_bytes": 47681,
+      "known_line_count": 882,
+      "known_sha256": "D5C0439A39ECD271625502E64F6EBD0BC018F262B9256F6095F44358F90C4BBA",
+      "is_input": false,
+      "permitted_access": "GIT_STATUS_PRESENCE_ONLY"
+    },
+    "excluded_m11_v1": {
+      "commit": "a9b287a58ba61e96c88e6b14eaa56abbdc52d22c",
+      "tag": "role-binding-timing-infra-m11-freeze-20260805",
+      "tag_object_oid": "8216d241ec51601de7afda5ea65b9e45cf30bd1b",
+      "is_input": false,
+      "permitted_access": "OBJECT_IDENTITY_CHECK_ONLY"
+    },
+    "excluded_m12_runtime_reuse": {
+      "path": "05_project/src/raven_m/role_binding_timing/infra_m12_sealed_role_derivation.py",
+      "module_identifier": "infra_m12_sealed_role_derivation",
+      "known_blob_oid": "922222aeec7bdb690d225b2018da0288604eb0bb",
+      "known_sha256": "73D8138F9ECEFA5B31F975968257FA779AFCD466CE93F67808C42A05544A336C",
+      "audit_input_only": true,
+      "import_or_copy_permitted": false
+    },
+    "partial_fragments_from_boundary_violations_permitted": false
+  },
+  "future_namespace": {
+    "implementation": "05_project/src/raven_m/role_binding_timing/infra_m13_proof_bound_attestation.py",
+    "canonical_view_tests": "05_project/tests/role_binding_timing/test_infra_m13_canonical_view_binding_contract.py",
+    "issuer_ledger_tests": "05_project/tests/role_binding_timing/test_infra_m13_issuer_ledger_contract.py",
+    "offline_root": "05_project/artifacts/role_binding_timing/infra_m13_proof_binding_issuer_ledger_offline_gates",
+    "result_root": "05_project/artifacts/role_binding_timing/infra_m13_proof_binding_issuer_ledger"
+  },
+  "protected_wip_sha256": {
+    "05_project/src/raven_m/controller/episode_controller.py": "FC0E82E0FDE90119365D4F685F080EB4519BF2F602E4BDA58DE5D4809A40FE33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "FF89D6B70BE4B4738646D262BEB67D7B7E932E9EB95956D940B1C5000A999D10",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5BB1F1E3DE673A1072CFEE62938B761A62FD69C187D5EADF54BC46B115A3FD0A"
+  },
+  "test_execution": {
+    "canonical_view_tests": "NOT_RUN_EXPECTED_FAIL_MISSING_IMPLEMENTATION",
+    "issuer_ledger_tests": "NOT_RUN_EXPECTED_FAIL_MISSING_IMPLEMENTATION",
+    "contamination_gate": "NOT_RUN",
+    "m9_replay": "NOT_RUN",
+    "full_regression": "NOT_RUN"
+  },
+  "frozen_zero_accounting": {
+    "generation_calls": 0,
+    "generation_tokens": 0,
+    "held_out_captures": 0,
+    "stage1_runs": 0,
+    "destination_first_gate_runs": 0,
+    "offline_behavior_executions": 0,
+    "live_chains": 0
+  }
+}

@@ -1,0 +1,167 @@
+{
+  "schema": "role_binding_timing.infra_m13.post_diagnosis_dev_contract.freeze_declaration.v1",
+  "protocol_id": "INFRA-M13-POST-DIAGNOSIS-PROOF-BINDING-ISSUER-LEDGER-V1",
+  "contract_kind": "POST_DIAGNOSIS_DEV_ENGINEERING_CONTRACT",
+  "date": "2026-08-05",
+  "freeze_parent_commit": "a8367b25b41be6174a088aa79bd4934bf3ee5ef3",
+  "freeze_tag": "role-binding-timing-infra-m13-freeze-20260805",
+  "decision": "FROZEN_NOT_IMPLEMENTED_NOT_TESTED_NOT_OFFLINE_OR_LIVE_ELIGIBLE",
+  "implementation": {
+    "path": "05_project/src/raven_m/role_binding_timing/infra_m13_proof_bound_attestation.py",
+    "present": false,
+    "sha256": null,
+    "blob_oid": null
+  },
+  "execution": {
+    "canonical_view_tests": "NOT_RUN_EXPECTED_FAIL_MISSING_IMPLEMENTATION",
+    "issuer_ledger_tests": "NOT_RUN_EXPECTED_FAIL_MISSING_IMPLEMENTATION",
+    "contamination_gate": "NOT_RUN",
+    "m9_compatibility_replay": "NOT_RUN",
+    "full_regression": "NOT_RUN",
+    "offline_behavior_runner": "NOT_RUN",
+    "live": "NOT_RUN"
+  },
+  "authorization_roots": {
+    "sealed_view": "RAW_AND_LOCKED_INPUT_RECOMPUTATION_PLUS_EXACT_CANONICAL_PARTITION_AND_ANCESTRY_EQUALITY",
+    "temporal_attestation": "CURRENT_PROCESS_RUN_LOCAL_ISSUER_LEDGER_MEMBERSHIP_PLUS_EXACT_DIGEST_AND_ACTIVE_SESSION",
+    "public_sha256": "CONTENT_ADDRESSING_ONLY_NOT_AUTHORIZATION_ROOT"
+  },
+  "proof_binding_requirements": {
+    "recompute_all_four_partitions": true,
+    "exact_every_row_and_field": true,
+    "reject_extra_or_missing_fields": true,
+    "exact_candidate_ancestry": true,
+    "birth_candidate_extracted_from_verified_seal": true,
+    "birth_chain_deterministically_rebuilt": true,
+    "birth_observability_copies_exactly_compared": true
+  },
+  "issuer_ledger_requirements": {
+    "unpredictable_run_nonce": true,
+    "unpredictable_attestation_id": true,
+    "exact_current_ledger_membership": true,
+    "exact_digest_epoch_nonce_and_id": true,
+    "fresh_process_rejects_old_serialized_proof": true,
+    "cross_process_persistent_trust": false,
+    "terminal_atomic_revoke_all": true,
+    "terminal_irreversible_tombstone": true
+  },
+  "frozen_artifacts": [
+    {
+      "path": "04_protocols/role_binding_timing/INFRA_M13_POST_DIAGNOSIS_PROOF_BINDING_ISSUER_LEDGER_V1.md",
+      "sha256": "3760B472E96D9BB610E8A8BF68838FC0618AC085DBBC4EA7AA5959AF37BBB3FA",
+      "prospective_blob_oid": "38427b742a1da2fbf44304e52f87f220355a23ae"
+    },
+    {
+      "path": "05_project/configs/role_binding_timing/infra_m13_post_diagnosis_proof_binding_issuer_ledger.json",
+      "sha256": "52A2914DCB4152B30CDBA50F5F0E8E3CF8EF1C614694E5544ABE7EB253418519",
+      "prospective_blob_oid": "6411449b3fd8571cf0096dc0c905b28110d11a6e"
+    },
+    {
+      "path": "05_project/configs/role_binding_timing/infra_m13_post_diagnosis_proof_binding_issuer_ledger.lock.json",
+      "sha256": "1BF0B6019607728E11175FD8E3BEB8CF606441969D466774E07C40B6E6A459F0",
+      "prospective_blob_oid": "7dff7b3ae6c6cd54eece53ddc36579d53e601702"
+    },
+    {
+      "path": "05_project/schemas/role_binding_timing_infra_m13_completion.v1.schema.json",
+      "sha256": "3659A36820AF1DEF3A43739FB2F3A9D07931A6C360BBAB2AEA7FF0C167E99F53",
+      "prospective_blob_oid": "9247763dbc52e13d61f722bf51d9f6e4d244796e"
+    },
+    {
+      "path": "05_project/tests/role_binding_timing/test_infra_m13_canonical_view_binding_contract.py",
+      "sha256": "8385C15D1438140B9060A31304C46EF354C117369E21629D2426D59A38F66061",
+      "prospective_blob_oid": "df8088ddc793b7707ec1181dfe143734d292c9be"
+    },
+    {
+      "path": "05_project/tests/role_binding_timing/test_infra_m13_issuer_ledger_contract.py",
+      "sha256": "E26D5DB43E495BA918BCF14CAE258CF396C9EC3CF622CEB80A4F05DF0E8240F3",
+      "prospective_blob_oid": "42f66cc82030d39cec585d62398058ec2c29c374"
+    },
+    {
+      "path": "05_project/scripts/check_role_binding_timing_infra_m13_contamination.py",
+      "sha256": "CEBFD55D935EAB2E785F36E8CA8DBB76D6371584C76931BCC6BE1776844F0E90",
+      "prospective_blob_oid": "97a180ec7cdecde32a8e2f2da7e726296060873c"
+    }
+  ],
+  "retained_m12_role_matrix": [
+    "raw_self_label_reject",
+    "support_to_candidate_reject",
+    "unrelated_to_candidate_reject",
+    "fake_trusted_runner_reject",
+    "candidate_reason_tamper_reject",
+    "known_path_config_tamper_reject",
+    "controlled_port_evidence_tamper_reject",
+    "derived_partition_class_tamper_reject",
+    "classifier_version_hash_mismatch_reject",
+    "sealed_view_raw_snapshot_mismatch_reject",
+    "same_pid_different_create_time_reject",
+    "m9_actual_deriver_compatibility_replay"
+  ],
+  "added_proof_binding_matrix": [
+    "runner_nonidentity_field_tamper_and_full_rehash_reject",
+    "candidate_nonidentity_field_tamper_and_full_rehash_reject",
+    "support_nonidentity_field_tamper_and_full_rehash_reject",
+    "unrelated_nonidentity_field_tamper_and_full_rehash_reject",
+    "extra_field_reject",
+    "missing_field_reject",
+    "source_record_tamper_and_full_rehash_reject",
+    "candidate_ancestry_field_node_order_membership_tamper_reject"
+  ],
+  "retained_m12_temporal_matrix": [
+    "lossless_support_projection",
+    "replay_12_exited_1_current",
+    "same_frame_accept",
+    "cross_frame_stitch_reject",
+    "parent_and_child_pid_reuse_reject",
+    "missing_fields_and_access_denied_reject",
+    "source_snapshot_partition_hash_tamper_reject",
+    "cross_run_replay_reject",
+    "current_history_conflict_reject",
+    "support_port_authority_lifecycle_reject",
+    "support_identity_as_candidate_reject",
+    "missing_chain_reject",
+    "runner_reuse_reject",
+    "terminal_expiry_reject"
+  ],
+  "added_issuer_ledger_matrix": [
+    "birth_candidate_exe_hash_cmdline_tamper_and_rehash_reject",
+    "birth_chain_node_mutation_reorder_insert_delete_reject",
+    "candidate_ancestry_tamper_reject",
+    "hand_forged_attestation_reject",
+    "copied_modified_rehashed_attestation_reject",
+    "unissued_direct_verify_reject",
+    "ledger_entry_missing_reject",
+    "nonce_mismatch_reject",
+    "epoch_mismatch_reject",
+    "attestation_id_mismatch_reject",
+    "fresh_process_empty_ledger_reject",
+    "terminal_original_and_replay_reject"
+  ],
+  "stop_rules": {
+    "implementation_requires_separate_parent_authorization": true,
+    "canonical_view_gate_before_issuer_ledger_gate": true,
+    "first_failure_immutable": true,
+    "same_version_patch_and_rerun": false,
+    "live_requires_separate_parent_authorization": true
+  },
+  "accounting": {
+    "generation_calls": 0,
+    "generation_tokens": 0,
+    "held_out_captures": 0,
+    "stage1_runs": 0,
+    "destination_first_gate_runs": 0,
+    "offline_behavior_executions": 0,
+    "live_chains": 0
+  },
+  "claim_evidence_boundary": {
+    "supported": [
+      "The M13 post-diagnosis DEV contract and fault matrices precede M13 implementation.",
+      "The frozen contract distinguishes content hashes from authorization roots.",
+      "No M13 test, gate, replay, offline runner, or live chain was executed."
+    ],
+    "unsupported": [
+      "Implementation correctness or security.",
+      "Infrastructure qualification, role-binding effects, memory efficacy, held-out behavior, novelty, or generalization."
+    ],
+    "independent_preregistration": false
+  }
+}
