@@ -1,0 +1,149 @@
+{
+  "schema": "role_binding_timing.infra_m13.implementation_lock.v1",
+  "protocol_id": "INFRA-M13-POST-DIAGNOSIS-PROOF-BINDING-ISSUER-LEDGER-V1",
+  "date": "2026-08-05",
+  "verdict": "STATIC_IMPLEMENTATION_LOCKED_NOT_BEHAVIOR_TESTED",
+  "implementation_lock_tag": "role-binding-timing-infra-m13-implementation-lock-20260805",
+  "implementation": {
+    "path": "05_project/src/raven_m/role_binding_timing/infra_m13_proof_bound_attestation.py",
+    "commit": "3c739b66c41f5a20073cfeb0ecc55650be017ee9",
+    "tree_oid": "b69211a50e6d0c437a624c4d4cd98cb02de32577",
+    "blob_oid": "153df3036797771b2efd24bb60c3e22a166bef5e",
+    "sha256": "8257123377AFBD9328F13CCA6B1C3C8749A9B8D72B3888CA022F63B4E7C7CA8F",
+    "line_count": 1280,
+    "source_files_in_commit": 1,
+    "locked_after_static_chain": true
+  },
+  "freeze": {
+    "commit": "fb697c67a724e75c602a65ed2713b75b750c1834",
+    "tree_oid": "485ae039c5961bc5a79d25735ad311767cf6f9aa",
+    "tag": "role-binding-timing-infra-m13-freeze-20260805",
+    "tag_object_oid": "28c1bd26d80e23578fbcaa5a30f42063f8d930ce",
+    "artifacts": {
+      "04_protocols/role_binding_timing/INFRA_M13_POST_DIAGNOSIS_PROOF_BINDING_ISSUER_LEDGER_V1.md": "38427b742a1da2fbf44304e52f87f220355a23ae",
+      "05_project/artifacts/role_binding_timing/infra_m13_dev_contract_freeze/freeze_declaration.json": "8d8887bed17403902cc86882f72b014e8dfd8dcc",
+      "05_project/configs/role_binding_timing/infra_m13_post_diagnosis_proof_binding_issuer_ledger.json": "6411449b3fd8571cf0096dc0c905b28110d11a6e",
+      "05_project/configs/role_binding_timing/infra_m13_post_diagnosis_proof_binding_issuer_ledger.lock.json": "7dff7b3ae6c6cd54eece53ddc36579d53e601702",
+      "05_project/schemas/role_binding_timing_infra_m13_completion.v1.schema.json": "9247763dbc52e13d61f722bf51d9f6e4d244796e",
+      "05_project/scripts/check_role_binding_timing_infra_m13_contamination.py": "97a180ec7cdecde32a8e2f2da7e726296060873c",
+      "05_project/tests/role_binding_timing/test_infra_m13_canonical_view_binding_contract.py": "df8088ddc793b7707ec1181dfe143734d292c9be",
+      "05_project/tests/role_binding_timing/test_infra_m13_issuer_ledger_contract.py": "42f66cc82030d39cec585d62398058ec2c29c374"
+    }
+  },
+  "runtime": {
+    "python_version": "Python 3.11.9",
+    "python_path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\envs\\androidworld\\Scripts\\python.exe",
+    "python_sha256": "21BB438C0D4A6F1F164B9A646F6EE000340185E5871180AEC06DB8D3F07C0082",
+    "bytecode_writes_disabled_for_static_chain": true
+  },
+  "static_checks": {
+    "attempts": 1,
+    "source_bytes_match_committed_blob": true,
+    "source_modified_after_checks": false,
+    "contamination_gate": {
+      "executed": true,
+      "exit_code": 0,
+      "passed": true,
+      "findings": 0,
+      "excluded_paths_opened": false,
+      "stdout_sha256": "6CED52ABCD725C5CEF289EF3F286AB70B1EF3BAEA12B67B6B9B341D4845BCC90",
+      "stderr_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "scanned_implementation_blob_oid": "153df3036797771b2efd24bb60c3e22a166bef5e",
+      "scanned_implementation_sha256": "8257123377AFBD9328F13CCA6B1C3C8749A9B8D72B3888CA022F63B4E7C7CA8F"
+    },
+    "ast_syntax": {
+      "executed": true,
+      "exit_code": 0,
+      "passed": true,
+      "stdout_sha256": "73FCE23C3C45AD63859BBC9C1CC6FFFD92469E55CC696F880C20D52ECB9BAD56",
+      "stderr_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "import": {
+      "executed": true,
+      "exit_code": 0,
+      "passed": true,
+      "stdout_sha256": "9DEBFE8613E5782777CD109B4A3DBA98887850B6745A389D9B3D4C134A3A662D",
+      "stderr_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    }
+  },
+  "frozen_tests": {
+    "canonical_view_binding": {
+      "path": "05_project/tests/role_binding_timing/test_infra_m13_canonical_view_binding_contract.py",
+      "blob_oid": "df8088ddc793b7707ec1181dfe143734d292c9be",
+      "sha256": "8385C15D1438140B9060A31304C46EF354C117369E21629D2426D59A38F66061",
+      "execution_status": "NOT_RUN"
+    },
+    "issuer_ledger": {
+      "path": "05_project/tests/role_binding_timing/test_infra_m13_issuer_ledger_contract.py",
+      "blob_oid": "42f66cc82030d39cec585d62398058ec2c29c374",
+      "sha256": "E26D5DB43E495BA918BCF14CAE258CF396C9EC3CF622CEB80A4F05DF0E8240F3",
+      "execution_status": "NOT_RUN"
+    },
+    "m9_replay": "NOT_RUN",
+    "offline_behavior_runner": "NOT_RUN",
+    "full_regression": "NOT_RUN",
+    "live": "NOT_RUN"
+  },
+  "legitimate_inputs": {
+    "m9_freeze": {
+      "commit": "d9e812b3bacd2d06da890086a106af94c95c5347",
+      "tree_oid": "2b3f059c3f3ec4ac62753692076cfa78bff089d5",
+      "tag_object_oid": "51f0d80e654e85060205b65e719587ad43ebffdc"
+    },
+    "m9_result": {
+      "commit": "613b338fce1eab5ecf8c29e6a95702dcfd04eca6",
+      "tree_oid": "8ee9d2b5825989bfa3d1bcf79fe8ff7dfd9ae9ac",
+      "tag_object_oid": "e716392e774560075b143ead3cfcd430f68cfa0f",
+      "snapshot_tree_oid": "d273b1e8afba0047b0624c8593d58015ae2f9d4f",
+      "authorization_deriver_blob_oid": "417884bbd9c1ebf127b439dd4077c1de4b356704",
+      "authorization_deriver_sha256": "D380553211E677A4465DCE1F851781149B6DFB158067466B29E4C27654354E00",
+      "config_blob_oid": "9aa2b52d374f6fd0bb643793d085ec27a205b2c4",
+      "config_sha256": "9EEEB36E9021F8330BA03ED09D18879ED8644C6A0FDFC6CD7EAA006F4EC28494",
+      "input_lock_blob_oid": "35c1a3e16e6e2ee5f2fa3a9a227551d3cbcedf38"
+    },
+    "m12_vulnerability_audit": {
+      "review_failure_commit": "a8367b25b41be6174a088aa79bd4934bf3ee5ef3",
+      "review_json_blob_oid": "c1b2826da49a6fe6c9c70b85148735f876bb1e53",
+      "review_report_blob_oid": "a8a8165109f5a06fa0fe960da3552fd1c4b49e31",
+      "audited_runtime_blob_oid": "922222aeec7bdb690d225b2018da0288604eb0bb",
+      "audited_runtime_sha256": "73D8138F9ECEFA5B31F975968257FA779AFCD466CE93F67808C42A05544A336C",
+      "use": "VULNERABILITY_FINDINGS_ONLY",
+      "runtime_imported_or_copied": false
+    }
+  },
+  "contamination_boundary": {
+    "excluded_untracked_leak_access": "GIT_STATUS_PRESENCE_ONLY",
+    "excluded_m11_access": "NOT_READ_NOT_REUSED",
+    "prior_runtime_import_or_copy": false,
+    "latex_modified": false,
+    "push_performed": false
+  },
+  "protected_wip_sha256": {
+    "05_project/src/raven_m/controller/episode_controller.py": "FC0E82E0FDE90119365D4F685F080EB4519BF2F602E4BDA58DE5D4809A40FE33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "FF89D6B70BE4B4738646D262BEB67D7B7E932E9EB95956D940B1C5000A999D10",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5BB1F1E3DE673A1072CFEE62938B761A62FD69C187D5EADF54BC46B115A3FD0A"
+  },
+  "accounting": {
+    "generation_calls": 0,
+    "generation_tokens": 0,
+    "held_out_captures": 0,
+    "live_chains": 0,
+    "stage1_runs": 0,
+    "destination_first_gate_runs": 0,
+    "frozen_pytest_runs": 0,
+    "m9_replays": 0,
+    "offline_behavior_runs": 0
+  },
+  "claim_evidence_boundary": {
+    "supported": [
+      "The exact committed M13 source passed one contamination, AST, and import static chain.",
+      "The source bytes are bound to the reviewed M13 freeze and legitimate engineering inputs.",
+      "No frozen behavior test, replay, offline behavior runner, or live chain was executed."
+    ],
+    "unsupported": [
+      "The implementation satisfies the frozen canonical-view or issuer-ledger tests.",
+      "Proof binding, issuer membership, temporal behavior, infrastructure, controller, or memory behavior is correct.",
+      "Any held-out, efficacy, novelty, security, or generalization claim."
+    ]
+  }
+}
