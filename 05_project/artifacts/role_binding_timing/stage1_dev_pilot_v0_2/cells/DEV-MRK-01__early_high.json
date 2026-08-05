@@ -1,0 +1,168 @@
+{
+  "schema_version": "role_binding_timing.dev_pilot_cell.v0_1",
+  "cell": {
+    "base_family_id": "DEV-MRK-01",
+    "fact_timing": "early",
+    "role_ambiguity": "high",
+    "image_path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/037_H06-s20260720_B3_MarkorMergeNotes/attempt_01/step_020_before.png",
+    "field": "merge token",
+    "value": "MK-205",
+    "source_name": "gx88_nice_jelly.md",
+    "source_target_id": "D",
+    "destination_name": "gentle_jacket_2023_05_31.md",
+    "destination_target_id": "C",
+    "task": "Two visible files are markdown files. The saved merge token comes from source 'gx88_nice_jelly.md', but the action must target destination 'gentle_jacket_2023_05_31.md'. Read the screenshot and tap the destination file row.",
+    "candidates": [
+      {
+        "target_id": "A",
+        "visible_label": ".app",
+        "visual_cue": "folder row",
+        "bounds": [
+          0,
+          357,
+          922,
+          476
+        ]
+      },
+      {
+        "target_id": "B",
+        "visible_label": "funny_watch_U9yt.txt",
+        "visual_cue": "text file row",
+        "bounds": [
+          0,
+          477,
+          922,
+          602
+        ]
+      },
+      {
+        "target_id": "C",
+        "visible_label": "gentle_jacket_2023_05_31.md",
+        "visual_cue": "markdown file row",
+        "bounds": [
+          0,
+          603,
+          922,
+          726
+        ]
+      },
+      {
+        "target_id": "D",
+        "visible_label": "gx88_nice_jelly.md",
+        "visual_cue": "markdown file row",
+        "bounds": [
+          0,
+          727,
+          922,
+          849
+        ]
+      }
+    ],
+    "candidate_prompt_fields": [
+      "target_id",
+      "bounds"
+    ],
+    "image_sha256": "02900f33f559f4bdbe1d8f57e044e1c85bf95b083e731f20345170dc049766b3"
+  },
+  "prompt_tokens": {
+    "call_1": 498,
+    "call_2": 856
+  },
+  "grounding_call": {
+    "call_id": "c2c286f4-ea79-4c60-8f27-03392dcbe40b",
+    "episode_id": "DEV-MRK-01__early_high",
+    "idempotency_key": "fb3bfc91bcdd801f1eca702475aef3cb10a2b40d001bdca08a0d6f72e0c64ce9",
+    "image_sha256": "02900f33f559f4bdbe1d8f57e044e1c85bf95b083e731f20345170dc049766b3",
+    "image_sha256s": [
+      "02900f33f559f4bdbe1d8f57e044e1c85bf95b083e731f20345170dc049766b3"
+    ],
+    "prompt_sha256": "75a2fe6ac1bf3c6b287d7396f43ecea533d7da669a66cc3f21b7d48c7091102a",
+    "request_sha256": "3c4184f8f88f7fa4caad39963b4cb3ca59e0457ce39599066b8e825a3d79d691",
+    "response_sha256": "7904268163b72d338beb61e37b2b57d3188a12d53cf0360d54a33aeaaa943b3d",
+    "content": "{\"phase\":\"grounding\",\"source_entity_id\":\"E1\",\"destination_entity_id\":\"E2\",\"destination_target_id\":\"A\",\"confidence\":0.95}",
+    "usage": {
+      "prompt_tokens": 3054,
+      "completion_tokens": 34,
+      "total_tokens": 3088
+    },
+    "raven_meta": {
+      "episode_id": "DEV-MRK-01__early_high",
+      "call_id": "c2c286f4-ea79-4c60-8f27-03392dcbe40b",
+      "idempotency_key": "fb3bfc91bcdd801f1eca702475aef3cb10a2b40d001bdca08a0d6f72e0c64ce9",
+      "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+      "backend_id": "qwen3_vl_32b_transformers_bf16_4x4090_v1",
+      "mode": "transformers",
+      "image_sha256": [
+        "02900f33f559f4bdbe1d8f57e044e1c85bf95b083e731f20345170dc049766b3"
+      ],
+      "image_bytes": 109018,
+      "latency_seconds": 5.210914750117809,
+      "peak_vram_bytes": 20751246848,
+      "client": "127.0.0.1"
+    }
+  },
+  "action_call": {
+    "call_id": "7b9d2e64-f553-4757-89a2-00c2e8321b5b",
+    "episode_id": "DEV-MRK-01__early_high",
+    "idempotency_key": "89485c9c2b394ff0013e87559986a0884ab4fc34e86e94213c0fdfc3a44329bb",
+    "image_sha256": "02900f33f559f4bdbe1d8f57e044e1c85bf95b083e731f20345170dc049766b3",
+    "image_sha256s": [
+      "02900f33f559f4bdbe1d8f57e044e1c85bf95b083e731f20345170dc049766b3"
+    ],
+    "prompt_sha256": "e8c75d89a0753699fc41af73c6bb3c1670ceb04be0df654c8e4067a0b93f8599",
+    "request_sha256": "22e69ea24ded10f0f1764524665ef0ec3be866fdc76364b04e70335bc6ec9ef8",
+    "response_sha256": "9c1feec8a08809ae22d4a2aaae37326f7ad3daacadffba68b218c66e9060d27f",
+    "content": "{\"phase\":\"action\",\"grounded_destination_target_id\":\"A\",\"recalled_value\":\"MK-205\",\"action\":{\"type\":\"tap\",\"target_id\":\"A\",\"text\":null},\"confidence\":1}",
+    "usage": {
+      "prompt_tokens": 3412,
+      "completion_tokens": 43,
+      "total_tokens": 3455
+    },
+    "raven_meta": {
+      "episode_id": "DEV-MRK-01__early_high",
+      "call_id": "7b9d2e64-f553-4757-89a2-00c2e8321b5b",
+      "idempotency_key": "89485c9c2b394ff0013e87559986a0884ab4fc34e86e94213c0fdfc3a44329bb",
+      "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+      "backend_id": "qwen3_vl_32b_transformers_bf16_4x4090_v1",
+      "mode": "transformers",
+      "image_sha256": [
+        "02900f33f559f4bdbe1d8f57e044e1c85bf95b083e731f20345170dc049766b3"
+      ],
+      "image_bytes": 109018,
+      "latency_seconds": 6.152616777922958,
+      "peak_vram_bytes": 20751246848,
+      "client": "127.0.0.1"
+    }
+  },
+  "parsed_grounding": {
+    "phase": "grounding",
+    "source_entity_id": "E1",
+    "destination_entity_id": "E2",
+    "destination_target_id": "A",
+    "confidence": 0.95
+  },
+  "parsed_action": {
+    "phase": "action",
+    "grounded_destination_target_id": "A",
+    "recalled_value": "MK-205",
+    "action": {
+      "type": "tap",
+      "target_id": "A",
+      "text": null
+    },
+    "confidence": 1
+  },
+  "grounding_parse_error": null,
+  "action_parse_error": null,
+  "valid": true,
+  "metrics": {
+    "wrong_target_first_targeting_action": true,
+    "grounding_destination_correct": false,
+    "action_target_correct": false,
+    "post_grounding_drift": false,
+    "exact_value_recall": true,
+    "source_as_target": false,
+    "other_wrong_target": true
+  },
+  "wall_time_seconds": 12.171999999991385
+}

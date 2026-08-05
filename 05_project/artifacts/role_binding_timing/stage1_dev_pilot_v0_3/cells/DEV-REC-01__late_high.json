@@ -1,0 +1,191 @@
+{
+  "schema_version": "role_binding_timing.dev_pilot_cell.v0_1",
+  "cell": {
+    "base_family_id": "DEV-REC-01",
+    "fact_timing": "late",
+    "role_ambiguity": "high",
+    "image_path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/049_H13-s20260720_B3_RecipeDeleteMultipleRecipesWithConstraint/attempt_01/step_001_before.png",
+    "field": "ingredient code",
+    "value": "AV-731",
+    "source_name": "the lower of the two adjacent Avocado Toast with Egg cards that both say 'An ideal recipe'",
+    "source_target_id": "C",
+    "destination_name": "the second Avocado Toast with Egg row (description starts 'An ideal recipe')",
+    "destination_target_id": "B",
+    "task": "Two adjacent Avocado Toast with Egg cards have identical title and description. The saved ingredient code comes from the lower of the two adjacent Avocado Toast with Egg cards that both say 'An ideal recipe'; it must instead be applied to the destination, the upper of those two identical cards. Locate and tap the destination card.",
+    "candidates": [
+      {
+        "target_id": "A",
+        "visible_label": "Avocado Toast with Egg — delicious and healthy",
+        "visual_cue": "first recipe card",
+        "bounds": [
+          17,
+          377,
+          905,
+          648
+        ]
+      },
+      {
+        "target_id": "B",
+        "visible_label": "Avocado Toast with Egg — ideal recipe",
+        "visual_cue": "second recipe card",
+        "bounds": [
+          17,
+          665,
+          905,
+          935
+        ]
+      },
+      {
+        "target_id": "C",
+        "visible_label": "Avocado Toast with Egg — ideal recipe",
+        "visual_cue": "third recipe card",
+        "bounds": [
+          17,
+          950,
+          905,
+          1221
+        ]
+      },
+      {
+        "target_id": "D",
+        "visible_label": "Caprese Salad Skewers — ideal recipe",
+        "visual_cue": "fourth recipe card",
+        "bounds": [
+          17,
+          1239,
+          905,
+          1509
+        ]
+      },
+      {
+        "target_id": "E",
+        "visible_label": "Caprese Salad Skewers — ideal recipe",
+        "visual_cue": "fifth recipe card",
+        "bounds": [
+          17,
+          1524,
+          905,
+          1795
+        ]
+      },
+      {
+        "target_id": "F",
+        "visible_label": "Caprese Salad Skewers — quick and easy",
+        "visual_cue": "partially visible sixth card",
+        "bounds": [
+          17,
+          1813,
+          905,
+          1995
+        ]
+      }
+    ],
+    "candidate_prompt_fields": [
+      "target_id",
+      "visible_label",
+      "bounds"
+    ],
+    "image_sha256": "3825aa5ab96f2a297edc446a85774e081f19f5caf74a11d67b51ec1ede143789"
+  },
+  "prompt_tokens": {
+    "call_1": 648,
+    "call_2": 1018
+  },
+  "grounding_call": {
+    "call_id": "c7600baf-1152-462e-b867-b33fff65dcbd",
+    "episode_id": "DEV-REC-01__late_high",
+    "idempotency_key": "e1fdd9d70f65864e435fa02fed0347f6718cb1415f5f03b4fc441e7bf78ddf7a",
+    "image_sha256": "3825aa5ab96f2a297edc446a85774e081f19f5caf74a11d67b51ec1ede143789",
+    "image_sha256s": [
+      "3825aa5ab96f2a297edc446a85774e081f19f5caf74a11d67b51ec1ede143789"
+    ],
+    "prompt_sha256": "15cb08cd3dd0e5c6cfff5ab93539ccd40663751625da43dace937b5b6e082cb2",
+    "request_sha256": "a739a4faf7714edaf776ac97696ef616c9ececde064e32e38600c6a37bf3f149",
+    "response_sha256": "4517ad280a61ea4e47c4836054e374d42caa33134b9663335d4b735b300324b2",
+    "content": "{\"phase\":\"grounding\",\"source_entity_id\":\"E1\",\"destination_entity_id\":\"E2\",\"destination_target_id\":\"B\",\"confidence\":0.95}",
+    "usage": {
+      "prompt_tokens": 3204,
+      "completion_tokens": 34,
+      "total_tokens": 3238
+    },
+    "raven_meta": {
+      "episode_id": "DEV-REC-01__late_high",
+      "call_id": "c7600baf-1152-462e-b867-b33fff65dcbd",
+      "idempotency_key": "e1fdd9d70f65864e435fa02fed0347f6718cb1415f5f03b4fc441e7bf78ddf7a",
+      "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+      "backend_id": "qwen3_vl_32b_transformers_bf16_4x4090_v1",
+      "mode": "transformers",
+      "image_sha256": [
+        "3825aa5ab96f2a297edc446a85774e081f19f5caf74a11d67b51ec1ede143789"
+      ],
+      "image_bytes": 230166,
+      "latency_seconds": 5.227091609034687,
+      "peak_vram_bytes": 20751246848,
+      "client": "127.0.0.1"
+    }
+  },
+  "action_call": {
+    "call_id": "b7674e84-fa1f-491c-876d-3549b4082377",
+    "episode_id": "DEV-REC-01__late_high",
+    "idempotency_key": "2aefae7d451dd6f550b31164593d43f62967ca63f1bdc11fe8388df2d4b4add8",
+    "image_sha256": "3825aa5ab96f2a297edc446a85774e081f19f5caf74a11d67b51ec1ede143789",
+    "image_sha256s": [
+      "3825aa5ab96f2a297edc446a85774e081f19f5caf74a11d67b51ec1ede143789"
+    ],
+    "prompt_sha256": "63a51796d9fb09ae84e7dcc6a00907b46e772a4d35b0393409708aa492b73083",
+    "request_sha256": "30376ace2efe6d83d049f92a20165c5b939f64c443c2be6116fb55d4589d6adc",
+    "response_sha256": "1311d660ab2871397f1c1d7639e7b9d5bcacf30c592ef4ed1e2f2f42f735130c",
+    "content": "{\"phase\":\"action\",\"grounded_destination_target_id\":\"B\",\"recalled_value\":\"AV-731\",\"action\":{\"type\":\"tap\",\"target_id\":\"B\",\"text\":null},\"confidence\":1}",
+    "usage": {
+      "prompt_tokens": 3574,
+      "completion_tokens": 43,
+      "total_tokens": 3617
+    },
+    "raven_meta": {
+      "episode_id": "DEV-REC-01__late_high",
+      "call_id": "b7674e84-fa1f-491c-876d-3549b4082377",
+      "idempotency_key": "2aefae7d451dd6f550b31164593d43f62967ca63f1bdc11fe8388df2d4b4add8",
+      "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+      "backend_id": "qwen3_vl_32b_transformers_bf16_4x4090_v1",
+      "mode": "transformers",
+      "image_sha256": [
+        "3825aa5ab96f2a297edc446a85774e081f19f5caf74a11d67b51ec1ede143789"
+      ],
+      "image_bytes": 230166,
+      "latency_seconds": 6.090521894861013,
+      "peak_vram_bytes": 20751246848,
+      "client": "127.0.0.1"
+    }
+  },
+  "parsed_grounding": {
+    "phase": "grounding",
+    "source_entity_id": "E1",
+    "destination_entity_id": "E2",
+    "destination_target_id": "B",
+    "confidence": 0.95
+  },
+  "parsed_action": {
+    "phase": "action",
+    "grounded_destination_target_id": "B",
+    "recalled_value": "AV-731",
+    "action": {
+      "type": "tap",
+      "target_id": "B",
+      "text": null
+    },
+    "confidence": 1
+  },
+  "grounding_parse_error": null,
+  "action_parse_error": null,
+  "valid": true,
+  "metrics": {
+    "wrong_target_first_targeting_action": false,
+    "grounding_destination_correct": true,
+    "action_target_correct": true,
+    "post_grounding_drift": false,
+    "exact_value_recall": true,
+    "source_as_target": false,
+    "other_wrong_target": false
+  },
+  "wall_time_seconds": 12.953999999997905
+}

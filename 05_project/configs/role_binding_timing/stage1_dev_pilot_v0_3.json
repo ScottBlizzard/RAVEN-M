@@ -1,0 +1,8 @@
+{
+  "schema_version": "role_binding_timing.dev_pilot.v0_3",
+  "study_id": "correct_memory_wrong_target_dev_pilot_v0_3_intermediate_grounding",
+  "parent_config": "configs/role_binding_timing/stage1_dev_pilot_v0_2.json",
+  "candidate_prompt_fields": ["target_id", "visible_label", "bounds"],
+  "confirmatory_claim_allowed": false,
+  "development_contaminated": true
+}

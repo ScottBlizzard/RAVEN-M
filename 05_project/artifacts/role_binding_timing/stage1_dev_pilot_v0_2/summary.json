@@ -1,0 +1,41 @@
+{
+  "schema_version": "role_binding_timing.dev_pilot_summary.v0_1",
+  "development_contaminated": true,
+  "confirmatory_claim_allowed": false,
+  "total_cells": 32,
+  "valid_cells": 32,
+  "parser_failure_rate": 0.0,
+  "exact_value_recall": 1.0,
+  "low_ambiguity_target_accuracy": 0.25,
+  "wrong_target_rates": {
+    "early_low": 0.75,
+    "late_low": 0.75,
+    "early_high": 0.875,
+    "late_high": 0.875
+  },
+  "source_as_target_rates": {
+    "early_low": 0.25,
+    "late_low": 0.25,
+    "early_high": 0.0,
+    "late_high": 0.0
+  },
+  "post_grounding_drift_rates": {
+    "early_low": 0.0,
+    "late_low": 0.0,
+    "early_high": 0.0,
+    "late_high": 0.0
+  },
+  "high_early_minus_late": 0.0,
+  "low_early_minus_late": 0.0,
+  "timing_by_ambiguity_interaction": 0.0,
+  "qualification_pass": false,
+  "mechanism_diagnostic_moves": false,
+  "dev_signal_pass": false,
+  "decision": "STOP_OR_REVISE_AFTER_DEV_PILOT",
+  "usage": {
+    "calls": 64,
+    "prompt_tokens_reported": 209692,
+    "completion_tokens_reported": 2419,
+    "wall_time_seconds": 406.1280000000261
+  }
+}

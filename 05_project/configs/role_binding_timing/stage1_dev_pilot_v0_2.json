@@ -1,0 +1,44 @@
+{
+  "schema_version": "role_binding_timing.dev_pilot.v0_2",
+  "study_id": "correct_memory_wrong_target_dev_pilot_v0_2_harder_ambiguity",
+  "parent_config": "configs/role_binding_timing/stage1_dev_pilot_v0_1.json",
+  "candidate_prompt_fields": ["target_id", "bounds"],
+  "confirmatory_claim_allowed": false,
+  "development_contaminated": true,
+  "task_overrides": {
+    "DEV-EXP-01": {
+      "low_task_template": "A saved {field} belongs to the source expense '{source}'. Apply it to the destination expense '{destination}'. Identify the destination row in the screenshot and tap it.",
+      "high_task_template": "Two medical-looking expenses are relevant. The saved {field} comes from '{source}', but it must be applied to the other role, the destination '{destination}'. Identify and tap only that destination row."
+    },
+    "DEV-EXP-02": {
+      "low_task_template": "A saved {field} belongs to the source expense '{source}'. Apply it to the destination expense '{destination}'. Identify the destination row in the screenshot and tap it.",
+      "high_task_template": "Two expenses share the same game-style icon. The saved {field} comes from '{source}', but the row to act on is the destination '{destination}'. Identify and tap the destination, not the source."
+    },
+    "DEV-EXP-03": {
+      "low_task_template": "A saved {field} belongs to the source expense '{source}'. Apply it to the destination expense '{destination}'. Identify the destination row in the screenshot and tap it.",
+      "high_task_template": "Two food-related expenses are visible. The saved {field} comes from '{source}', while the action belongs to destination '{destination}'. Identify and tap the destination row."
+    },
+    "DEV-EXP-04": {
+      "low_task_template": "A saved {field} belongs to the source expense '{source}'. Apply it to the destination expense '{destination}'. Identify the destination row in the screenshot and tap it.",
+      "high_task_template": "The source '{source}' and destination '{destination}' are both non-food purchase rows. Move the saved {field} from the source role to the destination role, then identify and tap the destination."
+    },
+    "DEV-REC-01": {
+      "low_task_template": "The saved {field} comes from {source}. Apply it to destination {destination}; locate and tap that destination card.",
+      "high_source_name": "the lower of the two adjacent Avocado Toast with Egg cards that both say 'An ideal recipe'",
+      "high_task_template": "Two adjacent Avocado Toast with Egg cards have identical title and description. The saved {field} comes from {source}; it must instead be applied to the destination, the upper of those two identical cards. Locate and tap the destination card."
+    },
+    "DEV-REC-02": {
+      "low_task_template": "The saved {field} comes from {source}. Apply it to destination {destination}; locate and tap that destination card.",
+      "high_source_name": "the lower of the two adjacent Caprese Salad Skewers cards that both say 'An ideal recipe'",
+      "high_task_template": "Two adjacent Caprese Salad Skewers cards have identical title and description. The saved {field} comes from {source}; apply it to the destination, the upper of those two identical cards. Locate and tap the destination card."
+    },
+    "DEV-MRK-01": {
+      "low_task_template": "Use the saved {field} from the source '{source}' for destination file '{destination}'. Read the screenshot, identify the destination row and tap it.",
+      "high_task_template": "Two visible files are markdown files. The saved {field} comes from source '{source}', but the action must target destination '{destination}'. Read the screenshot and tap the destination file row."
+    },
+    "DEV-MRK-02": {
+      "low_task_template": "Use the saved {field} from the source '{source}' for destination file '{destination}'. Read the screenshot, identify the destination row and tap it.",
+      "high_task_template": "Two visible text documents are relevant. The saved {field} belongs to source '{source}', while destination '{destination}' is the file to act on. Read the screenshot and tap the destination row."
+    }
+  }
+}

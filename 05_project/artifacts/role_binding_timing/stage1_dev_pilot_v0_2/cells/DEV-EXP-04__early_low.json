@@ -1,0 +1,212 @@
+{
+  "schema_version": "role_binding_timing.dev_pilot_cell.v0_1",
+  "cell": {
+    "base_family_id": "DEV-EXP-04",
+    "fact_timing": "early",
+    "role_ambiguity": "low",
+    "image_path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/001_H04-s20260720_B1_ExpenseDeleteMultiple2/attempt_01/step_008_before.png",
+    "field": "transfer token",
+    "value": "FS-609",
+    "source_name": "Specialty Foods",
+    "source_target_id": "B",
+    "destination_name": "Furnishing",
+    "destination_target_id": "D",
+    "task": "A saved transfer token belongs to the source expense 'Specialty Foods'. Apply it to the destination expense 'Furnishing'. Identify the destination row in the screenshot and tap it.",
+    "candidates": [
+      {
+        "target_id": "A",
+        "visible_label": "Video Games",
+        "visual_cue": "game icon",
+        "bounds": [
+          0,
+          240,
+          922,
+          370
+        ]
+      },
+      {
+        "target_id": "B",
+        "visible_label": "Specialty Foods",
+        "visual_cue": "food icon",
+        "bounds": [
+          0,
+          370,
+          922,
+          530
+        ]
+      },
+      {
+        "target_id": "C",
+        "visible_label": "Amusement Park",
+        "visual_cue": "game icon",
+        "bounds": [
+          0,
+          530,
+          922,
+          690
+        ]
+      },
+      {
+        "target_id": "D",
+        "visible_label": "Furnishing",
+        "visual_cue": "furniture icon",
+        "bounds": [
+          0,
+          690,
+          922,
+          850
+        ]
+      },
+      {
+        "target_id": "E",
+        "visible_label": "Health Insurance",
+        "visual_cue": "medical icon",
+        "bounds": [
+          0,
+          850,
+          922,
+          1010
+        ]
+      },
+      {
+        "target_id": "F",
+        "visible_label": "School Supplies",
+        "visual_cue": "book icon",
+        "bounds": [
+          0,
+          1010,
+          922,
+          1170
+        ]
+      },
+      {
+        "target_id": "G",
+        "visible_label": "Accessories",
+        "visual_cue": "clothing icon",
+        "bounds": [
+          0,
+          1170,
+          922,
+          1340
+        ]
+      },
+      {
+        "target_id": "H",
+        "visible_label": "Doctor Visits",
+        "visual_cue": "medical icon",
+        "bounds": [
+          0,
+          1340,
+          922,
+          1500
+        ]
+      }
+    ],
+    "candidate_prompt_fields": [
+      "target_id",
+      "bounds"
+    ],
+    "image_sha256": "4e65967d8500383e577947f82947fb6e18e399e6f121e0aed6c764570210021f"
+  },
+  "prompt_tokens": {
+    "call_1": 561,
+    "call_2": 914
+  },
+  "grounding_call": {
+    "call_id": "b9aea14f-1542-4faf-a52a-99b96715a8d3",
+    "episode_id": "DEV-EXP-04__early_low",
+    "idempotency_key": "af99b63206876e998073603b63b59e408eca392366f802de9e6c65914709d9b2",
+    "image_sha256": "4e65967d8500383e577947f82947fb6e18e399e6f121e0aed6c764570210021f",
+    "image_sha256s": [
+      "4e65967d8500383e577947f82947fb6e18e399e6f121e0aed6c764570210021f"
+    ],
+    "prompt_sha256": "f2760ae5fd93fc8a4fc4f3a5f10906d406fd0e2727f703a1df5a968d59c34a5a",
+    "request_sha256": "a182ab0d7e66ff5707c546461b72a8be62878fcc860cf2af93797ac2e6309aae",
+    "response_sha256": "3853244de765ac631e7ecdc178a5d98a7c574f56fcf61eddfced43cfff2828da",
+    "content": "{\"phase\":\"grounding\",\"source_entity_id\":\"E1\",\"destination_entity_id\":\"E2\",\"destination_target_id\":\"C\",\"confidence\":1}",
+    "usage": {
+      "prompt_tokens": 3117,
+      "completion_tokens": 31,
+      "total_tokens": 3148
+    },
+    "raven_meta": {
+      "episode_id": "DEV-EXP-04__early_low",
+      "call_id": "b9aea14f-1542-4faf-a52a-99b96715a8d3",
+      "idempotency_key": "af99b63206876e998073603b63b59e408eca392366f802de9e6c65914709d9b2",
+      "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+      "backend_id": "qwen3_vl_32b_transformers_bf16_4x4090_v1",
+      "mode": "transformers",
+      "image_sha256": [
+        "4e65967d8500383e577947f82947fb6e18e399e6f121e0aed6c764570210021f"
+      ],
+      "image_bytes": 222052,
+      "latency_seconds": 4.95495032472536,
+      "peak_vram_bytes": 20751246848,
+      "client": "127.0.0.1"
+    }
+  },
+  "action_call": {
+    "call_id": "845083ab-af21-4db6-bb11-d88d334fd58d",
+    "episode_id": "DEV-EXP-04__early_low",
+    "idempotency_key": "f4668af1eb9c951340734ba8b5ce34e49a439001c823da1d969a65a9a9d4ce4a",
+    "image_sha256": "4e65967d8500383e577947f82947fb6e18e399e6f121e0aed6c764570210021f",
+    "image_sha256s": [
+      "4e65967d8500383e577947f82947fb6e18e399e6f121e0aed6c764570210021f"
+    ],
+    "prompt_sha256": "525208d09649aef5a83fa7bf62766b53b52202eb871a977df36c5b71679c0c4b",
+    "request_sha256": "d3e35d9a26a130db2a60e0d1fe971d579bee33d4b80d27bd9e748385975818cd",
+    "response_sha256": "303d9a4432e8ca332a4c038c5a7d553eb3e458cfca581cfa4566e69d1f814542",
+    "content": "{\"phase\":\"action\",\"grounded_destination_target_id\":\"C\",\"recalled_value\":\"FS-609\",\"action\":{\"type\":\"tap\",\"target_id\":\"C\",\"text\":null},\"confidence\":1}",
+    "usage": {
+      "prompt_tokens": 3470,
+      "completion_tokens": 43,
+      "total_tokens": 3513
+    },
+    "raven_meta": {
+      "episode_id": "DEV-EXP-04__early_low",
+      "call_id": "845083ab-af21-4db6-bb11-d88d334fd58d",
+      "idempotency_key": "f4668af1eb9c951340734ba8b5ce34e49a439001c823da1d969a65a9a9d4ce4a",
+      "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+      "backend_id": "qwen3_vl_32b_transformers_bf16_4x4090_v1",
+      "mode": "transformers",
+      "image_sha256": [
+        "4e65967d8500383e577947f82947fb6e18e399e6f121e0aed6c764570210021f"
+      ],
+      "image_bytes": 222052,
+      "latency_seconds": 6.125640202779323,
+      "peak_vram_bytes": 20751246848,
+      "client": "127.0.0.1"
+    }
+  },
+  "parsed_grounding": {
+    "phase": "grounding",
+    "source_entity_id": "E1",
+    "destination_entity_id": "E2",
+    "destination_target_id": "C",
+    "confidence": 1
+  },
+  "parsed_action": {
+    "phase": "action",
+    "grounded_destination_target_id": "C",
+    "recalled_value": "FS-609",
+    "action": {
+      "type": "tap",
+      "target_id": "C",
+      "text": null
+    },
+    "confidence": 1
+  },
+  "grounding_parse_error": null,
+  "action_parse_error": null,
+  "valid": true,
+  "metrics": {
+    "wrong_target_first_targeting_action": true,
+    "grounding_destination_correct": false,
+    "action_target_correct": false,
+    "post_grounding_drift": false,
+    "exact_value_recall": true,
+    "source_as_target": false,
+    "other_wrong_target": true
+  },
+  "wall_time_seconds": 12.64100000000326
+}

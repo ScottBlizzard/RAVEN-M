@@ -1,0 +1,212 @@
+{
+  "schema_version": "role_binding_timing.dev_pilot_cell.v0_1",
+  "cell": {
+    "base_family_id": "DEV-EXP-01",
+    "fact_timing": "early",
+    "role_ambiguity": "high",
+    "image_path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/001_H04-s20260720_B1_ExpenseDeleteMultiple2/attempt_01/step_008_before.png",
+    "field": "reference code",
+    "value": "RX-314",
+    "source_name": "Health Insurance",
+    "source_target_id": "E",
+    "destination_name": "Doctor Visits",
+    "destination_target_id": "H",
+    "task": "Two medical-looking expenses are relevant. The saved reference code comes from 'Health Insurance', but it must be applied to the other role, the destination 'Doctor Visits'. Identify and tap only that destination row.",
+    "candidates": [
+      {
+        "target_id": "A",
+        "visible_label": "Video Games",
+        "visual_cue": "game icon",
+        "bounds": [
+          0,
+          240,
+          922,
+          370
+        ]
+      },
+      {
+        "target_id": "B",
+        "visible_label": "Specialty Foods",
+        "visual_cue": "food icon",
+        "bounds": [
+          0,
+          370,
+          922,
+          530
+        ]
+      },
+      {
+        "target_id": "C",
+        "visible_label": "Amusement Park",
+        "visual_cue": "game icon",
+        "bounds": [
+          0,
+          530,
+          922,
+          690
+        ]
+      },
+      {
+        "target_id": "D",
+        "visible_label": "Furnishing",
+        "visual_cue": "furniture icon",
+        "bounds": [
+          0,
+          690,
+          922,
+          850
+        ]
+      },
+      {
+        "target_id": "E",
+        "visible_label": "Health Insurance",
+        "visual_cue": "medical icon",
+        "bounds": [
+          0,
+          850,
+          922,
+          1010
+        ]
+      },
+      {
+        "target_id": "F",
+        "visible_label": "School Supplies",
+        "visual_cue": "book icon",
+        "bounds": [
+          0,
+          1010,
+          922,
+          1170
+        ]
+      },
+      {
+        "target_id": "G",
+        "visible_label": "Accessories",
+        "visual_cue": "clothing icon",
+        "bounds": [
+          0,
+          1170,
+          922,
+          1340
+        ]
+      },
+      {
+        "target_id": "H",
+        "visible_label": "Doctor Visits",
+        "visual_cue": "medical icon",
+        "bounds": [
+          0,
+          1340,
+          922,
+          1500
+        ]
+      }
+    ],
+    "candidate_prompt_fields": [
+      "target_id",
+      "bounds"
+    ],
+    "image_sha256": "4e65967d8500383e577947f82947fb6e18e399e6f121e0aed6c764570210021f"
+  },
+  "prompt_tokens": {
+    "call_1": 567,
+    "call_2": 919
+  },
+  "grounding_call": {
+    "call_id": "61cd0f06-736b-4e14-9f26-919e04eae67e",
+    "episode_id": "DEV-EXP-01__early_high",
+    "idempotency_key": "c24305fe4050c7e4db05efc41fd1f09a7e0f06763d922471bdbbf29ad5459c54",
+    "image_sha256": "4e65967d8500383e577947f82947fb6e18e399e6f121e0aed6c764570210021f",
+    "image_sha256s": [
+      "4e65967d8500383e577947f82947fb6e18e399e6f121e0aed6c764570210021f"
+    ],
+    "prompt_sha256": "2e71b3bbd5ccfd25288f8f63d91685d3177577957f7537b86999b3cbd3200db1",
+    "request_sha256": "f9d371a63eb80ad97b6b6329747ebfb47738e2018f9444b225e8148760dc6960",
+    "response_sha256": "f90d6885fa6bd12240efad03ec17a9b6c084490ecafd1386a543a0971dda339c",
+    "content": "{\"phase\":\"grounding\",\"source_entity_id\":\"E1\",\"destination_entity_id\":\"E2\",\"destination_target_id\":\"D\",\"confidence\":0.95}",
+    "usage": {
+      "prompt_tokens": 3123,
+      "completion_tokens": 34,
+      "total_tokens": 3157
+    },
+    "raven_meta": {
+      "episode_id": "DEV-EXP-01__early_high",
+      "call_id": "61cd0f06-736b-4e14-9f26-919e04eae67e",
+      "idempotency_key": "c24305fe4050c7e4db05efc41fd1f09a7e0f06763d922471bdbbf29ad5459c54",
+      "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+      "backend_id": "qwen3_vl_32b_transformers_bf16_4x4090_v1",
+      "mode": "transformers",
+      "image_sha256": [
+        "4e65967d8500383e577947f82947fb6e18e399e6f121e0aed6c764570210021f"
+      ],
+      "image_bytes": 222052,
+      "latency_seconds": 5.193168413825333,
+      "peak_vram_bytes": 20751246848,
+      "client": "127.0.0.1"
+    }
+  },
+  "action_call": {
+    "call_id": "e4823d6b-c45d-4644-8554-e191f8511d05",
+    "episode_id": "DEV-EXP-01__early_high",
+    "idempotency_key": "baf50b5e171bcc9783f2fa02b7a746b404370ff9d148c309105c81f6c626003c",
+    "image_sha256": "4e65967d8500383e577947f82947fb6e18e399e6f121e0aed6c764570210021f",
+    "image_sha256s": [
+      "4e65967d8500383e577947f82947fb6e18e399e6f121e0aed6c764570210021f"
+    ],
+    "prompt_sha256": "597cc88755c38bac43f1acd4acd2e6ebe9aaa9ff5e1ef976e4d6521ee5447bff",
+    "request_sha256": "cb070c35d8d1200a09ef35cc54326af2c7e6d8862f595924306c96d351121f3d",
+    "response_sha256": "104c82de5a3c1f163bf15fe73f54e47041a959a11d4616d3b6cef960d0844b7a",
+    "content": "{\"phase\":\"action\",\"grounded_destination_target_id\":\"D\",\"recalled_value\":\"RX-314\",\"action\":{\"type\":\"tap\",\"target_id\":\"D\",\"text\":null},\"confidence\":1}",
+    "usage": {
+      "prompt_tokens": 3475,
+      "completion_tokens": 43,
+      "total_tokens": 3518
+    },
+    "raven_meta": {
+      "episode_id": "DEV-EXP-01__early_high",
+      "call_id": "e4823d6b-c45d-4644-8554-e191f8511d05",
+      "idempotency_key": "baf50b5e171bcc9783f2fa02b7a746b404370ff9d148c309105c81f6c626003c",
+      "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+      "backend_id": "qwen3_vl_32b_transformers_bf16_4x4090_v1",
+      "mode": "transformers",
+      "image_sha256": [
+        "4e65967d8500383e577947f82947fb6e18e399e6f121e0aed6c764570210021f"
+      ],
+      "image_bytes": 222052,
+      "latency_seconds": 6.140928233042359,
+      "peak_vram_bytes": 20751246848,
+      "client": "127.0.0.1"
+    }
+  },
+  "parsed_grounding": {
+    "phase": "grounding",
+    "source_entity_id": "E1",
+    "destination_entity_id": "E2",
+    "destination_target_id": "D",
+    "confidence": 0.95
+  },
+  "parsed_action": {
+    "phase": "action",
+    "grounded_destination_target_id": "D",
+    "recalled_value": "RX-314",
+    "action": {
+      "type": "tap",
+      "target_id": "D",
+      "text": null
+    },
+    "confidence": 1
+  },
+  "grounding_parse_error": null,
+  "action_parse_error": null,
+  "valid": true,
+  "metrics": {
+    "wrong_target_first_targeting_action": true,
+    "grounding_destination_correct": false,
+    "action_target_correct": false,
+    "post_grounding_drift": false,
+    "exact_value_recall": true,
+    "source_as_target": false,
+    "other_wrong_target": true
+  },
+  "wall_time_seconds": 12.90700000000652
+}

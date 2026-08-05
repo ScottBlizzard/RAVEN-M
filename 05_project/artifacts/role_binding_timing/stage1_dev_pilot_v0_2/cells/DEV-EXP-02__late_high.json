@@ -1,0 +1,212 @@
+{
+  "schema_version": "role_binding_timing.dev_pilot_cell.v0_1",
+  "cell": {
+    "base_family_id": "DEV-EXP-02",
+    "fact_timing": "late",
+    "role_ambiguity": "high",
+    "image_path": "runs/frozen_hard_v1/hard_v1_breadth/episodes/001_H04-s20260720_B1_ExpenseDeleteMultiple2/attempt_01/step_008_before.png",
+    "field": "approval code",
+    "value": "VG-882",
+    "source_name": "Amusement Park",
+    "source_target_id": "C",
+    "destination_name": "Video Games",
+    "destination_target_id": "A",
+    "task": "Two expenses share the same game-style icon. The saved approval code comes from 'Amusement Park', but the row to act on is the destination 'Video Games'. Identify and tap the destination, not the source.",
+    "candidates": [
+      {
+        "target_id": "A",
+        "visible_label": "Video Games",
+        "visual_cue": "game icon",
+        "bounds": [
+          0,
+          240,
+          922,
+          370
+        ]
+      },
+      {
+        "target_id": "B",
+        "visible_label": "Specialty Foods",
+        "visual_cue": "food icon",
+        "bounds": [
+          0,
+          370,
+          922,
+          530
+        ]
+      },
+      {
+        "target_id": "C",
+        "visible_label": "Amusement Park",
+        "visual_cue": "game icon",
+        "bounds": [
+          0,
+          530,
+          922,
+          690
+        ]
+      },
+      {
+        "target_id": "D",
+        "visible_label": "Furnishing",
+        "visual_cue": "furniture icon",
+        "bounds": [
+          0,
+          690,
+          922,
+          850
+        ]
+      },
+      {
+        "target_id": "E",
+        "visible_label": "Health Insurance",
+        "visual_cue": "medical icon",
+        "bounds": [
+          0,
+          850,
+          922,
+          1010
+        ]
+      },
+      {
+        "target_id": "F",
+        "visible_label": "School Supplies",
+        "visual_cue": "book icon",
+        "bounds": [
+          0,
+          1010,
+          922,
+          1170
+        ]
+      },
+      {
+        "target_id": "G",
+        "visible_label": "Accessories",
+        "visual_cue": "clothing icon",
+        "bounds": [
+          0,
+          1170,
+          922,
+          1340
+        ]
+      },
+      {
+        "target_id": "H",
+        "visible_label": "Doctor Visits",
+        "visual_cue": "medical icon",
+        "bounds": [
+          0,
+          1340,
+          922,
+          1500
+        ]
+      }
+    ],
+    "candidate_prompt_fields": [
+      "target_id",
+      "bounds"
+    ],
+    "image_sha256": "4e65967d8500383e577947f82947fb6e18e399e6f121e0aed6c764570210021f"
+  },
+  "prompt_tokens": {
+    "call_1": 569,
+    "call_2": 922
+  },
+  "grounding_call": {
+    "call_id": "a28ac34c-1421-4f9f-8b5e-7e108f160fc9",
+    "episode_id": "DEV-EXP-02__late_high",
+    "idempotency_key": "3157509d3e33ff8670c65168ffab0a2192f65284b31747bdd89c87f154447eb8",
+    "image_sha256": "4e65967d8500383e577947f82947fb6e18e399e6f121e0aed6c764570210021f",
+    "image_sha256s": [
+      "4e65967d8500383e577947f82947fb6e18e399e6f121e0aed6c764570210021f"
+    ],
+    "prompt_sha256": "af14a8e5d26a2526367e448ac9c454ba223ac29bab31b7e10eeb6ae1091452bb",
+    "request_sha256": "eed1806c87d9a548f97ea060cf9657be6cef9f21078614b11194e651858661d5",
+    "response_sha256": "7904268163b72d338beb61e37b2b57d3188a12d53cf0360d54a33aeaaa943b3d",
+    "content": "{\"phase\":\"grounding\",\"source_entity_id\":\"E1\",\"destination_entity_id\":\"E2\",\"destination_target_id\":\"A\",\"confidence\":0.95}",
+    "usage": {
+      "prompt_tokens": 3125,
+      "completion_tokens": 34,
+      "total_tokens": 3159
+    },
+    "raven_meta": {
+      "episode_id": "DEV-EXP-02__late_high",
+      "call_id": "a28ac34c-1421-4f9f-8b5e-7e108f160fc9",
+      "idempotency_key": "3157509d3e33ff8670c65168ffab0a2192f65284b31747bdd89c87f154447eb8",
+      "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+      "backend_id": "qwen3_vl_32b_transformers_bf16_4x4090_v1",
+      "mode": "transformers",
+      "image_sha256": [
+        "4e65967d8500383e577947f82947fb6e18e399e6f121e0aed6c764570210021f"
+      ],
+      "image_bytes": 222052,
+      "latency_seconds": 5.216696069110185,
+      "peak_vram_bytes": 20751246848,
+      "client": "127.0.0.1"
+    }
+  },
+  "action_call": {
+    "call_id": "e626bbc2-bbf6-4287-b92a-229b86b151c1",
+    "episode_id": "DEV-EXP-02__late_high",
+    "idempotency_key": "bc08bb1a880da293ca6ccac6ef2c794a38fef056b9ed0f2fda7a8a8fe03a4382",
+    "image_sha256": "4e65967d8500383e577947f82947fb6e18e399e6f121e0aed6c764570210021f",
+    "image_sha256s": [
+      "4e65967d8500383e577947f82947fb6e18e399e6f121e0aed6c764570210021f"
+    ],
+    "prompt_sha256": "3096093aca828e39524f7da3d154af7644d6ac10438565068a28e0f6a5ad66ae",
+    "request_sha256": "14e0fe3dac753be7f759f8eccfdaf3869c6607ef43e5f9d175b7785bce222afc",
+    "response_sha256": "0c5b71e9ec2df49c431f8f6443e179478e25fcabc3f58639dd6a6c0c8b4c78e6",
+    "content": "{\"phase\":\"action\",\"grounded_destination_target_id\":\"A\",\"recalled_value\":\"VG-882\",\"action\":{\"type\":\"tap\",\"target_id\":\"A\",\"text\":null},\"confidence\":1}",
+    "usage": {
+      "prompt_tokens": 3478,
+      "completion_tokens": 43,
+      "total_tokens": 3521
+    },
+    "raven_meta": {
+      "episode_id": "DEV-EXP-02__late_high",
+      "call_id": "e626bbc2-bbf6-4287-b92a-229b86b151c1",
+      "idempotency_key": "bc08bb1a880da293ca6ccac6ef2c794a38fef056b9ed0f2fda7a8a8fe03a4382",
+      "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+      "backend_id": "qwen3_vl_32b_transformers_bf16_4x4090_v1",
+      "mode": "transformers",
+      "image_sha256": [
+        "4e65967d8500383e577947f82947fb6e18e399e6f121e0aed6c764570210021f"
+      ],
+      "image_bytes": 222052,
+      "latency_seconds": 6.205750960856676,
+      "peak_vram_bytes": 20751246848,
+      "client": "127.0.0.1"
+    }
+  },
+  "parsed_grounding": {
+    "phase": "grounding",
+    "source_entity_id": "E1",
+    "destination_entity_id": "E2",
+    "destination_target_id": "A",
+    "confidence": 0.95
+  },
+  "parsed_action": {
+    "phase": "action",
+    "grounded_destination_target_id": "A",
+    "recalled_value": "VG-882",
+    "action": {
+      "type": "tap",
+      "target_id": "A",
+      "text": null
+    },
+    "confidence": 1
+  },
+  "grounding_parse_error": null,
+  "action_parse_error": null,
+  "valid": true,
+  "metrics": {
+    "wrong_target_first_targeting_action": false,
+    "grounding_destination_correct": true,
+    "action_target_correct": true,
+    "post_grounding_drift": false,
+    "exact_value_recall": true,
+    "source_as_target": false,
+    "other_wrong_target": false
+  },
+  "wall_time_seconds": 13.0
+}
