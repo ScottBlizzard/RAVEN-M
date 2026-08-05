@@ -1,0 +1,162 @@
+{
+  "schema_version": "multi_framework_hard_benchmark.v0.1",
+  "status": "draft_for_gptpro_audit_generation_forbidden",
+  "created_at": "2026-08-05T19:00:00+08:00",
+  "research_question": "Which representative mobile-GUI systems or mechanisms improve task completion and which specific failure-chain edges remain broken on the frozen AndroidWorld Hard suite?",
+  "authorization": {
+    "model_generation_allowed_before_gptpro_audit": false,
+    "android_episode_allowed_before_gptpro_audit": false,
+    "repository_source_download_only": true,
+    "old_frozen_results_mutable": false
+  },
+  "source_task_manifest": {
+    "path": "05_project/configs/task_manifests/androidworld_hard_v1.json",
+    "sha256": "e651aedeb18f112be3a06562328618d19e9d33eaea94187b1edec51cb00f6ca7",
+    "expected_task_count": 19,
+    "androidworld_commit": "3e50888527ef9f29b9157ecd537e408008bb1c85"
+  },
+  "candidate_manifest": {
+    "path": "03_code/manifests/multi_framework_candidates_v0_1.csv"
+  },
+  "lanes": {
+    "common_backbone_diagnostic": {
+      "purpose": "Estimate framework effects without silently attributing backbone gains to the framework.",
+      "backbone": "Qwen/Qwen3-VL-32B-Instruct",
+      "revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+      "eligible_arm_ids_pending_audit": ["F01", "F02", "F05"],
+      "rule": "An arm enters only if its official action semantics can be preserved under the shared OpenAI-compatible model service. Otherwise it remains native-system only."
+    },
+    "native_system_benchmark": {
+      "purpose": "Measure end-to-end system capability under each official or closest documented configuration.",
+      "core_arm_ids_pending_audit": ["F00", "F03", "F04", "F05", "F06", "F07", "F08"],
+      "candidate_arm_ids_pending_audit": ["F09"],
+      "rule": "Do not interpret cross-arm differences causally when models, observation privileges, tools, or step semantics differ."
+    },
+    "mechanism_port_followup": {
+      "purpose": "Test a mechanism only after end-to-end benchmarking identifies a matching recurrent failure edge.",
+      "candidate_arm_ids_pending_audit": ["F10"],
+      "rule": "Never label an Android adaptation as exact reproduction of a desktop or differently trained system."
+    }
+  },
+  "stages": [
+    {
+      "stage": "S0_static_and_runtime_qualification",
+      "scored": false,
+      "generation_allowed": false,
+      "requirements": [
+        "official repository and exact commit recorded",
+        "license and model access recorded",
+        "observation privilege classified",
+        "action adapter mapping reviewed",
+        "isolated dependency environment created",
+        "official evaluator remains authoritative"
+      ]
+    },
+    {
+      "stage": "S1_excluded_nonhard_smoke",
+      "scored": false,
+      "tasks": ["ContactsAddContact", "ClockStopWatchRunning"],
+      "seed": 20260805,
+      "purpose": "Repair interface and lifecycle defects before any fresh Hard episode. No task-specific policy tuning is permitted."
+    },
+    {
+      "stage": "S2_hard_one_seed_breadth",
+      "scored": true,
+      "task_ids": "H01-H19",
+      "seed": 20260806,
+      "expected_cells_per_qualified_arm": 19,
+      "automatic_expansion": false
+    },
+    {
+      "stage": "S3_hard_confirmation",
+      "scored": true,
+      "task_ids": "H01-H19",
+      "seeds": [20260807, 20260808],
+      "expected_additional_cells_per_qualified_arm": 38,
+      "entry_rule": "S2 has no unresolved infrastructure-class cells; the arm was not modified after its first S2 Hard cell; and the expansion decision is independent of S2 success rate."
+    }
+  ],
+  "matching": {
+    "task_instance": "same task class and seed within a lane",
+    "native_step_budget": true,
+    "temperature": 0.0,
+    "official_evaluator_only": true,
+    "finish_claim_never_overrides_evaluator": true,
+    "framework_specific_task_hints_forbidden": true,
+    "manual_rescue_during_scored_cell_forbidden": true,
+    "native_system_differences_must_be_reported": [
+      "model and revision",
+      "observation source: screenshot/UI tree/accessibility/tool",
+      "action space",
+      "prompt and system roles",
+      "online search or external tools",
+      "step, model-call, token, and wall-clock budgets"
+    ]
+  },
+  "outcomes": {
+    "primary": [
+      "official_evaluator_success",
+      "valid_cell_rate"
+    ],
+    "process": [
+      "actions",
+      "model_calls",
+      "input_tokens",
+      "output_tokens",
+      "wall_clock_seconds",
+      "maximum_exact_action_run",
+      "exact_action_repeated_at_least_3",
+      "exact_action_repeated_at_least_10",
+      "feedback_events",
+      "feedback_followed_by_action_change",
+      "feedback_followed_by_exact_action_repeat",
+      "finish_claim_rejected_by_evaluator",
+      "first_broken_failure_chain_edge"
+    ],
+    "manual_audit": [
+      "wrong_target_or_destination",
+      "action_effect_not_observed",
+      "recovery_advice_not_bound_to_policy_change",
+      "terminal_state_not_verified"
+    ]
+  },
+  "validity_classes": [
+    "valid_success",
+    "valid_task_failure",
+    "infrastructure_failure",
+    "model_service_failure",
+    "adapter_contract_failure",
+    "contaminated_or_manual_intervention"
+  ],
+  "rerun_policy": {
+    "task_failure_rerun": false,
+    "infrastructure_rerun_max": 2,
+    "identical_infrastructure_failure_then_stop": 3,
+    "all_reruns_link_to_original_cell": true,
+    "failed_pilot_never_relabelled_heldout": true
+  },
+  "claim_labels": [
+    "exact_official_reproduction",
+    "configuration_equivalent_reproduction",
+    "common_backbone_adapter_comparison",
+    "mechanism_port",
+    "reported_paper_reference_only"
+  ],
+  "protected_preexisting_paths": {
+    "05_project/src/raven_m/controller/episode_controller.py": "fc0e82e0fde90119365d4f685f080eb4519bf2f602e4bda58de5d4809a40fe33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "ff89d6b70be4b4738646d262beb67d7b7e932e9eb95956d940b1c5000a999d10",
+    "05_project/src/raven_m/role_binding_timing/infra_m10_temporal_attestation.py": "d5c0439a39ecd271625502e64f6ebd0bc018f262b9256f6095f44358f90c4bba",
+    "05_project/src/raven_m/role_binding_timing/infra_m14_authority_context_attestation.py": "bfb2581ddd187b613a77ff4fd64469dd6abbc93e00ca810149f13d09d32aca50",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5bb1f1e3de673a1072cfee62938b761a62fd69c187d5eadf54bc46b115a3fd0a",
+    "2026_08_05_17_36.md": "5e8fb154aae23d96876a69aea87c72a69af6bdfe3245c9166f0c7de68fa03501",
+    "RAVEN-M_GPTPro_full_plan_2026-08-05.md": "25f1f2c77f33fbedee01f761d32427d1f38998181dc65034a1429fea289ccdf3"
+  },
+  "gptpro_decisions_required": [
+    "approve or revise the core and candidate arms",
+    "decide whether common-backbone adaptation is scientifically faithful for each eligible arm",
+    "approve S2 and S3 seeds and non-performance-based expansion rule",
+    "decide whether direct-accessibility systems belong in the same main table or a separate privileged table",
+    "set exact model and revision for every native arm",
+    "approve the minimum claim language for all-success, partial-process-improvement, and all-zero outcomes"
+  ]
+}
