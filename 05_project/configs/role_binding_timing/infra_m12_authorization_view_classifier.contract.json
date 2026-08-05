@@ -1,0 +1,115 @@
+{
+  "schema": "role_binding_timing.infra_m12.authorization_view_classifier_contract.v1",
+  "classifier_version": "infra-m12-derive-authorization-views-v1",
+  "contract_kind": "DEV_ENGINEERING_CONTRACT",
+  "api": {
+    "derive": "derive_authorization_views(raw_snapshot, locked_runner_record, locked_known_paths, controlled_ports, classifier_version, classifier_contract_sha256, classifier_implementation_sha256)",
+    "seal": "seal_derived_view(raw_snapshot, derived_views, classifier_binding, locked_input_hashes)",
+    "recompute": "recompute_and_verify_sealed_view(raw_snapshot, sealed_view, locked_inputs)"
+  },
+  "raw_snapshot": {
+    "must_be_complete_single_atomic_sample": true,
+    "required_top_level": [
+      "all_processes",
+      "observation_universe_complete",
+      "observation_universe_capture_errors",
+      "all_tcp_listener_ports_by_pid",
+      "listener_evidence_complete",
+      "sample_sequence",
+      "sample_time_utc"
+    ],
+    "forbidden_authority_fields_in_raw_records": [
+      "role",
+      "observed_class",
+      "view_class",
+      "authority",
+      "role_authority",
+      "authorization_candidate_reasons",
+      "trusted_runner",
+      "adoptable",
+      "kill_target",
+      "cleanup_target"
+    ],
+    "self_label_policy": "REJECT_RAW_AUTHORITY_LABEL_PRESENT",
+    "canonical_hash": "SHA256(canonical UTF-8 JSON with sorted keys, compact separators, allow_nan=false)"
+  },
+  "locked_inputs": {
+    "runner_required_fields": [
+      "pid",
+      "create_time",
+      "exe",
+      "exe_sha256",
+      "command_line"
+    ],
+    "known_path_entry_required_fields": [
+      "logical_role",
+      "normalized_path",
+      "exe_sha256"
+    ],
+    "controlled_ports": [
+      5037,
+      5038,
+      5554,
+      5555,
+      8554
+    ],
+    "bind_runner_record_hash": true,
+    "bind_known_paths_hash": true,
+    "bind_controlled_ports_hash": true,
+    "bind_classifier_contract_hash": true,
+    "bind_classifier_implementation_hash_and_blob": true
+  },
+  "derivation_order": [
+    "validate_raw_snapshot_completeness_and_forbidden_fields",
+    "recompute_raw_snapshot_hash",
+    "verify_locked_runner_exact_identity_path_hash_and_command",
+    "verify_known_paths_and_controlled_ports_against_locked_hashes",
+    "derive_candidate_reasons_from_path_hash_match_or_controlled_port_ownership",
+    "derive_bounded_same_sample_parent_chains",
+    "partition_nonrunner_rows_into_candidate_support_unrelated",
+    "verify_disjointness_and_full_coverage",
+    "reject_support_controlled_port_ownership",
+    "seal_views_and_classifier_binding"
+  ],
+  "view_rules": {
+    "trusted_runner_root": "The unique raw row exactly matching locked PID+create_time+path+exe_sha256+command_line; never caller-selected.",
+    "project_authorization_candidates": "Nonrunner rows with a recomputed LOCKED_PROJECT_BINARY_PATH_AND_HASH or CONTROLLED_PORT_OWNER reason.",
+    "support_only_ancestry_nodes": "Noncandidate same-sample ancestors needed only to connect a derived candidate to the exact locked runner within the frozen depth bound.",
+    "unrelated_observed_processes": "All other nonrunner rows in the complete raw universe.",
+    "views_disjoint": true,
+    "views_cover_all_nonrunner_rows": true,
+    "caller_supplied_classification_permitted": false
+  },
+  "support_invariants": {
+    "role_authority": false,
+    "adoptable": false,
+    "kill_target": false,
+    "cleanup_target": false,
+    "may_own_controlled_port": false,
+    "may_independently_authorize_candidate": false
+  },
+  "sealed_view_required_bindings": [
+    "raw_snapshot_sha256",
+    "locked_runner_record_sha256",
+    "locked_known_paths_sha256",
+    "controlled_ports_sha256",
+    "classifier_version",
+    "classifier_contract_sha256",
+    "classifier_implementation_sha256",
+    "classifier_implementation_blob_oid",
+    "trusted_runner_partition_sha256",
+    "candidate_partition_sha256",
+    "support_partition_sha256",
+    "unrelated_partition_sha256",
+    "complete_view_sha256"
+  ],
+  "verification": {
+    "recompute_from_raw_every_time": true,
+    "trust_stored_role_label": false,
+    "trust_stored_candidate_reason": false,
+    "trust_stored_partition_hash_without_recompute": false,
+    "current_evidence_priority": true,
+    "any_current_history_conflict": "FAIL_CLOSED",
+    "any_classifier_or_locked_input_mismatch": "FAIL_CLOSED"
+  }
+}

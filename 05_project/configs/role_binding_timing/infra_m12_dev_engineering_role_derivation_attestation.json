@@ -1,0 +1,70 @@
+{
+  "schema": "role_binding_timing.infra_m12.dev_engineering_contract.config.v1",
+  "protocol_id": "INFRA-M12-DEV-ENGINEERING-ROLE-DERIVATION-ATTESTATION-V1",
+  "contract_kind": "DEV_ENGINEERING_CONTRACT_NOT_INDEPENDENT_PREREGISTRATION",
+  "freeze_tag": "role-binding-timing-infra-m12-freeze-20260805",
+  "phase": "freeze_only",
+  "implementation_present": false,
+  "tests_executed": false,
+  "generation_eligible": false,
+  "live_eligible": false,
+  "classifier": {
+    "version": "infra-m12-derive-authorization-views-v1",
+    "contract_path": "05_project/configs/role_binding_timing/infra_m12_authorization_view_classifier.contract.json",
+    "contract_sha256": "973192F1D6153F099D9BCC38E784B4C9E2F5203F9CAC77910B349BCCE31D70A0",
+    "future_implementation_sha256_required": true,
+    "future_implementation_blob_oid_required": true,
+    "raw_authority_labels_permitted": false,
+    "recompute_before_authorization": true
+  },
+  "future_paths": {
+    "implementation": "05_project/src/raven_m/role_binding_timing/infra_m12_sealed_role_derivation.py",
+    "role_tests": "05_project/tests/role_binding_timing/test_infra_m12_role_derivation_contract.py",
+    "temporal_tests": "05_project/tests/role_binding_timing/test_infra_m12_temporal_attestation_contract.py",
+    "result_root": "05_project/artifacts/role_binding_timing/infra_m12_role_derivation_attestation",
+    "offline_gate_root": "05_project/artifacts/role_binding_timing/infra_m12_role_derivation_attestation_offline_gates"
+  },
+  "offline_gate_order": [
+    "static_contamination",
+    "role_derivation_contract",
+    "temporal_attestation_contract",
+    "full_regression",
+    "input_and_object_lock"
+  ],
+  "role_derivation_must_pass_before_temporal": true,
+  "controlled_ports": [
+    5037,
+    5038,
+    5554,
+    5555,
+    8554
+  ],
+  "support_invariants": {
+    "role_authority": false,
+    "adoptable": false,
+    "kill_target": false,
+    "cleanup_target": false,
+    "controlled_port_owner": false,
+    "independent_candidate_authority": false
+  },
+  "live_chain": {
+    "maximum_runs": 1,
+    "same_version_retry": false,
+    "stop_on_first_failure": true,
+    "burn_in_cycles": 24,
+    "burn_in_elapsed_seconds_must_exceed": 180,
+    "settings_a11y_required": 3,
+    "dev_grid_apps": 4,
+    "dev_grid_rounds": 3,
+    "dev_grid_required": 12
+  },
+  "accounting": {
+    "generation_calls": 0,
+    "generation_tokens": 0,
+    "held_out_captures": 0,
+    "stage1_runs": 0,
+    "destination_first_runs": 0,
+    "live_chains": 0
+  },
+  "preimplementation_test_state": "NOT_RUN_EXPECTED_FAIL_MISSING_IMPLEMENTATION"
+}

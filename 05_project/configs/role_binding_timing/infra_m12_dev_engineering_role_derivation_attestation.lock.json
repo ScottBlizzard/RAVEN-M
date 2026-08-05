@@ -1,0 +1,121 @@
+{
+  "schema": "role_binding_timing.infra_m12.dev_engineering_contract.input_lock.v1",
+  "protocol_id": "INFRA-M12-DEV-ENGINEERING-ROLE-DERIVATION-ATTESTATION-V1",
+  "freeze_tag": "role-binding-timing-infra-m12-freeze-20260805",
+  "contract_kind": "DEV_ENGINEERING_CONTRACT_NOT_INDEPENDENT_PREREGISTRATION",
+  "implementation_in_lock": false,
+  "generation_eligible": false,
+  "legitimate_engineering_inputs": {
+    "m9_freeze": {
+      "commit": "d9e812b3bacd2d06da890086a106af94c95c5347",
+      "tree_oid": "2b3f059c3f3ec4ac62753692076cfa78bff089d5",
+      "tag": "role-binding-timing-infra-m9-freeze-20260805",
+      "tag_object_oid": "51f0d80e654e85060205b65e719587ad43ebffdc"
+    },
+    "m9_result": {
+      "commit": "613b338fce1eab5ecf8c29e6a95702dcfd04eca6",
+      "tree_oid": "8ee9d2b5825989bfa3d1bcf79fe8ff7dfd9ae9ac",
+      "tag": "role-binding-timing-infra-m9-result-20260805",
+      "tag_object_oid": "e716392e774560075b143ead3cfcd430f68cfa0f",
+      "snapshot_tree_oid": "d273b1e8afba0047b0624c8593d58015ae2f9d4f",
+      "authorization_deriver_blob_oid": "417884bbd9c1ebf127b439dd4077c1de4b356704",
+      "authorization_deriver_sha256": "D380553211E677A4465DCE1F851781149B6DFB158067466B29E4C27654354E00",
+      "config_blob_oid": "9aa2b52d374f6fd0bb643793d085ec27a205b2c4",
+      "config_sha256": "9EEEB36E9021F8330BA03ED09D18879ED8644C6A0FDFC6CD7EAA006F4EC28494",
+      "lock_blob_oid": "35c1a3e16e6e2ee5f2fa3a9a227551d3cbcedf38"
+    },
+    "m11_incident_and_status": {
+      "commit": "a28cff9a4b53b23ae44d5e1dec52e48a3aa9abff",
+      "tree_oid": "c3a2763147ac119791c29694846abb032eaa7639",
+      "incident_blob_oid": "b034555d47fd46c7fee2d5a8abc5c4297601633e",
+      "status_blob_oid": "8a45aa8d97c824f95c1e34b6887aa275055d2617",
+      "use": "boundary_only"
+    }
+  },
+  "classifier_contract": {
+    "path": "05_project/configs/role_binding_timing/infra_m12_authorization_view_classifier.contract.json",
+    "version": "infra-m12-derive-authorization-views-v1",
+    "sha256": "973192F1D6153F099D9BCC38E784B4C9E2F5203F9CAC77910B349BCCE31D70A0",
+    "future_implementation_sha256": null,
+    "future_implementation_blob_oid": null,
+    "implementation_binding_required_before_tests": true
+  },
+  "contamination_boundary": {
+    "excluded_untracked_leak": {
+      "path": "05_project/src/raven_m/role_binding_timing/infra_m10_temporal_attestation.py",
+      "filename": "infra_m10_temporal_attestation.py",
+      "module_identifier": "infra_m10_temporal_attestation",
+      "known_size_bytes": 47681,
+      "known_line_count": 882,
+      "known_sha256": "D5C0439A39ECD271625502E64F6EBD0BC018F262B9256F6095F44358F90C4BBA",
+      "is_input": false,
+      "permitted_access": "git_status_presence_only"
+    },
+    "excluded_m11_v1": {
+      "commit": "a9b287a58ba61e96c88e6b14eaa56abbdc52d22c",
+      "tree_oid": "65fb63933d7e88acd91145158c61911ea4533f2d",
+      "tag": "role-binding-timing-infra-m11-freeze-20260805",
+      "tag_object_oid": "8216d241ec51601de7afda5ea65b9e45cf30bd1b",
+      "is_input": false,
+      "forbidden_reuse": [
+        {
+          "path": "04_protocols/role_binding_timing/INFRA_M11_PREREG_FIRST_TEMPORAL_SUPPORT_ATTESTATION_RECOVERY_V1.md",
+          "blob_oid": "944f6c8b023dbb533e12f9332c8575bf84a6fe33"
+        },
+        {
+          "path": "05_project/configs/role_binding_timing/infra_m11_prereg_first_temporal_support_attestation_recovery.json",
+          "blob_oid": "1a676a75a86070524eec49675330c647a2aac8a8"
+        },
+        {
+          "path": "05_project/configs/role_binding_timing/infra_m11_prereg_first_temporal_support_attestation_recovery.lock.json",
+          "blob_oid": "b89e8fd59d3fd6fba815fbee6da65ef477580644"
+        },
+        {
+          "path": "05_project/schemas/role_binding_timing_infra_m11_completion.v1.schema.json",
+          "blob_oid": "6d930c65724f47273bc85e8622b64ae153fe004f"
+        },
+        {
+          "path": "05_project/scripts/check_role_binding_timing_infra_m11_contamination.py",
+          "blob_oid": "207c0368c5400261b9f876cd2e403adfaf7e5013"
+        },
+        {
+          "path": "05_project/tests/role_binding_timing/test_infra_m11_prereg_first_recovery_contract.py",
+          "blob_oid": "411cd7d4f8c68c12ec49507e5027811c6bedf592"
+        },
+        {
+          "path": "05_project/artifacts/role_binding_timing/infra_m11_prereg_first_recovery_freeze/freeze_declaration.json",
+          "blob_oid": "b5ae26892fd94a1359f40f3b91791a1e62510b92"
+        },
+        {
+          "path": "reports/role_binding_timing/INFRA_M11_PREREGISTRATION_FREEZE_2026-08-05.md",
+          "blob_oid": "d0d2c8e0bd847024c15b2eb726c4b9d2ddb395ed"
+        }
+      ]
+    },
+    "partial_fragments_from_read_violation_permitted": false
+  },
+  "future_namespace": {
+    "implementation": "05_project/src/raven_m/role_binding_timing/infra_m12_sealed_role_derivation.py",
+    "role_tests": "05_project/tests/role_binding_timing/test_infra_m12_role_derivation_contract.py",
+    "temporal_tests": "05_project/tests/role_binding_timing/test_infra_m12_temporal_attestation_contract.py",
+    "result_root": "05_project/artifacts/role_binding_timing/infra_m12_role_derivation_attestation",
+    "offline_gate_root": "05_project/artifacts/role_binding_timing/infra_m12_role_derivation_attestation_offline_gates"
+  },
+  "protected_wip_sha256": {
+    "05_project/src/raven_m/controller/episode_controller.py": "FC0E82E0FDE90119365D4F685F080EB4519BF2F602E4BDA58DE5D4809A40FE33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "FF89D6B70BE4B4738646D262BEB67D7B7E932E9EB95956D940B1C5000A999D10",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5BB1F1E3DE673A1072CFEE62938B761A62FD69C187D5EADF54BC46B115A3FD0A"
+  },
+  "frozen_zero_accounting": {
+    "generation_calls": 0,
+    "generation_tokens": 0,
+    "held_out_captures": 0,
+    "stage1_runs": 0,
+    "destination_first_runs": 0,
+    "live_chains": 0
+  },
+  "test_execution": {
+    "executed_during_freeze": false,
+    "expected_state": "NOT_RUN_EXPECTED_FAIL_MISSING_IMPLEMENTATION"
+  }
+}

@@ -1,0 +1,248 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raven-m.local/schemas/role_binding_timing_infra_m12_completion.v1.schema.json",
+  "title": "INFRA-M12 DEV engineering terminal completion",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "protocol_id",
+    "contract_kind",
+    "frozen_commit",
+    "frozen_tag",
+    "status",
+    "verdict",
+    "first_broken_edge",
+    "classifier_binding",
+    "role_derivation_gate",
+    "temporal_gate",
+    "live_chain",
+    "accounting",
+    "contamination",
+    "protected_wip_sha256",
+    "predecessor_objects",
+    "claim_evidence_boundary"
+  ],
+  "properties": {
+    "schema": {
+      "const": "role_binding_timing.infra_m12.dev_engineering_contract.completion.v1"
+    },
+    "protocol_id": {
+      "const": "INFRA-M12-DEV-ENGINEERING-ROLE-DERIVATION-ATTESTATION-V1"
+    },
+    "contract_kind": {
+      "const": "DEV_ENGINEERING_CONTRACT_NOT_INDEPENDENT_PREREGISTRATION"
+    },
+    "frozen_commit": {
+      "$ref": "#/$defs/gitOid"
+    },
+    "frozen_tag": {
+      "const": "role-binding-timing-infra-m12-freeze-20260805"
+    },
+    "status": {
+      "enum": ["NOT_RUN", "FAIL_OFFLINE", "FAIL_LIVE", "PASS_DEV_QUALIFICATION"]
+    },
+    "verdict": {
+      "enum": [
+        "NOT_ELIGIBLE",
+        "FAIL_ROLE_DERIVATION",
+        "FAIL_TEMPORAL_ATTESTATION",
+        "FAIL_INFRASTRUCTURE",
+        "ELIGIBLE_TO_PREPARE_NOT_EXECUTE_V0_3"
+      ]
+    },
+    "first_broken_edge": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["phase", "code", "recorded_at_utc", "evidence_sha256"],
+          "properties": {
+            "phase": {"type": "string", "minLength": 1},
+            "code": {"type": "string", "minLength": 1},
+            "recorded_at_utc": {"type": "string", "format": "date-time"},
+            "evidence_sha256": {"$ref": "#/$defs/sha256"}
+          }
+        }
+      ]
+    },
+    "classifier_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "classifier_version",
+        "classifier_contract_sha256",
+        "classifier_implementation_sha256",
+        "classifier_implementation_blob_oid",
+        "locked_runner_record_sha256",
+        "locked_known_paths_sha256",
+        "controlled_ports_sha256"
+      ],
+      "properties": {
+        "classifier_version": {"const": "infra-m12-derive-authorization-views-v1"},
+        "classifier_contract_sha256": {
+          "const": "973192F1D6153F099D9BCC38E784B4C9E2F5203F9CAC77910B349BCCE31D70A0"
+        },
+        "classifier_implementation_sha256": {"$ref": "#/$defs/sha256"},
+        "classifier_implementation_blob_oid": {"$ref": "#/$defs/gitOid"},
+        "locked_runner_record_sha256": {"$ref": "#/$defs/sha256"},
+        "locked_known_paths_sha256": {"$ref": "#/$defs/sha256"},
+        "controlled_ports_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "role_derivation_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "executed",
+        "passed",
+        "completed_before_temporal",
+        "raw_self_label_accepts",
+        "role_escalation_accepts",
+        "fake_runner_accepts",
+        "tampered_view_accepts",
+        "m9_replay_cases",
+        "m9_replay_matches",
+        "stdout_sha256",
+        "stderr_sha256"
+      ],
+      "properties": {
+        "executed": {"type": "boolean"},
+        "passed": {"type": "boolean"},
+        "completed_before_temporal": {"const": true},
+        "raw_self_label_accepts": {"const": 0},
+        "role_escalation_accepts": {"const": 0},
+        "fake_runner_accepts": {"const": 0},
+        "tampered_view_accepts": {"const": 0},
+        "m9_replay_cases": {"type": "integer", "minimum": 1},
+        "m9_replay_matches": {"type": "integer", "minimum": 0},
+        "stdout_sha256": {"$ref": "#/$defs/nullableSha256"},
+        "stderr_sha256": {"$ref": "#/$defs/nullableSha256"}
+      }
+    },
+    "temporal_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "executed",
+        "passed",
+        "blocked_by_role_gate",
+        "test_count",
+        "failure_count",
+        "cross_sample_accepts",
+        "cross_run_accepts",
+        "exited_current_authority_accepts",
+        "support_authority_violations",
+        "stdout_sha256",
+        "stderr_sha256"
+      ],
+      "properties": {
+        "executed": {"type": "boolean"},
+        "passed": {"type": "boolean"},
+        "blocked_by_role_gate": {"type": "boolean"},
+        "test_count": {"type": "integer", "minimum": 0},
+        "failure_count": {"type": "integer", "minimum": 0},
+        "cross_sample_accepts": {"const": 0},
+        "cross_run_accepts": {"const": 0},
+        "exited_current_authority_accepts": {"const": 0},
+        "support_authority_violations": {"const": 0},
+        "stdout_sha256": {"$ref": "#/$defs/nullableSha256"},
+        "stderr_sha256": {"$ref": "#/$defs/nullableSha256"}
+      }
+    },
+    "live_chain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "executed",
+        "attempt_count",
+        "same_version_retries",
+        "port_5037_observations",
+        "burn_in_cycles_completed",
+        "burn_in_elapsed_seconds",
+        "settings_a11y_successes",
+        "dev_grid_successes",
+        "dev_grid_total"
+      ],
+      "properties": {
+        "executed": {"type": "boolean"},
+        "attempt_count": {"type": "integer", "minimum": 0, "maximum": 1},
+        "same_version_retries": {"const": 0},
+        "port_5037_observations": {"const": 0},
+        "burn_in_cycles_completed": {"type": "integer", "minimum": 0, "maximum": 24},
+        "burn_in_elapsed_seconds": {"type": "number", "minimum": 0},
+        "settings_a11y_successes": {"type": "integer", "minimum": 0, "maximum": 3},
+        "dev_grid_successes": {"type": "integer", "minimum": 0, "maximum": 12},
+        "dev_grid_total": {"const": 12}
+      }
+    },
+    "accounting": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "generation_calls",
+        "generation_tokens",
+        "held_out_captures",
+        "stage1_runs",
+        "destination_first_runs"
+      ],
+      "properties": {
+        "generation_calls": {"const": 0},
+        "generation_tokens": {"const": 0},
+        "held_out_captures": {"const": 0},
+        "stage1_runs": {"const": 0},
+        "destination_first_runs": {"const": 0}
+      }
+    },
+    "contamination": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "gate_executed",
+        "gate_passed",
+        "excluded_paths_opened",
+        "excluded_import_edges",
+        "excluded_exact_copies"
+      ],
+      "properties": {
+        "gate_executed": {"type": "boolean"},
+        "gate_passed": {"type": "boolean"},
+        "excluded_paths_opened": {"const": 0},
+        "excluded_import_edges": {"const": 0},
+        "excluded_exact_copies": {"const": 0}
+      }
+    },
+    "protected_wip_sha256": {
+      "type": "object",
+      "minProperties": 3,
+      "additionalProperties": {"$ref": "#/$defs/sha256"}
+    },
+    "predecessor_objects": {
+      "type": "object",
+      "minProperties": 4,
+      "additionalProperties": {"$ref": "#/$defs/gitOid"}
+    },
+    "claim_evidence_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["supported", "unsupported", "independent_preregistration", "v0_3_action"],
+      "properties": {
+        "supported": {"type": "array", "items": {"type": "string"}},
+        "unsupported": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "independent_preregistration": {"const": false},
+        "v0_3_action": {"enum": ["NOT_AUTHORIZED", "PREPARE_ONLY_NOT_EXECUTE"]}
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[A-Fa-f0-9]{64}$"},
+    "gitOid": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+    "nullableSha256": {
+      "oneOf": [
+        {"type": "null"},
+        {"$ref": "#/$defs/sha256"}
+      ]
+    }
+  }
+}

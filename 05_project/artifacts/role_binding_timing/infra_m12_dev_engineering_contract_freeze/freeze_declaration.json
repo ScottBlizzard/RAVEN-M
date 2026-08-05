@@ -1,0 +1,76 @@
+{
+  "schema": "role_binding_timing.infra_m12.dev_engineering_contract.freeze_declaration.v1",
+  "protocol_id": "INFRA-M12-DEV-ENGINEERING-ROLE-DERIVATION-ATTESTATION-V1",
+  "contract_kind": "DEV_ENGINEERING_CONTRACT_NOT_INDEPENDENT_PREREGISTRATION",
+  "date": "2026-08-05",
+  "freeze_tag": "role-binding-timing-infra-m12-freeze-20260805",
+  "decision": "FROZEN_NOT_IMPLEMENTED_NOT_TESTED_NOT_LIVE_ELIGIBLE",
+  "implementation_present": false,
+  "tests_executed": false,
+  "contamination_gate_executed": false,
+  "test_expected_state": "NOT_RUN_EXPECTED_FAIL_MISSING_IMPLEMENTATION",
+  "role_gate_must_pass_before_temporal_gate": true,
+  "classifier_binding": {
+    "version": "infra-m12-derive-authorization-views-v1",
+    "contract_sha256": "973192F1D6153F099D9BCC38E784B4C9E2F5203F9CAC77910B349BCCE31D70A0",
+    "implementation_sha256": null,
+    "implementation_blob_oid": null
+  },
+  "frozen_artifacts": [
+    "04_protocols/role_binding_timing/INFRA_M12_DEV_ENGINEERING_ROLE_DERIVATION_ATTESTATION_V1.md",
+    "05_project/configs/role_binding_timing/infra_m12_authorization_view_classifier.contract.json",
+    "05_project/configs/role_binding_timing/infra_m12_dev_engineering_role_derivation_attestation.json",
+    "05_project/configs/role_binding_timing/infra_m12_dev_engineering_role_derivation_attestation.lock.json",
+    "05_project/schemas/role_binding_timing_infra_m12_completion.v1.schema.json",
+    "05_project/scripts/check_role_binding_timing_infra_m12_contamination.py",
+    "05_project/tests/role_binding_timing/test_infra_m12_role_derivation_contract.py",
+    "05_project/tests/role_binding_timing/test_infra_m12_temporal_attestation_contract.py",
+    "05_project/artifacts/role_binding_timing/infra_m12_dev_engineering_contract_freeze/freeze_declaration.json",
+    "reports/role_binding_timing/INFRA_M12_DEV_ENGINEERING_CONTRACT_FREEZE_2026-08-05.md"
+  ],
+  "future_implementation_path": "05_project/src/raven_m/role_binding_timing/infra_m12_sealed_role_derivation.py",
+  "role_source_fault_matrix": [
+    "raw_self_label_reject",
+    "support_to_candidate_reject",
+    "unrelated_to_candidate_reject",
+    "fake_trusted_runner_reject",
+    "candidate_reason_tamper_reject",
+    "known_path_config_tamper_reject",
+    "controlled_port_evidence_tamper_reject",
+    "derived_partition_class_tamper_reject",
+    "classifier_version_hash_mismatch_reject",
+    "sealed_view_raw_snapshot_mismatch_reject",
+    "same_pid_different_create_time_reject",
+    "m9_actual_deriver_compatibility_replay"
+  ],
+  "temporal_fault_matrix": [
+    "lossless_support_projection",
+    "replay_12_exited_1_current",
+    "same_frame_accept",
+    "cross_frame_stitch_reject",
+    "parent_and_child_pid_reuse_reject",
+    "missing_fields_and_access_denied_reject",
+    "source_snapshot_partition_hash_tamper_reject",
+    "cross_run_replay_reject",
+    "current_history_conflict_reject",
+    "support_port_authority_lifecycle_reject",
+    "support_identity_as_candidate_reject",
+    "missing_chain_reject",
+    "runner_reuse_reject",
+    "terminal_expiry_reject"
+  ],
+  "live_chain": {
+    "executed": false,
+    "eligible_now": false,
+    "maximum_future_attempts": 1,
+    "same_version_retry": false
+  },
+  "accounting": {
+    "generation_calls": 0,
+    "generation_tokens": 0,
+    "held_out_captures": 0,
+    "stage1_runs": 0,
+    "destination_first_runs": 0,
+    "live_chains": 0
+  }
+}
