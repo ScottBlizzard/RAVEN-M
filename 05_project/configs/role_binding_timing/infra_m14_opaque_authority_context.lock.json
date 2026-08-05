@@ -1,0 +1,113 @@
+{
+  "schema": "role_binding_timing.infra_m14.opaque_authority_context.input_lock.v1",
+  "protocol_id": "INFRA-M14-OPAQUE-AUTHORITY-CONTEXT-V1",
+  "contract_kind": "POST_DIAGNOSIS_DEV_ENGINEERING_CONTRACT",
+  "freeze_tag": "role-binding-timing-infra-m14-freeze-20260805",
+  "freeze_parent_commit": "d781bf11e329a54e92ebde5ffcdfa4caad55440d",
+  "implementation_in_lock": false,
+  "offline_gate_eligible": false,
+  "live_eligible": false,
+  "contract_bindings": {
+    "protocol": {
+      "path": "04_protocols/role_binding_timing/INFRA_M14_OPAQUE_AUTHORITY_CONTEXT_V1.md",
+      "sha256": "DD2BEED9BE8C19EE92227F71015CA9C08D30FBFC7DC4FC98C7FDBE2DFE2DD9B1",
+      "prospective_blob_oid": "70bfaad178d0493e2a4c335264c1aea180dc2745"
+    },
+    "config": {
+      "path": "05_project/configs/role_binding_timing/infra_m14_opaque_authority_context.json",
+      "sha256": "8421E4985DEF834F84D5B22FFC0B2D22FF2A063473861213A64C4990C694C661",
+      "prospective_blob_oid": "2ac351ffb13fe16e80b8e42aee32713ace6dabdd"
+    },
+    "exact_controlled_ports": [5037, 5038, 5554, 5555, 8554]
+  },
+  "legitimate_inputs": {
+    "m9_engineering_compatibility": {
+      "freeze_commit": "d9e812b3bacd2d06da890086a106af94c95c5347",
+      "freeze_tag_object_oid": "51f0d80e654e85060205b65e719587ad43ebffdc",
+      "result_commit": "613b338fce1eab5ecf8c29e6a95702dcfd04eca6",
+      "result_tag_object_oid": "e716392e774560075b143ead3cfcd430f68cfa0f",
+      "snapshot_tree_oid": "d273b1e8afba0047b0624c8593d58015ae2f9d4f",
+      "authorization_deriver_blob_oid": "417884bbd9c1ebf127b439dd4077c1de4b356704",
+      "authorization_deriver_sha256": "D380553211E677A4465DCE1F851781149B6DFB158067466B29E4C27654354E00",
+      "config_blob_oid": "9aa2b52d374f6fd0bb643793d085ec27a205b2c4",
+      "config_sha256": "9EEEB36E9021F8330BA03ED09D18879ED8644C6A0FDFC6CD7EAA006F4EC28494",
+      "input_lock_blob_oid": "35c1a3e16e6e2ee5f2fa3a9a227551d3cbcedf38",
+      "use": "DEV_COMPATIBILITY_MATRIX_ONLY"
+    },
+    "m13_freeze_matrix": {
+      "commit": "fb697c67a724e75c602a65ed2713b75b750c1834",
+      "tag_object_oid": "28c1bd26d80e23578fbcaa5a30f42063f8d930ce",
+      "canonical_test_blob_oid": "df8088ddc793b7707ec1181dfe143734d292c9be",
+      "canonical_test_sha256": "8385C15D1438140B9060A31304C46EF354C117369E21629D2426D59A38F66061",
+      "ledger_test_blob_oid": "42f66cc82030d39cec585d62398058ec2c29c374",
+      "ledger_test_sha256": "E26D5DB43E495BA918BCF14CAE258CF396C9EC3CF622CEB80A4F05DF0E8240F3",
+      "use": "FAULT_MATRIX_BASELINE_ONLY_NO_RUNTIME_IMPORT"
+    },
+    "m13_vulnerability_audit": {
+      "implementation_commit": "3c739b66c41f5a20073cfeb0ecc55650be017ee9",
+      "implementation_blob_oid": "153df3036797771b2efd24bb60c3e22a166bef5e",
+      "implementation_sha256": "8257123377AFBD9328F13CCA6B1C3C8749A9B8D72B3888CA022F63B4E7C7CA8F",
+      "implementation_lock_commit": "dc48ef630a71528458291a9ad5e851f09c047b17",
+      "implementation_lock_tag_object_oid": "c80066c12e2f10f75812c8ebce4a7d1dd477c67f",
+      "review_failure_commit": "d781bf11e329a54e92ebde5ffcdfa4caad55440d",
+      "review_failure_tree_oid": "eb65c5e361198958afda14414b05298c519188e1",
+      "review_json_blob_oid": "dbddbafc303cd0efd8e79d2695938ac25cd360d9",
+      "review_report_blob_oid": "0a9abffc443c7635915bed825537302a7b984f8c",
+      "use": "VULNERABILITY_FINDINGS_ONLY",
+      "runtime_import_or_copy_permitted": false
+    }
+  },
+  "contamination_boundary": {
+    "excluded_untracked_leak": {
+      "path": "05_project/src/raven_m/role_binding_timing/infra_m10_temporal_attestation.py",
+      "module_identifier": "infra_m10_temporal_attestation",
+      "known_size_bytes": 47681,
+      "known_line_count": 882,
+      "known_sha256": "D5C0439A39ECD271625502E64F6EBD0BC018F262B9256F6095F44358F90C4BBA",
+      "permitted_access": "GIT_STATUS_PRESENCE_ONLY"
+    },
+    "excluded_m11": {
+      "commit": "a9b287a58ba61e96c88e6b14eaa56abbdc52d22c",
+      "tag_object_oid": "8216d241ec51601de7afda5ea65b9e45cf30bd1b",
+      "permitted_access": "OBJECT_IDENTITY_CHECK_ONLY"
+    },
+    "excluded_m13_runtime_reuse": {
+      "path": "05_project/src/raven_m/role_binding_timing/infra_m13_proof_bound_attestation.py",
+      "module_identifier": "infra_m13_proof_bound_attestation",
+      "known_blob_oid": "153df3036797771b2efd24bb60c3e22a166bef5e",
+      "known_sha256": "8257123377AFBD9328F13CCA6B1C3C8749A9B8D72B3888CA022F63B4E7C7CA8F",
+      "audit_input_only": true,
+      "import_or_copy_permitted": false
+    }
+  },
+  "future_namespace": {
+    "implementation": "05_project/src/raven_m/role_binding_timing/infra_m14_authority_context_attestation.py",
+    "authority_tests": "05_project/tests/role_binding_timing/test_infra_m14_authority_context_contract.py",
+    "ledger_tests": "05_project/tests/role_binding_timing/test_infra_m14_context_bound_issuer_ledger_contract.py",
+    "trusted_initializer_fixture": "FUTURE_SEPARATELY_LOCKED_DEV_HARNESS_CAPABILITY",
+    "offline_root": "05_project/artifacts/role_binding_timing/infra_m14_authority_context_offline_gates",
+    "result_root": "05_project/artifacts/role_binding_timing/infra_m14_authority_context"
+  },
+  "protected_wip_sha256": {
+    "05_project/src/raven_m/controller/episode_controller.py": "FC0E82E0FDE90119365D4F685F080EB4519BF2F602E4BDA58DE5D4809A40FE33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "FF89D6B70BE4B4738646D262BEB67D7B7E932E9EB95956D940B1C5000A999D10",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5BB1F1E3DE673A1072CFEE62938B761A62FD69C187D5EADF54BC46B115A3FD0A"
+  },
+  "test_execution": {
+    "authority_context_tests": "NOT_RUN_EXPECTED_FAIL_MISSING_IMPLEMENTATION_AND_TRUSTED_INITIALIZER_FIXTURE",
+    "ledger_tests": "NOT_RUN_EXPECTED_FAIL_MISSING_IMPLEMENTATION_AND_TRUSTED_INITIALIZER_FIXTURE",
+    "contamination_gate": "NOT_RUN",
+    "m9_replay": "NOT_RUN",
+    "full_regression": "NOT_RUN",
+    "live": "NOT_RUN"
+  },
+  "frozen_zero_accounting": {
+    "generation_calls": 0,
+    "generation_tokens": 0,
+    "held_out_captures": 0,
+    "stage1_runs": 0,
+    "destination_first_gate_runs": 0,
+    "offline_behavior_executions": 0,
+    "live_chains": 0
+  }
+}

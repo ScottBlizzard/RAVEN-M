@@ -1,0 +1,165 @@
+{
+  "schema": "role_binding_timing.infra_m14.dev_contract_freeze_declaration.v1",
+  "protocol_id": "INFRA-M14-OPAQUE-AUTHORITY-CONTEXT-V1",
+  "contract_kind": "POST_DIAGNOSIS_DEV_ENGINEERING_CONTRACT",
+  "declaration_status": "FROZEN_BEFORE_IMPLEMENTATION",
+  "freeze_parent_commit": "d781bf11e329a54e92ebde5ffcdfa4caad55440d",
+  "freeze_tag": "role-binding-timing-infra-m14-freeze-20260805",
+  "m13_status": "NOT_AUTHORIZED_FOR_OFFLINE_GATES",
+  "implementation": {
+    "path": "05_project/src/raven_m/role_binding_timing/infra_m14_authority_context_attestation.py",
+    "exists_at_freeze": false,
+    "implementation_commit": null,
+    "implementation_lock": null
+  },
+  "authorization_roots": [
+    "OPAQUE_PROCESS_LOCAL_LOCKED_AUTHORITY_CONTEXT_IDENTITY",
+    "RAW_RECOMPUTATION_AND_EXACT_CANONICAL_EQUALITY",
+    "ACTIVE_CONTEXT_BOUND_ISSUER_LEDGER_MEMBERSHIP"
+  ],
+  "authority_context_boundary": {
+    "created_once_before_snapshot_or_derivation": true,
+    "trusted_initializer_is_separate_future_locked_harness_capability": true,
+    "ordinary_dict_rejected": true,
+    "copy_and_serialization_rejected": true,
+    "binds_exact_runner_record": true,
+    "binds_known_paths": true,
+    "binds_exact_controlled_ports": [5037, 5038, 5554, 5555, 8554],
+    "binds_config_and_input_lock_hashes": true,
+    "binds_run_session_bootstrap_and_instance_identity": true,
+    "caller_cannot_replace_runner_paths_or_ports_per_call": true,
+    "same_visible_fields_do_not_make_contexts_interchangeable": true
+  },
+  "listener_and_ancestry_boundary": {
+    "listener_owner_must_resolve_to_one_fused_identity": true,
+    "unknown_or_ambiguous_listener_owner": "FAIL_CLOSED",
+    "candidate_requires_complete_same_frame_chain_to_exact_context_runner": true,
+    "support_materialized_only_from_complete_candidate_chain": true,
+    "incomplete_chain_emits_candidate_or_support": false,
+    "support_role_authority": false,
+    "support_adopt_kill_cleanup_or_port_authority": false
+  },
+  "proof_boundary": {
+    "sealed_rows_and_candidate_ancestry_exact_canonical_equality": true,
+    "birth_candidate_extracted_from_verified_seal": true,
+    "birth_chain_rebuilt_from_verified_ancestry": true,
+    "public_sha256_role": "CONTENT_ADDRESSING_ONLY",
+    "context_identity_bound_to_seal_session_entry_attestation_tombstone": true,
+    "current_evidence_priority": true,
+    "exited_candidate_current_authority": false
+  },
+  "frozen_files": [
+    {
+      "path": "04_protocols/role_binding_timing/INFRA_M14_OPAQUE_AUTHORITY_CONTEXT_V1.md",
+      "sha256": "DD2BEED9BE8C19EE92227F71015CA9C08D30FBFC7DC4FC98C7FDBE2DFE2DD9B1",
+      "prospective_blob_oid": "70bfaad178d0493e2a4c335264c1aea180dc2745",
+      "role": "protocol"
+    },
+    {
+      "path": "05_project/configs/role_binding_timing/infra_m14_opaque_authority_context.json",
+      "sha256": "8421E4985DEF834F84D5B22FFC0B2D22FF2A063473861213A64C4990C694C661",
+      "prospective_blob_oid": "2ac351ffb13fe16e80b8e42aee32713ace6dabdd",
+      "role": "config"
+    },
+    {
+      "path": "05_project/configs/role_binding_timing/infra_m14_opaque_authority_context.lock.json",
+      "sha256": "11BA21E3DAF4D8ED4BD0D2633E5D2EE9FD9583FB7060169FC3950AE777ADF4A6",
+      "prospective_blob_oid": "c887dab4ffdda7efb89b32bd4a540d77463ff2fd",
+      "role": "input_lock"
+    },
+    {
+      "path": "05_project/schemas/role_binding_timing_infra_m14_completion.v1.schema.json",
+      "sha256": "D15BAF6A82F6E648A0B0A5E1B30B8E29E26704A53EC591C088452A7515CD2E09",
+      "prospective_blob_oid": "a91a0f4128e0aef67d6d63ee8c9c44fb85828c79",
+      "role": "result_schema"
+    },
+    {
+      "path": "05_project/tests/role_binding_timing/test_infra_m14_authority_context_contract.py",
+      "sha256": "51784BD1EBF0795B17FDA5EDCE72BF9D842DDAA03A36E0375037443529363F29",
+      "prospective_blob_oid": "1ab0f11ce438f4e96bf26178f54795300a065616",
+      "role": "prewritten_authority_and_view_tests"
+    },
+    {
+      "path": "05_project/tests/role_binding_timing/test_infra_m14_context_bound_issuer_ledger_contract.py",
+      "sha256": "C2F3027BF6237AB52D2366A8EF47783ED2EB6E8B67B66B72A4C980F9BDF03C99",
+      "prospective_blob_oid": "a0b35414ef5c6e9404ba182430411f72f9875d3a",
+      "role": "prewritten_context_bound_ledger_tests"
+    },
+    {
+      "path": "05_project/scripts/check_role_binding_timing_infra_m14_contamination.py",
+      "sha256": "1FE0191C57A83BC30F65D0258A8BA18C772BEFC9C3E4D618F92E2D9DA4DE15EF",
+      "prospective_blob_oid": "b76bf2e6d2025abdc9403087194a7cb653790468",
+      "role": "prewritten_static_contamination_gate"
+    }
+  ],
+  "prewritten_fault_matrix": {
+    "retained_m13_canonical_and_ledger_cases": true,
+    "new_authority_context_cases": [
+      "RAW_FAKE_ROOT",
+      "UNRELATED_OR_SUPPORT_AS_BOOTSTRAP_ROOT",
+      "CONTEXT_DICT_FORGERY",
+      "CONTEXT_OR_INITIALIZER_COPY_OR_SERIALIZATION",
+      "RUNNER_CREATE_TIME_PATH_HASH_OR_COMMAND_SUBSTITUTION",
+      "CONFIG_OR_INPUT_LOCK_SUBSTITUTION",
+      "PORT_EMPTY_SUBSET_SUPERSET_DUPLICATE_REORDER_OR_TYPE_MISMATCH",
+      "UNKNOWN_OR_AMBIGUOUS_LISTENER_OWNER",
+      "INCOMPLETE_CHAIN_MISSING_PARENT_WRONG_ROOT_CYCLE_OR_DEPTH",
+      "SUPPORT_FROM_INCOMPLETE_CHAIN_FORBIDDEN",
+      "CROSS_CONTEXT_SEAL_SESSION_ATTESTATION_OR_TERMINAL",
+      "VISIBLY_EQUAL_CONTEXT_CAPABILITIES_REMAIN_DISTINCT"
+    ],
+    "retained_temporal_cases": [
+      "TWELVE_EXITED_PLUS_ONE_CURRENT_REPLAY",
+      "PUBLIC_REHASH_TAMPER",
+      "BIRTH_CANDIDATE_AND_CHAIN_TAMPER",
+      "PID_REUSE",
+      "MANUAL_OR_EMPTY_LEDGER_REPLAY",
+      "NONCE_ID_EPOCH_MISMATCH",
+      "CURRENT_EVIDENCE_CONFLICT",
+      "SUPPORT_ISSUE_REJECTION",
+      "ATOMIC_TERMINAL_TOMBSTONE"
+    ]
+  },
+  "execution_status": {
+    "authority_context_tests": "NOT_RUN_EXPECTED_FAIL_MISSING_IMPLEMENTATION_AND_TRUSTED_INITIALIZER_FIXTURE",
+    "context_bound_ledger_tests": "NOT_RUN_EXPECTED_FAIL_MISSING_IMPLEMENTATION_AND_TRUSTED_INITIALIZER_FIXTURE",
+    "static_contamination_gate": "NOT_RUN",
+    "m9_replay": "NOT_RUN",
+    "offline_behavior_runner": "NOT_RUN",
+    "full_regression": "NOT_RUN",
+    "live_chain": "NOT_RUN"
+  },
+  "zero_accounting": {
+    "generation_calls": 0,
+    "generation_tokens": 0,
+    "held_out_captures": 0,
+    "stage1_runs": 0,
+    "destination_first_gate_runs": 0,
+    "offline_behavior_executions": 0,
+    "live_chains": 0
+  },
+  "claim_evidence_boundary": {
+    "supported": [
+      "M13 locked implementation has four review-confirmed authority-context defects and is not authorized for offline gates.",
+      "M14 authority-context, exact-port, listener-owner, complete-ancestry, proof-binding and context-ledger rules were written before an M14 implementation exists.",
+      "M14 fault cases were fixed as DEV engineering gates before implementation."
+    ],
+    "unsupported": [
+      "M14 implementation correctness",
+      "M14 test or gate passage",
+      "offline or live infrastructure qualification",
+      "role-binding timing hypothesis evidence",
+      "memory or controller efficacy",
+      "held-out evidence",
+      "novelty or generalization"
+    ],
+    "independent_preregistration": false,
+    "future_live_chain_authorized": false
+  },
+  "protected_wip_sha256": {
+    "05_project/src/raven_m/controller/episode_controller.py": "FC0E82E0FDE90119365D4F685F080EB4519BF2F602E4BDA58DE5D4809A40FE33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "FF89D6B70BE4B4738646D262BEB67D7B7E932E9EB95956D940B1C5000A999D10",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5BB1F1E3DE673A1072CFEE62938B761A62FD69C187D5EADF54BC46B115A3FD0A"
+  },
+  "stop_rule": "STOP_AFTER_FREEZE_COMMIT_AND_TAG_WITHOUT_IMPLEMENTATION_OR_EXECUTION"
+}

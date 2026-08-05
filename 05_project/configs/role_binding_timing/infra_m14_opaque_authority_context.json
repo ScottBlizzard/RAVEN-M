@@ -1,0 +1,121 @@
+{
+  "schema": "role_binding_timing.infra_m14.opaque_authority_context.config.v1",
+  "protocol_id": "INFRA-M14-OPAQUE-AUTHORITY-CONTEXT-V1",
+  "contract_kind": "POST_DIAGNOSIS_DEV_ENGINEERING_CONTRACT",
+  "phase": "freeze_only",
+  "freeze_tag": "role-binding-timing-infra-m14-freeze-20260805",
+  "implementation_present": false,
+  "tests_executed": false,
+  "gates_executed": false,
+  "offline_gate_eligible": false,
+  "live_eligible": false,
+  "authority_context": {
+    "type": "OPAQUE_PROCESS_LOCAL_LOCKED_AUTHORITY_CONTEXT",
+    "creator": "PROJECT_OWNED_TRUSTED_RUNNER_INITIALIZER_BEFORE_FIRST_SNAPSHOT",
+    "creator_is_method_caller_dictionary": false,
+    "single_use_initializer": true,
+    "registered_object_identity_required": true,
+    "serializable": false,
+    "copyable": false,
+    "ordinary_mapping_accepted": false,
+    "bound_fields": [
+      "runner_pid_create_time_path_exe_sha256_command_line",
+      "canonical_known_paths_and_hashes",
+      "exact_controlled_ports",
+      "config_sha256",
+      "input_lock_sha256",
+      "run_identity",
+      "session_identity",
+      "bootstrap_sample_identity",
+      "initializer_instance_identity",
+      "context_registry_identity"
+    ],
+    "per_call_runner_path_or_port_override": false,
+    "cross_context_replay": "FAIL_CLOSED"
+  },
+  "controlled_ports": {
+    "exact_ordered_set": [5037, 5038, 5554, 5555, 8554],
+    "empty_permitted": false,
+    "subset_permitted": false,
+    "superset_permitted": false,
+    "duplicates_permitted": false,
+    "per_call_override_permitted": false
+  },
+  "listener_evidence": {
+    "complete_required": true,
+    "every_owner_pid_must_resolve_to_unique_fused_identity": true,
+    "unknown_owner": "FAIL_CLOSED",
+    "pid_reuse_or_ambiguity": "FAIL_CLOSED",
+    "silently_ignored_owner": false
+  },
+  "ancestry": {
+    "candidate_reason_before_chain_is_provisional_only": true,
+    "complete_same_frame_chain_to_exact_context_runner_required": true,
+    "incomplete_candidate_like_row": "FAIL_INCOMPLETE_CANDIDATE_ANCESTRY",
+    "incomplete_candidate_may_enter_authorized_view": false,
+    "support_source": "NONCANDIDATE_ANCESTORS_FROM_COMPLETE_CANDIDATE_CHAINS_ONLY",
+    "incomplete_chain_nodes_may_enter_support": false,
+    "maximum_depth": 16
+  },
+  "canonical_verification": {
+    "recompute_full_views_and_candidate_ancestry": true,
+    "exact_allowed_keys_fields_order_and_multiplicity": true,
+    "extra_or_missing_fields": "FAIL_CLOSED",
+    "public_sha256_role": "CONTENT_ADDRESSING_ONLY_NOT_AUTHORIZATION_ROOT"
+  },
+  "issuer_ledger": {
+    "process_local_nonserializable": true,
+    "csprng_nonce_and_attestation_id_minimum_bits": 128,
+    "exact_digest_membership": true,
+    "context_identity_bound_to_ledger_session_entry_and_tombstone": true,
+    "context_switch_within_run": "FAIL_CLOSED",
+    "cross_context_seal_or_attestation": "FAIL_CLOSED",
+    "terminal_atomic_revoke_and_tombstone": true
+  },
+  "api_contract": {
+    "create_context": "create_locked_authority_context(trusted_initializer_capability)",
+    "derive": "derive_authorization_views(raw_snapshot, authority_context)",
+    "seal": "seal_authorization_views(raw_snapshot, derived_views, candidate_ancestry, authority_context, implementation_binding)",
+    "verify_seal": "verify_sealed_authorization_views(raw_snapshot, sealed_view, authority_context, implementation_binding)",
+    "begin_run": "begin_issuer_run(ledger, authority_context)",
+    "issue": "issue_temporal_attestation(verified_seal, candidate_identity, ledger, issuer_session, authority_context)",
+    "verify_attestation": "verify_temporal_attestation(attestation, current_raw, ledger, issuer_session, authority_context)",
+    "terminal": "terminate_issuer_run(ledger, issuer_session, authority_context)"
+  },
+  "gate_order": [
+    "static_contamination",
+    "authority_context_and_view_contract",
+    "context_bound_issuer_ledger_contract",
+    "full_regression",
+    "input_and_object_lock"
+  ],
+  "stop_on_first_failure": true,
+  "same_version_patch_and_rerun": false,
+  "future_paths": {
+    "implementation": "05_project/src/raven_m/role_binding_timing/infra_m14_authority_context_attestation.py",
+    "authority_tests": "05_project/tests/role_binding_timing/test_infra_m14_authority_context_contract.py",
+    "ledger_tests": "05_project/tests/role_binding_timing/test_infra_m14_context_bound_issuer_ledger_contract.py",
+    "offline_root": "05_project/artifacts/role_binding_timing/infra_m14_authority_context_offline_gates",
+    "result_root": "05_project/artifacts/role_binding_timing/infra_m14_authority_context"
+  },
+  "future_live_chain": {
+    "authorized_now": false,
+    "maximum_runs_after_separate_review": 1,
+    "same_version_retry": false,
+    "burn_in_cycles": 24,
+    "burn_in_elapsed_seconds_must_exceed": 180,
+    "settings_a11y_required": 3,
+    "dev_grid_apps": 4,
+    "dev_grid_rounds": 3
+  },
+  "accounting": {
+    "generation_calls": 0,
+    "generation_tokens": 0,
+    "held_out_captures": 0,
+    "stage1_runs": 0,
+    "destination_first_gate_runs": 0,
+    "offline_behavior_executions": 0,
+    "live_chains": 0
+  },
+  "frozen_test_state": "NOT_RUN_EXPECTED_FAIL_MISSING_IMPLEMENTATION_AND_TRUSTED_INITIALIZER_FIXTURE"
+}

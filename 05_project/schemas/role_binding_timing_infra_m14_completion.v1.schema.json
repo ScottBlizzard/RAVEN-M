@@ -1,0 +1,182 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raven-m.local/schemas/role_binding_timing_infra_m14_completion.v1.schema.json",
+  "title": "INFRA-M14 opaque authority-context DEV completion",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "protocol_id",
+    "frozen_commit",
+    "frozen_tag",
+    "status",
+    "verdict",
+    "first_broken_edge",
+    "implementation_binding",
+    "authority_context_gate",
+    "canonical_view_gate",
+    "context_bound_ledger_gate",
+    "live_chain",
+    "accounting",
+    "contamination",
+    "protected_wip_sha256",
+    "claim_evidence_boundary"
+  ],
+  "properties": {
+    "schema": {"const": "role_binding_timing.infra_m14.completion.v1"},
+    "protocol_id": {"const": "INFRA-M14-OPAQUE-AUTHORITY-CONTEXT-V1"},
+    "frozen_commit": {"$ref": "#/$defs/gitOid"},
+    "frozen_tag": {"const": "role-binding-timing-infra-m14-freeze-20260805"},
+    "status": {"enum": ["NOT_RUN", "FAIL_OFFLINE", "FAIL_LIVE", "PASS_DEV_QUALIFICATION"]},
+    "verdict": {
+      "enum": [
+        "NOT_AUTHORIZED",
+        "FAIL_AUTHORITY_CONTEXT",
+        "FAIL_CANONICAL_VIEW",
+        "FAIL_CONTEXT_BOUND_LEDGER",
+        "FAIL_INFRASTRUCTURE",
+        "ELIGIBLE_TO_PREPARE_NOT_EXECUTE_V0_3"
+      ]
+    },
+    "first_broken_edge": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["phase", "code", "recorded_at_utc", "evidence_sha256"],
+          "properties": {
+            "phase": {"type": "string", "minLength": 1},
+            "code": {"type": "string", "minLength": 1},
+            "recorded_at_utc": {"type": "string", "format": "date-time"},
+            "evidence_sha256": {"$ref": "#/$defs/sha256"}
+          }
+        }
+      ]
+    },
+    "implementation_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["implementation_sha256", "implementation_blob_oid", "config_sha256", "input_lock_sha256"],
+      "properties": {
+        "implementation_sha256": {"$ref": "#/$defs/sha256"},
+        "implementation_blob_oid": {"$ref": "#/$defs/gitOid"},
+        "config_sha256": {"$ref": "#/$defs/sha256"},
+        "input_lock_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "authority_context_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "executed",
+        "passed",
+        "dict_forgery_accepts",
+        "copy_or_serialization_accepts",
+        "runner_substitution_accepts",
+        "port_lock_weakening_accepts",
+        "unknown_listener_owner_accepts",
+        "incomplete_ancestry_accepts",
+        "incomplete_chain_support_rows",
+        "stdout_sha256",
+        "stderr_sha256"
+      ],
+      "properties": {
+        "executed": {"type": "boolean"},
+        "passed": {"type": "boolean"},
+        "dict_forgery_accepts": {"const": 0},
+        "copy_or_serialization_accepts": {"const": 0},
+        "runner_substitution_accepts": {"const": 0},
+        "port_lock_weakening_accepts": {"const": 0},
+        "unknown_listener_owner_accepts": {"const": 0},
+        "incomplete_ancestry_accepts": {"const": 0},
+        "incomplete_chain_support_rows": {"const": 0},
+        "stdout_sha256": {"$ref": "#/$defs/nullableSha256"},
+        "stderr_sha256": {"$ref": "#/$defs/nullableSha256"}
+      }
+    },
+    "canonical_view_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["executed", "passed", "blocked_by_context_gate", "rehash_tamper_accepts", "cross_context_seal_accepts"],
+      "properties": {
+        "executed": {"type": "boolean"},
+        "passed": {"type": "boolean"},
+        "blocked_by_context_gate": {"type": "boolean"},
+        "rehash_tamper_accepts": {"const": 0},
+        "cross_context_seal_accepts": {"const": 0}
+      }
+    },
+    "context_bound_ledger_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["executed", "passed", "blocked_by_prior_gate", "context_switch_accepts", "cross_context_attestation_accepts", "forged_or_rehashed_accepts", "post_terminal_accepts"],
+      "properties": {
+        "executed": {"type": "boolean"},
+        "passed": {"type": "boolean"},
+        "blocked_by_prior_gate": {"type": "boolean"},
+        "context_switch_accepts": {"const": 0},
+        "cross_context_attestation_accepts": {"const": 0},
+        "forged_or_rehashed_accepts": {"const": 0},
+        "post_terminal_accepts": {"const": 0}
+      }
+    },
+    "live_chain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["executed", "attempt_count", "same_version_retries"],
+      "properties": {
+        "executed": {"type": "boolean"},
+        "attempt_count": {"type": "integer", "minimum": 0, "maximum": 1},
+        "same_version_retries": {"const": 0}
+      }
+    },
+    "accounting": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["generation_calls", "generation_tokens", "held_out_captures", "stage1_runs", "destination_first_gate_runs"],
+      "properties": {
+        "generation_calls": {"const": 0},
+        "generation_tokens": {"const": 0},
+        "held_out_captures": {"const": 0},
+        "stage1_runs": {"const": 0},
+        "destination_first_gate_runs": {"const": 0}
+      }
+    },
+    "contamination": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["gate_executed", "gate_passed", "excluded_paths_opened", "excluded_import_edges", "excluded_exact_copies"],
+      "properties": {
+        "gate_executed": {"type": "boolean"},
+        "gate_passed": {"type": "boolean"},
+        "excluded_paths_opened": {"const": 0},
+        "excluded_import_edges": {"const": 0},
+        "excluded_exact_copies": {"const": 0}
+      }
+    },
+    "protected_wip_sha256": {
+      "type": "object",
+      "minProperties": 3,
+      "additionalProperties": {"$ref": "#/$defs/sha256"}
+    },
+    "claim_evidence_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["supported", "unsupported", "independent_preregistration", "v0_3_action"],
+      "properties": {
+        "supported": {"type": "array", "items": {"type": "string"}},
+        "unsupported": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "independent_preregistration": {"const": false},
+        "v0_3_action": {"enum": ["NOT_AUTHORIZED", "PREPARE_ONLY_NOT_EXECUTE"]}
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[A-Fa-f0-9]{64}$"},
+    "gitOid": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+    "nullableSha256": {
+      "oneOf": [{"type": "null"}, {"$ref": "#/$defs/sha256"}]
+    }
+  }
+}
