@@ -38,6 +38,19 @@ def digest_json(value: Any) -> str:
     ).encode("utf-8")).hexdigest()
 
 
+def instantiate_frozen_task(registered: dict[str, Any], spec: dict[str, Any]) -> Any:
+    """Build the exact JSON-native S1b instance before any model call."""
+    task_type = registered[str(spec["task_class"])]
+    task = task_type(spec["params"])
+    actual_params = digest_json(task.params)
+    actual_goal = sha256(str(task.goal).encode("utf-8")).hexdigest()
+    if actual_params != str(spec["task_params_hash"]):
+        raise RuntimeError(f"Frozen params drift for {spec['task_class']}")
+    if actual_goal != str(spec["goal_hash"]):
+        raise RuntimeError(f"Frozen goal drift for {spec['task_class']}")
+    return task
+
+
 def read_events(path: Path) -> list[dict[str, Any]]:
     return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line]
 
@@ -102,14 +115,10 @@ def main() -> None:
     from android_world.env import env_launcher
     from raven_m.controller.episode_controller import EpisodeController
     from raven_m.history.policies import make_history_policy
-    from raven_m.multi_framework_benchmark.task_instances import (
-        instantiate_verified,
-        load_frozen_instances,
-    )
     from raven_m.models.transformers_client import TransformersClient
 
     manifest = json.loads(args.task_manifest.read_text(encoding="utf-8")) if args.task_manifest else None
-    task_specs = load_frozen_instances(args.task_manifest) if args.task_manifest else [
+    task_specs = manifest["tasks"] if manifest else [
         {"task_class": task, "task_seed": TASK_SEED} for task in TASKS
     ]
     max_actions = int(manifest.get("maximum_actions_per_task", MAX_ACTIONS)) if manifest else MAX_ACTIONS
@@ -154,7 +163,7 @@ def main() -> None:
             task_class = task_spec["task_class"]
             task_seed = int(task_spec["task_seed"])
             if args.task_manifest:
-                task = instantiate_verified(registered, task_spec)
+                task = instantiate_frozen_task(registered, task_spec)
             else:
                 random.seed(task_seed)
                 np.random.seed(task_seed)
