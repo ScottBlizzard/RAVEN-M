@@ -1,0 +1,128 @@
+{
+  "schema": "role_binding_timing.infra_m12.implementation_lock.v1",
+  "protocol_id": "INFRA-M12-DEV-ENGINEERING-ROLE-DERIVATION-ATTESTATION-V1",
+  "verdict": "STATIC_IMPLEMENTATION_LOCKED_NOT_BEHAVIOR_TESTED",
+  "implementation_lock_tag": "role-binding-timing-infra-m12-implementation-lock-20260805",
+  "implementation": {
+    "path": "05_project/src/raven_m/role_binding_timing/infra_m12_sealed_role_derivation.py",
+    "commit": "a8d3a831eea53fbf075eea6b8e5c3401e435fdf8",
+    "commit_tree_oid": "7b3b14481e921486263b600fc8545a3582513214",
+    "blob_oid": "922222aeec7bdb690d225b2018da0288604eb0bb",
+    "sha256": "73D8138F9ECEFA5B31F975968257FA779AFCD466CE93F67808C42A05544A336C",
+    "source_mutation_after_lock_allowed": false
+  },
+  "freeze": {
+    "commit": "08aa4182e1fe7fdff0def2b19193b4b3f7b69266",
+    "tree_oid": "b64cf6cac295d5c51c60a21c029ebea3f40726d8",
+    "tag": "role-binding-timing-infra-m12-freeze-20260805",
+    "tag_object_oid": "696d0ba571c34cd0099337ff2cc62641d9063835",
+    "protocol_blob_oid": "a791f3036cac29e7057a7d05d320083b44610a6a",
+    "classifier_contract_blob_oid": "c9fdc32d11d61e54a5178793855f85d5190d341e",
+    "classifier_contract_sha256": "973192F1D6153F099D9BCC38E784B4C9E2F5203F9CAC77910B349BCCE31D70A0",
+    "config_blob_oid": "3121573349c6bdcad0707a4df60faa7bb0c45aa9",
+    "input_lock_blob_oid": "7f23f4b9ce877a1f3b93097c6b31bceb241947be",
+    "result_schema_blob_oid": "92289e3bd786eeb12740e152cd687d11a27c06bb",
+    "contamination_gate_blob_oid": "95b44060f001474fd6e0d4918442e5c7b9f966de",
+    "freeze_declaration_blob_oid": "1e5cfe950b16a1b3dec59c16fb2e3587724bbc8a"
+  },
+  "frozen_tests": {
+    "role_derivation": {
+      "path": "05_project/tests/role_binding_timing/test_infra_m12_role_derivation_contract.py",
+      "blob_oid": "04a84fc3c0c2f609b3a0e36974bc0b7cadc9c0c2",
+      "sha256": "DBAB39A382357A95ECC49A167548E10EC3CFF9E7FECF7E592FA7691733EE092C",
+      "execution_status": "NOT_RUN"
+    },
+    "temporal_attestation": {
+      "path": "05_project/tests/role_binding_timing/test_infra_m12_temporal_attestation_contract.py",
+      "blob_oid": "e2fccaf63644c1fe2f1bebcf5e933bff9c38cb9b",
+      "sha256": "28265C7694F873B49801103A1D6DBAA8050385F80C04E7646DF69684D7462075",
+      "execution_status": "NOT_RUN"
+    },
+    "m9_compatibility_replay_execution_status": "NOT_RUN",
+    "offline_behavior_runner_execution_status": "NOT_RUN"
+  },
+  "static_checks": {
+    "attempts": 1,
+    "source_bytes_match_committed_blob": true,
+    "contamination_gate": {
+      "executed": true,
+      "exit_code": 0,
+      "passed": true,
+      "findings": 0,
+      "excluded_paths_opened": false,
+      "captured_stdout_sha256": "03B6939500180289A2CA6C7421AAC93AB3FA4BA291F173D790A893AB6932408F",
+      "scanned_implementation_blob_oid": "922222aeec7bdb690d225b2018da0288604eb0bb",
+      "scanned_implementation_sha256": "73D8138F9ECEFA5B31F975968257FA779AFCD466CE93F67808C42A05544A336C"
+    },
+    "syntax": {
+      "method": "Python ast.parse UTF-8 source",
+      "executed": true,
+      "exit_code": 0,
+      "passed": true,
+      "captured_stdout_sha256": "940464E5E0A3B39CD76E3A498DB8751A5B7FFEE7B1B23949A305F774223FADB5"
+    },
+    "import": {
+      "method": "PYTHONDONTWRITEBYTECODE=1 import exact M12 module",
+      "executed": true,
+      "exit_code": 0,
+      "passed": true,
+      "captured_stdout_sha256": "DF46B84BFB91F5BD05E72852064A5E9E82ED2ADCC3EC842FE0CE265ECA5DBA02"
+    }
+  },
+  "runtime": {
+    "python_version": "3.11.9",
+    "python_path": "06_local_runtime/envs/androidworld/Scripts/python.exe",
+    "python_sha256": "21BB438C0D4A6F1F164B9A646F6EE000340185E5871180AEC06DB8D3F07C0082",
+    "pythonpath": "05_project/src",
+    "bytecode_write_disabled_for_static_checks": true
+  },
+  "legitimate_m9_inputs": {
+    "freeze_commit": "d9e812b3bacd2d06da890086a106af94c95c5347",
+    "freeze_tag_object_oid": "51f0d80e654e85060205b65e719587ad43ebffdc",
+    "result_commit": "613b338fce1eab5ecf8c29e6a95702dcfd04eca6",
+    "result_tag_object_oid": "e716392e774560075b143ead3cfcd430f68cfa0f",
+    "snapshot_tree_oid": "d273b1e8afba0047b0624c8593d58015ae2f9d4f",
+    "deriver_blob_oid": "417884bbd9c1ebf127b439dd4077c1de4b356704",
+    "deriver_sha256": "D380553211E677A4465DCE1F851781149B6DFB158067466B29E4C27654354E00",
+    "config_blob_oid": "9aa2b52d374f6fd0bb643793d085ec27a205b2c4",
+    "config_sha256": "9EEEB36E9021F8330BA03ED09D18879ED8644C6A0FDFC6CD7EAA006F4EC28494",
+    "input_lock_blob_oid": "35c1a3e16e6e2ee5f2fa3a9a227551d3cbcedf38"
+  },
+  "contamination_boundary": {
+    "excluded_untracked_path": "05_project/src/raven_m/role_binding_timing/infra_m10_temporal_attestation.py",
+    "excluded_path_read_by_implementation_task": false,
+    "excluded_path_imported": false,
+    "excluded_path_copied": false,
+    "m11_v1_used_as_code_input": false,
+    "m11_v1_used_as_boundary_record_only": true
+  },
+  "protected_wip_sha256": {
+    "05_project/src/raven_m/controller/episode_controller.py": "FC0E82E0FDE90119365D4F685F080EB4519BF2F602E4BDA58DE5D4809A40FE33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "FF89D6B70BE4B4738646D262BEB67D7B7E932E9EB95956D940B1C5000A999D10",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5BB1F1E3DE673A1072CFEE62938B761A62FD69C187D5EADF54BC46B115A3FD0A"
+  },
+  "accounting": {
+    "generation_calls": 0,
+    "generation_tokens": 0,
+    "held_out_captures": 0,
+    "stage1_runs": 0,
+    "destination_first_runs": 0,
+    "live_chains": 0,
+    "frozen_role_tests_run": 0,
+    "frozen_temporal_tests_run": 0,
+    "m9_replays_run": 0,
+    "offline_behavior_runners_run": 0
+  },
+  "claim_evidence_boundary": {
+    "supported": [
+      "The exact committed M12 implementation passed one static contamination, syntax, and import chain.",
+      "The implementation bytes are bound to the M12 freeze and legitimate M9 objects.",
+      "No frozen behavior test, replay, offline behavior runner, or live chain was executed."
+    ],
+    "unsupported": [
+      "The implementation satisfies the frozen role or temporal tests.",
+      "Role derivation, sealing, attestation, infrastructure, controller, or memory behavior is correct.",
+      "Any held-out, efficacy, novelty, or research-hypothesis claim."
+    ]
+  }
+}
