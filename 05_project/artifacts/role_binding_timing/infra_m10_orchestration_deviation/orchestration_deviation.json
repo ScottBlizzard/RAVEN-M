@@ -1,0 +1,62 @@
+{
+  "schema": "role_binding_timing.infra_m10_orchestration_deviation.v1",
+  "record_id": "INFRA-M10-INVALID-20260805",
+  "recorded_date": "2026-08-05",
+  "verdict": "INVALID_IMPLEMENTATION_BEFORE_FREEZE",
+  "terminal": true,
+  "nearest_legal_boundary": {
+    "commit": "db5f4d3bd6113a6e4f889bf32eec2f2789bd82e3",
+    "subject": "infra: audit INFRA-M10 temporal attestation"
+  },
+  "preregistration_freeze": {
+    "commit_exists": false,
+    "tag_exists": false
+  },
+  "deviation": {
+    "classification": "orchestration_order_violation",
+    "description": "An implementation file was created after the closest-root-cause audit but before any M10 preregistration freeze.",
+    "evidence_source": "previously recorded metadata plus git status only",
+    "leaked_file": {
+      "path": "05_project/src/raven_m/role_binding_timing/infra_m10_temporal_attestation.py",
+      "git_status": "untracked",
+      "known_size_bytes": 47681,
+      "known_line_count": 882,
+      "known_sha256": "D5C0439A39ECD271625502E64F6EBD0BC018F262B9256F6095F44358F90C4BBA",
+      "classification": "DEV-contaminated/leaked implementation",
+      "is_result": false,
+      "reusable": false,
+      "committed_by_this_record": false,
+      "handling": "Preserve untracked and untouched as scene evidence; do not read, open, copy, move, delete, format, stage, commit, import, or reuse."
+    }
+  },
+  "accounting": {
+    "generation_calls": 0,
+    "generation_tokens": 0,
+    "held_out_captures": 0,
+    "live_chains": 0,
+    "tests_executed_after_deviation_detection": 0
+  },
+  "immutable_predecessors": {
+    "m9_freeze_commit": "d9e812b3bacd2d06da890086a106af94c95c5347",
+    "m9_freeze_tag": "role-binding-timing-infra-m9-freeze-20260805",
+    "m9_result_commit": "613b338fce1eab5ecf8c29e6a95702dcfd04eca6",
+    "m9_result_tag": "role-binding-timing-infra-m9-result-20260805",
+    "m10_closest_root_cause_audit_commit": "db5f4d3bd6113a6e4f889bf32eec2f2789bd82e3"
+  },
+  "protected_wip_sha256": {
+    "05_project/src/raven_m/controller/episode_controller.py": "FC0E82E0FDE90119365D4F685F080EB4519BF2F602E4BDA58DE5D4809A40FE33",
+    "05_project/src/raven_m/controller/protocol_v2_guard.py": "FF89D6B70BE4B4738646D262BEB67D7B7E932E9EB95956D940B1C5000A999D10",
+    "05_project/tests/scripts/test_protocol_v2_2_r79_r78_trace_replay.py": "5BB1F1E3DE673A1072CFEE62938B761A62FD69C187D5EADF54BC46B115A3FD0A"
+  },
+  "claim_evidence_boundary": {
+    "supported": [
+      "M10 violated preregistration order and is permanently invalid.",
+      "The leaked file exists as untracked DEV-contaminated scene evidence.",
+      "No model, held-out, test, or live evidence was produced by the invalid M10 implementation."
+    ],
+    "unsupported": [
+      "The leaked implementation is correct, safe, tested, or reusable.",
+      "M10 provides infrastructure, controller, memory, or research-hypothesis evidence."
+    ]
+  }
+}
