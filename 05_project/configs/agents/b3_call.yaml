@@ -1,9 +1,0 @@
-variant: B3_CALL
-control: call_trigger_matched_summary
-base: b3.yaml
-triggers:
-  - first_transition
-  - every_5_steps
-  - repeated_no_effect_loop
-max_call_budget_matches: m0
-context_cap_tokens: 8192

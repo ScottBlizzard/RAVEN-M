@@ -1,9 +1,0 @@
-{
-  "instance_seeds": [20260720, 20260721, 20260722],
-  "breadth_seed": 20260720,
-  "blocked_order_seed": 2026071901,
-  "breadth_variants": ["B0", "B1", "B2", "B3", "M0"],
-  "confirmatory_variants": ["B0", "B3", "M0"],
-  "schedule_algorithm": "For each instance seed, shuffle task IDs with Python random.Random(blocked_order_seed + instance_seed); within each task block shuffle variants with random.Random(blocked_order_seed + instance_seed + int(task_id[1:])).",
-  "paired_instance_rule": "Seed Python and NumPy before task_type.generate_random_params; store final task goal and JSON-safe params for every variant."
-}

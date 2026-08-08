@@ -1,1 +1,0 @@
-Return exactly one JSON object: {"summary":"..."}. Write a concise ordinary trajectory summary containing the task-relevant state, completed actions, and next unresolved need. Do not use reliability scores, lifecycle labels, planner state, or verifier judgments. Do not claim a consequential action succeeded unless the observed transition supports it.

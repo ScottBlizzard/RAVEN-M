@@ -1,9 +1,0 @@
-variant: S0
-history_policy: raven_strict
-executor_calls_per_step: 1
-conditional_role_calls: 0
-memory_config: configs/memory/raven_v1.yaml
-action_schema: schemas/action.raven.v1.schema.json
-context_cap_tokens: 8192
-prompt: prompts/executor_raven_v1.md
-scope: episode_only

@@ -1,0 +1,32 @@
+{
+  "verdict": "QUALIFICATION_FAIL_STOP",
+  "claim_class": "development_contaminated_prompt_mechanism_pilot_not_held_out",
+  "run_id": "official_qwen_20260808T193239_42804705",
+  "started_instances": 1,
+  "planned_instances": 3,
+  "completed_instances": 0,
+  "evaluator_results": 0,
+  "first_instance": {
+    "episode_id": "ExpenseAddMultipleFromMarkor_20260806_1a054f30",
+    "task_class": "ExpenseAddMultipleFromMarkor",
+    "task_seed": 20260806,
+    "logged_steps": 15,
+    "model_calls": 15,
+    "prompt_tokens": 56819,
+    "completion_tokens": 1778,
+    "markor_document_opened": true,
+    "forward_vertical_scrolls_before_first_document_exit": 0,
+    "first_document_exit_step": 7,
+    "first_document_exit_action": "press_home",
+    "first_document_exit_summary": "I navigated back to the home screen to prepare for opening the pro expense app.",
+    "coverage_ledger_used": false,
+    "task_result_available": false,
+    "events_sha256": "ad67a24f36d13208e456075f2aa7f2e418bd25bd1c5cd6a8d546a976d7927ee8",
+    "last_document_screenshot_sha256": "51dd7465bc1f46900711268e500135d244c1a65d5d5b3ce56052feb055a0ed25"
+  },
+  "frozen_prompt_sha256": "ef6a2125c5b36e55bab5bfe2e06b30fc2987423d1b11a2c394e3e510a773ae85",
+  "manifest_snapshot_sha256": "170510c468ead303bb588f776b7808efbcfa0c9b7378215277383c83f40f5a37",
+  "stop_reason": "The preregistered 3-of-3 process gate became irreversibly false when the first episode left Markor DocumentActivity without any forward vertical swipe. The run was terminated before evaluator completion and before starting the remaining two instances to avoid post-failure spending.",
+  "generation_after_stop": false,
+  "authorized_next_step": "external executable coverage gate design and offline validation only; no prompt tuning on this cohort"
+}

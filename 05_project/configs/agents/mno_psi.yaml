@@ -1,6 +1,0 @@
-variant: MNO_PSI
-control: remove_page_state_index
-base: m0.yaml
-page_hint_quota: 0
-quota_not_reassigned: true
-scope: episode_only

@@ -1,0 +1,32 @@
+{
+  "androidworld_commit": "3e50888527ef9f29b9157ecd537e408008bb1c85",
+  "claim_class": "new_instance_development_matched_source_stage_pilot_not_held_out",
+  "instance_generation": "independent random.seed(seed) and numpy.random.seed(seed) per task class",
+  "instances": [
+    {
+      "goal_hash": "114ccb0a3da6048e0e26df939f68b58aeaa0438bb8d55f5f813e4654bd3dc3f8",
+      "native_max_steps": 60,
+      "task_class": "ExpenseAddMultipleFromMarkor",
+      "task_id": "H03",
+      "task_params_hash": "b401a2617e68c6e41c1d64f420b861dbd3c7ca908124d91ab2df42bd2e879e57",
+      "task_seed": 20260809
+    },
+    {
+      "goal_hash": "baf52bb034f0deb6093a2cc267df77c12db96bfbf511fe6fd1b9f40608865154",
+      "native_max_steps": 60,
+      "task_class": "RecipeAddMultipleRecipesFromMarkor",
+      "task_id": "H11",
+      "task_params_hash": "a5c710cacc70a93cc9f8dca07a2ec0ecd4d9b0d794553d52f8512d7b991614bd",
+      "task_seed": 20260809
+    },
+    {
+      "goal_hash": "fe757b374bd64c2a99f3eeec90875eca2bb72b9e4363483c5f8a8f15ccba6af0",
+      "native_max_steps": 60,
+      "task_class": "RecipeAddMultipleRecipesFromMarkor2",
+      "task_id": "H12",
+      "task_params_hash": "8f03c813ad74f4b479fbea7cd8923ac936f2594beeada9cbb52d643df091736f",
+      "task_seed": 20260809
+    }
+  ],
+  "manifest_id": "source_document_coverage_gate_markor_seed_20260809_v1"
+}

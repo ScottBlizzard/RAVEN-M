@@ -1,0 +1,33 @@
+backend_id: qwen3_vl_32b_vllm_bf16_1xrtxpro6000_official_public_v1
+model_id: Qwen/Qwen3-VL-32B-Instruct
+model_revision: 0cfaf48183f594c314753d30a4c4974bc75f3ccb
+model_source: /root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope
+model_identity:
+  local_sha256_manifest: /root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope.sha256
+  local_sha256_manifest_sha256: 18e0909c7d993853d6d0f62443461a74009754f90db026a1723cab80121c7872
+  official_hf_shard13_sha256_anchor: b64f2289871261fdd1abbd3b78bcd66011b341de3dc8eeb2ed1a473ee7c8d95c
+dtype: bfloat16
+runtime: vllm==0.26.0
+tensor_parallel_size: 1
+gpu_memory_utilization: 0.92
+max_model_len: 65536
+limit_mm_per_prompt: {image: 1}
+concurrent_generations: 1
+max_new_tokens: 32768
+temperature: 0.7
+top_p: 0.8
+top_k: 20
+presence_penalty: 1.5
+repetition_penalty: 1.0
+generation_seed: 3407
+official_mobile_agent:
+  repository: https://github.com/QwenLM/Qwen3-VL
+  commit: 96588727e44c78b25ba03ea03b8e12f7e64fd0da
+  notebook: cookbooks/mobile_agent.ipynb
+  coordinate_grid: [0, 999]
+  image_policy: current_screenshot_only
+  history_policy: text_action_summaries_only
+  output_repair_calls: 0
+  reference_notebook_model: qwen3vl-235A22-instruct
+  experiment_model: Qwen/Qwen3-VL-32B-Instruct
+  interpretation: official_public_recipe_and_generation_settings_port_not_reference_model_reproduction

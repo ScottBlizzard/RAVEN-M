@@ -1,0 +1,139 @@
+{
+  "absolute_recall_gain": 0.125,
+  "baseline_extractor": {
+    "false_negative": 8,
+    "false_positive": 0,
+    "full_recall_episode_count": 0,
+    "micro_precision": 0.0,
+    "micro_recall": 0.0,
+    "record_count": 3,
+    "true_positive": 0,
+    "valid_output_count": 3
+  },
+  "baseline_source": {
+    "bottom_attested_episodes": 0,
+    "completion_tokens": 10406,
+    "episode_count": 3,
+    "episodes": [
+      {
+        "bottom_attested": false,
+        "completion_tokens": 1232,
+        "episode_id": "ExpenseAddMultipleFromMarkor_20260809_5e861839",
+        "forward_scrolls": 0,
+        "model_calls": 10,
+        "opened_document": true,
+        "override_count": 0,
+        "prompt_tokens": 35456,
+        "task_name": "ExpenseAddMultipleFromMarkor",
+        "termination_reason": "source_stage_exit"
+      },
+      {
+        "bottom_attested": false,
+        "completion_tokens": 1632,
+        "episode_id": "RecipeAddMultipleRecipesFromMarkor_20260809_5b2b9dee",
+        "forward_scrolls": 0,
+        "model_calls": 12,
+        "opened_document": false,
+        "override_count": 0,
+        "prompt_tokens": 42542,
+        "task_name": "RecipeAddMultipleRecipesFromMarkor",
+        "termination_reason": "official_output_invalid"
+      },
+      {
+        "bottom_attested": false,
+        "completion_tokens": 7542,
+        "episode_id": "RecipeAddMultipleRecipesFromMarkor2_20260809_0cf2971d",
+        "forward_scrolls": 0,
+        "model_calls": 60,
+        "opened_document": false,
+        "override_count": 0,
+        "prompt_tokens": 245497,
+        "task_name": "RecipeAddMultipleRecipesFromMarkor2",
+        "termination_reason": "max_steps"
+      }
+    ],
+    "episodes_with_forward_scroll": 0,
+    "forward_scrolls": 0,
+    "model_calls": 82,
+    "opened_documents": 1,
+    "prompt_tokens": 323495,
+    "suite_id": "official_qwen_20260808T195143_94ea41d5"
+  },
+  "claim_class": "new_instance_development_matched_source_stage_pilot_not_held_out",
+  "gate_extractor": {
+    "false_negative": 7,
+    "false_positive": 0,
+    "full_recall_episode_count": 0,
+    "micro_precision": 1.0,
+    "micro_recall": 0.125,
+    "record_count": 65,
+    "true_positive": 1,
+    "valid_output_count": 65
+  },
+  "gate_source": {
+    "bottom_attested_episodes": 1,
+    "completion_tokens": 21119,
+    "episode_count": 3,
+    "episodes": [
+      {
+        "bottom_attested": false,
+        "completion_tokens": 10115,
+        "episode_id": "ExpenseAddMultipleFromMarkor_20260809_a1b71e79",
+        "forward_scrolls": 53,
+        "model_calls": 60,
+        "opened_document": true,
+        "override_count": 7,
+        "prompt_tokens": 272979,
+        "task_name": "ExpenseAddMultipleFromMarkor",
+        "termination_reason": "max_steps"
+      },
+      {
+        "bottom_attested": false,
+        "completion_tokens": 8172,
+        "episode_id": "RecipeAddMultipleRecipesFromMarkor_20260809_38277e54",
+        "forward_scrolls": 0,
+        "model_calls": 60,
+        "opened_document": false,
+        "override_count": 0,
+        "prompt_tokens": 258485,
+        "task_name": "RecipeAddMultipleRecipesFromMarkor",
+        "termination_reason": "max_steps"
+      },
+      {
+        "bottom_attested": true,
+        "completion_tokens": 2832,
+        "episode_id": "RecipeAddMultipleRecipesFromMarkor2_20260809_ed55a1ad",
+        "forward_scrolls": 11,
+        "model_calls": 21,
+        "opened_document": true,
+        "override_count": 1,
+        "prompt_tokens": 81321,
+        "task_name": "RecipeAddMultipleRecipesFromMarkor2",
+        "termination_reason": "source_stage_exit"
+      }
+    ],
+    "episodes_with_forward_scroll": 2,
+    "forward_scrolls": 64,
+    "model_calls": 141,
+    "opened_documents": 2,
+    "prompt_tokens": 612785,
+    "suite_id": "official_qwen_20260808T203045_cb017b51"
+  },
+  "inputs": {
+    "baseline_aggregate_sha256": "b6823b7eb782b691e0b0f0958b073eae193b2759f19f3e914accfeb729bf15f7",
+    "baseline_extractor_sha256": "f7fb50b04e1076afb4ee7418a429f2d50f07e5b42a197535b0a6e037fd93ab28",
+    "gate_aggregate_sha256": "90149ff0a31c2bff8a8b1599d8348374044f595e23045f459ece2d100312c54c",
+    "gate_extractor_sha256": "3e146e8f0602170afb0fd6c0f466de96ea67140393c68d7e5a32d36ca928dedb"
+  },
+  "qualification": {
+    "absolute_recall_gain_at_least_0_20": false,
+    "all_gate_extractor_outputs_valid": true,
+    "gate_bottom_attested_3_of_3": false,
+    "gate_forward_scroll_3_of_3": false,
+    "gate_full_recall_at_least_2_of_3": false,
+    "gate_micro_precision_1_00": true,
+    "gate_micro_recall_at_least_0_75": false,
+    "gate_opens_document_3_of_3": false
+  },
+  "qualification_pass": false
+}

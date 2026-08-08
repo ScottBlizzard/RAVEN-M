@@ -1,6 +1,0 @@
-variant: MREL
-control: relevance_only_ranking
-base: m0.yaml
-reliability_aware: false
-hard_tombstone_safety_retained: true
-scope: episode_only

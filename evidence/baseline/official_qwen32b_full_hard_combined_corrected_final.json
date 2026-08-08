@@ -1,0 +1,2729 @@
+{
+  "complete": true,
+  "completed_episode_count": 102,
+  "episodes": [
+    {
+      "elapsed_seconds": 285.085403,
+      "episode_id": "BrowserMultiply_20260806_3e2fd311",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 4,
+      "max_consecutive_stagnant_steps": 1,
+      "mean_model_latency_seconds": 6.38358153846191,
+      "model_claimed_status": "answer",
+      "nearly_unchanged_ranges": [
+        {
+          "end": 3,
+          "length": 1,
+          "start": 3
+        },
+        {
+          "end": 6,
+          "length": 1,
+          "start": 6
+        },
+        {
+          "end": 12,
+          "length": 1,
+          "start": 12
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260806,
+      "single_tool_multi_action_claim_steps": [
+        9
+      ],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T012646_c8281b8f\\layer_suite_summary.json",
+      "stagnant_step_count": 3,
+      "step_count": 13,
+      "success": false,
+      "task_name": "BrowserMultiply",
+      "termination_reason": "model_answer"
+    },
+    {
+      "elapsed_seconds": 354.343289,
+      "episode_id": "BrowserMultiply_20260807_9c7f16f4",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 4,
+      "max_consecutive_stagnant_steps": 3,
+      "mean_model_latency_seconds": 6.361025206251725,
+      "model_claimed_status": "answer",
+      "nearly_unchanged_ranges": [
+        {
+          "end": 3,
+          "length": 2,
+          "start": 2
+        },
+        {
+          "end": 8,
+          "length": 2,
+          "start": 7
+        },
+        {
+          "end": 15,
+          "length": 3,
+          "start": 13
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260807,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T081151_160c14c8\\layer_suite_summary.corrected_validity_overlay.json",
+      "stagnant_step_count": 7,
+      "step_count": 16,
+      "success": false,
+      "task_name": "BrowserMultiply",
+      "termination_reason": "model_answer"
+    },
+    {
+      "elapsed_seconds": 561.552179,
+      "episode_id": "BrowserMultiply_20260808_92030d8d",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 6,
+      "max_consecutive_stagnant_steps": 4,
+      "mean_model_latency_seconds": 6.522165540911374,
+      "model_claimed_status": null,
+      "nearly_unchanged_ranges": [
+        {
+          "end": 0,
+          "length": 1,
+          "start": 0
+        },
+        {
+          "end": 3,
+          "length": 1,
+          "start": 3
+        },
+        {
+          "end": 7,
+          "length": 2,
+          "start": 6
+        },
+        {
+          "end": 9,
+          "length": 1,
+          "start": 9
+        },
+        {
+          "end": 12,
+          "length": 1,
+          "start": 12
+        },
+        {
+          "end": 21,
+          "length": 4,
+          "start": 18
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260808,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T081151_160c14c8\\layer_suite_summary.corrected_validity_overlay.json",
+      "stagnant_step_count": 10,
+      "step_count": 22,
+      "success": false,
+      "task_name": "BrowserMultiply",
+      "termination_reason": "max_steps"
+    },
+    {
+      "elapsed_seconds": 316.743006,
+      "episode_id": "ExpenseAddMultipleFromGallery_20260806_5a3bfad4",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": true,
+      "max_before_ui_state_repetitions": 4,
+      "max_consecutive_stagnant_steps": 3,
+      "mean_model_latency_seconds": 7.108073693749702,
+      "model_claimed_status": "success",
+      "nearly_unchanged_ranges": [
+        {
+          "end": 5,
+          "length": 1,
+          "start": 5
+        },
+        {
+          "end": 7,
+          "length": 1,
+          "start": 7
+        },
+        {
+          "end": 9,
+          "length": 1,
+          "start": 9
+        },
+        {
+          "end": 14,
+          "length": 3,
+          "start": 12
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260806,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T012646_c8281b8f\\layer_suite_summary.json",
+      "stagnant_step_count": 6,
+      "step_count": 16,
+      "success": false,
+      "task_name": "ExpenseAddMultipleFromGallery",
+      "termination_reason": "model_terminate_success"
+    },
+    {
+      "elapsed_seconds": 505.13799,
+      "episode_id": "ExpenseAddMultipleFromGallery_20260807_069ed75c",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": true,
+      "max_before_ui_state_repetitions": 5,
+      "max_consecutive_stagnant_steps": 1,
+      "mean_model_latency_seconds": 6.418077960002702,
+      "model_claimed_status": "success",
+      "nearly_unchanged_ranges": [
+        {
+          "end": 1,
+          "length": 1,
+          "start": 1
+        },
+        {
+          "end": 6,
+          "length": 1,
+          "start": 6
+        },
+        {
+          "end": 13,
+          "length": 1,
+          "start": 13
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260807,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T081151_160c14c8\\layer_suite_summary.corrected_validity_overlay.json",
+      "stagnant_step_count": 3,
+      "step_count": 25,
+      "success": false,
+      "task_name": "ExpenseAddMultipleFromGallery",
+      "termination_reason": "model_terminate_success"
+    },
+    {
+      "elapsed_seconds": 478.675318,
+      "episode_id": "ExpenseAddMultipleFromGallery_20260808_eb8948c8",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": true,
+      "max_before_ui_state_repetitions": 4,
+      "max_consecutive_stagnant_steps": 1,
+      "mean_model_latency_seconds": 6.671173689474113,
+      "model_claimed_status": "success",
+      "nearly_unchanged_ranges": [
+        {
+          "end": 3,
+          "length": 1,
+          "start": 3
+        },
+        {
+          "end": 5,
+          "length": 1,
+          "start": 5
+        },
+        {
+          "end": 10,
+          "length": 1,
+          "start": 10
+        },
+        {
+          "end": 12,
+          "length": 1,
+          "start": 12
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260808,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T081151_160c14c8\\layer_suite_summary.corrected_validity_overlay.json",
+      "stagnant_step_count": 4,
+      "step_count": 19,
+      "success": false,
+      "task_name": "ExpenseAddMultipleFromGallery",
+      "termination_reason": "model_terminate_success"
+    },
+    {
+      "elapsed_seconds": 254.884791,
+      "episode_id": "ExpenseAddMultipleFromMarkor_20260806_705f23ab",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": true,
+      "max_before_ui_state_repetitions": 3,
+      "max_consecutive_stagnant_steps": 0,
+      "mean_model_latency_seconds": 6.426852484613706,
+      "model_claimed_status": "success",
+      "nearly_unchanged_ranges": [],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260806,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T012646_c8281b8f\\layer_suite_summary.json",
+      "stagnant_step_count": 0,
+      "step_count": 13,
+      "success": false,
+      "task_name": "ExpenseAddMultipleFromMarkor",
+      "termination_reason": "model_terminate_success"
+    },
+    {
+      "elapsed_seconds": 222.961272,
+      "episode_id": "ExpenseAddMultipleFromMarkor_20260807_c0274114",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 3,
+      "max_consecutive_stagnant_steps": 0,
+      "mean_model_latency_seconds": 6.810483685713344,
+      "model_claimed_status": "answer",
+      "nearly_unchanged_ranges": [],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260807,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T131118_862525da\\layer_suite_summary.clean_expense_only.json",
+      "stagnant_step_count": 0,
+      "step_count": 7,
+      "success": false,
+      "task_name": "ExpenseAddMultipleFromMarkor",
+      "termination_reason": "model_answer"
+    },
+    {
+      "elapsed_seconds": 161.912593,
+      "episode_id": "ExpenseAddMultipleFromMarkor_20260808_ae263c2e",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 2,
+      "max_consecutive_stagnant_steps": 1,
+      "mean_model_latency_seconds": 6.570761939996737,
+      "model_claimed_status": "answer",
+      "nearly_unchanged_ranges": [
+        {
+          "end": 4,
+          "length": 1,
+          "start": 4
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": false,
+      "scientifically_eligible": true,
+      "seed": 20260808,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T081151_160c14c8\\layer_suite_summary.corrected_validity_overlay.json",
+      "stagnant_step_count": 1,
+      "step_count": 5,
+      "success": false,
+      "task_name": "ExpenseAddMultipleFromMarkor",
+      "termination_reason": "model_answer"
+    },
+    {
+      "elapsed_seconds": 330.246681,
+      "episode_id": "ExpenseDeleteMultiple2_20260806_0eeb0637",
+      "evaluator_reward": 1.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 3,
+      "max_consecutive_stagnant_steps": 0,
+      "mean_model_latency_seconds": 6.533804716666863,
+      "model_claimed_status": "success",
+      "nearly_unchanged_ranges": [],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260806,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T012646_c8281b8f\\layer_suite_summary.json",
+      "stagnant_step_count": 0,
+      "step_count": 18,
+      "success": true,
+      "task_name": "ExpenseDeleteMultiple2",
+      "termination_reason": "model_terminate_success"
+    },
+    {
+      "elapsed_seconds": 427.928025,
+      "episode_id": "ExpenseDeleteMultiple2_20260807_aa213b88",
+      "evaluator_reward": 1.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 3,
+      "max_consecutive_stagnant_steps": 1,
+      "mean_model_latency_seconds": 6.69308384090916,
+      "model_claimed_status": "success",
+      "nearly_unchanged_ranges": [
+        {
+          "end": 2,
+          "length": 1,
+          "start": 2
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260807,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T081151_160c14c8\\layer_suite_summary.corrected_validity_overlay.json",
+      "stagnant_step_count": 1,
+      "step_count": 22,
+      "success": true,
+      "task_name": "ExpenseDeleteMultiple2",
+      "termination_reason": "model_terminate_success"
+    },
+    {
+      "elapsed_seconds": 701.852069,
+      "episode_id": "ExpenseDeleteMultiple2_20260808_ab84a7fb",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 27,
+      "max_consecutive_stagnant_steps": 27,
+      "mean_model_latency_seconds": 7.232961982352529,
+      "model_claimed_status": null,
+      "nearly_unchanged_ranges": [
+        {
+          "end": 2,
+          "length": 1,
+          "start": 2
+        },
+        {
+          "end": 5,
+          "length": 1,
+          "start": 5
+        },
+        {
+          "end": 33,
+          "length": 27,
+          "start": 7
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260808,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T081151_160c14c8\\layer_suite_summary.corrected_validity_overlay.json",
+      "stagnant_step_count": 29,
+      "step_count": 34,
+      "success": false,
+      "task_name": "ExpenseDeleteMultiple2",
+      "termination_reason": "max_steps"
+    },
+    {
+      "elapsed_seconds": 357.483176,
+      "episode_id": "MarkorCreateNoteAndSms_20260806_91f6e017",
+      "evaluator_reward": 0.5,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": true,
+      "max_before_ui_state_repetitions": 2,
+      "max_consecutive_stagnant_steps": 0,
+      "mean_model_latency_seconds": 6.751790529412307,
+      "model_claimed_status": "success",
+      "nearly_unchanged_ranges": [],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": false,
+      "scientifically_eligible": true,
+      "seed": 20260806,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T012646_c8281b8f\\layer_suite_summary.json",
+      "stagnant_step_count": 0,
+      "step_count": 17,
+      "success": false,
+      "task_name": "MarkorCreateNoteAndSms",
+      "termination_reason": "model_terminate_success"
+    },
+    {
+      "elapsed_seconds": 396.561931,
+      "episode_id": "MarkorCreateNoteAndSms_20260807_2d37a9c4",
+      "evaluator_reward": 0.5,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 3,
+      "max_consecutive_stagnant_steps": 2,
+      "mean_model_latency_seconds": 6.404683577775561,
+      "model_claimed_status": null,
+      "nearly_unchanged_ranges": [
+        {
+          "end": 1,
+          "length": 2,
+          "start": 0
+        },
+        {
+          "end": 16,
+          "length": 1,
+          "start": 16
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260807,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T081151_160c14c8\\layer_suite_summary.corrected_validity_overlay.json",
+      "stagnant_step_count": 3,
+      "step_count": 18,
+      "success": false,
+      "task_name": "MarkorCreateNoteAndSms",
+      "termination_reason": "max_steps"
+    },
+    {
+      "elapsed_seconds": 499.851779,
+      "episode_id": "MarkorCreateNoteAndSms_20260808_1ce37f83",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 4,
+      "max_consecutive_stagnant_steps": 1,
+      "mean_model_latency_seconds": 6.776457511111706,
+      "model_claimed_status": null,
+      "nearly_unchanged_ranges": [
+        {
+          "end": 4,
+          "length": 1,
+          "start": 4
+        },
+        {
+          "end": 6,
+          "length": 1,
+          "start": 6
+        },
+        {
+          "end": 9,
+          "length": 1,
+          "start": 9
+        },
+        {
+          "end": 11,
+          "length": 1,
+          "start": 11
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260808,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T081151_160c14c8\\layer_suite_summary.corrected_validity_overlay.json",
+      "stagnant_step_count": 4,
+      "step_count": 18,
+      "success": false,
+      "task_name": "MarkorCreateNoteAndSms",
+      "termination_reason": "max_steps"
+    },
+    {
+      "elapsed_seconds": 620.049809,
+      "episode_id": "MarkorMergeNotes_20260806_4b24e296",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": true,
+      "max_before_ui_state_repetitions": 6,
+      "max_consecutive_stagnant_steps": 1,
+      "mean_model_latency_seconds": 7.749697900000001,
+      "model_claimed_status": "success",
+      "nearly_unchanged_ranges": [
+        {
+          "end": 30,
+          "length": 1,
+          "start": 30
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260806,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T012646_c8281b8f\\layer_suite_summary.json",
+      "stagnant_step_count": 1,
+      "step_count": 32,
+      "success": false,
+      "task_name": "MarkorMergeNotes",
+      "termination_reason": "model_terminate_success"
+    },
+    {
+      "elapsed_seconds": 618.395017,
+      "episode_id": "MarkorMergeNotes_20260807_fda66380",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": true,
+      "max_before_ui_state_repetitions": 5,
+      "max_consecutive_stagnant_steps": 3,
+      "mean_model_latency_seconds": 7.207559031034932,
+      "model_claimed_status": "success",
+      "nearly_unchanged_ranges": [
+        {
+          "end": 1,
+          "length": 1,
+          "start": 1
+        },
+        {
+          "end": 27,
+          "length": 3,
+          "start": 25
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260807,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T081151_160c14c8\\layer_suite_summary.corrected_validity_overlay.json",
+      "stagnant_step_count": 4,
+      "step_count": 29,
+      "success": false,
+      "task_name": "MarkorMergeNotes",
+      "termination_reason": "model_terminate_success"
+    },
+    {
+      "elapsed_seconds": 980.111716,
+      "episode_id": "MarkorMergeNotes_20260808_ad779c36",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": true,
+      "max_before_ui_state_repetitions": 12,
+      "max_consecutive_stagnant_steps": 7,
+      "mean_model_latency_seconds": 7.778066770587483,
+      "model_claimed_status": "success",
+      "nearly_unchanged_ranges": [
+        {
+          "end": 2,
+          "length": 1,
+          "start": 2
+        },
+        {
+          "end": 6,
+          "length": 1,
+          "start": 6
+        },
+        {
+          "end": 11,
+          "length": 1,
+          "start": 11
+        },
+        {
+          "end": 23,
+          "length": 7,
+          "start": 17
+        },
+        {
+          "end": 26,
+          "length": 1,
+          "start": 26
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260808,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T142800_e697484f\\layer_suite_summary.clean_retro7_markor8_only.json",
+      "stagnant_step_count": 11,
+      "step_count": 34,
+      "success": false,
+      "task_name": "MarkorMergeNotes",
+      "termination_reason": "model_terminate_success"
+    },
+    {
+      "elapsed_seconds": 415.11684,
+      "episode_id": "MarkorTranscribeVideo_20260806_f19368f3",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 9,
+      "max_consecutive_stagnant_steps": 1,
+      "mean_model_latency_seconds": 6.225582140000188,
+      "model_claimed_status": null,
+      "nearly_unchanged_ranges": [
+        {
+          "end": 4,
+          "length": 1,
+          "start": 4
+        },
+        {
+          "end": 9,
+          "length": 1,
+          "start": 9
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260806,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T012646_c8281b8f\\layer_suite_summary.json",
+      "stagnant_step_count": 2,
+      "step_count": 20,
+      "success": false,
+      "task_name": "MarkorTranscribeVideo",
+      "termination_reason": "max_steps"
+    },
+    {
+      "elapsed_seconds": 595.917859,
+      "episode_id": "MarkorTranscribeVideo_20260807_26bb3d42",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 5,
+      "max_consecutive_stagnant_steps": 1,
+      "mean_model_latency_seconds": 6.249189875002048,
+      "model_claimed_status": null,
+      "nearly_unchanged_ranges": [
+        {
+          "end": 0,
+          "length": 1,
+          "start": 0
+        },
+        {
+          "end": 4,
+          "length": 1,
+          "start": 4
+        },
+        {
+          "end": 7,
+          "length": 1,
+          "start": 7
+        },
+        {
+          "end": 16,
+          "length": 1,
+          "start": 16
+        },
+        {
+          "end": 18,
+          "length": 1,
+          "start": 18
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260807,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T134531_6e4d4fbe\\layer_suite_summary.clean_video_osmand_only.json",
+      "stagnant_step_count": 5,
+      "step_count": 20,
+      "success": false,
+      "task_name": "MarkorTranscribeVideo",
+      "termination_reason": "max_steps"
+    },
+    {
+      "elapsed_seconds": 517.622629,
+      "episode_id": "MarkorTranscribeVideo_20260808_5092435b",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 5,
+      "max_consecutive_stagnant_steps": 2,
+      "mean_model_latency_seconds": 6.281349159998354,
+      "model_claimed_status": null,
+      "nearly_unchanged_ranges": [
+        {
+          "end": 1,
+          "length": 2,
+          "start": 0
+        },
+        {
+          "end": 6,
+          "length": 1,
+          "start": 6
+        },
+        {
+          "end": 17,
+          "length": 2,
+          "start": 16
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260808,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T081151_160c14c8\\layer_suite_summary.corrected_validity_overlay.json",
+      "stagnant_step_count": 5,
+      "step_count": 20,
+      "success": false,
+      "task_name": "MarkorTranscribeVideo",
+      "termination_reason": "max_steps"
+    },
+    {
+      "elapsed_seconds": 250.166331,
+      "episode_id": "OsmAndMarker_20260806_2f730163",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": true,
+      "max_before_ui_state_repetitions": 2,
+      "max_consecutive_stagnant_steps": 0,
+      "mean_model_latency_seconds": 7.074855900001818,
+      "model_claimed_status": "success",
+      "nearly_unchanged_ranges": [],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": false,
+      "scientifically_eligible": true,
+      "seed": 20260806,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T012646_c8281b8f\\layer_suite_summary.json",
+      "stagnant_step_count": 0,
+      "step_count": 11,
+      "success": false,
+      "task_name": "OsmAndMarker",
+      "termination_reason": "model_terminate_success"
+    },
+    {
+      "elapsed_seconds": 276.550079,
+      "episode_id": "OsmAndMarker_20260807_601d96bd",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": true,
+      "max_before_ui_state_repetitions": 3,
+      "max_consecutive_stagnant_steps": 0,
+      "mean_model_latency_seconds": 6.892480679998698,
+      "model_claimed_status": "success",
+      "nearly_unchanged_ranges": [],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260807,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T081151_160c14c8\\layer_suite_summary.corrected_validity_overlay.json",
+      "stagnant_step_count": 0,
+      "step_count": 10,
+      "success": false,
+      "task_name": "OsmAndMarker",
+      "termination_reason": "model_terminate_success"
+    },
+    {
+      "elapsed_seconds": 570.691197,
+      "episode_id": "OsmAndMarker_20260808_876e6a1b",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 7,
+      "max_consecutive_stagnant_steps": 7,
+      "mean_model_latency_seconds": 6.7525827499979645,
+      "model_claimed_status": null,
+      "nearly_unchanged_ranges": [
+        {
+          "end": 2,
+          "length": 1,
+          "start": 2
+        },
+        {
+          "end": 5,
+          "length": 2,
+          "start": 4
+        },
+        {
+          "end": 19,
+          "length": 7,
+          "start": 13
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260808,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T081151_160c14c8\\layer_suite_summary.corrected_validity_overlay.json",
+      "stagnant_step_count": 10,
+      "step_count": 20,
+      "success": false,
+      "task_name": "OsmAndMarker",
+      "termination_reason": "max_steps"
+    },
+    {
+      "elapsed_seconds": 392.285133,
+      "episode_id": "OsmAndTrack_20260806_d883cd01",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 5,
+      "max_consecutive_stagnant_steps": 4,
+      "mean_model_latency_seconds": 7.4551275157887416,
+      "model_claimed_status": "failure",
+      "nearly_unchanged_ranges": [
+        {
+          "end": 14,
+          "length": 4,
+          "start": 11
+        },
+        {
+          "end": 16,
+          "length": 1,
+          "start": 16
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260806,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T012646_c8281b8f\\layer_suite_summary.json",
+      "stagnant_step_count": 5,
+      "step_count": 19,
+      "success": false,
+      "task_name": "OsmAndTrack",
+      "termination_reason": "model_terminate_failure"
+    },
+    {
+      "elapsed_seconds": 1109.241058,
+      "episode_id": "OsmAndTrack_20260807_a8d3c6c0",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": true,
+      "max_before_ui_state_repetitions": 6,
+      "max_consecutive_stagnant_steps": 1,
+      "mean_model_latency_seconds": 7.128671611904186,
+      "model_claimed_status": "success",
+      "nearly_unchanged_ranges": [
+        {
+          "end": 3,
+          "length": 1,
+          "start": 3
+        },
+        {
+          "end": 7,
+          "length": 1,
+          "start": 7
+        },
+        {
+          "end": 9,
+          "length": 1,
+          "start": 9
+        },
+        {
+          "end": 15,
+          "length": 1,
+          "start": 15
+        },
+        {
+          "end": 17,
+          "length": 1,
+          "start": 17
+        },
+        {
+          "end": 23,
+          "length": 1,
+          "start": 23
+        },
+        {
+          "end": 29,
+          "length": 1,
+          "start": 29
+        },
+        {
+          "end": 32,
+          "length": 1,
+          "start": 32
+        },
+        {
+          "end": 34,
+          "length": 1,
+          "start": 34
+        },
+        {
+          "end": 39,
+          "length": 1,
+          "start": 39
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260807,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T134531_6e4d4fbe\\layer_suite_summary.clean_video_osmand_only.json",
+      "stagnant_step_count": 10,
+      "step_count": 42,
+      "success": false,
+      "task_name": "OsmAndTrack",
+      "termination_reason": "model_terminate_success"
+    },
+    {
+      "elapsed_seconds": 3004.779156,
+      "episode_id": "OsmAndTrack_20260808_df8b4a93",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 72,
+      "max_consecutive_stagnant_steps": 72,
+      "mean_model_latency_seconds": 7.3546063658336305,
+      "model_claimed_status": null,
+      "nearly_unchanged_ranges": [
+        {
+          "end": 3,
+          "length": 1,
+          "start": 3
+        },
+        {
+          "end": 6,
+          "length": 1,
+          "start": 6
+        },
+        {
+          "end": 22,
+          "length": 1,
+          "start": 22
+        },
+        {
+          "end": 30,
+          "length": 1,
+          "start": 30
+        },
+        {
+          "end": 38,
+          "length": 2,
+          "start": 37
+        },
+        {
+          "end": 44,
+          "length": 1,
+          "start": 44
+        },
+        {
+          "end": 119,
+          "length": 72,
+          "start": 48
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260808,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T081151_160c14c8\\layer_suite_summary.corrected_validity_overlay.json",
+      "stagnant_step_count": 79,
+      "step_count": 120,
+      "success": false,
+      "task_name": "OsmAndTrack",
+      "termination_reason": "max_steps"
+    },
+    {
+      "elapsed_seconds": 908.098039,
+      "episode_id": "RecipeAddMultipleRecipesFromImage_20260806_a68f8831",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 58,
+      "max_consecutive_stagnant_steps": 58,
+      "mean_model_latency_seconds": 6.511982971666779,
+      "model_claimed_status": null,
+      "nearly_unchanged_ranges": [
+        {
+          "end": 59,
+          "length": 58,
+          "start": 2
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260806,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T012646_c8281b8f\\layer_suite_summary.json",
+      "stagnant_step_count": 58,
+      "step_count": 60,
+      "success": false,
+      "task_name": "RecipeAddMultipleRecipesFromImage",
+      "termination_reason": "max_steps"
+    },
+    {
+      "elapsed_seconds": 1116.710908,
+      "episode_id": "RecipeAddMultipleRecipesFromImage_20260807_4e182688",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 57,
+      "max_consecutive_stagnant_steps": 57,
+      "mean_model_latency_seconds": 6.4112955116662,
+      "model_claimed_status": null,
+      "nearly_unchanged_ranges": [
+        {
+          "end": 59,
+          "length": 57,
+          "start": 3
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260807,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T081151_160c14c8\\layer_suite_summary.corrected_validity_overlay.json",
+      "stagnant_step_count": 57,
+      "step_count": 60,
+      "success": false,
+      "task_name": "RecipeAddMultipleRecipesFromImage",
+      "termination_reason": "max_steps"
+    },
+    {
+      "elapsed_seconds": 488.893157,
+      "episode_id": "RecipeAddMultipleRecipesFromImage_20260808_095486f8",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": true,
+      "max_before_ui_state_repetitions": 3,
+      "max_consecutive_stagnant_steps": 1,
+      "mean_model_latency_seconds": 6.530157882352154,
+      "model_claimed_status": "success",
+      "nearly_unchanged_ranges": [
+        {
+          "end": 3,
+          "length": 1,
+          "start": 3
+        },
+        {
+          "end": 8,
+          "length": 1,
+          "start": 8
+        },
+        {
+          "end": 10,
+          "length": 1,
+          "start": 10
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260808,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T081151_160c14c8\\layer_suite_summary.corrected_validity_overlay.json",
+      "stagnant_step_count": 3,
+      "step_count": 17,
+      "success": false,
+      "task_name": "RecipeAddMultipleRecipesFromImage",
+      "termination_reason": "model_terminate_success"
+    },
+    {
+      "elapsed_seconds": 255.31221,
+      "episode_id": "RecipeAddMultipleRecipesFromMarkor_20260806_d7fd8f16",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 2,
+      "max_consecutive_stagnant_steps": 0,
+      "mean_model_latency_seconds": 6.60063174615397,
+      "model_claimed_status": null,
+      "nearly_unchanged_ranges": [],
+      "protocol_error_count": 1,
+      "protocol_error_steps": [
+        12
+      ],
+      "repeated_state_flag": false,
+      "scientifically_eligible": true,
+      "seed": 20260806,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T012646_c8281b8f\\layer_suite_summary.json",
+      "stagnant_step_count": 0,
+      "step_count": 13,
+      "success": false,
+      "task_name": "RecipeAddMultipleRecipesFromMarkor",
+      "termination_reason": "official_output_invalid"
+    },
+    {
+      "elapsed_seconds": 288.496696,
+      "episode_id": "RecipeAddMultipleRecipesFromMarkor_20260807_c5b10928",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": true,
+      "max_before_ui_state_repetitions": 3,
+      "max_consecutive_stagnant_steps": 0,
+      "mean_model_latency_seconds": 6.6246635181808164,
+      "model_claimed_status": "success",
+      "nearly_unchanged_ranges": [],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260807,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T081151_160c14c8\\layer_suite_summary.corrected_validity_overlay.json",
+      "stagnant_step_count": 0,
+      "step_count": 11,
+      "success": false,
+      "task_name": "RecipeAddMultipleRecipesFromMarkor",
+      "termination_reason": "model_terminate_success"
+    },
+    {
+      "elapsed_seconds": 426.977034,
+      "episode_id": "RecipeAddMultipleRecipesFromMarkor_20260808_01d70cc1",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 4,
+      "max_consecutive_stagnant_steps": 1,
+      "mean_model_latency_seconds": 6.485536762498668,
+      "model_claimed_status": null,
+      "nearly_unchanged_ranges": [
+        {
+          "end": 4,
+          "length": 1,
+          "start": 4
+        },
+        {
+          "end": 9,
+          "length": 1,
+          "start": 9
+        },
+        {
+          "end": 11,
+          "length": 1,
+          "start": 11
+        },
+        {
+          "end": 14,
+          "length": 1,
+          "start": 14
+        }
+      ],
+      "protocol_error_count": 1,
+      "protocol_error_steps": [
+        15
+      ],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260808,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T081151_160c14c8\\layer_suite_summary.corrected_validity_overlay.json",
+      "stagnant_step_count": 4,
+      "step_count": 16,
+      "success": false,
+      "task_name": "RecipeAddMultipleRecipesFromMarkor",
+      "termination_reason": "official_output_invalid"
+    },
+    {
+      "elapsed_seconds": 302.513178,
+      "episode_id": "RecipeAddMultipleRecipesFromMarkor2_20260806_b77e9af2",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": true,
+      "max_before_ui_state_repetitions": 3,
+      "max_consecutive_stagnant_steps": 0,
+      "mean_model_latency_seconds": 6.8026481357145325,
+      "model_claimed_status": "success",
+      "nearly_unchanged_ranges": [],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260806,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T012646_c8281b8f\\layer_suite_summary.json",
+      "stagnant_step_count": 0,
+      "step_count": 14,
+      "success": false,
+      "task_name": "RecipeAddMultipleRecipesFromMarkor2",
+      "termination_reason": "model_terminate_success"
+    },
+    {
+      "elapsed_seconds": 187.337191,
+      "episode_id": "RecipeAddMultipleRecipesFromMarkor2_20260807_6d7a1b36",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 2,
+      "max_consecutive_stagnant_steps": 1,
+      "mean_model_latency_seconds": 6.96545785000247,
+      "model_claimed_status": "answer",
+      "nearly_unchanged_ranges": [
+        {
+          "end": 3,
+          "length": 1,
+          "start": 3
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": false,
+      "scientifically_eligible": true,
+      "seed": 20260807,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T081151_160c14c8\\layer_suite_summary.corrected_validity_overlay.json",
+      "stagnant_step_count": 1,
+      "step_count": 6,
+      "success": false,
+      "task_name": "RecipeAddMultipleRecipesFromMarkor2",
+      "termination_reason": "model_answer"
+    },
+    {
+      "elapsed_seconds": 896.308267,
+      "episode_id": "RecipeAddMultipleRecipesFromMarkor2_20260808_fdb1faf3",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": true,
+      "max_before_ui_state_repetitions": 4,
+      "max_consecutive_stagnant_steps": 1,
+      "mean_model_latency_seconds": 7.2768024548380295,
+      "model_claimed_status": "success",
+      "nearly_unchanged_ranges": [
+        {
+          "end": 0,
+          "length": 1,
+          "start": 0
+        },
+        {
+          "end": 5,
+          "length": 1,
+          "start": 5
+        },
+        {
+          "end": 10,
+          "length": 1,
+          "start": 10
+        },
+        {
+          "end": 13,
+          "length": 1,
+          "start": 13
+        },
+        {
+          "end": 15,
+          "length": 1,
+          "start": 15
+        },
+        {
+          "end": 17,
+          "length": 1,
+          "start": 17
+        },
+        {
+          "end": 21,
+          "length": 1,
+          "start": 21
+        },
+        {
+          "end": 23,
+          "length": 1,
+          "start": 23
+        },
+        {
+          "end": 28,
+          "length": 1,
+          "start": 28
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260808,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T151611_aaf19d25\\layer_suite_summary.clean_recipe8_only.json",
+      "stagnant_step_count": 9,
+      "step_count": 31,
+      "success": false,
+      "task_name": "RecipeAddMultipleRecipesFromMarkor2",
+      "termination_reason": "model_terminate_success"
+    },
+    {
+      "elapsed_seconds": 281.124417,
+      "episode_id": "RecipeDeleteMultipleRecipesWithConstraint_20260806_ad293d85",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": true,
+      "max_before_ui_state_repetitions": 2,
+      "max_consecutive_stagnant_steps": 0,
+      "mean_model_latency_seconds": 6.248440513332995,
+      "model_claimed_status": "success",
+      "nearly_unchanged_ranges": [],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": false,
+      "scientifically_eligible": true,
+      "seed": 20260806,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T012646_c8281b8f\\layer_suite_summary.json",
+      "stagnant_step_count": 0,
+      "step_count": 15,
+      "success": false,
+      "task_name": "RecipeDeleteMultipleRecipesWithConstraint",
+      "termination_reason": "model_terminate_success"
+    },
+    {
+      "elapsed_seconds": 296.281378,
+      "episode_id": "RecipeDeleteMultipleRecipesWithConstraint_20260807_7fbc3224",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": true,
+      "max_before_ui_state_repetitions": 2,
+      "max_consecutive_stagnant_steps": 1,
+      "mean_model_latency_seconds": 6.322991627269816,
+      "model_claimed_status": "success",
+      "nearly_unchanged_ranges": [
+        {
+          "end": 1,
+          "length": 1,
+          "start": 1
+        },
+        {
+          "end": 4,
+          "length": 1,
+          "start": 4
+        },
+        {
+          "end": 7,
+          "length": 1,
+          "start": 7
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": false,
+      "scientifically_eligible": true,
+      "seed": 20260807,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T081151_160c14c8\\layer_suite_summary.corrected_validity_overlay.json",
+      "stagnant_step_count": 3,
+      "step_count": 11,
+      "success": false,
+      "task_name": "RecipeDeleteMultipleRecipesWithConstraint",
+      "termination_reason": "model_terminate_success"
+    },
+    {
+      "elapsed_seconds": 463.315716,
+      "episode_id": "RecipeDeleteMultipleRecipesWithConstraint_20260808_b0195b2f",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": true,
+      "max_before_ui_state_repetitions": 3,
+      "max_consecutive_stagnant_steps": 1,
+      "mean_model_latency_seconds": 6.468073388235473,
+      "model_claimed_status": "success",
+      "nearly_unchanged_ranges": [
+        {
+          "end": 0,
+          "length": 1,
+          "start": 0
+        },
+        {
+          "end": 7,
+          "length": 1,
+          "start": 7
+        },
+        {
+          "end": 10,
+          "length": 1,
+          "start": 10
+        },
+        {
+          "end": 13,
+          "length": 1,
+          "start": 13
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260808,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T081151_160c14c8\\layer_suite_summary.corrected_validity_overlay.json",
+      "stagnant_step_count": 4,
+      "step_count": 17,
+      "success": false,
+      "task_name": "RecipeDeleteMultipleRecipesWithConstraint",
+      "termination_reason": "model_terminate_success"
+    },
+    {
+      "elapsed_seconds": 823.720125,
+      "episode_id": "RetroSavePlaylist_20260806_c44b826d",
+      "evaluator_reward": 1.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 9,
+      "max_consecutive_stagnant_steps": 1,
+      "mean_model_latency_seconds": 5.733705225000222,
+      "model_claimed_status": "success",
+      "nearly_unchanged_ranges": [
+        {
+          "end": 2,
+          "length": 1,
+          "start": 2
+        },
+        {
+          "end": 8,
+          "length": 1,
+          "start": 8
+        },
+        {
+          "end": 12,
+          "length": 1,
+          "start": 12
+        },
+        {
+          "end": 16,
+          "length": 1,
+          "start": 16
+        },
+        {
+          "end": 19,
+          "length": 1,
+          "start": 19
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260806,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T012646_c8281b8f\\layer_suite_summary.json",
+      "stagnant_step_count": 5,
+      "step_count": 32,
+      "success": true,
+      "task_name": "RetroSavePlaylist",
+      "termination_reason": "model_terminate_success"
+    },
+    {
+      "elapsed_seconds": 1157.059304,
+      "episode_id": "RetroSavePlaylist_20260807_3cf9ee3a",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": true,
+      "max_before_ui_state_repetitions": 8,
+      "max_consecutive_stagnant_steps": 1,
+      "mean_model_latency_seconds": 7.165459221951584,
+      "model_claimed_status": "success",
+      "nearly_unchanged_ranges": [
+        {
+          "end": 2,
+          "length": 1,
+          "start": 2
+        },
+        {
+          "end": 4,
+          "length": 1,
+          "start": 4
+        },
+        {
+          "end": 7,
+          "length": 1,
+          "start": 7
+        },
+        {
+          "end": 9,
+          "length": 1,
+          "start": 9
+        },
+        {
+          "end": 12,
+          "length": 1,
+          "start": 12
+        },
+        {
+          "end": 15,
+          "length": 1,
+          "start": 15
+        },
+        {
+          "end": 18,
+          "length": 1,
+          "start": 18
+        },
+        {
+          "end": 20,
+          "length": 1,
+          "start": 20
+        },
+        {
+          "end": 26,
+          "length": 1,
+          "start": 26
+        },
+        {
+          "end": 28,
+          "length": 1,
+          "start": 28
+        },
+        {
+          "end": 30,
+          "length": 1,
+          "start": 30
+        },
+        {
+          "end": 33,
+          "length": 1,
+          "start": 33
+        },
+        {
+          "end": 38,
+          "length": 1,
+          "start": 38
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260807,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T142800_e697484f\\layer_suite_summary.clean_retro7_markor8_only.json",
+      "stagnant_step_count": 13,
+      "step_count": 41,
+      "success": false,
+      "task_name": "RetroSavePlaylist",
+      "termination_reason": "model_terminate_success"
+    },
+    {
+      "elapsed_seconds": 1631.081998,
+      "episode_id": "RetroSavePlaylist_20260808_3c3b848a",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 9,
+      "max_consecutive_stagnant_steps": 1,
+      "mean_model_latency_seconds": 7.210194626000593,
+      "model_claimed_status": null,
+      "nearly_unchanged_ranges": [
+        {
+          "end": 5,
+          "length": 1,
+          "start": 5
+        },
+        {
+          "end": 7,
+          "length": 1,
+          "start": 7
+        },
+        {
+          "end": 11,
+          "length": 1,
+          "start": 11
+        },
+        {
+          "end": 15,
+          "length": 1,
+          "start": 15
+        },
+        {
+          "end": 17,
+          "length": 1,
+          "start": 17
+        },
+        {
+          "end": 23,
+          "length": 1,
+          "start": 23
+        },
+        {
+          "end": 28,
+          "length": 1,
+          "start": 28
+        },
+        {
+          "end": 33,
+          "length": 1,
+          "start": 33
+        },
+        {
+          "end": 43,
+          "length": 1,
+          "start": 43
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260808,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T160431_eb733116\\layer_suite_summary.json",
+      "stagnant_step_count": 9,
+      "step_count": 50,
+      "success": false,
+      "task_name": "RetroSavePlaylist",
+      "termination_reason": "max_steps"
+    },
+    {
+      "elapsed_seconds": 187.391385,
+      "episode_id": "SaveCopyOfReceiptTaskEval_20260806_d1d528de",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": true,
+      "max_before_ui_state_repetitions": 2,
+      "max_consecutive_stagnant_steps": 0,
+      "mean_model_latency_seconds": 6.394011749998754,
+      "model_claimed_status": "success",
+      "nearly_unchanged_ranges": [],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": false,
+      "scientifically_eligible": true,
+      "seed": 20260806,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T012646_c8281b8f\\layer_suite_summary.json",
+      "stagnant_step_count": 0,
+      "step_count": 10,
+      "success": false,
+      "task_name": "SaveCopyOfReceiptTaskEval",
+      "termination_reason": "model_terminate_success"
+    },
+    {
+      "elapsed_seconds": 241.946241,
+      "episode_id": "SaveCopyOfReceiptTaskEval_20260807_76acc287",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": true,
+      "max_before_ui_state_repetitions": 2,
+      "max_consecutive_stagnant_steps": 1,
+      "mean_model_latency_seconds": 6.4759838600002695,
+      "model_claimed_status": "success",
+      "nearly_unchanged_ranges": [
+        {
+          "end": 1,
+          "length": 1,
+          "start": 1
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": false,
+      "scientifically_eligible": true,
+      "seed": 20260807,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T081151_160c14c8\\layer_suite_summary.corrected_validity_overlay.json",
+      "stagnant_step_count": 1,
+      "step_count": 10,
+      "success": false,
+      "task_name": "SaveCopyOfReceiptTaskEval",
+      "termination_reason": "model_terminate_success"
+    },
+    {
+      "elapsed_seconds": 423.081187,
+      "episode_id": "SaveCopyOfReceiptTaskEval_20260808_05e0fc0e",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 3,
+      "max_consecutive_stagnant_steps": 2,
+      "mean_model_latency_seconds": 6.921944824999628,
+      "model_claimed_status": null,
+      "nearly_unchanged_ranges": [
+        {
+          "end": 0,
+          "length": 1,
+          "start": 0
+        },
+        {
+          "end": 5,
+          "length": 1,
+          "start": 5
+        },
+        {
+          "end": 9,
+          "length": 2,
+          "start": 8
+        },
+        {
+          "end": 11,
+          "length": 1,
+          "start": 11
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260808,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T081151_160c14c8\\layer_suite_summary.corrected_validity_overlay.json",
+      "stagnant_step_count": 5,
+      "step_count": 16,
+      "success": false,
+      "task_name": "SaveCopyOfReceiptTaskEval",
+      "termination_reason": "max_steps"
+    },
+    {
+      "elapsed_seconds": 343.790009,
+      "episode_id": "SimpleCalendarAddOneEvent_20260806_739e8ebf",
+      "evaluator_reward": 1.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 2,
+      "max_consecutive_stagnant_steps": 0,
+      "mean_model_latency_seconds": 6.784676629411799,
+      "model_claimed_status": "success",
+      "nearly_unchanged_ranges": [],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": false,
+      "scientifically_eligible": true,
+      "seed": 20260806,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T012646_c8281b8f\\layer_suite_summary.json",
+      "stagnant_step_count": 0,
+      "step_count": 17,
+      "success": true,
+      "task_name": "SimpleCalendarAddOneEvent",
+      "termination_reason": "model_terminate_success"
+    },
+    {
+      "elapsed_seconds": 703.626073,
+      "episode_id": "SimpleCalendarAddOneEvent_20260807_2b8acc6f",
+      "evaluator_reward": 1.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 4,
+      "max_consecutive_stagnant_steps": 1,
+      "mean_model_latency_seconds": 6.533920103568692,
+      "model_claimed_status": "success",
+      "nearly_unchanged_ranges": [
+        {
+          "end": 12,
+          "length": 1,
+          "start": 12
+        },
+        {
+          "end": 25,
+          "length": 1,
+          "start": 25
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260807,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T081151_160c14c8\\layer_suite_summary.corrected_validity_overlay.json",
+      "stagnant_step_count": 2,
+      "step_count": 28,
+      "success": true,
+      "task_name": "SimpleCalendarAddOneEvent",
+      "termination_reason": "model_terminate_success"
+    },
+    {
+      "elapsed_seconds": 489.583892,
+      "episode_id": "SimpleCalendarAddOneEvent_20260808_4d895cc4",
+      "evaluator_reward": 1.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 2,
+      "max_consecutive_stagnant_steps": 0,
+      "mean_model_latency_seconds": 6.6603225157894865,
+      "model_claimed_status": "success",
+      "nearly_unchanged_ranges": [],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": false,
+      "scientifically_eligible": true,
+      "seed": 20260808,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T081151_160c14c8\\layer_suite_summary.corrected_validity_overlay.json",
+      "stagnant_step_count": 0,
+      "step_count": 19,
+      "success": true,
+      "task_name": "SimpleCalendarAddOneEvent",
+      "termination_reason": "model_terminate_success"
+    },
+    {
+      "elapsed_seconds": 69.879671,
+      "episode_id": "SportsTrackerActivitiesOnDate_20260806_fdbba51c",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 1,
+      "max_consecutive_stagnant_steps": 1,
+      "mean_model_latency_seconds": 6.2308084333344596,
+      "model_claimed_status": "answer",
+      "nearly_unchanged_ranges": [
+        {
+          "end": 2,
+          "length": 1,
+          "start": 2
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": false,
+      "scientifically_eligible": true,
+      "seed": 20260806,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T012646_c8281b8f\\layer_suite_summary.json",
+      "stagnant_step_count": 1,
+      "step_count": 3,
+      "success": false,
+      "task_name": "SportsTrackerActivitiesOnDate",
+      "termination_reason": "model_answer"
+    },
+    {
+      "elapsed_seconds": 231.234037,
+      "episode_id": "SportsTrackerActivitiesOnDate_20260807_4adf34a4",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 3,
+      "max_consecutive_stagnant_steps": 1,
+      "mean_model_latency_seconds": 6.442000222219374,
+      "model_claimed_status": null,
+      "nearly_unchanged_ranges": [
+        {
+          "end": 3,
+          "length": 1,
+          "start": 3
+        }
+      ],
+      "protocol_error_count": 1,
+      "protocol_error_steps": [
+        8
+      ],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260807,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T081151_160c14c8\\layer_suite_summary.corrected_validity_overlay.json",
+      "stagnant_step_count": 1,
+      "step_count": 9,
+      "success": false,
+      "task_name": "SportsTrackerActivitiesOnDate",
+      "termination_reason": "official_output_invalid"
+    },
+    {
+      "elapsed_seconds": 131.289824,
+      "episode_id": "SportsTrackerActivitiesOnDate_20260808_52f5c59f",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 2,
+      "max_consecutive_stagnant_steps": 0,
+      "mean_model_latency_seconds": 6.397525349999341,
+      "model_claimed_status": null,
+      "nearly_unchanged_ranges": [],
+      "protocol_error_count": 1,
+      "protocol_error_steps": [
+        3
+      ],
+      "repeated_state_flag": false,
+      "scientifically_eligible": true,
+      "seed": 20260808,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T081151_160c14c8\\layer_suite_summary.corrected_validity_overlay.json",
+      "stagnant_step_count": 0,
+      "step_count": 4,
+      "success": false,
+      "task_name": "SportsTrackerActivitiesOnDate",
+      "termination_reason": "official_output_invalid"
+    },
+    {
+      "elapsed_seconds": 74.641141,
+      "episode_id": "SportsTrackerTotalDistanceForCategoryOverInterval_20260806_6fba2c5e",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 1,
+      "max_consecutive_stagnant_steps": 1,
+      "mean_model_latency_seconds": 7.456602133335157,
+      "model_claimed_status": "answer",
+      "nearly_unchanged_ranges": [
+        {
+          "end": 2,
+          "length": 1,
+          "start": 2
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": false,
+      "scientifically_eligible": true,
+      "seed": 20260806,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T012646_c8281b8f\\layer_suite_summary.json",
+      "stagnant_step_count": 1,
+      "step_count": 3,
+      "success": false,
+      "task_name": "SportsTrackerTotalDistanceForCategoryOverInterval",
+      "termination_reason": "model_answer"
+    },
+    {
+      "elapsed_seconds": 157.860726,
+      "episode_id": "SportsTrackerTotalDistanceForCategoryOverInterval_20260807_3abf6055",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 3,
+      "max_consecutive_stagnant_steps": 1,
+      "mean_model_latency_seconds": 7.4980464799999025,
+      "model_claimed_status": "answer",
+      "nearly_unchanged_ranges": [
+        {
+          "end": 2,
+          "length": 1,
+          "start": 2
+        },
+        {
+          "end": 4,
+          "length": 1,
+          "start": 4
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": true,
+      "scientifically_eligible": true,
+      "seed": 20260807,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T081151_160c14c8\\layer_suite_summary.corrected_validity_overlay.json",
+      "stagnant_step_count": 2,
+      "step_count": 5,
+      "success": false,
+      "task_name": "SportsTrackerTotalDistanceForCategoryOverInterval",
+      "termination_reason": "model_answer"
+    },
+    {
+      "elapsed_seconds": 170.517825,
+      "episode_id": "SportsTrackerTotalDistanceForCategoryOverInterval_20260808_0bbabe86",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 2,
+      "max_consecutive_stagnant_steps": 1,
+      "mean_model_latency_seconds": 6.740443860000232,
+      "model_claimed_status": "answer",
+      "nearly_unchanged_ranges": [
+        {
+          "end": 2,
+          "length": 1,
+          "start": 2
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": false,
+      "scientifically_eligible": true,
+      "seed": 20260808,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T081151_160c14c8\\layer_suite_summary.corrected_validity_overlay.json",
+      "stagnant_step_count": 1,
+      "step_count": 5,
+      "success": false,
+      "task_name": "SportsTrackerTotalDistanceForCategoryOverInterval",
+      "termination_reason": "model_answer"
+    },
+    {
+      "elapsed_seconds": 73.623196,
+      "episode_id": "SportsTrackerTotalDurationForCategoryThisWeek_20260806_a575f564",
+      "evaluator_reward": 1.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 1,
+      "max_consecutive_stagnant_steps": 1,
+      "mean_model_latency_seconds": 6.6940614000001615,
+      "model_claimed_status": "answer",
+      "nearly_unchanged_ranges": [
+        {
+          "end": 2,
+          "length": 1,
+          "start": 2
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": false,
+      "scientifically_eligible": true,
+      "seed": 20260806,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T012646_c8281b8f\\layer_suite_summary.json",
+      "stagnant_step_count": 1,
+      "step_count": 3,
+      "success": true,
+      "task_name": "SportsTrackerTotalDurationForCategoryThisWeek",
+      "termination_reason": "model_answer"
+    },
+    {
+      "elapsed_seconds": 142.52323,
+      "episode_id": "SportsTrackerTotalDurationForCategoryThisWeek_20260807_abe1efa7",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 2,
+      "max_consecutive_stagnant_steps": 1,
+      "mean_model_latency_seconds": 6.765124839992495,
+      "model_claimed_status": "answer",
+      "nearly_unchanged_ranges": [
+        {
+          "end": 2,
+          "length": 1,
+          "start": 2
+        }
+      ],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": false,
+      "scientifically_eligible": true,
+      "seed": 20260807,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T081151_160c14c8\\layer_suite_summary.corrected_validity_overlay.json",
+      "stagnant_step_count": 1,
+      "step_count": 5,
+      "success": false,
+      "task_name": "SportsTrackerTotalDurationForCategoryThisWeek",
+      "termination_reason": "model_answer"
+    },
+    {
+      "elapsed_seconds": 145.675456,
+      "episode_id": "SportsTrackerTotalDurationForCategoryThisWeek_20260808_16e33d39",
+      "evaluator_reward": 0.0,
+      "execution_failure_count": 0,
+      "execution_failure_steps": [],
+      "false_success_claim_flag": false,
+      "max_before_ui_state_repetitions": 2,
+      "max_consecutive_stagnant_steps": 0,
+      "mean_model_latency_seconds": 6.78501029999461,
+      "model_claimed_status": "answer",
+      "nearly_unchanged_ranges": [],
+      "protocol_error_count": 0,
+      "protocol_error_steps": [],
+      "repeated_state_flag": false,
+      "scientifically_eligible": true,
+      "seed": 20260808,
+      "single_tool_multi_action_claim_steps": [],
+      "source_summary": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T081151_160c14c8\\layer_suite_summary.corrected_validity_overlay.json",
+      "stagnant_step_count": 0,
+      "step_count": 4,
+      "success": false,
+      "task_name": "SportsTrackerTotalDurationForCategoryThisWeek",
+      "termination_reason": "model_answer"
+    }
+  ],
+  "excluded_episode_count": 45,
+  "excluded_episode_ids": [
+    "BrowserMultiply_20260807_4443f081",
+    "BrowserMultiply_20260808_e89d5a37",
+    "ExpenseAddMultipleFromGallery_20260807_97c8b274",
+    "ExpenseAddMultipleFromGallery_20260808_18ac727e",
+    "ExpenseAddMultipleFromMarkor_20260807_99bfcb04",
+    "ExpenseAddMultipleFromMarkor_20260808_62c95c9c",
+    "ExpenseDeleteMultiple2_20260807_e3e69078",
+    "ExpenseDeleteMultiple2_20260808_19b46de8",
+    "MarkorCreateNoteAndSms_20260807_7a54ebc2",
+    "MarkorCreateNoteAndSms_20260808_0714ff34",
+    "MarkorMergeNotes_20260807_87037e31",
+    "MarkorMergeNotes_20260808_fa849241",
+    "MarkorTranscribeVideo_20260807_5b48b4e6",
+    "MarkorTranscribeVideo_20260808_afec15a3",
+    "OsmAndMarker_20260807_b4912198",
+    "OsmAndMarker_20260808_513e94d1",
+    "OsmAndTrack_20260807_604b5ee5",
+    "OsmAndTrack_20260808_8930ba35",
+    "RecipeAddMultipleRecipesFromImage_20260807_7a86916b",
+    "RecipeAddMultipleRecipesFromImage_20260808_673e6f17",
+    "RecipeAddMultipleRecipesFromMarkor2_20260807_4ea2110b",
+    "RecipeAddMultipleRecipesFromMarkor2_20260808_596cb248",
+    "RecipeAddMultipleRecipesFromMarkor_20260807_12f4144e",
+    "RecipeAddMultipleRecipesFromMarkor_20260808_f0811cfc",
+    "RecipeDeleteMultipleRecipesWithConstraint_20260807_ad3433b2",
+    "RecipeDeleteMultipleRecipesWithConstraint_20260808_07c93a0e",
+    "RetroSavePlaylist_20260807_3adb5bef",
+    "RetroSavePlaylist_20260808_fe7a1b86",
+    "SaveCopyOfReceiptTaskEval_20260807_ff36531b",
+    "SaveCopyOfReceiptTaskEval_20260808_87f28a56",
+    "SimpleCalendarAddOneEvent_20260807_c2b24222",
+    "SimpleCalendarAddOneEvent_20260808_4eecf7bd",
+    "SportsTrackerActivitiesOnDate_20260807_96768591",
+    "SportsTrackerActivitiesOnDate_20260808_5a877b47",
+    "SportsTrackerTotalDistanceForCategoryOverInterval_20260807_ed8fcb2d",
+    "SportsTrackerTotalDistanceForCategoryOverInterval_20260808_cb2f8695",
+    "SportsTrackerTotalDurationForCategoryThisWeek_20260807_976b9f3b",
+    "SportsTrackerTotalDurationForCategoryThisWeek_20260808_f7e9458b",
+    "ExpenseAddMultipleFromMarkor_20260807_d600ca2c",
+    "MarkorMergeNotes_20260808_14a2d58d",
+    "MarkorTranscribeVideo_20260807_fac6007a",
+    "OsmAndTrack_20260807_adcf6eaa",
+    "RecipeAddMultipleRecipesFromMarkor2_20260808_5319e66f",
+    "RetroSavePlaylist_20260807_eceddac6",
+    "RetroSavePlaylist_20260808_378e13b2"
+  ],
+  "execution_failure_count": 0,
+  "expected_scientifically_eligible_episode_count": 57,
+  "false_success_claim_count": 21,
+  "implementation_invalid_episode_count": 5,
+  "implementation_invalid_episode_ids": [
+    "ExpenseAddMultipleFromMarkor_20260807_d600ca2c",
+    "MarkorMergeNotes_20260808_14a2d58d",
+    "MarkorTranscribeVideo_20260807_fac6007a",
+    "OsmAndTrack_20260807_adcf6eaa",
+    "RecipeAddMultipleRecipesFromMarkor2_20260808_5319e66f"
+  ],
+  "in_progress_episode_ids": [],
+  "infrastructure_invalid_episode_count": 40,
+  "infrastructure_invalid_episode_ids": [
+    "BrowserMultiply_20260807_4443f081",
+    "BrowserMultiply_20260808_e89d5a37",
+    "ExpenseAddMultipleFromGallery_20260807_97c8b274",
+    "ExpenseAddMultipleFromGallery_20260808_18ac727e",
+    "ExpenseAddMultipleFromMarkor_20260807_99bfcb04",
+    "ExpenseAddMultipleFromMarkor_20260808_62c95c9c",
+    "ExpenseDeleteMultiple2_20260807_e3e69078",
+    "ExpenseDeleteMultiple2_20260808_19b46de8",
+    "MarkorCreateNoteAndSms_20260807_7a54ebc2",
+    "MarkorCreateNoteAndSms_20260808_0714ff34",
+    "MarkorMergeNotes_20260807_87037e31",
+    "MarkorMergeNotes_20260808_fa849241",
+    "MarkorTranscribeVideo_20260807_5b48b4e6",
+    "MarkorTranscribeVideo_20260808_afec15a3",
+    "OsmAndMarker_20260807_b4912198",
+    "OsmAndMarker_20260808_513e94d1",
+    "OsmAndTrack_20260807_604b5ee5",
+    "OsmAndTrack_20260808_8930ba35",
+    "RecipeAddMultipleRecipesFromImage_20260807_7a86916b",
+    "RecipeAddMultipleRecipesFromImage_20260808_673e6f17",
+    "RecipeAddMultipleRecipesFromMarkor2_20260807_4ea2110b",
+    "RecipeAddMultipleRecipesFromMarkor2_20260808_596cb248",
+    "RecipeAddMultipleRecipesFromMarkor_20260807_12f4144e",
+    "RecipeAddMultipleRecipesFromMarkor_20260808_f0811cfc",
+    "RecipeDeleteMultipleRecipesWithConstraint_20260807_ad3433b2",
+    "RecipeDeleteMultipleRecipesWithConstraint_20260808_07c93a0e",
+    "RetroSavePlaylist_20260807_3adb5bef",
+    "RetroSavePlaylist_20260808_fe7a1b86",
+    "SaveCopyOfReceiptTaskEval_20260807_ff36531b",
+    "SaveCopyOfReceiptTaskEval_20260808_87f28a56",
+    "SimpleCalendarAddOneEvent_20260807_c2b24222",
+    "SimpleCalendarAddOneEvent_20260808_4eecf7bd",
+    "SportsTrackerActivitiesOnDate_20260807_96768591",
+    "SportsTrackerActivitiesOnDate_20260808_5a877b47",
+    "SportsTrackerTotalDistanceForCategoryOverInterval_20260807_ed8fcb2d",
+    "SportsTrackerTotalDistanceForCategoryOverInterval_20260808_cb2f8695",
+    "SportsTrackerTotalDurationForCategoryThisWeek_20260807_976b9f3b",
+    "SportsTrackerTotalDurationForCategoryThisWeek_20260808_f7e9458b",
+    "RetroSavePlaylist_20260807_eceddac6",
+    "RetroSavePlaylist_20260808_378e13b2"
+  ],
+  "mean_reward": 0.14035087719298245,
+  "partial_reward_count": 2,
+  "per_task": {
+    "BrowserMultiply": {
+      "completed_count": 3,
+      "consistency": "all_failure",
+      "mean_reward": 0.0,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "seeds": [
+        20260806,
+        20260807,
+        20260808
+      ],
+      "step_counts": [
+        13,
+        16,
+        22
+      ],
+      "success_count": 0
+    },
+    "ExpenseAddMultipleFromGallery": {
+      "completed_count": 3,
+      "consistency": "all_failure",
+      "mean_reward": 0.0,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "seeds": [
+        20260806,
+        20260807,
+        20260808
+      ],
+      "step_counts": [
+        16,
+        25,
+        19
+      ],
+      "success_count": 0
+    },
+    "ExpenseAddMultipleFromMarkor": {
+      "completed_count": 3,
+      "consistency": "all_failure",
+      "mean_reward": 0.0,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "seeds": [
+        20260806,
+        20260807,
+        20260808
+      ],
+      "step_counts": [
+        13,
+        7,
+        5
+      ],
+      "success_count": 0
+    },
+    "ExpenseDeleteMultiple2": {
+      "completed_count": 3,
+      "consistency": "mixed",
+      "mean_reward": 0.6666666666666666,
+      "rewards": [
+        1.0,
+        1.0,
+        0.0
+      ],
+      "seeds": [
+        20260806,
+        20260807,
+        20260808
+      ],
+      "step_counts": [
+        18,
+        22,
+        34
+      ],
+      "success_count": 2
+    },
+    "MarkorCreateNoteAndSms": {
+      "completed_count": 3,
+      "consistency": "all_failure",
+      "mean_reward": 0.3333333333333333,
+      "rewards": [
+        0.5,
+        0.5,
+        0.0
+      ],
+      "seeds": [
+        20260806,
+        20260807,
+        20260808
+      ],
+      "step_counts": [
+        17,
+        18,
+        18
+      ],
+      "success_count": 0
+    },
+    "MarkorMergeNotes": {
+      "completed_count": 3,
+      "consistency": "all_failure",
+      "mean_reward": 0.0,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "seeds": [
+        20260806,
+        20260807,
+        20260808
+      ],
+      "step_counts": [
+        32,
+        29,
+        34
+      ],
+      "success_count": 0
+    },
+    "MarkorTranscribeVideo": {
+      "completed_count": 3,
+      "consistency": "all_failure",
+      "mean_reward": 0.0,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "seeds": [
+        20260806,
+        20260807,
+        20260808
+      ],
+      "step_counts": [
+        20,
+        20,
+        20
+      ],
+      "success_count": 0
+    },
+    "OsmAndMarker": {
+      "completed_count": 3,
+      "consistency": "all_failure",
+      "mean_reward": 0.0,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "seeds": [
+        20260806,
+        20260807,
+        20260808
+      ],
+      "step_counts": [
+        11,
+        10,
+        20
+      ],
+      "success_count": 0
+    },
+    "OsmAndTrack": {
+      "completed_count": 3,
+      "consistency": "all_failure",
+      "mean_reward": 0.0,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "seeds": [
+        20260806,
+        20260807,
+        20260808
+      ],
+      "step_counts": [
+        19,
+        42,
+        120
+      ],
+      "success_count": 0
+    },
+    "RecipeAddMultipleRecipesFromImage": {
+      "completed_count": 3,
+      "consistency": "all_failure",
+      "mean_reward": 0.0,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "seeds": [
+        20260806,
+        20260807,
+        20260808
+      ],
+      "step_counts": [
+        60,
+        60,
+        17
+      ],
+      "success_count": 0
+    },
+    "RecipeAddMultipleRecipesFromMarkor": {
+      "completed_count": 3,
+      "consistency": "all_failure",
+      "mean_reward": 0.0,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "seeds": [
+        20260806,
+        20260807,
+        20260808
+      ],
+      "step_counts": [
+        13,
+        11,
+        16
+      ],
+      "success_count": 0
+    },
+    "RecipeAddMultipleRecipesFromMarkor2": {
+      "completed_count": 3,
+      "consistency": "all_failure",
+      "mean_reward": 0.0,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "seeds": [
+        20260806,
+        20260807,
+        20260808
+      ],
+      "step_counts": [
+        14,
+        6,
+        31
+      ],
+      "success_count": 0
+    },
+    "RecipeDeleteMultipleRecipesWithConstraint": {
+      "completed_count": 3,
+      "consistency": "all_failure",
+      "mean_reward": 0.0,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "seeds": [
+        20260806,
+        20260807,
+        20260808
+      ],
+      "step_counts": [
+        15,
+        11,
+        17
+      ],
+      "success_count": 0
+    },
+    "RetroSavePlaylist": {
+      "completed_count": 3,
+      "consistency": "mixed",
+      "mean_reward": 0.3333333333333333,
+      "rewards": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "seeds": [
+        20260806,
+        20260807,
+        20260808
+      ],
+      "step_counts": [
+        32,
+        41,
+        50
+      ],
+      "success_count": 1
+    },
+    "SaveCopyOfReceiptTaskEval": {
+      "completed_count": 3,
+      "consistency": "all_failure",
+      "mean_reward": 0.0,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "seeds": [
+        20260806,
+        20260807,
+        20260808
+      ],
+      "step_counts": [
+        10,
+        10,
+        16
+      ],
+      "success_count": 0
+    },
+    "SimpleCalendarAddOneEvent": {
+      "completed_count": 3,
+      "consistency": "all_success",
+      "mean_reward": 1.0,
+      "rewards": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "seeds": [
+        20260806,
+        20260807,
+        20260808
+      ],
+      "step_counts": [
+        17,
+        28,
+        19
+      ],
+      "success_count": 3
+    },
+    "SportsTrackerActivitiesOnDate": {
+      "completed_count": 3,
+      "consistency": "all_failure",
+      "mean_reward": 0.0,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "seeds": [
+        20260806,
+        20260807,
+        20260808
+      ],
+      "step_counts": [
+        3,
+        9,
+        4
+      ],
+      "success_count": 0
+    },
+    "SportsTrackerTotalDistanceForCategoryOverInterval": {
+      "completed_count": 3,
+      "consistency": "all_failure",
+      "mean_reward": 0.0,
+      "rewards": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "seeds": [
+        20260806,
+        20260807,
+        20260808
+      ],
+      "step_counts": [
+        3,
+        5,
+        5
+      ],
+      "success_count": 0
+    },
+    "SportsTrackerTotalDurationForCategoryThisWeek": {
+      "completed_count": 3,
+      "consistency": "mixed",
+      "mean_reward": 0.3333333333333333,
+      "rewards": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "seeds": [
+        20260806,
+        20260807,
+        20260808
+      ],
+      "step_counts": [
+        3,
+        5,
+        4
+      ],
+      "success_count": 1
+    }
+  },
+  "positive_reward_count": 9,
+  "protocol_error_count": 4,
+  "repeated_state_episode_count": 39,
+  "scientifically_eligible_episode_count": 57,
+  "scientifically_eligible_model_calls": 1175,
+  "single_tool_multi_action_claim_episode_count": 1,
+  "source_summaries": [
+    "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T012646_c8281b8f\\layer_suite_summary.json",
+    "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T081151_160c14c8\\layer_suite_summary.corrected_validity_overlay.json",
+    "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T131118_862525da\\layer_suite_summary.clean_expense_only.json",
+    "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T134531_6e4d4fbe\\layer_suite_summary.clean_video_osmand_only.json",
+    "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T142800_e697484f\\layer_suite_summary.clean_retro7_markor8_only.json",
+    "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T151611_aaf19d25\\layer_suite_summary.clean_recipe8_only.json",
+    "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T160431_eb733116\\layer_suite_summary.json"
+  ],
+  "stagnation_episode_count": 14,
+  "success_count": 7,
+  "success_rate_completed": 0.12280701754385964,
+  "suite_dir": "MERGED:D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T012646_c8281b8f\\layer_suite_summary.json;D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T081151_160c14c8\\layer_suite_summary.corrected_validity_overlay.json;D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T131118_862525da\\layer_suite_summary.clean_expense_only.json;D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T134531_6e4d4fbe\\layer_suite_summary.clean_video_osmand_only.json;D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T142800_e697484f\\layer_suite_summary.clean_retro7_markor8_only.json;D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T151611_aaf19d25\\layer_suite_summary.clean_recipe8_only.json;D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\runs\\official_qwen_mobile\\official_qwen_20260808T160431_eb733116\\layer_suite_summary.json",
+  "termination_reasons": {
+    "max_steps": 13,
+    "model_answer": 12,
+    "model_terminate_failure": 1,
+    "model_terminate_success": 27,
+    "official_output_invalid": 4
+  },
+  "total_episode_elapsed_seconds": 28316.03983699999,
+  "total_model_calls": 1285,
+  "total_reward": 8.0,
+  "total_stagnant_steps": 385
+}

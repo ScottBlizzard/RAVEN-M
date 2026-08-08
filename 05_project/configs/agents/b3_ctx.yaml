@@ -1,6 +1,0 @@
-variant: B3_CTX
-control: predeclared_context_budget_summary
-base: b3.yaml
-target_history_chars: 10000
-neutral_padding_label: unused_context_budget_control
-context_cap_tokens: 8192

@@ -1,44 +1,25 @@
-# Local third-party clones are pinned by manifests/locks, not vendored here.
-03_code/third_party/*
-!03_code/third_party/README.md
-
-# Downloaded papers and web snapshots are local research assets.
-02_literature/papers/**/*.pdf
-01_sources/official/**/*.html
-01_sources/official/**/*.json
-01_sources/official/**/*.ipynb
-
-# Large model and experiment artifacts must never enter this repository.
+# Large runtime assets remain local and are represented by manifests and hashes.
 /models/
 /checkpoints/
 /runs/
 /results/
-05_project/outputs/
-05_project/.venv-model-server/
+/outputs/
 *.safetensors
 *.bin
 *.pt
 *.pth
 *.gguf
 
-# Temporary and local environment files.
+# Credentials, temporary files, caches, and editor state.
 *.part
 *.tmp
 *.log
 .env
+.env.*
 .venv/
 __pycache__/
+*.pyc
 .pytest_cache/
 .idea/
 .vscode/
 Thumbs.db
-
-# Machine-local Android/Python runtime. Keep only reproducible instructions,
-# scripts, and small audit metadata in Git.
-06_local_runtime/**
-!06_local_runtime/README.md
-!06_local_runtime/scripts/
-!06_local_runtime/scripts/**
-06_local_runtime/scripts/__pycache__/
-!06_local_runtime/metadata/
-!06_local_runtime/metadata/**
