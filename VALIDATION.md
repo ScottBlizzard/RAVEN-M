@@ -12,7 +12,7 @@ This repository snapshot was curated specifically for the next GPT Pro decision:
 - Decision-document relative links: **8 checked, 0 broken**.
 - JSON syntax: **20 files checked, 0 invalid**.
 - Secret-pattern scan: **0 hits** for common API-token, GitHub-token, AWS-key, private-key, password-assignment, and bearer-token patterns.
-- Curated snapshot size: **147 files, 3,330,075 bytes** before the final formatting-only update and excluding Git worktree metadata.
+- Curated snapshot size: **141 files, 2,432,809 bytes**, excluding Git worktree metadata.
 - Large raw episode directories are intentionally excluded; the compact evidence tables, aggregate JSON, protocols, diagnostic reports, and executable analysis/runner code needed for the decision are included.
 
 ## Provenance and safety
@@ -20,6 +20,7 @@ This repository snapshot was curated specifically for the next GPT Pro decision:
 - The latest official-Qwen baseline and diagnostic artifacts were copied from the working research tree without modifying their contents.
 - The original dirty research worktree at `D:\ZJU\Summer_Camp\RAVEN-M-Research` was not cleaned, reset, or deleted.
 - Historical repository content removed from the new default snapshot remains recoverable through Git history.
+- Earlier GPT analyses and the author-written formal report are intentionally excluded from the current decision snapshot to prevent anchoring; they must not be consulted through Git history for this decision.
 - Frozen reports may contain their original local paths. Use the path-redirect table in `ARTIFACT_MANIFEST.md` to locate their curated equivalents.
 - Some frozen Markdown reports intentionally retain two trailing spaces for Markdown line breaks. These produce `git diff --check` whitespace notices but are preserved to avoid changing evidence artifacts; the new root decision documents were checked separately.
 

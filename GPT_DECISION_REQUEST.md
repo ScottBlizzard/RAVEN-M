@@ -96,11 +96,6 @@ scrolls from 0 to 64 but recovered only 1/8 target objects and found the full se
 in 0/3 tasks. Its only bottom attestation was contradicted by six later
 same-direction page changes.
 
-Earlier RAVEN-M planner/executor/memory/critic prototypes are useful historical
-negative evidence, not a fair current comparator. A heavier controller did not
-automatically improve task success, and early all-zero Hard results were not a
-clean model-capability baseline.
-
 ## 5. Hard eligibility constraints for the selected framework
 
 The winner must satisfy all of the following:
@@ -150,11 +145,13 @@ result and report it as held-out.
 
 ## 7. Required research work
 
-Use current web and primary sources, not memory alone. Audit at least the methods
-named in the assignment and prior reviews, including relevant candidates such as
-HAR-GUI, LAMO, MobileAgent-V3, PG-Agent, HYMEM, Agent-S2, Mobile-Agent-E,
-Agent-SAMA, and strong public state/recovery/verification frameworks discovered
-after them. Verify paper claims against official repositories and actual code.
+Use current web and primary sources, not memory alone. Build the candidate pool
+independently and broadly from the present literature and official repositories;
+do not privilege frameworks that may have appeared in earlier project
+discussions. Verify paper claims against official repositories and actual code.
+Prior GPT analyses, author-written reports, and historical Git commits are
+deliberately outside the evidence packet and must not be used to anchor the
+decision.
 
 For every serious candidate, distinguish:
 

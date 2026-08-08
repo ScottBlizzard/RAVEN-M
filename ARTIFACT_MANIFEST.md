@@ -43,21 +43,20 @@ not randomized causal estimates.
 All are under `evidence/interventions/`. A negative result is retained as a
 boundary; it is not an invitation to tune the same exposed cell until it passes.
 
-## Tier 4: prior independent reviews
-
-The four files under `evidence/prior_reviews/` preserve earlier GPT Pro analyses.
-They predate the corrected 7/57 baseline and therefore cannot override Tier 1-3
-evidence. Use them to avoid repeating already occupied ideas and to understand
-how the research question changed.
-
-## Tier 5: implementation feasibility
+## Tier 4: implementation feasibility
 
 - `protocols/`: current runbook, preregistrations, correction records, and frozen stop rules.
 - `implementation/src/`: official-style controller, protocol, coverage gate, completion verifier, AndroidWorld adapter, task-instantiation code, and vLLM client.
 - `implementation/scripts/`: runner, preflight, server launch, deterministic audits, merge logic, and extractor/verifier drivers.
 - `implementation/configs/`: frozen model, task, extractor, and verifier configurations.
 - `implementation/tests/`: compact relevant test suite.
-- `final_report/`: current Chinese formal report in TeX and PDF.
+
+## Deliberately excluded interpretive material
+
+Earlier GPT Pro reviews and the author-written summer-camp report are not part of
+this decision packet. They mix evidence with prior interpretations and proposed
+routes, which could anchor a supposedly independent selection. Do not recover
+them from historical Git commits for this decision.
 
 ### Path redirects inside frozen reports
 

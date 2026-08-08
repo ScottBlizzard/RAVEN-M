@@ -59,12 +59,14 @@ evidence/layer_audits/
                      deterministic audits of the failure chain
 evidence/interventions/
                      preregistered or frozen rescue results, including failures
-evidence/prior_reviews/
-                     earlier independent GPT Pro reviews, preserved as context
 protocols/           current preregistrations, corrections, and runbook
 implementation/      compact inspectable slice of the official baseline code
-final_report/        current formal Chinese report in TeX and PDF
 ```
+
+Prior GPT analyses and author-written reports are intentionally excluded from
+this decision snapshot. They contain interpretations that could anchor an
+independent framework-selection review. Work only from the current `main` tree;
+do not use historical commits as decision evidence.
 
 ## Raw-data boundary
 
