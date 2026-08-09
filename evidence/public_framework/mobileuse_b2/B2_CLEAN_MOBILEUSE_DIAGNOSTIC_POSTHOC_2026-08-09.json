@@ -1,0 +1,132 @@
+{
+  "schema": "raven_m.b2_clean_mobileuse.diagnostic_posthoc.v1",
+  "date": "2026-08-09",
+  "arm_id": "B2_CLEAN_MOBILEUSE_QWEN3VL32B_AW_HARD_DEV_S20260806_V1",
+  "suite_id": "b2_diagnostic_20260809T193415_e28d6b3c",
+  "model": "Qwen/Qwen3-VL-32B-Instruct",
+  "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+  "androidworld_seed": 20260806,
+  "sampling_seed": 3407,
+  "frozen_controller_commit": "d3a50d8cd9592eacf1a16deecd6c25d7de55655e",
+  "frozen_result": {
+    "episode_count": 5,
+    "scientifically_valid_count": 5,
+    "full_success_count": 1,
+    "partial_reward_count": 1,
+    "total_reward": 1.5,
+    "native_actions": 154,
+    "operator_decisions": 157,
+    "total_model_requests": 326,
+    "requests_per_operator_decision": 2.0764331210191083,
+    "false_success_task_ids": ["H01"],
+    "implementation_or_infrastructure_errors": 0,
+    "hash_chain_errors": 0
+  },
+  "expansion_gate": {
+    "pass": false,
+    "failed_checks": ["reward_at_least_2"],
+    "directive": "do_not_expand_preserve_diagnostic"
+  },
+  "tasks": [
+    {
+      "id": "H12",
+      "name": "RecipeAddMultipleRecipesFromMarkor2",
+      "reward": 0.0,
+      "valid": true,
+      "native_actions": 60,
+      "operator_decisions": 60,
+      "model_requests": 119,
+      "primary_finding": "The public-framework crash was repaired, but reflection detected the loop without constraining the next action; unsupported long_press requests and repeated swipes exhausted the budget."
+    },
+    {
+      "id": "H08",
+      "name": "OsmAndMarker",
+      "reward": 1.0,
+      "valid": true,
+      "native_actions": 8,
+      "operator_decisions": 9,
+      "model_requests": 22,
+      "primary_finding": "PF01 full success retained."
+    },
+    {
+      "id": "H05",
+      "name": "MarkorCreateNoteAndSms",
+      "reward": 0.0,
+      "valid": true,
+      "native_actions": 18,
+      "operator_decisions": 18,
+      "model_requests": 40,
+      "primary_finding": "Nominal failure is causally confounded by unequal initial Markor extension state (.md in PF01 versus .txt in B2)."
+    },
+    {
+      "id": "H01",
+      "name": "BrowserMultiply",
+      "reward": 0.0,
+      "valid": true,
+      "native_actions": 19,
+      "operator_decisions": 20,
+      "model_requests": 53,
+      "primary_finding": "The values were visually observed but the append-only history was overwritten; the correct product 1120 became a false-success answer of 120."
+    },
+    {
+      "id": "H14",
+      "name": "RetroSavePlaylist",
+      "reward": 0.5,
+      "valid": true,
+      "native_actions": 49,
+      "operator_decisions": 50,
+      "model_requests": 92,
+      "primary_finding": "The export-file predicate passed while the playlist remained at 0 Songs; operation attempts were promoted to task-state facts."
+    }
+  ],
+  "clean_matched_subset": {
+    "task_ids": ["H01", "H08", "H14"],
+    "exclusions": {
+      "H05": "initial application state mismatch",
+      "H12": "PF01 implementation-invalid"
+    },
+    "pf01_reward": 1.5,
+    "b2_reward": 1.5,
+    "pf01_model_requests": 239,
+    "b2_model_requests": 167,
+    "model_request_reduction_fraction": 0.301255230125523,
+    "pf01_operator_decisions": 75,
+    "b2_operator_decisions": 79,
+    "pf01_requests_per_decision": 3.1866666666666665,
+    "b2_requests_per_decision": 2.1139240506329116
+  },
+  "h05_initial_state_audit": {
+    "same_task_parameter_hash": true,
+    "task_parameter_hash": "b98ac624a6c56ffc717cf2eb33fa52d06bfa5f2934b85c2e909138123767b82d",
+    "pf01_default_extension": ".md",
+    "b2_default_extension": ".txt",
+    "causal_comparison_qualified": false,
+    "frozen_score_changed": false,
+    "inference": "Cross-task Markor preference carryover is the most plausible cause; initial-state inequality is directly observed, while its cause is post-hoc inference."
+  },
+  "mechanism_findings": [
+    "exact_state_retention",
+    "feedback_to_policy_enforcement",
+    "state_to_task_predicate_binding",
+    "action_affordance_ceiling",
+    "initial_application_state_equivalence"
+  ],
+  "sha256": {
+    "aggregate": "494bf7b3d5166528faf6c5de75c0f35206323cc65b39e5d18a6d25132e1d5d0d",
+    "expansion_gate": "21d815ee3a8ff3f75ed0d0aa37773e5660daab4e2b9afd3e267f60e68bffc2cd",
+    "h01_events": "a4d67df5b3920a26ba1c028b40c478728b112bf4bdc621d4323f5db563ddfff8",
+    "h05_events": "54f0f4f270455ee1ac6ceb4221aa42c6e5bc03e5fe671835d09852281feb795d",
+    "h08_events": "9874dd5413f5ae6a11710327423ce124efa64678245f261d76f9414d59032bb6",
+    "h12_events": "9cc9a504564514f9271c6889831a877c0c227be71cae17d44fa4e61bd99e9928",
+    "h14_events": "6b423e8ea4bce236979d22cbdc506ea68b1bbea01bb8a48a2304fd3b57012ef1",
+    "pf01_h05_snapshot_00005_and_00006": "fd97746e3bd0e2fbad8c4b224428598d36e252b215bf9da5b56d6b86af603939",
+    "b2_h05_snapshot_00005_and_00006": "cfb3cb8f9b1386fc84d53d78e19b95096e11825adb57c1e73d9e032ddfbd2c33"
+  },
+  "qualification": {
+    "label": "NEGATIVE CAPABILITY RESULT; POSITIVE DIAGNOSTIC AND ENGINEERING RESULT",
+    "b2_capability_improvement_supported": false,
+    "cost_and_stability_improvement_supported": true,
+    "h05_regression_attributable_to_b2": false,
+    "full_hard_expansion_authorized": false
+  }
+}
