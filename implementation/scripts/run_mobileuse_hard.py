@@ -48,11 +48,17 @@ FROZEN_ORDER = [
 FREEZE_FILES = [
     "implementation/configs/mobileuse_multiagent_qwen3_vl_32b_hard_seed20260806.yaml",
     "implementation/third_party/mobile_use/SOURCE_LOCK.json",
+    "implementation/third_party/mobile_use/DEPENDENCY_LOCK.json",
     "implementation/src/raven_m/models/vllm_multi_image_client.py",
     "implementation/src/raven_m/public_frameworks/mobileuse/action_adapter.py",
     "implementation/src/raven_m/public_frameworks/mobileuse/controller.py",
     "implementation/src/raven_m/public_frameworks/mobileuse/logging.py",
+    "implementation/src/raven_m/public_frameworks/mobileuse/mechanism_metrics.py",
     "implementation/src/raven_m/public_frameworks/mobileuse/prompt_adapter.py",
+    "implementation/scripts/live_preflight_mobileuse.py",
+    "implementation/scripts/preflight_mobileuse.py",
+    "implementation/scripts/run_mobileuse_hard.py",
+    "implementation/scripts/start_mobileuse_server.sh",
     "protocols/MOBILEUSE_QWEN3VL32B_HARD_SEED20260806_PREREG.json",
     "protocols/MOBILEUSE_QWEN3VL32B_HARD_SEED20260806_PREREG.md",
 ]
@@ -237,6 +243,12 @@ def main() -> None:
         raise RuntimeError("Zero-generation preflight has not passed")
     if not replay.is_file() or json.loads(replay.read_text())["episode_count"] != 19:
         raise RuntimeError("Baseline first-seed replay has not passed")
+    live_preflight = REPOSITORY_ROOT / "evidence" / "public_framework" / "mobileuse" / "PF01_LIVE_MULTI_IMAGE_PREFLIGHT.json"
+    if not live_preflight.is_file():
+        raise RuntimeError("Live one/two/three-image preflight has not run")
+    live_report = json.loads(live_preflight.read_text(encoding="utf-8"))
+    if live_report.get("status") != "pass" or live_report.get("image_counts") != [1, 2, 3]:
+        raise RuntimeError("Live one/two/three-image preflight has not passed")
     freeze_path = REPOSITORY_ROOT / "evidence" / "public_framework" / "mobileuse" / "PF01_FREEZE_AFTER_SMOKE.json"
     if args.mode == "scored":
         if not freeze_path.is_file():

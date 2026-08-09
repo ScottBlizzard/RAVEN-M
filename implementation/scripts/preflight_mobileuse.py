@@ -7,6 +7,7 @@ import base64
 from hashlib import sha256
 from importlib import metadata
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -214,9 +215,15 @@ def dependency_inventory() -> dict[str, Any]:
 
 def run_tests() -> dict[str, Any]:
     test_dir = PROJECT_ROOT / "tests" / "public_frameworks" / "mobileuse"
+    python_path = [str(PROJECT_ROOT / "src"), str(UPSTREAM)]
+    if os.environ.get("PYTHONPATH"):
+        python_path.append(os.environ["PYTHONPATH"])
+    child_env = dict(os.environ)
+    child_env["PYTHONPATH"] = os.pathsep.join(python_path)
     completed = subprocess.run(
         [sys.executable, "-m", "pytest", str(test_dir), "-q"],
         cwd=PROJECT_ROOT,
+        env=child_env,
         text=True,
         capture_output=True,
         check=False,
