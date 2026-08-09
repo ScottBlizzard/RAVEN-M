@@ -1,0 +1,27 @@
+{
+  "arm_id": "B2_CLEAN_MOBILEUSE_QWEN3VL32B_AW_HARD_DEV_S20260806_V1",
+  "development_only_not_held_out": true,
+  "expansion_gate": {
+    "hash_chain_errors": 0,
+    "implementation_or_infrastructure_errors": 0,
+    "maximum_false_successes": 1,
+    "maximum_model_requests_per_operator_decision": 2.4,
+    "minimum_total_reward": 2.0,
+    "required_retained_success": "H08",
+    "scientifically_valid_tasks": 5
+  },
+  "generation": {
+    "presence_penalty": 1.5,
+    "repetition_penalty": 1.0,
+    "seed": 3407,
+    "temperature": 0.7,
+    "top_k": 20,
+    "top_p": 0.8
+  },
+  "memory_intervention": false,
+  "model": "Qwen/Qwen3-VL-32B-Instruct",
+  "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+  "task_order": ["H12", "H08", "H05", "H01", "H14"],
+  "task_seed": 20260806,
+  "schema": "raven_m.b2_clean_mobileuse.prereg.v1"
+}

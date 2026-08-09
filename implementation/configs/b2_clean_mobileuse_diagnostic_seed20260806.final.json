@@ -1,0 +1,56 @@
+{
+  "androidworld_commit": "3e50888527ef9f29b9157ecd537e408008bb1c85",
+  "arm_id": "B2_CLEAN_MOBILEUSE_QWEN3VL32B_AW_HARD_DEV_S20260806_V1",
+  "development_only_not_held_out": true,
+  "instances": [
+    {
+      "goal_hash": "4ffe2b12e6070e57e3c4cc9dd3346676116a28bab41a387f49d686c4e1119732",
+      "native_max_steps": 60,
+      "task_class": "RecipeAddMultipleRecipesFromMarkor2",
+      "task_id": "H12",
+      "task_params_hash": "5db0c231fd785fc488577d93c04a72a9089a09b9daa37aac37fa3f6200399460",
+      "task_seed": 20260806
+    },
+    {
+      "goal_hash": "bbf12c906ef6d750292b83f8f7da9ede95aba3e1791b38a3ec7d6dfa1f1e8786",
+      "native_max_steps": 20,
+      "task_class": "OsmAndMarker",
+      "task_id": "H08",
+      "task_params_hash": "3a229b926d13318458a8cab3fac1b8a47aee1681aefa7434c0890c3872c79c85",
+      "task_seed": 20260806
+    },
+    {
+      "goal_hash": "fcf368cdcedeb3a572d7d0c27cf990430faba6387cd7077d281354d5ad6976c1",
+      "native_max_steps": 18,
+      "task_class": "MarkorCreateNoteAndSms",
+      "task_id": "H05",
+      "task_params_hash": "b98ac624a6c56ffc717cf2eb33fa52d06bfa5f2934b85c2e909138123767b82d",
+      "task_seed": 20260806
+    },
+    {
+      "goal_hash": "3a848f7058fc4f68d01926f5cb8eb5dae66cb17f63579b88f28a53a974c3d383",
+      "native_max_steps": 22,
+      "task_class": "BrowserMultiply",
+      "task_id": "H01",
+      "task_params_hash": "325eee9a7085b1d618af713b8b667836321b8c3d4deda8b6cf341957087eb1f3",
+      "task_seed": 20260806
+    },
+    {
+      "goal_hash": "a6c5ceb9173aa9fbe0458f9eff30412f100aa241510fb4d3f403fce8fb8c89f8",
+      "native_max_steps": 50,
+      "task_class": "RetroSavePlaylist",
+      "task_id": "H14",
+      "task_params_hash": "238fe1e1c9b8be07c4f57b5658312772ec6dda5363b90f6f35c732162fbec62e",
+      "task_seed": 20260806
+    }
+  ],
+  "parent_reference": {
+    "H01": {"model_requests": 54, "operator_decisions": 17, "reward": 0.0, "valid": true},
+    "H05": {"model_requests": 56, "operator_decisions": 18, "reward": 0.5, "valid": true},
+    "H08": {"model_requests": 25, "operator_decisions": 8, "reward": 1.0, "valid": true},
+    "H12": {"model_requests_before_crash": 57, "reward": null, "valid": false},
+    "H14": {"model_requests": 160, "operator_decisions": 50, "reward": 0.5, "valid": true}
+  },
+  "schema": "raven_m.b2_clean_mobileuse.diagnostic_manifest.v1"
+}
+
