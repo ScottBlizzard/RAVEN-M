@@ -124,6 +124,11 @@
     },
     "one_two_three_image_serialization": "pass"
   },
+  "runner_entrypoint": {
+    "emulator_mutations": 0,
+    "generation_calls": 0,
+    "status": "pass"
+  },
   "schema": "raven_m.mobileuse.preflight.v1",
   "source_lock": {
     "checked_file_count": 15,
