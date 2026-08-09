@@ -1,0 +1,22 @@
+{
+  "file_sha256": {
+    "implementation/configs/mobileuse_multiagent_qwen3_vl_32b_hard_seed20260806.yaml": "f8f6ca9c5f0308ec97f3b74d48f15c79cb9c4f64d316a9e631a0a09d845aa58c",
+    "implementation/scripts/live_preflight_mobileuse.py": "cad33c8ea06b36cc0392470965b883a0a77eaea63a2eecc08adac5a78ee339f1",
+    "implementation/scripts/preflight_mobileuse.py": "47d37c858c9c64d2e1f3a9f5dc1a0a08c27df5d7bf631c10c351ef4d2cc1a5ec",
+    "implementation/scripts/run_mobileuse_hard.py": "528bf9649af660b3e9e335d431883ed6a9f95afbcd42ebddf2d7142fb1c0caa0",
+    "implementation/scripts/start_mobileuse_server.sh": "9f6e41f716373cf1d2dc116afb06ec5c24d4dc7b5f7a04f9bda3d2561727190c",
+    "implementation/src/raven_m/models/vllm_multi_image_client.py": "d1e46e6dccb6f7c35a18e878b3c65d3a142c25b72016576eaf4655a9806b86f4",
+    "implementation/src/raven_m/public_frameworks/mobileuse/action_adapter.py": "890b595946f2671feb50d332e5701e8bfd7746eece9d378993610e53c39b7ee5",
+    "implementation/src/raven_m/public_frameworks/mobileuse/controller.py": "c045e048eca9ae23c5a50245d4aea7fe3bf50ab1457c4e61c0f8dda9a08c4275",
+    "implementation/src/raven_m/public_frameworks/mobileuse/logging.py": "9dded7f233b837b4cba2be8bf41c9cbeeb7ad66d3d82abb7a93cc2c929479ff4",
+    "implementation/src/raven_m/public_frameworks/mobileuse/mechanism_metrics.py": "2b9e1b9936b098c5f2894b1397ae082c57dbaa40736f891957b8e7d33ae8724e",
+    "implementation/src/raven_m/public_frameworks/mobileuse/prompt_adapter.py": "d641b3a6550f889d26cbbbe622939b1695a874b7abfc78d36384224b3addbb00",
+    "implementation/third_party/mobile_use/DEPENDENCY_LOCK.json": "53fe09dbd6a37c9685494572d9d1e10ef99cce6697a99d1cff3b7ac86ede6b0f",
+    "implementation/third_party/mobile_use/SOURCE_LOCK.json": "d952edcf61c0d3aab0c432ec43e19e8d55a1499ce597dc5b18442b4df63bed09",
+    "protocols/MOBILEUSE_QWEN3VL32B_HARD_SEED20260806_PREREG.json": "e46319e45a5da90c1c381297dfdb44893189492b12b513ec704ce51e65ed72a0",
+    "protocols/MOBILEUSE_QWEN3VL32B_HARD_SEED20260806_PREREG.md": "ed76fca647c9d481db6068c416e8ff7e219a22a51702c6354d655d3ad010b545"
+  },
+  "schema": "raven_m.mobileuse.freeze_after_smoke.v1",
+  "smoke_aggregate_sha256": "6071a5112cb21a68484d61f41d202ef3a1b26ed9bbb90e5bbb247089f814b7f0",
+  "smoke_suite": "D:\\ZJU\\Summer_Camp\\RAVEN-M-PF01\\runs\\public_framework\\mobileuse\\pf01_smoke_20260809T112227_eec30bd7"
+}
