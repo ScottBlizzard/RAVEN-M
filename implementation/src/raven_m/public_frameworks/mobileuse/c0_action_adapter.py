@@ -150,7 +150,7 @@ class C0NativeActionAdapter:
             text = p.get("text")
             if not isinstance(text, str) or not text.strip():
                 raise ValueError("open.text must be a package name")
-            bridge = {"type": "open_package", "package": text.strip()}
+            bridge = {"type": "open_app_name", "text": text.strip()}
         elif name == "key":
             self._exact(p, {"text"})
             text = p.get("text")

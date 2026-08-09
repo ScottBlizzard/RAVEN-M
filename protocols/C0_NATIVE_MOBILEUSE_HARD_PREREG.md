@@ -34,7 +34,32 @@ The task/evaluator source remains AndroidWorld commit
 Audio Recorder, Camera, Tasks, Markor, Simple Calendar Pro, and Chrome is
 inserted at the same lifecycle location as the MadeAgents fork: after snapshot
 restore and before task-specific seeded state is created. Every episode writes
-`reset_audit.json`.
+`reset_audit.json`, then returns to Home before the first model screenshot when
+the task requests `start_on_home_screen`. Protocol code is locked to MobileUse
+`babec07`; the six-app isolation policy follows its README, while the Tasks
+entry is explicitly referenced from the later MadeAgents fork `ea208c7` rather
+than claimed as byte-identical to the older gitlink.
+
+Before any model generation, a zero-generation qualification builds and
+verifies baseline snapshots for all 11 apps used by the 19 scored tasks. Three
+frozen-APK compatibility normalizations are explicit: Markor 2.10 uses its
+icon-only onboarding; OsmAnd 4.6 creates its own `map_markers` schema with one
+temporary marker that is deleted and verified absent before snapshotting; and
+Chrome 109 uses a frozen device-side script to write only the five persisted
+values observed after a successful stock onboarding. The Chrome normalization
+is necessary because the 2 GB AVD can make System UI/Launcher ANR before the
+welcome-screen taps are delivered. It first lets Chrome create its own data,
+then verifies a clean Chrome main activity, no application-error window, and
+all five persisted values. This is environment preparation only: it makes no
+model call, changes no scored task/evaluator, and the scored/live qualification
+still runs on the standard 2 GB AVD. Snapshot, live-emulator, and static source
+freeze reports must all agree before C0 is allowed to call the model.
+
+The released MobileUse `type`/`clear_text` bridge depends on the open-source
+ADBKeyBoard IME. C0 freezes and installs the official v2.4 stable APK
+(`SHA256=e0d0cf276b710cb34c46121f58720f5285a83ed410b0d45f57a0677b67dc2852`)
+and treats a missing package/version or unregistered `AdbIME` as an
+infrastructure qualification failure, not as a model failure.
 
 ## Qualification and stopping
 
@@ -55,4 +80,3 @@ physical action, screenshots, audit-only UI tree, package transition, progress
 and reflection outputs, evaluator reward, reset audit, mechanism metrics, and a
 hash-chained event log. The aggregate is rewritten after every task so an
 interruption cannot erase completed evidence.
-

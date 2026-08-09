@@ -4,7 +4,9 @@ from __future__ import annotations
 
 import ast
 from datetime import datetime, timezone
+import importlib.metadata
 import json
+import math
 import os
 from pathlib import Path
 import subprocess
@@ -60,6 +62,34 @@ def main() -> None:
         errors.append("budget_multiplier_drift")
     if config.get("memory_boundary", {}).get("new_raven_m_memory") is not False:
         errors.append("c0_must_not_add_raven_m_memory")
+    expected_model = {
+        "id": c0.MODEL_ID,
+        "revision": c0.MODEL_REVISION,
+        "dtype": "bfloat16",
+        "tensor_parallel_size": 1,
+        "temperature": 0.7,
+        "top_p": 0.8,
+        "top_k": 20,
+        "presence_penalty": 1.5,
+        "repetition_penalty": 1.0,
+        "generation_seed": 3407,
+    }
+    if config.get("model") != expected_model:
+        errors.append("model_or_sampling_config_drift")
+    if config.get("benchmark", {}).get("androidworld_commit") != "3e50888527ef9f29b9157ecd537e408008bb1c85":
+        errors.append("androidworld_commit_config_drift")
+    expected_roles = [
+        "Operator", "Reflector", "Progressor", "TrajectoryReflector",
+        "AnswerAgent", "GlobalReflector",
+    ]
+    if config.get("mobileuse", {}).get("roles") != expected_roles:
+        errors.append("six_role_config_drift")
+    expected_reset_apps = [
+        "audio recorder", "camera", "tasks", "markor",
+        "simple calendar pro", "chrome",
+    ]
+    if config.get("state_isolation", {}).get("reset_apps") != expected_reset_apps:
+        errors.append("six_app_reset_config_drift")
     if "C1 must reuse this order" not in prereg:
         errors.append("paired_c1_order_not_frozen")
 
@@ -68,7 +98,11 @@ def main() -> None:
         errors.append("nineteen_instance_freeze_failed")
     if any(int(item["task_seed"]) != c0.TASK_SEED for item in specs):
         errors.append("instance_seed_drift")
-    if any(item["native_max_steps"] < item["base_native_max_steps"] for item in specs):
+    if any(
+        int(item["native_max_steps"])
+        != int(math.ceil(c0.BUDGET_MULTIPLIER * item["base_native_max_steps"]))
+        for item in specs
+    ):
         errors.append("budget_scaling_failed")
 
     source_lock = json.loads(
@@ -76,6 +110,34 @@ def main() -> None:
     )
     if "babec07fd0e5faa7e7bcc7d3d0ee2320f6b83347" not in json.dumps(source_lock):
         errors.append("mobileuse_source_lock_drift")
+    locked_entries = (
+        source_lock.get("selected_source_files", [])
+        + source_lock.get("selected_prompt_files", [])
+    )
+    vendor_root = PROJECT_ROOT / "third_party/mobile_use/upstream"
+    for entry in locked_entries:
+        path = vendor_root / entry["path"]
+        if not path.is_file():
+            errors.append(f"locked_upstream_missing:{entry['path']}")
+        elif c0.digest(path) != entry["sha256"]:
+            errors.append(f"locked_upstream_hash_drift:{entry['path']}")
+    dependency_lock = json.loads(
+        (PROJECT_ROOT / "third_party/mobile_use/DEPENDENCY_LOCK.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    if sys.version != dependency_lock.get("python"):
+        errors.append("python_runtime_dependency_drift")
+    for package in dependency_lock.get("packages", []):
+        try:
+            actual_version = importlib.metadata.version(package["name"])
+        except importlib.metadata.PackageNotFoundError:
+            errors.append(f"dependency_missing:{package['name']}")
+            continue
+        if actual_version != package["version"]:
+            errors.append(
+                f"dependency_version_drift:{package['name']}:{actual_version}"
+            )
     reset_source = (
         SOURCE_REPOSITORY
         / "03_code/third_party/android_world/android_world/task_evals/utils/user_data_generation.py"
@@ -132,6 +194,50 @@ def main() -> None:
                     errors.append(f"native_prompt_missing:{token}")
             if controller.agent.reflect_on_demand is not False:
                 errors.append("reflect_on_demand_drift")
+            if controller.agent.planner is not None or controller.agent.note_taker is not None:
+                errors.append("released_disabled_roles_drift")
+            if controller.agent.max_action_retry != 3:
+                errors.append("max_action_retry_drift")
+            if controller.agent.enable_pre_reflection is not True:
+                errors.append("pre_reflection_drift")
+            trajectory_expected = {
+                "evoke_every_steps": 5, "cold_steps": 3,
+                "detect_error": True, "num_histories": 5,
+                "num_latest_screenshots": 0, "max_repeat_action": 3,
+                "max_repeat_action_series": 2, "max_repeat_screen": 3,
+                "max_fail_count": 3,
+            }
+            for key, expected_value in trajectory_expected.items():
+                if getattr(controller.agent.trajectory_reflector, key, None) != expected_value:
+                    errors.append(f"trajectory_schedule_drift:{key}")
+            if controller.agent.global_reflector.num_latest_screenshots != 3:
+                errors.append("global_reflector_screenshot_schedule_drift")
+
+            from mobile_use.default_prompts.prompt_type import load_prompt
+            prompt_map = {
+                "operator": "operator.yaml",
+                "reflector": "reflector.yaml",
+                "progressor": "progressor.yaml",
+                "trajectory_reflector": "trajectory_reflector.yaml",
+                "answer_agent": "answer_agent.yaml",
+                "global_reflector": "global_reflector.yaml",
+            }
+            runtime_prompt_hashes = {}
+            for role, filename in prompt_map.items():
+                runtime_prompt = getattr(controller.agent, role).prompt
+                released_prompt = load_prompt(role, filename)
+                def stable_prompt(value):
+                    return {
+                        key: item for key, item in vars(value).items()
+                        if key != "parse_response" and not callable(item)
+                    }
+                runtime_value = stable_prompt(runtime_prompt)
+                released_value = stable_prompt(released_prompt)
+                runtime_prompt_hashes[role] = c0.digest(
+                    PROJECT_ROOT / "third_party/mobile_use/upstream/mobile_use/default_prompts" / filename
+                )
+                if runtime_value != released_value:
+                    errors.append(f"runtime_prompt_drift:{role}")
     except Exception as exc:
         errors.append(f"controller_construction:{type(exc).__name__}:{exc}")
 
@@ -161,6 +267,8 @@ def main() -> None:
             "androidworld_task_evaluator_commit": "3e50888527ef9f29b9157ecd537e408008bb1c85",
             "madeagents_reset_reference": "ea208c7",
             "madeagents_internal_storage_fix": "9a207d1a378bacbef0dbf3b81b79c63369e11f7e",
+            "external_androidworld_runtime_is_content_hashed": True,
+            "runtime_prompt_file_sha256": locals().get("runtime_prompt_hashes", {}),
         },
         "tests": {
             "returncode": completed.returncode,

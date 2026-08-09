@@ -1,0 +1,719 @@
+{
+  "checks": {
+    "adb_keyboard_registered": {
+      "pass": true,
+      "registered": [
+        "com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME",
+        "com.google.android.tts/com.google.android.apps.speech.tts.googletts.settings.asr.voiceime.VoiceInputMethodService",
+        "com.android.adbkeyboard/.AdbIME"
+      ],
+      "required": "com.android.adbkeyboard/.AdbIME"
+    },
+    "back": {
+      "foreground": "net.gsantner.markor/net.gsantner.markor.activity.MainActivity",
+      "pass": true
+    },
+    "clear_text": {
+      "editable_value": "Search",
+      "foreground_still_markor": true,
+      "pass": true
+    },
+    "enter": {
+      "foreground": "net.gsantner.markor/net.gsantner.markor.activity.MainActivity",
+      "pass": true
+    },
+    "home": {
+      "foreground": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+      "pass": true
+    },
+    "key_and_menu": {
+      "foreground": "net.gsantner.markor/net.gsantner.markor.activity.MainActivity",
+      "pass": true,
+      "volume_overlay_changed": true
+    },
+    "long_press_and_wait": {
+      "observable_screen_change": true,
+      "pass": true
+    },
+    "markor_last_used_extension_is_clean": {
+      "pass": true,
+      "value": null
+    },
+    "open_app_name": {
+      "foreground": "net.gsantner.markor/net.gsantner.markor.activity.MainActivity",
+      "pass": true
+    },
+    "scored_relevant_app_resets": {
+      "audits": [
+        {
+          "completed_resets": [],
+          "declared_apps": [
+            "osmand"
+          ],
+          "lifecycle": "after_snapshot_restore_before_seeded_task_state",
+          "pass": true,
+          "post_initialize_foreground": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+          "post_initialize_home_pass": true,
+          "required_resets": [],
+          "reset_policy_apps": [
+            "audio recorder",
+            "camera",
+            "tasks",
+            "markor",
+            "simple calendar pro",
+            "chrome"
+          ],
+          "schema": "raven_m.c0.app_reset_audit.v1",
+          "task_class": "OsmAndMarker",
+          "timestamp_utc": "2026-08-09T19:24:09.243988+00:00"
+        },
+        {
+          "completed_resets": [
+            "markor"
+          ],
+          "declared_apps": [
+            "broccoli app",
+            "markor"
+          ],
+          "lifecycle": "after_snapshot_restore_before_seeded_task_state",
+          "pass": true,
+          "post_initialize_foreground": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+          "post_initialize_home_pass": true,
+          "required_resets": [
+            "markor"
+          ],
+          "reset_policy_apps": [
+            "audio recorder",
+            "camera",
+            "tasks",
+            "markor",
+            "simple calendar pro",
+            "chrome"
+          ],
+          "schema": "raven_m.c0.app_reset_audit.v1",
+          "task_class": "RecipeAddMultipleRecipesFromMarkor2",
+          "timestamp_utc": "2026-08-09T19:25:50.092896+00:00"
+        },
+        {
+          "completed_resets": [
+            "markor"
+          ],
+          "declared_apps": [
+            "markor",
+            "simple sms messenger"
+          ],
+          "lifecycle": "after_snapshot_restore_before_seeded_task_state",
+          "pass": true,
+          "post_initialize_foreground": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+          "post_initialize_home_pass": true,
+          "required_resets": [
+            "markor"
+          ],
+          "reset_policy_apps": [
+            "audio recorder",
+            "camera",
+            "tasks",
+            "markor",
+            "simple calendar pro",
+            "chrome"
+          ],
+          "schema": "raven_m.c0.app_reset_audit.v1",
+          "task_class": "MarkorCreateNoteAndSms",
+          "timestamp_utc": "2026-08-09T19:27:30.556064+00:00"
+        },
+        {
+          "completed_resets": [],
+          "declared_apps": [
+            "retro music"
+          ],
+          "lifecycle": "after_snapshot_restore_before_seeded_task_state",
+          "pass": true,
+          "post_initialize_foreground": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+          "post_initialize_home_pass": true,
+          "required_resets": [],
+          "reset_policy_apps": [
+            "audio recorder",
+            "camera",
+            "tasks",
+            "markor",
+            "simple calendar pro",
+            "chrome"
+          ],
+          "schema": "raven_m.c0.app_reset_audit.v1",
+          "task_class": "RetroSavePlaylist",
+          "timestamp_utc": "2026-08-09T19:28:32.020110+00:00"
+        },
+        {
+          "completed_resets": [],
+          "declared_apps": [
+            "pro expense"
+          ],
+          "lifecycle": "after_snapshot_restore_before_seeded_task_state",
+          "pass": true,
+          "post_initialize_foreground": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+          "post_initialize_home_pass": true,
+          "required_resets": [],
+          "reset_policy_apps": [
+            "audio recorder",
+            "camera",
+            "tasks",
+            "markor",
+            "simple calendar pro",
+            "chrome"
+          ],
+          "schema": "raven_m.c0.app_reset_audit.v1",
+          "task_class": "ExpenseDeleteMultiple2",
+          "timestamp_utc": "2026-08-09T19:29:14.656477+00:00"
+        },
+        {
+          "completed_resets": [
+            "simple calendar pro"
+          ],
+          "declared_apps": [
+            "simple calendar pro"
+          ],
+          "lifecycle": "after_snapshot_restore_before_seeded_task_state",
+          "pass": true,
+          "post_initialize_foreground": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+          "post_initialize_home_pass": true,
+          "required_resets": [
+            "simple calendar pro"
+          ],
+          "reset_policy_apps": [
+            "audio recorder",
+            "camera",
+            "tasks",
+            "markor",
+            "simple calendar pro",
+            "chrome"
+          ],
+          "schema": "raven_m.c0.app_reset_audit.v1",
+          "task_class": "SimpleCalendarAddOneEvent",
+          "timestamp_utc": "2026-08-09T19:30:03.814396+00:00"
+        },
+        {
+          "completed_resets": [],
+          "declared_apps": [
+            "open tracks sports tracker"
+          ],
+          "lifecycle": "after_snapshot_restore_before_seeded_task_state",
+          "pass": true,
+          "post_initialize_foreground": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+          "post_initialize_home_pass": true,
+          "required_resets": [],
+          "reset_policy_apps": [
+            "audio recorder",
+            "camera",
+            "tasks",
+            "markor",
+            "simple calendar pro",
+            "chrome"
+          ],
+          "schema": "raven_m.c0.app_reset_audit.v1",
+          "task_class": "SportsTrackerTotalDurationForCategoryThisWeek",
+          "timestamp_utc": "2026-08-09T19:30:34.713819+00:00"
+        },
+        {
+          "completed_resets": [],
+          "declared_apps": [
+            "broccoli app"
+          ],
+          "lifecycle": "after_snapshot_restore_before_seeded_task_state",
+          "pass": true,
+          "post_initialize_foreground": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+          "post_initialize_home_pass": true,
+          "required_resets": [],
+          "reset_policy_apps": [
+            "audio recorder",
+            "camera",
+            "tasks",
+            "markor",
+            "simple calendar pro",
+            "chrome"
+          ],
+          "schema": "raven_m.c0.app_reset_audit.v1",
+          "task_class": "RecipeDeleteMultipleRecipesWithConstraint",
+          "timestamp_utc": "2026-08-09T19:31:12.069335+00:00"
+        },
+        {
+          "completed_resets": [],
+          "declared_apps": [
+            "open tracks sports tracker"
+          ],
+          "lifecycle": "after_snapshot_restore_before_seeded_task_state",
+          "pass": true,
+          "post_initialize_foreground": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+          "post_initialize_home_pass": true,
+          "required_resets": [],
+          "reset_policy_apps": [
+            "audio recorder",
+            "camera",
+            "tasks",
+            "markor",
+            "simple calendar pro",
+            "chrome"
+          ],
+          "schema": "raven_m.c0.app_reset_audit.v1",
+          "task_class": "SportsTrackerTotalDistanceForCategoryOverInterval",
+          "timestamp_utc": "2026-08-09T19:31:43.471339+00:00"
+        },
+        {
+          "completed_resets": [
+            "markor"
+          ],
+          "declared_apps": [
+            "markor"
+          ],
+          "lifecycle": "after_snapshot_restore_before_seeded_task_state",
+          "pass": true,
+          "post_initialize_foreground": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+          "post_initialize_home_pass": true,
+          "required_resets": [
+            "markor"
+          ],
+          "reset_policy_apps": [
+            "audio recorder",
+            "camera",
+            "tasks",
+            "markor",
+            "simple calendar pro",
+            "chrome"
+          ],
+          "schema": "raven_m.c0.app_reset_audit.v1",
+          "task_class": "MarkorMergeNotes",
+          "timestamp_utc": "2026-08-09T19:33:02.570698+00:00"
+        },
+        {
+          "completed_resets": [
+            "markor"
+          ],
+          "declared_apps": [
+            "pro expense",
+            "markor"
+          ],
+          "lifecycle": "after_snapshot_restore_before_seeded_task_state",
+          "pass": true,
+          "post_initialize_foreground": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+          "post_initialize_home_pass": true,
+          "required_resets": [
+            "markor"
+          ],
+          "reset_policy_apps": [
+            "audio recorder",
+            "camera",
+            "tasks",
+            "markor",
+            "simple calendar pro",
+            "chrome"
+          ],
+          "schema": "raven_m.c0.app_reset_audit.v1",
+          "task_class": "ExpenseAddMultipleFromMarkor",
+          "timestamp_utc": "2026-08-09T19:34:42.295171+00:00"
+        },
+        {
+          "completed_resets": [
+            "markor"
+          ],
+          "declared_apps": [
+            "broccoli app",
+            "markor"
+          ],
+          "lifecycle": "after_snapshot_restore_before_seeded_task_state",
+          "pass": true,
+          "post_initialize_foreground": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+          "post_initialize_home_pass": true,
+          "required_resets": [
+            "markor"
+          ],
+          "reset_policy_apps": [
+            "audio recorder",
+            "camera",
+            "tasks",
+            "markor",
+            "simple calendar pro",
+            "chrome"
+          ],
+          "schema": "raven_m.c0.app_reset_audit.v1",
+          "task_class": "RecipeAddMultipleRecipesFromMarkor",
+          "timestamp_utc": "2026-08-09T19:36:12.070598+00:00"
+        },
+        {
+          "completed_resets": [],
+          "declared_apps": [
+            "pro expense",
+            "simple gallery pro"
+          ],
+          "lifecycle": "after_snapshot_restore_before_seeded_task_state",
+          "pass": true,
+          "post_initialize_foreground": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+          "post_initialize_home_pass": true,
+          "required_resets": [],
+          "reset_policy_apps": [
+            "audio recorder",
+            "camera",
+            "tasks",
+            "markor",
+            "simple calendar pro",
+            "chrome"
+          ],
+          "schema": "raven_m.c0.app_reset_audit.v1",
+          "task_class": "ExpenseAddMultipleFromGallery",
+          "timestamp_utc": "2026-08-09T19:37:04.438990+00:00"
+        },
+        {
+          "completed_resets": [],
+          "declared_apps": [
+            "broccoli app",
+            "simple gallery pro"
+          ],
+          "lifecycle": "after_snapshot_restore_before_seeded_task_state",
+          "pass": true,
+          "post_initialize_foreground": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+          "post_initialize_home_pass": true,
+          "required_resets": [],
+          "reset_policy_apps": [
+            "audio recorder",
+            "camera",
+            "tasks",
+            "markor",
+            "simple calendar pro",
+            "chrome"
+          ],
+          "schema": "raven_m.c0.app_reset_audit.v1",
+          "task_class": "RecipeAddMultipleRecipesFromImage",
+          "timestamp_utc": "2026-08-09T19:37:49.914760+00:00"
+        },
+        {
+          "completed_resets": [],
+          "declared_apps": [
+            "simple gallery pro"
+          ],
+          "lifecycle": "after_snapshot_restore_before_seeded_task_state",
+          "pass": true,
+          "post_initialize_foreground": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+          "post_initialize_home_pass": true,
+          "required_resets": [],
+          "reset_policy_apps": [
+            "audio recorder",
+            "camera",
+            "tasks",
+            "markor",
+            "simple calendar pro",
+            "chrome"
+          ],
+          "schema": "raven_m.c0.app_reset_audit.v1",
+          "task_class": "SaveCopyOfReceiptTaskEval",
+          "timestamp_utc": "2026-08-09T19:38:23.763571+00:00"
+        },
+        {
+          "completed_resets": [],
+          "declared_apps": [
+            "osmand"
+          ],
+          "lifecycle": "after_snapshot_restore_before_seeded_task_state",
+          "pass": true,
+          "post_initialize_foreground": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+          "post_initialize_home_pass": true,
+          "required_resets": [],
+          "reset_policy_apps": [
+            "audio recorder",
+            "camera",
+            "tasks",
+            "markor",
+            "simple calendar pro",
+            "chrome"
+          ],
+          "schema": "raven_m.c0.app_reset_audit.v1",
+          "task_class": "OsmAndTrack",
+          "timestamp_utc": "2026-08-09T19:38:51.288071+00:00"
+        },
+        {
+          "completed_resets": [],
+          "declared_apps": [
+            "open tracks sports tracker"
+          ],
+          "lifecycle": "after_snapshot_restore_before_seeded_task_state",
+          "pass": true,
+          "post_initialize_foreground": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+          "post_initialize_home_pass": true,
+          "required_resets": [],
+          "reset_policy_apps": [
+            "audio recorder",
+            "camera",
+            "tasks",
+            "markor",
+            "simple calendar pro",
+            "chrome"
+          ],
+          "schema": "raven_m.c0.app_reset_audit.v1",
+          "task_class": "SportsTrackerActivitiesOnDate",
+          "timestamp_utc": "2026-08-09T19:39:22.240388+00:00"
+        },
+        {
+          "completed_resets": [
+            "chrome"
+          ],
+          "declared_apps": [
+            "chrome"
+          ],
+          "lifecycle": "after_snapshot_restore_before_seeded_task_state",
+          "pass": true,
+          "post_initialize_foreground": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+          "post_initialize_home_pass": true,
+          "required_resets": [
+            "chrome"
+          ],
+          "reset_policy_apps": [
+            "audio recorder",
+            "camera",
+            "tasks",
+            "markor",
+            "simple calendar pro",
+            "chrome"
+          ],
+          "schema": "raven_m.c0.app_reset_audit.v1",
+          "task_class": "BrowserMultiply",
+          "timestamp_utc": "2026-08-09T19:41:20.185018+00:00"
+        },
+        {
+          "completed_resets": [
+            "markor"
+          ],
+          "declared_apps": [
+            "markor",
+            "vlc"
+          ],
+          "lifecycle": "after_snapshot_restore_before_seeded_task_state",
+          "pass": true,
+          "post_initialize_foreground": "com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity",
+          "post_initialize_home_pass": true,
+          "required_resets": [
+            "markor"
+          ],
+          "reset_policy_apps": [
+            "audio recorder",
+            "camera",
+            "tasks",
+            "markor",
+            "simple calendar pro",
+            "chrome"
+          ],
+          "schema": "raven_m.c0.app_reset_audit.v1",
+          "task_class": "MarkorTranscribeVideo",
+          "timestamp_utc": "2026-08-09T19:43:06.086958+00:00"
+        }
+      ],
+      "covered": [
+        "chrome",
+        "markor",
+        "simple calendar pro"
+      ],
+      "expected": [
+        "chrome",
+        "markor",
+        "simple calendar pro"
+      ],
+      "pass": true
+    },
+    "swipe": {
+      "foreground": "com.android.settings/com.android.settings.Settings",
+      "observable_screen_change": true,
+      "pass": true
+    },
+    "type_without_enter": {
+      "editable_values": [
+        "C0NoEnter7319"
+      ],
+      "foreground_still_markor": true,
+      "pass": true,
+      "sentinel_exact_count": 1
+    }
+  },
+  "device_identity": {
+    "build_fingerprint": "google/sdk_gphone64_x86_64/emu64x:13/TE1A.240213.009/12342917:userdebug/dev-keys",
+    "packages": {
+      "adb keyboard": {
+        "package": "com.android.adbkeyboard",
+        "version_lines": [
+          "versionCode=2 minSdk=21 targetSdk=33",
+          "versionName=2.0"
+        ]
+      },
+      "audio recorder": {
+        "package": "com.dimowner.audiorecorder",
+        "version_lines": [
+          "versionCode=926 minSdk=21 targetSdk=30",
+          "versionName=0.9.26"
+        ]
+      },
+      "broccoli app": {
+        "package": "com.flauschcode.broccoli",
+        "version_lines": [
+          "versionCode=1020600 minSdk=26 targetSdk=34",
+          "versionName=1.2.6"
+        ]
+      },
+      "camera": {
+        "package": "com.android.camera2",
+        "version_lines": [
+          "versionCode=20002000 minSdk=33 targetSdk=1000",
+          "versionName=2.0.002"
+        ]
+      },
+      "chrome": {
+        "package": "com.android.chrome",
+        "version_lines": [
+          "versionCode=541412337 minSdk=29 targetSdk=33",
+          "versionName=109.0.5414.123"
+        ]
+      },
+      "markor": {
+        "package": "net.gsantner.markor",
+        "version_lines": [
+          "versionCode=146 minSdk=16 targetSdk=33",
+          "versionName=2.10.9"
+        ]
+      },
+      "open tracks sports tracker": {
+        "package": "de.dennisguse.opentracks",
+        "version_lines": [
+          "versionCode=5705 minSdk=26 targetSdk=34",
+          "versionName=v4.11.3"
+        ]
+      },
+      "osmand": {
+        "package": "net.osmand",
+        "version_lines": [
+          "versionCode=4613 minSdk=23 targetSdk=33",
+          "versionName=4.6.13"
+        ]
+      },
+      "pro expense": {
+        "package": "com.arduia.expense",
+        "version_lines": [
+          "versionCode=11 minSdk=21 targetSdk=30",
+          "versionName=1.0.0-beta05"
+        ]
+      },
+      "retro music": {
+        "package": "code.name.monkey.retromusic",
+        "version_lines": [
+          "versionCode=10603 minSdk=21 targetSdk=33",
+          "versionName=6.1.0"
+        ]
+      },
+      "simple calendar pro": {
+        "package": "com.simplemobiletools.calendar.pro",
+        "version_lines": [
+          "versionCode=238 minSdk=23 targetSdk=33",
+          "versionName=6.22.2"
+        ]
+      },
+      "simple gallery pro": {
+        "package": "com.simplemobiletools.gallery.pro",
+        "version_lines": [
+          "versionCode=396 minSdk=23 targetSdk=33",
+          "versionName=6.28.1"
+        ]
+      },
+      "simple sms messenger": {
+        "package": "com.simplemobiletools.smsmessenger",
+        "version_lines": [
+          "versionCode=85 minSdk=23 targetSdk=34",
+          "versionName=5.19.3"
+        ]
+      },
+      "tasks": {
+        "package": "org.tasks",
+        "version_lines": [
+          "versionCode=130605 minSdk=24 targetSdk=33",
+          "versionName=13.6.3"
+        ]
+      },
+      "vlc": {
+        "package": "org.videolan.vlc",
+        "version_lines": [
+          "versionCode=13050408 minSdk=17 targetSdk=33",
+          "versionName=3.5.4"
+        ]
+      }
+    },
+    "serial": "emulator-5554"
+  },
+  "errors": [],
+  "generation_calls": 0,
+  "schema": "raven_m.c0.live_emulator_preflight.v1",
+  "screenshots": [
+    "evidence/public_framework/mobileuse_c0/live_preflight/00_home_before.png",
+    "evidence/public_framework/mobileuse_c0/live_preflight/01_markor_open.png",
+    "evidence/public_framework/mobileuse_c0/live_preflight/02_typed_without_enter.png",
+    "evidence/public_framework/mobileuse_c0/live_preflight/03_long_pressed.png",
+    "evidence/public_framework/mobileuse_c0/live_preflight/04_cleared.png",
+    "evidence/public_framework/mobileuse_c0/live_preflight/05_back_after_search.png",
+    "evidence/public_framework/mobileuse_c0/live_preflight/06_settings_before_swipe.png",
+    "evidence/public_framework/mobileuse_c0/live_preflight/07_settings_after_swipe.png",
+    "evidence/public_framework/mobileuse_c0/live_preflight/08_home_after.png"
+  ],
+  "source_freeze": {
+    "external:androidworld_compat.py": "76bd4cae773543986275c9b6e14bc5eef47b25a2af9e08fb8c69930e25b13865",
+    "external:androidworld_runtime_file_count": "165",
+    "external:androidworld_runtime_tree": "7d36049b601d95c81c09c76f8ead74ccb4ec6e904d002c0afed3dc528ae7325a",
+    "implementation/configs/androidworld_hard_v2_instances.json": "c1d718e9d380e443d12d2c29ab2182ae801a3befc53881b864cd830f2ad0440a",
+    "implementation/configs/c0_native_mobileuse_qwen3_vl_32b_hard_seed20260806.yaml": "1532ec29a481d10a0ec6cafa86edb53faf9fa70e2da8f84d515ef1307b4d8653",
+    "implementation/configs/c0_qwen3_vl_32b_model.sha256": "d18f8e731880a2263b68ff2d565db711e6cf1585755f9ae78fcafcd5d4a77227",
+    "implementation/scripts/android_c0_set_chrome_prefs.sh": "7255419b4968fcdcfb22a07a80021bb4d7775686f8b38d328ffa596cd53758ec",
+    "implementation/scripts/live_preflight_mobileuse_c0.py": "5b919689722c0c339d77c6ceeff2dba6643f8a9b8062db7aa37ae76bcfc122ba",
+    "implementation/scripts/preflight_mobileuse_c0.py": "b363ff5568323a65b5c71acc52076193d680e8eb35533d997c25de09c2adf44a",
+    "implementation/scripts/prepare_mobileuse_c0_snapshots.py": "bf36ab3d600f8a5c16802271baacf3f36f094d4d8f5043c341f82fb3f2375880",
+    "implementation/scripts/run_mobileuse_c0.py": "ef58d37bdb40acd268982b70391f9b0f5bf5318cda7093e0c0392261d8f0ef2f",
+    "implementation/scripts/run_mobileuse_hard.py": "528bf9649af660b3e9e335d431883ed6a9f95afbcd42ebddf2d7142fb1c0caa0",
+    "implementation/scripts/start_mobileuse_c0_server.sh": "2a8151deb7ba3d61bf4fadecb25170618a2ca62e6e13ec2ea8dbc44d95cdd683",
+    "implementation/src/raven_m/env/androidworld_adapter.py": "ad4ecbee9430326ca7380334c49372911a1c6b1c217ee12bb3714d2fb1219c33",
+    "implementation/src/raven_m/models/transformers_client.py": "a43efbdba72af01282a5159b4acbaf0c8252096bea04da1457fb1ff62243e778",
+    "implementation/src/raven_m/models/vllm_multi_image_client.py": "d1e46e6dccb6f7c35a18e878b3c65d3a142c25b72016576eaf4655a9806b86f4",
+    "implementation/src/raven_m/multi_framework_benchmark/task_instances.py": "fd0772a3ba9b973911dfbb055b25c8dab6e34d0fa640cf6ab4d7b540595f05be",
+    "implementation/src/raven_m/public_frameworks/mobileuse/action_adapter.py": "890b595946f2671feb50d332e5701e8bfd7746eece9d378993610e53c39b7ee5",
+    "implementation/src/raven_m/public_frameworks/mobileuse/c0_action_adapter.py": "b6dd36e15300435b09d1e99856f12c5d6ba862310cbddefaae1f693fce5a5787",
+    "implementation/src/raven_m/public_frameworks/mobileuse/c0_controller.py": "de66a1be8314e69c7e32f91cbe2b4965b9ff918b6f7f4a33775400cd8f0cd438",
+    "implementation/src/raven_m/public_frameworks/mobileuse/c0_reset.py": "a17713aa55fedbb8a762ec66cc01c0fd71447ac8e92c21106ec425ee7eed5bd9",
+    "implementation/src/raven_m/public_frameworks/mobileuse/controller.py": "c045e048eca9ae23c5a50245d4aea7fe3bf50ab1457c4e61c0f8dda9a08c4275",
+    "implementation/src/raven_m/public_frameworks/mobileuse/logging.py": "9dded7f233b837b4cba2be8bf41c9cbeeb7ad66d3d82abb7a93cc2c929479ff4",
+    "implementation/src/raven_m/public_frameworks/mobileuse/mechanism_metrics.py": "2b9e1b9936b098c5f2894b1397ae082c57dbaa40736f891957b8e7d33ae8724e",
+    "implementation/src/raven_m/public_frameworks/mobileuse/prompt_adapter.py": "d641b3a6550f889d26cbbbe622939b1695a874b7abfc78d36384224b3addbb00",
+    "implementation/third_party/adbkeyboard/keyboardservice-debug-v2.4.apk": "e0d0cf276b710cb34c46121f58720f5285a83ed410b0d45f57a0677b67dc2852",
+    "implementation/third_party/mobile_use/DEPENDENCY_LOCK.json": "53fe09dbd6a37c9685494572d9d1e10ef99cce6697a99d1cff3b7ac86ede6b0f",
+    "implementation/third_party/mobile_use/SOURCE_LOCK.json": "d952edcf61c0d3aab0c432ec43e19e8d55a1499ce597dc5b18442b4df63bed09",
+    "implementation/third_party/mobile_use/upstream/mobile_use/agents/multi_agent.py": "0b3c0babeef93120c0a71bdfa12192239fe856ffca6cddddd4406a1722797b55",
+    "implementation/third_party/mobile_use/upstream/mobile_use/agents/sub_agent.py": "0171d3c84887c548305aeb42d3ece17ff8050e34b1a4df6f0738f2b32cf083fa",
+    "implementation/third_party/mobile_use/upstream/mobile_use/default_prompts/answer_agent.yaml": "12f8d0722e875e8c2e522c1df3e257cfdd58d8883a8d6b167239bc687cb1f80f",
+    "implementation/third_party/mobile_use/upstream/mobile_use/default_prompts/global_reflector.yaml": "4da36191b3442579e1bf5e37519083a098f104f8c72d23c7215286f274320731",
+    "implementation/third_party/mobile_use/upstream/mobile_use/default_prompts/operator.yaml": "4ccf163ee0b3818c61e38386151ee46bdf0144dd1ff9da9ecb7f03865bde8a64",
+    "implementation/third_party/mobile_use/upstream/mobile_use/default_prompts/progressor.yaml": "5bfcc0c793acf43cab14dc3f6e7a19d84aa2f72ae755748ecf5bc7a198a92380",
+    "implementation/third_party/mobile_use/upstream/mobile_use/default_prompts/prompt_type.py": "ced2f7b42ac353c227f82dbd94787f8eb5428ccbc8350b4d91a77733745393e6",
+    "implementation/third_party/mobile_use/upstream/mobile_use/default_prompts/reflector.yaml": "47a5bde95c3c98d9c181b62d107aa79b1080d0ea766077d856bc9d2da43c4f0a",
+    "implementation/third_party/mobile_use/upstream/mobile_use/default_prompts/trajectory_reflector.yaml": "5219204aea2fadbc4f656dbbd52c7af3cf05ea38d4258e600bf405b31a99df78",
+    "implementation/third_party/mobile_use/upstream/mobile_use/environment/mobile_environ.py": "a5d224c28045fcfe561eb6a13da212e9e4cf850a7a75b021d0740f6ddc50677c",
+    "implementation/third_party/mobile_use/upstream/mobile_use/schema/config.py": "8591b4cfd4a7f3540bdbd325683b3782dfb8bcde9764bfabc3b8d4db53097e60",
+    "implementation/third_party/mobile_use/upstream/mobile_use/schema/schema.py": "ff5563e1d3ecd3ee23f07377ca5453675e4ee15316c07761d790f42c2364b570",
+    "locked_upstream:benchmark/android_world/configs/mobileuse_template.yaml": "d49054776eb3e438eff91de6685aa5ee8d2ddf0d9db14d13f07f69802b6dbd8a",
+    "locked_upstream:benchmark/android_world/mobile_use_agent.py": "9a9eb5e4534f898f82c5d301692f7e92ce0525ea150639826e8a7394309df991",
+    "locked_upstream:mobile_use/agents/base.py": "167ce25e6223cc51d80cb88e8264271eae0dbfc92ca7ae9b71578c661a568b90",
+    "locked_upstream:mobile_use/agents/multi_agent.py": "0b3c0babeef93120c0a71bdfa12192239fe856ffca6cddddd4406a1722797b55",
+    "locked_upstream:mobile_use/agents/sub_agent.py": "0171d3c84887c548305aeb42d3ece17ff8050e34b1a4df6f0738f2b32cf083fa",
+    "locked_upstream:mobile_use/default_prompts/answer_agent.yaml": "12f8d0722e875e8c2e522c1df3e257cfdd58d8883a8d6b167239bc687cb1f80f",
+    "locked_upstream:mobile_use/default_prompts/global_reflector.yaml": "4da36191b3442579e1bf5e37519083a098f104f8c72d23c7215286f274320731",
+    "locked_upstream:mobile_use/default_prompts/operator.yaml": "4ccf163ee0b3818c61e38386151ee46bdf0144dd1ff9da9ecb7f03865bde8a64",
+    "locked_upstream:mobile_use/default_prompts/progressor.yaml": "5bfcc0c793acf43cab14dc3f6e7a19d84aa2f72ae755748ecf5bc7a198a92380",
+    "locked_upstream:mobile_use/default_prompts/reflector.yaml": "47a5bde95c3c98d9c181b62d107aa79b1080d0ea766077d856bc9d2da43c4f0a",
+    "locked_upstream:mobile_use/default_prompts/trajectory_reflector.yaml": "5219204aea2fadbc4f656dbbd52c7af3cf05ea38d4258e600bf405b31a99df78",
+    "locked_upstream:mobile_use/schema/config.py": "8591b4cfd4a7f3540bdbd325683b3782dfb8bcde9764bfabc3b8d4db53097e60",
+    "locked_upstream:mobile_use/schema/schema.py": "ff5563e1d3ecd3ee23f07377ca5453675e4ee15316c07761d790f42c2364b570",
+    "locked_upstream:mobile_use/utils/utils.py": "38df646289eb3d4ffcf33e3c2bab04a8259693d3428ceed07b7ea8ca27406dc4",
+    "locked_upstream:mobile_use/utils/vlm.py": "16fcd24088e13605ed73fbece14b0b1b1a317c38d462e284c79c7121aad151a3",
+    "locked_upstream:mobile_use_runtime_file_count": "58",
+    "locked_upstream:mobile_use_runtime_tree": "89312553ddacf092473ddee9936099418d8c46bc96ff7c839c38076c90b12fb3",
+    "protocols/C0_NATIVE_MOBILEUSE_HARD_PREREG.md": "34658b27359c69ca5e482bf1c59f344dcacb2dff0dc1e312b0dbf991b86cabb9"
+  },
+  "status": "pass",
+  "timestamp_utc": "2026-08-09T19:23:49.246158+00:00"
+}

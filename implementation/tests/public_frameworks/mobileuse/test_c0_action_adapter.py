@@ -32,8 +32,8 @@ def test_released_actions_map(adapter, value, expected_type):
 
 
 def test_open_and_key_are_explicit_bridge_actions(adapter):
-    assert adapter.map(action("open", text="net.gsantner.markor"), screen_width=100, screen_height=50).bridge_action == {
-        "type": "open_package", "package": "net.gsantner.markor"
+    assert adapter.map(action("open", text="markor"), screen_width=100, screen_height=50).bridge_action == {
+        "type": "open_app_name", "text": "markor"
     }
     assert adapter.map(action("key", text="volume_up"), screen_width=100, screen_height=50).bridge_action == {
         "type": "key", "text": "volume_up"
