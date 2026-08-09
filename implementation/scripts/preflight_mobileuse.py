@@ -233,6 +233,21 @@ def run_tests() -> dict[str, Any]:
     return {"status": "pass", "stdout": completed.stdout.strip()}
 
 
+def check_runner_entrypoint() -> dict[str, Any]:
+    completed = subprocess.run(
+        [sys.executable, str(PROJECT_ROOT / "scripts" / "run_mobileuse_hard.py"), "--help"],
+        cwd=REPOSITORY_ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    if completed.returncode:
+        raise RuntimeError(completed.stdout + "\n" + completed.stderr)
+    if "--mode {smoke,scored}" not in completed.stdout:
+        raise RuntimeError("MobileUse runner help did not expose the frozen modes")
+    return {"status": "pass", "generation_calls": 0, "emulator_mutations": 0}
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -251,6 +266,7 @@ def main() -> None:
         "actions": check_actions(),
         "dependencies": dependency_inventory(),
         "tests": run_tests(),
+        "runner_entrypoint": check_runner_entrypoint(),
         "status": "pass",
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)

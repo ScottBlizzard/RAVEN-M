@@ -24,6 +24,7 @@ LOCAL_RUNTIME = SOURCE_REPOSITORY / "06_local_runtime"
 VENDOR_ROOT = PROJECT_ROOT / "third_party" / "mobile_use" / "upstream"
 sys.path[:0] = [
     str(PROJECT_ROOT / "src"),
+    str(PROJECT_ROOT / "src" / "raven_m" / "multi_framework_benchmark"),
     str(VENDOR_ROOT),
     str(LOCAL_RUNTIME / "scripts"),
     str(SOURCE_REPOSITORY / "03_code" / "third_party" / "android_world"),
@@ -33,7 +34,7 @@ import androidworld_compat  # noqa: E402,F401
 from android_world import registry  # noqa: E402
 from android_world.env import android_world_controller, env_launcher  # noqa: E402
 from raven_m.models.vllm_multi_image_client import VLLMMultiImageClient  # noqa: E402
-from raven_m.multi_framework_benchmark.task_instances import instantiate_verified  # noqa: E402
+from task_instances import instantiate_verified  # type: ignore  # noqa: E402
 from raven_m.public_frameworks.mobileuse.controller import ARM_ID, MobileUseController  # noqa: E402
 from raven_m.public_frameworks.mobileuse.mechanism_metrics import extract as extract_mechanism_metrics  # noqa: E402
 
