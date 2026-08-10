@@ -40,6 +40,8 @@ SOURCE_FILES = (
     "implementation/scripts/build_a345_reference_ledger.py",
     "implementation/scripts/build_a4_donor_bank.py",
     "implementation/scripts/run_a4_expense_donor.ps1",
+    "implementation/scripts/qualify_a345_live_server.py",
+    "implementation/scripts/run_a345_arm.ps1",
     "implementation/src/raven_m/__init__.py",
     "implementation/src/raven_m/env/__init__.py",
     "implementation/src/raven_m/env/androidworld_adapter.py",

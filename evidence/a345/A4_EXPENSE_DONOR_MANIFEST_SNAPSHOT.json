@@ -1,0 +1,13 @@
+{
+  "schema": "a4_independent_donor_manifest_snapshot_v1",
+  "tasks": [
+    {
+      "app": "Pro Expense",
+      "difficulty": "easy",
+      "name": "ExpenseAddSingle",
+      "seed": 20260821,
+      "max_steps": 20,
+      "role": "donor_acquisition_only"
+    }
+  ]
+}

@@ -1,5 +1,7 @@
 {
   "checks": {
+    "a4_workflow_bank_sha256": "fe2dc206403a4f856613ced504d4021179c8dccf174658dad37e6815fcd3178c",
+    "a4_workflow_count": 3,
     "config_sha256": {
       "a3": "c814bf08a4f3145cb121dfd090d22736234c3d6cef6422b24960dfbb32036ec8",
       "a4": "28d20b4ad85ad5fba973851ac02691a620d9ee8d9d8d10cd82836b62ad734204",
@@ -43,23 +45,27 @@
       "stdout": "..............                                                           [100%]\n"
     }
   },
-  "created_at": "2026-08-10T18:21:09.398728+00:00",
-  "errors": [
-    "a4_frozen_donor_workflow_bank_missing"
-  ],
+  "created_at": "2026-08-10T18:41:13.138748+00:00",
+  "errors": [],
   "generation_calls": 0,
-  "qualified_arms": [],
+  "qualified_arms": [
+    "a3",
+    "a4",
+    "a5"
+  ],
   "schema": "a345_zero_generation_preflight_v1",
   "source_freeze": {
     "implementation/configs/a3_conact_hard_seed20260806.json": "c814bf08a4f3145cb121dfd090d22736234c3d6cef6422b24960dfbb32036ec8",
-    "implementation/configs/a4_awm_donor_manifest_v1.json": "49fe98488b3149ecbbdb0307333382be96e3a87fcfdd41e07a31ccfce854656c",
+    "implementation/configs/a4_awm_donor_manifest_v1.json": "420f5445989aac5f6a5ea87a19ce5f07c852bb120deec0f8ae7fa1fe8b92ee37",
     "implementation/configs/a4_awm_workflow_hard_seed20260806.json": "28d20b4ad85ad5fba973851ac02691a620d9ee8d9d8d10cd82836b62ad734204",
     "implementation/configs/a5_visual_graph_hard_seed20260806.json": "82d6c5e8a8c9a816a44c166a857b6408de1cde93eb96463490aa385450f2a205",
     "implementation/configs/androidworld_hard_v2_instances.json": "c1d718e9d380e443d12d2c29ab2182ae801a3befc53881b864cd830f2ad0440a",
     "implementation/scripts/build_a345_reference_ledger.py": "9f69cb6e63ad3c11420da49b7f9d5c199b6737a6c4ab775e36f9cc9651180e88",
     "implementation/scripts/build_a4_donor_bank.py": "3b791cecd91dff1c2d499d4d900bbc8fb35d70be10dc654a2be6dd35c2ec7037",
-    "implementation/scripts/preflight_a345_memory.py": "964b62e5c18c986138d1338c8640fd9d95cfce11e05daf5d424bc8bf960454c9",
-    "implementation/scripts/run_a4_expense_donor.ps1": "9f4a2811ec7a03569fae08ee0067bb312ec7c902997217114fbd6deed6101ec5",
+    "implementation/scripts/preflight_a345_memory.py": "b8b8d088a068a98312c2872e903c5df26e81f7a707f509db480098bda203fea8",
+    "implementation/scripts/qualify_a345_live_server.py": "e51e52455f22e8405d5e8e43550722811c860624d6b64a8ae2e729bbb4b46906",
+    "implementation/scripts/run_a345_arm.ps1": "aea3445b8a5a946006cd55d8ae14088811179e216cdc3da2cb9c5444e53225b6",
+    "implementation/scripts/run_a4_expense_donor.ps1": "eb52f3c5c816a273f351d1d674e8cc6712b27b98bbd80a460eb24c1f85b5714c",
     "implementation/scripts/run_official_qwen_mobile.py": "f0bfcc70aa9a951073e489d55d9289813413489c3539cd159cbdd35b573f1909",
     "implementation/src/raven_m/__init__.py": "83c1229d32f6e1b873cb8447f7d3e0926b6b69304743f5111cec61642f37a561",
     "implementation/src/raven_m/env/__init__.py": "ebd568a4e585b3ad8342d6374b61a3accb1b29432fe1dd0050bf14997b2a6afc",
@@ -70,7 +76,7 @@
     "implementation/src/raven_m/multi_framework_benchmark/__init__.py": "de3ef8d87d3132d407616d94674800a047e881e5f98cf97d58a4809ead9356e9",
     "implementation/src/raven_m/multi_framework_benchmark/task_instances.py": "fd0772a3ba9b973911dfbb055b25c8dab6e34d0fa640cf6ab4d7b540595f05be",
     "implementation/src/raven_m/official_qwen_mobile/__init__.py": "0ae4dd2aa0cd7972b5f37e436a6811b2a23eac745374f967a6ee407f7e092a14",
-    "implementation/src/raven_m/official_qwen_mobile/a345_contract.py": "d6d6633b6f055b183b8d1e10e6863eeaa3c560a71ac84a2191ebe8967143ff8c",
+    "implementation/src/raven_m/official_qwen_mobile/a345_contract.py": "57cd106215aeb93b5784908af8969cae524fc3c3e248c515ec90e9a6bac5d5d0",
     "implementation/src/raven_m/official_qwen_mobile/a345_memory.py": "657e954a0c58e7438de9c1a7f99291bb092fb4b9e7ea7763d08de4ff96e74a0b",
     "implementation/src/raven_m/official_qwen_mobile/a4_donor.py": "0712e693b94023c06379771ea7ed005c39ad5886a658deab684c6f9ceb84073b",
     "implementation/src/raven_m/official_qwen_mobile/controller.py": "8de0058485bcbac74ab90e551428340d48bd5d20dc6bee70dbd55bd03f6bf6a8",
@@ -84,6 +90,6 @@
     "protocols/A345_RUNBOOK.md": "0dfdca8f2cc5ee5161d5d15dd2e06e12d7d97fbd5f76b8d65dbf64c8641d8137",
     "protocols/A4_AWM_DONOR_ACQUISITION_RUNBOOK.md": "969088fb92fb3cc77d2562a6e958b570776a50564f0abda0ac6dbd88809e64ef"
   },
-  "source_freeze_sha256": "18c008fa15d98bb58ab6fd66530266e3fe26db84759f24016df73589f503eede",
-  "status": "fail"
+  "source_freeze_sha256": "15e29096382b500f376699891e271c4b9b7ffbabf1c2e88a9eb5b2dad6db23b8",
+  "status": "pass"
 }

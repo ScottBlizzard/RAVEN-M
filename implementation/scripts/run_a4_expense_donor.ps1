@@ -9,7 +9,9 @@ $output = Join-Path $repo "runs\a4_donors"
 foreach ($required in @($python, $adb, $runner)) {
     if (-not (Test-Path -LiteralPath $required)) { throw "Missing donor runtime path: $required" }
 }
-$health = Invoke-RestMethod -Uri "$Url/v1/models" -TimeoutSec 30
+$healthText = & curl.exe --silent --show-error --fail --noproxy "*" --max-time 30 "$Url/v1/models"
+if ($LASTEXITCODE -ne 0) { throw "Model health endpoint is unavailable at $Url" }
+$health = $healthText | ConvertFrom-Json
 $served = @($health.data | ForEach-Object { $_.id })
 if ($served -notcontains "Qwen/Qwen3-VL-32B-Instruct") {
     throw "Frozen Qwen3-VL-32B is not served at $Url"

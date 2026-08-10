@@ -107,6 +107,33 @@
       "suite_summary_path": "../RAVEN-M-Research/runs/dev_nonhard_g3/g3_b0_executor_v1_20260723/suite_summary.json",
       "suite_summary_path_sha256": "3663680e28217f1a0943a2b4dd88642b07b93c5bd769f58732c272e82b115e86",
       "task_class": "MarkorCreateNote"
+    },
+    {
+      "app": "Pro Expense",
+      "coverage_family": "expense",
+      "difficulty": "easy",
+      "donor_id": "a4d_expense_add_seed20260821",
+      "episode_path": "runs/a4_donors/official_qwen_20260811T022904_214bb91d/episodes/ExpenseAddSingle_20260821_1ea0ff16/episode.json",
+      "episode_path_sha256": "70c19d1e9747fc52fcc3563dc97114c7d5542c6ac3584fdaa94350031414a51d",
+      "events_path": "runs/a4_donors/official_qwen_20260811T022904_214bb91d/episodes/ExpenseAddSingle_20260821_1ea0ff16/events.jsonl",
+      "events_path_sha256": "201ed8e40cd2b74b16710df971209855af9310ffaed0312d0aa908aa7a72b43d",
+      "keywords": [
+        "expense",
+        "expenses",
+        "record",
+        "records",
+        "add",
+        "delete",
+        "remove",
+        "category",
+        "amount"
+      ],
+      "seed": 20260821,
+      "suite_manifest_path": "evidence/a345/A4_EXPENSE_DONOR_MANIFEST_SNAPSHOT.json",
+      "suite_manifest_path_sha256": "3e6e87b2d2c00710db6c251cfd8b3475fafdfff09005f7b73dd6a9bdf20def02",
+      "suite_summary_path": "evidence/a345/A4_EXPENSE_DONOR_SUITE_SUMMARY.json",
+      "suite_summary_path_sha256": "1665265a357859a60cc8969a5f5958b57efbcf865cb7ed8f84f68683b9f850d3",
+      "task_class": "ExpenseAddSingle"
     }
   ],
   "manifest_id": "a4_awm_independent_nonhard_donors_v1",

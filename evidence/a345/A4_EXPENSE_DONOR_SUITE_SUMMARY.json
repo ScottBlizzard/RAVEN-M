@@ -1,0 +1,16 @@
+{
+  "schema": "a4_independent_donor_suite_summary_v1",
+  "source_aggregate_sha256": "e78093db90c10cc347cae4218070399f8dd9378d9501e930bb318668b8d45a91",
+  "episodes": [
+    {
+      "episode_id": "ExpenseAddSingle_20260821_1ea0ff16",
+      "task_name": "ExpenseAddSingle",
+      "seed": 20260821,
+      "success": true,
+      "reward": 1.0,
+      "model_calls": 20,
+      "executed_actions": 20,
+      "termination_reason": "max_steps"
+    }
+  ]
+}
