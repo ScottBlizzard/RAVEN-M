@@ -83,6 +83,20 @@ from raven_m.official_qwen_mobile.a345_contract import (  # noqa: E402
     validate_launch_receipt as validate_a345_launch_receipt,
     validate_preflight_report as validate_a345_preflight_report,
 )
+from raven_m.official_qwen_mobile.a678_memory import (  # noqa: E402
+    ExactVisualRevisitActionOutcomeCache,
+    GoalItemStatusLedger,
+    ShortTransitionEpisodicBuffer,
+)
+from raven_m.official_qwen_mobile.a678_contract import (  # noqa: E402
+    A0_PRESERVATION_TASKS,
+    A678_CONFIGS,
+    A678_MECHANISMS,
+    exact_completion_errors as a678_completion_errors,
+    preservation_report as a678_preservation_report,
+    validate_launch_receipt as validate_a678_launch_receipt,
+    validate_preflight_report as validate_a678_preflight_report,
+)
 
 
 MODEL_ID = "Qwen/Qwen3-VL-32B-Instruct"
@@ -198,6 +212,21 @@ def main() -> None:
         "--a345-arm",
         choices=("a3", "a4", "a5"),
         help="Run one frozen A3/A4/A5 public-memory-kernel arm.",
+    )
+    parser.add_argument(
+        "--a678-arm",
+        choices=("a6", "a7", "a8"),
+        help="Run one frozen controller-authored A6/A7/A8 memory arm.",
+    )
+    parser.add_argument(
+        "--a678-preflight-report",
+        type=Path,
+        default=REPOSITORY_ROOT / "evidence/a678/A678_ZERO_GENERATION_PREFLIGHT.json",
+    )
+    parser.add_argument(
+        "--a678-launch-receipt",
+        type=Path,
+        help="Live server receipt bound to the final A678 zero-generation preflight.",
     )
     parser.add_argument(
         "--a345-preflight-report",
@@ -326,6 +355,7 @@ def main() -> None:
             args.a1_working_memory,
             args.a2_verified_progress_memory,
             args.a345_arm,
+            args.a678_arm,
         )
     )
     if diagnostic_modes > 1:
@@ -333,14 +363,24 @@ def main() -> None:
             "--transient-observation-carry, --transition-attested-history, "
             "--evidence-qualified-progress, and --source-document-coverage "
             "--source-document-coverage-gate, --a1-working-memory, and "
-            "--a2-verified-progress-memory and --a345-arm are mutually exclusive"
+            "--a2-verified-progress-memory, --a345-arm, and --a678-arm are mutually exclusive"
         )
     held_out_eligible = not bool(args.diagnostic) and not bool(
         args.held_out_ineligible_reason
     )
     a345_scored_arm = bool(args.a345_arm)
+    a678_scored_arm = bool(args.a678_arm)
+    held_out_ineligible_reason = args.held_out_ineligible_reason
+    if a678_scored_arm:
+        # This seed and its A0/A1/A2/A3-A5 outcomes have already been inspected.
+        # A6-A8 are valid paired mechanism comparisons, not held-out evidence.
+        held_out_eligible = False
+        held_out_ineligible_reason = "post_observed_seed20260806_memory_mechanism_comparison"
     scored_memory_arm = bool(
-        args.a1_working_memory or args.a2_verified_progress_memory or a345_scored_arm
+        args.a1_working_memory
+        or args.a2_verified_progress_memory
+        or a345_scored_arm
+        or a678_scored_arm
     )
     if args.resume_suite_dir is not None and not scored_memory_arm:
         parser.error("--resume-suite-dir is restricted to scored memory arms")
@@ -355,7 +395,23 @@ def main() -> None:
             parser.error("scored memory hidden observation backend must match A0 uiautomator")
         if _sha256(args.manifest.resolve()) != _sha256(A1_MANIFEST.resolve()):
             parser.error("memory-arm manifest differs from the frozen A0 first-seed manifest")
-        if a345_scored_arm:
+        if a678_scored_arm:
+            if not args.a678_preflight_report.is_file():
+                parser.error(f"A6/A7/A8 preflight is missing: {args.a678_preflight_report}")
+            try:
+                validate_a678_preflight_report(args.a678_preflight_report.resolve())
+            except Exception as exc:
+                parser.error(str(exc))
+            if args.a678_launch_receipt is None or not args.a678_launch_receipt.is_file():
+                parser.error("A6/A7/A8 scored generation requires a live launch receipt")
+            try:
+                validate_a678_launch_receipt(
+                    args.a678_launch_receipt.resolve(),
+                    preflight_path=args.a678_preflight_report.resolve(),
+                )
+            except Exception as exc:
+                parser.error(str(exc))
+        elif a345_scored_arm:
             if not args.a345_preflight_report.is_file():
                 parser.error(f"A3/A4/A5 preflight is missing: {args.a345_preflight_report}")
             try:
@@ -466,7 +522,15 @@ def main() -> None:
             if args.a2_verified_progress_memory
             else (
                 f"{args.a345_arm.upper()}_PUBLIC_MEMORY_KERNEL_QWEN3VL32B_AW_HARD_S20260806_V1"
-                if a345_scored_arm else None
+                if a345_scored_arm
+                else (
+                    {
+                        "a6": "A6_SHORT_EPISODIC_QWEN3VL32B_AW_HARD_S20260806_V1",
+                        "a7": "A7_GOAL_ITEM_LEDGER_QWEN3VL32B_AW_HARD_S20260806_V1",
+                        "a8": "A8_EXACT_REVISIT_CACHE_QWEN3VL32B_AW_HARD_S20260806_V1",
+                    }[args.a678_arm]
+                    if a678_scored_arm else None
+                )
             )
         ),
         "method": (
@@ -479,7 +543,11 @@ def main() -> None:
                     "a5": "a5_hymem_online_visual_symbolic_graph_v1",
                 }[args.a345_arm]
                 if a345_scored_arm
-                else ("a1_action_working_memory_v1" if args.a1_working_memory else "a0")
+                else (
+                    A678_MECHANISMS[args.a678_arm]
+                    if a678_scored_arm
+                    else ("a1_action_working_memory_v1" if args.a1_working_memory else "a0")
+                )
             )
         ),
         "manifest_sha256": _sha256(args.manifest) if args.manifest else None,
@@ -514,6 +582,27 @@ def main() -> None:
                 "a4_workflow_bank_sha256": (
                     _sha256(args.a345_workflow_bank) if args.a345_arm == "a4" else None
                 ),
+            }
+        )
+    if a678_scored_arm:
+        config_path = REPOSITORY_ROOT / A678_CONFIGS[str(args.a678_arm)]
+        run_signature.update(
+            {
+                "a678_arm": args.a678_arm,
+                "a678_config_sha256": _sha256(config_path),
+                "a678_preflight_sha256": _sha256(args.a678_preflight_report),
+                "a678_launch_receipt_sha256": _sha256(args.a678_launch_receipt),
+                "task_order": "original_frozen_manifest_order_seed20260806",
+                "reward_fail_fast": False,
+                "scientific_failure_rerun": False,
+                "A0_preservation_tasks": list(A0_PRESERVATION_TASKS),
+                "A0_preservation_required_for_continuation": False,
+                "controller_authored_memory": True,
+                "response_prefix_required": False,
+                "official_system_prompt_unchanged": True,
+                "extra_model_calls": 0,
+                "guard": False,
+                "action_override": False,
             }
         )
     if args.a2_verified_progress_memory:
@@ -620,7 +709,9 @@ def main() -> None:
         repetition_penalty=1.0,
         seed=args.generation_seed,
         timeout_seconds=args.request_timeout_seconds,
-        retry_transient_errors=not (args.a2_verified_progress_memory or a345_scored_arm),
+        retry_transient_errors=not (
+            args.a2_verified_progress_memory or a345_scored_arm or a678_scored_arm
+        ),
     )
     health = client.health()
     env = env_launcher.load_and_setup_env(
@@ -659,6 +750,17 @@ def main() -> None:
                 if args.step_cap is not None
                 else native_limit
             )
+            a678_memory = None
+            if args.a678_arm == "a6":
+                a678_memory = ShortTransitionEpisodicBuffer(capacity=2, max_chars=240)
+            elif args.a678_arm == "a7":
+                a678_memory = GoalItemStatusLedger(
+                    max_items=6, max_item_chars=48, max_chars=320
+                )
+            elif args.a678_arm == "a8":
+                a678_memory = ExactVisualRevisitActionOutcomeCache(
+                    max_entries=12, max_matches=2, max_chars=260
+                )
             controller = OfficialQwenMobileController(
                 client,
                 max_steps=effective_limit,
@@ -667,7 +769,7 @@ def main() -> None:
                     "run_stage": args.run_stage,
                     "diagnostic": bool(args.diagnostic),
                     "held_out_eligible": held_out_eligible,
-                    "held_out_ineligible_reason": args.held_out_ineligible_reason,
+                    "held_out_ineligible_reason": held_out_ineligible_reason,
                     "native_max_steps": native_limit,
                     "effective_max_steps": effective_limit,
                     "step_cap": args.step_cap,
@@ -692,7 +794,11 @@ def main() -> None:
                     "run_signature_sha256": run_signature_sha256,
                     "live_server_receipt_sha256": (
                         _sha256(args.a2_launch_receipt)
-                        if args.a2_verified_progress_memory else None
+                        if args.a2_verified_progress_memory
+                        else (
+                            _sha256(args.a678_launch_receipt)
+                            if a678_scored_arm else None
+                        )
                     ),
                     "stop_after_markor_source_exit": bool(
                         args.stop_after_markor_source_exit
@@ -702,7 +808,7 @@ def main() -> None:
                         if args.a2_verified_progress_memory
                         else (
                             run_signature["method"]
-                            if a345_scored_arm
+                            if (a345_scored_arm or a678_scored_arm)
                             else ("a1_action_working_memory_v1" if args.a1_working_memory else None)
                         )
                     ),
@@ -759,6 +865,9 @@ def main() -> None:
                 ),
                 stop_after_markor_source_exit=args.stop_after_markor_source_exit,
                 working_memory=(
+                    a678_memory
+                    if a678_scored_arm
+                    else (
                     VerifiedProgressMemory(max_chars=1200)
                     if args.a2_verified_progress_memory
                     else (
@@ -782,6 +891,7 @@ def main() -> None:
                                 )
                             )
                         )
+                    )
                     )
                 ),
                 cost_guard=(
@@ -915,6 +1025,18 @@ def main() -> None:
             raise RuntimeError(
                 f"{args.a345_arm.upper()} cannot aggregate: exact 19-task validity closure failed"
             )
+    if a678_scored_arm:
+        closure_errors = a678_completion_errors(
+            summaries=summaries,
+            expected_keys=expected_keys,
+            invalid_attempts=invalid_attempts,
+            lifecycle_errors=suite_lifecycle_errors,
+        )
+        if closure_errors:
+            checkpoint("stopped_incomplete_or_invalid")
+            raise RuntimeError(
+                f"{args.a678_arm.upper()} cannot aggregate: {closure_errors}"
+            )
 
     aggregate = {
         "suite_id": suite_id,
@@ -922,7 +1044,7 @@ def main() -> None:
         "run_stage": args.run_stage,
         "diagnostic": bool(args.diagnostic),
         "held_out_eligible": held_out_eligible,
-        "held_out_ineligible_reason": args.held_out_ineligible_reason,
+        "held_out_ineligible_reason": held_out_ineligible_reason,
         "hidden_observation_backend": args.observation_backend,
         "model_visible_observation": "current_screenshot_only",
         "transient_observation_carry": bool(args.transient_observation_carry),
@@ -934,7 +1056,7 @@ def main() -> None:
             if args.a2_verified_progress_memory
             else (
                 run_signature["method"]
-                if a345_scored_arm
+                if (a345_scored_arm or a678_scored_arm)
                 else ("a1_action_working_memory_v1" if args.a1_working_memory else None)
             )
         ),
@@ -946,6 +1068,9 @@ def main() -> None:
         "memory_active_episode_count": sum(
             int(bool((item.get("memory_mechanism") or {}).get("active")))
             for item in summaries
+        ),
+        "A0_preservation_monitor": (
+            a678_preservation_report(summaries) if a678_scored_arm else None
         ),
         "token_usage": _usage_totals(summaries),
         "memory_write_success_count": sum(

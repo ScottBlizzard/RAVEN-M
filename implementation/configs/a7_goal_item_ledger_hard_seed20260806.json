@@ -1,0 +1,59 @@
+{
+  "schema": "a678_memory_arm_v1",
+  "experiment_id": "A7_GOAL_ITEM_LEDGER_QWEN3VL32B_AW_HARD_S20260806_V1",
+  "arm": "a7",
+  "method": "controller-authored deterministic active goal-item attempt ledger on A0",
+  "mechanism_id": "a7_deterministic_active_goal_item_status_ledger_v1",
+  "model": {
+    "id": "Qwen/Qwen3-VL-32B-Instruct",
+    "revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+    "generation_seed": 3407,
+    "temperature": 0.7,
+    "top_p": 0.8,
+    "top_k": 20,
+    "presence_penalty": 1.5,
+    "repetition_penalty": 1.0,
+    "max_tokens": 32768
+  },
+  "benchmark": {
+    "name": "AndroidWorld",
+    "split": "Hard",
+    "manifest": "implementation/configs/androidworld_hard_v2_instances.json",
+    "task_seed": 20260806,
+    "task_count": 19,
+    "order": "original frozen manifest order for seed 20260806",
+    "action_budget": "unchanged native_max_steps"
+  },
+  "intervention": {
+    "writer": "controller deterministic",
+    "response_prefix_required": false,
+    "system_prompt": "exact OFFICIAL_SYSTEM_PROMPT",
+    "goal_item_extraction": "quoted strings, else final colon suffix split only by comma or semicolon",
+    "status_claims": ["pending", "attempted; visible change", "attempted; negligible visible change", "attempted; no visible change"],
+    "completion_claim_forbidden": true,
+    "first_request_injection": false,
+    "exposure_boundary": "withhold parsed items until at least one controller-observed action",
+    "max_items": 6,
+    "max_item_chars": 48,
+    "max_chars": 320,
+    "extra_model_calls": 0,
+    "guard": false,
+    "action_override": false,
+    "evaluator_input": false,
+    "hidden_ui_input": false
+  },
+  "stopping": {
+    "full_19_required": true,
+    "reward_fail_fast": false,
+    "scientific_failure_rerun": false,
+    "infrastructure_invalid_resume_same_task": true,
+    "parse_inactive_is_valid": true,
+    "A0_preservation_tasks_nonblocking": [
+      "ExpenseDeleteMultiple2",
+      "RetroSavePlaylist",
+      "SimpleCalendarAddOneEvent",
+      "SportsTrackerTotalDurationForCategoryThisWeek"
+    ]
+  }
+}
+

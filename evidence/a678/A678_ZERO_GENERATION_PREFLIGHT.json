@@ -1,0 +1,58 @@
+{
+  "checks": {
+    "config_sha256": {
+      "a6": "9c8f8ca713795e462c8f1876b46a94a192c745d431095d3d0c2a9e3d342e1b40",
+      "a7": "4343036dfdae9c54dd3102f058ca9c2d9abd5565c813309b6a28ea7fbbf96d81",
+      "a8": "09b29be27018519947dfbb998a8e8b774a58ccbf3e2153a59d28098d5b1a3573"
+    },
+    "frozen_dependency_sha256": {
+      "implementation/configs/androidworld_hard_v2_instances.json": "c1d718e9d380e443d12d2c29ab2182ae801a3befc53881b864cd830f2ad0440a",
+      "implementation/scripts/run_official_qwen_mobile.py": "a46bc04e9acd88e828669171f1a5ed271241ac5edb9f9a1dc223bf2d23b60773",
+      "implementation/src/raven_m/env/androidworld_adapter.py": "ad4ecbee9430326ca7380334c49372911a1c6b1c217ee12bb3714d2fb1219c33",
+      "implementation/src/raven_m/models/vllm_client.py": "7e590c410850909b46fa49e9bc267c23478f60c5f560ba53a7901d095c96c367",
+      "implementation/src/raven_m/multi_framework_benchmark/task_instances.py": "fd0772a3ba9b973911dfbb055b25c8dab6e34d0fa640cf6ab4d7b540595f05be",
+      "implementation/src/raven_m/official_qwen_mobile/controller.py": "8de0058485bcbac74ab90e551428340d48bd5d20dc6bee70dbd55bd03f6bf6a8",
+      "implementation/src/raven_m/official_qwen_mobile/protocol.py": "7ff3662f5f5eea6e9f0d689f43bf8c1278262b7cacee8c51aaabf88b717a60e1"
+    },
+    "memory_canaries": "pass",
+    "official_system_prompt_sha256": "9d060af15f62acb31b9fb197649ec001d4096491d7fb102de929316944b3e26d",
+    "tests": {
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "................                                                         [100%]\n"
+    }
+  },
+  "created_at": "2026-08-10T19:56:04.775349+00:00",
+  "errors": [],
+  "generation_calls": 0,
+  "qualification_scope": "repository_static_zero_generation_ready_for_live_receipt",
+  "schema": "a678_zero_generation_preflight_v1",
+  "source_freeze": {
+    "implementation/configs/a6_short_episodic_hard_seed20260806.json": "9c8f8ca713795e462c8f1876b46a94a192c745d431095d3d0c2a9e3d342e1b40",
+    "implementation/configs/a7_goal_item_ledger_hard_seed20260806.json": "4343036dfdae9c54dd3102f058ca9c2d9abd5565c813309b6a28ea7fbbf96d81",
+    "implementation/configs/a8_exact_revisit_cache_hard_seed20260806.json": "09b29be27018519947dfbb998a8e8b774a58ccbf3e2153a59d28098d5b1a3573",
+    "implementation/configs/androidworld_hard_v2_instances.json": "c1d718e9d380e443d12d2c29ab2182ae801a3befc53881b864cd830f2ad0440a",
+    "implementation/scripts/preflight_a678.py": "2c1a142caef2ac0519886efe13737b4baacc156891037fb3896578c7c9a9e88c",
+    "implementation/scripts/qualify_a678_live_server.py": "a96028917f4d32a0e3b3cc92a8cc915a607c47a8f8548129bb556b122e34e104",
+    "implementation/scripts/run_a678_arm.py": "da699d069fb86afa229e319d24b349c6c897472a67e1e7190a465d98e5ad423b",
+    "implementation/scripts/run_official_qwen_mobile.py": "a46bc04e9acd88e828669171f1a5ed271241ac5edb9f9a1dc223bf2d23b60773",
+    "implementation/src/raven_m/__init__.py": "83c1229d32f6e1b873cb8447f7d3e0926b6b69304743f5111cec61642f37a561",
+    "implementation/src/raven_m/env/__init__.py": "ebd568a4e585b3ad8342d6374b61a3accb1b29432fe1dd0050bf14997b2a6afc",
+    "implementation/src/raven_m/env/androidworld_adapter.py": "ad4ecbee9430326ca7380334c49372911a1c6b1c217ee12bb3714d2fb1219c33",
+    "implementation/src/raven_m/models/__init__.py": "7f29bbd82dbc576e3290daac8dcdb3ef1be192b6b621d9521946317167e34332",
+    "implementation/src/raven_m/models/transformers_client.py": "a43efbdba72af01282a5159b4acbaf0c8252096bea04da1457fb1ff62243e778",
+    "implementation/src/raven_m/models/vllm_client.py": "7e590c410850909b46fa49e9bc267c23478f60c5f560ba53a7901d095c96c367",
+    "implementation/src/raven_m/multi_framework_benchmark/__init__.py": "de3ef8d87d3132d407616d94674800a047e881e5f98cf97d58a4809ead9356e9",
+    "implementation/src/raven_m/multi_framework_benchmark/task_instances.py": "fd0772a3ba9b973911dfbb055b25c8dab6e34d0fa640cf6ab4d7b540595f05be",
+    "implementation/src/raven_m/official_qwen_mobile/__init__.py": "0ae4dd2aa0cd7972b5f37e436a6811b2a23eac745374f967a6ee407f7e092a14",
+    "implementation/src/raven_m/official_qwen_mobile/a678_contract.py": "6793ae8009d712c9ca38f0d19306ac013290dd301bf7649ae14ee85fba63f2ea",
+    "implementation/src/raven_m/official_qwen_mobile/a678_memory.py": "cfefa80d10e57b5c8c5472eddea8773188cbdbfe46ef67eceeb2aa819b63a99a",
+    "implementation/src/raven_m/official_qwen_mobile/controller.py": "8de0058485bcbac74ab90e551428340d48bd5d20dc6bee70dbd55bd03f6bf6a8",
+    "implementation/src/raven_m/official_qwen_mobile/protocol.py": "7ff3662f5f5eea6e9f0d689f43bf8c1278262b7cacee8c51aaabf88b717a60e1",
+    "implementation/tests/official_qwen_mobile/test_a678_contract.py": "d176fee9cce5c02ab794ffbf6a6098025bf5aa9c543e64c9d202095e61a2c49b",
+    "implementation/tests/official_qwen_mobile/test_a678_memory.py": "3156dde8406de5798567c4533f6335814fb49333dd7e47ce35e32d90950a1fb6",
+    "protocols/A678_INTEGRATION_PLAN.md": "e75b7c95bc141ac867dd794ee5f1ae485af2f14447a9a433c0e00d78c0189e65"
+  },
+  "source_freeze_sha256": "3bb709980371724836c4333ed3494d505b7a62cbe6d241776fd8345dc18c2cab",
+  "status": "pass"
+}
