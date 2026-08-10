@@ -1,5 +1,6 @@
 param(
-    [string]$ResumeSuiteDir = ""
+    [string]$ResumeSuiteDir = "",
+    [Parameter(Mandatory=$true)][string]$LaunchReceipt
 )
 
 $ErrorActionPreference = "Stop"
@@ -9,9 +10,11 @@ $adb = Join-Path $repo "06_local_runtime\android\sdk\platform-tools\adb.exe"
 $runner = Join-Path $repo "implementation\scripts\run_official_qwen_mobile.py"
 $manifest = Join-Path $repo "implementation\configs\androidworld_hard_v2_instances.json"
 $preflight = Join-Path $repo "evidence\a2\A2_ZERO_GENERATION_PREFLIGHT.json"
+$runtimeQualification = Join-Path $repo "evidence\a2\A2_RUNTIME_QUALIFICATION.json"
+$referenceLedger = Join-Path $repo "evidence\a2\A0_A1_PAIRED_REFERENCE_20260810.json"
 $outputRoot = Join-Path $repo "runs\a2_verified_progress_memory"
 
-foreach ($required in @($python, $adb, $runner, $manifest, $preflight)) {
+foreach ($required in @($python, $adb, $runner, $manifest, $preflight, $runtimeQualification, $referenceLedger, $LaunchReceipt)) {
     if (-not (Test-Path -LiteralPath $required)) {
         throw "Required A2 path is missing: $required"
     }
@@ -30,6 +33,9 @@ $arguments = @(
     "--manifest", $manifest,
     "--a2-verified-progress-memory",
     "--a2-preflight-report", $preflight,
+    "--a2-runtime-qualification", $runtimeQualification,
+    "--a2-reference-ledger", $referenceLedger,
+    "--a2-launch-receipt", (Resolve-Path $LaunchReceipt).Path,
     "--run-stage", "a2_scored_full",
     "--output-root", $outputRoot,
     "--generation-seed", "3407",

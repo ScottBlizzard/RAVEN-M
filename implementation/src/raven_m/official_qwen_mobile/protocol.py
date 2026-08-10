@@ -96,14 +96,14 @@ A1_WORKING_MEMORY_SYSTEM_PROMPT = OFFICIAL_SYSTEM_PROMPT + A1_WORKING_MEMORY_SUF
 # success; the hidden evaluator remains unavailable until the episode ends.
 A2_VERIFIED_PROGRESS_SUFFIX = r"""
 
-# A2 verified progress memory
+# A2-v1r1 model-asserted screenshot-progress memory
 
 Begin every Action sentence, including answer or terminate steps, with exactly:
-PROGRESS[observed=<exact task-relevant facts visible now or none>; verified=<requirements directly proven by the current screenshot or none>; pending=<most important unmet requirements>; expected=<visible effect expected from this action>] | <one concise UI imperative>
+PROGRESS[observed=<exact task-relevant facts visible now or none>; verified=<requirements you assert are visible in the current screenshot or none>; pending=<most important unmet requirements>; expected=<visible effect expected from this action>] | <one concise UI imperative>
 
 Rules:
 - Keep the complete PROGRESS[...] payload under 360 characters.
-- Verified means directly visible on the current screenshot, never merely attempted.
+- Verified is your own screenshot-visible assertion, not a controller or evaluator confirmation; never use it for something merely attempted.
 - State the concrete visible effect expected after the proposed action.
 - Consult the compact progress block in the user message, but let the current screenshot override it.
 - If the prior outcome says no visible change, inspect or choose a different target instead of repeating the same action.

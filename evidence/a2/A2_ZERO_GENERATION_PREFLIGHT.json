@@ -1,5 +1,5 @@
 {
-  "a2_prompt_sha256": "f1dc20c68c2b0ade4f117b4cacf3ad5b2ed221ecdc84f87d83239d378880e268",
+  "a2_prompt_sha256": "7cf9847c8b5514ef95a51a52ed68002b48a656a7ff71360a4e81e7a9748e386f",
   "androidworld_instantiated_tasks": [
     "BrowserMultiply",
     "ExpenseAddMultipleFromGallery",
@@ -24,55 +24,107 @@
   "cost_guard_canary": {
     "assessments": [
       {
-        "action_signature": "f94dada326561ba5078e7bcbdc35b70001a52b70a22ef06a1d1e523cb2fa4748",
         "blocked": false,
-        "mechanism_id": "a2_repeated_no_progress_cost_guard_v1",
+        "eligible": true,
+        "mapped_action_signature": "773c23e9a6d80b85ab68f93e6759161c32806f5167ec75b2bf4dc2cb1b7295c4",
+        "mechanism_id": "a2_repeated_no_progress_cost_guard_v1r1",
         "prior_no_progress_executions": 0,
-        "state_signature": "14215ac14655b9fee1ba080875e360e3fbf4e9ed2be59815191474572ae55078",
-        "threshold": 2
+        "state_signature": "a0933895d36b33124ad69f5e478178f1a9871232c0a22d434a3d8ad6c965d36d",
+        "threshold": 2,
+        "warnings_previously_delivered": 0
       },
       {
-        "action_signature": "f94dada326561ba5078e7bcbdc35b70001a52b70a22ef06a1d1e523cb2fa4748",
         "blocked": false,
-        "mechanism_id": "a2_repeated_no_progress_cost_guard_v1",
+        "eligible": true,
+        "mapped_action_signature": "773c23e9a6d80b85ab68f93e6759161c32806f5167ec75b2bf4dc2cb1b7295c4",
+        "mechanism_id": "a2_repeated_no_progress_cost_guard_v1r1",
         "prior_no_progress_executions": 1,
-        "state_signature": "14215ac14655b9fee1ba080875e360e3fbf4e9ed2be59815191474572ae55078",
-        "threshold": 2
+        "state_signature": "a0933895d36b33124ad69f5e478178f1a9871232c0a22d434a3d8ad6c965d36d",
+        "threshold": 2,
+        "warnings_previously_delivered": 0
       },
       {
-        "action_signature": "f94dada326561ba5078e7bcbdc35b70001a52b70a22ef06a1d1e523cb2fa4748",
         "blocked": true,
-        "mechanism_id": "a2_repeated_no_progress_cost_guard_v1",
+        "eligible": true,
+        "mapped_action_signature": "773c23e9a6d80b85ab68f93e6759161c32806f5167ec75b2bf4dc2cb1b7295c4",
+        "mechanism_id": "a2_repeated_no_progress_cost_guard_v1r1",
         "prior_no_progress_executions": 2,
-        "state_signature": "14215ac14655b9fee1ba080875e360e3fbf4e9ed2be59815191474572ae55078",
-        "threshold": 2
+        "state_signature": "a0933895d36b33124ad69f5e478178f1a9871232c0a22d434a3d8ad6c965d36d",
+        "threshold": 2,
+        "warnings_previously_delivered": 0
       }
     ],
     "first_block": {
-      "action_signature": "f94dada326561ba5078e7bcbdc35b70001a52b70a22ef06a1d1e523cb2fa4748",
-      "block_index_for_same_state_action": 1,
+      "block_index": 1,
       "blocked": true,
       "cost_stop": false,
-      "mechanism_id": "a2_repeated_no_progress_cost_guard_v1",
-      "message": "This equivalent action has already produced no observable change twice on this same UI state. Do not repeat it; inspect the screen and choose a different target or route.",
+      "eligible": true,
+      "mapped_action_signature": "773c23e9a6d80b85ab68f93e6759161c32806f5167ec75b2bf4dc2cb1b7295c4",
+      "mechanism_id": "a2_repeated_no_progress_cost_guard_v1r1",
+      "message": "This exact mapped action has already produced an exactly identical screenshot twice on this same visible state. Do not repeat it; inspect the current screenshot and choose a different target or route.",
       "prior_no_progress_executions": 2,
-      "state_signature": "14215ac14655b9fee1ba080875e360e3fbf4e9ed2be59815191474572ae55078",
-      "threshold": 2
+      "state_signature": "a0933895d36b33124ad69f5e478178f1a9871232c0a22d434a3d8ad6c965d36d",
+      "threshold": 2,
+      "warning_emitted": true,
+      "warning_text_sha256": "50df5bac3a5112ef6c17156e4ee3325bb0cb06a4a4ae40acbd96bce1bd274122",
+      "warnings_previously_delivered": 0
     },
     "second_block": {
-      "action_signature": "f94dada326561ba5078e7bcbdc35b70001a52b70a22ef06a1d1e523cb2fa4748",
-      "block_index_for_same_state_action": 2,
+      "block_index": 2,
+      "blocked": true,
+      "cost_stop": false,
+      "eligible": true,
+      "mapped_action_signature": "773c23e9a6d80b85ab68f93e6759161c32806f5167ec75b2bf4dc2cb1b7295c4",
+      "mechanism_id": "a2_repeated_no_progress_cost_guard_v1r1",
+      "message": "This exact mapped action has already produced an exactly identical screenshot twice on this same visible state. Do not repeat it; inspect the current screenshot and choose a different target or route.",
+      "prior_no_progress_executions": 2,
+      "state_signature": "a0933895d36b33124ad69f5e478178f1a9871232c0a22d434a3d8ad6c965d36d",
+      "threshold": 2,
+      "warning_emitted": true,
+      "warning_text_sha256": "50df5bac3a5112ef6c17156e4ee3325bb0cb06a4a4ae40acbd96bce1bd274122",
+      "warnings_previously_delivered": 1
+    },
+    "third_block": {
+      "block_index": 3,
       "blocked": true,
       "cost_stop": true,
-      "mechanism_id": "a2_repeated_no_progress_cost_guard_v1",
-      "message": "This equivalent action has already produced no observable change twice on this same UI state. Do not repeat it; inspect the screen and choose a different target or route.",
+      "eligible": true,
+      "mapped_action_signature": "773c23e9a6d80b85ab68f93e6759161c32806f5167ec75b2bf4dc2cb1b7295c4",
+      "mechanism_id": "a2_repeated_no_progress_cost_guard_v1r1",
+      "message": "",
       "prior_no_progress_executions": 2,
-      "state_signature": "14215ac14655b9fee1ba080875e360e3fbf4e9ed2be59815191474572ae55078",
-      "threshold": 2
+      "state_signature": "a0933895d36b33124ad69f5e478178f1a9871232c0a22d434a3d8ad6c965d36d",
+      "threshold": 2,
+      "warning_emitted": false,
+      "warning_text_sha256": null,
+      "warnings_previously_delivered": 2
     }
   },
   "errors": [],
-  "experiment_id": "A2_VERIFIED_PROGRESS_MEMORY_QWEN3VL32B_AW_HARD_S20260806_V1",
+  "evidence_checks": {
+    "guard_replay": {
+      "generation_calls": 0,
+      "path": "evidence\\a2\\A1_EXACT_GUARD_REPLAY_20260810.json",
+      "qualification_pass": true,
+      "sha256": "4377a46398423c74012ac303abb811fcdda0965faa9130265b9339677b0b3a8b",
+      "status": null
+    },
+    "reference_ledger": {
+      "generation_calls": null,
+      "path": "evidence\\a2\\A0_A1_PAIRED_REFERENCE_20260810.json",
+      "qualification_pass": null,
+      "sha256": "ad0799334c887693b51e9769495d3f38055458141e3da1f66956a0db73495116",
+      "status": null
+    },
+    "runtime_qualification": {
+      "generation_calls": 0,
+      "path": "evidence\\a2\\A2_RUNTIME_QUALIFICATION.json",
+      "qualification_pass": null,
+      "sha256": "87170275083e896d3afde316c05649acc935c4fe83c59750c88ab99ca1932fc6",
+      "status": "pass"
+    }
+  },
+  "experiment_id": "A2_VERIFIED_PROGRESS_MEMORY_QWEN3VL32B_AW_HARD_S20260806_V1R1",
   "generation_calls": 0,
   "manifest_sha256": "c1d718e9d380e443d12d2c29ab2182ae801a3befc53881b864cd830f2ad0440a",
   "manifest_task_order": [
@@ -99,7 +151,7 @@
   "memory_canary": {
     "empty_read": {
       "guard_notice_present": false,
-      "mechanism_id": "a2_verified_progress_memory_v1",
+      "mechanism_id": "a2_verified_progress_memory_v1r1",
       "nonempty": false,
       "rendered_chars": 0,
       "rendered_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
@@ -107,10 +159,10 @@
     },
     "nonempty_read": {
       "guard_notice_present": false,
-      "mechanism_id": "a2_verified_progress_memory_v1",
+      "mechanism_id": "a2_verified_progress_memory_v1r1",
       "nonempty": true,
-      "rendered_chars": 423,
-      "rendered_sha256": "b9a0a947842a08b8035a3a1243d86099ac42be3aa9d089d2d6882617e29d3afa",
+      "rendered_chars": 538,
+      "rendered_sha256": "c4289e23fa04f549219b0c379b20ee02c86513542bc626d25c895eb399d14331",
       "state_source_step": 0
     },
     "present_in_next_prompt": true,
@@ -124,7 +176,7 @@
           "y": 0.1
         },
         "expected": "confirmation appears",
-        "observable_outcome": "no_visible_change",
+        "observable_outcome": "no_visible_change_exact",
         "observed": "A2-CANARY-9157",
         "pending": "save",
         "source_call_id": "preflight-call",
@@ -132,8 +184,12 @@
         "source_screenshot_sha256": "preflight-screen",
         "source_step": 0,
         "transition_evidence": {
+          "active_guard_input": false,
+          "active_memory_input": false,
           "activity_changed": false,
           "changed_pixel_fraction_gt_5": 0.0,
+          "exactly_unchanged": true,
+          "model_visible": false,
           "ui_sha_changed": false
         },
         "verified": "form visible"
@@ -143,38 +199,52 @@
   },
   "official_prompt_sha256": "9d060af15f62acb31b9fb197649ec001d4096491d7fb102de929316944b3e26d",
   "source_freeze": {
-    "evidence/a2/A2_DESIGN_RATIONALE_AND_A1_REPLAY_2026-08-10.md": "1bfbe691617b12214bcb7e6dff27bfb8d7950da18d257418ae5ad5826d3b12ca",
-    "implementation/configs/a2_verified_progress_memory_hard_seed20260806.json": "de04d54f1e57f60c2c543f080c26d15f3e40f9a2cfebd14758c73b787775b315",
+    "ARTIFACT_MANIFEST.md": "ae5c2a21c4799ea2755166eb0ee4a9c43764faab1dd18b922b95d6220f998157",
+    "evidence/a2/A0_A1_PAIRED_REFERENCE_20260810.json": "ad0799334c887693b51e9769495d3f38055458141e3da1f66956a0db73495116",
+    "evidence/a2/A1_EXACT_GUARD_REPLAY_20260810.json": "4377a46398423c74012ac303abb811fcdda0965faa9130265b9339677b0b3a8b",
+    "evidence/a2/A2_DESIGN_RATIONALE_AND_A1_REPLAY_2026-08-10.md": "9adead628a42375dde55e38be577107f8abaf41b6fb0a1d755d5c50c7c695503",
+    "implementation/configs/a2_verified_progress_memory_hard_seed20260806.json": "79cd97490308e8efb9d8f1850578ecf0f54019f14f4a55abc6045b02967de326",
     "implementation/configs/androidworld_hard_v2_instances.json": "c1d718e9d380e443d12d2c29ab2182ae801a3befc53881b864cd830f2ad0440a",
+    "implementation/configs/qwen3_vl_32b_official_mobile_1xrtxpro6000.yaml": "b8204fbf1288666854eb508663e1792223f50c4824178c33fe827e153a36294c",
+    "implementation/pyproject.toml": "00580ac07543d03d510dc8690ba3115ddade22c6a25796b687872aabd7972d89",
     "implementation/runtime/androidworld_compat.py": "76bd4cae773543986275c9b6e14bc5eef47b25a2af9e08fb8c69930e25b13865",
-    "implementation/scripts/preflight_a2_verified_progress.py": "c138974886ccffa05a233038c0dbfd7a3dc97099ce075e4885e1562328ab24ad",
-    "implementation/scripts/run_a2_verified_progress.ps1": "729aa6ba381cc729dce8ad28fc82fd04b3f7bc215d4e4666c8ec5d0c2c75bbf7",
-    "implementation/scripts/run_official_qwen_mobile.py": "5be7a3dbff8ce88e4c63d0f684ee678e0e904923aa7edfbe982ca5eb2a6a4f4f",
+    "implementation/scripts/build_a2_reference_ledger.py": "ae90f5d0ccab2b939005b4cf16a63cac9687eeaee0e613af1da9608bd85b13db",
+    "implementation/scripts/preflight_a2_verified_progress.py": "bddb2b736b707d8aa9b74ac705e8a5d9260136ff9be882d587261d94883a8de1",
+    "implementation/scripts/preflight_official_qwen.py": "eafd2413f7741c4bf106973f8b29fa816ff3494c88b8a53cc990d7f773c0c8fb",
+    "implementation/scripts/qualify_a2_live_server.py": "1a342f63c09eccd85536af4b885b58ef3a1f37b919d259411387da75d026a8fd",
+    "implementation/scripts/qualify_a2_runtime.py": "c180209c1d03d00afb046bf4232133061f42bdf1245c451334d915971ae1c425",
+    "implementation/scripts/replay_a1_exact_guard.py": "7f4fed3dc490dcc58c70ba77b6aa57031f42f740816652812ee3aa8e11c88861",
+    "implementation/scripts/run_a2_verified_progress.ps1": "7ce46aeb0a7fb00682c77fedc3862c3cc3596f70812b70557479cb763471c7a3",
+    "implementation/scripts/run_official_qwen_mobile.py": "04983f3e5af1a51ec7491c36ac451461fddd9e9159488bf1606df01a331a9a14",
+    "implementation/scripts/start_a2_verified_progress_server.sh": "578a86784635a660ec15170cf629ba0d328956c49d75bfebda1c56296d415be4",
     "implementation/scripts/start_official_qwen_server.sh": "5cf90d8d0779ec9a5656854957c7b880695011fe78f180de0ae9060f4de4fbee",
+    "implementation/scripts/validate_a2_paired_suite.py": "3ac5bba7816531a7f94ba4314efa3e48a952439d7b99765a9256913cafc50343",
     "implementation/src/raven_m/env/androidworld_adapter.py": "ad4ecbee9430326ca7380334c49372911a1c6b1c217ee12bb3714d2fb1219c33",
-    "implementation/src/raven_m/models/vllm_client.py": "b3c613db89cf690ed4c8b56158d7d341fb948c4ce553d4ef269d7fb854f5c3d2",
+    "implementation/src/raven_m/models/vllm_client.py": "7e590c410850909b46fa49e9bc267c23478f60c5f560ba53a7901d095c96c367",
     "implementation/src/raven_m/multi_framework_benchmark/task_instances.py": "fd0772a3ba9b973911dfbb055b25c8dab6e34d0fa640cf6ab4d7b540595f05be",
     "implementation/src/raven_m/official_qwen_mobile/a1_contract.py": "f0b3daa50267eeecca907b5044999a489e782b5bad8e5548a66270f882902739",
-    "implementation/src/raven_m/official_qwen_mobile/a2_contract.py": "237223de04cc919dc6eecc3ae6717e4ede795c739dcc9f2072018c62a7cfe118",
-    "implementation/src/raven_m/official_qwen_mobile/controller.py": "bae0e2eb8d9ebf4c105766d56cb114abbea13ab5766a72ae4fa3c78fe9033019",
-    "implementation/src/raven_m/official_qwen_mobile/progress_memory.py": "c4d64edaa57a0962ce35b0f325aa56e66968dadf24cc3a7ccc82ad1fa6a01ea6",
-    "implementation/src/raven_m/official_qwen_mobile/protocol.py": "74608223997eefb43dac83855eca03d88ad4f91070f941a1ce358aa488a06571",
+    "implementation/src/raven_m/official_qwen_mobile/a2_contract.py": "43f08e463bbf51bfd1eb22f14d894369ac0ad43e63f06da5a1ab51acb5428ce4",
+    "implementation/src/raven_m/official_qwen_mobile/a2_suite.py": "afe1a35c07347287e054fb03b2c3850507c688f38d2aeab274d33dcb2ff1bcea",
+    "implementation/src/raven_m/official_qwen_mobile/controller.py": "26ce26ac36d7a9f7fd6566472750a4c9360ac2ff3176f9818945538ae5737ab4",
+    "implementation/src/raven_m/official_qwen_mobile/progress_memory.py": "c8d77310c7abc07395b857287a6a6e54b809fae9a09287934eff2a81141e4b84",
+    "implementation/src/raven_m/official_qwen_mobile/protocol.py": "3fa0988275c23f31d2d0c739b4c90b503499a71442678bae432bc3450a12b2b6",
     "implementation/src/raven_m/official_qwen_mobile/source_document_coverage_gate.py": "a9785349431c9fba80d76f127d2742aab66ed2b8b8da5b7df83484b954812f97",
     "implementation/src/raven_m/official_qwen_mobile/working_memory.py": "86589458c820a08a220c738ae3b55fdce40e7df37ade5b8b1d3c9631bea79ee3",
-    "implementation/tests/models/test_vllm_client.py": "c7fcfb38726be9822753da1612dfa514a2df3e505affbe69b7870e70d417d1b4",
+    "implementation/tests/models/test_vllm_client.py": "dcaa9a1aff97b603c9b89f822f233b1d49ee98cf39eb7c80cc361213103fe305",
+    "implementation/tests/official_qwen_mobile/test_a2_suite.py": "85e7040883d21f07961bd1663407851c01dfc93db5170cd76cb33c31c3bf366c",
     "implementation/tests/official_qwen_mobile/test_official_qwen_controller.py": "1af702f98d045bd77ea61ae4effa5a35478631db38926c5b3d6ae30823c42291",
-    "implementation/tests/official_qwen_mobile/test_progress_memory.py": "872435c11f2b0f4b90261023fae5b2ffbf3c93b1c11c1ac345e8075728813ec0",
+    "implementation/tests/official_qwen_mobile/test_progress_memory.py": "e4dbd91f938eb538f6ea7db230696b50d8116125691bdca2258916d49872027d",
     "implementation/tests/official_qwen_mobile/test_protocol.py": "88fbe9ef5def4b551a3ef2d49f6130814f2d56bf9e7ad65a5497b17948fdc0c0",
     "implementation/tests/official_qwen_mobile/test_source_document_coverage_gate.py": "785fcecafea98aea16071d4c98e25948744d913f15ff614d427e7e0c7e6407cd",
     "implementation/tests/official_qwen_mobile/test_working_memory.py": "435117457c9cd70be411841fa488ccf480936c6997d1bdffbaebe7b184d570ac",
-    "protocols/A2_VERIFIED_PROGRESS_MEMORY_PREREG_2026-08-10.md": "0a8f000fc38ee39327fbfc5162b61be6c5a1ac46bb474694bf2fbf5b4f9a0f6e",
-    "protocols/A2_VERIFIED_PROGRESS_MEMORY_RUNBOOK.md": "0d9cb4802f09b25c7cdbd22442db730994c29c639fb99e2205f3f50a47ffaaa7"
+    "protocols/A2_VERIFIED_PROGRESS_MEMORY_PREREG_2026-08-10.md": "6eb3fafcdc4d621a169d7666bf69ebc97538c4238f955e9487aeaa74986aa4e4",
+    "protocols/A2_VERIFIED_PROGRESS_MEMORY_RUNBOOK.md": "3c4ef3d9ea8529726c5baccfa1b6b14046ed08d618dd7406086d174eb201eb1e"
   },
   "status": "pass",
   "task_seed": 20260806,
   "tests": {
     "returncode": 0,
     "stderr": "",
-    "stdout": "............................................                             [100%]\n"
+    "stdout": "..................................................                       [100%]\n"
   }
 }

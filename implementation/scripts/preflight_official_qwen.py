@@ -31,6 +31,14 @@ EXPECTED_OFFICIAL_SHARD13_SHA256 = (
 )
 
 
+def file_sha256(path: Path) -> str:
+    digest = sha256()
+    with path.open("rb") as stream:
+        for chunk in iter(lambda: stream.read(8 * 1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--model-dir", type=Path, required=True)
@@ -123,6 +131,32 @@ def main() -> None:
         != EXPECTED_OFFICIAL_SHARD13_SHA256
     ):
         raise RuntimeError("the frozen cross-source weight-shard anchor drifted")
+    model_files = sorted(
+        item for item in args.model_dir.iterdir() if item.is_file()
+    )
+    actual_names = {item.name for item in model_files}
+    if not set(hashes).issubset(actual_names):
+        raise RuntimeError(
+            "model manifest/file-set drift: "
+            f"missing_from_disk={sorted(set(hashes) - actual_names)!r}, "
+            f"unmanifested={sorted(actual_names - set(hashes))!r}"
+        )
+    actual_files: list[dict[str, object]] = []
+    for model_file in model_files:
+        actual_hash = file_sha256(model_file)
+        if actual_hash != hashes[model_file.name]:
+            raise RuntimeError(
+                f"model file hash mismatch: {model_file.name}: "
+                f"{actual_hash} != {hashes[model_file.name]}"
+            )
+        actual_files.append(
+            {
+                "name": model_file.name,
+                "bytes": model_file.stat().st_size,
+                "sha256": actual_hash,
+                "realpath": str(model_file.resolve()),
+            }
+        )
     raw = (
         "Thought: inspect.\nAction: Tap the control.\n<tool_call>\n"
         '{"name":"mobile_use","arguments":{"action":"click","coordinate":[999,0]}}'
@@ -148,6 +182,10 @@ def main() -> None:
         "model_generation_config": actual_generation,
         "model_sha256_manifest": str(manifest_path.resolve()),
         "model_sha256_manifest_sha256": manifest_sha256,
+        "model_file_count": len(actual_files),
+        "model_total_bytes": sum(int(item["bytes"]) for item in actual_files),
+        "model_files": actual_files,
+        "unmanifested_ancillary_files": sorted(actual_names - set(hashes)),
         "official_hf_shard13_sha256_anchor": EXPECTED_OFFICIAL_SHARD13_SHA256,
     }
     print(json.dumps(record, indent=2, ensure_ascii=False, sort_keys=True))

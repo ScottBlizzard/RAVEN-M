@@ -1,13 +1,13 @@
 {
-  "experiment_id": "A2_VERIFIED_PROGRESS_MEMORY_QWEN3VL32B_AW_HARD_S20260806_V1",
+  "experiment_id": "A2_VERIFIED_PROGRESS_MEMORY_QWEN3VL32B_AW_HARD_S20260806_V1R1",
   "comparison": {
     "control": "A1 Action Working Memory, seed 20260806",
-    "intervention": "A2 compact verified-progress memory with separately audited repeated-no-progress cost guard",
+    "intervention": "A2 compact model-asserted screenshot-progress memory with separately audited repeated-no-progress cost guard",
     "causal_changes": [
       "replace six raw recency records with one compact visible-evidence progress state",
-      "record whether the preceding action caused an observable screen/activity/UI transition",
+      "record the exact model-visible screenshot outcome without using hidden activity or UI-tree state",
       "store the PROGRESS payload once instead of duplicating it in ordinary action history",
-      "block a third equivalent action only after two no-transition executions on the same UI state"
+      "block a third exact mapped tap/long-press/swipe only after two byte-identical no-change executions on the exact same screenshot"
     ]
   },
   "model": {
@@ -39,9 +39,9 @@
     "action_protocol": "official Qwen mobile_use",
     "extra_model_calls": 0,
     "memory": {
-      "mechanism_id": "a2_verified_progress_memory_v1",
+      "mechanism_id": "a2_verified_progress_memory_v1r1",
       "scope": "current episode only",
-      "source": "model-visible screenshot/task plus controller-observed visible transition",
+      "source": "model-authored screenshot-visible assertions plus exact screenshot transition evidence",
       "state_count": 1,
       "max_chars": 1200,
       "hidden_ui_semantics_visible_to_model": false,
@@ -49,10 +49,11 @@
       "cross_episode_reuse": false
     },
     "cost_guard": {
-      "mechanism_id": "a2_repeated_no_progress_cost_guard_v1",
+      "mechanism_id": "a2_repeated_no_progress_cost_guard_v1r1",
       "no_progress_execution_threshold": 2,
-      "max_consecutive_blocks_before_cost_stop": 2,
-      "state_source": "coarse perceptual signature of the model-visible screenshot only",
+      "max_ignored_block_warnings": 2,
+      "state_source": "exact full-resolution model-visible pixels only",
+      "action_source": "exact mapped physical tap, long-press, or swipe action",
       "success_credit": false,
       "purpose": "reduce repeated-action runtime waste only"
     }

@@ -1,0 +1,379 @@
+{
+  "generation_calls": 0,
+  "local_android": {
+    "adb_devices": "List of devices attached\nemulator-5554\tdevice",
+    "adb_realpath": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+    "android_build_fingerprint": "google/sdk_gphone64_x86_64/emu64x:13/TE1A.240213.009/12342917:userdebug/dev-keys",
+    "androidworld_commit": "3e50888527ef9f29b9157ecd537e408008bb1c85",
+    "androidworld_source_file_count": 161,
+    "androidworld_source_tree_sha256": "03fb2cb384ff6d70e27f3ed5647536b9f0cf98b2b14d20e3a888f0035b4e3e8b",
+    "androidworld_worktree_status": "M android_world/env/actuation.py\n M android_world/env/actuation_test.py\n M android_world/env/android_world_controller.py\n M android_world/env/env_launcher.py\n M android_world/task_evals/single/retro_music.py\n M android_world/task_evals/single/retro_music_test.py\n?? android_world/task_evals/information_retrieval/proto/state_pb2.py\n?? android_world/task_evals/information_retrieval/proto/state_pb2_grpc.py\n?? android_world/task_evals/information_retrieval/proto/task_pb2.py\n?? android_world/task_evals/information_retrieval/proto/task_pb2_grpc.py",
+    "disk": {
+      "free": 67405295616,
+      "total": 629824024576,
+      "used": 562418728960
+    },
+    "emulator_serial": "EMULATOR36X6X11X0",
+    "generation_calls": 0,
+    "installed_package_count": 223,
+    "ordered_scored_keys": [
+      [
+        "BrowserMultiply",
+        20260806
+      ],
+      [
+        "ExpenseAddMultipleFromGallery",
+        20260806
+      ],
+      [
+        "ExpenseAddMultipleFromMarkor",
+        20260806
+      ],
+      [
+        "ExpenseDeleteMultiple2",
+        20260806
+      ],
+      [
+        "MarkorCreateNoteAndSms",
+        20260806
+      ],
+      [
+        "MarkorMergeNotes",
+        20260806
+      ],
+      [
+        "MarkorTranscribeVideo",
+        20260806
+      ],
+      [
+        "OsmAndMarker",
+        20260806
+      ],
+      [
+        "OsmAndTrack",
+        20260806
+      ],
+      [
+        "RecipeAddMultipleRecipesFromImage",
+        20260806
+      ],
+      [
+        "RecipeAddMultipleRecipesFromMarkor",
+        20260806
+      ],
+      [
+        "RecipeAddMultipleRecipesFromMarkor2",
+        20260806
+      ],
+      [
+        "RecipeDeleteMultipleRecipesWithConstraint",
+        20260806
+      ],
+      [
+        "RetroSavePlaylist",
+        20260806
+      ],
+      [
+        "SaveCopyOfReceiptTaskEval",
+        20260806
+      ],
+      [
+        "SimpleCalendarAddOneEvent",
+        20260806
+      ],
+      [
+        "SportsTrackerActivitiesOnDate",
+        20260806
+      ],
+      [
+        "SportsTrackerTotalDistanceForCategoryOverInterval",
+        20260806
+      ],
+      [
+        "SportsTrackerTotalDurationForCategoryThisWeek",
+        20260806
+      ]
+    ],
+    "ordered_scored_keys_sha256": "de8916b5bdd69af4777c6d4b02973d9e612a8c2822aa164a8f687a6e5842b048",
+    "output_write_check": "pass",
+    "packages": {
+      "Pillow": "12.3.0",
+      "android-env": "1.2.3",
+      "android-world": "0.1.0",
+      "numpy": "2.4.6"
+    },
+    "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+    "resolution": "Physical size: 1080x2400",
+    "schema": "a2_runtime_qualification_local_android_v1",
+    "scored_package_identity": {
+      "code.name.monkey.retromusic": [
+        "versionCode=10603 minSdk=21 targetSdk=33",
+        "versionName=6.1.0",
+        "lastUpdateTime=2026-07-22 17:56:03",
+        "firstInstallTime=2026-07-22 17:56:03"
+      ],
+      "com.android.chrome": [
+        "versionCode=541412337 minSdk=29 targetSdk=33",
+        "versionName=109.0.5414.123",
+        "lastUpdateTime=2024-09-09 22:59:58",
+        "firstInstallTime=2024-09-09 22:59:58",
+        "versionCode=541412337 minSdk=24 targetSdk=33",
+        "versionName=109.0.5414.123",
+        "lastUpdateTime=1969-12-31 23:59:59",
+        "firstInstallTime=1969-12-31 23:59:59"
+      ],
+      "com.arduia.expense": [
+        "versionCode=11 minSdk=21 targetSdk=30",
+        "versionName=1.0.0-beta05",
+        "lastUpdateTime=2026-07-22 17:47:47",
+        "firstInstallTime=2026-07-22 17:07:58"
+      ],
+      "com.flauschcode.broccoli": [
+        "versionCode=1020600 minSdk=26 targetSdk=34",
+        "versionName=1.2.6",
+        "lastUpdateTime=2026-07-22 17:55:37",
+        "firstInstallTime=2026-07-22 17:55:37"
+      ],
+      "com.google.android.apps.messaging": [
+        "versionCode=163204880 minSdk=33 targetSdk=33",
+        "versionName=messages.android_20221208_01_RC02_alldpi.x86_64.phone",
+        "lastUpdateTime=2024-09-09 23:01:11",
+        "firstInstallTime=2024-09-09 23:01:11"
+      ],
+      "com.simplemobiletools.calendar.pro": [
+        "versionCode=238 minSdk=23 targetSdk=33",
+        "versionName=6.22.2",
+        "lastUpdateTime=2026-07-22 17:56:26",
+        "firstInstallTime=2026-07-22 17:56:26"
+      ],
+      "com.simplemobiletools.gallery.pro": [
+        "versionCode=396 minSdk=23 targetSdk=33",
+        "versionName=6.28.1",
+        "lastUpdateTime=2026-07-22 17:56:50",
+        "firstInstallTime=2026-07-22 17:56:50"
+      ],
+      "com.simplemobiletools.smsmessenger": [
+        "versionCode=85 minSdk=23 targetSdk=34",
+        "versionName=5.19.3",
+        "lastUpdateTime=2026-07-22 17:57:26",
+        "firstInstallTime=2026-07-22 17:57:26"
+      ],
+      "de.dennisguse.opentracks": [
+        "versionCode=5705 minSdk=26 targetSdk=34",
+        "versionName=v4.11.3",
+        "lastUpdateTime=2026-07-22 17:53:39",
+        "firstInstallTime=2026-07-22 17:53:39"
+      ],
+      "net.gsantner.markor": [
+        "versionCode=146 minSdk=16 targetSdk=33",
+        "versionName=2.10.9",
+        "lastUpdateTime=2026-07-22 17:52:10",
+        "firstInstallTime=2026-07-22 17:52:10"
+      ],
+      "net.osmand": [
+        "versionCode=4613 minSdk=23 targetSdk=33",
+        "versionName=4.6.13",
+        "lastUpdateTime=2026-07-22 17:54:48",
+        "firstInstallTime=2026-07-22 17:54:48"
+      ],
+      "org.tasks": [
+        "versionCode=130605 minSdk=24 targetSdk=33",
+        "versionName=13.6.3",
+        "lastUpdateTime=2026-07-22 17:57:52",
+        "firstInstallTime=2026-07-22 17:57:52"
+      ],
+      "org.videolan.vlc": [
+        "versionCode=13050408 minSdk=17 targetSdk=33",
+        "versionName=3.5.4",
+        "lastUpdateTime=2026-07-22 17:58:23",
+        "firstInstallTime=2026-07-22 17:58:23"
+      ]
+    },
+    "status": "pass",
+    "task_manifest_realpath": "D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\implementation\\configs\\androidworld_hard_v2_instances.json",
+    "task_manifest_sha256": "c1d718e9d380e443d12d2c29ab2182ae801a3befc53881b864cd830f2ad0440a"
+  },
+  "local_android_report_sha256": "49ff7a7dc6941eb6bd2171e5bfc52c55eefa9f1395c8b700327e5758488d1b89",
+  "remote_model": {
+    "disk": {
+      "free": 122566103040,
+      "total": 214748364800,
+      "used": 92182261760
+    },
+    "generation_calls": 0,
+    "gpu_expected": false,
+    "model_file_count": 24,
+    "model_files": [
+      {
+        "bytes": 5499,
+        "name": "chat_template.json",
+        "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/chat_template.json",
+        "sha256": "5c72a170d2a4a1a3bc5adad2e689ae28138a9700e5b8c96c0266331e86c0acce"
+      },
+      {
+        "bytes": 1474,
+        "name": "config.json",
+        "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/config.json",
+        "sha256": "d2dd0c60d01b9e195d9447c52da61c7302d28828524914c044d9c6e1b81d0427"
+      },
+      {
+        "bytes": 51,
+        "name": "configuration.json",
+        "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/configuration.json",
+        "sha256": "2d4464e2ead06bc9bc718c781309ad1e7baded626d66e8dcdc8b469ba185faf0"
+      },
+      {
+        "bytes": 269,
+        "name": "generation_config.json",
+        "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/generation_config.json",
+        "sha256": "1e241830b48b397cb0900101421df5450baddc7adf01e5fc86b5615865f3bae4"
+      },
+      {
+        "bytes": 4932328944,
+        "name": "model-00001-of-00014.safetensors",
+        "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/model-00001-of-00014.safetensors",
+        "sha256": "6b9dfbc930e505402ae9d7e5091a9d7d656cda5f34614f01cfe70bfb0cca27cb"
+      },
+      {
+        "bytes": 4875990528,
+        "name": "model-00002-of-00014.safetensors",
+        "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/model-00002-of-00014.safetensors",
+        "sha256": "d8bb44b4ff303fe76fe9e894022fb3dc71b15a2e716592790fe0e3c3e60478fa"
+      },
+      {
+        "bytes": 4875990552,
+        "name": "model-00003-of-00014.safetensors",
+        "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/model-00003-of-00014.safetensors",
+        "sha256": "54f22e8b3168f8dc962fac0d313607ebf52a12b433d4cf3098a0d82d9f042940"
+      },
+      {
+        "bytes": 4875990584,
+        "name": "model-00004-of-00014.safetensors",
+        "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/model-00004-of-00014.safetensors",
+        "sha256": "ad09c74d3c13ee29b5d0d84548fd8a3424a651564eaccd519946c296e59c557f"
+      },
+      {
+        "bytes": 4875990584,
+        "name": "model-00005-of-00014.safetensors",
+        "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/model-00005-of-00014.safetensors",
+        "sha256": "fc993c8a0e2a5b0570f383e1a95dc3a1281d1b224b6f3ee908f4827941e1dfc2"
+      },
+      {
+        "bytes": 4875990584,
+        "name": "model-00006-of-00014.safetensors",
+        "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/model-00006-of-00014.safetensors",
+        "sha256": "82f05620d1f718a90c362b221d6a184ff1a0f53301d706882d3df49695fa1974"
+      },
+      {
+        "bytes": 4875990584,
+        "name": "model-00007-of-00014.safetensors",
+        "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/model-00007-of-00014.safetensors",
+        "sha256": "fb91da8cb01ff4de3eef0eab1c3e769a734b3a1aafc61734068638a0d6c86934"
+      },
+      {
+        "bytes": 4875990584,
+        "name": "model-00008-of-00014.safetensors",
+        "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/model-00008-of-00014.safetensors",
+        "sha256": "431ca56535c8781944ce3801f5eb61c45531e853ecc5846d936ebaf4761b764f"
+      },
+      {
+        "bytes": 4875990584,
+        "name": "model-00009-of-00014.safetensors",
+        "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/model-00009-of-00014.safetensors",
+        "sha256": "3825e3f4302f4d2f7d76aa7430d2ce0864fde6b9e540a5806bf0d8e38e4d9f47"
+      },
+      {
+        "bytes": 4875990584,
+        "name": "model-00010-of-00014.safetensors",
+        "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/model-00010-of-00014.safetensors",
+        "sha256": "aded5a4d1d5e22dbd8b6f79266b6eb88c840411b09527c53917a1419ace22e2f"
+      },
+      {
+        "bytes": 4875990584,
+        "name": "model-00011-of-00014.safetensors",
+        "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/model-00011-of-00014.safetensors",
+        "sha256": "3820ffe8d8d6477f6fe8d614ef3c87abb264ee39accebf43a1507b970d80946f"
+      },
+      {
+        "bytes": 4875990584,
+        "name": "model-00012-of-00014.safetensors",
+        "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/model-00012-of-00014.safetensors",
+        "sha256": "05ad2d08ce71963121c9b03f1d9ec5d7641052f4b23c6c12b80d71065eb8e98e"
+      },
+      {
+        "bytes": 4875990584,
+        "name": "model-00013-of-00014.safetensors",
+        "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/model-00013-of-00014.safetensors",
+        "sha256": "b64f2289871261fdd1abbd3b78bcd66011b341de3dc8eeb2ed1a473ee7c8d95c"
+      },
+      {
+        "bytes": 3270697008,
+        "name": "model-00014-of-00014.safetensors",
+        "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/model-00014-of-00014.safetensors",
+        "sha256": "e45b6c9998c77ee5a6577f9f47bc76416c1d4d387169e50c4c9d3134ea51b13b"
+      },
+      {
+        "bytes": 97831,
+        "name": "model.safetensors.index.json",
+        "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/model.safetensors.index.json",
+        "sha256": "06c952c569285870b811989b794b9766493e280fb77fbcb957fc4e5fcf25403a"
+      },
+      {
+        "bytes": 390,
+        "name": "preprocessor_config.json",
+        "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/preprocessor_config.json",
+        "sha256": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516"
+      },
+      {
+        "bytes": 7032403,
+        "name": "tokenizer.json",
+        "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/tokenizer.json",
+        "sha256": "a5d85b6dcc535e6b93115a9ef287e6132fdbf30270da6218194ba742261173c7"
+      },
+      {
+        "bytes": 10868,
+        "name": "tokenizer_config.json",
+        "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/tokenizer_config.json",
+        "sha256": "c2da771801886ad9ae98181793ffd3dfb7f1af30f6f7c6a4e15d7dbba52e2399"
+      },
+      {
+        "bytes": 385,
+        "name": "video_preprocessor_config.json",
+        "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/video_preprocessor_config.json",
+        "sha256": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13"
+      },
+      {
+        "bytes": 2776833,
+        "name": "vocab.json",
+        "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/vocab.json",
+        "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+      }
+    ],
+    "model_id": "Qwen/Qwen3-VL-32B-Instruct",
+    "model_manifest_realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope.sha256",
+    "model_manifest_sha256": "18e0909c7d993853d6d0f62443461a74009754f90db026a1723cab80121c7872",
+    "model_realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope",
+    "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+    "model_total_bytes": 66724838875,
+    "note": "Static no-GPU qualification; scored launcher must bind its live process and command to this model realpath and receipt hash.",
+    "official_qwen_commit": "96588727e44c78b25ba03ea03b8e12f7e64fd0da",
+    "packages": {
+      "qwen-vl-utils": "0.0.14",
+      "torch": "2.11.0",
+      "transformers": "5.14.1",
+      "vllm": "0.26.0"
+    },
+    "python": "3.11.15 (main, Jun 11 2026, 15:20:16) [GCC 14.3.0]",
+    "schema": "a2_runtime_qualification_remote_model_v1",
+    "server_process_expected": false,
+    "status": "pass",
+    "unmanifested_ancillary_files": [
+      ".gitattributes",
+      "README.md",
+      "merges.txt"
+    ]
+  },
+  "remote_model_report_sha256": "44cb67aefbe92075a627523c9641a631d573aa4cf278e052463e302e3c94a33f",
+  "schema": "a2_runtime_qualification_combined_v1",
+  "status": "pass"
+}

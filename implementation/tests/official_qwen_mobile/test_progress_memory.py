@@ -8,14 +8,17 @@ from raven_m.official_qwen_mobile.controller import OfficialQwenMobileController
 from raven_m.official_qwen_mobile.progress_memory import (
     RepeatedNoProgressGuard,
     VerifiedProgressMemory,
-    action_signature,
+    exact_state_signature,
+    mapped_action_signature,
+    progress_parse,
+    transition_outcome,
 )
 
 
-def _snapshot(ui: str = "ui-a", activity: str = "pkg/.Main") -> dict:
+def _snapshot(value: int = 1, activity: str = "pkg/.Main") -> dict:
     return {
-        "visible_state": ui,
-        "ui_sha256": ui,
+        "pixels": np.full((8, 6, 3), value, dtype=np.uint8),
+        "ui_sha256": f"hidden-{value}",
         "foreground": {"activity": activity},
     }
 
@@ -23,6 +26,7 @@ def _snapshot(ui: str = "ui-a", activity: str = "pkg/.Main") -> dict:
 def _no_change() -> dict:
     return {
         "changed_pixel_fraction_gt_5": 0.0,
+        "exactly_unchanged": True,
         "activity_changed": False,
         "ui_sha_changed": False,
     }
@@ -46,79 +50,110 @@ def test_progress_memory_is_single_state_and_does_not_duplicate_history() -> Non
     assert write["written"] is True
     rendered, audit = memory.read()
     assert "CANARY-4721" in rendered
-    assert "no_visible_change" in rendered
+    assert "no_visible_change_exact" in rendered
+    assert "model-asserted screenshot-visible requirements" in rendered
     assert audit["nonempty"] is True
     assert memory.history_summary(summary) == "Tap Save."
     assert "PROGRESS[" not in memory.history_summary(summary)
 
 
-def test_guard_allows_two_no_progress_executions_then_blocks_jittered_repeat() -> None:
-    guard = RepeatedNoProgressGuard(no_progress_threshold=2, max_blocks=2)
+def _mapped(action_type: str = "tap", *, x: int = 50, y: int = 8) -> dict:
+    return {
+        "canonical": {"type": action_type, "x": 0.5, "y": 0.08},
+        "screen_size": [100, 100],
+        "actual_pixels": {"x": x, "y": y},
+        "upstream_action": {"action_type": "click", "x": x, "y": y},
+    }
+
+
+def test_guard_allows_two_no_progress_executions_then_warns_twice_and_stops() -> None:
+    guard = RepeatedNoProgressGuard(no_progress_threshold=2, max_ignored_block_warnings=2)
     before = _snapshot()
     after = _snapshot()
-    first = {"type": "tap", "x": 0.501, "y": 0.081}
-    jittered = {"type": "tap", "x": 0.499, "y": 0.085}
-    assert action_signature(first) == action_signature(jittered)
-    assert guard.assess(before=before, action=first)["blocked"] is False
-    guard.observe(before=before, after=after, action=first, transition=_no_change())
-    assert guard.assess(before=before, action=jittered)["blocked"] is False
-    guard.observe(before=before, after=after, action=jittered, transition=_no_change())
-    assessment = guard.assess(before=before, action=first)
+    action = _mapped()
+    assert guard.assess(before=before, mapped_action=action)["blocked"] is False
+    guard.observe(before=before, after=after, mapped_action=action, transition=_no_change())
+    assert guard.assess(before=before, mapped_action=action)["blocked"] is False
+    guard.observe(before=before, after=after, mapped_action=action, transition=_no_change())
+    assessment = guard.assess(before=before, mapped_action=action)
     assert assessment["blocked"] is True
-    assert guard.record_block(assessment)["cost_stop"] is False
-    assert guard.record_block(assessment)["cost_stop"] is True
+    first = guard.record_block(assessment)
+    second = guard.record_block(assessment)
+    third = guard.record_block(assessment)
+    assert (first["block_index"], first["warning_emitted"], first["cost_stop"]) == (1, True, False)
+    assert (second["block_index"], second["warning_emitted"], second["cost_stop"]) == (2, True, False)
+    assert (third["block_index"], third["warning_emitted"], third["cost_stop"]) == (3, False, True)
 
 
 def test_guard_never_blocks_after_real_visible_change() -> None:
-    guard = RepeatedNoProgressGuard(no_progress_threshold=2, max_blocks=2)
-    action = {"type": "tap", "x": 0.5, "y": 0.08}
+    guard = RepeatedNoProgressGuard()
+    action = _mapped()
     guard.observe(
-        before=_snapshot("a"),
-        after=_snapshot("b"),
-        action=action,
+        before=_snapshot(1),
+        after=_snapshot(2),
+        mapped_action=action,
         transition={
             "changed_pixel_fraction_gt_5": 0.2,
+            "exactly_unchanged": False,
             "activity_changed": False,
             "ui_sha_changed": True,
         },
     )
-    assert guard.assess(before=_snapshot("a"), action=action)["blocked"] is False
+    assert guard.assess(before=_snapshot(1), mapped_action=action)["blocked"] is False
 
 
 def test_guard_ignores_hidden_activity_and_ui_metadata() -> None:
-    guard = RepeatedNoProgressGuard(no_progress_threshold=2, max_blocks=2)
+    guard = RepeatedNoProgressGuard()
     visible_a = {
-        "visible_state": "same-visible-screen",
+        "pixels": np.zeros((8, 6, 3), dtype=np.uint8),
         "ui_sha256": "hidden-ui-a",
         "foreground": {"activity": "hidden/.A"},
     }
     visible_b = {
-        "visible_state": "same-visible-screen",
+        "pixels": np.zeros((8, 6, 3), dtype=np.uint8),
         "ui_sha256": "hidden-ui-b",
         "foreground": {"activity": "hidden/.B"},
     }
-    action = {"type": "tap", "x": 0.5, "y": 0.08}
-    guard.observe(before=visible_a, after=visible_b, action=action, transition=_no_change())
-    guard.observe(before=visible_a, after=visible_b, action=action, transition=_no_change())
-    assert guard.assess(before=visible_b, action=action)["blocked"] is True
+    action = _mapped()
+    guard.observe(before=visible_a, after=visible_b, mapped_action=action, transition=_no_change())
+    guard.observe(before=visible_a, after=visible_b, mapped_action=action, transition=_no_change())
+    assert guard.assess(before=visible_b, mapped_action=action)["blocked"] is True
 
 
-def test_different_executed_action_resets_consecutive_block_sequence() -> None:
-    guard = RepeatedNoProgressGuard(no_progress_threshold=2, max_blocks=2)
+def test_noneligible_actions_are_never_guarded() -> None:
+    guard = RepeatedNoProgressGuard()
     snapshot = _snapshot()
-    first = {"type": "tap", "x": 0.5, "y": 0.08}
-    different = {"type": "press_back"}
+    back = {"canonical": {"type": "press_back"}, "actual_pixels": {}}
+    for _ in range(5):
+        guard.observe(before=snapshot, after=snapshot, mapped_action=back, transition=_no_change())
+    assert guard.assess(before=snapshot, mapped_action=back)["eligible"] is False
+
+
+def test_different_proposal_resets_ignored_warning_sequence() -> None:
+    guard = RepeatedNoProgressGuard()
+    snapshot = _snapshot()
+    first = _mapped(x=50)
+    different = _mapped(x=51)
     for _ in range(2):
-        guard.observe(before=snapshot, after=snapshot, action=first, transition=_no_change())
-    blocked = guard.assess(before=snapshot, action=first)
-    assert guard.record_block(blocked)["cost_stop"] is False
-    guard.observe(
-        before=snapshot,
-        after=snapshot,
-        action=different,
-        transition=_no_change(),
-    )
-    assert guard.record_block(blocked)["cost_stop"] is False
+        guard.observe(before=snapshot, after=snapshot, mapped_action=first, transition=_no_change())
+    blocked = guard.assess(before=snapshot, mapped_action=first)
+    assert guard.record_block(blocked)["block_index"] == 1
+    assert guard.assess(before=snapshot, mapped_action=different)["blocked"] is False
+    blocked_again = guard.assess(before=snapshot, mapped_action=first)
+    assert guard.record_block(blocked_again)["block_index"] == 1
+
+
+def test_exact_signatures_do_not_merge_pixel_or_coordinate_jitter() -> None:
+    assert exact_state_signature(_snapshot(1)) != exact_state_signature(_snapshot(2))
+    assert mapped_action_signature(_mapped(x=50))[1] != mapped_action_signature(_mapped(x=51))[1]
+
+
+def test_progress_compliance_and_three_way_outcome() -> None:
+    parsed = progress_parse("PROGRESS[observed=a; verified=b; pending=c; expected=d] | tap")
+    assert parsed["fields_complete"] is True
+    assert transition_outcome(_no_change()) == "no_visible_change_exact"
+    assert transition_outcome({"exactly_unchanged": False, "changed_pixel_fraction_gt_5": 0.0005}) == "minor_or_ambiguous_visible_change"
+    assert transition_outcome({"exactly_unchanged": False, "changed_pixel_fraction_gt_5": 0.2}) == "material_visible_change"
 
 
 class _Client:
@@ -221,7 +256,7 @@ def test_controller_a2_injects_outcome_memory_and_keeps_evaluator_hidden(
         client,
         adapter=_Adapter(),
         working_memory=VerifiedProgressMemory(max_chars=1200),
-        cost_guard=RepeatedNoProgressGuard(no_progress_threshold=2, max_blocks=2),
+        cost_guard=RepeatedNoProgressGuard(),
     ).run(
         env=_Env(),
         task=_Task(),
@@ -233,6 +268,8 @@ def test_controller_a2_injects_outcome_memory_and_keeps_evaluator_hidden(
     assert "CANARY-A2" in client.prompts[1]
     assert "PROGRESS[" not in summary["steps"][0]["history_after"][0]
     assert summary["memory_mechanism"]["active"] is True
+    assert summary["memory_mechanism"]["progress_prefix_attempt_count"] == 2
+    assert summary["steps"][1]["progress_parse"]["fields_complete"] is True
     assert summary["cost_guard"]["block_count"] == 0
     assert summary["evaluator_reward"] == 0.0
     assert summary["success"] is False

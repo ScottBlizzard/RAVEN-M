@@ -20,15 +20,15 @@ The useful A1 gain still matters: in `RecipeDeleteMultipleRecipesWithConstraint`
 A2 therefore does not add a planner, critic, RAG retriever, extra screenshots, or extra model calls. It:
 
 1. replaces six raw recency records with one compact progress state;
-2. requires `observed`, screenshot-attested `verified`, `pending`, and the next action's expected visible effect;
-3. records whether the action actually produced an observable screen/activity/UI-tree change;
+2. requires `observed`, model-asserted screenshot-visible `verified`, `pending`, and the next action's expected visible effect; `verified` is not objective confirmation;
+3. records a three-way outcome from the exact model-visible screenshot transition only; activity/UI-tree metadata is audit-only;
 4. stores the structured state once and commits only the short imperative to ordinary action history.
 
 This directly targets A1's useful behavior (persisting pending confirmation) and its largest cost defect (repeated structured prose).
 
 ## Separate cost guard and its attribution boundary
 
-The deterministic guard only asks whether an equivalent action was executed twice on the same visibly equivalent screenshot state without any observable screenshot change. Its state signature is computed from the screenshot already supplied to the model; hidden activity and UI-tree data remain audit-only. The first two attempts are allowed. A third equivalent proposal is blocked and the model is told to inspect or reroute. If it ignores two consecutive block messages, interaction stops and the normal evaluator assigns the final label; the guard receives no success credit.
+The deterministic guard only asks whether the exact same mapped physical tap/long-press/swipe was executed twice on a byte-identical model-visible screenshot and returned a byte-identical screenshot. It does not quantize pixels or coordinates. The first two executions are allowed. The third proposal is blocked with warning 1; repeating after warnings 1 and 2 leads to block 3 and a cost stop. Hidden activity/UI-tree data remain audit-only, and the guard receives no success credit.
 
 The guard cannot see evaluator state and cannot earn success credit. Its events are logged separately from memory reads and writes. Therefore the final analysis can distinguish:
 
@@ -50,7 +50,7 @@ The frozen guard rule was replayed over already recorded A1 screenshots, UI hash
 | SaveCopyOfReceiptTaskEval | fail | 16 | 7 | repeated unchanged-state swipe |
 | SportsTrackerActivitiesOnDate | fail | 20 | 17 | repeated unchanged-state swipe |
 
-No successful A1 episode reached the frozen blocking condition in this replay. This does **not** prove that A2 will be harmless or successful; it only shows that the rule is aimed at observed failed loops rather than being chosen without trace evidence.
+The corrected full-pixel, exact-mapped-action replay found one hypothetical block exposure, confined to a failed A1 episode; zero successful A1 episodes reached the frozen blocking condition. This does **not** prove that A2 will be harmless or successful; it only qualifies the conservative threshold before generation.
 
 ## Frozen decision
 

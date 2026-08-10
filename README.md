@@ -6,7 +6,7 @@ This branch is the clean audit packet for a Zhejiang University summer-camp stud
 
 1. **A0 — official Qwen mobile baseline.** The public Qwen3-VL mobile-agent prompt and action protocol were ported to AndroidWorld with Qwen3-VL-32B. On the frozen first seed it achieved 4/19 full successes.
 2. **A1 — simple Action Working Memory.** Six recent `observed / verified / pending` records were injected within each episode. It achieved 5/19 but increased steps from 329 to 603 and tokens from 1.27M to 3.46M.
-3. **A2 — proposed verified-progress memory.** One compact progress state records visible facts, screenshot-attested requirements, pending work, the expected visible effect, and the actual observable screenshot transition. A separately logged cost guard blocks a third equivalent no-progress action. A2 adds no model calls and is not yet a scored result.
+3. **A2-v1r1 — proposed verified-progress memory.** One compact progress state records the model's own screenshot-visible assertions, pending work, expected effect, and exact screenshot outcome. A separately logged guard blocks a third exact mapped tap/long-press/swipe only after two byte-identical no-change executions. A2 adds no model calls and is not yet a scored result.
 
 The A2 guard is not claimed as memory intelligence. It only limits obvious repeated-action waste. All memory reads/writes and guard assessments/blocks/stops are recorded separately so the final trace analysis can attribute changes.
 

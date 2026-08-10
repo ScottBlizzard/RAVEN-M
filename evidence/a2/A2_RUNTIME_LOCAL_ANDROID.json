@@ -1,0 +1,193 @@
+{
+  "adb_devices": "List of devices attached\nemulator-5554\tdevice",
+  "adb_realpath": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\android\\sdk\\platform-tools\\adb.exe",
+  "android_build_fingerprint": "google/sdk_gphone64_x86_64/emu64x:13/TE1A.240213.009/12342917:userdebug/dev-keys",
+  "androidworld_commit": "3e50888527ef9f29b9157ecd537e408008bb1c85",
+  "androidworld_source_file_count": 161,
+  "androidworld_source_tree_sha256": "03fb2cb384ff6d70e27f3ed5647536b9f0cf98b2b14d20e3a888f0035b4e3e8b",
+  "androidworld_worktree_status": "M android_world/env/actuation.py\n M android_world/env/actuation_test.py\n M android_world/env/android_world_controller.py\n M android_world/env/env_launcher.py\n M android_world/task_evals/single/retro_music.py\n M android_world/task_evals/single/retro_music_test.py\n?? android_world/task_evals/information_retrieval/proto/state_pb2.py\n?? android_world/task_evals/information_retrieval/proto/state_pb2_grpc.py\n?? android_world/task_evals/information_retrieval/proto/task_pb2.py\n?? android_world/task_evals/information_retrieval/proto/task_pb2_grpc.py",
+  "disk": {
+    "free": 67405295616,
+    "total": 629824024576,
+    "used": 562418728960
+  },
+  "emulator_serial": "EMULATOR36X6X11X0",
+  "generation_calls": 0,
+  "installed_package_count": 223,
+  "ordered_scored_keys": [
+    [
+      "BrowserMultiply",
+      20260806
+    ],
+    [
+      "ExpenseAddMultipleFromGallery",
+      20260806
+    ],
+    [
+      "ExpenseAddMultipleFromMarkor",
+      20260806
+    ],
+    [
+      "ExpenseDeleteMultiple2",
+      20260806
+    ],
+    [
+      "MarkorCreateNoteAndSms",
+      20260806
+    ],
+    [
+      "MarkorMergeNotes",
+      20260806
+    ],
+    [
+      "MarkorTranscribeVideo",
+      20260806
+    ],
+    [
+      "OsmAndMarker",
+      20260806
+    ],
+    [
+      "OsmAndTrack",
+      20260806
+    ],
+    [
+      "RecipeAddMultipleRecipesFromImage",
+      20260806
+    ],
+    [
+      "RecipeAddMultipleRecipesFromMarkor",
+      20260806
+    ],
+    [
+      "RecipeAddMultipleRecipesFromMarkor2",
+      20260806
+    ],
+    [
+      "RecipeDeleteMultipleRecipesWithConstraint",
+      20260806
+    ],
+    [
+      "RetroSavePlaylist",
+      20260806
+    ],
+    [
+      "SaveCopyOfReceiptTaskEval",
+      20260806
+    ],
+    [
+      "SimpleCalendarAddOneEvent",
+      20260806
+    ],
+    [
+      "SportsTrackerActivitiesOnDate",
+      20260806
+    ],
+    [
+      "SportsTrackerTotalDistanceForCategoryOverInterval",
+      20260806
+    ],
+    [
+      "SportsTrackerTotalDurationForCategoryThisWeek",
+      20260806
+    ]
+  ],
+  "ordered_scored_keys_sha256": "de8916b5bdd69af4777c6d4b02973d9e612a8c2822aa164a8f687a6e5842b048",
+  "output_write_check": "pass",
+  "packages": {
+    "Pillow": "12.3.0",
+    "android-env": "1.2.3",
+    "android-world": "0.1.0",
+    "numpy": "2.4.6"
+  },
+  "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "resolution": "Physical size: 1080x2400",
+  "schema": "a2_runtime_qualification_local_android_v1",
+  "scored_package_identity": {
+    "code.name.monkey.retromusic": [
+      "versionCode=10603 minSdk=21 targetSdk=33",
+      "versionName=6.1.0",
+      "lastUpdateTime=2026-07-22 17:56:03",
+      "firstInstallTime=2026-07-22 17:56:03"
+    ],
+    "com.android.chrome": [
+      "versionCode=541412337 minSdk=29 targetSdk=33",
+      "versionName=109.0.5414.123",
+      "lastUpdateTime=2024-09-09 22:59:58",
+      "firstInstallTime=2024-09-09 22:59:58",
+      "versionCode=541412337 minSdk=24 targetSdk=33",
+      "versionName=109.0.5414.123",
+      "lastUpdateTime=1969-12-31 23:59:59",
+      "firstInstallTime=1969-12-31 23:59:59"
+    ],
+    "com.arduia.expense": [
+      "versionCode=11 minSdk=21 targetSdk=30",
+      "versionName=1.0.0-beta05",
+      "lastUpdateTime=2026-07-22 17:47:47",
+      "firstInstallTime=2026-07-22 17:07:58"
+    ],
+    "com.flauschcode.broccoli": [
+      "versionCode=1020600 minSdk=26 targetSdk=34",
+      "versionName=1.2.6",
+      "lastUpdateTime=2026-07-22 17:55:37",
+      "firstInstallTime=2026-07-22 17:55:37"
+    ],
+    "com.google.android.apps.messaging": [
+      "versionCode=163204880 minSdk=33 targetSdk=33",
+      "versionName=messages.android_20221208_01_RC02_alldpi.x86_64.phone",
+      "lastUpdateTime=2024-09-09 23:01:11",
+      "firstInstallTime=2024-09-09 23:01:11"
+    ],
+    "com.simplemobiletools.calendar.pro": [
+      "versionCode=238 minSdk=23 targetSdk=33",
+      "versionName=6.22.2",
+      "lastUpdateTime=2026-07-22 17:56:26",
+      "firstInstallTime=2026-07-22 17:56:26"
+    ],
+    "com.simplemobiletools.gallery.pro": [
+      "versionCode=396 minSdk=23 targetSdk=33",
+      "versionName=6.28.1",
+      "lastUpdateTime=2026-07-22 17:56:50",
+      "firstInstallTime=2026-07-22 17:56:50"
+    ],
+    "com.simplemobiletools.smsmessenger": [
+      "versionCode=85 minSdk=23 targetSdk=34",
+      "versionName=5.19.3",
+      "lastUpdateTime=2026-07-22 17:57:26",
+      "firstInstallTime=2026-07-22 17:57:26"
+    ],
+    "de.dennisguse.opentracks": [
+      "versionCode=5705 minSdk=26 targetSdk=34",
+      "versionName=v4.11.3",
+      "lastUpdateTime=2026-07-22 17:53:39",
+      "firstInstallTime=2026-07-22 17:53:39"
+    ],
+    "net.gsantner.markor": [
+      "versionCode=146 minSdk=16 targetSdk=33",
+      "versionName=2.10.9",
+      "lastUpdateTime=2026-07-22 17:52:10",
+      "firstInstallTime=2026-07-22 17:52:10"
+    ],
+    "net.osmand": [
+      "versionCode=4613 minSdk=23 targetSdk=33",
+      "versionName=4.6.13",
+      "lastUpdateTime=2026-07-22 17:54:48",
+      "firstInstallTime=2026-07-22 17:54:48"
+    ],
+    "org.tasks": [
+      "versionCode=130605 minSdk=24 targetSdk=33",
+      "versionName=13.6.3",
+      "lastUpdateTime=2026-07-22 17:57:52",
+      "firstInstallTime=2026-07-22 17:57:52"
+    ],
+    "org.videolan.vlc": [
+      "versionCode=13050408 minSdk=17 targetSdk=33",
+      "versionName=3.5.4",
+      "lastUpdateTime=2026-07-22 17:58:23",
+      "firstInstallTime=2026-07-22 17:58:23"
+    ]
+  },
+  "status": "pass",
+  "task_manifest_realpath": "D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\implementation\\configs\\androidworld_hard_v2_instances.json",
+  "task_manifest_sha256": "c1d718e9d380e443d12d2c29ab2182ae801a3befc53881b864cd830f2ad0440a"
+}

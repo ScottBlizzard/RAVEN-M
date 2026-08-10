@@ -3,6 +3,8 @@ from __future__ import annotations
 from pathlib import Path
 
 from PIL import Image
+import pytest
+import requests
 
 from raven_m.models.vllm_client import VLLMClient
 
@@ -100,3 +102,36 @@ def test_vllm_client_locks_official_public_sampling_and_message_order(
         item["type"] for item in payload["messages"][1]["content"]
     ] == ["text", "image_url"]
     assert result.raven_meta["runtime"] == "vllm_openai"
+
+
+def test_scored_transport_can_disable_automatic_retry(tmp_path: Path) -> None:
+    class FailingSession(Session):
+        def __init__(self) -> None:
+            super().__init__()
+            self.attempts = 0
+
+        def post(self, url: str, *, json: dict, headers: dict, timeout: float) -> Response:
+            del url, json, headers, timeout
+            self.attempts += 1
+            raise requests.Timeout("unknown remote token consumption")
+
+    image = tmp_path / "screen.png"
+    Image.new("RGB", (8, 8), "white").save(image)
+    session = FailingSession()
+    client = VLLMClient(
+        "http://127.0.0.1:18000",
+        model_id="Qwen/Qwen3-VL-32B-Instruct",
+        model_revision="revision",
+        backend_id="backend",
+        retry_transient_errors=False,
+        session=session,
+    )
+    with pytest.raises(requests.Timeout):
+        client.generate(
+            image_path=image,
+            system_prompt="system",
+            user_prompt="user",
+            episode_id="episode",
+            call_label="step_000",
+        )
+    assert session.attempts == 1

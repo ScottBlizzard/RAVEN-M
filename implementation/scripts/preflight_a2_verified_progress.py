@@ -10,6 +10,8 @@ from pathlib import Path
 import subprocess
 import sys
 
+import numpy as np
+
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 REPOSITORY_ROOT = PROJECT_ROOT.parent
@@ -19,8 +21,11 @@ sys.path.insert(0, str(LOCAL_RUNTIME / "scripts"))
 
 from raven_m.official_qwen_mobile.a2_contract import (  # noqa: E402
     A2_CONFIG,
+    A2_GUARD_REPLAY,
     A2_MANIFEST,
     A2_PREFLIGHT_REPORT,
+    A2_REFERENCE_LEDGER,
+    A2_RUNTIME_QUALIFICATION,
     current_source_freeze,
 )
 from raven_m.official_qwen_mobile.progress_memory import (  # noqa: E402
@@ -85,7 +90,7 @@ def main() -> None:
     guard_config = config.get("agent", {}).get("cost_guard", {})
     if (
         guard_config.get("no_progress_execution_threshold") != 2
-        or guard_config.get("max_consecutive_blocks_before_cost_stop") != 2
+        or guard_config.get("max_ignored_block_warnings") != 2
         or guard_config.get("success_credit") is not False
     ):
         errors.append("a2_cost_guard_contract_drift")
@@ -112,6 +117,7 @@ def main() -> None:
         canonical_action={"type": "tap", "x": 0.8, "y": 0.1},
         transition={
             "changed_pixel_fraction_gt_5": 0.0,
+            "exactly_unchanged": True,
             "activity_changed": False,
             "ui_sha_changed": False,
         },
@@ -132,45 +138,78 @@ def main() -> None:
     if empty_read.get("nonempty"):
         errors.append("empty_a2_memory_read_marked_nonempty")
 
-    guard = RepeatedNoProgressGuard(no_progress_threshold=2, max_blocks=2)
+    memory.record_progress_parse(action_summary)
+    guard = RepeatedNoProgressGuard(
+        no_progress_threshold=2, max_ignored_block_warnings=2
+    )
     snapshot = {
-        "visible_state": "stable-screen",
+        "pixels": np.zeros((12, 8, 3), dtype=np.uint8),
         "ui_sha256": "audit-only-stable-ui",
         "foreground": {"activity": "audit-only-pkg/.Main"},
     }
-    action = {"type": "tap", "x": 0.501, "y": 0.081}
+    action = {
+        "canonical": {"type": "tap", "x": 0.5, "y": 0.08},
+        "screen_size": [100, 100],
+        "actual_pixels": {"x": 50, "y": 8},
+        "upstream_action": {"action_type": "click", "x": 50, "y": 8},
+    }
     transition = {
         "changed_pixel_fraction_gt_5": 0.0,
+        "exactly_unchanged": True,
         "activity_changed": False,
         "ui_sha_changed": False,
     }
     guard_sequence: list[dict] = []
     for _ in range(2):
-        guard_sequence.append(guard.assess(before=snapshot, action=action))
-        guard.observe(before=snapshot, after=snapshot, action=action, transition=transition)
-    third = guard.assess(
-        before=snapshot,
-        action={"type": "tap", "x": 0.499, "y": 0.085},
-    )
+        guard_sequence.append(guard.assess(before=snapshot, mapped_action=action))
+        guard.observe(before=snapshot, after=snapshot, mapped_action=action, transition=transition)
+    third = guard.assess(before=snapshot, mapped_action=action)
     guard_sequence.append(third)
     first_block = guard.record_block(third)
     second_block = guard.record_block(third)
+    third_block = guard.record_block(third)
     if [item["blocked"] for item in guard_sequence] != [False, False, True]:
         errors.append("a2_guard_did_not_allow_two_then_block_third")
-    if first_block["cost_stop"] or not second_block["cost_stop"]:
+    if first_block["cost_stop"] or second_block["cost_stop"] or not third_block["cost_stop"]:
         errors.append("a2_guard_cost_stop_threshold_drift")
+
+    evidence_checks = {}
+    for path, label in (
+        (A2_REFERENCE_LEDGER, "reference_ledger"),
+        (A2_GUARD_REPLAY, "guard_replay"),
+        (A2_RUNTIME_QUALIFICATION, "runtime_qualification"),
+    ):
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+            evidence_checks[label] = {
+                "path": str(path.relative_to(REPOSITORY_ROOT)),
+                "sha256": sha256(path.read_bytes()).hexdigest(),
+                "status": payload.get("status"),
+                "generation_calls": payload.get("generation_calls"),
+                "qualification_pass": payload.get("qualification_pass"),
+            }
+        except Exception as exc:
+            errors.append(f"{label}_unreadable:{type(exc).__name__}:{exc}")
+    ledger = json.loads(A2_REFERENCE_LEDGER.read_text(encoding="utf-8"))
+    if (
+        ledger.get("summaries", {}).get("A0", {}).get("success_count") != 4
+        or ledger.get("summaries", {}).get("A1", {}).get("success_count") != 5
+        or ledger.get("paired_outcome") != {"A1_losses": 0, "A1_wins": 1, "ties": 18}
+    ):
+        errors.append("a0_a1_reference_ledger_invariant_drift")
+    replay = json.loads(A2_GUARD_REPLAY.read_text(encoding="utf-8"))
+    if replay.get("generation_calls") != 0 or not replay.get("qualification_pass"):
+        errors.append("a1_exact_guard_replay_failed")
+    runtime = json.loads(A2_RUNTIME_QUALIFICATION.read_text(encoding="utf-8"))
+    if runtime.get("status") != "pass" or runtime.get("generation_calls") != 0:
+        errors.append("a2_runtime_qualification_failed")
 
     tests = subprocess.run(
         [
             sys.executable,
             "-m",
             "pytest",
-            "tests/official_qwen_mobile/test_protocol.py",
-            "tests/official_qwen_mobile/test_official_qwen_controller.py",
-            "tests/official_qwen_mobile/test_working_memory.py",
-            "tests/official_qwen_mobile/test_progress_memory.py",
-            "tests/official_qwen_mobile/test_source_document_coverage_gate.py",
-            "tests/models/test_vllm_client.py",
+            "tests",
             "-q",
         ],
         cwd=PROJECT_ROOT,
@@ -205,7 +244,9 @@ def main() -> None:
             "assessments": guard_sequence,
             "first_block": first_block,
             "second_block": second_block,
+            "third_block": third_block,
         },
+        "evidence_checks": evidence_checks,
         "tests": {
             "returncode": tests.returncode,
             "stdout": tests.stdout,

@@ -136,6 +136,8 @@ def _audit_snapshot(
         "screenshot": screenshot.name,
         "screenshot_sha256": _sha256(screenshot),
         "pixel_sha256": sha256(pixels.tobytes()).hexdigest(),
+        "pixel_shape": list(pixels.shape),
+        "pixel_dtype": pixels.dtype.str,
         "ui_record": ui_path.name,
         "ui_sha256": sha256(ui_payload).hexdigest(),
         "ui_node_count": len(ui_records),
@@ -256,17 +258,15 @@ class OfficialQwenMobileController:
                 f"status={response.status}, error={response.error_message!r}"
             )
 
-    def _execute(
+    def _map_action(
         self,
-        env: Any,
         action: dict[str, Any],
         *,
         screen_width: int,
         screen_height: int,
-    ) -> dict[str, Any]:
+    ) -> tuple[Any | None, dict[str, Any]]:
         if action["type"] == "press_recents":
-            self._press_recents(env)
-            return {
+            return None, {
                 "canonical": action,
                 "screen_size": [screen_width, screen_height],
                 "actual_pixels": {},
@@ -277,8 +277,21 @@ class OfficialQwenMobileController:
             screen_width=screen_width,
             screen_height=screen_height,
         )
-        self.adapter.execute(env, mapped)
-        return mapped.audit_record()
+        return mapped, mapped.audit_record()
+
+    def _execute_mapped(
+        self,
+        env: Any,
+        *,
+        mapped_object: Any | None,
+        mapped_record: dict[str, Any],
+    ) -> None:
+        if mapped_record["canonical"]["type"] == "press_recents":
+            self._press_recents(env)
+            return
+        if mapped_object is None:
+            raise RuntimeError("Mapped Android action object is missing.")
+        self.adapter.execute(env, mapped_object)
 
     def run(
         self,
@@ -384,13 +397,8 @@ class OfficialQwenMobileController:
                 memory_read: dict[str, Any] | None = None
                 rendered_memory = ""
                 if self.working_memory is not None:
-                    guard_notice = (
-                        self.cost_guard.notice(before)
-                        if self.cost_guard is not None
-                        else ""
-                    )
                     rendered_memory, memory_read = self.working_memory.read(
-                        context={"before": _snapshot_record(before), "guard_notice": guard_notice}
+                        context={"before": _snapshot_record(before)}
                     )
                 user_prompt = append_working_memory(
                     build_user_prompt(effective_goal, history),
@@ -452,6 +460,10 @@ class OfficialQwenMobileController:
                     termination_reason = "official_output_invalid"
                     break
                 record["decision"] = decision.audit_record()
+                if isinstance(self.working_memory, VerifiedProgressMemory):
+                    record["progress_parse"] = self.working_memory.record_progress_parse(
+                        decision.action_summary
+                    )
                 canonical_action = decision.canonical_action
                 gate_decision: dict[str, Any] | None = None
                 if self.source_document_coverage_gate is not None:
@@ -482,11 +494,17 @@ class OfficialQwenMobileController:
                     steps.append(record)
                     log(record)
                     break
+                mapped_object, mapped_record = self._map_action(
+                    canonical_action,
+                    screen_width=width,
+                    screen_height=height,
+                )
+                record["mapped_action_proposal"] = mapped_record
                 guard_assessment: dict[str, Any] | None = None
                 if self.cost_guard is not None:
                     guard_assessment = self.cost_guard.assess(
                         before=before,
-                        action=canonical_action,
+                        mapped_action=mapped_record,
                     )
                     record["cost_guard_assessment"] = guard_assessment
                     if guard_assessment.get("blocked"):
@@ -498,12 +516,15 @@ class OfficialQwenMobileController:
                             "blocked_by_cost_guard": True,
                         }
                         guard_history = str(guard_block["message"])
-                        history.append(guard_history)
+                        if guard_block.get("warning_emitted"):
+                            history.append(guard_history)
                         record["history_commit"] = {
                             "policy": "a2_cost_guard_block_message",
                             "model_action_summary": decision.action_summary,
                             "committed_history_summary": guard_history,
-                            "attestation_applied": True,
+                            "attestation_applied": bool(
+                                guard_block.get("warning_emitted")
+                            ),
                             "attestation_reason": "repeated_no_progress_cost_guard",
                         }
                         record["history_after"] = list(history)
@@ -521,11 +542,10 @@ class OfficialQwenMobileController:
                     "started_at": execution_started_utc,
                 }
                 try:
-                    mapped = self._execute(
+                    self._execute_mapped(
                         env,
-                        canonical_action,
-                        screen_width=width,
-                        screen_height=height,
+                        mapped_object=mapped_object,
+                        mapped_record=mapped_record,
                     )
                 except Exception as exc:
                     record["layers"]["L3_execution"].update(
@@ -542,14 +562,14 @@ class OfficialQwenMobileController:
                     raise
                 execution_latency = time.perf_counter() - execution_started_monotonic
                 record["executed"] = True
-                record["mapped_action"] = mapped
+                record["mapped_action"] = mapped_record
                 record["layers"]["L3_execution"] = {
                     "attempted": True,
                     "completed": True,
                     "started_at": execution_started_utc,
                     "finished_at": _utc_now(),
                     "latency_seconds": execution_latency,
-                    "mapped_action": mapped,
+                    "mapped_action": mapped_record,
                 }
                 after_state = env.get_state(wait_to_stabilize=True)
                 pending_state = after_state
@@ -580,7 +600,7 @@ class OfficialQwenMobileController:
                     record["cost_guard_observation"] = self.cost_guard.observe(
                         before=before,
                         after=after,
-                        action=canonical_action,
+                        mapped_action=mapped_record,
                         transition=transition,
                     )
                 gate_observation: dict[str, Any] | None = None

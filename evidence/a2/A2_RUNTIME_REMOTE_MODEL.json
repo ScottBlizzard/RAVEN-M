@@ -1,0 +1,179 @@
+{
+  "disk": {
+    "free": 122566103040,
+    "total": 214748364800,
+    "used": 92182261760
+  },
+  "generation_calls": 0,
+  "gpu_expected": false,
+  "model_file_count": 24,
+  "model_files": [
+    {
+      "bytes": 5499,
+      "name": "chat_template.json",
+      "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/chat_template.json",
+      "sha256": "5c72a170d2a4a1a3bc5adad2e689ae28138a9700e5b8c96c0266331e86c0acce"
+    },
+    {
+      "bytes": 1474,
+      "name": "config.json",
+      "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/config.json",
+      "sha256": "d2dd0c60d01b9e195d9447c52da61c7302d28828524914c044d9c6e1b81d0427"
+    },
+    {
+      "bytes": 51,
+      "name": "configuration.json",
+      "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/configuration.json",
+      "sha256": "2d4464e2ead06bc9bc718c781309ad1e7baded626d66e8dcdc8b469ba185faf0"
+    },
+    {
+      "bytes": 269,
+      "name": "generation_config.json",
+      "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/generation_config.json",
+      "sha256": "1e241830b48b397cb0900101421df5450baddc7adf01e5fc86b5615865f3bae4"
+    },
+    {
+      "bytes": 4932328944,
+      "name": "model-00001-of-00014.safetensors",
+      "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/model-00001-of-00014.safetensors",
+      "sha256": "6b9dfbc930e505402ae9d7e5091a9d7d656cda5f34614f01cfe70bfb0cca27cb"
+    },
+    {
+      "bytes": 4875990528,
+      "name": "model-00002-of-00014.safetensors",
+      "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/model-00002-of-00014.safetensors",
+      "sha256": "d8bb44b4ff303fe76fe9e894022fb3dc71b15a2e716592790fe0e3c3e60478fa"
+    },
+    {
+      "bytes": 4875990552,
+      "name": "model-00003-of-00014.safetensors",
+      "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/model-00003-of-00014.safetensors",
+      "sha256": "54f22e8b3168f8dc962fac0d313607ebf52a12b433d4cf3098a0d82d9f042940"
+    },
+    {
+      "bytes": 4875990584,
+      "name": "model-00004-of-00014.safetensors",
+      "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/model-00004-of-00014.safetensors",
+      "sha256": "ad09c74d3c13ee29b5d0d84548fd8a3424a651564eaccd519946c296e59c557f"
+    },
+    {
+      "bytes": 4875990584,
+      "name": "model-00005-of-00014.safetensors",
+      "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/model-00005-of-00014.safetensors",
+      "sha256": "fc993c8a0e2a5b0570f383e1a95dc3a1281d1b224b6f3ee908f4827941e1dfc2"
+    },
+    {
+      "bytes": 4875990584,
+      "name": "model-00006-of-00014.safetensors",
+      "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/model-00006-of-00014.safetensors",
+      "sha256": "82f05620d1f718a90c362b221d6a184ff1a0f53301d706882d3df49695fa1974"
+    },
+    {
+      "bytes": 4875990584,
+      "name": "model-00007-of-00014.safetensors",
+      "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/model-00007-of-00014.safetensors",
+      "sha256": "fb91da8cb01ff4de3eef0eab1c3e769a734b3a1aafc61734068638a0d6c86934"
+    },
+    {
+      "bytes": 4875990584,
+      "name": "model-00008-of-00014.safetensors",
+      "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/model-00008-of-00014.safetensors",
+      "sha256": "431ca56535c8781944ce3801f5eb61c45531e853ecc5846d936ebaf4761b764f"
+    },
+    {
+      "bytes": 4875990584,
+      "name": "model-00009-of-00014.safetensors",
+      "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/model-00009-of-00014.safetensors",
+      "sha256": "3825e3f4302f4d2f7d76aa7430d2ce0864fde6b9e540a5806bf0d8e38e4d9f47"
+    },
+    {
+      "bytes": 4875990584,
+      "name": "model-00010-of-00014.safetensors",
+      "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/model-00010-of-00014.safetensors",
+      "sha256": "aded5a4d1d5e22dbd8b6f79266b6eb88c840411b09527c53917a1419ace22e2f"
+    },
+    {
+      "bytes": 4875990584,
+      "name": "model-00011-of-00014.safetensors",
+      "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/model-00011-of-00014.safetensors",
+      "sha256": "3820ffe8d8d6477f6fe8d614ef3c87abb264ee39accebf43a1507b970d80946f"
+    },
+    {
+      "bytes": 4875990584,
+      "name": "model-00012-of-00014.safetensors",
+      "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/model-00012-of-00014.safetensors",
+      "sha256": "05ad2d08ce71963121c9b03f1d9ec5d7641052f4b23c6c12b80d71065eb8e98e"
+    },
+    {
+      "bytes": 4875990584,
+      "name": "model-00013-of-00014.safetensors",
+      "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/model-00013-of-00014.safetensors",
+      "sha256": "b64f2289871261fdd1abbd3b78bcd66011b341de3dc8eeb2ed1a473ee7c8d95c"
+    },
+    {
+      "bytes": 3270697008,
+      "name": "model-00014-of-00014.safetensors",
+      "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/model-00014-of-00014.safetensors",
+      "sha256": "e45b6c9998c77ee5a6577f9f47bc76416c1d4d387169e50c4c9d3134ea51b13b"
+    },
+    {
+      "bytes": 97831,
+      "name": "model.safetensors.index.json",
+      "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/model.safetensors.index.json",
+      "sha256": "06c952c569285870b811989b794b9766493e280fb77fbcb957fc4e5fcf25403a"
+    },
+    {
+      "bytes": 390,
+      "name": "preprocessor_config.json",
+      "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/preprocessor_config.json",
+      "sha256": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516"
+    },
+    {
+      "bytes": 7032403,
+      "name": "tokenizer.json",
+      "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/tokenizer.json",
+      "sha256": "a5d85b6dcc535e6b93115a9ef287e6132fdbf30270da6218194ba742261173c7"
+    },
+    {
+      "bytes": 10868,
+      "name": "tokenizer_config.json",
+      "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/tokenizer_config.json",
+      "sha256": "c2da771801886ad9ae98181793ffd3dfb7f1af30f6f7c6a4e15d7dbba52e2399"
+    },
+    {
+      "bytes": 385,
+      "name": "video_preprocessor_config.json",
+      "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/video_preprocessor_config.json",
+      "sha256": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13"
+    },
+    {
+      "bytes": 2776833,
+      "name": "vocab.json",
+      "realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope/vocab.json",
+      "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+    }
+  ],
+  "model_id": "Qwen/Qwen3-VL-32B-Instruct",
+  "model_manifest_realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope.sha256",
+  "model_manifest_sha256": "18e0909c7d993853d6d0f62443461a74009754f90db026a1723cab80121c7872",
+  "model_realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope",
+  "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+  "model_total_bytes": 66724838875,
+  "note": "Static no-GPU qualification; scored launcher must bind its live process and command to this model realpath and receipt hash.",
+  "official_qwen_commit": "96588727e44c78b25ba03ea03b8e12f7e64fd0da",
+  "packages": {
+    "qwen-vl-utils": "0.0.14",
+    "torch": "2.11.0",
+    "transformers": "5.14.1",
+    "vllm": "0.26.0"
+  },
+  "python": "3.11.15 (main, Jun 11 2026, 15:20:16) [GCC 14.3.0]",
+  "schema": "a2_runtime_qualification_remote_model_v1",
+  "server_process_expected": false,
+  "status": "pass",
+  "unmanifested_ancillary_files": [
+    ".gitattributes",
+    "README.md",
+    "merges.txt"
+  ]
+}

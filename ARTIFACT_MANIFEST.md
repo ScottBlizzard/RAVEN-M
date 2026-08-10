@@ -1,51 +1,50 @@
-# A0–A2 Audit Artifact Manifest
+# A0–A2-v1r1 Audit Artifact Manifest
 
-Independent review instructions: `GPT_PRO_A2_AUDIT_REQUEST.md`.
+Independent review basis: `GPT_PRO_A2_AUDIT_REQUEST.md` and the returned `A2_PRO_AUDIT.md` supplied outside this repository.
 
-## Assignment
+## Assignment and paired evidence
 
 - `assessment/夏令营考核题目.pdf`
-- `assessment/夏令营考核题目_提取文本.txt`
+- `evidence/baseline/official_qwen32b_full_hard_combined_corrected_final.md` — A0 evidence; seed 20260806 is the paired control.
+- `evidence/a1/A1_ACTION_WORKING_MEMORY_RESULTS_2026-08-10.md` — A1 result/cost analysis.
+- `evidence/a2/A0_A1_PAIRED_REFERENCE_20260810.json` — exact per-episode A0/A1 ledger rebuilt from raw traces.
+- `evidence/a2/A1_EXACT_GUARD_REPLAY_20260810.json` — zero-generation corrected-guard replay.
+- `evidence/a2/A2_DESIGN_RATIONALE_AND_A1_REPLAY_2026-08-10.md` — targeted design rationale.
 
-## Results and design evidence
+## Runtime identity and qualification
 
-- `evidence/baseline/official_qwen32b_full_hard_combined_corrected_final.md` — official-style A0 aggregate across three seeds; seed 20260806 is the paired 19-task control.
-- `evidence/baseline/official_qwen32b_full_hard_failure_taxonomy_2026-08-08.md` — A0 failure mechanisms.
-- `evidence/baseline/official_qwen32b_full_hard_case_notes_2026-08-08.md` — trace-grounded A0 cases.
-- `evidence/a1/A1_ACTION_WORKING_MEMORY_RESULTS_2026-08-10.md` — paired A0/A1 result and cost analysis.
-- `evidence/a1/A1_ZERO_GENERATION_PREFLIGHT.json` — A1 no-generation qualification.
-- `evidence/a2/A2_DESIGN_RATIONALE_AND_A1_REPLAY_2026-08-10.md` — why A2 contains these minimal changes.
-- `evidence/a2/A2_ZERO_GENERATION_PREFLIGHT.json` — A2 no-generation qualification and source freeze.
+- `evidence/a2/A2_RUNTIME_REMOTE_MODEL.json` — all manifest-listed Qwen model files recomputed on the no-GPU server.
+- `evidence/a2/A2_RUNTIME_LOCAL_ANDROID.json` — AndroidWorld source digest, emulator/ADB identity, resolution, and ordered tasks.
+- `evidence/a2/A2_RUNTIME_QUALIFICATION.json` — combined zero-generation receipt.
+- `evidence/a2/A2_ZERO_GENERATION_PREFLIGHT.json` — final source-frozen A2 gate (generated only after all edits/tests).
 
-## Frozen protocols
+## Frozen protocol and implementation
 
-- `protocols/A1_ACTION_WORKING_MEMORY_PREREG_2026-08-10.md`
-- `protocols/A1_ACTION_WORKING_MEMORY_RUNBOOK.md`
 - `protocols/A2_VERIFIED_PROGRESS_MEMORY_PREREG_2026-08-10.md`
 - `protocols/A2_VERIFIED_PROGRESS_MEMORY_RUNBOOK.md`
-
-## Core implementation
-
-- `implementation/src/raven_m/official_qwen_mobile/protocol.py` — official prompt/action protocol plus opt-in A1/A2 suffixes.
-- `implementation/src/raven_m/official_qwen_mobile/controller.py` — screenshot-only loop, L0–L5 audit, memory and separate guard hooks.
-- `implementation/src/raven_m/official_qwen_mobile/working_memory.py` — A1 mechanism.
-- `implementation/src/raven_m/official_qwen_mobile/progress_memory.py` — A2 memory and separate cost guard.
-- `implementation/scripts/run_official_qwen_mobile.py` — common A0/A1/A2 runner.
-- `implementation/scripts/preflight_a2_verified_progress.py` — zero-generation A2 gate.
-- `implementation/scripts/run_a2_verified_progress.ps1` — scored A2 launcher.
-- `implementation/configs/androidworld_hard_v2_instances.json` — frozen instances and native budgets.
-- `implementation/configs/a2_verified_progress_memory_hard_seed20260806.json` — A2 experimental contract.
+- `implementation/configs/a2_verified_progress_memory_hard_seed20260806.json`
+- `implementation/src/raven_m/official_qwen_mobile/progress_memory.py`
+- `implementation/src/raven_m/official_qwen_mobile/controller.py`
+- `implementation/src/raven_m/official_qwen_mobile/a2_suite.py`
+- `implementation/src/raven_m/models/vllm_client.py`
+- `implementation/scripts/run_official_qwen_mobile.py`
+- `implementation/scripts/run_a2_verified_progress.ps1`
+- `implementation/scripts/start_a2_verified_progress_server.sh`
+- `implementation/scripts/qualify_a2_runtime.py`
+- `implementation/scripts/qualify_a2_live_server.py`
+- `implementation/scripts/build_a2_reference_ledger.py`
+- `implementation/scripts/replay_a1_exact_guard.py`
+- `implementation/scripts/validate_a2_paired_suite.py`
 
 ## Tests
 
 - `implementation/tests/official_qwen_mobile/test_progress_memory.py`
-- `implementation/tests/official_qwen_mobile/test_working_memory.py`
 - `implementation/tests/official_qwen_mobile/test_official_qwen_controller.py`
-- `implementation/tests/official_qwen_mobile/test_protocol.py`
+- `implementation/tests/official_qwen_mobile/test_a2_suite.py`
 - `implementation/tests/models/test_vllm_client.py`
 
-## Deliberately absent
+## Scope and claim limits
 
-Superseded RAVEN-M revisions, public-framework selection materials, MobileUse/B2/C0 code, failed rescue packets, and earlier GPT planning documents were removed from this branch. They remain in Git history and are not evidence for the A2 audit.
+A2-v1r1 is a compound arm: one-state outcome-aware memory, history deduplication, and a separately logged exact repeated-no-progress guard. It uses one seed and supports a descriptive paired diagnostic only. `verified` is a model-authored screenshot assertion, not objective verification. The evaluator remains the only success authority. Guard-exposed gains are never reported as pure memory effects.
 
-The exact A1 implementation and source freeze are recoverable at commit `fbc25dc`; A2 deliberately modifies shared controller files on this branch.
+Superseded RAVEN-M revisions, MobileUse/B2/C0 code, and earlier planning packets are deliberately absent from this audit branch but remain recoverable in Git history. The exact A1 implementation is recoverable at commit `fbc25dc`.

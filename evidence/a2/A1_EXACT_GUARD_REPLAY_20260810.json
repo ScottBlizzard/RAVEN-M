@@ -1,0 +1,149 @@
+{
+  "a1_root": "D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\runs\\a1_working_memory\\official_qwen_20260810T122419_26573d7c",
+  "episode_count": 19,
+  "episodes": [
+    {
+      "episode_id": "BrowserMultiply_20260806_579e82bd",
+      "hypothetical_blocks": [],
+      "success": false,
+      "task_name": "BrowserMultiply"
+    },
+    {
+      "episode_id": "ExpenseAddMultipleFromGallery_20260806_cef0baed",
+      "hypothetical_blocks": [],
+      "success": false,
+      "task_name": "ExpenseAddMultipleFromGallery"
+    },
+    {
+      "episode_id": "ExpenseAddMultipleFromMarkor_20260806_0e569fd5",
+      "hypothetical_blocks": [],
+      "success": false,
+      "task_name": "ExpenseAddMultipleFromMarkor"
+    },
+    {
+      "episode_id": "ExpenseDeleteMultiple2_20260806_6edafbe6",
+      "hypothetical_blocks": [],
+      "success": true,
+      "task_name": "ExpenseDeleteMultiple2"
+    },
+    {
+      "episode_id": "MarkorCreateNoteAndSms_20260806_684d3f89",
+      "hypothetical_blocks": [],
+      "success": false,
+      "task_name": "MarkorCreateNoteAndSms"
+    },
+    {
+      "episode_id": "MarkorMergeNotes_20260806_61743b34",
+      "hypothetical_blocks": [],
+      "success": false,
+      "task_name": "MarkorMergeNotes"
+    },
+    {
+      "episode_id": "MarkorTranscribeVideo_20260806_b25654b8",
+      "hypothetical_blocks": [],
+      "success": false,
+      "task_name": "MarkorTranscribeVideo"
+    },
+    {
+      "episode_id": "OsmAndMarker_20260806_496e6fc3",
+      "hypothetical_blocks": [],
+      "success": false,
+      "task_name": "OsmAndMarker"
+    },
+    {
+      "episode_id": "OsmAndTrack_20260806_e2520311",
+      "hypothetical_blocks": [],
+      "success": false,
+      "task_name": "OsmAndTrack"
+    },
+    {
+      "episode_id": "RecipeAddMultipleRecipesFromImage_20260806_9a2c02ac",
+      "hypothetical_blocks": [
+        {
+          "blocked": true,
+          "eligible": true,
+          "mapped_action_signature": "564cf3a319b24b295b06607f5c53e3f7f659e6e8312d141da969e98f8c023552",
+          "mechanism_id": "a2_repeated_no_progress_cost_guard_v1r1",
+          "prior_no_progress_executions": 2,
+          "state_signature": "496bb80ce6a3e0ddb8a1114aaea8e892f7218185d489f759e49d1969cda4b52b",
+          "step": 41,
+          "threshold": 2,
+          "warnings_previously_delivered": 0
+        },
+        {
+          "blocked": true,
+          "eligible": true,
+          "mapped_action_signature": "f06d72c35779a0638c6aefab044252dd760aa4453717adcb90859df0a469a757",
+          "mechanism_id": "a2_repeated_no_progress_cost_guard_v1r1",
+          "prior_no_progress_executions": 2,
+          "state_signature": "b4103b4ac52d1c113007fdcf57efa1cd6ac03eaf706e933de6c2eaf2250ee505",
+          "step": 49,
+          "threshold": 2,
+          "warnings_previously_delivered": 0
+        }
+      ],
+      "success": false,
+      "task_name": "RecipeAddMultipleRecipesFromImage"
+    },
+    {
+      "episode_id": "RecipeAddMultipleRecipesFromMarkor2_20260806_e3774629",
+      "hypothetical_blocks": [],
+      "success": false,
+      "task_name": "RecipeAddMultipleRecipesFromMarkor2"
+    },
+    {
+      "episode_id": "RecipeAddMultipleRecipesFromMarkor_20260806_653c1a16",
+      "hypothetical_blocks": [],
+      "success": false,
+      "task_name": "RecipeAddMultipleRecipesFromMarkor"
+    },
+    {
+      "episode_id": "RecipeDeleteMultipleRecipesWithConstraint_20260806_5e42fb32",
+      "hypothetical_blocks": [],
+      "success": true,
+      "task_name": "RecipeDeleteMultipleRecipesWithConstraint"
+    },
+    {
+      "episode_id": "RetroSavePlaylist_20260806_2ea27be7",
+      "hypothetical_blocks": [],
+      "success": true,
+      "task_name": "RetroSavePlaylist"
+    },
+    {
+      "episode_id": "SaveCopyOfReceiptTaskEval_20260806_449739fa",
+      "hypothetical_blocks": [],
+      "success": false,
+      "task_name": "SaveCopyOfReceiptTaskEval"
+    },
+    {
+      "episode_id": "SimpleCalendarAddOneEvent_20260806_3811998a",
+      "hypothetical_blocks": [],
+      "success": true,
+      "task_name": "SimpleCalendarAddOneEvent"
+    },
+    {
+      "episode_id": "SportsTrackerActivitiesOnDate_20260806_98bf38f5",
+      "hypothetical_blocks": [],
+      "success": false,
+      "task_name": "SportsTrackerActivitiesOnDate"
+    },
+    {
+      "episode_id": "SportsTrackerTotalDistanceForCategoryOverInterval_20260806_0b3fa3ff",
+      "hypothetical_blocks": [],
+      "success": false,
+      "task_name": "SportsTrackerTotalDistanceForCategoryOverInterval"
+    },
+    {
+      "episode_id": "SportsTrackerTotalDurationForCategoryThisWeek_20260806_598f7937",
+      "hypothetical_blocks": [],
+      "success": true,
+      "task_name": "SportsTrackerTotalDurationForCategoryThisWeek"
+    }
+  ],
+  "generation_calls": 0,
+  "hypothetical_block_episode_count": 1,
+  "qualification_pass": true,
+  "schema": "a2_v1r1_exact_guard_a1_replay_v1",
+  "successful_episode_hypothetical_block_count": 0,
+  "successful_episode_hypothetical_blocks": []
+}

@@ -15,7 +15,7 @@ A1 improved full success from 4/19 to 5/19, but increased steps from 329 to 603 
 - Model, revision, decoding, backend, 19 task instances, seed 20260806, task order, native step budgets, screenshot-only observation, evaluator, and action protocol are identical to A0/A1.
 - One ordinary model call per step; no planner, critic, retrieval model, or repair call.
 - The model writes `PROGRESS[observed=...; verified=...; pending=...; expected=...]` in its Action sentence.
-- The controller stores one compact state. It adds only whether the executed action caused an observable pixel/activity/UI-tree transition. Observable transition is not task success.
+- The controller stores one compact state. `verified` is explicitly a model-authored assertion that a requirement is screenshot-visible, not a controller/evaluator confirmation. It adds a three-way outcome from the model-visible pixels only: exact no change, material visible change, or minor/ambiguous visible change. Hidden activity/UI-tree evidence is audit-only and cannot affect memory or guard decisions.
 - The structured prefix is stored once in A2 memory and removed from ordinary action-history prose. The imperative remains in the official action history.
 - Memory is episode-local and cannot read hidden evaluator state or cross-episode data.
 
@@ -23,12 +23,13 @@ A1 improved full success from 4/19 to 5/19, but increased steps from 329 to 603 
 
 The guard is not a memory success mechanism. It is allowed to save runtime only.
 
-- State key: a coarse perceptual signature of the same screenshot supplied to the model. Hidden activity and UI-tree records remain audit-only and never control the guard.
+- State key: an exact domain-separated hash of the full model-visible pixel array, including shape and dtype. Missing exact pixels is an infrastructure error in a scored run.
+- Action key: the exact mapped physical tap, long-press, or swipe, including integer pixel coordinates and duration. Text, wait, key, app-open, answer, and terminate actions are never guard-eligible.
 - Action key: action type and conservative coordinate/text signature.
 - The first two equivalent executions on the same state are allowed.
-- Only when both produce no observable change may the next equivalent proposal be blocked.
-- The model receives a visible warning and may choose another route on its next normal call.
-- Two consecutive ignored block warnings end interaction as `a2_cost_guard_stop` and invoke the normal hidden evaluator. The evaluator remains the final label; a resulting success cannot be credited to the guard.
+- Only when both executions yield byte-identical before/after screenshots may the third exact proposal be blocked.
+- The first and second blocked proposals deliver warning 1 and warning 2 through ordinary history only; there is no pre-proposal warning and no warning inside the memory block.
+- Repeating the exact proposal after warning 2 produces block 3 and ends interaction as `a2_cost_guard_stop`; the normal hidden evaluator remains the only success authority.
 - Every assessment, no-progress observation, block, and cost stop is logged separately from memory read/write.
 
 ## Frozen hypotheses and decision rules
@@ -59,3 +60,13 @@ If either primary target fails, the result remains a valid frozen negative resul
 Per step: request/response audit, screenshot and UI audit hashes, L0–L5 layers, parsed/executed action, transition evidence, memory read/write, and cost-guard records.
 
 Per suite: paired task table against A0/A1; successes; partial rewards; steps; calls; tokens; wall time; memory activation; guard triggers/blocks/stops; and qualitative trace attribution for every gain or loss.
+
+## A2-v1r1 qualification amendment (frozen before scored generation)
+
+- Experiment ID: `A2_VERIFIED_PROGRESS_MEMORY_QWEN3VL32B_AW_HARD_S20260806_V1R1`.
+- Memory ID: `a2_verified_progress_memory_v1r1`; guard ID: `a2_repeated_no_progress_cost_guard_v1r1`.
+- Scored HTTP transport makes exactly one request attempt. Timeout or connection failure is infrastructure-invalid because remote token consumption is unknowable.
+- The frozen A0/A1 ledger, corrected A1 guard replay, model-file receipt, AndroidWorld/emulator receipt, live server launch receipt, source freeze, exact ordered 19-task digest, ports, timeout, and model manifest are bound into the run signature.
+- Checkpoints contain immutable episode references and hashes, never embedded mutable summaries. Resume revalidates every reference and excludes/reports orphan directories.
+- A completed suite requires exactly the 19 ordered unique keys, one transport attempt per call, non-null evaluator results, no episode/suite lifecycle errors, no invalid attempts, and matching run signatures.
+- A2-v1r1 is reported as a compound package (one-state outcome-aware memory, history deduplication, and separately logged guard). Trace exposure is not counterfactual component causality.

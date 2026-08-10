@@ -12,21 +12,37 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[4]
 A2_PREFLIGHT_REPORT = REPOSITORY_ROOT / "evidence/a2/A2_ZERO_GENERATION_PREFLIGHT.json"
 A2_CONFIG = REPOSITORY_ROOT / "implementation/configs/a2_verified_progress_memory_hard_seed20260806.json"
 A2_MANIFEST = REPOSITORY_ROOT / "implementation/configs/androidworld_hard_v2_instances.json"
+A2_REFERENCE_LEDGER = REPOSITORY_ROOT / "evidence/a2/A0_A1_PAIRED_REFERENCE_20260810.json"
+A2_GUARD_REPLAY = REPOSITORY_ROOT / "evidence/a2/A1_EXACT_GUARD_REPLAY_20260810.json"
+A2_RUNTIME_QUALIFICATION = REPOSITORY_ROOT / "evidence/a2/A2_RUNTIME_QUALIFICATION.json"
 
 A2_FREEZE_FILES = (
+    "ARTIFACT_MANIFEST.md",
     "evidence/a2/A2_DESIGN_RATIONALE_AND_A1_REPLAY_2026-08-10.md",
     "implementation/configs/a2_verified_progress_memory_hard_seed20260806.json",
     "implementation/configs/androidworld_hard_v2_instances.json",
     "implementation/runtime/androidworld_compat.py",
     "implementation/scripts/preflight_a2_verified_progress.py",
+    "implementation/scripts/preflight_official_qwen.py",
+    "implementation/scripts/build_a2_reference_ledger.py",
+    "implementation/scripts/replay_a1_exact_guard.py",
+    "implementation/scripts/qualify_a2_runtime.py",
+    "implementation/scripts/qualify_a2_live_server.py",
+    "implementation/scripts/validate_a2_paired_suite.py",
     "implementation/scripts/run_a2_verified_progress.ps1",
     "implementation/scripts/run_official_qwen_mobile.py",
     "implementation/scripts/start_official_qwen_server.sh",
+    "implementation/scripts/start_a2_verified_progress_server.sh",
+    "implementation/configs/qwen3_vl_32b_official_mobile_1xrtxpro6000.yaml",
+    "implementation/pyproject.toml",
+    "evidence/a2/A0_A1_PAIRED_REFERENCE_20260810.json",
+    "evidence/a2/A1_EXACT_GUARD_REPLAY_20260810.json",
     "implementation/src/raven_m/env/androidworld_adapter.py",
     "implementation/src/raven_m/models/vllm_client.py",
     "implementation/src/raven_m/multi_framework_benchmark/task_instances.py",
     "implementation/src/raven_m/official_qwen_mobile/a1_contract.py",
     "implementation/src/raven_m/official_qwen_mobile/a2_contract.py",
+    "implementation/src/raven_m/official_qwen_mobile/a2_suite.py",
     "implementation/src/raven_m/official_qwen_mobile/controller.py",
     "implementation/src/raven_m/official_qwen_mobile/progress_memory.py",
     "implementation/src/raven_m/official_qwen_mobile/protocol.py",
@@ -34,6 +50,7 @@ A2_FREEZE_FILES = (
     "implementation/src/raven_m/official_qwen_mobile/working_memory.py",
     "implementation/tests/models/test_vllm_client.py",
     "implementation/tests/official_qwen_mobile/test_official_qwen_controller.py",
+    "implementation/tests/official_qwen_mobile/test_a2_suite.py",
     "implementation/tests/official_qwen_mobile/test_progress_memory.py",
     "implementation/tests/official_qwen_mobile/test_protocol.py",
     "implementation/tests/official_qwen_mobile/test_source_document_coverage_gate.py",

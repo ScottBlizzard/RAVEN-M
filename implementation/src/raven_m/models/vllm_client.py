@@ -38,6 +38,7 @@ class VLLMClient:
         seed: int = 3407,
         timeout_seconds: float = 3600.0,
         retry_backoff_seconds: float = 5.0,
+        retry_transient_errors: bool = True,
         session: requests.Session | None = None,
     ) -> None:
         self.base_url = base_url.rstrip("/")
@@ -52,6 +53,7 @@ class VLLMClient:
         self.seed = int(seed)
         self.timeout_seconds = float(timeout_seconds)
         self.retry_backoff_seconds = float(retry_backoff_seconds)
+        self.retry_transient_errors = bool(retry_transient_errors)
         self.session = session or requests.Session()
 
     @property
@@ -166,7 +168,8 @@ class VLLMClient:
 
         response: requests.Response | None = None
         last_error: Exception | None = None
-        for attempt in range(2):
+        maximum_attempts = 2 if self.retry_transient_errors else 1
+        for attempt in range(maximum_attempts):
             transport_attempts += 1
             try:
                 response = self.session.post(
@@ -183,7 +186,7 @@ class VLLMClient:
                 break
             except (requests.ConnectionError, requests.Timeout) as exc:
                 last_error = exc
-                if attempt == 0:
+                if attempt + 1 < maximum_attempts:
                     time.sleep(self.retry_backoff_seconds)
         if response is None or not response.ok:
             if last_error is not None:
