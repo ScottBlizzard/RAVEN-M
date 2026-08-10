@@ -30,7 +30,13 @@ Use the predeclared independent Easy task, not any of the scored 19 Hard tasks:
 - budget: `20` actions
 - source role: donor acquisition only; it is never scored as A4 evidence
 
-Run the existing official Qwen-Mobile runner with a separate output root and diagnostic-only label. Do not change the controller, prompt, model revision, task, seed, or budget after seeing the outcome:
+Run the frozen wrapper with a separate output root and diagnostic-only label. Do not change the controller, prompt, model revision, task, seed, or budget after seeing the outcome:
+
+```powershell
+.\implementation\scripts\run_a4_expense_donor.ps1
+```
+
+The wrapper expands to the following command:
 
 ```bash
 python implementation/scripts/run_official_qwen_mobile.py \

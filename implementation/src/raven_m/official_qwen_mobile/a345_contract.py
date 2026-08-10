@@ -33,6 +33,7 @@ SOURCE_FILES = (
     "implementation/scripts/preflight_a345_memory.py",
     "implementation/scripts/build_a345_reference_ledger.py",
     "implementation/scripts/build_a4_donor_bank.py",
+    "implementation/scripts/run_a4_expense_donor.ps1",
     "implementation/src/raven_m/__init__.py",
     "implementation/src/raven_m/env/__init__.py",
     "implementation/src/raven_m/env/androidworld_adapter.py",
