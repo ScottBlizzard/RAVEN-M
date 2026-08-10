@@ -23,4 +23,5 @@ __pycache__/
 .idea/
 .vscode/
 /tmp/
+/references/public_memory_upstreams/
 Thumbs.db

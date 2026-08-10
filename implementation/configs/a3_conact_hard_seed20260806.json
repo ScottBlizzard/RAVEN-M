@@ -1,0 +1,10 @@
+{
+  "experiment_id": "A3_CONACT_QWEN3VL32B_AW_HARD_S20260806_V1",
+  "method": "zero-shot ConAct adaptation on A0",
+  "mechanism_id": "a3_memgui_conact_folded_context_v1",
+  "public_source": {"paper": "arXiv:2606.19926", "repository": "https://github.com/kwai/MemGUI-Agent", "commit": "321734eaf9788c6a802f8f11e62651702d14af28"},
+  "model": {"id": "Qwen/Qwen3-VL-32B-Instruct", "revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb", "generation_seed": 3407, "temperature": 0.7, "top_p": 0.8, "top_k": 20, "presence_penalty": 1.5, "repetition_penalty": 1.0, "max_tokens": 32768},
+  "benchmark": {"name": "AndroidWorld", "split": "Hard", "manifest": "implementation/configs/androidworld_hard_v2_instances.json", "task_seed": 20260806, "task_count": 19, "action_budget": "unchanged native_max_steps", "qualification_first": ["ExpenseDeleteMultiple2", "RecipeDeleteMultipleRecipesWithConstraint", "RetroSavePlaylist", "SimpleCalendarAddOneEvent", "SportsTrackerTotalDurationForCategoryThisWeek"]},
+  "intervention": {"memory_type": "in-trial proactive folded context", "fields": ["folded_history", "ui_state", "recent"], "max_chars": 1800, "extra_model_calls": 0, "extra_planner": false, "critic": false, "guard": false, "history_prefix_deduplicated": true, "scope": "episode-local"},
+  "gate": {"required": "5/5 known A1-success tasks", "fail_fast": true, "scientific_failure_rerun": false, "infrastructure_invalid_resume_same_task": true}
+}

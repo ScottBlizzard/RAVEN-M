@@ -1,0 +1,88 @@
+{
+  "checks": {
+    "config_sha256": {
+      "a3": "5e08951b7a0dd0ee240675e2a8c03cec37bb9d1485643cb51116fd2c573be0fa",
+      "a4": "bed1475dbbbe9069301ccbfa1a46bffc98e24a4af8e760db63cf692af241e43e",
+      "a5": "649c1110fe749ea52c3b201cdc672580c23e673b4cc5b38ddc410c3f4ae79d69"
+    },
+    "manifest_sha256": "c1d718e9d380e443d12d2c29ab2182ae801a3befc53881b864cd830f2ad0440a",
+    "memory_canaries": "pass",
+    "public_upstream_commits": {
+      "a3": "321734eaf9788c6a802f8f11e62651702d14af28",
+      "a4": "8c0ff8cd11d648c8fceb99e4e42f37e3b75381b1",
+      "a5": "911722c99c8c3fa0052cbb1f596e13d691610ed5"
+    },
+    "reference_ledger_sha256": "1d8be721b0fb32ca00b600091e08d39a526de9fafbff551e782becafeae28d90",
+    "reference_success_sets": {
+      "A0": [
+        "ExpenseDeleteMultiple2",
+        "RetroSavePlaylist",
+        "SimpleCalendarAddOneEvent",
+        "SportsTrackerTotalDurationForCategoryThisWeek"
+      ],
+      "A1": [
+        "ExpenseDeleteMultiple2",
+        "RecipeDeleteMultipleRecipesWithConstraint",
+        "RetroSavePlaylist",
+        "SimpleCalendarAddOneEvent",
+        "SportsTrackerTotalDurationForCategoryThisWeek"
+      ],
+      "A2": []
+    },
+    "unit_tests": {
+      "command": [
+        "C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "-m",
+        "pytest",
+        "implementation/tests/official_qwen_mobile/test_a345_memory.py",
+        "implementation/tests/official_qwen_mobile/test_a345_runner_contract.py",
+        "implementation/tests/official_qwen_mobile/test_a4_donor.py"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "..............                                                           [100%]\n"
+    }
+  },
+  "created_at": "2026-08-10T17:58:51.113085+00:00",
+  "errors": [
+    "a4_frozen_donor_workflow_bank_missing"
+  ],
+  "generation_calls": 0,
+  "qualified_arms": [],
+  "schema": "a345_zero_generation_preflight_v1",
+  "source_freeze": {
+    "implementation/configs/a3_conact_hard_seed20260806.json": "5e08951b7a0dd0ee240675e2a8c03cec37bb9d1485643cb51116fd2c573be0fa",
+    "implementation/configs/a4_awm_donor_manifest_v1.json": "49fe98488b3149ecbbdb0307333382be96e3a87fcfdd41e07a31ccfce854656c",
+    "implementation/configs/a4_awm_workflow_hard_seed20260806.json": "bed1475dbbbe9069301ccbfa1a46bffc98e24a4af8e760db63cf692af241e43e",
+    "implementation/configs/a5_visual_graph_hard_seed20260806.json": "649c1110fe749ea52c3b201cdc672580c23e673b4cc5b38ddc410c3f4ae79d69",
+    "implementation/configs/androidworld_hard_v2_instances.json": "c1d718e9d380e443d12d2c29ab2182ae801a3befc53881b864cd830f2ad0440a",
+    "implementation/scripts/build_a345_reference_ledger.py": "9f69cb6e63ad3c11420da49b7f9d5c199b6737a6c4ab775e36f9cc9651180e88",
+    "implementation/scripts/build_a4_donor_bank.py": "3b791cecd91dff1c2d499d4d900bbc8fb35d70be10dc654a2be6dd35c2ec7037",
+    "implementation/scripts/preflight_a345_memory.py": "01b1772d7d5997b15ecdd21447dffc42b2a64d3609fb73205b9cccee8858a463",
+    "implementation/scripts/run_official_qwen_mobile.py": "c300dab584d5a5ebe83aeb7932aed91619dcf3f2c6af6e0eeae21bd2d8a0f909",
+    "implementation/src/raven_m/__init__.py": "83c1229d32f6e1b873cb8447f7d3e0926b6b69304743f5111cec61642f37a561",
+    "implementation/src/raven_m/env/__init__.py": "ebd568a4e585b3ad8342d6374b61a3accb1b29432fe1dd0050bf14997b2a6afc",
+    "implementation/src/raven_m/env/androidworld_adapter.py": "ad4ecbee9430326ca7380334c49372911a1c6b1c217ee12bb3714d2fb1219c33",
+    "implementation/src/raven_m/models/__init__.py": "7f29bbd82dbc576e3290daac8dcdb3ef1be192b6b621d9521946317167e34332",
+    "implementation/src/raven_m/models/transformers_client.py": "a43efbdba72af01282a5159b4acbaf0c8252096bea04da1457fb1ff62243e778",
+    "implementation/src/raven_m/models/vllm_client.py": "7e590c410850909b46fa49e9bc267c23478f60c5f560ba53a7901d095c96c367",
+    "implementation/src/raven_m/multi_framework_benchmark/__init__.py": "de3ef8d87d3132d407616d94674800a047e881e5f98cf97d58a4809ead9356e9",
+    "implementation/src/raven_m/multi_framework_benchmark/task_instances.py": "fd0772a3ba9b973911dfbb055b25c8dab6e34d0fa640cf6ab4d7b540595f05be",
+    "implementation/src/raven_m/official_qwen_mobile/__init__.py": "0ae4dd2aa0cd7972b5f37e436a6811b2a23eac745374f967a6ee407f7e092a14",
+    "implementation/src/raven_m/official_qwen_mobile/a345_contract.py": "32043287ec3788ef89b1a5ba5643d508f03fe69b0361c10f4c8966096938b6d8",
+    "implementation/src/raven_m/official_qwen_mobile/a345_memory.py": "657e954a0c58e7438de9c1a7f99291bb092fb4b9e7ea7763d08de4ff96e74a0b",
+    "implementation/src/raven_m/official_qwen_mobile/a4_donor.py": "0712e693b94023c06379771ea7ed005c39ad5886a658deab684c6f9ceb84073b",
+    "implementation/src/raven_m/official_qwen_mobile/controller.py": "8de0058485bcbac74ab90e551428340d48bd5d20dc6bee70dbd55bd03f6bf6a8",
+    "implementation/src/raven_m/official_qwen_mobile/progress_memory.py": "c8d77310c7abc07395b857287a6a6e54b809fae9a09287934eff2a81141e4b84",
+    "implementation/src/raven_m/official_qwen_mobile/protocol.py": "7ff3662f5f5eea6e9f0d689f43bf8c1278262b7cacee8c51aaabf88b717a60e1",
+    "implementation/src/raven_m/official_qwen_mobile/working_memory.py": "86589458c820a08a220c738ae3b55fdce40e7df37ade5b8b1d3c9631bea79ee3",
+    "implementation/tests/official_qwen_mobile/test_a345_memory.py": "315d6a7af38ba17f98b658fd578a52e260f32350e259cf251ec3343d7ea4f9ab",
+    "implementation/tests/official_qwen_mobile/test_a345_runner_contract.py": "403c8c63480a9c9a7944b03c8a9bce685b94619f6e4c1c6799a385a7106f4caf",
+    "implementation/tests/official_qwen_mobile/test_a4_donor.py": "ebeabb604198ac9fc25f6dbd401061c0efc4ee02ea78c453b176cf6420c32ae7",
+    "protocols/A345_PUBLIC_MEMORY_KERNELS_PREREG_2026-08-11.md": "051b903969856e8ca671e4bed27c42484a91c6600180be347d6898a211d47d5c",
+    "protocols/A345_RUNBOOK.md": "0dfdca8f2cc5ee5161d5d15dd2e06e12d7d97fbd5f76b8d65dbf64c8641d8137",
+    "protocols/A4_AWM_DONOR_ACQUISITION_RUNBOOK.md": "6c62aadb33ffedc9d6a9142ed610cba67b3e353a699b20532983dd94e5745b64"
+  },
+  "source_freeze_sha256": "2cf7235d2a9f5bf7c9ffbc8f17b0d893a069eaed5afb1dfa57cccaa8ea5498b6",
+  "status": "fail"
+}

@@ -1,0 +1,121 @@
+{
+  "acquisition_queue": [
+    {
+      "app": "Pro Expense",
+      "coverage_family": "expense",
+      "difficulty": "easy",
+      "keywords": [
+        "expense",
+        "expenses",
+        "record",
+        "records",
+        "add",
+        "delete",
+        "remove",
+        "category",
+        "amount"
+      ],
+      "max_steps": 20,
+      "required_for_a4": true,
+      "seed": 20260821,
+      "task_class": "ExpenseAddSingle"
+    },
+    {
+      "app": "Broccoli",
+      "coverage_family": "recipe",
+      "difficulty": "easy",
+      "max_steps": 24,
+      "required_for_a4": false,
+      "seed": 20260822,
+      "task_class": "RecipeAddSingleRecipe"
+    },
+    {
+      "app": "Retro Music",
+      "coverage_family": "retro",
+      "difficulty": "medium",
+      "max_steps": 35,
+      "required_for_a4": false,
+      "seed": 20260823,
+      "task_class": "RetroCreatePlaylist"
+    },
+    {
+      "app": "Simple Calendar Pro",
+      "coverage_family": "calendar",
+      "difficulty": "easy",
+      "max_steps": 24,
+      "required_for_a4": false,
+      "seed": 20260824,
+      "task_class": "SimpleCalendarAddOneEventTomorrow"
+    },
+    {
+      "app": "OpenTracks",
+      "coverage_family": "sports",
+      "difficulty": "easy",
+      "max_steps": 20,
+      "required_for_a4": false,
+      "seed": 20260825,
+      "task_class": "SportsTrackerActivityDuration"
+    }
+  ],
+  "donors": [
+    {
+      "app": "Contacts",
+      "coverage_family": "contacts",
+      "difficulty": "easy",
+      "donor_id": "a4d_contacts_add_seed20260723",
+      "episode_path": "../RAVEN-M-Research/runs/dev_nonhard_g3/g3_b0_executor_v1_20260723/episodes/01_core_ContactsAddContact_seed20260723/episode.json",
+      "episode_path_sha256": "a6de010fcd0c910fac6fcc56b642c0a68119ec09a3ba0a79dbfd99507efed493",
+      "events_path": "../RAVEN-M-Research/runs/dev_nonhard_g3/g3_b0_executor_v1_20260723/episodes/01_core_ContactsAddContact_seed20260723/events.jsonl",
+      "events_path_sha256": "b2cc723a89782a7fd600c9c0e8f1f6fb1a7bae565c2f26416d030e56070da934",
+      "keywords": [
+        "contact",
+        "contacts",
+        "person",
+        "create",
+        "add",
+        "save",
+        "phone"
+      ],
+      "seed": 20260723,
+      "suite_manifest_path": "../RAVEN-M-Research/runs/dev_nonhard_g3/g3_b0_executor_v1_20260723/manifest.snapshot.json",
+      "suite_manifest_path_sha256": "2dadd27ff453c3446d483c6d2594c272854900af09447ccdc0ed683c0f27d433",
+      "suite_summary_path": "../RAVEN-M-Research/runs/dev_nonhard_g3/g3_b0_executor_v1_20260723/suite_summary.json",
+      "suite_summary_path_sha256": "3663680e28217f1a0943a2b4dd88642b07b93c5bd769f58732c272e82b115e86",
+      "task_class": "ContactsAddContact"
+    },
+    {
+      "app": "Markor",
+      "coverage_family": "markor",
+      "difficulty": "medium",
+      "donor_id": "a4d_markor_create_note_seed20260726",
+      "episode_path": "../RAVEN-M-Research/runs/dev_nonhard_g3/g3_b0_executor_v1_20260723/episodes/04_core_MarkorCreateNote_seed20260726/episode.json",
+      "episode_path_sha256": "15036ce47cd1a6fa335a6ceffc7e276c4b54d935b4ffc86776d3d71f48ae76f3",
+      "events_path": "../RAVEN-M-Research/runs/dev_nonhard_g3/g3_b0_executor_v1_20260723/episodes/04_core_MarkorCreateNote_seed20260726/events.jsonl",
+      "events_path_sha256": "cdcb12c964a54984330a82b0bb0d7d053c2209d1f0eb214876e97fcff84c817c",
+      "keywords": [
+        "markor",
+        "note",
+        "notes",
+        "create",
+        "file",
+        "save",
+        "text"
+      ],
+      "seed": 20260726,
+      "suite_manifest_path": "../RAVEN-M-Research/runs/dev_nonhard_g3/g3_b0_executor_v1_20260723/manifest.snapshot.json",
+      "suite_manifest_path_sha256": "2dadd27ff453c3446d483c6d2594c272854900af09447ccdc0ed683c0f27d433",
+      "suite_summary_path": "../RAVEN-M-Research/runs/dev_nonhard_g3/g3_b0_executor_v1_20260723/suite_summary.json",
+      "suite_summary_path_sha256": "3663680e28217f1a0943a2b4dd88642b07b93c5bd769f58732c272e82b115e86",
+      "task_class": "MarkorCreateNote"
+    }
+  ],
+  "manifest_id": "a4_awm_independent_nonhard_donors_v1",
+  "required_coverage_families": [
+    "expense"
+  ],
+  "scored_hard_manifest": {
+    "path": "implementation/configs/androidworld_hard_v2_instances.json",
+    "sha256": "c1d718e9d380e443d12d2c29ab2182ae801a3befc53881b864cd830f2ad0440a"
+  },
+  "selection_policy": "Only evaluator-confirmed successful Easy/Medium episodes from task classes absent from the scored 19-Hard manifest are admissible. Expense coverage is mandatory before A4 is runnable."
+}

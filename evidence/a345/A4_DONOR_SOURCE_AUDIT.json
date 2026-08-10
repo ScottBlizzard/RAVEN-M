@@ -1,0 +1,144 @@
+{
+  "acquisition_queue": [
+    {
+      "app": "Pro Expense",
+      "coverage_family": "expense",
+      "difficulty": "easy",
+      "keywords": [
+        "expense",
+        "expenses",
+        "record",
+        "records",
+        "add",
+        "delete",
+        "remove",
+        "category",
+        "amount"
+      ],
+      "max_steps": 20,
+      "required_for_a4": true,
+      "seed": 20260821,
+      "task_class": "ExpenseAddSingle"
+    },
+    {
+      "app": "Broccoli",
+      "coverage_family": "recipe",
+      "difficulty": "easy",
+      "max_steps": 24,
+      "required_for_a4": false,
+      "seed": 20260822,
+      "task_class": "RecipeAddSingleRecipe"
+    },
+    {
+      "app": "Retro Music",
+      "coverage_family": "retro",
+      "difficulty": "medium",
+      "max_steps": 35,
+      "required_for_a4": false,
+      "seed": 20260823,
+      "task_class": "RetroCreatePlaylist"
+    },
+    {
+      "app": "Simple Calendar Pro",
+      "coverage_family": "calendar",
+      "difficulty": "easy",
+      "max_steps": 24,
+      "required_for_a4": false,
+      "seed": 20260824,
+      "task_class": "SimpleCalendarAddOneEventTomorrow"
+    },
+    {
+      "app": "OpenTracks",
+      "coverage_family": "sports",
+      "difficulty": "easy",
+      "max_steps": 20,
+      "required_for_a4": false,
+      "seed": 20260825,
+      "task_class": "SportsTrackerActivityDuration"
+    }
+  ],
+  "bank_sha256": "1677e804b1595125b44d380592e170b1b6175d4df253cfb29ffe097f4a31fecf",
+  "covered_families": [
+    "contacts",
+    "markor"
+  ],
+  "eligible_donor_count": 2,
+  "eligible_donor_ids": [
+    "a4d_contacts_add_seed20260723",
+    "a4d_markor_create_note_seed20260726"
+  ],
+  "errors": [],
+  "generation_calls": 0,
+  "manifest_id": "a4_awm_independent_nonhard_donors_v1",
+  "missing_required_families": [
+    "expense"
+  ],
+  "schema": "a4.frozen_donor_workflow_bank.v1",
+  "scored_hard_inputs_used": false,
+  "source_lock": {
+    "../RAVEN-M-Research/runs/dev_nonhard_g3/g3_b0_executor_v1_20260723/episodes/01_core_ContactsAddContact_seed20260723/episode.json": "a6de010fcd0c910fac6fcc56b642c0a68119ec09a3ba0a79dbfd99507efed493",
+    "../RAVEN-M-Research/runs/dev_nonhard_g3/g3_b0_executor_v1_20260723/episodes/01_core_ContactsAddContact_seed20260723/events.jsonl": "b2cc723a89782a7fd600c9c0e8f1f6fb1a7bae565c2f26416d030e56070da934",
+    "../RAVEN-M-Research/runs/dev_nonhard_g3/g3_b0_executor_v1_20260723/episodes/04_core_MarkorCreateNote_seed20260726/episode.json": "15036ce47cd1a6fa335a6ceffc7e276c4b54d935b4ffc86776d3d71f48ae76f3",
+    "../RAVEN-M-Research/runs/dev_nonhard_g3/g3_b0_executor_v1_20260723/episodes/04_core_MarkorCreateNote_seed20260726/events.jsonl": "cdcb12c964a54984330a82b0bb0d7d053c2209d1f0eb214876e97fcff84c817c",
+    "../RAVEN-M-Research/runs/dev_nonhard_g3/g3_b0_executor_v1_20260723/manifest.snapshot.json": "2dadd27ff453c3446d483c6d2594c272854900af09447ccdc0ed683c0f27d433",
+    "../RAVEN-M-Research/runs/dev_nonhard_g3/g3_b0_executor_v1_20260723/suite_summary.json": "3663680e28217f1a0943a2b4dd88642b07b93c5bd769f58732c272e82b115e86",
+    "donor_manifest": "49fe98488b3149ecbbdb0307333382be96e3a87fcfdd41e07a31ccfce854656c",
+    "implementation/configs/androidworld_hard_v2_instances.json": "c1d718e9d380e443d12d2c29ab2182ae801a3befc53881b864cd830f2ad0440a"
+  },
+  "source_lock_sha256": "d09a2db40d05c1b7c5b2eb9a995be7cc6e520c0a289c11496c8b7bf7711ebd25",
+  "status": "not_ready",
+  "workflows": [
+    {
+      "donor_family": "contacts",
+      "donor_seed": 20260723,
+      "donor_split": "Easy",
+      "donor_task": "ContactsAddContact",
+      "keywords": [
+        "contact",
+        "contacts",
+        "person",
+        "create",
+        "add",
+        "save",
+        "phone"
+      ],
+      "provenance": {
+        "app": "Contacts",
+        "difficulty": "easy",
+        "episode_id": "g3_b0_executor_v1_20260723_01_core_ContactsAddContact_seed20260723",
+        "events_sha256": "b2cc723a89782a7fd600c9c0e8f1f6fb1a7bae565c2f26416d030e56070da934",
+        "masked_task_value_count": 4
+      },
+      "source_episode_sha256": "a6de010fcd0c910fac6fcc56b642c0a68119ec09a3ba0a79dbfd99507efed493",
+      "source_evaluator_reward": 1.0,
+      "workflow": "Treat setup/onboarding steps as conditional and follow only controls supported by current pixels. 1. open Contacts; intent: The task requires creating a contact, so opening the Contacts app is the first step. 2. tap the currently visible control described by the step intent; intent: The plus button is visible and used to add a new contact. 3. tap the currently visible control described by the step intent; intent: The First name field is visible and needs to be filled first. 4. enter <task_value_4> into the visible goal-relevant field; intent: The first name field is focused and ready for input. 5. enter <task_value_3> into the visible goal-relevant field; intent: The Last name field is active and ready for input. 6. enter <task_value_2> into the visible goal-relevant field; intent: The Company field is active and ready for input. 7. enter <task_value_1> into the visible goal-relevant field; intent: The Phone field is active and ready for input. 8. tap the currently visible control described by the step intent; intent: All required fields are filled; tapping Save will persist the contact. 9. perform the visible done operation; intent: The contact details are filled and the '<task_value_4> <task_value_3> saved' notification confirms successful creation. Do not reuse donor coordinates or literal values; stop only after visible persistence evidence.",
+      "workflow_id": "a4d_contacts_add_seed20260723"
+    },
+    {
+      "donor_family": "markor",
+      "donor_seed": 20260726,
+      "donor_split": "Medium",
+      "donor_task": "MarkorCreateNote",
+      "keywords": [
+        "markor",
+        "note",
+        "notes",
+        "create",
+        "file",
+        "save",
+        "text"
+      ],
+      "provenance": {
+        "app": "Markor",
+        "difficulty": "medium",
+        "episode_id": "g3_b0_executor_v1_20260723_04_core_MarkorCreateNote_seed20260726",
+        "events_sha256": "cdcb12c964a54984330a82b0bb0d7d053c2209d1f0eb214876e97fcff84c817c",
+        "masked_task_value_count": 2
+      },
+      "source_episode_sha256": "15036ce47cd1a6fa335a6ceffc7e276c4b54d935b4ffc86776d3d71f48ae76f3",
+      "source_evaluator_reward": 1.0,
+      "workflow": "Treat setup/onboarding steps as conditional and follow only controls supported by current pixels. 1. open Markor; intent: The task requires opening Markor to create a new note. 2. tap the currently visible control described by the step intent; intent: The 'OK' button must be tapped to grant storage permission for the app to proceed. 3. wait briefly only when the visible UI is loading; intent: The screen appears blank or loading; waiting to allow content to render. 4. tap the currently visible control described by the step intent; intent: Enabling file access is necessary for Markor to create and save new notes. 5. return one screen when the current visible setup screen is complete; intent: The file access permission is already granted; returning to Markor to create the note. 6. tap the currently visible control described by the step intent; intent: The red plus button at the bottom right is used to create a new note. 7. enter <task_value_2> into the visible goal-relevant field; intent: The current name field must be cleared and replaced with the required file name. 8. tap the currently visible control described by the step intent; intent: The name is set; confirming creation by tapping OK. 9. enter <task_value_1> into the visible goal-relevant field; intent: The note is open and ready for text input. 10. tap the currently visible control described by the step intent; intent: The save icon is visible and should be tapped to save the note. 11. tap the currently visible control described by the step intent; intent: The note content is entered; saving is the next logical step. 12. perform the visible done operation; intent: The note content matches the task requirement and the file name is correctly set. Do not reuse donor coordinates or literal values; stop only after visible persistence evidence.",
+      "workflow_id": "a4d_markor_create_note_seed20260726"
+    }
+  ]
+}

@@ -115,6 +115,66 @@ A2_VERIFIED_PROGRESS_SYSTEM_PROMPT = (
 )
 
 
+# A3 isolates the zero-shot Context-as-Action memory kernel from MemGUI-Agent.
+# The same policy call updates compact context and selects the GUI action; no
+# SFT model, extra planner, critic, or memory-model call is introduced.
+A3_CONACT_SUFFIX = r"""
+
+# A3 proactive folded-context memory
+
+Begin every Action sentence, including answer or terminate steps, with exactly:
+CONTEXT[folded_history=<compact completed operations and progress or none>; ui_state=<exact task facts that must survive page/app changes or none>; recent=<what the current screen says about the last operation>] | <one concise UI imperative>
+
+Rules:
+- Keep the complete CONTEXT[...] payload under 420 characters.
+- Replace stale context instead of copying the whole trajectory.
+- Preserve exact names, values, constraints, and still-pending requirements.
+- The current screenshot overrides folded context; an attempted action or page transition is not task completion.
+- Do not add a planner, critic, repair action, or hidden-state claim.
+"""
+
+A3_CONACT_SYSTEM_PROMPT = OFFICIAL_SYSTEM_PROMPT + A3_CONACT_SUFFIX
+
+
+# A4 keeps the official response format byte-for-byte and only teaches the
+# policy how to interpret a frozen donor-only workflow block.  The bank is
+# built before the scored Hard suite and is immutable during evaluation.
+A4_WORKFLOW_SUFFIX = r"""
+
+# A4 frozen procedural workflow memory
+
+- A user-message workflow block, when present, comes only from an independent evaluator-confirmed donor task.
+- Treat it as a reusable procedure, not as evidence that the current task is complete and never copy donor-specific values.
+- Apply a step only when the current screenshot visibly supports the same operation.
+- If no workflow is retrieved, act exactly as the official baseline.
+- Do not add a planner, critic, reflection call, action guard, or controller override.
+"""
+
+A4_WORKFLOW_SYSTEM_PROMPT = OFFICIAL_SYSTEM_PROMPT + A4_WORKFLOW_SUFFIX
+
+
+# A5 is deliberately named as an isolated in-trial graph adaptation.  Full
+# HyMEM additionally requires an offline successful-trajectory graph, learned
+# Q-Former continuous tokens, retrieval digestion, and self-evolution; those
+# unavailable components are not silently approximated or claimed here.
+A5_VISUAL_GRAPH_SUFFIX = r"""
+
+# A5 online visual-symbolic transition-graph memory (HyMEM-inspired)
+
+Begin every Action sentence, including answer or terminate steps, with exactly:
+GRAPH[node=<semantic role of the current page>; relation=<visible transition or function expected from this action>; facts=<exact reusable facts visible now or none>; avoid=<a visibly unsupported edge to avoid or none>] | <one concise UI imperative>
+
+Rules:
+- Keep the complete GRAPH[...] payload under 420 characters.
+- Retrieved edges are applicable only when their page evidence matches the current screenshot.
+- Store exact visible facts and transition roles, never hidden app state or evaluator conclusions.
+- An identical/near page can still contain changed values; current pixels always override graph memory.
+- Do not add a planner, critic, action guard, or controller override.
+"""
+
+A5_VISUAL_GRAPH_SYSTEM_PROMPT = OFFICIAL_SYSTEM_PROMPT + A5_VISUAL_GRAPH_SUFFIX
+
+
 # Frozen post-hoc mechanism diagnostic.  A visible transition is evidence only
 # for the exact object role and postcondition that the screenshot supports; it
 # is not automatically evidence of task progress.

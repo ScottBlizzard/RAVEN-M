@@ -29,6 +29,20 @@ from .protocol import (
 from .source_document_coverage_gate import SourceDocumentCoverageGate
 from .working_memory import ActionWorkingMemory, append_working_memory
 from .progress_memory import RepeatedNoProgressGuard, VerifiedProgressMemory
+from .a345_memory import (
+    FrozenWorkflowMemory,
+    OnlinePageGraphMemory,
+    ProactiveFoldedContextMemory,
+)
+
+
+EpisodeMemory = (
+    ActionWorkingMemory
+    | VerifiedProgressMemory
+    | ProactiveFoldedContextMemory
+    | FrozenWorkflowMemory
+    | OnlinePageGraphMemory
+)
 
 
 def _utc_now() -> str:
@@ -188,7 +202,7 @@ class OfficialQwenMobileController:
         history_policy: str = "official_text_action_summaries_only",
         source_document_coverage_gate: SourceDocumentCoverageGate | None = None,
         stop_after_markor_source_exit: bool = False,
-        working_memory: ActionWorkingMemory | VerifiedProgressMemory | None = None,
+        working_memory: EpisodeMemory | None = None,
         cost_guard: RepeatedNoProgressGuard | None = None,
     ) -> None:
         self.client = client
@@ -397,8 +411,11 @@ class OfficialQwenMobileController:
                 memory_read: dict[str, Any] | None = None
                 rendered_memory = ""
                 if self.working_memory is not None:
+                    # The memory receives only the same pixels available to the
+                    # policy.  Raw pixels are needed by A5's deterministic
+                    # visual fingerprint but are never serialized into memory.
                     rendered_memory, memory_read = self.working_memory.read(
-                        context={"before": _snapshot_record(before)}
+                        context={"before": before, "goal": effective_goal}
                     )
                 user_prompt = append_working_memory(
                     build_user_prompt(effective_goal, history),
@@ -462,6 +479,12 @@ class OfficialQwenMobileController:
                 record["decision"] = decision.audit_record()
                 if isinstance(self.working_memory, VerifiedProgressMemory):
                     record["progress_parse"] = self.working_memory.record_progress_parse(
+                        decision.action_summary
+                    )
+                elif self.working_memory is not None and hasattr(
+                    self.working_memory, "record_protocol"
+                ):
+                    record["memory_protocol_parse"] = self.working_memory.record_protocol(
                         decision.action_summary
                     )
                 canonical_action = decision.canonical_action
@@ -631,6 +654,16 @@ class OfficialQwenMobileController:
                     )
                     attestation_applied = True
                     attestation_reason = "a2_progress_prefix_stored_once_not_duplicated_in_history"
+                elif self.working_memory is not None and hasattr(
+                    self.working_memory, "history_summary"
+                ):
+                    committed_summary = self.working_memory.history_summary(
+                        decision.action_summary
+                    )
+                    attestation_applied = True
+                    attestation_reason = (
+                        "memory_prefix_stored_once_not_duplicated_in_action_history"
+                    )
                 if gate_decision and gate_decision.get("overridden"):
                     committed_summary = (
                         "Coverage gate blocked the model's proposed source-document "
@@ -657,6 +690,18 @@ class OfficialQwenMobileController:
                             action_summary=decision.action_summary,
                             canonical_action=canonical_action,
                             transition=transition,
+                            source_call_id=call.call_id,
+                            source_response_sha256=call.response_sha256,
+                            source_screenshot_sha256=str(before["screenshot_sha256"]),
+                        )
+                    elif hasattr(self.working_memory, "observe_step"):
+                        record["memory_write"] = self.working_memory.observe_step(
+                            source_step=step_index,
+                            action_summary=decision.action_summary,
+                            canonical_action=canonical_action,
+                            transition=transition,
+                            before=before,
+                            after=after,
                             source_call_id=call.call_id,
                             source_response_sha256=call.response_sha256,
                             source_screenshot_sha256=str(before["screenshot_sha256"]),

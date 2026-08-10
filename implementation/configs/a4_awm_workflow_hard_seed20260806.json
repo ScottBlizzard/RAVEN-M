@@ -1,0 +1,10 @@
+{
+  "experiment_id": "A4_AWM_FROZEN_WORKFLOW_QWEN3VL32B_AW_HARD_S20260806_V1",
+  "method": "AWM-style frozen donor-only procedural workflow memory on A0",
+  "mechanism_id": "a4_awm_frozen_donor_workflow_memory_v1",
+  "public_source": {"paper": "ICML 2025 Agent Workflow Memory", "repository": "https://github.com/zorazrw/agent-workflow-memory", "commit": "8c0ff8cd11d648c8fceb99e4e42f37e3b75381b1"},
+  "model": {"id": "Qwen/Qwen3-VL-32B-Instruct", "revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb", "generation_seed": 3407, "temperature": 0.7, "top_p": 0.8, "top_k": 20, "presence_penalty": 1.5, "repetition_penalty": 1.0, "max_tokens": 32768},
+  "benchmark": {"name": "AndroidWorld", "split": "Hard", "manifest": "implementation/configs/androidworld_hard_v2_instances.json", "task_seed": 20260806, "task_count": 19, "action_budget": "unchanged native_max_steps", "qualification_first": ["ExpenseDeleteMultiple2", "RecipeDeleteMultipleRecipesWithConstraint", "RetroSavePlaylist", "SimpleCalendarAddOneEvent", "SportsTrackerTotalDurationForCategoryThisWeek"]},
+  "intervention": {"memory_type": "cross-task procedural workflow", "bank": "evidence/a345/A4_FROZEN_DONOR_WORKFLOW_BANK.json", "bank_source": "preregistered independent AndroidWorld Easy/Medium evaluator-confirmed successful donor episodes only", "scored_hard_bank_updates": false, "retrieval": "deterministic lexical top-1, inject only positive overlap", "max_chars": 1800, "extra_model_calls_during_scored_suite": 0, "extra_planner": false, "critic": false, "guard": false},
+  "gate": {"required": "5/5 known A1-success tasks and at least one non-empty donor workflow read on task 1", "fail_fast": true, "scientific_failure_rerun": false, "infrastructure_invalid_resume_same_task": true}
+}

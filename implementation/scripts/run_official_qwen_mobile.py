@@ -56,6 +56,9 @@ from raven_m.official_qwen_mobile.source_document_coverage_gate import (  # noqa
 from raven_m.official_qwen_mobile.protocol import (  # noqa: E402
     A1_WORKING_MEMORY_SYSTEM_PROMPT,
     A2_VERIFIED_PROGRESS_SYSTEM_PROMPT,
+    A3_CONACT_SYSTEM_PROMPT,
+    A4_WORKFLOW_SYSTEM_PROMPT,
+    A5_VISUAL_GRAPH_SYSTEM_PROMPT,
     EVIDENCE_QUALIFIED_PROGRESS_SYSTEM_PROMPT,
     OFFICIAL_SYSTEM_PROMPT,
     SOURCE_DOCUMENT_COVERAGE_SYSTEM_PROMPT,
@@ -66,13 +69,24 @@ from raven_m.official_qwen_mobile.progress_memory import (  # noqa: E402
     RepeatedNoProgressGuard,
     VerifiedProgressMemory,
 )
+from raven_m.official_qwen_mobile.a345_memory import (  # noqa: E402
+    FrozenWorkflowMemory,
+    OnlinePageGraphMemory,
+    ProactiveFoldedContextMemory,
+)
+from raven_m.official_qwen_mobile.a345_contract import (  # noqa: E402
+    A345_GATE_TASKS,
+    A345_TERMINAL_CHECKPOINT_STATUSES,
+    A4_WORKFLOW_BANK,
+    activation_valid as _a345_activation_valid,
+    validate_launch_receipt as validate_a345_launch_receipt,
+    validate_preflight_report as validate_a345_preflight_report,
+)
 
 
 MODEL_ID = "Qwen/Qwen3-VL-32B-Instruct"
 MODEL_REVISION = "0cfaf48183f594c314753d30a4c4974bc75f3ccb"
 BACKEND_ID = "qwen3_vl_32b_vllm_bf16_1xrtxpro6000_official_public_v1"
-
-
 def _atomic_json(path: Path, value: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(path.suffix + ".tmp")
@@ -85,6 +99,23 @@ def _atomic_json(path: Path, value: dict) -> None:
 
 def _sha256(path: Path) -> str:
     return sha256(path.read_bytes()).hexdigest()
+
+
+def _load_a4_workflows(path: Path) -> list[dict]:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        raise RuntimeError("A4 canonical donor bank must be a JSON object")
+    if payload.get("schema") != "a4.frozen_donor_workflow_bank.v1" or payload.get("status") != "ready":
+        raise RuntimeError("A4 canonical donor bank is not ready or has wrong schema")
+    if payload.get("generation_calls") != 0 or payload.get("scored_hard_inputs_used") is not False:
+        raise RuntimeError("A4 canonical donor bank provenance is invalid")
+    workflows = payload.get("workflows")
+    if not isinstance(workflows, list) or not workflows:
+        raise RuntimeError("A4 canonical donor bank has no workflows")
+    workflow_sha = sha256(json.dumps(workflows, sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()
+    if payload.get("bank_sha256") != workflow_sha:
+        raise RuntimeError("A4 workflow payload hash drifted")
+    return workflows
 
 
 def _episode_infrastructure_valid(summary: dict) -> bool:
@@ -161,6 +192,26 @@ def main() -> None:
         "--a2-verified-progress-memory",
         action="store_true",
         help="Enable compact verified-progress memory and the separately audited cost guard.",
+    )
+    parser.add_argument(
+        "--a345-arm",
+        choices=("a3", "a4", "a5"),
+        help="Run one frozen A3/A4/A5 public-memory-kernel arm.",
+    )
+    parser.add_argument(
+        "--a345-preflight-report",
+        type=Path,
+        default=REPOSITORY_ROOT / "evidence" / "a345" / "A345_ZERO_GENERATION_PREFLIGHT.json",
+    )
+    parser.add_argument(
+        "--a345-workflow-bank",
+        type=Path,
+        default=REPOSITORY_ROOT / "evidence" / "a345" / "A4_FROZEN_DONOR_WORKFLOW_BANK.json",
+    )
+    parser.add_argument(
+        "--a345-launch-receipt",
+        type=Path,
+        help="Live frozen-server receipt created after GPU start and before the first scored call.",
     )
     parser.add_argument(
         "--transient-observation-carry",
@@ -273,6 +324,7 @@ def main() -> None:
             args.source_document_coverage_gate,
             args.a1_working_memory,
             args.a2_verified_progress_memory,
+            args.a345_arm,
         )
     )
     if diagnostic_modes > 1:
@@ -280,12 +332,15 @@ def main() -> None:
             "--transient-observation-carry, --transition-attested-history, "
             "--evidence-qualified-progress, and --source-document-coverage "
             "--source-document-coverage-gate, --a1-working-memory, and "
-            "--a2-verified-progress-memory are mutually exclusive"
+            "--a2-verified-progress-memory and --a345-arm are mutually exclusive"
         )
     held_out_eligible = not bool(args.diagnostic) and not bool(
         args.held_out_ineligible_reason
     )
-    scored_memory_arm = bool(args.a1_working_memory or args.a2_verified_progress_memory)
+    a345_scored_arm = bool(args.a345_arm)
+    scored_memory_arm = bool(
+        args.a1_working_memory or args.a2_verified_progress_memory or a345_scored_arm
+    )
     if args.resume_suite_dir is not None and not scored_memory_arm:
         parser.error("--resume-suite-dir is restricted to scored memory arms")
     if scored_memory_arm:
@@ -299,7 +354,33 @@ def main() -> None:
             parser.error("scored memory hidden observation backend must match A0 uiautomator")
         if _sha256(args.manifest.resolve()) != _sha256(A1_MANIFEST.resolve()):
             parser.error("memory-arm manifest differs from the frozen A0 first-seed manifest")
-        if args.a1_working_memory:
+        if a345_scored_arm:
+            if not args.a345_preflight_report.is_file():
+                parser.error(f"A3/A4/A5 preflight is missing: {args.a345_preflight_report}")
+            try:
+                preflight = validate_a345_preflight_report(args.a345_preflight_report.resolve())
+            except Exception as exc:
+                parser.error(str(exc))
+            if args.a345_arm == "a4" and not args.a345_workflow_bank.is_file():
+                parser.error("A4 requires the frozen independent-donor workflow bank")
+            if args.a345_arm == "a4":
+                if args.a345_workflow_bank.resolve() != A4_WORKFLOW_BANK.resolve():
+                    parser.error("A4 scored run must use the canonical preflight-qualified workflow bank")
+                expected_bank_sha = (preflight.get("checks") or {}).get(
+                    "a4_workflow_bank_sha256"
+                )
+                if expected_bank_sha != _sha256(args.a345_workflow_bank.resolve()):
+                    parser.error("A4 workflow bank drifted after zero-generation preflight")
+            if args.a345_launch_receipt is None or not args.a345_launch_receipt.is_file():
+                parser.error("A3/A4/A5 scored generation requires a live launch receipt")
+            try:
+                validate_a345_launch_receipt(
+                    args.a345_launch_receipt.resolve(),
+                    preflight_path=args.a345_preflight_report.resolve(),
+                )
+            except Exception as exc:
+                parser.error(str(exc))
+        elif args.a1_working_memory:
             validate_preflight_report(args.a1_preflight_report.resolve())
         else:
             validate_a2_preflight_report(args.a2_preflight_report.resolve())
@@ -336,6 +417,13 @@ def main() -> None:
         specs = [item for item in specs if int(item["task_seed"]) == 20260806]
         if len(specs) != 19 or len({item["task_class"] for item in specs}) != 19:
             raise RuntimeError("memory-arm seed filter did not produce exactly 19 unique Hard tasks")
+        if a345_scored_arm:
+            by_name = {str(item["task_class"]): item for item in specs}
+            missing_gate = sorted(set(A345_GATE_TASKS) - set(by_name))
+            if missing_gate:
+                raise RuntimeError(f"A3/A4/A5 gate tasks missing from manifest: {missing_gate}")
+            remaining = [item for item in specs if str(item["task_class"]) not in A345_GATE_TASKS]
+            specs = [by_name[name] for name in A345_GATE_TASKS] + remaining
     unknown = sorted(
         {str(item["task_class"]) for item in specs} - set(available)
     )
@@ -374,12 +462,24 @@ def main() -> None:
     run_signature = {
         "experiment_id": (
             "A2_VERIFIED_PROGRESS_MEMORY_QWEN3VL32B_AW_HARD_S20260806_V1R1"
-            if args.a2_verified_progress_memory else None
+            if args.a2_verified_progress_memory
+            else (
+                f"{args.a345_arm.upper()}_PUBLIC_MEMORY_KERNEL_QWEN3VL32B_AW_HARD_S20260806_V1"
+                if a345_scored_arm else None
+            )
         ),
         "method": (
             "a2_verified_progress_memory_v1r1"
             if args.a2_verified_progress_memory
-            else ("a1_action_working_memory_v1" if args.a1_working_memory else "a0")
+            else (
+                {
+                    "a3": "a3_memgui_conact_folded_context_v1",
+                    "a4": "a4_awm_frozen_donor_workflow_memory_v1",
+                    "a5": "a5_hymem_online_visual_symbolic_graph_v1",
+                }[args.a345_arm]
+                if a345_scored_arm
+                else ("a1_action_working_memory_v1" if args.a1_working_memory else "a0")
+            )
         ),
         "manifest_sha256": _sha256(args.manifest) if args.manifest else None,
         "ordered_expected_keys": expected_keys,
@@ -401,6 +501,20 @@ def main() -> None:
         "grpc_port": args.grpc_port,
         "adb_path": str(Path(args.adb_path).resolve()),
     }
+    if a345_scored_arm:
+        run_signature.update(
+            {
+                "qualification_gate_tasks": list(A345_GATE_TASKS),
+                "qualification_gate_required_successes": 5,
+                "qualification_gate_fail_fast": True,
+                "schedule_note": "post-hoc capability-preservation gate, not new held-out evidence",
+                "a345_preflight_sha256": _sha256(args.a345_preflight_report),
+                "a345_launch_receipt_sha256": _sha256(args.a345_launch_receipt),
+                "a4_workflow_bank_sha256": (
+                    _sha256(args.a345_workflow_bank) if args.a345_arm == "a4" else None
+                ),
+            }
+        )
     if args.a2_verified_progress_memory:
         source_freeze = current_a2_source_freeze()
         run_signature.update(
@@ -454,6 +568,8 @@ def main() -> None:
             checkpoint = json.loads(
                 (suite_dir / "checkpoint.json").read_text(encoding="utf-8")
             )
+            if a345_scored_arm and checkpoint.get("status") in A345_TERMINAL_CHECKPOINT_STATUSES:
+                raise RuntimeError("A3/A4/A5 scientific or activation gate failure is terminal and cannot be resumed")
             summaries = list(checkpoint.get("valid_summaries") or [])
             invalid_attempts = list(checkpoint.get("invalid_attempts") or [])
         suite_id = suite_dir.name
@@ -503,7 +619,7 @@ def main() -> None:
         repetition_penalty=1.0,
         seed=args.generation_seed,
         timeout_seconds=args.request_timeout_seconds,
-        retry_transient_errors=not args.a2_verified_progress_memory,
+        retry_transient_errors=not (args.a2_verified_progress_memory or a345_scored_arm),
     )
     health = client.health()
     env = env_launcher.load_and_setup_env(
@@ -583,7 +699,11 @@ def main() -> None:
                     "memory_intervention": (
                         "a2_verified_progress_memory_v1r1"
                         if args.a2_verified_progress_memory
-                        else ("a1_action_working_memory_v1" if args.a1_working_memory else None)
+                        else (
+                            run_signature["method"]
+                            if a345_scored_arm
+                            else ("a1_action_working_memory_v1" if args.a1_working_memory else None)
+                        )
                     ),
                     "cost_guard": (
                         "a2_repeated_no_progress_cost_guard_v1r1"
@@ -594,7 +714,11 @@ def main() -> None:
                 system_prompt=(
                     A2_VERIFIED_PROGRESS_SYSTEM_PROMPT
                     if args.a2_verified_progress_memory
-                    else (A1_WORKING_MEMORY_SYSTEM_PROMPT
+                    else (
+                    A3_CONACT_SYSTEM_PROMPT if args.a345_arm == "a3" else (
+                    A4_WORKFLOW_SYSTEM_PROMPT if args.a345_arm == "a4" else (
+                    A5_VISUAL_GRAPH_SYSTEM_PROMPT if args.a345_arm == "a5" else (
+                    A1_WORKING_MEMORY_SYSTEM_PROMPT
                     if args.a1_working_memory
                     else (
                         SOURCE_DOCUMENT_COVERAGE_SYSTEM_PROMPT
@@ -608,7 +732,7 @@ def main() -> None:
                                 else OFFICIAL_SYSTEM_PROMPT
                             )
                         )
-                    ))
+                    )))))
                 ),
                 history_policy=(
                     "source_document_coverage_action_ledger_v1"
@@ -637,9 +761,26 @@ def main() -> None:
                     VerifiedProgressMemory(max_chars=1200)
                     if args.a2_verified_progress_memory
                     else (
+                        ProactiveFoldedContextMemory(max_chars=1800)
+                        if args.a345_arm == "a3"
+                        else (
+                            FrozenWorkflowMemory(
+                                bank=_load_a4_workflows(args.a345_workflow_bank),
+                                max_chars=1800,
+                            )
+                            if args.a345_arm == "a4"
+                            else (
+                                OnlinePageGraphMemory(
+                                    max_edges=12, max_chars=1800, max_hamming=6
+                                )
+                                if args.a345_arm == "a5"
+                                else (
                         ActionWorkingMemory(max_items=6, max_chars=3000)
                         if args.a1_working_memory
                         else None
+                                )
+                            )
+                        )
                     )
                 ),
                 cost_guard=(
@@ -693,6 +834,22 @@ def main() -> None:
                     )
                 )
             completed_keys.add((task_name, episode_seed))
+            if a345_scored_arm and len(summaries) == 1 and not _a345_activation_valid(
+                result, str(args.a345_arm)
+            ):
+                checkpoint("stopped_memory_activation_failure")
+                raise RuntimeError(
+                    f"{args.a345_arm.upper()} first task did not prove memory exposure; "
+                    "the suite is invalid and must not continue"
+                )
+            if a345_scored_arm and task_name in A345_GATE_TASKS and not bool(
+                result.get("success")
+            ):
+                checkpoint("stopped_capability_gate_failure")
+                raise RuntimeError(
+                    f"{args.a345_arm.upper()} capability-preservation gate failed on "
+                    f"{task_name}; scientific failures are terminal and cannot be rerun"
+                )
             checkpoint("running")
     except BaseException as exc:
         active_exception = exc
@@ -737,6 +894,26 @@ def main() -> None:
         ):
             checkpoint("stopped_incomplete_or_invalid")
             raise RuntimeError("A2 cannot aggregate: exact 19-task validity closure failed")
+    if a345_scored_arm:
+        completed_ordered_keys = [
+            (str(item["task_name"]), int(item["seed"])) for item in summaries
+        ]
+        if (
+            completed_ordered_keys != expected_keys
+            or len(summaries) != 19
+            or any(not item.get("resolved_by_episode_id") for item in invalid_attempts)
+            or suite_lifecycle_errors
+            or any(not _episode_infrastructure_valid(item) for item in summaries)
+            or any(item.get("evaluator_reward") is None for item in summaries)
+            or any(
+                int(((step.get("model_call") or {}).get("raven_meta") or {}).get("transport_attempts") or 0) != 1
+                for item in summaries for step in item.get("steps", [])
+            )
+        ):
+            checkpoint("stopped_incomplete_or_invalid")
+            raise RuntimeError(
+                f"{args.a345_arm.upper()} cannot aggregate: exact 19-task validity closure failed"
+            )
 
     aggregate = {
         "suite_id": suite_id,
@@ -754,7 +931,11 @@ def main() -> None:
         "memory_intervention": (
             "a2_verified_progress_memory_v1r1"
             if args.a2_verified_progress_memory
-            else ("a1_action_working_memory_v1" if args.a1_working_memory else None)
+            else (
+                run_signature["method"]
+                if a345_scored_arm
+                else ("a1_action_working_memory_v1" if args.a1_working_memory else None)
+            )
         ),
         "cost_guard": (
             "a2_repeated_no_progress_cost_guard_v1r1"
@@ -843,7 +1024,11 @@ def main() -> None:
                 ).total_seconds(),
                 "progress_prefix_attempt_count": int((item.get("memory_mechanism") or {}).get("progress_prefix_attempt_count") or 0),
                 "progress_prefix_valid_count": int((item.get("memory_mechanism") or {}).get("progress_prefix_valid_count") or 0),
-                "memory_write_success_count": int((item.get("memory_mechanism") or {}).get("memory_write_success_count") or 0),
+                "memory_write_success_count": int(
+                    (item.get("memory_mechanism") or {}).get("memory_write_success_count")
+                    or (item.get("memory_mechanism") or {}).get("write_success_count")
+                    or 0
+                ),
                 "guard_blocks": int((item.get("cost_guard") or {}).get("block_count") or 0),
                 "guard_warnings": int((item.get("cost_guard") or {}).get("warning_count") or 0),
                 "guard_cost_stops": int((item.get("cost_guard") or {}).get("cost_stop_count") or 0),
