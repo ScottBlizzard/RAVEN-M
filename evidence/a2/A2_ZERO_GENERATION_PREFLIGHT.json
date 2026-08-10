@@ -1,0 +1,180 @@
+{
+  "a2_prompt_sha256": "f1dc20c68c2b0ade4f117b4cacf3ad5b2ed221ecdc84f87d83239d378880e268",
+  "androidworld_instantiated_tasks": [
+    "BrowserMultiply",
+    "ExpenseAddMultipleFromGallery",
+    "ExpenseAddMultipleFromMarkor",
+    "ExpenseDeleteMultiple2",
+    "MarkorCreateNoteAndSms",
+    "MarkorMergeNotes",
+    "MarkorTranscribeVideo",
+    "OsmAndMarker",
+    "OsmAndTrack",
+    "RecipeAddMultipleRecipesFromImage",
+    "RecipeAddMultipleRecipesFromMarkor",
+    "RecipeAddMultipleRecipesFromMarkor2",
+    "RecipeDeleteMultipleRecipesWithConstraint",
+    "RetroSavePlaylist",
+    "SaveCopyOfReceiptTaskEval",
+    "SimpleCalendarAddOneEvent",
+    "SportsTrackerActivitiesOnDate",
+    "SportsTrackerTotalDistanceForCategoryOverInterval",
+    "SportsTrackerTotalDurationForCategoryThisWeek"
+  ],
+  "cost_guard_canary": {
+    "assessments": [
+      {
+        "action_signature": "f94dada326561ba5078e7bcbdc35b70001a52b70a22ef06a1d1e523cb2fa4748",
+        "blocked": false,
+        "mechanism_id": "a2_repeated_no_progress_cost_guard_v1",
+        "prior_no_progress_executions": 0,
+        "state_signature": "14215ac14655b9fee1ba080875e360e3fbf4e9ed2be59815191474572ae55078",
+        "threshold": 2
+      },
+      {
+        "action_signature": "f94dada326561ba5078e7bcbdc35b70001a52b70a22ef06a1d1e523cb2fa4748",
+        "blocked": false,
+        "mechanism_id": "a2_repeated_no_progress_cost_guard_v1",
+        "prior_no_progress_executions": 1,
+        "state_signature": "14215ac14655b9fee1ba080875e360e3fbf4e9ed2be59815191474572ae55078",
+        "threshold": 2
+      },
+      {
+        "action_signature": "f94dada326561ba5078e7bcbdc35b70001a52b70a22ef06a1d1e523cb2fa4748",
+        "blocked": true,
+        "mechanism_id": "a2_repeated_no_progress_cost_guard_v1",
+        "prior_no_progress_executions": 2,
+        "state_signature": "14215ac14655b9fee1ba080875e360e3fbf4e9ed2be59815191474572ae55078",
+        "threshold": 2
+      }
+    ],
+    "first_block": {
+      "action_signature": "f94dada326561ba5078e7bcbdc35b70001a52b70a22ef06a1d1e523cb2fa4748",
+      "block_index_for_same_state_action": 1,
+      "blocked": true,
+      "cost_stop": false,
+      "mechanism_id": "a2_repeated_no_progress_cost_guard_v1",
+      "message": "This equivalent action has already produced no observable change twice on this same UI state. Do not repeat it; inspect the screen and choose a different target or route.",
+      "prior_no_progress_executions": 2,
+      "state_signature": "14215ac14655b9fee1ba080875e360e3fbf4e9ed2be59815191474572ae55078",
+      "threshold": 2
+    },
+    "second_block": {
+      "action_signature": "f94dada326561ba5078e7bcbdc35b70001a52b70a22ef06a1d1e523cb2fa4748",
+      "block_index_for_same_state_action": 2,
+      "blocked": true,
+      "cost_stop": true,
+      "mechanism_id": "a2_repeated_no_progress_cost_guard_v1",
+      "message": "This equivalent action has already produced no observable change twice on this same UI state. Do not repeat it; inspect the screen and choose a different target or route.",
+      "prior_no_progress_executions": 2,
+      "state_signature": "14215ac14655b9fee1ba080875e360e3fbf4e9ed2be59815191474572ae55078",
+      "threshold": 2
+    }
+  },
+  "errors": [],
+  "experiment_id": "A2_VERIFIED_PROGRESS_MEMORY_QWEN3VL32B_AW_HARD_S20260806_V1",
+  "generation_calls": 0,
+  "manifest_sha256": "c1d718e9d380e443d12d2c29ab2182ae801a3befc53881b864cd830f2ad0440a",
+  "manifest_task_order": [
+    "BrowserMultiply",
+    "ExpenseAddMultipleFromGallery",
+    "ExpenseAddMultipleFromMarkor",
+    "ExpenseDeleteMultiple2",
+    "MarkorCreateNoteAndSms",
+    "MarkorMergeNotes",
+    "MarkorTranscribeVideo",
+    "OsmAndMarker",
+    "OsmAndTrack",
+    "RecipeAddMultipleRecipesFromImage",
+    "RecipeAddMultipleRecipesFromMarkor",
+    "RecipeAddMultipleRecipesFromMarkor2",
+    "RecipeDeleteMultipleRecipesWithConstraint",
+    "RetroSavePlaylist",
+    "SaveCopyOfReceiptTaskEval",
+    "SimpleCalendarAddOneEvent",
+    "SportsTrackerActivitiesOnDate",
+    "SportsTrackerTotalDistanceForCategoryOverInterval",
+    "SportsTrackerTotalDurationForCategoryThisWeek"
+  ],
+  "memory_canary": {
+    "empty_read": {
+      "guard_notice_present": false,
+      "mechanism_id": "a2_verified_progress_memory_v1",
+      "nonempty": false,
+      "rendered_chars": 0,
+      "rendered_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "state_source_step": null
+    },
+    "nonempty_read": {
+      "guard_notice_present": false,
+      "mechanism_id": "a2_verified_progress_memory_v1",
+      "nonempty": true,
+      "rendered_chars": 423,
+      "rendered_sha256": "b9a0a947842a08b8035a3a1243d86099ac42be3aa9d089d2d6882617e29d3afa",
+      "state_source_step": 0
+    },
+    "present_in_next_prompt": true,
+    "structured_prefix_removed_from_history": true,
+    "value": "A2-CANARY-9157",
+    "write": {
+      "state": {
+        "executed_action": {
+          "type": "tap",
+          "x": 0.8,
+          "y": 0.1
+        },
+        "expected": "confirmation appears",
+        "observable_outcome": "no_visible_change",
+        "observed": "A2-CANARY-9157",
+        "pending": "save",
+        "source_call_id": "preflight-call",
+        "source_response_sha256": "preflight-response",
+        "source_screenshot_sha256": "preflight-screen",
+        "source_step": 0,
+        "transition_evidence": {
+          "activity_changed": false,
+          "changed_pixel_fraction_gt_5": 0.0,
+          "ui_sha_changed": false
+        },
+        "verified": "form visible"
+      },
+      "written": true
+    }
+  },
+  "official_prompt_sha256": "9d060af15f62acb31b9fb197649ec001d4096491d7fb102de929316944b3e26d",
+  "source_freeze": {
+    "evidence/a2/A2_DESIGN_RATIONALE_AND_A1_REPLAY_2026-08-10.md": "1bfbe691617b12214bcb7e6dff27bfb8d7950da18d257418ae5ad5826d3b12ca",
+    "implementation/configs/a2_verified_progress_memory_hard_seed20260806.json": "de04d54f1e57f60c2c543f080c26d15f3e40f9a2cfebd14758c73b787775b315",
+    "implementation/configs/androidworld_hard_v2_instances.json": "c1d718e9d380e443d12d2c29ab2182ae801a3befc53881b864cd830f2ad0440a",
+    "implementation/runtime/androidworld_compat.py": "76bd4cae773543986275c9b6e14bc5eef47b25a2af9e08fb8c69930e25b13865",
+    "implementation/scripts/preflight_a2_verified_progress.py": "c138974886ccffa05a233038c0dbfd7a3dc97099ce075e4885e1562328ab24ad",
+    "implementation/scripts/run_a2_verified_progress.ps1": "729aa6ba381cc729dce8ad28fc82fd04b3f7bc215d4e4666c8ec5d0c2c75bbf7",
+    "implementation/scripts/run_official_qwen_mobile.py": "5be7a3dbff8ce88e4c63d0f684ee678e0e904923aa7edfbe982ca5eb2a6a4f4f",
+    "implementation/scripts/start_official_qwen_server.sh": "5cf90d8d0779ec9a5656854957c7b880695011fe78f180de0ae9060f4de4fbee",
+    "implementation/src/raven_m/env/androidworld_adapter.py": "ad4ecbee9430326ca7380334c49372911a1c6b1c217ee12bb3714d2fb1219c33",
+    "implementation/src/raven_m/models/vllm_client.py": "b3c613db89cf690ed4c8b56158d7d341fb948c4ce553d4ef269d7fb854f5c3d2",
+    "implementation/src/raven_m/multi_framework_benchmark/task_instances.py": "fd0772a3ba9b973911dfbb055b25c8dab6e34d0fa640cf6ab4d7b540595f05be",
+    "implementation/src/raven_m/official_qwen_mobile/a1_contract.py": "f0b3daa50267eeecca907b5044999a489e782b5bad8e5548a66270f882902739",
+    "implementation/src/raven_m/official_qwen_mobile/a2_contract.py": "237223de04cc919dc6eecc3ae6717e4ede795c739dcc9f2072018c62a7cfe118",
+    "implementation/src/raven_m/official_qwen_mobile/controller.py": "bae0e2eb8d9ebf4c105766d56cb114abbea13ab5766a72ae4fa3c78fe9033019",
+    "implementation/src/raven_m/official_qwen_mobile/progress_memory.py": "c4d64edaa57a0962ce35b0f325aa56e66968dadf24cc3a7ccc82ad1fa6a01ea6",
+    "implementation/src/raven_m/official_qwen_mobile/protocol.py": "74608223997eefb43dac83855eca03d88ad4f91070f941a1ce358aa488a06571",
+    "implementation/src/raven_m/official_qwen_mobile/source_document_coverage_gate.py": "a9785349431c9fba80d76f127d2742aab66ed2b8b8da5b7df83484b954812f97",
+    "implementation/src/raven_m/official_qwen_mobile/working_memory.py": "86589458c820a08a220c738ae3b55fdce40e7df37ade5b8b1d3c9631bea79ee3",
+    "implementation/tests/models/test_vllm_client.py": "c7fcfb38726be9822753da1612dfa514a2df3e505affbe69b7870e70d417d1b4",
+    "implementation/tests/official_qwen_mobile/test_official_qwen_controller.py": "1af702f98d045bd77ea61ae4effa5a35478631db38926c5b3d6ae30823c42291",
+    "implementation/tests/official_qwen_mobile/test_progress_memory.py": "872435c11f2b0f4b90261023fae5b2ffbf3c93b1c11c1ac345e8075728813ec0",
+    "implementation/tests/official_qwen_mobile/test_protocol.py": "88fbe9ef5def4b551a3ef2d49f6130814f2d56bf9e7ad65a5497b17948fdc0c0",
+    "implementation/tests/official_qwen_mobile/test_source_document_coverage_gate.py": "785fcecafea98aea16071d4c98e25948744d913f15ff614d427e7e0c7e6407cd",
+    "implementation/tests/official_qwen_mobile/test_working_memory.py": "435117457c9cd70be411841fa488ccf480936c6997d1bdffbaebe7b184d570ac",
+    "protocols/A2_VERIFIED_PROGRESS_MEMORY_PREREG_2026-08-10.md": "0a8f000fc38ee39327fbfc5162b61be6c5a1ac46bb474694bf2fbf5b4f9a0f6e",
+    "protocols/A2_VERIFIED_PROGRESS_MEMORY_RUNBOOK.md": "0d9cb4802f09b25c7cdbd22442db730994c29c639fb99e2205f3f50a47ffaaa7"
+  },
+  "status": "pass",
+  "task_seed": 20260806,
+  "tests": {
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "............................................                             [100%]\n"
+  }
+}

@@ -1,88 +1,51 @@
-# Artifact manifest and reading order
+# A0–A2 Audit Artifact Manifest
 
-## Tier 0: task and current decision
+Independent review instructions: `GPT_PRO_A2_AUDIT_REQUEST.md`.
 
-- `assessment/夏令营考核题目.pdf`: original seven-page assignment.
-- `assessment/夏令营考核题目_提取文本.txt`: searchable extraction.
-- `GPT_DECISION_REQUEST.md`: authoritative current question and output contract.
-- `FRAMEWORK_SELECTION_RUBRIC.md`: eligibility and comparison rules.
+## Assignment
 
-## Tier 1: authoritative current baseline
+- `assessment/夏令营考核题目.pdf`
+- `assessment/夏令营考核题目_提取文本.txt`
 
-- `evidence/baseline/GPU_8H_GOAL_COMPLETION_AUDIT_2026-08-08.md`: requirement-by-requirement completion audit.
-- `evidence/baseline/official_qwen32b_hard_pulse_2026-08-08.md`: full execution narrative, infrastructure corrections, four-task pulse, 57-instance completion, and first rescue.
-- `evidence/baseline/official_qwen32b_full_hard_combined_corrected_final.json`: machine-readable final 57-key result.
-- `evidence/baseline/official_qwen32b_full_hard_combined_corrected_final.md`: readable 19-class x 3-seed table.
-- `evidence/baseline/official_qwen32b_full_hard_failure_taxonomy_2026-08-08.md`: whole-suite automatic failure signals and rescue qualification.
-- `evidence/baseline/official_qwen32b_cross_seed_mechanism_notes_2026-08-08.md`: task-class consistency and deterministic-replay limits.
-- `evidence/baseline/official_qwen32b_full_hard_case_notes_2026-08-08.md`: representative success and failure interpretations.
-- `evidence/baseline/official_qwen32b_observation_reuse_final.json`: mechanical observation-reuse statistics.
+## Results and design evidence
 
-## Tier 2: deterministic layer audits
+- `evidence/baseline/official_qwen32b_full_hard_combined_corrected_final.md` — official-style A0 aggregate across three seeds; seed 20260806 is the paired 19-task control.
+- `evidence/baseline/official_qwen32b_full_hard_failure_taxonomy_2026-08-08.md` — A0 failure mechanisms.
+- `evidence/baseline/official_qwen32b_full_hard_case_notes_2026-08-08.md` — trace-grounded A0 cases.
+- `evidence/a1/A1_ACTION_WORKING_MEMORY_RESULTS_2026-08-10.md` — paired A0/A1 result and cost analysis.
+- `evidence/a1/A1_ZERO_GENERATION_PREFLIGHT.json` — A1 no-generation qualification.
+- `evidence/a2/A2_DESIGN_RATIONALE_AND_A1_REPLAY_2026-08-10.md` — why A2 contains these minimal changes.
+- `evidence/a2/A2_ZERO_GENERATION_PREFLIGHT.json` — A2 no-generation qualification and source freeze.
 
-- `official_qwen32b_app_launch_grounding_audit_2026-08-08.{md,json}`: correct/wrong/recovered initial app entry.
-- `official_qwen32b_cross_app_handoff_audit_2026-08-08.{md,json}`: source-to-destination application funnel.
-- `official_qwen32b_expected_object_transfer_audit_2026-08-08.{md,json}`: expected object identifiers entering actual target-app text actions.
-- `official_qwen32b_markor_source_funnel_audit_2026-08-08.{md,json}`: source document to final write funnel.
-- `official_qwen32b_markor_document_coverage_audit_2026-08-08.{md,json}`: document-scroll behavior.
-- `object_role_evidence_prevalence_audit_2026-08-08.md`: clean wrong-proof-type cases across tasks and apps.
+## Frozen protocols
 
-All are under `evidence/layer_audits/`. They are post-hoc deterministic audits,
-not randomized causal estimates.
+- `protocols/A1_ACTION_WORKING_MEMORY_PREREG_2026-08-10.md`
+- `protocols/A1_ACTION_WORKING_MEMORY_RUNBOOK.md`
+- `protocols/A2_VERIFIED_PROGRESS_MEMORY_PREREG_2026-08-10.md`
+- `protocols/A2_VERIFIED_PROGRESS_MEMORY_RUNBOOK.md`
 
-## Tier 3: tested interventions and negative boundaries
+## Core implementation
 
-- `l4_transition_attestation_matched_diagnostic_2026-08-08.md`
-- `evidence_qualified_progress_matched_diagnostic_2026-08-08.md`
-- `offline_completion_verifier_diagnostic_2026-08-08.md`
-- `visible_object_extractor_markor_diagnostic_2026-08-08.md`
-- `source_document_coverage_markor_dev_stopped_2026-08-08.{md,json}`
-- `source_document_coverage_gate_matched_2026-08-08.{md,json}`
-- `source_document_coverage_contract_audit_2026-08-08.{md,json}`
+- `implementation/src/raven_m/official_qwen_mobile/protocol.py` — official prompt/action protocol plus opt-in A1/A2 suffixes.
+- `implementation/src/raven_m/official_qwen_mobile/controller.py` — screenshot-only loop, L0–L5 audit, memory and separate guard hooks.
+- `implementation/src/raven_m/official_qwen_mobile/working_memory.py` — A1 mechanism.
+- `implementation/src/raven_m/official_qwen_mobile/progress_memory.py` — A2 memory and separate cost guard.
+- `implementation/scripts/run_official_qwen_mobile.py` — common A0/A1/A2 runner.
+- `implementation/scripts/preflight_a2_verified_progress.py` — zero-generation A2 gate.
+- `implementation/scripts/run_a2_verified_progress.ps1` — scored A2 launcher.
+- `implementation/configs/androidworld_hard_v2_instances.json` — frozen instances and native budgets.
+- `implementation/configs/a2_verified_progress_memory_hard_seed20260806.json` — A2 experimental contract.
 
-All are under `evidence/interventions/`. A negative result is retained as a
-boundary; it is not an invitation to tune the same exposed cell until it passes.
+## Tests
 
-## Tier 4: implementation feasibility
+- `implementation/tests/official_qwen_mobile/test_progress_memory.py`
+- `implementation/tests/official_qwen_mobile/test_working_memory.py`
+- `implementation/tests/official_qwen_mobile/test_official_qwen_controller.py`
+- `implementation/tests/official_qwen_mobile/test_protocol.py`
+- `implementation/tests/models/test_vllm_client.py`
 
-- `protocols/`: current runbook, preregistrations, correction records, and frozen stop rules.
-- `implementation/src/`: official-style controller, protocol, coverage gate, completion verifier, AndroidWorld adapter, task-instantiation code, and vLLM client.
-- `implementation/scripts/`: runner, preflight, server launch, deterministic audits, merge logic, and extractor/verifier drivers.
-- `implementation/configs/`: frozen model, task, extractor, and verifier configurations.
-- `implementation/tests/`: compact relevant test suite.
+## Deliberately absent
 
-## Deliberately excluded interpretive material
+Superseded RAVEN-M revisions, public-framework selection materials, MobileUse/B2/C0 code, failed rescue packets, and earlier GPT planning documents were removed from this branch. They remain in Git history and are not evidence for the A2 audit.
 
-Earlier GPT Pro reviews and the author-written summer-camp report are not part of
-this decision packet. They mix evidence with prior interpretations and proposed
-routes, which could anchor a supposedly independent selection. Do not recover
-them from historical Git commits for this decision.
-
-### Path redirects inside frozen reports
-
-Some reports retain their original local-repository paths so their recorded
-provenance is not silently rewritten. In this curated tree, resolve them as:
-
-| Original path prefix in a report | Current curated location |
-|---|---|
-| `05_project/docs/` | `protocols/` |
-| `05_project/scripts/` | `implementation/scripts/` |
-| `05_project/src/raven_m/` | `implementation/src/raven_m/` |
-| `05_project/configs/` | `implementation/configs/` |
-| `05_project/tests/` | `implementation/tests/` |
-| `reports/<current baseline audit>` | `evidence/baseline/`, `evidence/layer_audits/`, or `evidence/interventions/` |
-
-Original absolute `runs/` paths identify local raw trajectories and do not have a
-GitHub redirect; their hashes and derived measurements are retained in the audit
-JSON files.
-
-## Deliberately excluded
-
-- model weights and caches;
-- the multi-gigabyte raw `runs/` tree;
-- obsolete r1-r78 protocol iterations and infrastructure burn-in logs;
-- early RAVEN-M module variants that are not the current comparison target;
-- partial and superseded aggregates when a corrected final aggregate exists;
-- local credentials, SSH configuration, environment files, and tokens.
-
-Excluded history remains in earlier Git commits or the local research workspace.
+The exact A1 implementation and source freeze are recoverable at commit `fbc25dc`; A2 deliberately modifies shared controller files on this branch.

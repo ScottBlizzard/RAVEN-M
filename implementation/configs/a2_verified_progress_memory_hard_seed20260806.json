@@ -1,0 +1,67 @@
+{
+  "experiment_id": "A2_VERIFIED_PROGRESS_MEMORY_QWEN3VL32B_AW_HARD_S20260806_V1",
+  "comparison": {
+    "control": "A1 Action Working Memory, seed 20260806",
+    "intervention": "A2 compact verified-progress memory with separately audited repeated-no-progress cost guard",
+    "causal_changes": [
+      "replace six raw recency records with one compact visible-evidence progress state",
+      "record whether the preceding action caused an observable screen/activity/UI transition",
+      "store the PROGRESS payload once instead of duplicating it in ordinary action history",
+      "block a third equivalent action only after two no-transition executions on the same UI state"
+    ]
+  },
+  "model": {
+    "id": "Qwen/Qwen3-VL-32B-Instruct",
+    "revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+    "backend": "qwen3_vl_32b_vllm_bf16_1xrtxpro6000_official_public_v1",
+    "generation_seed": 3407,
+    "temperature": 0.7,
+    "top_p": 0.8,
+    "top_k": 20,
+    "presence_penalty": 1.5,
+    "repetition_penalty": 1.0,
+    "max_tokens": 32768
+  },
+  "benchmark": {
+    "name": "AndroidWorld",
+    "split": "Hard",
+    "manifest": "implementation/configs/androidworld_hard_v2_instances.json",
+    "manifest_filter": "task_seed == 20260806",
+    "task_count": 19,
+    "task_seed": 20260806,
+    "action_budget": "native_max_steps from the frozen A0 manifest",
+    "task_order": "identical to A0 and A1"
+  },
+  "agent": {
+    "base_controller": "OfficialQwenMobileController",
+    "system_prompt": "official prompt plus A2_VERIFIED_PROGRESS_SUFFIX",
+    "image_policy": "current screenshot only",
+    "action_protocol": "official Qwen mobile_use",
+    "extra_model_calls": 0,
+    "memory": {
+      "mechanism_id": "a2_verified_progress_memory_v1",
+      "scope": "current episode only",
+      "source": "model-visible screenshot/task plus controller-observed visible transition",
+      "state_count": 1,
+      "max_chars": 1200,
+      "hidden_ui_semantics_visible_to_model": false,
+      "evaluator_access": false,
+      "cross_episode_reuse": false
+    },
+    "cost_guard": {
+      "mechanism_id": "a2_repeated_no_progress_cost_guard_v1",
+      "no_progress_execution_threshold": 2,
+      "max_consecutive_blocks_before_cost_stop": 2,
+      "state_source": "coarse perceptual signature of the model-visible screenshot only",
+      "success_credit": false,
+      "purpose": "reduce repeated-action runtime waste only"
+    }
+  },
+  "paired_decision_gates": {
+    "success_target": "A2 full success count must exceed A1's 5/19 to claim accuracy improvement",
+    "cost_target": "A2 total tokens and wall-clock time should both be lower than A1",
+    "memory_attribution": "an improved task needs nonempty memory reads before the changed decision; guard-only interventions cannot be credited to memory",
+    "guard_attribution": "report guard triggers, blocks, cost stops, and affected tasks separately",
+    "negative_result": "if either primary target fails, preserve and report the frozen negative result without tuning this run"
+  }
+}

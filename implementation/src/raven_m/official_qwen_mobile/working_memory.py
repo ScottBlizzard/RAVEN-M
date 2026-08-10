@@ -88,7 +88,8 @@ class ActionWorkingMemory:
         self.write_success_count += 1
         return {"written": True, "record": record.audit_record()}
 
-    def read(self) -> tuple[str, dict[str, Any]]:
+    def read(self, context: dict[str, Any] | None = None) -> tuple[str, dict[str, Any]]:
+        del context
         self.read_count += 1
         selected: list[WorkingMemoryRecord] = []
         used_chars = 0

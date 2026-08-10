@@ -28,6 +28,7 @@ from .protocol import (
 )
 from .source_document_coverage_gate import SourceDocumentCoverageGate
 from .working_memory import ActionWorkingMemory, append_working_memory
+from .progress_memory import RepeatedNoProgressGuard, VerifiedProgressMemory
 
 
 def _utc_now() -> str:
@@ -185,7 +186,8 @@ class OfficialQwenMobileController:
         history_policy: str = "official_text_action_summaries_only",
         source_document_coverage_gate: SourceDocumentCoverageGate | None = None,
         stop_after_markor_source_exit: bool = False,
-        working_memory: ActionWorkingMemory | None = None,
+        working_memory: ActionWorkingMemory | VerifiedProgressMemory | None = None,
+        cost_guard: RepeatedNoProgressGuard | None = None,
     ) -> None:
         self.client = client
         self.max_steps = max(1, int(max_steps))
@@ -197,6 +199,7 @@ class OfficialQwenMobileController:
         self.source_document_coverage_gate = source_document_coverage_gate
         self.stop_after_markor_source_exit = bool(stop_after_markor_source_exit)
         self.working_memory = working_memory
+        self.cost_guard = cost_guard
 
     def _committed_history_summary(
         self,
@@ -340,6 +343,11 @@ class OfficialQwenMobileController:
                     if self.working_memory is not None
                     else None
                 ),
+                "cost_guard": (
+                    self.cost_guard.audit_record()
+                    if self.cost_guard is not None
+                    else None
+                ),
             }
         )
         try:
@@ -376,7 +384,14 @@ class OfficialQwenMobileController:
                 memory_read: dict[str, Any] | None = None
                 rendered_memory = ""
                 if self.working_memory is not None:
-                    rendered_memory, memory_read = self.working_memory.read()
+                    guard_notice = (
+                        self.cost_guard.notice(before)
+                        if self.cost_guard is not None
+                        else ""
+                    )
+                    rendered_memory, memory_read = self.working_memory.read(
+                        context={"before": _snapshot_record(before), "guard_notice": guard_notice}
+                    )
                 user_prompt = append_working_memory(
                     build_user_prompt(effective_goal, history),
                     rendered_memory,
@@ -467,6 +482,37 @@ class OfficialQwenMobileController:
                     steps.append(record)
                     log(record)
                     break
+                guard_assessment: dict[str, Any] | None = None
+                if self.cost_guard is not None:
+                    guard_assessment = self.cost_guard.assess(
+                        before=before,
+                        action=canonical_action,
+                    )
+                    record["cost_guard_assessment"] = guard_assessment
+                    if guard_assessment.get("blocked"):
+                        guard_block = self.cost_guard.record_block(guard_assessment)
+                        record["cost_guard_block"] = guard_block
+                        record["layers"]["L3_execution"] = {
+                            "attempted": False,
+                            "completed": False,
+                            "blocked_by_cost_guard": True,
+                        }
+                        guard_history = str(guard_block["message"])
+                        history.append(guard_history)
+                        record["history_commit"] = {
+                            "policy": "a2_cost_guard_block_message",
+                            "model_action_summary": decision.action_summary,
+                            "committed_history_summary": guard_history,
+                            "attestation_applied": True,
+                            "attestation_reason": "repeated_no_progress_cost_guard",
+                        }
+                        record["history_after"] = list(history)
+                        steps.append(record)
+                        log(record)
+                        if guard_block.get("cost_stop"):
+                            termination_reason = "a2_cost_guard_stop"
+                            break
+                        continue
                 execution_started_utc = _utc_now()
                 execution_started_monotonic = time.perf_counter()
                 record["layers"]["L3_execution"] = {
@@ -530,6 +576,13 @@ class OfficialQwenMobileController:
                     "observed": True,
                     **transition,
                 }
+                if self.cost_guard is not None:
+                    record["cost_guard_observation"] = self.cost_guard.observe(
+                        before=before,
+                        after=after,
+                        action=canonical_action,
+                        transition=transition,
+                    )
                 gate_observation: dict[str, Any] | None = None
                 if self.source_document_coverage_gate is not None:
                     gate_observation = self.source_document_coverage_gate.observe(
@@ -552,6 +605,12 @@ class OfficialQwenMobileController:
                         transition=transition,
                     )
                 )
+                if isinstance(self.working_memory, VerifiedProgressMemory):
+                    committed_summary = self.working_memory.history_summary(
+                        decision.action_summary
+                    )
+                    attestation_applied = True
+                    attestation_reason = "a2_progress_prefix_stored_once_not_duplicated_in_history"
                 if gate_decision and gate_decision.get("overridden"):
                     committed_summary = (
                         "Coverage gate blocked the model's proposed source-document "
@@ -572,13 +631,24 @@ class OfficialQwenMobileController:
                 history.append(committed_summary)
                 record["history_after"] = list(history)
                 if self.working_memory is not None:
-                    record["memory_write"] = self.working_memory.write(
-                        source_step=step_index,
-                        action_summary=decision.action_summary,
-                        source_call_id=call.call_id,
-                        source_response_sha256=call.response_sha256,
-                        source_screenshot_sha256=str(before["screenshot_sha256"]),
-                    )
+                    if isinstance(self.working_memory, VerifiedProgressMemory):
+                        record["memory_write"] = self.working_memory.observe_step(
+                            source_step=step_index,
+                            action_summary=decision.action_summary,
+                            canonical_action=canonical_action,
+                            transition=transition,
+                            source_call_id=call.call_id,
+                            source_response_sha256=call.response_sha256,
+                            source_screenshot_sha256=str(before["screenshot_sha256"]),
+                        )
+                    else:
+                        record["memory_write"] = self.working_memory.write(
+                            source_step=step_index,
+                            action_summary=decision.action_summary,
+                            source_call_id=call.call_id,
+                            source_response_sha256=call.response_sha256,
+                            source_screenshot_sha256=str(before["screenshot_sha256"]),
+                        )
                 steps.append(record)
                 log(record)
                 if (
@@ -721,6 +791,11 @@ class OfficialQwenMobileController:
             "memory_mechanism": (
                 self.working_memory.audit_record()
                 if self.working_memory is not None
+                else None
+            ),
+            "cost_guard": (
+                self.cost_guard.audit_record()
+                if self.cost_guard is not None
                 else None
             ),
         }

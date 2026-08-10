@@ -90,6 +90,31 @@ Rules:
 A1_WORKING_MEMORY_SYSTEM_PROMPT = OFFICIAL_SYSTEM_PROMPT + A1_WORKING_MEMORY_SUFFIX
 
 
+# A2 replaces A1's recency list with one compact, outcome-aware progress state.
+# The expected field makes the next screenshot comparison explicit without an
+# extra model call.  Controller-observed screen change is never called task
+# success; the hidden evaluator remains unavailable until the episode ends.
+A2_VERIFIED_PROGRESS_SUFFIX = r"""
+
+# A2 verified progress memory
+
+Begin every Action sentence, including answer or terminate steps, with exactly:
+PROGRESS[observed=<exact task-relevant facts visible now or none>; verified=<requirements directly proven by the current screenshot or none>; pending=<most important unmet requirements>; expected=<visible effect expected from this action>] | <one concise UI imperative>
+
+Rules:
+- Keep the complete PROGRESS[...] payload under 360 characters.
+- Verified means directly visible on the current screenshot, never merely attempted.
+- State the concrete visible effect expected after the proposed action.
+- Consult the compact progress block in the user message, but let the current screenshot override it.
+- If the prior outcome says no visible change, inspect or choose a different target instead of repeating the same action.
+- A page transition alone does not prove that the requested object, field, or final task state is correct.
+"""
+
+A2_VERIFIED_PROGRESS_SYSTEM_PROMPT = (
+    OFFICIAL_SYSTEM_PROMPT + A2_VERIFIED_PROGRESS_SUFFIX
+)
+
+
 # Frozen post-hoc mechanism diagnostic.  A visible transition is evidence only
 # for the exact object role and postcondition that the screenshot supports; it
 # is not automatically evidence of task progress.

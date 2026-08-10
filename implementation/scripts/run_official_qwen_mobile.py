@@ -37,17 +37,26 @@ from raven_m.official_qwen_mobile.a1_contract import (  # noqa: E402
     A1_PREFLIGHT_REPORT,
     validate_preflight_report,
 )
+from raven_m.official_qwen_mobile.a2_contract import (  # noqa: E402
+    A2_PREFLIGHT_REPORT,
+    validate_preflight_report as validate_a2_preflight_report,
+)
 from raven_m.official_qwen_mobile.source_document_coverage_gate import (  # noqa: E402
     SourceDocumentCoverageGate,
 )
 from raven_m.official_qwen_mobile.protocol import (  # noqa: E402
     A1_WORKING_MEMORY_SYSTEM_PROMPT,
+    A2_VERIFIED_PROGRESS_SYSTEM_PROMPT,
     EVIDENCE_QUALIFIED_PROGRESS_SYSTEM_PROMPT,
     OFFICIAL_SYSTEM_PROMPT,
     SOURCE_DOCUMENT_COVERAGE_SYSTEM_PROMPT,
     TRANSIENT_OBSERVATION_CARRY_SYSTEM_PROMPT,
 )
 from raven_m.official_qwen_mobile.working_memory import ActionWorkingMemory  # noqa: E402
+from raven_m.official_qwen_mobile.progress_memory import (  # noqa: E402
+    RepeatedNoProgressGuard,
+    VerifiedProgressMemory,
+)
 
 
 MODEL_ID = "Qwen/Qwen3-VL-32B-Instruct"
@@ -134,6 +143,11 @@ def main() -> None:
         help="Enable the preregistered bounded Action-record working memory.",
     )
     parser.add_argument(
+        "--a2-verified-progress-memory",
+        action="store_true",
+        help="Enable compact verified-progress memory and the separately audited cost guard.",
+    )
+    parser.add_argument(
         "--transient-observation-carry",
         action="store_true",
         help=(
@@ -206,6 +220,11 @@ def main() -> None:
         type=Path,
         default=A1_PREFLIGHT_REPORT,
     )
+    parser.add_argument(
+        "--a2-preflight-report",
+        type=Path,
+        default=A2_PREFLIGHT_REPORT,
+    )
     args = parser.parse_args()
 
     if bool(args.task) == bool(args.manifest):
@@ -227,31 +246,37 @@ def main() -> None:
             args.source_document_coverage,
             args.source_document_coverage_gate,
             args.a1_working_memory,
+            args.a2_verified_progress_memory,
         )
     )
     if diagnostic_modes > 1:
         parser.error(
             "--transient-observation-carry, --transition-attested-history, "
             "--evidence-qualified-progress, and --source-document-coverage "
-            "--source-document-coverage-gate, and --a1-working-memory are mutually exclusive"
+            "--source-document-coverage-gate, --a1-working-memory, and "
+            "--a2-verified-progress-memory are mutually exclusive"
         )
     held_out_eligible = not bool(args.diagnostic) and not bool(
         args.held_out_ineligible_reason
     )
-    if args.resume_suite_dir is not None and not args.a1_working_memory:
-        parser.error("--resume-suite-dir is currently restricted to A1")
-    if args.a1_working_memory:
+    scored_memory_arm = bool(args.a1_working_memory or args.a2_verified_progress_memory)
+    if args.resume_suite_dir is not None and not scored_memory_arm:
+        parser.error("--resume-suite-dir is restricted to scored memory arms")
+    if scored_memory_arm:
         if args.task or args.manifest is None:
-            parser.error("A1 requires the frozen 19-task manifest")
+            parser.error("scored memory arms require the frozen 19-task manifest")
         if args.step_cap is not None or args.diagnostic or args.held_out_ineligible_reason:
-            parser.error("A1 scored run forbids step caps, diagnostic mode, and ineligible labels")
+            parser.error("scored memory runs forbid step caps, diagnostic mode, and ineligible labels")
         if args.generation_seed != 3407 or args.max_tokens != 32768:
-            parser.error("A1 scored generation seed/max tokens drifted")
+            parser.error("scored memory generation seed/max tokens drifted")
         if args.observation_backend != "uiautomator":
-            parser.error("A1 scored hidden observation backend must match A0 uiautomator")
+            parser.error("scored memory hidden observation backend must match A0 uiautomator")
         if _sha256(args.manifest.resolve()) != _sha256(A1_MANIFEST.resolve()):
-            parser.error("A1 manifest differs from the frozen A0 first-seed manifest")
-        validate_preflight_report(args.a1_preflight_report.resolve())
+            parser.error("memory-arm manifest differs from the frozen A0 first-seed manifest")
+        if args.a1_working_memory:
+            validate_preflight_report(args.a1_preflight_report.resolve())
+        else:
+            validate_a2_preflight_report(args.a2_preflight_report.resolve())
 
     task_registry = registry.TaskRegistry()
     available = task_registry.get_registry(task_registry.ANDROID_WORLD_FAMILY)
@@ -266,10 +291,10 @@ def main() -> None:
             }
             for task_name in args.task
         ]
-    if args.a1_working_memory:
+    if scored_memory_arm:
         specs = [item for item in specs if int(item["task_seed"]) == 20260806]
         if len(specs) != 19 or len({item["task_class"] for item in specs}) != 19:
-            raise RuntimeError("A1 seed filter did not produce exactly 19 unique Hard tasks")
+            raise RuntimeError("memory-arm seed filter did not produce exactly 19 unique Hard tasks")
     unknown = sorted(
         {str(item["task_class"]) for item in specs} - set(available)
     )
@@ -277,7 +302,11 @@ def main() -> None:
         raise KeyError(f"Unknown AndroidWorld tasks: {unknown}")
 
     run_signature = {
-        "method": "a1_action_working_memory_v1" if args.a1_working_memory else "a0",
+        "method": (
+            "a2_verified_progress_memory_v1"
+            if args.a2_verified_progress_memory
+            else ("a1_action_working_memory_v1" if args.a1_working_memory else "a0")
+        ),
         "manifest_sha256": _sha256(args.manifest) if args.manifest else None,
         "generation_seed": args.generation_seed,
         "max_tokens": args.max_tokens,
@@ -411,13 +440,20 @@ def main() -> None:
                         args.stop_after_markor_source_exit
                     ),
                     "memory_intervention": (
-                        "a1_action_working_memory_v1"
-                        if args.a1_working_memory
+                        "a2_verified_progress_memory_v1"
+                        if args.a2_verified_progress_memory
+                        else ("a1_action_working_memory_v1" if args.a1_working_memory else None)
+                    ),
+                    "cost_guard": (
+                        "a2_repeated_no_progress_cost_guard_v1"
+                        if args.a2_verified_progress_memory
                         else None
                     ),
                 },
                 system_prompt=(
-                    A1_WORKING_MEMORY_SYSTEM_PROMPT
+                    A2_VERIFIED_PROGRESS_SYSTEM_PROMPT
+                    if args.a2_verified_progress_memory
+                    else (A1_WORKING_MEMORY_SYSTEM_PROMPT
                     if args.a1_working_memory
                     else (
                         SOURCE_DOCUMENT_COVERAGE_SYSTEM_PROMPT
@@ -431,7 +467,7 @@ def main() -> None:
                                 else OFFICIAL_SYSTEM_PROMPT
                             )
                         )
-                    )
+                    ))
                 ),
                 history_policy=(
                     "source_document_coverage_action_ledger_v1"
@@ -457,8 +493,17 @@ def main() -> None:
                 ),
                 stop_after_markor_source_exit=args.stop_after_markor_source_exit,
                 working_memory=(
-                    ActionWorkingMemory(max_items=6, max_chars=3000)
-                    if args.a1_working_memory
+                    VerifiedProgressMemory(max_chars=1200)
+                    if args.a2_verified_progress_memory
+                    else (
+                        ActionWorkingMemory(max_items=6, max_chars=3000)
+                        if args.a1_working_memory
+                        else None
+                    )
+                ),
+                cost_guard=(
+                    RepeatedNoProgressGuard(no_progress_threshold=2, max_blocks=2)
+                    if args.a2_verified_progress_memory
                     else None
                 ),
             )
@@ -486,7 +531,7 @@ def main() -> None:
                     f"A1 stopped after infrastructure-invalid episode {episode_id}; "
                     "resume will rerun only this task"
                 )
-            if args.a1_working_memory and not summaries:
+            if scored_memory_arm and not summaries:
                 memory_audit = result.get("memory_mechanism") or {}
                 if not memory_audit.get("active"):
                     invalid_attempts.append(
@@ -500,7 +545,7 @@ def main() -> None:
                     )
                     checkpoint("stopped_memory_activation_failure")
                     raise RuntimeError(
-                        "A1 H01 produced no write-followed-by-read evidence; stopped before H02"
+                        "first scored episode produced no write-followed-by-read memory evidence"
                     )
             summaries.append(result)
             completed_keys.add((task_name, episode_seed))
@@ -522,7 +567,14 @@ def main() -> None:
         "evidence_qualified_progress": bool(args.evidence_qualified_progress),
         "request_timeout_seconds": args.request_timeout_seconds,
         "memory_intervention": (
-            "a1_action_working_memory_v1" if args.a1_working_memory else None
+            "a2_verified_progress_memory_v1"
+            if args.a2_verified_progress_memory
+            else ("a1_action_working_memory_v1" if args.a1_working_memory else None)
+        ),
+        "cost_guard": (
+            "a2_repeated_no_progress_cost_guard_v1"
+            if args.a2_verified_progress_memory
+            else None
         ),
         "memory_active_episode_count": sum(
             int(bool((item.get("memory_mechanism") or {}).get("active")))
@@ -535,6 +587,18 @@ def main() -> None:
         ),
         "memory_nonempty_read_count": sum(
             int((item.get("memory_mechanism") or {}).get("nonempty_read_count") or 0)
+            for item in summaries
+        ),
+        "cost_guard_trigger_count": sum(
+            int((item.get("cost_guard") or {}).get("trigger_count") or 0)
+            for item in summaries
+        ),
+        "cost_guard_block_count": sum(
+            int((item.get("cost_guard") or {}).get("block_count") or 0)
+            for item in summaries
+        ),
+        "cost_guard_stop_count": sum(
+            int((item.get("cost_guard") or {}).get("cost_stop_count") or 0)
             for item in summaries
         ),
         "invalid_attempts": invalid_attempts,
