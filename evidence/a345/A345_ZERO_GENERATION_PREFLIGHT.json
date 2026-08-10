@@ -45,7 +45,7 @@
       "stdout": "..............                                                           [100%]\n"
     }
   },
-  "created_at": "2026-08-10T18:41:13.138748+00:00",
+  "created_at": "2026-08-10T19:03:49.375837+00:00",
   "errors": [],
   "generation_calls": 0,
   "qualified_arms": [
@@ -77,19 +77,19 @@
     "implementation/src/raven_m/multi_framework_benchmark/task_instances.py": "fd0772a3ba9b973911dfbb055b25c8dab6e34d0fa640cf6ab4d7b540595f05be",
     "implementation/src/raven_m/official_qwen_mobile/__init__.py": "0ae4dd2aa0cd7972b5f37e436a6811b2a23eac745374f967a6ee407f7e092a14",
     "implementation/src/raven_m/official_qwen_mobile/a345_contract.py": "57cd106215aeb93b5784908af8969cae524fc3c3e248c515ec90e9a6bac5d5d0",
-    "implementation/src/raven_m/official_qwen_mobile/a345_memory.py": "657e954a0c58e7438de9c1a7f99291bb092fb4b9e7ea7763d08de4ff96e74a0b",
+    "implementation/src/raven_m/official_qwen_mobile/a345_memory.py": "777ac06dd46e9592ed77731e9175eec26ac12f7aa8b8d689f4b3c1a129c9aab9",
     "implementation/src/raven_m/official_qwen_mobile/a4_donor.py": "0712e693b94023c06379771ea7ed005c39ad5886a658deab684c6f9ceb84073b",
     "implementation/src/raven_m/official_qwen_mobile/controller.py": "8de0058485bcbac74ab90e551428340d48bd5d20dc6bee70dbd55bd03f6bf6a8",
     "implementation/src/raven_m/official_qwen_mobile/progress_memory.py": "c8d77310c7abc07395b857287a6a6e54b809fae9a09287934eff2a81141e4b84",
     "implementation/src/raven_m/official_qwen_mobile/protocol.py": "7ff3662f5f5eea6e9f0d689f43bf8c1278262b7cacee8c51aaabf88b717a60e1",
     "implementation/src/raven_m/official_qwen_mobile/working_memory.py": "86589458c820a08a220c738ae3b55fdce40e7df37ade5b8b1d3c9631bea79ee3",
-    "implementation/tests/official_qwen_mobile/test_a345_memory.py": "315d6a7af38ba17f98b658fd578a52e260f32350e259cf251ec3343d7ea4f9ab",
+    "implementation/tests/official_qwen_mobile/test_a345_memory.py": "ac2b8455eba8504f87d27ba4599e950884ae929dee813a934ef75164713c5513",
     "implementation/tests/official_qwen_mobile/test_a345_runner_contract.py": "e4b7a06d612ff6655aa1181d4a84b3efbe809538279bad6b5c6e8b6bdc51792d",
     "implementation/tests/official_qwen_mobile/test_a4_donor.py": "ebeabb604198ac9fc25f6dbd401061c0efc4ee02ea78c453b176cf6420c32ae7",
     "protocols/A345_PUBLIC_MEMORY_KERNELS_PREREG_2026-08-11.md": "fc8a49d8f1c6eb948fc7b50568d5e8a5cb3864ef22c602fb0396d9e2dba6e54f",
     "protocols/A345_RUNBOOK.md": "0dfdca8f2cc5ee5161d5d15dd2e06e12d7d97fbd5f76b8d65dbf64c8641d8137",
     "protocols/A4_AWM_DONOR_ACQUISITION_RUNBOOK.md": "969088fb92fb3cc77d2562a6e958b570776a50564f0abda0ac6dbd88809e64ef"
   },
-  "source_freeze_sha256": "15e29096382b500f376699891e271c4b9b7ffbabf1c2e88a9eb5b2dad6db23b8",
+  "source_freeze_sha256": "623cec847354025265bbc16efb8cddcb1727bb80bad6e071d4b40d2c8fae6a39",
   "status": "pass"
 }

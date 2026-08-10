@@ -283,6 +283,15 @@ class FrozenWorkflowMemory:
             "retrieval": event,
         }
 
+    def observe_step(self, **kwargs: Any) -> dict[str, Any]:
+        """Expose the common memory hook without mutating the frozen bank."""
+        del kwargs
+        return {
+            "written": False,
+            "reason": "frozen_donor_bank_is_read_only",
+            "bank_updated": False,
+        }
+
     def audit_record(self) -> dict[str, Any]:
         return {
             "mechanism_id": self.mechanism_id,

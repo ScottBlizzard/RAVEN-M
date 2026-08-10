@@ -88,7 +88,13 @@ def test_a4_is_frozen_deterministic_and_does_not_inject_zero_overlap() -> None:
     assert record["write_attempt_count"] == 0
     assert record["scored_suite_updates_bank"] is False
     assert record["model_calls_added"] == 0
-    assert not hasattr(memory, "observe_step")
+    no_op = memory.observe_step(source_step=0, action_summary="tap save")
+    assert no_op == {
+        "written": False,
+        "reason": "frozen_donor_bank_is_read_only",
+        "bank_updated": False,
+    }
+    assert memory.audit_record()["write_attempt_count"] == 0
 
 
 def test_a5_uses_only_visible_pixels_and_exposes_written_edge_later() -> None:
@@ -130,4 +136,3 @@ def test_a5_rejects_missing_pixels_and_malformed_prefix() -> None:
         transition={},
     )
     assert result["written"] is False
-
