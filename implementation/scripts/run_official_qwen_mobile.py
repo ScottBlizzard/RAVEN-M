@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 from datetime import datetime
+from hashlib import sha256
 import json
 from pathlib import Path
 import random
@@ -31,20 +32,59 @@ from raven_m.multi_framework_benchmark.task_instances import (  # noqa: E402
 from raven_m.official_qwen_mobile.controller import (  # noqa: E402
     OfficialQwenMobileController,
 )
+from raven_m.official_qwen_mobile.a1_contract import (  # noqa: E402
+    A1_MANIFEST,
+    A1_PREFLIGHT_REPORT,
+    validate_preflight_report,
+)
 from raven_m.official_qwen_mobile.source_document_coverage_gate import (  # noqa: E402
     SourceDocumentCoverageGate,
 )
 from raven_m.official_qwen_mobile.protocol import (  # noqa: E402
+    A1_WORKING_MEMORY_SYSTEM_PROMPT,
     EVIDENCE_QUALIFIED_PROGRESS_SYSTEM_PROMPT,
     OFFICIAL_SYSTEM_PROMPT,
     SOURCE_DOCUMENT_COVERAGE_SYSTEM_PROMPT,
     TRANSIENT_OBSERVATION_CARRY_SYSTEM_PROMPT,
 )
+from raven_m.official_qwen_mobile.working_memory import ActionWorkingMemory  # noqa: E402
 
 
 MODEL_ID = "Qwen/Qwen3-VL-32B-Instruct"
 MODEL_REVISION = "0cfaf48183f594c314753d30a4c4974bc75f3ccb"
 BACKEND_ID = "qwen3_vl_32b_vllm_bf16_1xrtxpro6000_official_public_v1"
+
+
+def _atomic_json(path: Path, value: dict) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_suffix(path.suffix + ".tmp")
+    temporary.write_text(
+        json.dumps(value, indent=2, ensure_ascii=False, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    temporary.replace(path)
+
+
+def _sha256(path: Path) -> str:
+    return sha256(path.read_bytes()).hexdigest()
+
+
+def _episode_infrastructure_valid(summary: dict) -> bool:
+    return (
+        summary.get("error") is None
+        and summary.get("evaluator_reward") is not None
+        and not summary.get("lifecycle_errors")
+    )
+
+
+def _usage_totals(summaries: list[dict]) -> dict[str, int]:
+    totals = {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}
+    for summary in summaries:
+        for step in summary.get("steps", []):
+            usage = (step.get("model_call") or {}).get("usage") or {}
+            for key in totals:
+                totals[key] += int(usage.get(key) or 0)
+    return totals
 
 
 def main() -> None:
@@ -88,6 +128,11 @@ def main() -> None:
         ),
     )
     parser.add_argument("--run-stage", default="held_out_full")
+    parser.add_argument(
+        "--a1-working-memory",
+        action="store_true",
+        help="Enable the preregistered bounded Action-record working memory.",
+    )
     parser.add_argument(
         "--transient-observation-carry",
         action="store_true",
@@ -151,6 +196,16 @@ def main() -> None:
         type=Path,
         default=REPOSITORY_ROOT / "runs" / "official_qwen_mobile",
     )
+    parser.add_argument(
+        "--resume-suite-dir",
+        type=Path,
+        help="Resume a checkpointed A1 suite without rerunning valid completed tasks.",
+    )
+    parser.add_argument(
+        "--a1-preflight-report",
+        type=Path,
+        default=A1_PREFLIGHT_REPORT,
+    )
     args = parser.parse_args()
 
     if bool(args.task) == bool(args.manifest):
@@ -171,17 +226,32 @@ def main() -> None:
             args.evidence_qualified_progress,
             args.source_document_coverage,
             args.source_document_coverage_gate,
+            args.a1_working_memory,
         )
     )
     if diagnostic_modes > 1:
         parser.error(
             "--transient-observation-carry, --transition-attested-history, "
             "--evidence-qualified-progress, and --source-document-coverage "
-            "or --source-document-coverage-gate are mutually exclusive diagnostics"
+            "--source-document-coverage-gate, and --a1-working-memory are mutually exclusive"
         )
     held_out_eligible = not bool(args.diagnostic) and not bool(
         args.held_out_ineligible_reason
     )
+    if args.resume_suite_dir is not None and not args.a1_working_memory:
+        parser.error("--resume-suite-dir is currently restricted to A1")
+    if args.a1_working_memory:
+        if args.task or args.manifest is None:
+            parser.error("A1 requires the frozen 19-task manifest")
+        if args.step_cap is not None or args.diagnostic or args.held_out_ineligible_reason:
+            parser.error("A1 scored run forbids step caps, diagnostic mode, and ineligible labels")
+        if args.generation_seed != 3407 or args.max_tokens != 32768:
+            parser.error("A1 scored generation seed/max tokens drifted")
+        if args.observation_backend != "uiautomator":
+            parser.error("A1 scored hidden observation backend must match A0 uiautomator")
+        if _sha256(args.manifest.resolve()) != _sha256(A1_MANIFEST.resolve()):
+            parser.error("A1 manifest differs from the frozen A0 first-seed manifest")
+        validate_preflight_report(args.a1_preflight_report.resolve())
 
     task_registry = registry.TaskRegistry()
     available = task_registry.get_registry(task_registry.ANDROID_WORLD_FAMILY)
@@ -196,17 +266,69 @@ def main() -> None:
             }
             for task_name in args.task
         ]
+    if args.a1_working_memory:
+        specs = [item for item in specs if int(item["task_seed"]) == 20260806]
+        if len(specs) != 19 or len({item["task_class"] for item in specs}) != 19:
+            raise RuntimeError("A1 seed filter did not produce exactly 19 unique Hard tasks")
     unknown = sorted(
         {str(item["task_class"]) for item in specs} - set(available)
     )
     if unknown:
         raise KeyError(f"Unknown AndroidWorld tasks: {unknown}")
 
-    suite_id = f"official_qwen_{datetime.now().strftime('%Y%m%dT%H%M%S')}_{uuid4().hex[:8]}"
-    suite_dir = args.output_root / suite_id
-    suite_dir.mkdir(parents=True, exist_ok=False)
-    if args.manifest:
-        shutil.copy2(args.manifest, suite_dir / "manifest.snapshot.json")
+    run_signature = {
+        "method": "a1_action_working_memory_v1" if args.a1_working_memory else "a0",
+        "manifest_sha256": _sha256(args.manifest) if args.manifest else None,
+        "generation_seed": args.generation_seed,
+        "max_tokens": args.max_tokens,
+        "observation_backend": args.observation_backend,
+        "model_id": MODEL_ID,
+        "model_revision": MODEL_REVISION,
+        "backend_id": BACKEND_ID,
+        "temperature": 0.7,
+        "top_p": 0.8,
+        "top_k": 20,
+        "presence_penalty": 1.5,
+        "repetition_penalty": 1.0,
+    }
+    invalid_attempts: list[dict] = []
+    if args.resume_suite_dir is not None:
+        suite_dir = args.resume_suite_dir.resolve()
+        if not suite_dir.is_dir():
+            raise RuntimeError(f"resume suite does not exist: {suite_dir}")
+        frozen_signature = json.loads(
+            (suite_dir / "run_signature.json").read_text(encoding="utf-8")
+        )
+        if frozen_signature != run_signature:
+            raise RuntimeError("resume run signature differs from the frozen A1 suite")
+        checkpoint = json.loads(
+            (suite_dir / "checkpoint.json").read_text(encoding="utf-8")
+        )
+        summaries = list(checkpoint.get("valid_summaries") or [])
+        invalid_attempts = list(checkpoint.get("invalid_attempts") or [])
+        suite_id = suite_dir.name
+    else:
+        suite_id = f"official_qwen_{datetime.now().strftime('%Y%m%dT%H%M%S')}_{uuid4().hex[:8]}"
+        suite_dir = args.output_root / suite_id
+        suite_dir.mkdir(parents=True, exist_ok=False)
+        summaries: list[dict] = []
+        _atomic_json(suite_dir / "run_signature.json", run_signature)
+        if args.manifest:
+            shutil.copy2(args.manifest, suite_dir / "manifest.snapshot.json")
+
+    def checkpoint(status: str) -> None:
+        _atomic_json(
+            suite_dir / "checkpoint.json",
+            {
+                "suite_id": suite_id,
+                "status": status,
+                "updated_at": datetime.now().isoformat(),
+                "valid_summaries": summaries,
+                "invalid_attempts": invalid_attempts,
+            },
+        )
+
+    checkpoint("running")
     client = VLLMClient(
         args.url,
         model_id=MODEL_ID,
@@ -233,11 +355,15 @@ def main() -> None:
             else android_world_controller.A11yMethod.A11Y_FORWARDER_APP
         ),
     )
-    summaries: list[dict] = []
+    completed_keys = {
+        (str(item["task_name"]), int(item["seed"])) for item in summaries
+    }
     try:
         for spec in specs:
             task_name = str(spec["task_class"])
             episode_seed = int(spec["task_seed"])
+            if (task_name, episode_seed) in completed_keys:
+                continue
             if "task_params_hash" in spec and "goal_hash" in spec:
                 task = instantiate_verified(available, spec)
             else:
@@ -284,17 +410,26 @@ def main() -> None:
                     "stop_after_markor_source_exit": bool(
                         args.stop_after_markor_source_exit
                     ),
+                    "memory_intervention": (
+                        "a1_action_working_memory_v1"
+                        if args.a1_working_memory
+                        else None
+                    ),
                 },
                 system_prompt=(
-                    SOURCE_DOCUMENT_COVERAGE_SYSTEM_PROMPT
-                    if (args.source_document_coverage or args.source_document_coverage_gate)
+                    A1_WORKING_MEMORY_SYSTEM_PROMPT
+                    if args.a1_working_memory
                     else (
-                        EVIDENCE_QUALIFIED_PROGRESS_SYSTEM_PROMPT
-                        if args.evidence_qualified_progress
+                        SOURCE_DOCUMENT_COVERAGE_SYSTEM_PROMPT
+                        if (args.source_document_coverage or args.source_document_coverage_gate)
                         else (
-                            TRANSIENT_OBSERVATION_CARRY_SYSTEM_PROMPT
-                            if args.transient_observation_carry
-                            else OFFICIAL_SYSTEM_PROMPT
+                            EVIDENCE_QUALIFIED_PROGRESS_SYSTEM_PROMPT
+                            if args.evidence_qualified_progress
+                            else (
+                                TRANSIENT_OBSERVATION_CARRY_SYSTEM_PROMPT
+                                if args.transient_observation_carry
+                                else OFFICIAL_SYSTEM_PROMPT
+                            )
                         )
                     )
                 ),
@@ -321,17 +456,55 @@ def main() -> None:
                     else None
                 ),
                 stop_after_markor_source_exit=args.stop_after_markor_source_exit,
+                working_memory=(
+                    ActionWorkingMemory(max_items=6, max_chars=3000)
+                    if args.a1_working_memory
+                    else None
+                ),
             )
             episode_id = f"{task_name}_{episode_seed}_{uuid4().hex[:8]}"
-            summaries.append(
-                controller.run(
-                    env=env,
-                    task=task,
-                    episode_id=episode_id,
-                    episode_dir=suite_dir / "episodes" / episode_id,
-                    seed=episode_seed,
-                )
+            result = controller.run(
+                env=env,
+                task=task,
+                episode_id=episode_id,
+                episode_dir=suite_dir / "episodes" / episode_id,
+                seed=episode_seed,
             )
+            if not _episode_infrastructure_valid(result):
+                invalid_attempts.append(
+                    {
+                        "episode_id": episode_id,
+                        "task_name": task_name,
+                        "seed": episode_seed,
+                        "reason": "controller_or_lifecycle_invalid",
+                        "error": result.get("error"),
+                        "lifecycle_errors": result.get("lifecycle_errors"),
+                    }
+                )
+                checkpoint("stopped_invalid_episode")
+                raise RuntimeError(
+                    f"A1 stopped after infrastructure-invalid episode {episode_id}; "
+                    "resume will rerun only this task"
+                )
+            if args.a1_working_memory and not summaries:
+                memory_audit = result.get("memory_mechanism") or {}
+                if not memory_audit.get("active"):
+                    invalid_attempts.append(
+                        {
+                            "episode_id": episode_id,
+                            "task_name": task_name,
+                            "seed": episode_seed,
+                            "reason": "first_episode_memory_activation_gate_failed",
+                            "memory_mechanism": memory_audit,
+                        }
+                    )
+                    checkpoint("stopped_memory_activation_failure")
+                    raise RuntimeError(
+                        "A1 H01 produced no write-followed-by-read evidence; stopped before H02"
+                    )
+            summaries.append(result)
+            completed_keys.add((task_name, episode_seed))
+            checkpoint("running")
     finally:
         env.close()
 
@@ -348,6 +521,23 @@ def main() -> None:
         "transition_attested_history": bool(args.transition_attested_history),
         "evidence_qualified_progress": bool(args.evidence_qualified_progress),
         "request_timeout_seconds": args.request_timeout_seconds,
+        "memory_intervention": (
+            "a1_action_working_memory_v1" if args.a1_working_memory else None
+        ),
+        "memory_active_episode_count": sum(
+            int(bool((item.get("memory_mechanism") or {}).get("active")))
+            for item in summaries
+        ),
+        "token_usage": _usage_totals(summaries),
+        "memory_write_success_count": sum(
+            int((item.get("memory_mechanism") or {}).get("write_success_count") or 0)
+            for item in summaries
+        ),
+        "memory_nonempty_read_count": sum(
+            int((item.get("memory_mechanism") or {}).get("nonempty_read_count") or 0)
+            for item in summaries
+        ),
+        "invalid_attempts": invalid_attempts,
         "episode_count": len(summaries),
         "success_count": sum(int(item["success"]) for item in summaries),
         "success_rate": (
@@ -366,10 +556,8 @@ def main() -> None:
             for item in summaries
         ],
     }
-    (suite_dir / "aggregate.json").write_text(
-        json.dumps(aggregate, indent=2, ensure_ascii=False, sort_keys=True),
-        encoding="utf-8",
-    )
+    _atomic_json(suite_dir / "aggregate.json", aggregate)
+    checkpoint("complete")
     print(json.dumps({"suite_dir": str(suite_dir), **aggregate}, indent=2, ensure_ascii=False))
 
 

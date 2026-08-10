@@ -1,0 +1,23 @@
+{
+  "status": "pass",
+  "checked_without_gpu": true,
+  "generation_calls": 0,
+  "androidworld_runtime": "D:/ZJU/Summer_Camp/RAVEN-M-Research/06_local_runtime/envs/androidworld/Scripts/python.exe",
+  "manifest": "implementation/configs/androidworld_hard_v2_instances.json",
+  "filter": "task_seed == 20260806",
+  "verified_task_count": 19,
+  "verified_unique_task_classes": 19,
+  "first": {
+    "task_id": "H01",
+    "task_class": "BrowserMultiply"
+  },
+  "last": {
+    "task_id": "H19",
+    "task_class": "SportsTrackerTotalDurationForCategoryThisWeek"
+  },
+  "checks": [
+    "AndroidWorld compatibility module imported",
+    "Hard task registry loaded",
+    "all 19 frozen task parameters and goal hashes instantiated successfully"
+  ]
+}

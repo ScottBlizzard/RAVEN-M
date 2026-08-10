@@ -4,6 +4,7 @@ from hashlib import sha256
 import pytest
 
 from raven_m.official_qwen_mobile.protocol import (
+    A1_WORKING_MEMORY_SYSTEM_PROMPT,
     EVIDENCE_QUALIFIED_PROGRESS_SYSTEM_PROMPT,
     OFFICIAL_QWEN_COMMIT,
     OFFICIAL_SYSTEM_PROMPT,
@@ -35,6 +36,19 @@ def test_prompt_is_provenanced_and_uses_official_grid() -> None:
 def test_transient_carry_is_opt_in_and_does_not_mutate_official_prompt() -> None:
     assert sha256(OFFICIAL_SYSTEM_PROMPT.encode("utf-8")).hexdigest() == (
         "9d060af15f62acb31b9fb197649ec001d4096491d7fb102de929316944b3e26d"
+    )
+
+
+def test_a1_memory_is_opt_in_and_preserves_official_prompt() -> None:
+    assert sha256(OFFICIAL_SYSTEM_PROMPT.encode("utf-8")).hexdigest() == (
+        "9d060af15f62acb31b9fb197649ec001d4096491d7fb102de929316944b3e26d"
+    )
+    assert A1_WORKING_MEMORY_SYSTEM_PROMPT.startswith(OFFICIAL_SYSTEM_PROMPT)
+    assert "MEMORY[observed=<exact task-relevant facts" in (
+        A1_WORKING_MEMORY_SYSTEM_PROMPT
+    )
+    assert "current screenshot overrides stale or conflicting memory" in (
+        A1_WORKING_MEMORY_SYSTEM_PROMPT
     )
     assert TRANSIENT_OBSERVATION_CARRY_SYSTEM_PROMPT.startswith(
         OFFICIAL_SYSTEM_PROMPT

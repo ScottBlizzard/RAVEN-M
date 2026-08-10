@@ -1,0 +1,92 @@
+{
+  "a1_prompt_sha256": "653f727961a97d04176d3ddb9b1098355fe1fe8783473c2abc74967798f4a5b8",
+  "errors": [],
+  "experiment_id": "A1_ACTION_WORKING_MEMORY_QWEN3VL32B_AW_HARD_S20260806_V1",
+  "generation_calls": 0,
+  "manifest_sha256": "c1d718e9d380e443d12d2c29ab2182ae801a3befc53881b864cd830f2ad0440a",
+  "manifest_task_order": [
+    "BrowserMultiply",
+    "ExpenseAddMultipleFromGallery",
+    "ExpenseAddMultipleFromMarkor",
+    "ExpenseDeleteMultiple2",
+    "MarkorCreateNoteAndSms",
+    "MarkorMergeNotes",
+    "MarkorTranscribeVideo",
+    "OsmAndMarker",
+    "OsmAndTrack",
+    "RecipeAddMultipleRecipesFromImage",
+    "RecipeAddMultipleRecipesFromMarkor",
+    "RecipeAddMultipleRecipesFromMarkor2",
+    "RecipeDeleteMultipleRecipesWithConstraint",
+    "RetroSavePlaylist",
+    "SaveCopyOfReceiptTaskEval",
+    "SimpleCalendarAddOneEvent",
+    "SportsTrackerActivitiesOnDate",
+    "SportsTrackerTotalDistanceForCategoryOverInterval",
+    "SportsTrackerTotalDurationForCategoryThisWeek"
+  ],
+  "memory_canary": {
+    "empty_read": {
+      "mechanism_id": "a1_action_working_memory_v1",
+      "nonempty": false,
+      "rendered_chars": 0,
+      "rendered_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "retrieved_count": 0,
+      "retrieved_ids": []
+    },
+    "nonempty_read": {
+      "mechanism_id": "a1_action_working_memory_v1",
+      "nonempty": true,
+      "rendered_chars": 224,
+      "rendered_sha256": "1313be331413c542f348f86fdcd2171fee835dba6802a8e98fcd462c2182728b",
+      "retrieved_count": 1,
+      "retrieved_ids": [
+        "a1m_000_c0086957f5ff"
+      ]
+    },
+    "present_in_next_prompt": true,
+    "value": "A1-CANARY-4721",
+    "write": {
+      "record": {
+        "memory_id": "a1m_000_c0086957f5ff",
+        "payload": "observed=A1-CANARY-4721; verified=none; pending=continue",
+        "source_call_id": "preflight-call",
+        "source_response_sha256": "preflight-response",
+        "source_screenshot_sha256": "preflight-screen",
+        "source_step": 0
+      },
+      "written": true
+    }
+  },
+  "official_prompt_sha256": "9d060af15f62acb31b9fb197649ec001d4096491d7fb102de929316944b3e26d",
+  "source_freeze": {
+    "implementation/configs/a1_action_working_memory_hard_seed20260806.json": "bb7acb22e6fe98b4b3907b812d1a0f369fa864ecf7a500f4592764062b2b6932",
+    "implementation/configs/androidworld_hard_v2_instances.json": "c1d718e9d380e443d12d2c29ab2182ae801a3befc53881b864cd830f2ad0440a",
+    "implementation/runtime/androidworld_compat.py": "76bd4cae773543986275c9b6e14bc5eef47b25a2af9e08fb8c69930e25b13865",
+    "implementation/scripts/preflight_a1_working_memory.py": "4d685dc019f115e1f69246aaa9607b47205c84cd53a68702185002151edacb0a",
+    "implementation/scripts/run_a1_working_memory.ps1": "143d39e372bc4f2651ed674d49cdf7311d16ee26f84083a659e0010a4d206a2d",
+    "implementation/scripts/run_official_qwen_mobile.py": "31ea0ef7cd89752b35c665f8bfbd5eb8450b16ae56a8379699bd068539215c6e",
+    "implementation/scripts/start_official_qwen_server.sh": "5cf90d8d0779ec9a5656854957c7b880695011fe78f180de0ae9060f4de4fbee",
+    "implementation/src/raven_m/env/androidworld_adapter.py": "ad4ecbee9430326ca7380334c49372911a1c6b1c217ee12bb3714d2fb1219c33",
+    "implementation/src/raven_m/models/vllm_client.py": "b3c613db89cf690ed4c8b56158d7d341fb948c4ce553d4ef269d7fb854f5c3d2",
+    "implementation/src/raven_m/multi_framework_benchmark/__init__.py": "de3ef8d87d3132d407616d94674800a047e881e5f98cf97d58a4809ead9356e9",
+    "implementation/src/raven_m/multi_framework_benchmark/task_instances.py": "fd0772a3ba9b973911dfbb055b25c8dab6e34d0fa640cf6ab4d7b540595f05be",
+    "implementation/src/raven_m/official_qwen_mobile/a1_contract.py": "f0b3daa50267eeecca907b5044999a489e782b5bad8e5548a66270f882902739",
+    "implementation/src/raven_m/official_qwen_mobile/controller.py": "3c229fc752ff2577d6aeb99e5765a32b7603ee7d6295e3b114ac50d418580904",
+    "implementation/src/raven_m/official_qwen_mobile/protocol.py": "6b68422c0b1a09b4de9cc161c8d2c30d2cc59bd229272a4157a66d1ab39c0fe2",
+    "implementation/src/raven_m/official_qwen_mobile/working_memory.py": "61af2d6cc0650c87ba8b3609f9ccac65613d5680591f1ee473f86711ae6cfd8f",
+    "implementation/tests/models/test_vllm_client.py": "c7fcfb38726be9822753da1612dfa514a2df3e505affbe69b7870e70d417d1b4",
+    "implementation/tests/official_qwen_mobile/test_official_qwen_controller.py": "1af702f98d045bd77ea61ae4effa5a35478631db38926c5b3d6ae30823c42291",
+    "implementation/tests/official_qwen_mobile/test_protocol.py": "88fbe9ef5def4b551a3ef2d49f6130814f2d56bf9e7ad65a5497b17948fdc0c0",
+    "implementation/tests/official_qwen_mobile/test_working_memory.py": "435117457c9cd70be411841fa488ccf480936c6997d1bdffbaebe7b184d570ac",
+    "protocols/A1_ACTION_WORKING_MEMORY_PREREG_2026-08-10.md": "aae8cdbced0bb1783977ecee018ee7224570212274684cb4fc92d2c09735c3f7",
+    "protocols/A1_ACTION_WORKING_MEMORY_RUNBOOK.md": "6ef21421744c8c7fff523ae4ef0d72e6088c65794287122258f37c7eadd88450"
+  },
+  "status": "pass",
+  "task_seed": 20260806,
+  "tests": {
+    "returncode": 0,
+    "stderr": "",
+    "stdout": ".................................                                        [100%]\n============================== warnings summary ===============================\nC:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\requests\\__init__.py:113\n  C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\requests\\__init__.py:113: RequestsDependencyWarning: urllib3 (2.3.0) or chardet (7.0.1)/charset_normalizer (3.4.4) doesn't match a supported version!\n    warnings.warn(\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n"
+  }
+}

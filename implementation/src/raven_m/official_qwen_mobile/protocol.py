@@ -69,6 +69,27 @@ TRANSIENT_OBSERVATION_CARRY_SYSTEM_PROMPT = (
 )
 
 
+# A1 is the first formal memory intervention on top of the official baseline.
+# It reuses the official Action prose channel but turns it into an explicit,
+# bounded, auditable within-episode working-memory record.
+A1_WORKING_MEMORY_SUFFIX = r"""
+
+# A1 explicit working memory
+
+Begin every Action sentence, including answer or terminate steps, with exactly:
+MEMORY[observed=<exact task-relevant facts visible now or none>; verified=<task requirements directly confirmed by the current screen or none>; pending=<most important unmet requirements>] | <one concise UI imperative>
+
+Rules:
+- Keep the complete MEMORY[...] payload under 450 characters.
+- Copy exact names, numbers, dates, labels, and other values that may disappear after the next action.
+- Mark a requirement verified only when the current screenshot directly proves it; an attempted click or page change is not proof.
+- Do not invent missing facts. Use none when the current screen provides no support.
+- On later steps, consult the explicit working-memory block in the user message. The current screenshot overrides stale or conflicting memory.
+"""
+
+A1_WORKING_MEMORY_SYSTEM_PROMPT = OFFICIAL_SYSTEM_PROMPT + A1_WORKING_MEMORY_SUFFIX
+
+
 # Frozen post-hoc mechanism diagnostic.  A visible transition is evidence only
 # for the exact object role and postcondition that the screenshot supports; it
 # is not automatically evidence of task progress.

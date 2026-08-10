@@ -1,10 +1,8 @@
-"""Protocol-v0.2 multi-framework benchmark infrastructure.
+"""Shared benchmark helpers present in this evidence-qualified source slice.
 
-This package is intentionally controller-agnostic.  It normalizes, audits and
-budgets controller output; it must never improve or repair a controller policy.
+The PF01/A1 source package deliberately vendors only ``task_instances`` from
+the larger research repository.  Importing this package must therefore not
+eagerly import modules that are absent from the frozen slice.
 """
 
-from .arm_registry import ARM_REGISTRY, ArmSpec
-from .runner import CellLimits, StageAuthorization
-
-__all__ = ["ARM_REGISTRY", "ArmSpec", "CellLimits", "StageAuthorization"]
+__all__: list[str] = []

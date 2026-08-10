@@ -1,0 +1,27 @@
+{
+  "status": "pass",
+  "checked_without_gpu": true,
+  "generation_calls": 0,
+  "remote_host": "connect.westb.seetacloud.com:22252",
+  "launcher": {
+    "remote_path": "/root/autodl-tmp/RAVEN-M/05_project/scripts/start_official_qwen_server.sh",
+    "local_sha256": "5cf90d8d0779ec9a5656854957c7b880695011fe78f180de0ae9060f4de4fbee",
+    "remote_sha256": "5cf90d8d0779ec9a5656854957c7b880695011fe78f180de0ae9060f4de4fbee",
+    "identical": true
+  },
+  "model": {
+    "path": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope",
+    "sha256_manifest_sha256": "18e0909c7d993853d6d0f62443461a74009754f90db026a1723cab80121c7872",
+    "revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb"
+  },
+  "qwen_recipe": {
+    "repository_path": "/root/autodl-tmp/Qwen3-VL",
+    "commit": "96588727e44c78b25ba03ea03b8e12f7e64fd0da"
+  },
+  "runtime": {
+    "vllm": "0.26.0",
+    "torch": "2.11.0+cu130",
+    "transformers": "5.14.1"
+  },
+  "note": "A1 reuses the byte-identical A0 server launcher and model. No remote A1 code or server change is required before GPU start."
+}

@@ -1,0 +1,60 @@
+{
+  "experiment_id": "A1_ACTION_WORKING_MEMORY_QWEN3VL32B_AW_HARD_S20260806_V1",
+  "comparison": {
+    "control": "A0 official Qwen3-VL mobile baseline, seed 20260806",
+    "intervention": "A1 bounded Action-record working memory",
+    "single_causal_change": "write task-relevant observation/progress/pending payloads in Action prose and inject a bounded deterministic memory block on later steps"
+  },
+  "model": {
+    "id": "Qwen/Qwen3-VL-32B-Instruct",
+    "revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+    "backend": "qwen3_vl_32b_vllm_bf16_1xrtxpro6000_official_public_v1",
+    "generation_seed": 3407,
+    "temperature": 0.7,
+    "top_p": 0.8,
+    "top_k": 20,
+    "presence_penalty": 1.5,
+    "repetition_penalty": 1.0,
+    "max_tokens": 32768
+  },
+  "benchmark": {
+    "name": "AndroidWorld",
+    "split": "Hard",
+    "manifest": "implementation/configs/androidworld_hard_v2_instances.json",
+    "manifest_filter": "task_seed == 20260806",
+    "task_count": 19,
+    "task_seed": 20260806,
+    "action_budget": "native_max_steps from the frozen A0 manifest",
+    "task_order": "identical to the frozen A0 first-seed manifest"
+  },
+  "agent": {
+    "base_controller": "OfficialQwenMobileController",
+    "system_prompt": "official prompt plus A1_WORKING_MEMORY_SUFFIX",
+    "image_policy": "current screenshot only",
+    "action_protocol": "official Qwen mobile_use",
+    "extra_model_calls": 0,
+    "memory": {
+      "mechanism_id": "a1_action_working_memory_v1",
+      "scope": "current episode only",
+      "writer": "executor Action sentence",
+      "source": "model-visible current screenshot and task prompt only",
+      "max_items": 6,
+      "max_chars": 3000,
+      "retrieval": "deterministic recency order with exact-duplicate refresh",
+      "hidden_ui_access": false,
+      "evaluator_access": false,
+      "cross_episode_reuse": false
+    }
+  },
+  "qualification": {
+    "before_gpu": [
+      "official prompt hash unchanged",
+      "A1 prompt is opt-in",
+      "canary memory write appears in the next captured model request",
+      "A0 path remains byte-for-byte prompt compatible when A1 is disabled",
+      "official controller/protocol/action tests pass"
+    ],
+    "first_scored_episode_gate": "after H01, at least one successful write and one later non-empty read must be logged; otherwise stop before H02",
+    "scientific_validity": "controller/infrastructure/lifecycle errors invalidate that task and stop the suite; model parse, planning, action, or reward failures remain scientific failures"
+  }
+}

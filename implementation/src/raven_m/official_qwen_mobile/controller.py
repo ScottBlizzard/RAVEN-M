@@ -27,6 +27,7 @@ from .protocol import (
     parse_official_response,
 )
 from .source_document_coverage_gate import SourceDocumentCoverageGate
+from .working_memory import ActionWorkingMemory, append_working_memory
 
 
 def _utc_now() -> str:
@@ -184,6 +185,7 @@ class OfficialQwenMobileController:
         history_policy: str = "official_text_action_summaries_only",
         source_document_coverage_gate: SourceDocumentCoverageGate | None = None,
         stop_after_markor_source_exit: bool = False,
+        working_memory: ActionWorkingMemory | None = None,
     ) -> None:
         self.client = client
         self.max_steps = max(1, int(max_steps))
@@ -194,6 +196,7 @@ class OfficialQwenMobileController:
         self.history_policy = str(history_policy)
         self.source_document_coverage_gate = source_document_coverage_gate
         self.stop_after_markor_source_exit = bool(stop_after_markor_source_exit)
+        self.working_memory = working_memory
 
     def _committed_history_summary(
         self,
@@ -308,6 +311,7 @@ class OfficialQwenMobileController:
         claimed_status: str | None = None
         evaluator_reward: float | None = None
         error: dict[str, Any] | None = None
+        lifecycle_errors: list[dict[str, Any]] = []
 
         log(
             {
@@ -331,6 +335,11 @@ class OfficialQwenMobileController:
                 "image_policy": "current_screenshot_only",
                 "swipe_duration_ms": DEFAULT_SWIPE_DURATION_MS,
                 "run_metadata": self.run_metadata,
+                "memory_mechanism": (
+                    self.working_memory.audit_record()
+                    if self.working_memory is not None
+                    else None
+                ),
             }
         )
         try:
@@ -364,7 +373,14 @@ class OfficialQwenMobileController:
                     label=f"step_{step_index:03d}_before",
                 )
                 screenshot = episode_dir / str(before["screenshot"])
-                user_prompt = build_user_prompt(effective_goal, history)
+                memory_read: dict[str, Any] | None = None
+                rendered_memory = ""
+                if self.working_memory is not None:
+                    rendered_memory, memory_read = self.working_memory.read()
+                user_prompt = append_working_memory(
+                    build_user_prompt(effective_goal, history),
+                    rendered_memory,
+                )
                 call = self.client.generate(
                     image_path=screenshot,
                     system_prompt=self.system_prompt,
@@ -385,6 +401,7 @@ class OfficialQwenMobileController:
                     "before_screenshot_sha256": before["screenshot_sha256"],
                     "user_prompt": user_prompt,
                     "history_before": list(history),
+                    "memory_read": memory_read,
                     "model_call": call.audit_record(),
                     "executed": False,
                     "layers": {
@@ -554,6 +571,14 @@ class OfficialQwenMobileController:
                 }
                 history.append(committed_summary)
                 record["history_after"] = list(history)
+                if self.working_memory is not None:
+                    record["memory_write"] = self.working_memory.write(
+                        source_step=step_index,
+                        action_summary=decision.action_summary,
+                        source_call_id=call.call_id,
+                        source_response_sha256=call.response_sha256,
+                        source_screenshot_sha256=str(before["screenshot_sha256"]),
+                    )
                 steps.append(record)
                 log(record)
                 if (
@@ -605,6 +630,9 @@ class OfficialQwenMobileController:
                     task.tear_down(env)
                     log({"event": "task_torn_down"})
                 except Exception as exc:
+                    lifecycle_errors.append(
+                        {"stage": "tear_down", "type": type(exc).__name__, "message": str(exc)}
+                    )
                     log(
                         {
                             "event": "teardown_error",
@@ -615,6 +643,9 @@ class OfficialQwenMobileController:
                 env.reset(go_home=True)
                 log({"event": "post_episode_reset"})
             except Exception as exc:
+                lifecycle_errors.append(
+                    {"stage": "post_episode_reset", "type": type(exc).__name__, "message": str(exc)}
+                )
                 log(
                     {
                         "event": "reset_error",
@@ -639,6 +670,7 @@ class OfficialQwenMobileController:
             "executed_action_count": sum(int(item["executed"]) for item in steps),
             "model_call_count": len(steps),
             "error": error,
+            "lifecycle_errors": lifecycle_errors,
             "layers": {
                 "L0_runtime": {
                     "episode_error": error,
@@ -684,6 +716,11 @@ class OfficialQwenMobileController:
             "source_document_coverage_gate": (
                 self.source_document_coverage_gate.audit_record()
                 if self.source_document_coverage_gate is not None
+                else None
+            ),
+            "memory_mechanism": (
+                self.working_memory.audit_record()
+                if self.working_memory is not None
                 else None
             ),
         }
