@@ -8,6 +8,7 @@ import pytest
 
 from raven_m.official_qwen_mobile.a345_contract import (
     A345_GATE_TASKS,
+    A345_REQUIRED_GATE_TASKS,
     A345_TERMINAL_CHECKPOINT_STATUSES,
     MODEL_ID,
     MODEL_MANIFEST_SHA256,
@@ -33,7 +34,7 @@ def test_three_prompts_preserve_the_frozen_official_protocol() -> None:
     assert A5_VISUAL_GRAPH_SYSTEM_PROMPT.startswith(OFFICIAL_SYSTEM_PROMPT)
 
 
-def test_gate_is_exactly_five_a1_successes_and_manifest_seed_is_fixed() -> None:
+def test_gate_preserves_all_four_a0_successes_and_observes_a1_gain() -> None:
     ledger = json.loads(
         (REPOSITORY_ROOT / "evidence/a345/A0_A1_A2_FROZEN_REFERENCE_LEDGER.json").read_text(
             encoding="utf-8"
@@ -46,6 +47,10 @@ def test_gate_is_exactly_five_a1_successes_and_manifest_seed_is_fixed() -> None:
         row["task_name"] for row in ledger["tasks"] if bool(row["A1"]["success"])
     }
     assert successes == set(A345_GATE_TASKS)
+    a0_successes = {
+        row["task_name"] for row in ledger["tasks"] if bool(row["A0"]["success"])
+    }
+    assert a0_successes == set(A345_REQUIRED_GATE_TASKS)
 
 
 def test_activation_gate_requires_a_later_read_for_online_memories() -> None:

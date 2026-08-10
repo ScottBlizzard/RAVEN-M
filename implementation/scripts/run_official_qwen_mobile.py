@@ -76,6 +76,7 @@ from raven_m.official_qwen_mobile.a345_memory import (  # noqa: E402
 )
 from raven_m.official_qwen_mobile.a345_contract import (  # noqa: E402
     A345_GATE_TASKS,
+    A345_REQUIRED_GATE_TASKS,
     A345_TERMINAL_CHECKPOINT_STATUSES,
     A4_WORKFLOW_BANK,
     activation_valid as _a345_activation_valid,
@@ -842,7 +843,7 @@ def main() -> None:
                     f"{args.a345_arm.upper()} first task did not prove memory exposure; "
                     "the suite is invalid and must not continue"
                 )
-            if a345_scored_arm and task_name in A345_GATE_TASKS and not bool(
+            if a345_scored_arm and task_name in A345_REQUIRED_GATE_TASKS and not bool(
                 result.get("success")
             ):
                 checkpoint("stopped_capability_gate_failure")

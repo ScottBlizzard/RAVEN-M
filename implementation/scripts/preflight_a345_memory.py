@@ -28,6 +28,7 @@ sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from raven_m.official_qwen_mobile.a345_contract import (  # noqa: E402
     A345_GATE_TASKS,
+    A345_REQUIRED_GATE_TASKS,
     A345_PREFLIGHT_REPORT,
     A345_REFERENCE_LEDGER,
     A4_WORKFLOW_BANK,
@@ -159,7 +160,7 @@ def _check_manifest_and_ledger(errors: list[str], checks: dict[str, Any]) -> set
     }
     if success_sets["A1"] != set(A345_GATE_TASKS):
         errors.append("a1_success_set_not_exact_gate")
-    if len(success_sets["A0"]) != 4 or success_sets["A2"]:
+    if success_sets["A0"] != set(A345_REQUIRED_GATE_TASKS) or success_sets["A2"]:
         errors.append("frozen_reference_success_counts_drift")
     checks["manifest_sha256"] = file_sha256(MANIFEST)
     checks["reference_ledger_sha256"] = file_sha256(A345_REFERENCE_LEDGER)

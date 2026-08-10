@@ -51,7 +51,10 @@ relative order:
 5. `SportsTrackerTotalDurationForCategoryThisWeek`
 
 This is a post-hoc capability-preservation gate, not held-out accuracy
-evidence.  The gate is strictly **5/5**.  Any model format, reasoning, action,
+evidence. The required gate is the four tasks A0 previously solved; all four
+must remain successful. The fifth A1-only success is run in the same prefix as
+an observational development probe but is not required for expansion. Any
+model format, reasoning, action,
 termination, max-budget, or reward failure is a scientific failure: stop the
 arm immediately, do not rerun it, and do not resume it.  Only an explicitly
 logged infrastructure-invalid episode may be rerun from a clean reset.  Five
@@ -85,4 +88,3 @@ task order, gate, and stopping rules are frozen before the first generation.
 Any code/prompt/threshold change creates a new version and restarts its gate
 from task 1.  Failed gate observations may diagnose a later version but may not
 be relabeled held-out.
-

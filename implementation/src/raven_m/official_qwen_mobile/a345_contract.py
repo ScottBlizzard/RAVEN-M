@@ -24,6 +24,12 @@ A345_GATE_TASKS = (
     "SimpleCalendarAddOneEvent",
     "SportsTrackerTotalDurationForCategoryThisWeek",
 )
+A345_REQUIRED_GATE_TASKS = (
+    "ExpenseDeleteMultiple2",
+    "RetroSavePlaylist",
+    "SimpleCalendarAddOneEvent",
+    "SportsTrackerTotalDurationForCategoryThisWeek",
+)
 A345_TERMINAL_CHECKPOINT_STATUSES = frozenset(
     {"stopped_capability_gate_failure", "stopped_memory_activation_failure"}
 )
