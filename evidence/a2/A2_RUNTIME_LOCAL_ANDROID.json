@@ -7,9 +7,9 @@
   "androidworld_source_tree_sha256": "03fb2cb384ff6d70e27f3ed5647536b9f0cf98b2b14d20e3a888f0035b4e3e8b",
   "androidworld_worktree_status": "M android_world/env/actuation.py\n M android_world/env/actuation_test.py\n M android_world/env/android_world_controller.py\n M android_world/env/env_launcher.py\n M android_world/task_evals/single/retro_music.py\n M android_world/task_evals/single/retro_music_test.py\n?? android_world/task_evals/information_retrieval/proto/state_pb2.py\n?? android_world/task_evals/information_retrieval/proto/state_pb2_grpc.py\n?? android_world/task_evals/information_retrieval/proto/task_pb2.py\n?? android_world/task_evals/information_retrieval/proto/task_pb2_grpc.py",
   "disk": {
-    "free": 67405295616,
+    "free": 67405086720,
     "total": 629824024576,
-    "used": 562418728960
+    "used": 562418937856
   },
   "emulator_serial": "EMULATOR36X6X11X0",
   "generation_calls": 0,

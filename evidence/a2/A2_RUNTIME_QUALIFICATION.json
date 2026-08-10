@@ -9,9 +9,9 @@
     "androidworld_source_tree_sha256": "03fb2cb384ff6d70e27f3ed5647536b9f0cf98b2b14d20e3a888f0035b4e3e8b",
     "androidworld_worktree_status": "M android_world/env/actuation.py\n M android_world/env/actuation_test.py\n M android_world/env/android_world_controller.py\n M android_world/env/env_launcher.py\n M android_world/task_evals/single/retro_music.py\n M android_world/task_evals/single/retro_music_test.py\n?? android_world/task_evals/information_retrieval/proto/state_pb2.py\n?? android_world/task_evals/information_retrieval/proto/state_pb2_grpc.py\n?? android_world/task_evals/information_retrieval/proto/task_pb2.py\n?? android_world/task_evals/information_retrieval/proto/task_pb2_grpc.py",
     "disk": {
-      "free": 67405295616,
+      "free": 67405086720,
       "total": 629824024576,
-      "used": 562418728960
+      "used": 562418937856
     },
     "emulator_serial": "EMULATOR36X6X11X0",
     "generation_calls": 0,
@@ -193,12 +193,12 @@
     "task_manifest_realpath": "D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\implementation\\configs\\androidworld_hard_v2_instances.json",
     "task_manifest_sha256": "c1d718e9d380e443d12d2c29ab2182ae801a3befc53881b864cd830f2ad0440a"
   },
-  "local_android_report_sha256": "49ff7a7dc6941eb6bd2171e5bfc52c55eefa9f1395c8b700327e5758488d1b89",
+  "local_android_report_sha256": "5a3e4ae802832904008d5d53f0fbecac30ff07888019229e53efd30c0e9f8ea8",
   "remote_model": {
     "disk": {
-      "free": 122566103040,
+      "free": 122565513216,
       "total": 214748364800,
-      "used": 92182261760
+      "used": 92182851584
     },
     "generation_calls": 0,
     "gpu_expected": false,
@@ -373,7 +373,7 @@
       "merges.txt"
     ]
   },
-  "remote_model_report_sha256": "44cb67aefbe92075a627523c9641a631d573aa4cf278e052463e302e3c94a33f",
+  "remote_model_report_sha256": "42145c27762e6f2a4192fe9b1499fcc3d37380f336a223492b05a702da4c676a",
   "schema": "a2_runtime_qualification_combined_v1",
   "status": "pass"
 }

@@ -1,8 +1,8 @@
 {
   "disk": {
-    "free": 122566103040,
+    "free": 122565513216,
     "total": 214748364800,
-    "used": 92182261760
+    "used": 92182851584
   },
   "generation_calls": 0,
   "gpu_expected": false,
