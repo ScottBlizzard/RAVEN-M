@@ -7,7 +7,7 @@
     },
     "frozen_dependency_sha256": {
       "implementation/configs/androidworld_hard_v2_instances.json": "c1d718e9d380e443d12d2c29ab2182ae801a3befc53881b864cd830f2ad0440a",
-      "implementation/scripts/run_official_qwen_mobile.py": "a46bc04e9acd88e828669171f1a5ed271241ac5edb9f9a1dc223bf2d23b60773",
+      "implementation/scripts/run_official_qwen_mobile.py": "025dbd27e133edb924aadd65c875495bf20a7b814efdd6fa5237a36b2e7d0148",
       "implementation/src/raven_m/env/androidworld_adapter.py": "ad4ecbee9430326ca7380334c49372911a1c6b1c217ee12bb3714d2fb1219c33",
       "implementation/src/raven_m/models/vllm_client.py": "7e590c410850909b46fa49e9bc267c23478f60c5f560ba53a7901d095c96c367",
       "implementation/src/raven_m/multi_framework_benchmark/task_instances.py": "fd0772a3ba9b973911dfbb055b25c8dab6e34d0fa640cf6ab4d7b540595f05be",
@@ -22,7 +22,7 @@
       "stdout": "................                                                         [100%]\n"
     }
   },
-  "created_at": "2026-08-10T19:56:04.775349+00:00",
+  "created_at": "2026-08-11T01:38:46.617427+00:00",
   "errors": [],
   "generation_calls": 0,
   "qualification_scope": "repository_static_zero_generation_ready_for_live_receipt",
@@ -35,7 +35,7 @@
     "implementation/scripts/preflight_a678.py": "2c1a142caef2ac0519886efe13737b4baacc156891037fb3896578c7c9a9e88c",
     "implementation/scripts/qualify_a678_live_server.py": "a96028917f4d32a0e3b3cc92a8cc915a607c47a8f8548129bb556b122e34e104",
     "implementation/scripts/run_a678_arm.py": "da699d069fb86afa229e319d24b349c6c897472a67e1e7190a465d98e5ad423b",
-    "implementation/scripts/run_official_qwen_mobile.py": "a46bc04e9acd88e828669171f1a5ed271241ac5edb9f9a1dc223bf2d23b60773",
+    "implementation/scripts/run_official_qwen_mobile.py": "025dbd27e133edb924aadd65c875495bf20a7b814efdd6fa5237a36b2e7d0148",
     "implementation/src/raven_m/__init__.py": "83c1229d32f6e1b873cb8447f7d3e0926b6b69304743f5111cec61642f37a561",
     "implementation/src/raven_m/env/__init__.py": "ebd568a4e585b3ad8342d6374b61a3accb1b29432fe1dd0050bf14997b2a6afc",
     "implementation/src/raven_m/env/androidworld_adapter.py": "ad4ecbee9430326ca7380334c49372911a1c6b1c217ee12bb3714d2fb1219c33",
@@ -53,6 +53,6 @@
     "implementation/tests/official_qwen_mobile/test_a678_memory.py": "3156dde8406de5798567c4533f6335814fb49333dd7e47ce35e32d90950a1fb6",
     "protocols/A678_INTEGRATION_PLAN.md": "e75b7c95bc141ac867dd794ee5f1ae485af2f14447a9a433c0e00d78c0189e65"
   },
-  "source_freeze_sha256": "3bb709980371724836c4333ed3494d505b7a62cbe6d241776fd8345dc18c2cab",
+  "source_freeze_sha256": "a1bc067e03aa98f00801a4b59b97550bcbfa9e3259e32e0f6773eb043e0dc970",
   "status": "pass"
 }

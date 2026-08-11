@@ -646,7 +646,10 @@ def main() -> None:
         frozen_signature = json.loads(
             (suite_dir / "run_signature.json").read_text(encoding="utf-8")
         )
-        if frozen_signature != run_signature:
+        # JSON serialisation turns tuple-valued expected keys into lists.  Compare
+        # their canonical JSON digests so a byte-equivalent frozen signature can
+        # resume without being rejected solely for that in-memory type change.
+        if _json_digest(frozen_signature) != run_signature_sha256:
             raise RuntimeError("resume run signature differs from the frozen scored-memory suite")
         if args.a2_verified_progress_memory:
             summaries, valid_entries, invalid_attempts, orphan_episode_directories = load_a2_checkpoint(
