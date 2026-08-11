@@ -1,0 +1,14 @@
+{
+  "base_deployed_commit": "25f4a58",
+  "generation_calls": 0,
+  "gpu_device_present": false,
+  "launcher_dry_run_sha256": "55873e8df5d59446939ccb2da741e8580f5186480b0135cceba4732422d1cfb4",
+  "launcher_dry_run_status": "dry_run_only_no_live_process",
+  "next_required_artifact": "new_live_A678_LIVE_SERVER_RECEIPT_after_GPU_start",
+  "preflight_sha256": "3aebf13489b4c6065792548d9214a342d9c667151157c012b97cf37a6caf56ac",
+  "remote_repo": "/root/autodl-tmp/RAVEN-M-A7-GATED",
+  "schema": "a7_gated_remote_no_gpu_readiness_v1",
+  "source_freeze_sha256": "92f484aea80375ad7c1e42b77516d726c414899f1fd005209c34c8e811dc66c3",
+  "status": "ready_for_gpu_start_not_generation_qualified_yet",
+  "vllm_process_started_by_dry_run": false
+}

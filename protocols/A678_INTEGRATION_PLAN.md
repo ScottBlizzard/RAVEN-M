@@ -144,3 +144,28 @@ arbitrary caller interpreter. First inspect the exact dry-run command, then add
 python implementation/scripts/run_a678_arm.py --arm a6 --adb-path adb `
   --launch-receipt evidence/a678/A678_LIVE_SERVER_RECEIPT.json
 ```
+
+## 8. Post-result successors
+
+After A3-A7 results were inspected, A8-v1 remained frozen and unrun. Two new
+prospective arms were added without relabeling prior designs:
+
+- `a8v2`: failure-aware exact-screen action-family and closed-route evidence;
+- `a9`: one-shot query-reentry and exact navigation-recurrence canaries.
+
+Both are controller-authored, add zero model calls, preserve the exact official
+system prompt, and neither guards nor overrides actions. Unlike the original
+A6-A8 schedule, they use a blocking four-task A0 preservation gate. Only 4/4
+success releases the remaining 15 tasks. Their detailed causal boundaries are
+frozen in the A8-v2 and A9 protocols and the A3-A7 forensics report.
+
+## 9. A8-v2/A9 four-task diagnostic replication
+
+The initial A8-v2 and A9 prospective suites failed their blocking gates and
+remain terminal. A separately labelled replication may rerun all four gate
+tasks from a fresh suite with reward fail-fast disabled. This schedule is
+diagnostic only, never repairs or overwrites the initial gate, and never
+releases the remaining fifteen tasks. Use
+`--four-task-diagnostic-replication` through `run_a678_arm.py`; the full claim
+boundary is frozen in
+`protocols/A89_FOUR_TASK_DIAGNOSTIC_REPLICATION_AMENDMENT_2026-08-12.md`.

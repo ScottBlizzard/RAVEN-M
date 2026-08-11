@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the frozen A6/A7/A8 runner command; execute only with --execute."""
+"""Build a frozen A6-A9 runner command; execute only with --execute."""
 
 from __future__ import annotations
 
@@ -16,15 +16,35 @@ ANDROIDWORLD_PYTHON = (
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--arm", required=True, choices=("a6", "a7", "a8"))
+    parser.add_argument(
+        "--arm", required=True, choices=("a6", "a7", "a8", "a8v2", "a9")
+    )
     parser.add_argument("--adb-path", required=True)
     parser.add_argument("--launch-receipt", type=Path, required=True)
     parser.add_argument("--url", default="http://127.0.0.1:18000")
     parser.add_argument("--console-port", type=int, default=5554)
     parser.add_argument("--grpc-port", type=int, default=8554)
     parser.add_argument("--resume-suite-dir", type=Path)
+    parser.add_argument("--a7-continuation-plan", type=Path)
+    parser.add_argument("--a7-parent-suite-dir", type=Path)
+    parser.add_argument(
+        "--four-task-diagnostic-replication",
+        action="store_true",
+        help="Fresh non-fail-fast A8-v2/A9 diagnostic over the four A0-success tasks.",
+    )
     parser.add_argument("--execute", action="store_true")
     args = parser.parse_args()
+    if bool(args.a7_continuation_plan) != bool(args.a7_parent_suite_dir):
+        parser.error(
+            "--a7-continuation-plan and --a7-parent-suite-dir must be supplied together"
+        )
+    if args.a7_continuation_plan is not None and args.arm != "a7":
+        parser.error("A7 continuation arguments require --arm a7")
+    if args.four_task_diagnostic_replication:
+        if args.arm not in {"a8v2", "a9"}:
+            parser.error("four-task diagnostic replication requires a8v2 or a9")
+        if args.resume_suite_dir is not None or args.a7_continuation_plan is not None:
+            parser.error("four-task diagnostic replication requires a fresh suite")
     if not ANDROIDWORLD_PYTHON.is_file():
         raise RuntimeError(
             f"frozen AndroidWorld runtime Python is missing: {ANDROIDWORLD_PYTHON}"
@@ -44,6 +64,22 @@ def main() -> int:
     ]
     if args.resume_suite_dir is not None:
         command.extend(["--resume-suite-dir", str(args.resume_suite_dir.resolve())])
+    if args.a7_continuation_plan is not None:
+        command.extend(
+            [
+                "--a7-continuation-plan",
+                str(args.a7_continuation_plan.resolve()),
+                "--a7-parent-suite-dir",
+                str(args.a7_parent_suite_dir.resolve()),
+            ]
+        )
+    if args.four_task_diagnostic_replication:
+        command.extend(
+            [
+                "--diagnostic",
+                "--a89-four-task-diagnostic-replication",
+            ]
+        )
     print(subprocess.list2cmdline(command))
     if not args.execute:
         print(

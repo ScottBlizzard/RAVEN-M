@@ -1,0 +1,75 @@
+{
+  "schema": "a678_memory_arm_v1",
+  "experiment_id": "A9_SPARSE_RECURRENCE_CANARY_QWEN3VL32B_AW_HARD_S20260806_V1",
+  "arm": "a9",
+  "method": "controller-authored sparse query-reentry and exact navigation-cycle canaries on A0",
+  "mechanism_id": "a9_sparse_query_and_navigation_recurrence_canary_v1",
+  "model": {
+    "id": "Qwen/Qwen3-VL-32B-Instruct",
+    "revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+    "generation_seed": 3407,
+    "temperature": 0.7,
+    "top_p": 0.8,
+    "top_k": 20,
+    "presence_penalty": 1.5,
+    "repetition_penalty": 1.0,
+    "max_tokens": 32768
+  },
+  "benchmark": {
+    "name": "AndroidWorld",
+    "split": "Hard",
+    "manifest": "implementation/configs/androidworld_hard_v2_instances.json",
+    "task_seed": 20260806,
+    "task_count": 19,
+    "order": "four-task A0 preservation gate, then frozen manifest remainder",
+    "action_budget": "unchanged native_max_steps"
+  },
+  "intervention": {
+    "writer": "controller deterministic",
+    "response_prefix_required": false,
+    "system_prompt": "exact OFFICIAL_SYSTEM_PROMPT",
+    "normal_read": "empty",
+    "activation_canaries": {
+      "query_reentry": "same normalized non-trivial type_text twice within 12 steps",
+      "stationary_screen": "same exact model-visible screen across three observations",
+      "navigation_cycle": "exact screen sequence of period 2 or 3 repeated twice"
+    },
+    "retrieval": "each recurrence signature injected once only",
+    "query_window_steps": 12,
+    "max_query_keys": 8,
+    "max_occurrences_per_query": 4,
+    "max_trace_screens": 13,
+    "max_cycle_period": 3,
+    "pending_capacity": 2,
+    "event_log_capacity": 16,
+    "max_chars": 280,
+    "extra_model_calls": 0,
+    "guard": false,
+    "action_override": false,
+    "evaluator_input": false,
+    "hidden_ui_input": false,
+    "near_visual_match": false,
+    "completion_claim": false
+  },
+  "stopping": {
+    "full_19_required": true,
+    "reward_fail_fast": true,
+    "A0_preservation_tasks_blocking": [
+      "ExpenseDeleteMultiple2",
+      "RetroSavePlaylist",
+      "SimpleCalendarAddOneEvent",
+      "SportsTrackerTotalDurationForCategoryThisWeek"
+    ],
+    "capability_gate_tasks": [
+      "ExpenseDeleteMultiple2",
+      "RetroSavePlaylist",
+      "SimpleCalendarAddOneEvent",
+      "SportsTrackerTotalDurationForCategoryThisWeek"
+    ],
+    "capability_gate_required_reward": "4/4",
+    "fail_fast": true,
+    "full_19_only_after_gate": true,
+    "scientific_failure_rerun": false,
+    "infrastructure_invalid_resume_same_task": true
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "schema": "a7_gated_continuation_v1",
+  "experiment_id": "A7_GOAL_ITEM_LEDGER_QWEN3VL32B_AW_HARD_S20260806_V1_GATED_CONTINUATION",
+  "parent_experiment_id": "A7_GOAL_ITEM_LEDGER_QWEN3VL32B_AW_HARD_S20260806_V1",
+  "arm": "a7",
+  "mechanism_id": "a7_deterministic_active_goal_item_status_ledger_v1",
+  "mechanism_changed": false,
+  "model_or_prompt_changed": false,
+  "parent_valid_episode_count": 7,
+  "continuation": {
+    "retain_parent_valid_episodes": true,
+    "rerun_parent_scientific_outcomes": false,
+    "missing_gate_order": [
+      "RetroSavePlaylist",
+      "SimpleCalendarAddOneEvent",
+      "SportsTrackerTotalDurationForCategoryThisWeek"
+    ],
+    "parent_gate_success": "ExpenseDeleteMultiple2",
+    "required_gate_successes": 4,
+    "scientific_gate_failure_fail_fast": true,
+    "infrastructure_invalid_retry_same_task_only": true,
+    "remaining_tasks_released_only_after_gate": true,
+    "remaining_unique_task_count_after_gate": 9
+  },
+  "claim_boundary": "post_7_protocol_amendment_not_pristine_single_preregistered_suite"
+}

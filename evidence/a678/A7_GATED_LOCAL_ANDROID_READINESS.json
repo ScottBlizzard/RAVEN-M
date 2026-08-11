@@ -1,0 +1,26 @@
+{
+  "adb_serial": "emulator-5554",
+  "boot_completed": true,
+  "checked_at": "2026-08-11T13:27:59.9711435+08:00",
+  "current_focus": "com.google.android.apps.nexuslauncher/.NexusLauncherActivity",
+  "generation_calls": 0,
+  "local_port_18000_connections": 0,
+  "local_port_18000_listeners": 0,
+  "schema": "a7_gated_local_android_readiness_v1",
+  "snapshot_count": 11,
+  "snapshots": [
+    "code.name.monkey.retromusic",
+    "com.android.chrome",
+    "com.arduia.expense",
+    "com.flauschcode.broccoli",
+    "com.simplemobiletools.calendar.pro",
+    "com.simplemobiletools.gallery.pro",
+    "com.simplemobiletools.smsmessenger",
+    "de.dennisguse.opentracks",
+    "net.gsantner.markor",
+    "net.osmand",
+    "org.videolan.vlc"
+  ],
+  "status": "ready_for_a7_gated_continuation_after_gpu_server_qualification",
+  "wakefulness": "Awake"
+}

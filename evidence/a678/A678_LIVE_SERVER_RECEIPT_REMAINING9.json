@@ -1,8 +1,8 @@
 {
-  "a678_preflight_sha256": "3aebf13489b4c6065792548d9214a342d9c667151157c012b97cf37a6caf56ac",
+  "a678_preflight_sha256": "44a637cb30426d6def53ddfdfb0142953accef7228e08c9353990f04ff547e03",
   "generation_calls": 0,
   "host": "127.0.0.1",
-  "launch_intent_sha256": "410c5eddd4df2e8e2a7753be08b73d96a8af9c971d0d9785e2f5feb4ec5f089e",
+  "launch_intent_sha256": "aaa8791611bae4bc553073ebeec24f51fff3d8731e18a0deda3e9e00ea9eb1a4",
   "model_manifest_sha256": "18e0909c7d993853d6d0f62443461a74009754f90db026a1723cab80121c7872",
   "model_realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope",
   "packages": {
@@ -10,7 +10,7 @@
     "transformers": "5.14.1",
     "vllm": "0.26.0"
   },
-  "pid": 1706,
+  "pid": 5718,
   "port": 18000,
   "process_cmdline": [
     "/root/autodl-tmp/envs/qwen_vllm/bin/python",

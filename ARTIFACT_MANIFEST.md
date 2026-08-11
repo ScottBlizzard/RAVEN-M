@@ -1,5 +1,15 @@
 # A0–A2-v1r1 Audit Artifact Manifest
 
+## 2026-08-12 current entry points
+
+- `HANDOFF_2026-08-12.md` — current verified status and next execution.
+- `GPT_PRO_MEMORY_MECHANISM_DESIGN_REQUEST_2026-08-12.md` — constrained design
+  assignment for the next standalone memory arm.
+- `evidence/a678/A89_INITIAL_GATE_RESULTS_2026-08-12.json` — compact immutable
+  summary of the first A8-v2/A9 prospective gates.
+- `protocols/A89_FOUR_TASK_DIAGNOSTIC_REPLICATION_AMENDMENT_2026-08-12.md` —
+  fresh all-four diagnostic schedule that does not overwrite the first gates.
+
 Independent review basis: `GPT_PRO_A2_AUDIT_REQUEST.md` and the returned `A2_PRO_AUDIT.md` supplied outside this repository.
 
 ## Assignment and paired evidence

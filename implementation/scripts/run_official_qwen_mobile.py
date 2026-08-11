@@ -90,6 +90,7 @@ from raven_m.official_qwen_mobile.a678_memory import (  # noqa: E402
 )
 from raven_m.official_qwen_mobile.a678_contract import (  # noqa: E402
     A0_PRESERVATION_TASKS,
+    A7_CONTINUATION_CONFIG,
     A678_CONFIGS,
     A678_MECHANISMS,
     exact_completion_errors as a678_completion_errors,
@@ -97,11 +98,41 @@ from raven_m.official_qwen_mobile.a678_contract import (  # noqa: E402
     validate_launch_receipt as validate_a678_launch_receipt,
     validate_preflight_report as validate_a678_preflight_report,
 )
+from raven_m.official_qwen_mobile.a7_continuation import (  # noqa: E402
+    CONTINUATION_EXPERIMENT_ID as A7_CONTINUATION_EXPERIMENT_ID,
+    canonicalize_summaries as canonicalize_a7_summaries,
+    gate_report as a7_gate_report,
+    validate_plan as validate_a7_continuation_plan,
+)
+from raven_m.official_qwen_mobile.a8_failure_aware_revisit import (  # noqa: E402
+    FailureAwareExactRevisitMemory,
+)
+from raven_m.official_qwen_mobile.a9_recurrence_memory import (  # noqa: E402
+    SparseRecurrenceCanaryMemory,
+)
+from raven_m.official_qwen_mobile.a89_diagnostic import (  # noqa: E402
+    CLAIM_BOUNDARY as A89_DIAGNOSTIC_CLAIM_BOUNDARY,
+    EXPERIMENT_IDS as A89_DIAGNOSTIC_EXPERIMENT_IDS,
+    completion_errors as a89_diagnostic_completion_errors,
+    report as a89_diagnostic_report,
+    select_four_task_specs as select_a89_diagnostic_specs,
+)
 
 
 MODEL_ID = "Qwen/Qwen3-VL-32B-Instruct"
 MODEL_REVISION = "0cfaf48183f594c314753d30a4c4974bc75f3ccb"
 BACKEND_ID = "qwen3_vl_32b_vllm_bf16_1xrtxpro6000_official_public_v1"
+A7_REMAINING_AFTER_GATE_TASKS = (
+    "OsmAndMarker",
+    "OsmAndTrack",
+    "RecipeAddMultipleRecipesFromImage",
+    "RecipeAddMultipleRecipesFromMarkor",
+    "RecipeAddMultipleRecipesFromMarkor2",
+    "RecipeDeleteMultipleRecipesWithConstraint",
+    "SaveCopyOfReceiptTaskEval",
+    "SportsTrackerActivitiesOnDate",
+    "SportsTrackerTotalDistanceForCategoryOverInterval",
+)
 def _atomic_json(path: Path, value: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(path.suffix + ".tmp")
@@ -215,8 +246,8 @@ def main() -> None:
     )
     parser.add_argument(
         "--a678-arm",
-        choices=("a6", "a7", "a8"),
-        help="Run one frozen controller-authored A6/A7/A8 memory arm.",
+        choices=("a6", "a7", "a8", "a8v2", "a9"),
+        help="Run one frozen controller-authored A6-A9 memory arm.",
     )
     parser.add_argument(
         "--a678-preflight-report",
@@ -227,6 +258,41 @@ def main() -> None:
         "--a678-launch-receipt",
         type=Path,
         help="Live server receipt bound to the final A678 zero-generation preflight.",
+    )
+    parser.add_argument(
+        "--a7-continuation-plan",
+        type=Path,
+        help="Zero-generation plan for the gated A7 continuation campaign.",
+    )
+    parser.add_argument(
+        "--a7-parent-suite-dir",
+        type=Path,
+        help="Immutable seven-episode parent A7 suite referenced by the continuation plan.",
+    )
+    parser.add_argument(
+        "--a7-post-gate-diagnostic",
+        action="store_true",
+        help=(
+            "Run only SportsTrackerTotalDurationForCategoryThisWeek as an explicitly "
+            "ineligible A7 diagnostic after a terminal preservation-gate failure."
+        ),
+    )
+    parser.add_argument(
+        "--a7-post-gate-remaining-diagnostic",
+        action="store_true",
+        help=(
+            "Run the nine tasks remaining after the A7 preservation gate as an "
+            "explicitly ineligible completion diagnostic."
+        ),
+    )
+    parser.add_argument(
+        "--a89-four-task-diagnostic-replication",
+        action="store_true",
+        help=(
+            "Rerun all four A0-success tasks for A8-v2 or A9 without reward "
+            "fail-fast. Diagnostic only: never repairs the original gate or "
+            "releases the remaining fifteen tasks."
+        ),
     )
     parser.add_argument(
         "--a345-preflight-report",
@@ -334,6 +400,46 @@ def main() -> None:
     )
     args = parser.parse_args()
 
+    if bool(args.a7_continuation_plan) != bool(args.a7_parent_suite_dir):
+        parser.error(
+            "--a7-continuation-plan and --a7-parent-suite-dir must be supplied together"
+        )
+    a7_gated_continuation = bool(args.a7_continuation_plan)
+    if a7_gated_continuation and args.a678_arm != "a7":
+        parser.error("A7 gated continuation requires --a678-arm a7")
+    if args.a7_post_gate_diagnostic and args.a7_post_gate_remaining_diagnostic:
+        parser.error("select only one A7 post-gate diagnostic schedule")
+    a7_sports_diagnostic = bool(args.a7_post_gate_diagnostic)
+    a7_remaining_diagnostic = bool(args.a7_post_gate_remaining_diagnostic)
+    a7_post_gate_diagnostic = a7_sports_diagnostic or a7_remaining_diagnostic
+    if a7_post_gate_diagnostic:
+        if args.a678_arm != "a7" or not args.diagnostic:
+            parser.error(
+                "--a7-post-gate-diagnostic requires --a678-arm a7 and --diagnostic"
+            )
+        if a7_gated_continuation or args.task or args.manifest is None:
+            parser.error(
+                "A7 post-gate diagnostic requires only the frozen manifest, not a task or continuation plan"
+            )
+    a89_four_task_diagnostic = bool(args.a89_four_task_diagnostic_replication)
+    if a89_four_task_diagnostic:
+        if args.a678_arm not in {"a8v2", "a9"} or not args.diagnostic:
+            parser.error(
+                "--a89-four-task-diagnostic-replication requires "
+                "--a678-arm a8v2/a9 and --diagnostic"
+            )
+        if (
+            a7_gated_continuation
+            or a7_post_gate_diagnostic
+            or args.task
+            or args.manifest is None
+            or args.resume_suite_dir is not None
+        ):
+            parser.error(
+                "A8/A9 four-task diagnostic requires a fresh suite using only "
+                "the frozen manifest"
+            )
+
     if bool(args.task) == bool(args.manifest):
         parser.error("provide exactly one of --task or --manifest")
     if args.step_cap is not None and args.step_cap < 1:
@@ -369,7 +475,12 @@ def main() -> None:
         args.held_out_ineligible_reason
     )
     a345_scored_arm = bool(args.a345_arm)
-    a678_scored_arm = bool(args.a678_arm)
+    a678_memory_arm = bool(args.a678_arm)
+    a678_post_gate_diagnostic = a7_post_gate_diagnostic or a89_four_task_diagnostic
+    a678_scored_arm = a678_memory_arm and not a678_post_gate_diagnostic
+    prospective_gate_arm = (
+        args.a678_arm in {"a8v2", "a9"} and not a89_four_task_diagnostic
+    )
     held_out_ineligible_reason = args.held_out_ineligible_reason
     if a678_scored_arm:
         # This seed and its A0/A1/A2/A3-A5 outcomes have already been inspected.
@@ -382,7 +493,11 @@ def main() -> None:
         or a345_scored_arm
         or a678_scored_arm
     )
-    if args.resume_suite_dir is not None and not scored_memory_arm:
+    if (
+        args.resume_suite_dir is not None
+        and not scored_memory_arm
+        and not a678_post_gate_diagnostic
+    ):
         parser.error("--resume-suite-dir is restricted to scored memory arms")
     if scored_memory_arm:
         if args.task or args.manifest is None:
@@ -457,6 +572,35 @@ def main() -> None:
             if args.a2_launch_receipt is None or not args.a2_launch_receipt.is_file():
                 parser.error("scored A2 requires --a2-launch-receipt from the live frozen server")
 
+    if a678_post_gate_diagnostic:
+        if _sha256(args.manifest.resolve()) != _sha256(A1_MANIFEST.resolve()):
+            parser.error("A678 diagnostic manifest differs from the frozen manifest")
+        if args.generation_seed != 3407 or args.max_tokens != 32768:
+            parser.error("A678 diagnostic generation parameters drifted")
+        if args.observation_backend != "uiautomator":
+            parser.error("A678 diagnostic must use uiautomator")
+        if not args.a678_preflight_report.is_file():
+            parser.error(f"A6-A9 preflight is missing: {args.a678_preflight_report}")
+        try:
+            validate_a678_preflight_report(args.a678_preflight_report.resolve())
+        except Exception as exc:
+            parser.error(str(exc))
+        if args.a678_launch_receipt is None or not args.a678_launch_receipt.is_file():
+            parser.error("A678 diagnostic requires a live launch receipt")
+        try:
+            validate_a678_launch_receipt(
+                args.a678_launch_receipt.resolve(),
+                preflight_path=args.a678_preflight_report.resolve(),
+            )
+        except Exception as exc:
+            parser.error(str(exc))
+        held_out_eligible = False
+        held_out_ineligible_reason = (
+            "post_terminal_A7_gate_failure_requested_diagnostic_only"
+            if a7_post_gate_diagnostic
+            else "A8_A9_four_task_diagnostic_replication_not_gate_repair"
+        )
+
     task_registry = registry.TaskRegistry()
     available = task_registry.get_registry(task_registry.ANDROID_WORLD_FAMILY)
     if args.manifest:
@@ -470,6 +614,25 @@ def main() -> None:
             }
             for task_name in args.task
         ]
+    if a7_post_gate_diagnostic:
+        selected_names = (
+            {"SportsTrackerTotalDurationForCategoryThisWeek"}
+            if a7_sports_diagnostic
+            else set(A7_REMAINING_AFTER_GATE_TASKS)
+        )
+        specs = [
+            item
+            for item in specs
+            if str(item["task_class"]) in selected_names
+            and int(item["task_seed"]) == 20260806
+        ]
+        expected_diagnostic_count = 1 if a7_sports_diagnostic else 9
+        if len(specs) != expected_diagnostic_count:
+            raise RuntimeError(
+                "A7 post-gate diagnostic resolved an unexpected frozen task count"
+            )
+    elif a89_four_task_diagnostic:
+        specs = select_a89_diagnostic_specs(specs)
     if scored_memory_arm:
         specs = [item for item in specs if int(item["task_seed"]) == 20260806]
         if len(specs) != 19 or len({item["task_class"] for item in specs}) != 19:
@@ -481,14 +644,48 @@ def main() -> None:
                 raise RuntimeError(f"A3/A4/A5 gate tasks missing from manifest: {missing_gate}")
             remaining = [item for item in specs if str(item["task_class"]) not in A345_GATE_TASKS]
             specs = [by_name[name] for name in A345_GATE_TASKS] + remaining
+        elif prospective_gate_arm:
+            by_name = {str(item["task_class"]): item for item in specs}
+            missing_gate = sorted(set(A0_PRESERVATION_TASKS) - set(by_name))
+            if missing_gate:
+                raise RuntimeError(
+                    f"{str(args.a678_arm).upper()} gate tasks missing from manifest: {missing_gate}"
+                )
+            remaining = [
+                item
+                for item in specs
+                if str(item["task_class"]) not in A0_PRESERVATION_TASKS
+            ]
+            specs = [by_name[name] for name in A0_PRESERVATION_TASKS] + remaining
+    canonical_specs = list(specs)
     unknown = sorted(
         {str(item["task_class"]) for item in specs} - set(available)
     )
     if unknown:
         raise KeyError(f"Unknown AndroidWorld tasks: {unknown}")
 
-    expected_keys = [(str(item["task_class"]), int(item["task_seed"])) for item in specs]
+    expected_keys = [
+        (str(item["task_class"]), int(item["task_seed"])) for item in canonical_specs
+    ]
     expected_keys_sha256 = _json_digest(expected_keys)
+    a7_continuation_plan: dict | None = None
+    a7_parent_snapshot: dict | None = None
+    if a7_gated_continuation:
+        a7_continuation_plan, a7_parent_snapshot = validate_a7_continuation_plan(
+            plan_path=args.a7_continuation_plan.resolve(),
+            parent_suite_dir=args.a7_parent_suite_dir.resolve(),
+            canonical_specs=canonical_specs,
+            manifest_path=args.manifest.resolve(),
+        )
+        by_key = {
+            (str(item["task_class"]), int(item["task_seed"])): item
+            for item in canonical_specs
+        }
+        scheduled_keys = [
+            (str(item[0]), int(item[1]))
+            for item in a7_continuation_plan["execution_schedule"]
+        ]
+        specs = [by_key[key] for key in scheduled_keys]
     a2_preflight = (
         json.loads(args.a2_preflight_report.read_text(encoding="utf-8"))
         if args.a2_verified_progress_memory else None
@@ -518,23 +715,39 @@ def main() -> None:
 
     run_signature = {
         "experiment_id": (
-            "A2_VERIFIED_PROGRESS_MEMORY_QWEN3VL32B_AW_HARD_S20260806_V1R1"
+            (
+                "A7_POST_GATE_SPORTS_DIAGNOSTIC_QWEN3VL32B_AW_HARD_S20260806_V1"
+                if a7_sports_diagnostic
+                else "A7_POST_GATE_REMAINING9_DIAGNOSTIC_QWEN3VL32B_AW_HARD_S20260806_V1"
+            )
+            if a7_post_gate_diagnostic
+            else A89_DIAGNOSTIC_EXPERIMENT_IDS[str(args.a678_arm)]
+            if a89_four_task_diagnostic
+            else "A2_VERIFIED_PROGRESS_MEMORY_QWEN3VL32B_AW_HARD_S20260806_V1R1"
             if args.a2_verified_progress_memory
             else (
                 f"{args.a345_arm.upper()}_PUBLIC_MEMORY_KERNEL_QWEN3VL32B_AW_HARD_S20260806_V1"
                 if a345_scored_arm
                 else (
-                    {
-                        "a6": "A6_SHORT_EPISODIC_QWEN3VL32B_AW_HARD_S20260806_V1",
-                        "a7": "A7_GOAL_ITEM_LEDGER_QWEN3VL32B_AW_HARD_S20260806_V1",
-                        "a8": "A8_EXACT_REVISIT_CACHE_QWEN3VL32B_AW_HARD_S20260806_V1",
-                    }[args.a678_arm]
+                    (
+                        A7_CONTINUATION_EXPERIMENT_ID
+                        if a7_gated_continuation
+                        else {
+                            "a6": "A6_SHORT_EPISODIC_QWEN3VL32B_AW_HARD_S20260806_V1",
+                            "a7": "A7_GOAL_ITEM_LEDGER_QWEN3VL32B_AW_HARD_S20260806_V1",
+                            "a8": "A8_EXACT_REVISIT_CACHE_QWEN3VL32B_AW_HARD_S20260806_V1",
+                            "a8v2": "A8_FAILURE_AWARE_EXACT_REVISIT_QWEN3VL32B_AW_HARD_S20260806_V2",
+                            "a9": "A9_SPARSE_RECURRENCE_CANARY_QWEN3VL32B_AW_HARD_S20260806_V1",
+                        }[args.a678_arm]
+                    )
                     if a678_scored_arm else None
                 )
             )
         ),
         "method": (
-            "a2_verified_progress_memory_v1r1"
+            A678_MECHANISMS[str(args.a678_arm)]
+            if a678_post_gate_diagnostic
+            else "a2_verified_progress_memory_v1r1"
             if args.a2_verified_progress_memory
             else (
                 {
@@ -585,18 +798,108 @@ def main() -> None:
             }
         )
     if a678_scored_arm:
-        config_path = REPOSITORY_ROOT / A678_CONFIGS[str(args.a678_arm)]
+        config_path = REPOSITORY_ROOT / (
+            A7_CONTINUATION_CONFIG
+            if a7_gated_continuation
+            else A678_CONFIGS[str(args.a678_arm)]
+        )
         run_signature.update(
             {
                 "a678_arm": args.a678_arm,
                 "a678_config_sha256": _sha256(config_path),
                 "a678_preflight_sha256": _sha256(args.a678_preflight_report),
                 "a678_launch_receipt_sha256": _sha256(args.a678_launch_receipt),
-                "task_order": "original_frozen_manifest_order_seed20260806",
-                "reward_fail_fast": False,
+                "task_order": (
+                    "retain_parent_7_then_missing_A0_gate_then_remaining_9"
+                    if a7_gated_continuation
+                    else (
+                        "blocking_A0_4_task_gate_then_frozen_manifest_remainder"
+                        if prospective_gate_arm
+                        else "original_frozen_manifest_order_seed20260806"
+                    )
+                ),
+                "reward_fail_fast": bool(
+                    a7_gated_continuation or prospective_gate_arm
+                ),
                 "scientific_failure_rerun": False,
                 "A0_preservation_tasks": list(A0_PRESERVATION_TASKS),
+                "A0_preservation_required_for_continuation": bool(
+                    a7_gated_continuation or prospective_gate_arm
+                ),
+                "controller_authored_memory": True,
+                "response_prefix_required": False,
+                "official_system_prompt_unchanged": True,
+                "extra_model_calls": 0,
+                "guard": False,
+                "action_override": False,
+            }
+        )
+        if a7_gated_continuation:
+            run_signature.update(
+                {
+                    "protocol_amendment": (
+                        "campaign_schedule_only_memory_mechanism_unchanged"
+                    ),
+                    "a7_continuation_plan_sha256": _sha256(
+                        args.a7_continuation_plan
+                    ),
+                    "a7_parent_run_signature_sha256": a7_parent_snapshot[
+                        "parent_run_signature_sha256"
+                    ],
+                    "a7_parent_checkpoint_sha256": a7_parent_snapshot[
+                        "parent_checkpoint_sha256"
+                    ],
+                    "imported_parent_valid_episode_count": a7_parent_snapshot[
+                        "parent_valid_episode_count"
+                    ],
+                    "execution_schedule": a7_continuation_plan[
+                        "execution_schedule"
+                    ],
+                    "capability_gate_fail_fast": True,
+                    "claim_boundary": a7_continuation_plan["claim_boundary"],
+                }
+            )
+    if a7_post_gate_diagnostic:
+        run_signature.update(
+            {
+                "a678_arm": "a7",
+                "a678_config_sha256": _sha256(
+                    REPOSITORY_ROOT / A678_CONFIGS["a7"]
+                ),
+                "a678_preflight_sha256": _sha256(args.a678_preflight_report),
+                "a678_launch_receipt_sha256": _sha256(args.a678_launch_receipt),
+                "task_order": (
+                    "single_post_terminal_gate_diagnostic"
+                    if a7_sports_diagnostic
+                    else "remaining_9_after_terminal_gate_diagnostic"
+                ),
+                "claim_boundary": "diagnostic_only_not_gate_repair_not_scored_continuation",
+                "controller_authored_memory": True,
+                "response_prefix_required": False,
+                "official_system_prompt_unchanged": True,
+                "extra_model_calls": 0,
+                "guard": False,
+                "action_override": False,
+            }
+        )
+    if a89_four_task_diagnostic:
+        run_signature.update(
+            {
+                "a678_arm": args.a678_arm,
+                "a678_config_sha256": _sha256(
+                    REPOSITORY_ROOT / A678_CONFIGS[str(args.a678_arm)]
+                ),
+                "a678_preflight_sha256": _sha256(args.a678_preflight_report),
+                "a678_launch_receipt_sha256": _sha256(args.a678_launch_receipt),
+                "task_order": "A0_four_task_gate_order_seed20260806",
+                "reward_fail_fast": False,
+                "scientific_failure_rerun": True,
+                "replication_index": 1,
+                "A0_preservation_tasks": list(A0_PRESERVATION_TASKS),
                 "A0_preservation_required_for_continuation": False,
+                "remaining_15_released": False,
+                "claim_boundary": A89_DIAGNOSTIC_CLAIM_BOUNDARY,
+                "original_terminal_gate_suites_preserved": True,
                 "controller_authored_memory": True,
                 "response_prefix_required": False,
                 "official_system_prompt_unchanged": True,
@@ -663,6 +966,20 @@ def main() -> None:
             )
             if a345_scored_arm and checkpoint.get("status") in A345_TERMINAL_CHECKPOINT_STATUSES:
                 raise RuntimeError("A3/A4/A5 scientific or activation gate failure is terminal and cannot be resumed")
+            if (
+                a7_gated_continuation
+                and checkpoint.get("status") == "stopped_capability_gate_failure"
+            ):
+                raise RuntimeError(
+                    "A7 capability-preservation failure is terminal and cannot be resumed"
+                )
+            if (
+                prospective_gate_arm
+                and checkpoint.get("status") == "stopped_capability_gate_failure"
+            ):
+                raise RuntimeError(
+                    f"{str(args.a678_arm).upper()} capability-preservation failure is terminal and cannot be resumed"
+                )
             summaries = list(checkpoint.get("valid_summaries") or [])
             invalid_attempts = list(checkpoint.get("invalid_attempts") or [])
         suite_id = suite_dir.name
@@ -670,8 +987,27 @@ def main() -> None:
         suite_id = f"official_qwen_{datetime.now().strftime('%Y%m%dT%H%M%S')}_{uuid4().hex[:8]}"
         suite_dir = args.output_root / suite_id
         suite_dir.mkdir(parents=True, exist_ok=False)
-        summaries: list[dict] = []
+        summaries: list[dict] = (
+            list(a7_parent_snapshot["summaries"])
+            if a7_gated_continuation
+            else []
+        )
+        if a7_gated_continuation:
+            invalid_attempts = list(a7_parent_snapshot["invalid_attempts"])
         _atomic_json(suite_dir / "run_signature.json", run_signature)
+        if a7_gated_continuation:
+            _atomic_json(
+                suite_dir / "imported_parent_evidence.json",
+                {
+                    key: value
+                    for key, value in a7_parent_snapshot.items()
+                    if key not in {"summaries", "invalid_attempts"}
+                },
+            )
+            shutil.copy2(
+                args.a7_continuation_plan,
+                suite_dir / "A7_GATED_CONTINUATION_PLAN.snapshot.json",
+            )
         if args.manifest:
             shutil.copy2(args.manifest, suite_dir / "manifest.snapshot.json")
 
@@ -694,6 +1030,27 @@ def main() -> None:
                 "valid_summaries": summaries,
                 "invalid_attempts": invalid_attempts,
             }
+            if a7_gated_continuation:
+                payload.update(
+                    {
+                        "protocol_amendment": (
+                            "campaign_schedule_only_memory_mechanism_unchanged"
+                        ),
+                        "imported_parent_valid_episode_count": a7_parent_snapshot[
+                            "parent_valid_episode_count"
+                        ],
+                        "capability_gate": a7_gate_report(summaries),
+                    }
+                )
+            elif prospective_gate_arm:
+                payload["capability_gate"] = a7_gate_report(summaries)
+            elif a89_four_task_diagnostic:
+                payload.update(
+                    {
+                        "claim_boundary": A89_DIAGNOSTIC_CLAIM_BOUNDARY,
+                        "four_task_diagnostic": a89_diagnostic_report(summaries),
+                    }
+                )
         _atomic_json(
             suite_dir / "checkpoint.json",
             payload,
@@ -713,7 +1070,7 @@ def main() -> None:
         seed=args.generation_seed,
         timeout_seconds=args.request_timeout_seconds,
         retry_transient_errors=not (
-            args.a2_verified_progress_memory or a345_scored_arm or a678_scored_arm
+            args.a2_verified_progress_memory or a345_scored_arm or a678_memory_arm
         ),
     )
     health = client.health()
@@ -740,6 +1097,16 @@ def main() -> None:
             episode_seed = int(spec["task_seed"])
             if (task_name, episode_seed) in completed_keys:
                 continue
+            if (
+                (a7_gated_continuation or prospective_gate_arm)
+                and task_name not in A0_PRESERVATION_TASKS
+            ):
+                gate = a7_gate_report(summaries)
+                if gate["status"] != "passed":
+                    checkpoint("stopped_capability_gate_incomplete")
+                    raise RuntimeError(
+                        f"{str(args.a678_arm).upper()} remaining tasks are locked until the A0 preservation gate is 4/4"
+                    )
             if "task_params_hash" in spec and "goal_hash" in spec:
                 task = instantiate_verified(available, spec)
             else:
@@ -763,6 +1130,25 @@ def main() -> None:
             elif args.a678_arm == "a8":
                 a678_memory = ExactVisualRevisitActionOutcomeCache(
                     max_entries=12, max_matches=2, max_chars=260
+                )
+            elif args.a678_arm == "a8v2":
+                a678_memory = FailureAwareExactRevisitMemory(
+                    max_states=12,
+                    max_actions_per_state=4,
+                    max_transitions=24,
+                    max_rendered_actions=3,
+                    max_chars=360,
+                )
+            elif args.a678_arm == "a9":
+                a678_memory = SparseRecurrenceCanaryMemory(
+                    max_chars=280,
+                    query_window_steps=12,
+                    max_query_keys=8,
+                    max_occurrences_per_query=4,
+                    max_trace_screens=13,
+                    max_cycle_period=3,
+                    pending_capacity=2,
+                    event_log_capacity=16,
                 )
             controller = OfficialQwenMobileController(
                 client,
@@ -800,7 +1186,7 @@ def main() -> None:
                         if args.a2_verified_progress_memory
                         else (
                             _sha256(args.a678_launch_receipt)
-                            if a678_scored_arm else None
+                            if a678_memory_arm else None
                         )
                     ),
                     "stop_after_markor_source_exit": bool(
@@ -811,7 +1197,7 @@ def main() -> None:
                         if args.a2_verified_progress_memory
                         else (
                             run_signature["method"]
-                            if (a345_scored_arm or a678_scored_arm)
+                            if (a345_scored_arm or a678_memory_arm)
                             else ("a1_action_working_memory_v1" if args.a1_working_memory else None)
                         )
                     ),
@@ -869,7 +1255,7 @@ def main() -> None:
                 stop_after_markor_source_exit=args.stop_after_markor_source_exit,
                 working_memory=(
                     a678_memory
-                    if a678_scored_arm
+                    if a678_memory_arm
                     else (
                     VerifiedProgressMemory(max_chars=1200)
                     if args.a2_verified_progress_memory
@@ -964,6 +1350,16 @@ def main() -> None:
                     f"{args.a345_arm.upper()} capability-preservation gate failed on "
                     f"{task_name}; scientific failures are terminal and cannot be rerun"
                 )
+            if (
+                (a7_gated_continuation or prospective_gate_arm)
+                and task_name in A0_PRESERVATION_TASKS
+                and not bool(result.get("success"))
+            ):
+                checkpoint("stopped_capability_gate_failure")
+                raise RuntimeError(
+                    f"{str(args.a678_arm).upper()} capability-preservation gate failed on "
+                    f"{task_name}; scientific failures are terminal and cannot be rerun"
+                )
             checkpoint("running")
     except BaseException as exc:
         active_exception = exc
@@ -1029,6 +1425,14 @@ def main() -> None:
                 f"{args.a345_arm.upper()} cannot aggregate: exact 19-task validity closure failed"
             )
     if a678_scored_arm:
+        if a7_gated_continuation:
+            summaries = canonicalize_a7_summaries(summaries, expected_keys)
+            gate = a7_gate_report(summaries)
+            if gate["status"] != "passed":
+                checkpoint("stopped_capability_gate_incomplete")
+                raise RuntimeError(
+                    "A7 cannot aggregate before the blocking 4/4 preservation gate passes"
+                )
         closure_errors = a678_completion_errors(
             summaries=summaries,
             expected_keys=expected_keys,
@@ -1039,6 +1443,19 @@ def main() -> None:
             checkpoint("stopped_incomplete_or_invalid")
             raise RuntimeError(
                 f"{args.a678_arm.upper()} cannot aggregate: {closure_errors}"
+            )
+    if a89_four_task_diagnostic:
+        closure_errors = a89_diagnostic_completion_errors(
+            summaries=summaries,
+            expected_keys=expected_keys,
+            invalid_attempts=invalid_attempts,
+            lifecycle_errors=suite_lifecycle_errors,
+        )
+        if closure_errors:
+            checkpoint("stopped_incomplete_or_invalid")
+            raise RuntimeError(
+                f"{str(args.a678_arm).upper()} four-task diagnostic cannot "
+                f"aggregate: {closure_errors}"
             )
 
     aggregate = {
@@ -1059,7 +1476,7 @@ def main() -> None:
             if args.a2_verified_progress_memory
             else (
                 run_signature["method"]
-                if (a345_scored_arm or a678_scored_arm)
+                if (a345_scored_arm or a678_memory_arm)
                 else ("a1_action_working_memory_v1" if args.a1_working_memory else None)
             )
         ),
@@ -1073,7 +1490,16 @@ def main() -> None:
             for item in summaries
         ),
         "A0_preservation_monitor": (
-            a678_preservation_report(summaries) if a678_scored_arm else None
+            a89_diagnostic_report(summaries)
+            if a89_four_task_diagnostic
+            else
+            (
+                a7_gate_report(summaries)
+                if (a7_gated_continuation or prospective_gate_arm)
+                else a678_preservation_report(summaries)
+            )
+            if a678_scored_arm
+            else None
         ),
         "token_usage": _usage_totals(summaries),
         "memory_write_success_count": sum(

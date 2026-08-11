@@ -4,6 +4,7 @@
 /runs/
 /results/
 /outputs/
+/06_local_runtime/
 *.safetensors
 *.bin
 *.pt

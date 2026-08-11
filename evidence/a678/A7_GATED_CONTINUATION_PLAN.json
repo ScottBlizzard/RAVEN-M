@@ -1,0 +1,266 @@
+{
+  "already_valid_count": 7,
+  "already_valid_keys": [
+    [
+      "BrowserMultiply",
+      20260806
+    ],
+    [
+      "ExpenseAddMultipleFromGallery",
+      20260806
+    ],
+    [
+      "ExpenseAddMultipleFromMarkor",
+      20260806
+    ],
+    [
+      "ExpenseDeleteMultiple2",
+      20260806
+    ],
+    [
+      "MarkorCreateNoteAndSms",
+      20260806
+    ],
+    [
+      "MarkorMergeNotes",
+      20260806
+    ],
+    [
+      "MarkorTranscribeVideo",
+      20260806
+    ]
+  ],
+  "canonical_expected_keys": [
+    [
+      "BrowserMultiply",
+      20260806
+    ],
+    [
+      "ExpenseAddMultipleFromGallery",
+      20260806
+    ],
+    [
+      "ExpenseAddMultipleFromMarkor",
+      20260806
+    ],
+    [
+      "ExpenseDeleteMultiple2",
+      20260806
+    ],
+    [
+      "MarkorCreateNoteAndSms",
+      20260806
+    ],
+    [
+      "MarkorMergeNotes",
+      20260806
+    ],
+    [
+      "MarkorTranscribeVideo",
+      20260806
+    ],
+    [
+      "OsmAndMarker",
+      20260806
+    ],
+    [
+      "OsmAndTrack",
+      20260806
+    ],
+    [
+      "RecipeAddMultipleRecipesFromImage",
+      20260806
+    ],
+    [
+      "RecipeAddMultipleRecipesFromMarkor",
+      20260806
+    ],
+    [
+      "RecipeAddMultipleRecipesFromMarkor2",
+      20260806
+    ],
+    [
+      "RecipeDeleteMultipleRecipesWithConstraint",
+      20260806
+    ],
+    [
+      "RetroSavePlaylist",
+      20260806
+    ],
+    [
+      "SaveCopyOfReceiptTaskEval",
+      20260806
+    ],
+    [
+      "SimpleCalendarAddOneEvent",
+      20260806
+    ],
+    [
+      "SportsTrackerActivitiesOnDate",
+      20260806
+    ],
+    [
+      "SportsTrackerTotalDistanceForCategoryOverInterval",
+      20260806
+    ],
+    [
+      "SportsTrackerTotalDurationForCategoryThisWeek",
+      20260806
+    ]
+  ],
+  "canonical_expected_keys_sha256": "de8916b5bdd69af4777c6d4b02973d9e612a8c2822aa164a8f687a6e5842b048",
+  "claim_boundary": "transparent_post_7_protocol_amendment_not_a_pristine_single_preregistered_suite",
+  "created_at": "2026-08-11T05:13:58.384247+00:00",
+  "execution_schedule": [
+    [
+      "RetroSavePlaylist",
+      20260806
+    ],
+    [
+      "SimpleCalendarAddOneEvent",
+      20260806
+    ],
+    [
+      "SportsTrackerTotalDurationForCategoryThisWeek",
+      20260806
+    ],
+    [
+      "OsmAndMarker",
+      20260806
+    ],
+    [
+      "OsmAndTrack",
+      20260806
+    ],
+    [
+      "RecipeAddMultipleRecipesFromImage",
+      20260806
+    ],
+    [
+      "RecipeAddMultipleRecipesFromMarkor",
+      20260806
+    ],
+    [
+      "RecipeAddMultipleRecipesFromMarkor2",
+      20260806
+    ],
+    [
+      "RecipeDeleteMultipleRecipesWithConstraint",
+      20260806
+    ],
+    [
+      "SaveCopyOfReceiptTaskEval",
+      20260806
+    ],
+    [
+      "SportsTrackerActivitiesOnDate",
+      20260806
+    ],
+    [
+      "SportsTrackerTotalDistanceForCategoryOverInterval",
+      20260806
+    ]
+  ],
+  "experiment_id": "A7_GOAL_ITEM_LEDGER_QWEN3VL32B_AW_HARD_S20260806_V1_GATED_CONTINUATION",
+  "full_result_policy": "retain_parent_7_then_require_remaining_gate_3_of_3_then_run_remaining_9",
+  "generation_calls": 0,
+  "manifest_sha256": "c1d718e9d380e443d12d2c29ab2182ae801a3befc53881b864cd830f2ad0440a",
+  "mechanism_id": "a7_deterministic_active_goal_item_status_ledger_v1",
+  "parent": {
+    "episode_references": [
+      {
+        "episode_id": "BrowserMultiply_20260806_21614338",
+        "episode_json": "D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\runs\\a678_memory\\official_qwen_20260811T094144_c61c8a37\\episodes\\BrowserMultiply_20260806_21614338\\episode.json",
+        "episode_json_sha256": "5dd2d6ca37b5b7a9a83da7a4ec0acf25497b342dbdad548c30279a3fbc53acb3",
+        "evaluator_reward": 0.0,
+        "seed": 20260806,
+        "success": false,
+        "task_name": "BrowserMultiply"
+      },
+      {
+        "episode_id": "ExpenseAddMultipleFromGallery_20260806_7f9f37c6",
+        "episode_json": "D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\runs\\a678_memory\\official_qwen_20260811T094144_c61c8a37\\episodes\\ExpenseAddMultipleFromGallery_20260806_7f9f37c6\\episode.json",
+        "episode_json_sha256": "533e595ae8969f12ba6b2f0bb9c1ceb6373eef8ef01839ba1946d1d4ec6d7f8c",
+        "evaluator_reward": 0.0,
+        "seed": 20260806,
+        "success": false,
+        "task_name": "ExpenseAddMultipleFromGallery"
+      },
+      {
+        "episode_id": "ExpenseAddMultipleFromMarkor_20260806_7d375958",
+        "episode_json": "D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\runs\\a678_memory\\official_qwen_20260811T094144_c61c8a37\\episodes\\ExpenseAddMultipleFromMarkor_20260806_7d375958\\episode.json",
+        "episode_json_sha256": "abc933ea595c46bde19e1fa085b66c718e7be94cdd6abf3a199cfb10441f9199",
+        "evaluator_reward": 0.0,
+        "seed": 20260806,
+        "success": false,
+        "task_name": "ExpenseAddMultipleFromMarkor"
+      },
+      {
+        "episode_id": "ExpenseDeleteMultiple2_20260806_93a07702",
+        "episode_json": "D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\runs\\a678_memory\\official_qwen_20260811T094144_c61c8a37\\episodes\\ExpenseDeleteMultiple2_20260806_93a07702\\episode.json",
+        "episode_json_sha256": "de73e7b0b26dfa109727fa231673ab17ac4192711d9350204ccd68ebce9e4172",
+        "evaluator_reward": 1.0,
+        "seed": 20260806,
+        "success": true,
+        "task_name": "ExpenseDeleteMultiple2"
+      },
+      {
+        "episode_id": "MarkorCreateNoteAndSms_20260806_17367e05",
+        "episode_json": "D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\runs\\a678_memory\\official_qwen_20260811T094144_c61c8a37\\episodes\\MarkorCreateNoteAndSms_20260806_17367e05\\episode.json",
+        "episode_json_sha256": "50c15fd41659d46eb3500b584af8f3cb04c806613d0d32bb3d18b002761ca7ee",
+        "evaluator_reward": 0.0,
+        "seed": 20260806,
+        "success": false,
+        "task_name": "MarkorCreateNoteAndSms"
+      },
+      {
+        "episode_id": "MarkorMergeNotes_20260806_86fe30b3",
+        "episode_json": "D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\runs\\a678_memory\\official_qwen_20260811T094144_c61c8a37\\episodes\\MarkorMergeNotes_20260806_86fe30b3\\episode.json",
+        "episode_json_sha256": "aaac1509d87e1c564fd129b666554b843754fec74f05186746fea13d2dbfa562",
+        "evaluator_reward": 0.0,
+        "seed": 20260806,
+        "success": false,
+        "task_name": "MarkorMergeNotes"
+      },
+      {
+        "episode_id": "MarkorTranscribeVideo_20260806_df8c831b",
+        "episode_json": "D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\runs\\a678_memory\\official_qwen_20260811T094144_c61c8a37\\episodes\\MarkorTranscribeVideo_20260806_df8c831b\\episode.json",
+        "episode_json_sha256": "bb0fdbd091a3c4bff38459fc71bd2bf1d3a279b31f93d514d12dac779e15d8bc",
+        "evaluator_reward": 0.0,
+        "seed": 20260806,
+        "success": false,
+        "task_name": "MarkorTranscribeVideo"
+      }
+    ],
+    "parent_checkpoint_sha256": "d62729608f63b425539c222db7937ff3563fe9404877dc13cecc00d4cd36e256",
+    "parent_checkpoint_status": "stopped_invalid_episode",
+    "parent_invalid_attempt_count": 4,
+    "parent_run_signature_sha256": "3e0a3e8e0509e4c711254fced3fec08146415e23b2e65819f7d963708cd71878",
+    "parent_suite_dir": "D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\runs\\a678_memory\\official_qwen_20260811T094144_c61c8a37",
+    "parent_suite_id": "official_qwen_20260811T094144_c61c8a37",
+    "parent_valid_episode_count": 7
+  },
+  "preservation_gate": {
+    "all_tasks": [
+      "ExpenseDeleteMultiple2",
+      "RetroSavePlaylist",
+      "SimpleCalendarAddOneEvent",
+      "SportsTrackerTotalDurationForCategoryThisWeek"
+    ],
+    "infrastructure_invalid_retry_same_task_only": true,
+    "missing_tasks_in_execution_order": [
+      "RetroSavePlaylist",
+      "SimpleCalendarAddOneEvent",
+      "SportsTrackerTotalDurationForCategoryThisWeek"
+    ],
+    "parent_successes": [
+      "ExpenseDeleteMultiple2"
+    ],
+    "required_total_successes": 4,
+    "scientific_failure_fail_fast": true
+  },
+  "protocol_amendment": "campaign_schedule_only_memory_mechanism_unchanged",
+  "remaining_after_gate_count": 9,
+  "schema": "a7_gated_continuation_plan_v1",
+  "status": "pass"
+}

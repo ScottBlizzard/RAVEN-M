@@ -1,0 +1,73 @@
+{
+  "schema": "a89_initial_prospective_gate_results_v1",
+  "created_at": "2026-08-12",
+  "claim_boundary": "retain original prospective terminal suites; never overwrite with diagnostic replication",
+  "shared_runtime": {
+    "task_seed": 20260806,
+    "generation_seed": 3407,
+    "preflight_sha256": "a0ca7c2673b890efed6b0a9ce45ae3324e990f4305191b0cf692353f8f88ea76",
+    "live_receipt_sha256": "2ded90e32409612b0d139b4c7c50e80656f6b1ba36738fe4e181ea6fdf875038"
+  },
+  "arms": {
+    "a9": {
+      "suite_id": "official_qwen_20260811T230354_8f9f65b8",
+      "status": "stopped_capability_gate_failure",
+      "checkpoint_sha256": "5652a9717c0d7379204afe8592032f080c7d7ce1bc636ffeb5684bdf48e726a5",
+      "run_signature_sha256": "5dd9c75005993d882e8dd67e8cca85f20e69bdbf1c975483d9c54a1465514c86",
+      "valid_episode_count": 2,
+      "invalid_episode_count": 0,
+      "success_count": 1,
+      "tasks": [
+        {
+          "task_name": "ExpenseDeleteMultiple2",
+          "reward": 1.0,
+          "executed_actions": 17,
+          "model_calls": 18,
+          "termination_reason": "model_terminate_success",
+          "memory_active": false,
+          "memory_nonempty_reads": 0,
+          "memory_activations": 0,
+          "transport_attempt_max": 1
+        },
+        {
+          "task_name": "RetroSavePlaylist",
+          "reward": 0.0,
+          "executed_actions": 50,
+          "model_calls": 50,
+          "termination_reason": "max_steps",
+          "memory_active": true,
+          "memory_nonempty_reads": 3,
+          "memory_activations": 3,
+          "transport_attempt_max": 1
+        }
+      ]
+    },
+    "a8v2": {
+      "suite_id": "official_qwen_20260811T234137_09c0ac7b",
+      "status": "stopped_capability_gate_failure",
+      "checkpoint_sha256": "9289c5bda8426f6db69f0a75ec792782dbe00f614ebd84aded029852381733b3",
+      "run_signature_sha256": "0e115d29048733407c9a71904d4cc79149bacf45c4886f4175ecbcdf393046fc",
+      "valid_episode_count": 1,
+      "invalid_episode_count": 0,
+      "success_count": 0,
+      "tasks": [
+        {
+          "task_name": "ExpenseDeleteMultiple2",
+          "reward": 0.0,
+          "executed_actions": 34,
+          "model_calls": 34,
+          "termination_reason": "max_steps",
+          "memory_active": true,
+          "memory_nonempty_reads": 14,
+          "transport_attempt_max": 1
+        }
+      ]
+    }
+  },
+  "next_campaign": {
+    "protocol": "protocols/A89_FOUR_TASK_DIAGNOSTIC_REPLICATION_AMENDMENT_2026-08-12.md",
+    "fresh_suites": true,
+    "run_all_four_without_reward_fail_fast": true,
+    "remaining_15_released": false
+  }
+}

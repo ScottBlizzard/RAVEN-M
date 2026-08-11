@@ -1,5 +1,15 @@
 # Qwen Mobile Memory Study: A0 → A1 → A2
 
+## Current research handoff
+
+The current project state is in `HANDOFF_2026-08-12.md`. The specification for
+GPT Pro to design a new standalone memory mechanism is
+`GPT_PRO_MEMORY_MECHANISM_DESIGN_REQUEST_2026-08-12.md`. Initial A8-v2/A9 gate
+results are preserved in
+`evidence/a678/A89_INITIAL_GATE_RESULTS_2026-08-12.json`, and their fresh
+four-task diagnostic replication is governed by
+`protocols/A89_FOUR_TASK_DIAGNOSTIC_REPLICATION_AMENDMENT_2026-08-12.md`.
+
 This branch is the clean audit packet for a Zhejiang University summer-camp study of memory mechanisms in long-horizon AndroidWorld tasks. It replaces the earlier public-framework selection packet. Superseded MobileUse/B2/C0 explorations remain recoverable in Git history but are intentionally absent from this branch so that an independent reviewer can focus on the current paired experiment.
 
 ## Research progression

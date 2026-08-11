@@ -30,7 +30,15 @@ def test_configs_freeze_only_memory_side_interventions() -> None:
         assert config["model"]["generation_seed"] == GENERATION_SEED
         assert config["benchmark"]["task_seed"] == TASK_SEED
         assert config["benchmark"]["task_count"] == TASK_COUNT
-        assert config["benchmark"]["order"].startswith("original frozen manifest order")
+        prospective_gate_arm = arm in {"a8v2", "a9"}
+        if prospective_gate_arm:
+            assert config["benchmark"]["order"].startswith(
+                "four-task A0 preservation gate"
+            )
+        else:
+            assert config["benchmark"]["order"].startswith(
+                "original frozen manifest order"
+            )
         assert config["intervention"]["writer"] == "controller deterministic"
         assert config["intervention"]["response_prefix_required"] is False
         assert config["intervention"]["system_prompt"] == "exact OFFICIAL_SYSTEM_PROMPT"
@@ -40,8 +48,13 @@ def test_configs_freeze_only_memory_side_interventions() -> None:
         assert config["intervention"]["evaluator_input"] is False
         assert config["intervention"]["hidden_ui_input"] is False
         assert config["stopping"]["full_19_required"] is True
-        assert config["stopping"]["reward_fail_fast"] is False
-        assert tuple(config["stopping"]["A0_preservation_tasks_nonblocking"]) == A0_PRESERVATION_TASKS
+        assert config["stopping"]["reward_fail_fast"] is prospective_gate_arm
+        preservation_key = (
+            "A0_preservation_tasks_blocking"
+            if prospective_gate_arm
+            else "A0_preservation_tasks_nonblocking"
+        )
+        assert tuple(config["stopping"][preservation_key]) == A0_PRESERVATION_TASKS
 
 
 def _summary(task_name: str, seed: int = TASK_SEED, success: bool = False) -> dict:
@@ -99,10 +112,22 @@ def test_runner_integrates_a678_without_reward_fail_fast_or_prompt_suffix() -> N
     assert "ShortTransitionEpisodicBuffer(capacity=2, max_chars=240)" in source
     assert "GoalItemStatusLedger(" in source
     assert "ExactVisualRevisitActionOutcomeCache(" in source
-    assert "args.a2_verified_progress_memory or a345_scored_arm or a678_scored_arm" in source
+    assert "FailureAwareExactRevisitMemory(" in source
+    assert "SparseRecurrenceCanaryMemory(" in source
+    assert "args.a2_verified_progress_memory or a345_scored_arm or a678_memory_arm" in source
+    assert '"--a7-post-gate-diagnostic"' in source
+    assert '"--a7-post-gate-remaining-diagnostic"' in source
+    assert '"--a89-four-task-diagnostic-replication"' in source
+    assert "A89_DIAGNOSTIC_EXPERIMENT_IDS" in source
+    assert "a89_diagnostic_completion_errors" in source
+    assert '"remaining_15_released": False' in source
+    assert "A7_POST_GATE_SPORTS_DIAGNOSTIC_QWEN3VL32B_AW_HARD_S20260806_V1" in source
+    assert "A7_POST_GATE_REMAINING9_DIAGNOSTIC_QWEN3VL32B_AW_HARD_S20260806_V1" in source
+    assert "post_terminal_A7_gate_failure_requested_diagnostic_only" in source
     assert "if a345_scored_arm and task_name in A345_REQUIRED_GATE_TASKS" in source
-    assert "if a678_scored_arm and task_name" not in source
-    assert '"reward_fail_fast": False' in source
+    assert "prospective_gate_arm" in source
+    assert "a7_gated_continuation or prospective_gate_arm" in source
+    assert '"A0_preservation_required_for_continuation": bool(' in source
     assert '"official_system_prompt_unchanged": True' in source
 
 
@@ -116,6 +141,8 @@ def test_wrapper_is_dry_run_by_default() -> None:
     assert 'REPOSITORY_ROOT / "06_local_runtime/envs/androidworld/Scripts/python.exe"' in source
     assert "str(ANDROIDWORLD_PYTHON)" in source
     assert "sys.executable" not in source
+    assert '"--four-task-diagnostic-replication"' in source
+    assert '"--a89-four-task-diagnostic-replication"' in source
 
 
 def test_a678_live_qualifier_binds_new_preflight_receipt() -> None:
@@ -126,3 +153,20 @@ def test_a678_live_qualifier_binds_new_preflight_receipt() -> None:
     assert '"a678_preflight_sha256": _hash(args.preflight)' in source
     assert '"generation_calls": 0' in source
     assert 'intent["served_model_id"] not in cmdline' in source
+
+
+def test_a7_launcher_binds_preflight_model_runtime_and_exact_server_command() -> None:
+    source = (
+        STAGING_ROOT / "implementation/scripts/start_a7_gated_server.sh"
+    ).read_text(encoding="utf-8")
+    assert "validate_preflight_report(preflight_path)" in source
+    assert '"dry_run_only_no_live_process"' in source
+    assert 'else "launch_pending_live_qualification"' in source
+    assert 'else os.getppid()' in source
+    assert '"served_model_id": "Qwen/Qwen3-VL-32B-Instruct"' in source
+    assert "exec \"${ENV_DIR}/bin/vllm\" serve" in source
+    assert "--tensor-parallel-size 1" in source
+    assert "--dtype bfloat16" in source
+    assert "--max-num-seqs 1" in source
+    assert 'if [[ "${DRY_RUN}" == "1" ]]' in source
+    assert "no vLLM process was started" in source

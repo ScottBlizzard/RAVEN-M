@@ -1,0 +1,45 @@
+{
+  "schema": "a9_zero_generation_design_evidence_v1",
+  "status": "pass_integrated_zero_generation_only_not_live_qualified",
+  "generation_calls": 0,
+  "arm": "a9",
+  "experiment_id": "A9_SPARSE_RECURRENCE_CANARY_QWEN3VL32B_AW_HARD_S20260806_V1",
+  "mechanism_id": "a9_sparse_query_and_navigation_recurrence_canary_v1",
+  "activation_canaries": [
+    "QUERY_REENTRY",
+    "QUERY_CLEAR_REENTRY",
+    "STATIONARY_SCREEN",
+    "NAVIGATION_CYCLE_P2",
+    "NAVIGATION_CYCLE_P3"
+  ],
+  "ordinary_read": "exactly_empty",
+  "retrieval": "one_shot_per_recurrence_signature",
+  "capacity": {
+    "max_chars": 280,
+    "query_window_steps": 12,
+    "max_query_keys": 8,
+    "max_occurrences_per_query": 4,
+    "max_trace_screens": 13,
+    "pending_capacity": 2,
+    "event_log_capacity": 16
+  },
+  "causal_boundary": {
+    "extra_model_calls": 0,
+    "evaluator_input": false,
+    "hidden_ui_input": false,
+    "guard": false,
+    "action_override": false,
+    "completion_claim": false
+  },
+  "execution_policy": "blocking A0 preservation gate 4/4, then remaining 15",
+  "tests": {
+    "a9_specific": "9 passed",
+    "shared_plus_arm_specific": "37 passed"
+  },
+  "source_sha256": {
+    "implementation/src/raven_m/official_qwen_mobile/a9_recurrence_memory.py": "28bb617ccf2a006dd4c3780ca3e8a04e0edc7b2600faf079f9e732107ae69a41",
+    "implementation/tests/official_qwen_mobile/test_a9_recurrence_memory.py": "3f1f31d4f2d1386b209384da80d0bb4331d9472dffe33e51d7395d257ffa7f6c",
+    "implementation/configs/a9_sparse_recurrence_canary_hard_seed20260806.json": "da280186db7be3e2f1f1c9940b94a4fbc2ca8b6a4a5bd844e95b5a772de411c6",
+    "protocols/A9_SPARSE_RECURRENCE_CANARY_PREREG_2026-08-11.md": "fa9a9ffaf978f091fe886c6284b92542af9a955e8da982ef7b678fc3721e6233"
+  }
+}

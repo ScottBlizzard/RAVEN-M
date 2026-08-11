@@ -1,4 +1,4 @@
-"""Frozen scientific contract for the staged A6/A7/A8 experiment."""
+"""Frozen scientific contract for the staged A6-A9 memory experiments."""
 
 from __future__ import annotations
 
@@ -31,23 +31,37 @@ A678_MECHANISMS = {
     "a6": "a6_short_transition_attested_episodic_buffer_v1",
     "a7": "a7_deterministic_active_goal_item_status_ledger_v1",
     "a8": "a8_exact_visual_revisit_action_outcome_cache_v1",
+    "a8v2": "a8_failure_aware_exact_revisit_memory_v2",
+    "a9": "a9_sparse_query_and_navigation_recurrence_canary_v1",
 }
 
 A678_CONFIGS = {
     "a6": "implementation/configs/a6_short_episodic_hard_seed20260806.json",
     "a7": "implementation/configs/a7_goal_item_ledger_hard_seed20260806.json",
     "a8": "implementation/configs/a8_exact_revisit_cache_hard_seed20260806.json",
+    "a8v2": "implementation/configs/a8_failure_aware_exact_revisit_v2_hard_seed20260806.json",
+    "a9": "implementation/configs/a9_sparse_recurrence_canary_hard_seed20260806.json",
 }
+
+A7_CONTINUATION_CONFIG = (
+    "implementation/configs/a7_goal_item_ledger_gated_continuation_seed20260806.json"
+)
 
 SOURCE_FILES = (
     "implementation/scripts/run_official_qwen_mobile.py",
     "implementation/scripts/run_a678_arm.py",
+    "implementation/scripts/prepare_a7_gated_continuation.py",
+    "implementation/scripts/start_a7_gated_server.sh",
     "implementation/scripts/preflight_a678.py",
     "implementation/scripts/qualify_a678_live_server.py",
     "implementation/src/raven_m/__init__.py",
     "implementation/src/raven_m/env/__init__.py",
     "implementation/src/raven_m/official_qwen_mobile/a678_memory.py",
     "implementation/src/raven_m/official_qwen_mobile/a678_contract.py",
+    "implementation/src/raven_m/official_qwen_mobile/a7_continuation.py",
+    "implementation/src/raven_m/official_qwen_mobile/a8_failure_aware_revisit.py",
+    "implementation/src/raven_m/official_qwen_mobile/a9_recurrence_memory.py",
+    "implementation/src/raven_m/official_qwen_mobile/a89_diagnostic.py",
     "implementation/src/raven_m/official_qwen_mobile/__init__.py",
     "implementation/src/raven_m/official_qwen_mobile/controller.py",
     "implementation/src/raven_m/official_qwen_mobile/protocol.py",
@@ -59,11 +73,24 @@ SOURCE_FILES = (
     "implementation/src/raven_m/multi_framework_benchmark/task_instances.py",
     "implementation/configs/a6_short_episodic_hard_seed20260806.json",
     "implementation/configs/a7_goal_item_ledger_hard_seed20260806.json",
+    "implementation/configs/a7_goal_item_ledger_gated_continuation_seed20260806.json",
     "implementation/configs/a8_exact_revisit_cache_hard_seed20260806.json",
+    "implementation/configs/a8_failure_aware_exact_revisit_v2_hard_seed20260806.json",
+    "implementation/configs/a9_sparse_recurrence_canary_hard_seed20260806.json",
     "implementation/configs/androidworld_hard_v2_instances.json",
     "implementation/tests/official_qwen_mobile/test_a678_memory.py",
     "implementation/tests/official_qwen_mobile/test_a678_contract.py",
+    "implementation/tests/official_qwen_mobile/test_a7_continuation.py",
+    "implementation/tests/official_qwen_mobile/test_a8_failure_aware_revisit.py",
+    "implementation/tests/official_qwen_mobile/test_a9_recurrence_memory.py",
+    "implementation/tests/official_qwen_mobile/test_a89_diagnostic.py",
     "protocols/A678_INTEGRATION_PLAN.md",
+    "protocols/A7_GATED_CONTINUATION_AMENDMENT_2026-08-11.md",
+    "protocols/A8_EXACT_REVISIT_FAILURE_AWARE_V2_DESIGN_2026-08-11.md",
+    "protocols/A9_SPARSE_RECURRENCE_CANARY_PREREG_2026-08-11.md",
+    "protocols/A345_FAILURE_FORENSICS_AND_SUCCESSOR_CONSTRAINTS_2026-08-11.md",
+    "protocols/A89_FOUR_TASK_DIAGNOSTIC_REPLICATION_AMENDMENT_2026-08-12.md",
+    "GPT_PRO_MEMORY_MECHANISM_DESIGN_REQUEST_2026-08-12.md",
 )
 
 TERMINAL_SCIENTIFIC_STATUSES = frozenset(
@@ -86,7 +113,7 @@ def file_sha256(path: Path) -> str:
 def current_source_freeze() -> dict[str, str]:
     missing = [name for name in SOURCE_FILES if not (REPOSITORY_ROOT / name).is_file()]
     if missing:
-        raise RuntimeError(f"A6/A7/A8 source closure incomplete: {missing}")
+        raise RuntimeError(f"A6-A9 source closure incomplete: {missing}")
     return {name: file_sha256(REPOSITORY_ROOT / name) for name in SOURCE_FILES}
 
 
@@ -103,7 +130,7 @@ def validate_preflight_report(path: Path = A678_PREFLIGHT_REPORT) -> dict[str, A
     if report.get("source_freeze_sha256") != json_sha256(current):
         errors.append("source_freeze_digest_drift")
     if errors:
-        raise RuntimeError(f"A6/A7/A8 preflight validation failed: {errors}")
+        raise RuntimeError(f"A6-A9 preflight validation failed: {errors}")
     return report
 
 
@@ -128,7 +155,7 @@ def validate_launch_receipt(
     if not all(str(packages.get(name) or "") for name in ("vllm", "torch", "transformers")):
         errors.append("runtime_packages_missing")
     if errors:
-        raise RuntimeError(f"A6/A7/A8 launch receipt invalid: {errors}")
+        raise RuntimeError(f"A6-A9 launch receipt invalid: {errors}")
     return receipt
 
 

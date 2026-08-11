@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""No-generation staging qualification for A6/A7/A8."""
+"""No-generation staging qualification for A6-A9."""
 
 from __future__ import annotations
 
@@ -23,6 +23,7 @@ sys.path.insert(0, str(STAGED_SOURCE))
 
 from raven_m.official_qwen_mobile.a678_contract import (  # noqa: E402
     A0_PRESERVATION_TASKS,
+    A7_CONTINUATION_CONFIG,
     A678_CONFIGS,
     A678_MECHANISMS,
     GENERATION_SEED,
@@ -39,12 +40,26 @@ from raven_m.official_qwen_mobile.a678_memory import (  # noqa: E402
     GoalItemStatusLedger,
     ShortTransitionEpisodicBuffer,
 )
+from raven_m.official_qwen_mobile.a8_failure_aware_revisit import (  # noqa: E402
+    FailureAwareExactRevisitMemory,
+)
+from raven_m.official_qwen_mobile.a9_recurrence_memory import (  # noqa: E402
+    SparseRecurrenceCanaryMemory,
+)
+from raven_m.official_qwen_mobile.a89_diagnostic import (  # noqa: E402
+    CLAIM_BOUNDARY as A89_DIAGNOSTIC_CLAIM_BOUNDARY,
+    EXPERIMENT_IDS as A89_DIAGNOSTIC_EXPERIMENT_IDS,
+    report as a89_diagnostic_report,
+)
 
 
 FROZEN_DEPENDENCIES = (
     "implementation/scripts/run_official_qwen_mobile.py",
     "implementation/src/raven_m/official_qwen_mobile/controller.py",
     "implementation/src/raven_m/official_qwen_mobile/protocol.py",
+    "implementation/src/raven_m/official_qwen_mobile/a8_failure_aware_revisit.py",
+    "implementation/src/raven_m/official_qwen_mobile/a9_recurrence_memory.py",
+    "implementation/src/raven_m/official_qwen_mobile/a89_diagnostic.py",
     "implementation/src/raven_m/models/vllm_client.py",
     "implementation/src/raven_m/env/androidworld_adapter.py",
     "implementation/src/raven_m/multi_framework_benchmark/task_instances.py",
@@ -88,7 +103,12 @@ def _check_configs(errors: list[str], checks: dict[str, Any]) -> None:
         benchmark = config.get("benchmark") or {}
         if benchmark.get("task_seed") != TASK_SEED or benchmark.get("task_count") != TASK_COUNT:
             errors.append(f"{arm}_benchmark_drift")
-        if not str(benchmark.get("order") or "").startswith("original frozen manifest order"):
+        prospective_gate_arm = arm in {"a8v2", "a9"}
+        order = str(benchmark.get("order") or "")
+        if prospective_gate_arm:
+            if not order.startswith("four-task A0 preservation gate"):
+                errors.append(f"{arm}_order_drift")
+        elif not order.startswith("original frozen manifest order"):
             errors.append(f"{arm}_order_drift")
         intervention = config.get("intervention") or {}
         expected = {
@@ -105,11 +125,41 @@ def _check_configs(errors: list[str], checks: dict[str, Any]) -> None:
             if intervention.get(key) != value:
                 errors.append(f"{arm}_{key}_drift")
         stopping = config.get("stopping") or {}
-        if stopping.get("full_19_required") is not True or stopping.get("reward_fail_fast") is not False:
+        if stopping.get("full_19_required") is not True:
             errors.append(f"{arm}_stopping_drift")
-        if tuple(stopping.get("A0_preservation_tasks_nonblocking") or []) != A0_PRESERVATION_TASKS:
-            errors.append(f"{arm}_preservation_monitor_drift")
+        if prospective_gate_arm:
+            if stopping.get("reward_fail_fast") is not True:
+                errors.append(f"{arm}_stopping_drift")
+            if (
+                tuple(stopping.get("A0_preservation_tasks_blocking") or [])
+                != A0_PRESERVATION_TASKS
+            ):
+                errors.append(f"{arm}_preservation_gate_drift")
+        else:
+            if stopping.get("reward_fail_fast") is not False:
+                errors.append(f"{arm}_stopping_drift")
+            if (
+                tuple(stopping.get("A0_preservation_tasks_nonblocking") or [])
+                != A0_PRESERVATION_TASKS
+            ):
+                errors.append(f"{arm}_preservation_monitor_drift")
     checks["config_sha256"] = hashes
+    continuation_path = STAGING_ROOT / A7_CONTINUATION_CONFIG
+    continuation = _load(continuation_path)
+    checks["a7_continuation_config_sha256"] = _sha(continuation_path)
+    if continuation.get("schema") != "a7_gated_continuation_v1":
+        errors.append("a7_continuation_schema_drift")
+    if continuation.get("mechanism_changed") is not False:
+        errors.append("a7_continuation_mechanism_changed")
+    if continuation.get("model_or_prompt_changed") is not False:
+        errors.append("a7_continuation_model_or_prompt_changed")
+    policy = continuation.get("continuation") or {}
+    if policy.get("required_gate_successes") != 4:
+        errors.append("a7_continuation_gate_count_drift")
+    if policy.get("scientific_gate_failure_fail_fast") is not True:
+        errors.append("a7_continuation_fail_fast_drift")
+    if policy.get("remaining_tasks_released_only_after_gate") is not True:
+        errors.append("a7_continuation_release_policy_drift")
 
 
 def _check_frozen_repo(repo: Path, errors: list[str], checks: dict[str, Any]) -> None:
@@ -186,13 +236,38 @@ def _canaries(errors: list[str], checks: dict[str, Any]) -> None:
         assert a8.read({"before": {"pixels": pixels}})[0] == ""
         assert a8.observe_step(**kwargs)["written"]
         assert a8.read({"before": {"pixels": pixels, "evaluator_reward": 999}})[1]["nonempty"]
-        for memory in (a6, a7, a8):
+        a8v2 = FailureAwareExactRevisitMemory(max_chars=360)
+        assert a8v2.read({"before": {"pixels": pixels}})[0] == ""
+        assert a8v2.observe_step(**kwargs)["written"]
+        assert a8v2.read({"before": {"pixels": pixels, "evaluator_reward": 999}})[1][
+            "nonempty"
+        ]
+
+        a9 = SparseRecurrenceCanaryMemory()
+        assert a9.read()[0] == ""
+        stationary = dict(kwargs)
+        stationary["after"] = stationary["before"]
+        stationary["transition"] = {
+            "exactly_unchanged": True,
+            "changed_pixel_fraction_gt_5": 0.0,
+        }
+        assert not a9.observe_step(**stationary)["written"]
+        stationary["source_step"] = 1
+        assert a9.observe_step(**stationary)["written"]
+        assert a9.read()[1]["activation_canary"] is True
+
+        for memory in (a6, a7, a8, a8v2, a9):
             audit = memory.audit_record()
             assert audit["model_calls_added"] == 0
             assert audit["evaluator_used_for_decision"] is False
             assert audit["hidden_ui_used_for_decision"] is False
             assert audit["guard_enabled"] is False
             assert audit["action_override_count"] == 0
+        assert set(A89_DIAGNOSTIC_EXPERIMENT_IDS) == {"a8v2", "a9"}
+        assert "not_gate_repair" in A89_DIAGNOSTIC_CLAIM_BOUNDARY
+        diagnostic = a89_diagnostic_report([])
+        assert diagnostic["releases_remaining_15"] is False
+        assert diagnostic["required_for_suite_continuation"] is False
         checks["memory_canaries"] = "pass"
     except Exception as exc:
         errors.append(f"memory_canary_failed:{type(exc).__name__}:{exc}")
@@ -209,6 +284,10 @@ def _run_tests(errors: list[str], checks: dict[str, Any]) -> None:
             "pytest",
             "implementation/tests/official_qwen_mobile/test_a678_memory.py",
             "implementation/tests/official_qwen_mobile/test_a678_contract.py",
+            "implementation/tests/official_qwen_mobile/test_a7_continuation.py",
+            "implementation/tests/official_qwen_mobile/test_a8_failure_aware_revisit.py",
+            "implementation/tests/official_qwen_mobile/test_a9_recurrence_memory.py",
+            "implementation/tests/official_qwen_mobile/test_a89_diagnostic.py",
             "-q",
             "-p",
             "no:cacheprovider",
