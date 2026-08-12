@@ -6,6 +6,7 @@ import argparse
 from datetime import datetime
 from hashlib import sha256
 import json
+import math
 from pathlib import Path
 import random
 import shutil
@@ -110,6 +111,23 @@ from raven_m.official_qwen_mobile.a8_failure_aware_revisit import (  # noqa: E40
 from raven_m.official_qwen_mobile.a9_recurrence_memory import (  # noqa: E402
     SparseRecurrenceCanaryMemory,
 )
+from raven_m.official_qwen_mobile.a10_obligation_branch_frontier import (  # noqa: E402
+    EvidenceCalibratedObligationBranchFrontierMemory,
+)
+from raven_m.official_qwen_mobile.a10_contract import (  # noqa: E402
+    CONFIG_PATH as A10_CONFIG_PATH,
+    EXPERIMENT_ID as A10_EXPERIMENT_ID,
+    MECHANISM_ID as A10_MECHANISM_ID,
+    MODEL_REALPATH as A10_MODEL_REALPATH,
+    PARENT_EVIDENCE_COMMIT as A10_PARENT_EVIDENCE_COMMIT,
+    TASK_SEED as A10_TASK_SEED,
+    current_source_freeze as current_a10_source_freeze,
+    json_sha256 as a10_json_sha256,
+    exact_completion_errors as a10_completion_errors,
+    preservation_report as a10_preservation_report,
+    validate_launch_receipt as validate_a10_launch_receipt,
+    validate_preflight_report as validate_a10_preflight_report,
+)
 from raven_m.official_qwen_mobile.a89_diagnostic import (  # noqa: E402
     CLAIM_BOUNDARY as A89_DIAGNOSTIC_CLAIM_BOUNDARY,
     EXPERIMENT_IDS as A89_DIAGNOSTIC_EXPERIMENT_IDS,
@@ -164,11 +182,27 @@ def _load_a4_workflows(path: Path) -> list[dict]:
     return workflows
 
 
-def _episode_infrastructure_valid(summary: dict) -> bool:
+def _episode_infrastructure_valid(
+    summary: dict, *, require_single_transport: bool = False
+) -> bool:
+    try:
+        finite_reward = math.isfinite(float(summary.get("evaluator_reward")))
+    except (TypeError, ValueError):
+        finite_reward = False
+    single_transport = not require_single_transport or all(
+        int(
+            ((step.get("model_call") or {}).get("raven_meta") or {}).get(
+                "transport_attempts"
+            )
+            or 0
+        ) == 1
+        for step in summary.get("steps", [])
+    )
     return (
         summary.get("error") is None
-        and summary.get("evaluator_reward") is not None
+        and finite_reward
         and not summary.get("lifecycle_errors")
+        and single_transport
     )
 
 
@@ -182,10 +216,209 @@ def _usage_totals(summaries: list[dict]) -> dict[str, int]:
     return totals
 
 
+def _a10_memory_token_counts(summaries: list[dict]) -> dict[str, int]:
+    from transformers import AutoTokenizer
+
+    tokenizer = AutoTokenizer.from_pretrained(
+        A10_MODEL_REALPATH, local_files_only=True, trust_remote_code=True
+    )
+    counts: dict[str, int] = {}
+    for summary in summaries:
+        total = 0
+        for step in summary.get("steps", []):
+            text = str((step.get("memory_read") or {}).get("exact_injected_text") or "")
+            if text:
+                total += len(tokenizer.encode(text, add_special_tokens=False))
+        counts[str(summary["episode_id"])] = total
+    return counts
+
+
+def _a10_pairwise(
+    summaries: list[dict], reference_arm: str, reference: dict
+) -> dict[str, float | int]:
+    current = {str(item["task_name"]): item for item in summaries}
+    reference_tasks = {
+        str(item["task_name"]): item[reference_arm]
+        for item in reference.get("tasks") or []
+    }
+
+
+def _a10_causal_read_analysis(summaries: list[dict]) -> list[dict]:
+    records: list[dict] = []
+    for summary in summaries:
+        audit = summary.get("memory_mechanism") or {}
+        anchors = ((audit.get("goal") or {}).get("anchors") or [])
+        frontiers = {
+            str(item.get("frontier_id")): item
+            for item in ((audit.get("frontiers") or {}).get("records") or [])
+        }
+        steps = {int(item.get("step", -1)): item for item in summary.get("steps", [])}
+        for event in ((audit.get("reads") or {}).get("read_events") or []):
+            read_step = int(event.get("step", -1))
+            step = steps.get(read_step) or {}
+            mask = int(event.get("open_anchor_mask") or 0)
+            frontier = frontiers.get(str(event.get("frontier_id"))) or {}
+            branches = list((frontier.get("branches") or {}).values())
+            delta = event.get("open_anchor_confidence_delta_within_4")
+            productive = bool(
+                event.get("next_action_was_novel")
+                and event.get("escaped_frontier_within_3")
+                and not event.get("returned_within_4")
+                and ((delta is not None and float(delta) >= .15) or summary.get("success"))
+            )
+            negative = bool(
+                not event.get("next_action_was_novel")
+                and event.get("returned_within_4")
+                and float(delta or 0.0) < .15
+                and not summary.get("success")
+            )
+            records.append(
+                {
+                    "task": summary.get("task_name"),
+                    "episode": summary.get("episode_id"),
+                    "read_step": read_step,
+                    "trigger_kind": event.get("trigger_kind"),
+                    "trigger_score": event.get("score"),
+                    "open_obligations_before_read": [
+                        item.get("literal")
+                        for index, item in enumerate(anchors)
+                        if mask & (1 << index)
+                    ],
+                    "locally_supported_obligations": [
+                        item.get("literal")
+                        for item in anchors
+                        if item.get("status") == "LOCALLY_SUPPORTED"
+                    ],
+                    "matching_frontier": event.get("frontier_id"),
+                    "prior_branches": [item.get("branch_id") for item in branches],
+                    "prior_branch_outcomes": [
+                        {
+                            "branch_id": item.get("branch_id"),
+                            "no_progress": item.get("raw_no_progress_count"),
+                            "local_change": item.get("raw_local_change_count"),
+                            "return": item.get("raw_return_count"),
+                            "durable": item.get("raw_durable_count"),
+                            "failure_confidence": item.get("failure_confidence"),
+                            "escape_confidence": item.get("escape_confidence"),
+                        }
+                        for item in branches
+                    ],
+                    "exact_injected_text": (step.get("memory_read") or {}).get(
+                        "exact_injected_text"
+                    ),
+                    "rendered_sha256": event.get("rendered_sha256"),
+                    "next_action": (step.get("decision") or {}).get(
+                        "canonical_action"
+                    ),
+                    "next_branch_id": event.get("next_action_branch_id"),
+                    "next_branch_was_novel": event.get("next_action_was_novel"),
+                    "screen_left_frontier_within_3": event.get(
+                        "escaped_frontier_within_3"
+                    ),
+                    "screen_returned_within_4": event.get("returned_within_4"),
+                    "anchor_confidence_delta_within_4": delta,
+                    "episode_reward": summary.get("evaluator_reward"),
+                    "final_success": summary.get("success"),
+                    "analysis_class": (
+                        "trace_grounded_productive_divergence_hypothesis"
+                        if productive
+                        else "activation_without_productive_divergence"
+                        if negative
+                        else "no_causal_classification"
+                    ),
+                }
+            )
+    return records
+    wins = losses = ties = 0
+    for task_name, summary in current.items():
+        ref = reference_tasks[task_name]
+        delta = int(bool(summary.get("success"))) - int(bool(ref.get("success")))
+        wins += int(delta > 0)
+        losses += int(delta < 0)
+        ties += int(delta == 0)
+    usage = _usage_totals(summaries)
+    ref_summary = reference["summaries"][reference_arm]
+    elapsed = sum(
+        (
+            datetime.fromisoformat(item["finished_at"])
+            - datetime.fromisoformat(item["started_at"])
+        ).total_seconds()
+        for item in summaries
+    )
+    return {
+        "wins": wins,
+        "losses": losses,
+        "ties": ties,
+        "success_delta": sum(int(bool(item.get("success"))) for item in summaries) - int(ref_summary["success_count"]),
+        "reward_delta": sum(float(item["evaluator_reward"]) for item in summaries) - float(ref_summary["reward_sum"]),
+        "action_delta": sum(int(item["executed_action_count"]) for item in summaries) - int(ref_summary["executed_actions"]),
+        "call_delta": sum(int(item["model_call_count"]) for item in summaries) - int(ref_summary["model_calls"]),
+        "prompt_token_delta": usage["prompt_tokens"] - int(ref_summary["prompt_tokens"]),
+        "total_token_delta": usage["total_tokens"] - int(ref_summary["total_tokens"]),
+        "elapsed_delta": elapsed - float(ref_summary["valid_elapsed_seconds"]),
+    }
+
+
 def _json_digest(value: object) -> str:
     return sha256(
         json.dumps(value, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
     ).hexdigest()
+
+
+def _a10_episode_entry(
+    *, suite_dir: Path, summary: dict, run_signature_sha256: str
+) -> dict:
+    episode_id = str(summary["episode_id"])
+    episode_path = suite_dir / "episodes" / episode_id / "episode.json"
+    if not episode_path.is_file():
+        raise RuntimeError(f"A10 episode artifact missing: {episode_path}")
+    on_disk = json.loads(episode_path.read_text(encoding="utf-8"))
+    if _json_digest(on_disk) != _json_digest(summary):
+        raise RuntimeError(f"A10 checkpoint summary differs from episode artifact: {episode_id}")
+    return {
+        "task_name": str(summary["task_name"]),
+        "seed": int(summary["seed"]),
+        "episode_id": episode_id,
+        "episode_json_sha256": _sha256(episode_path),
+        "summary_sha256": _json_digest(summary),
+        "run_signature_sha256": run_signature_sha256,
+    }
+
+
+def _load_a10_checkpoint(
+    *, suite_dir: Path, checkpoint: dict, run_signature_sha256: str
+) -> tuple[list[dict], list[dict], list[dict]]:
+    summaries = list(checkpoint.get("valid_summaries") or [])
+    entries = list(checkpoint.get("a10_valid_entries") or [])
+    invalid_attempts = list(checkpoint.get("invalid_attempts") or [])
+    if len(entries) != len(summaries):
+        raise RuntimeError("A10 checkpoint entry/summary cardinality mismatch")
+    for summary, entry in zip(summaries, entries, strict=True):
+        if entry.get("run_signature_sha256") != run_signature_sha256:
+            raise RuntimeError("A10 checkpoint entry signature drift")
+        expected_identity = (
+            str(summary.get("task_name")),
+            int(summary.get("seed", -1)),
+            str(summary.get("episode_id")),
+        )
+        entry_identity = (
+            str(entry.get("task_name")),
+            int(entry.get("seed", -1)),
+            str(entry.get("episode_id")),
+        )
+        if entry_identity != expected_identity:
+            raise RuntimeError("A10 checkpoint entry identity mismatch")
+        episode_path = suite_dir / "episodes" / entry_identity[2] / "episode.json"
+        if not episode_path.is_file() or _sha256(episode_path) != entry.get("episode_json_sha256"):
+            raise RuntimeError("A10 checkpoint episode artifact hash mismatch")
+        on_disk = json.loads(episode_path.read_text(encoding="utf-8"))
+        if (
+            _json_digest(on_disk) != entry.get("summary_sha256")
+            or _json_digest(summary) != entry.get("summary_sha256")
+            or not _episode_infrastructure_valid(on_disk, require_single_transport=True)
+        ):
+            raise RuntimeError("A10 checkpoint episode validity closure failed")
+    return summaries, entries, invalid_attempts
 
 
 def main() -> None:
@@ -248,6 +481,21 @@ def main() -> None:
         "--a678-arm",
         choices=("a6", "a7", "a8", "a8v2", "a9"),
         help="Run one frozen controller-authored A6-A9 memory arm.",
+    )
+    parser.add_argument(
+        "--a10-ecobf",
+        action="store_true",
+        help="Run the preregistered A10 Evidence-Calibrated Obligation-Branch Frontier arm.",
+    )
+    parser.add_argument(
+        "--a10-preflight-report",
+        type=Path,
+        default=REPOSITORY_ROOT / "evidence/a10/A10_ZERO_GENERATION_PREFLIGHT.json",
+    )
+    parser.add_argument(
+        "--a10-launch-receipt",
+        type=Path,
+        help="Fresh A10 live receipt bound to the A10 zero-generation preflight.",
     )
     parser.add_argument(
         "--a678-preflight-report",
@@ -462,6 +710,7 @@ def main() -> None:
             args.a2_verified_progress_memory,
             args.a345_arm,
             args.a678_arm,
+            args.a10_ecobf,
         )
     )
     if diagnostic_modes > 1:
@@ -476,13 +725,18 @@ def main() -> None:
     )
     a345_scored_arm = bool(args.a345_arm)
     a678_memory_arm = bool(args.a678_arm)
+    a10_scored_arm = bool(args.a10_ecobf)
+    a10_launch: dict | None = None
+    a10_preflight: dict | None = None
+    controller_memory_arm = a678_memory_arm or a10_scored_arm
     a678_post_gate_diagnostic = a7_post_gate_diagnostic or a89_four_task_diagnostic
     a678_scored_arm = a678_memory_arm and not a678_post_gate_diagnostic
     prospective_gate_arm = (
-        args.a678_arm in {"a8v2", "a9"} and not a89_four_task_diagnostic
+        (args.a678_arm in {"a8v2", "a9"} and not a89_four_task_diagnostic)
+        or a10_scored_arm
     )
     held_out_ineligible_reason = args.held_out_ineligible_reason
-    if a678_scored_arm:
+    if a678_scored_arm or a10_scored_arm:
         # This seed and its A0/A1/A2/A3-A5 outcomes have already been inspected.
         # A6-A8 are valid paired mechanism comparisons, not held-out evidence.
         held_out_eligible = False
@@ -492,6 +746,7 @@ def main() -> None:
         or args.a2_verified_progress_memory
         or a345_scored_arm
         or a678_scored_arm
+        or a10_scored_arm
     )
     if (
         args.resume_suite_dir is not None
@@ -510,7 +765,25 @@ def main() -> None:
             parser.error("scored memory hidden observation backend must match A0 uiautomator")
         if _sha256(args.manifest.resolve()) != _sha256(A1_MANIFEST.resolve()):
             parser.error("memory-arm manifest differs from the frozen A0 first-seed manifest")
-        if a678_scored_arm:
+        if a10_scored_arm:
+            if not args.a10_preflight_report.is_file():
+                parser.error(f"A10 preflight is missing: {args.a10_preflight_report}")
+            try:
+                a10_preflight = validate_a10_preflight_report(
+                    args.a10_preflight_report.resolve()
+                )
+            except Exception as exc:
+                parser.error(str(exc))
+            if args.a10_launch_receipt is None or not args.a10_launch_receipt.is_file():
+                parser.error("A10 scored generation requires a fresh A10 live receipt")
+            try:
+                a10_launch = validate_a10_launch_receipt(
+                    args.a10_launch_receipt.resolve(),
+                    preflight_path=args.a10_preflight_report.resolve(),
+                )
+            except Exception as exc:
+                parser.error(str(exc))
+        elif a678_scored_arm:
             if not args.a678_preflight_report.is_file():
                 parser.error(f"A6/A7/A8 preflight is missing: {args.a678_preflight_report}")
             try:
@@ -649,7 +922,7 @@ def main() -> None:
             missing_gate = sorted(set(A0_PRESERVATION_TASKS) - set(by_name))
             if missing_gate:
                 raise RuntimeError(
-                    f"{str(args.a678_arm).upper()} gate tasks missing from manifest: {missing_gate}"
+                    f"{'A10' if a10_scored_arm else str(args.a678_arm).upper()} gate tasks missing from manifest: {missing_gate}"
                 )
             remaining = [
                 item
@@ -725,6 +998,8 @@ def main() -> None:
             if a89_four_task_diagnostic
             else "A2_VERIFIED_PROGRESS_MEMORY_QWEN3VL32B_AW_HARD_S20260806_V1R1"
             if args.a2_verified_progress_memory
+            else A10_EXPERIMENT_ID
+            if a10_scored_arm
             else (
                 f"{args.a345_arm.upper()}_PUBLIC_MEMORY_KERNEL_QWEN3VL32B_AW_HARD_S20260806_V1"
                 if a345_scored_arm
@@ -747,6 +1022,8 @@ def main() -> None:
         "method": (
             A678_MECHANISMS[str(args.a678_arm)]
             if a678_post_gate_diagnostic
+            else A10_MECHANISM_ID
+            if a10_scored_arm
             else "a2_verified_progress_memory_v1r1"
             if args.a2_verified_progress_memory
             else (
@@ -859,6 +1136,35 @@ def main() -> None:
                     "claim_boundary": a7_continuation_plan["claim_boundary"],
                 }
             )
+    if a10_scored_arm:
+        run_signature.update(
+            {
+                "a10_config_sha256": _sha256(A10_CONFIG_PATH),
+                "a10_preflight_sha256": _sha256(args.a10_preflight_report),
+                # The scientific signature binds the stable server identity,
+                # not a process-specific receipt.  A crash may be resumed only
+                # after a newly qualified process produces a fresh receipt.
+                "a10_live_server_stable_identity": {
+                    "served_model_id": a10_launch["served_model_id"],
+                    "model_realpath": a10_launch["model_realpath"],
+                    "model_manifest_sha256": a10_launch["model_manifest_sha256"],
+                    "port": a10_launch["port"],
+                    "packages": a10_launch["packages"],
+                },
+                "task_order": "blocking_A0_4_task_gate_then_frozen_manifest_remainder",
+                "reward_fail_fast": True,
+                "scientific_failure_rerun": False,
+                "A0_preservation_tasks": list(A0_PRESERVATION_TASKS),
+                "A0_preservation_required_for_continuation": True,
+                "controller_authored_memory": True,
+                "response_prefix_required": False,
+                "official_system_prompt_unchanged": True,
+                "extra_model_calls": 0,
+                "guard": False,
+                "action_override": False,
+                "forced_termination": False,
+            }
+        )
     if a7_post_gate_diagnostic:
         run_signature.update(
             {
@@ -941,6 +1247,7 @@ def main() -> None:
     run_signature_sha256 = _json_digest(run_signature)
     invalid_attempts: list[dict] = []
     valid_entries: list[dict] = []
+    a10_valid_entries: list[dict] = []
     orphan_episode_directories: list[str] = []
     if args.resume_suite_dir is not None:
         suite_dir = args.resume_suite_dir.resolve()
@@ -980,8 +1287,15 @@ def main() -> None:
                 raise RuntimeError(
                     f"{str(args.a678_arm).upper()} capability-preservation failure is terminal and cannot be resumed"
                 )
-            summaries = list(checkpoint.get("valid_summaries") or [])
-            invalid_attempts = list(checkpoint.get("invalid_attempts") or [])
+            if a10_scored_arm:
+                summaries, a10_valid_entries, invalid_attempts = _load_a10_checkpoint(
+                    suite_dir=suite_dir,
+                    checkpoint=checkpoint,
+                    run_signature_sha256=run_signature_sha256,
+                )
+            else:
+                summaries = list(checkpoint.get("valid_summaries") or [])
+                invalid_attempts = list(checkpoint.get("invalid_attempts") or [])
         suite_id = suite_dir.name
     else:
         suite_id = f"official_qwen_{datetime.now().strftime('%Y%m%dT%H%M%S')}_{uuid4().hex[:8]}"
@@ -1030,6 +1344,21 @@ def main() -> None:
                 "valid_summaries": summaries,
                 "invalid_attempts": invalid_attempts,
             }
+            if a10_scored_arm:
+                payload.update(
+                    {
+                        "run_signature_sha256": run_signature_sha256,
+                        "a10_valid_entries": a10_valid_entries,
+                        "live_server_receipt_sha256s": sorted(
+                            {
+                                str((item.get("run_metadata") or {}).get("live_server_receipt_sha256"))
+                                for item in summaries
+                                if (item.get("run_metadata") or {}).get("live_server_receipt_sha256")
+                            }
+                            | {_sha256(args.a10_launch_receipt)}
+                        ),
+                    }
+                )
             if a7_gated_continuation:
                 payload.update(
                     {
@@ -1070,7 +1399,10 @@ def main() -> None:
         seed=args.generation_seed,
         timeout_seconds=args.request_timeout_seconds,
         retry_transient_errors=not (
-            args.a2_verified_progress_memory or a345_scored_arm or a678_memory_arm
+            args.a2_verified_progress_memory
+            or a345_scored_arm
+            or a678_memory_arm
+            or a10_scored_arm
         ),
     )
     health = client.health()
@@ -1105,7 +1437,7 @@ def main() -> None:
                 if gate["status"] != "passed":
                     checkpoint("stopped_capability_gate_incomplete")
                     raise RuntimeError(
-                        f"{str(args.a678_arm).upper()} remaining tasks are locked until the A0 preservation gate is 4/4"
+                        f"{'A10' if a10_scored_arm else str(args.a678_arm).upper()} remaining tasks are locked until the A0 preservation gate is 4/4"
                     )
             if "task_params_hash" in spec and "goal_hash" in spec:
                 task = instantiate_verified(available, spec)
@@ -1150,6 +1482,22 @@ def main() -> None:
                     pending_capacity=2,
                     event_log_capacity=16,
                 )
+            elif a10_scored_arm:
+                a678_memory = EvidenceCalibratedObligationBranchFrontierMemory(
+                    max_anchors=8,
+                    max_anchor_events=6,
+                    max_frontiers=16,
+                    max_branches_per_frontier=5,
+                    max_attempt_receipts=32,
+                    max_pending_routes=4,
+                    max_escape_watches=2,
+                    max_trigger_candidates=8,
+                    max_nonempty_reads=5,
+                    max_reads_per_phase=2,
+                    read_cooldown_steps=4,
+                    max_chars=420,
+                    max_utf8_bytes=720,
+                )
             controller = OfficialQwenMobileController(
                 client,
                 max_steps=effective_limit,
@@ -1185,8 +1533,12 @@ def main() -> None:
                         _sha256(args.a2_launch_receipt)
                         if args.a2_verified_progress_memory
                         else (
-                            _sha256(args.a678_launch_receipt)
-                            if a678_memory_arm else None
+                            _sha256(args.a10_launch_receipt)
+                            if a10_scored_arm
+                            else (
+                                _sha256(args.a678_launch_receipt)
+                                if a678_memory_arm else None
+                            )
                         )
                     ),
                     "stop_after_markor_source_exit": bool(
@@ -1197,7 +1549,7 @@ def main() -> None:
                         if args.a2_verified_progress_memory
                         else (
                             run_signature["method"]
-                            if (a345_scored_arm or a678_memory_arm)
+                            if (a345_scored_arm or controller_memory_arm)
                             else ("a1_action_working_memory_v1" if args.a1_working_memory else None)
                         )
                     ),
@@ -1255,7 +1607,7 @@ def main() -> None:
                 stop_after_markor_source_exit=args.stop_after_markor_source_exit,
                 working_memory=(
                     a678_memory
-                    if a678_memory_arm
+                    if controller_memory_arm
                     else (
                     VerifiedProgressMemory(max_chars=1200)
                     if args.a2_verified_progress_memory
@@ -1300,7 +1652,9 @@ def main() -> None:
                 episode_dir=suite_dir / "episodes" / episode_id,
                 seed=episode_seed,
             )
-            if not _episode_infrastructure_valid(result):
+            if not _episode_infrastructure_valid(
+                result, require_single_transport=a10_scored_arm
+            ):
                 invalid_attempts.append(
                     {
                         "episode_id": episode_id,
@@ -1316,6 +1670,18 @@ def main() -> None:
                     f"Scored memory arm stopped after infrastructure-invalid episode {episode_id}; "
                     "resume will rerun only this task"
                 )
+            resolved_invalid_ids = [
+                str(attempt.get("episode_id"))
+                for attempt in invalid_attempts
+                if (
+                    str(attempt.get("task_name")) == task_name
+                    and int(attempt.get("seed", -1)) == episode_seed
+                    and not attempt.get("resolved_by_episode_id")
+                )
+            ]
+            if resolved_invalid_ids:
+                result["resolves_invalid_episode_id"] = resolved_invalid_ids[-1]
+                result["resolves_invalid_episode_ids"] = resolved_invalid_ids
             for attempt in invalid_attempts:
                 if (
                     str(attempt.get("task_name")) == task_name
@@ -1323,12 +1689,25 @@ def main() -> None:
                     and not attempt.get("resolved_by_episode_id")
                 ):
                     attempt["resolved_by_episode_id"] = episode_id
+            if a10_scored_arm:
+                _atomic_json(
+                    suite_dir / "episodes" / episode_id / "episode.json",
+                    result,
+                )
             summaries.append(result)
             if args.a2_verified_progress_memory:
                 valid_entries.append(
                     a2_episode_reference(
                         suite_dir=suite_dir,
                         episode_dir=suite_dir / "episodes" / episode_id,
+                        summary=result,
+                        run_signature_sha256=run_signature_sha256,
+                    )
+                )
+            elif a10_scored_arm:
+                a10_valid_entries.append(
+                    _a10_episode_entry(
+                        suite_dir=suite_dir,
                         summary=result,
                         run_signature_sha256=run_signature_sha256,
                     )
@@ -1357,7 +1736,7 @@ def main() -> None:
             ):
                 checkpoint("stopped_capability_gate_failure")
                 raise RuntimeError(
-                    f"{str(args.a678_arm).upper()} capability-preservation gate failed on "
+                    f"{'A10' if a10_scored_arm else str(args.a678_arm).upper()} capability-preservation gate failed on "
                     f"{task_name}; scientific failures are terminal and cannot be rerun"
                 )
             checkpoint("running")
@@ -1444,6 +1823,19 @@ def main() -> None:
             raise RuntimeError(
                 f"{args.a678_arm.upper()} cannot aggregate: {closure_errors}"
             )
+    if a10_scored_arm:
+        gate = a10_preservation_report(summaries)
+        if gate["status"] != "pass":
+            checkpoint("stopped_capability_gate_incomplete")
+            raise RuntimeError("A10 cannot aggregate before the blocking 4/4 preservation gate passes")
+        closure_errors = a10_completion_errors(
+            summaries=summaries,
+            invalid_attempts=invalid_attempts,
+            lifecycle_errors=suite_lifecycle_errors,
+        )
+        if closure_errors:
+            checkpoint("stopped_incomplete_or_invalid")
+            raise RuntimeError(f"A10 cannot aggregate: {closure_errors}")
     if a89_four_task_diagnostic:
         closure_errors = a89_diagnostic_completion_errors(
             summaries=summaries,
@@ -1476,7 +1868,7 @@ def main() -> None:
             if args.a2_verified_progress_memory
             else (
                 run_signature["method"]
-                if (a345_scored_arm or a678_memory_arm)
+                if (a345_scored_arm or controller_memory_arm)
                 else ("a1_action_working_memory_v1" if args.a1_working_memory else None)
             )
         ),
@@ -1494,11 +1886,13 @@ def main() -> None:
             if a89_four_task_diagnostic
             else
             (
-                a7_gate_report(summaries)
+                a10_preservation_report(summaries)
+                if a10_scored_arm
+                else a7_gate_report(summaries)
                 if (a7_gated_continuation or prospective_gate_arm)
                 else a678_preservation_report(summaries)
             )
-            if a678_scored_arm
+            if (a678_scored_arm or a10_scored_arm)
             else None
         ),
         "token_usage": _usage_totals(summaries),
@@ -1584,6 +1978,19 @@ def main() -> None:
                     or (item.get("memory_mechanism") or {}).get("write_success_count")
                     or 0
                 ),
+                "memory_active": bool((item.get("memory_mechanism") or {}).get("active")),
+                "memory_trigger_count": int((item.get("memory_mechanism") or {}).get("trigger_count") or 0),
+                "memory_nonempty_read_count": int((item.get("memory_mechanism") or {}).get("nonempty_read_count") or 0),
+                "first_nonempty_read_step": (
+                    (((item.get("memory_mechanism") or {}).get("reads") or {}).get("read_events") or [{}])[0].get("step")
+                    if (((item.get("memory_mechanism") or {}).get("reads") or {}).get("read_events"))
+                    else None
+                ),
+                "memory_rendered_chars": int((item.get("memory_mechanism") or {}).get("rendered_chars_total") or 0),
+                "phase_switch_count": int((((item.get("memory_mechanism") or {}).get("phase") or {}).get("phase_switch_count")) or 0),
+                "frontier_eviction_count": int((((item.get("memory_mechanism") or {}).get("frontiers") or {}).get("eviction_count")) or 0),
+                "model_calls_added": int((item.get("memory_mechanism") or {}).get("model_calls_added") or 0),
+                "action_override_count": int((item.get("memory_mechanism") or {}).get("action_override_count") or 0),
                 "guard_blocks": int((item.get("cost_guard") or {}).get("block_count") or 0),
                 "guard_warnings": int((item.get("cost_guard") or {}).get("warning_count") or 0),
                 "guard_cost_stops": int((item.get("cost_guard") or {}).get("cost_stop_count") or 0),
@@ -1609,6 +2016,149 @@ def main() -> None:
             for item in summaries
         ],
     }
+    if a10_scored_arm:
+        reward_sum = sum(float(item.get("evaluator_reward") or 0.0) for item in summaries)
+        success_count = sum(int(bool(item.get("success"))) for item in summaries)
+        memory_token_counts = _a10_memory_token_counts(summaries)
+        manifest_payload = json.loads(args.manifest.read_text(encoding="utf-8"))
+        task_ids = {
+            (str(item["task_class"]), int(item["task_seed"])): str(item["task_id"])
+            for item in manifest_payload.get("instances") or []
+        }
+        pairwise_reference_path = REPOSITORY_ROOT / "evidence/a2/A0_A1_PAIRED_REFERENCE_20260810.json"
+        pairwise_reference = json.loads(pairwise_reference_path.read_text(encoding="utf-8"))
+        elapsed_seconds = sum(
+            (
+                datetime.fromisoformat(item["finished_at"])
+                - datetime.fromisoformat(item["started_at"])
+            ).total_seconds()
+            for item in summaries
+        )
+        active_success_count = sum(
+            int(bool(item.get("success")) and bool((item.get("memory_mechanism") or {}).get("active")))
+            for item in summaries
+        )
+        causal_read_analysis = _a10_causal_read_analysis(summaries)
+        productive_divergence_count = sum(
+            item["analysis_class"]
+            == "trace_grounded_productive_divergence_hypothesis"
+            for item in causal_read_analysis
+        )
+        protocol_boundary_invalid = bool(
+            any(
+                int((item.get("memory_mechanism") or {}).get("model_calls_added") or 0)
+                or bool((item.get("memory_mechanism") or {}).get("guard_enabled"))
+                or int((item.get("memory_mechanism") or {}).get("action_override_count") or 0)
+                or int((item.get("memory_mechanism") or {}).get("forced_termination_count") or 0)
+                or bool(((item.get("memory_mechanism") or {}).get("decision_boundary") or {}).get("hidden_ui_used_for_decision"))
+                or bool(((item.get("memory_mechanism") or {}).get("decision_boundary") or {}).get("evaluator_used_for_decision"))
+                for item in summaries
+            )
+        )
+        performance_target = bool(
+            len(summaries) == 19
+            and success_count >= 6
+            and reward_sum > 5.5
+            and a10_preservation_report(summaries)["status"] == "pass"
+        )
+        if closure_errors:
+            final_verdict = "A10 INFRASTRUCTURE INVALID"
+        elif protocol_boundary_invalid:
+            final_verdict = "A10 PROTOCOL INVALID"
+        elif not performance_target:
+            final_verdict = "A10 SCIENTIFIC FAILURE"
+        elif active_success_count < 1 or productive_divergence_count < 1:
+            final_verdict = "A10 PERFORMANCE PASS / MECHANISM EVIDENCE FAIL"
+        else:
+            final_verdict = "A10 OVERALL PASS"
+        aggregate["a10_result"] = {
+            "schema": "a10_ecobf_result_v1",
+            "parent_evidence_commit": A10_PARENT_EVIDENCE_COMMIT,
+            "a10_implementation_commit": a10_preflight["a10_implementation_commit"],
+            "source_freeze_sha256": a10_preflight["source_freeze_sha256"],
+            "preflight_sha256": _sha256(args.a10_preflight_report),
+            "live_receipt_sha256": _sha256(args.a10_launch_receipt),
+            "live_receipt_sha256s": aggregate["live_server_receipt_sha256s"],
+            "run_signature_sha256": run_signature_sha256,
+            "task_seed": A10_TASK_SEED,
+            "generation_seed": args.generation_seed,
+            "valid_episode_count": len(summaries),
+            "invalid_episode_count": len(invalid_attempts),
+            "gate": a10_preservation_report(summaries),
+            "summary": {
+                "success_count": success_count,
+                "reward_sum": reward_sum,
+                "executed_actions": sum(int(item.get("executed_action_count") or 0) for item in summaries),
+                "model_calls": sum(int(item.get("model_call_count") or 0) for item in summaries),
+                **_usage_totals(summaries),
+                "elapsed_seconds": elapsed_seconds,
+            },
+            "memory": {
+                "write_attempt_count": sum(int((item.get("memory_mechanism") or {}).get("write_attempt_count") or 0) for item in summaries),
+                "write_success_count": sum(int((item.get("memory_mechanism") or {}).get("write_success_count") or 0) for item in summaries),
+                "trigger_count": sum(int((item.get("memory_mechanism") or {}).get("trigger_count") or 0) for item in summaries),
+                "nonempty_read_count": sum(int((item.get("memory_mechanism") or {}).get("nonempty_read_count") or 0) for item in summaries),
+                "active_success_count": active_success_count,
+                "max_reads_per_episode": max([int((item.get("memory_mechanism") or {}).get("nonempty_read_count") or 0) for item in summaries] or [0]),
+                "rendered_chars_total": sum(int((item.get("memory_mechanism") or {}).get("rendered_chars_total") or 0) for item in summaries),
+                "rendered_tokens_total": sum(memory_token_counts.values()),
+                "model_calls_added": sum(int((item.get("memory_mechanism") or {}).get("model_calls_added") or 0) for item in summaries),
+                "guard_enabled": any(bool((item.get("memory_mechanism") or {}).get("guard_enabled")) for item in summaries),
+                "action_override_count": sum(int((item.get("memory_mechanism") or {}).get("action_override_count") or 0) for item in summaries),
+                "forced_termination_count": sum(int((item.get("memory_mechanism") or {}).get("forced_termination_count") or 0) for item in summaries),
+                "hidden_ui_used_for_decision": any(bool(((item.get("memory_mechanism") or {}).get("decision_boundary") or {}).get("hidden_ui_used_for_decision")) for item in summaries),
+                "evaluator_used_for_decision": any(bool(((item.get("memory_mechanism") or {}).get("decision_boundary") or {}).get("evaluator_used_for_decision")) for item in summaries),
+            },
+            "per_task": [
+                {
+                    "task_id": task_ids[(str(item["task_name"]), int(item["seed"]))],
+                    "task_name": item["task_name"],
+                    "task_seed": item["seed"],
+                    "native_max_steps": int((item.get("run_metadata") or {})["native_max_steps"]),
+                    "episode_id": item["episode_id"],
+                    "episode_json_sha256": _sha256(suite_dir / "episodes" / item["episode_id"] / "episode.json"),
+                    "reward": item["evaluator_reward"],
+                    "success": item["success"],
+                    "termination_reason": item["termination_reason"],
+                    "executed_actions": item["executed_action_count"],
+                    "model_calls": item["model_call_count"],
+                    "transport_attempt_max": max(
+                        [int(((step.get("model_call") or {}).get("raven_meta") or {}).get("transport_attempts") or 0) for step in item.get("steps", [])] or [0]
+                    ),
+                    **_usage_totals([item]),
+                    "elapsed_seconds": (
+                        datetime.fromisoformat(item["finished_at"])
+                        - datetime.fromisoformat(item["started_at"])
+                    ).total_seconds(),
+                    "memory_active": bool((item.get("memory_mechanism") or {}).get("active")),
+                    "memory_write_success_count": int((item.get("memory_mechanism") or {}).get("write_success_count") or 0),
+                    "memory_trigger_count": int((item.get("memory_mechanism") or {}).get("trigger_count") or 0),
+                    "memory_nonempty_read_count": int((item.get("memory_mechanism") or {}).get("nonempty_read_count") or 0),
+                    "first_nonempty_read_step": (
+                        (((item.get("memory_mechanism") or {}).get("reads") or {}).get("read_events") or [{}])[0].get("step")
+                        if (((item.get("memory_mechanism") or {}).get("reads") or {}).get("read_events")) else None
+                    ),
+                    "memory_rendered_chars": int((item.get("memory_mechanism") or {}).get("rendered_chars_total") or 0),
+                    "memory_rendered_tokens": memory_token_counts[str(item["episode_id"])],
+                    "phase_switch_count": int(((item.get("memory_mechanism") or {}).get("phase") or {}).get("phase_switch_count") or 0),
+                    "frontier_eviction_count": int(((item.get("memory_mechanism") or {}).get("frontiers") or {}).get("eviction_count") or 0),
+                    "branch_eviction_count": int(((item.get("memory_mechanism") or {}).get("frontiers") or {}).get("branch_eviction_count") or 0),
+                    "model_calls_added": int((item.get("memory_mechanism") or {}).get("model_calls_added") or 0),
+                    "guard_enabled": bool((item.get("memory_mechanism") or {}).get("guard_enabled")),
+                    "action_override_count": int((item.get("memory_mechanism") or {}).get("action_override_count") or 0),
+                }
+                for item in summaries
+            ],
+            "pairwise": {
+                "A0": _a10_pairwise(summaries, "A0", pairwise_reference),
+                "A1": _a10_pairwise(summaries, "A1", pairwise_reference),
+                "reference_sha256": _sha256(pairwise_reference_path),
+            },
+            "causal_read_analysis": causal_read_analysis,
+            "productive_divergence_hypothesis_count": productive_divergence_count,
+            "performance_target_reached": performance_target,
+            "overall_verdict": final_verdict,
+        }
     _atomic_json(suite_dir / "aggregate.json", aggregate)
     checkpoint("complete")
     print(json.dumps({"suite_dir": str(suite_dir), **aggregate}, indent=2, ensure_ascii=False))

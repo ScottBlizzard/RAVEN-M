@@ -1,0 +1,141 @@
+{
+  "schema": "a10_frozen_query_set_v1",
+  "source_suite": "official_qwen_20260808T012646_c8281b8f",
+  "task_seed": 20260806,
+  "task_count": 19,
+  "records": [
+    {
+      "task_name": "BrowserMultiply",
+      "task_seed": 20260806,
+      "goal": "Open the file task.html in Downloads in the file manager; when prompted open it with Chrome. Then click the button 5 times, remember the numbers displayed, and enter their product in the form.",
+      "goal_sha256": "3a848f7058fc4f68d01926f5cb8eb5dae66cb17f63579b88f28a53a974c3d383",
+      "episode_id": "BrowserMultiply_20260806_3e2fd311"
+    },
+    {
+      "task_name": "ExpenseAddMultipleFromGallery",
+      "task_seed": 20260806,
+      "goal": "Add the expenses from expenses.jpg in Simple Gallery Pro to pro expense.",
+      "goal_sha256": "806c0dc656114592ed5bc195d95f448ce1f67a3d3fcbac2aa0b2775c3f82b5ef",
+      "episode_id": "ExpenseAddMultipleFromGallery_20260806_5a3bfad4"
+    },
+    {
+      "task_name": "ExpenseAddMultipleFromMarkor",
+      "task_seed": 20260806,
+      "goal": "Go through the transactions in my_expenses.txt in Markor. Log the reimbursable transactions in the pro expense.",
+      "goal_sha256": "114ccb0a3da6048e0e26df939f68b58aeaa0438bb8d55f5f813e4654bd3dc3f8",
+      "episode_id": "ExpenseAddMultipleFromMarkor_20260806_705f23ab"
+    },
+    {
+      "task_name": "ExpenseDeleteMultiple2",
+      "task_seed": 20260806,
+      "goal": "Delete the following expenses from pro expense: Bike Repairs, Tuition Fees, Public Transit.",
+      "goal_sha256": "9ffbdce72a934ee7d802e0ac7eb80dbe0df28540df837f4d855baabc1f4dd1c8",
+      "episode_id": "ExpenseDeleteMultiple2_20260806_0eeb0637"
+    },
+    {
+      "task_name": "MarkorCreateNoteAndSms",
+      "task_seed": 20260806,
+      "goal": "Create a new note in Markor named neat_rabbit_bS4V.md with the following text: Ignorance is bliss.. Share the entire content of the note with the phone number +14678402526 via SMS using Simple SMS Messenger",
+      "goal_sha256": "fcf368cdcedeb3a572d7d0c27cf990430faba6387cd7077d281354d5ad6976c1",
+      "episode_id": "MarkorCreateNoteAndSms_20260806_91f6e017"
+    },
+    {
+      "task_name": "MarkorMergeNotes",
+      "task_seed": 20260806,
+      "goal": "Merge the contents of Markor notes neat_rabbit_bS4V.md, bright_bear_0kSk.md and real_house_2023_01_25.txt (in the same order) into a new Markor note named 2zo4n6Ho and save it. Add a new line between the content of each note.",
+      "goal_sha256": "688e7483fb44b00e00962c6adc541a2babd67afc39b6e8108d75666fb1a453fd",
+      "episode_id": "MarkorMergeNotes_20260806_4b24e296"
+    },
+    {
+      "task_name": "MarkorTranscribeVideo",
+      "task_seed": 20260806,
+      "goal": "Transcribe the contents of video edited_clip_92_export.mp4 by watching it in VLC player (located in Download) and writing the sequence of strings shown on each frame to the text file edited_clip_92_export_transcription.txt in Markor as a comma separated list. For example, if the first frame shows the text \"edna\" and the second frame shows the text \"pineapple\", then the text file should contain only the following text: \"edna, pineapple\".",
+      "goal_sha256": "a683040f20cb606368aa7618a1092715aecc461940763516ed9677459c0a8eaa",
+      "episode_id": "MarkorTranscribeVideo_20260806_f19368f3"
+    },
+    {
+      "task_name": "OsmAndMarker",
+      "task_seed": 20260806,
+      "goal": "Add a location marker for 47.1858882, 9.5452201 in the OsmAnd maps app.",
+      "goal_sha256": "bbf12c906ef6d750292b83f8f7da9ede95aba3e1791b38a3ec7d6dfa1f1e8786",
+      "episode_id": "OsmAndMarker_20260806_2f730163"
+    },
+    {
+      "task_name": "OsmAndTrack",
+      "task_seed": 20260806,
+      "goal": "Save a track with waypoints Oberplanken, Liechtenstein, Rotenboden, Liechtenstein, Planken, Liechtenstein in the OsmAnd maps app in the same order as listed.",
+      "goal_sha256": "7c744894d0ab2c8a404402b3313f2df7d8ad031f9c00ca52d5165d6f6cbe19d9",
+      "episode_id": "OsmAndTrack_20260806_d883cd01"
+    },
+    {
+      "task_name": "RecipeAddMultipleRecipesFromImage",
+      "task_seed": 20260806,
+      "goal": "Add the recipes from recipes.jpg in Simple Gallery Pro to the Broccoli recipe app.",
+      "goal_sha256": "91acfd100d02748127379ca6ba9e7780bef9178a05d1a5fae68b65d4bb8cdfd5",
+      "episode_id": "RecipeAddMultipleRecipesFromImage_20260806_a68f8831"
+    },
+    {
+      "task_name": "RecipeAddMultipleRecipesFromMarkor",
+      "task_seed": 20260806,
+      "goal": "Add the recipes from recipes.txt in Markor to the Broccoli recipe app.",
+      "goal_sha256": "baf52bb034f0deb6093a2cc267df77c12db96bfbf511fe6fd1b9f40608865154",
+      "episode_id": "RecipeAddMultipleRecipesFromMarkor_20260806_d7fd8f16"
+    },
+    {
+      "task_name": "RecipeAddMultipleRecipesFromMarkor2",
+      "task_seed": 20260806,
+      "goal": "Add the recipes from recipes.txt in Markor that take 2 hrs to prepare into the Broccoli recipe app.",
+      "goal_sha256": "4ffe2b12e6070e57e3c4cc9dd3346676116a28bab41a387f49d686c4e1119732",
+      "episode_id": "RecipeAddMultipleRecipesFromMarkor2_20260806_b77e9af2"
+    },
+    {
+      "task_name": "RecipeDeleteMultipleRecipesWithConstraint",
+      "task_seed": 20260806,
+      "goal": "Delete the recipes from Broccoli app that use zucchini in the directions.",
+      "goal_sha256": "c1f5b920736ba875394087568db3baead27eefea9fb7d2690e9159925642a280",
+      "episode_id": "RecipeDeleteMultipleRecipesWithConstraint_20260806_ad293d85"
+    },
+    {
+      "task_name": "RetroSavePlaylist",
+      "task_seed": 20260806,
+      "goal": "Create a playlist in Retro Music titled \"Metal Mayhem 375\" with the following songs, in order: Heartbeat Away, Reflections, Endless Summer. Then export the playlist to the Downloads directory on the device.",
+      "goal_sha256": "a6c5ceb9173aa9fbe0458f9eff30412f100aa241510fb4d3f403fce8fb8c89f8",
+      "episode_id": "RetroSavePlaylist_20260806_c44b826d"
+    },
+    {
+      "task_name": "SaveCopyOfReceiptTaskEval",
+      "task_seed": 20260806,
+      "goal": "In Simple Gallery Pro, copy receipt_pretty_deer_CS0k.jpg in DCIM and save a copy with the same name in Download",
+      "goal_sha256": "0dabc605c1c35fbe6fb532611957f35e4fb1decfa0da87c35affa49a82ae8cf6",
+      "episode_id": "SaveCopyOfReceiptTaskEval_20260806_d1d528de"
+    },
+    {
+      "task_name": "SimpleCalendarAddOneEvent",
+      "task_seed": 20260806,
+      "goal": "In Simple Calendar Pro, create a calendar event on 2023-10-26 at 8h with the title 'Workshop on Project X' and the description 'We will strategize about upcoming project milestones. Let's be punctual.'. The event should last for 60 mins.",
+      "goal_sha256": "042b083d617792b26640043ba808bccb607c384c23197ab0dacade4980efaa50",
+      "episode_id": "SimpleCalendarAddOneEvent_20260806_739e8ebf"
+    },
+    {
+      "task_name": "SportsTrackerActivitiesOnDate",
+      "task_seed": 20260806,
+      "goal": "What activities did I do October 02 in the OpenTracks app? Answer with the activity type only. If there are multiple types, format your answer in a comma separated list.",
+      "goal_sha256": "bf7ad04fb8974a35dd21c2844780924c1bb1a93ce7d8ced8cde33b0a211c6868",
+      "episode_id": "SportsTrackerActivitiesOnDate_20260806_fdbba51c"
+    },
+    {
+      "task_name": "SportsTrackerTotalDistanceForCategoryOverInterval",
+      "task_seed": 20260806,
+      "goal": "What was the total distance covered for skiing activities in the OpenTracks app from October 06 to October 12 2023? Express your answer as a single number in meters rounded to the nearest integer.",
+      "goal_sha256": "be19a1427cbdde1c63151f95570c9904714de66b49aad6db5a46c7227174ef68",
+      "episode_id": "SportsTrackerTotalDistanceForCategoryOverInterval_20260806_6fba2c5e"
+    },
+    {
+      "task_name": "SportsTrackerTotalDurationForCategoryThisWeek",
+      "task_seed": 20260806,
+      "goal": "What was the total duration of mountain biking activities in the OpenTracks app this week? Assume the week starts from Monday. Express your answer in minutes as a single integer.",
+      "goal_sha256": "fc49bb408347d9fcabda35bf19c282011b8f04ff550070c623ab8f8127edf800",
+      "episode_id": "SportsTrackerTotalDurationForCategoryThisWeek_20260806_a575f564"
+    }
+  ]
+}

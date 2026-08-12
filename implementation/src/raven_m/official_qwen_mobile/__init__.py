@@ -10,6 +10,9 @@ from .protocol import (
     build_user_prompt,
     parse_official_response,
 )
+from .a10_obligation_branch_frontier import (
+    EvidenceCalibratedObligationBranchFrontierMemory,
+)
 
 __all__ = [
     "OFFICIAL_QWEN_COMMIT",
@@ -20,4 +23,5 @@ __all__ = [
     "OfficialProtocolError",
     "build_user_prompt",
     "parse_official_response",
+    "EvidenceCalibratedObligationBranchFrontierMemory",
 ]

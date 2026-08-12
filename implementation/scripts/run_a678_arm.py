@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a frozen A6-A9 runner command; execute only with --execute."""
+"""Build a frozen A6-A10 runner command; execute only with --execute."""
 
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ ANDROIDWORLD_PYTHON = (
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--arm", required=True, choices=("a6", "a7", "a8", "a8v2", "a9")
+        "--arm", required=True, choices=("a6", "a7", "a8", "a8v2", "a9", "a10")
     )
     parser.add_argument("--adb-path", required=True)
     parser.add_argument("--launch-receipt", type=Path, required=True)
@@ -52,16 +52,33 @@ def main() -> int:
     command = [
         str(ANDROIDWORLD_PYTHON),
         str(REPOSITORY_ROOT / "implementation/scripts/run_official_qwen_mobile.py"),
-        "--a678-arm", args.arm,
         "--adb-path", args.adb_path,
         "--manifest", str(REPOSITORY_ROOT / "implementation/configs/androidworld_hard_v2_instances.json"),
-        "--a678-preflight-report", str(REPOSITORY_ROOT / "evidence/a678/A678_ZERO_GENERATION_PREFLIGHT.json"),
-        "--a678-launch-receipt", str(args.launch_receipt.resolve()),
         "--url", args.url,
         "--console-port", str(args.console_port),
         "--grpc-port", str(args.grpc_port),
-        "--output-root", str(REPOSITORY_ROOT / "runs/a678_memory"),
+        "--output-root", str(REPOSITORY_ROOT / ("runs/a10_ecobf" if args.arm == "a10" else "runs/a678_memory")),
     ]
+    if args.arm == "a10":
+        command.extend(
+            [
+                "--a10-ecobf",
+                "--a10-preflight-report",
+                str(REPOSITORY_ROOT / "evidence/a10/A10_ZERO_GENERATION_PREFLIGHT.json"),
+                "--a10-launch-receipt",
+                str(args.launch_receipt.resolve()),
+            ]
+        )
+    else:
+        command.extend(
+            [
+                "--a678-arm", args.arm,
+                "--a678-preflight-report",
+                str(REPOSITORY_ROOT / "evidence/a678/A678_ZERO_GENERATION_PREFLIGHT.json"),
+                "--a678-launch-receipt",
+                str(args.launch_receipt.resolve()),
+            ]
+        )
     if args.resume_suite_dir is not None:
         command.extend(["--resume-suite-dir", str(args.resume_suite_dir.resolve())])
     if args.a7_continuation_plan is not None:

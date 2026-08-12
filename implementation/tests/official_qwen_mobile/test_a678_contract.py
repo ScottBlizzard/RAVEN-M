@@ -114,7 +114,10 @@ def test_runner_integrates_a678_without_reward_fail_fast_or_prompt_suffix() -> N
     assert "ExactVisualRevisitActionOutcomeCache(" in source
     assert "FailureAwareExactRevisitMemory(" in source
     assert "SparseRecurrenceCanaryMemory(" in source
-    assert "args.a2_verified_progress_memory or a345_scored_arm or a678_memory_arm" in source
+    assert "args.a2_verified_progress_memory" in source
+    assert "or a345_scored_arm" in source
+    assert "or a678_memory_arm" in source
+    assert "or a10_scored_arm" in source
     assert '"--a7-post-gate-diagnostic"' in source
     assert '"--a7-post-gate-remaining-diagnostic"' in source
     assert '"--a89-four-task-diagnostic-replication"' in source

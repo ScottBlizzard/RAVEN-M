@@ -1,0 +1,78 @@
+{
+  "schema": "a10_offline_trace_source_spec_v1",
+  "task_seed": 20260806,
+  "provenance": {
+    "evidence_files": {
+      "evidence/a2/A0_A1_PAIRED_REFERENCE_20260810.json": "ad0799334c887693b51e9769495d3f38055458141e3da1f66956a0db73495116",
+      "evidence/a678/A8_V2_OFFLINE_TRACE_AUDIT_2026-08-11.json": "28f0198ff3acb52aef1b4d2f379871efc79066bcaae8e01bc22504e71bef6eeb",
+      "evidence/a678/A89_INITIAL_GATE_RESULTS_2026-08-12.json": "039dd8f6237fb7b2045f7df2c53512b4b5bbdbc16bd45720bd2430ba46e946f5"
+    },
+    "suite_metadata_sha256": {
+      "a0/aggregate.json": "d80f1528073886876203576dc39c25898fd7a2c3e7abba2ed8fc9f92febc863c",
+      "a1_recipe/aggregate.json": "7a4ebaad754802fcf3350e83ca13032a16de609f2904c96c7b5ecd0efc006f51",
+      "a1_recipe/checkpoint.json": "184b3a0cd458b52bf73bdf918e953fb1db02808aff0e55aff06187ff1a006646",
+      "a1_recipe/run_signature.json": "06073ccf87c2f9f2f3c7ed4ac6cddcfe09c3dcc28122f7bbecb2b8785a7a9741",
+      "a6/aggregate.json": "a988c69a016c7a47aa367230b44ba11017f5046b41bbd65ecfdf2f5fc016a3c1",
+      "a6/checkpoint.json": "e094835bd2b697ad8d080dc9bf5d71e1fcc2d7e0bdc37a15117e9c796c41beae",
+      "a6/run_signature.json": "3c83ca9fdc171cfff913d0bde88104991e21cd0070da8c5eaf69b0b7819d52b3",
+      "a8v2_expense/checkpoint.json": "9289c5bda8426f6db69f0a75ec792782dbe00f614ebd84aded029852381733b3",
+      "a8v2_expense/run_signature.json": "0e115d29048733407c9a71904d4cc79149bacf45c4886f4175ecbcdf393046fc",
+      "a9_retro/checkpoint.json": "5652a9717c0d7379204afe8592032f080c7d7ce1bc636ffeb5684bdf48e726a5",
+      "a9_retro/run_signature.json": "5dd9c75005993d882e8dd67e8cca85f20e69bdbf1c975483d9c54a1465514c86"
+    }
+  },
+  "roles": {
+    "a0": {
+      "suite_id": "official_qwen_20260808T012646_c8281b8f",
+      "episodes": [
+        "ExpenseDeleteMultiple2_20260806_0eeb0637",
+        "RetroSavePlaylist_20260806_c44b826d",
+        "SimpleCalendarAddOneEvent_20260806_739e8ebf",
+        "SportsTrackerTotalDurationForCategoryThisWeek_20260806_a575f564",
+        "RecipeDeleteMultipleRecipesWithConstraint_20260806_ad293d85"
+      ]
+    },
+    "a1_recipe": {
+      "suite_id": "official_qwen_20260810T122419_26573d7c",
+      "episodes": [
+        "RecipeDeleteMultipleRecipesWithConstraint_20260806_5e42fb32"
+      ]
+    },
+    "a6": {
+      "suite_id": "official_qwen_20260811T035710_4b246fd9",
+      "episodes": [
+        "BrowserMultiply_20260806_a29e4eb9",
+        "ExpenseAddMultipleFromGallery_20260806_d0a46e60",
+        "ExpenseAddMultipleFromMarkor_20260806_222885ba",
+        "ExpenseDeleteMultiple2_20260806_b9572c71",
+        "MarkorCreateNoteAndSms_20260806_0d806f12",
+        "MarkorMergeNotes_20260806_87ebe9b4",
+        "MarkorTranscribeVideo_20260806_72c52c56",
+        "OsmAndMarker_20260806_984cb06d",
+        "OsmAndTrack_20260806_7b0f1f71",
+        "RecipeAddMultipleRecipesFromImage_20260806_208de610",
+        "RecipeAddMultipleRecipesFromMarkor2_20260806_49b8ce7c",
+        "RecipeAddMultipleRecipesFromMarkor_20260806_c5bac209",
+        "RecipeDeleteMultipleRecipesWithConstraint_20260806_379a5e29",
+        "RetroSavePlaylist_20260806_b2cf1c61",
+        "SaveCopyOfReceiptTaskEval_20260806_4b5581c4",
+        "SimpleCalendarAddOneEvent_20260806_6164a204",
+        "SportsTrackerActivitiesOnDate_20260806_3e23131c",
+        "SportsTrackerTotalDistanceForCategoryOverInterval_20260806_8b80e84f",
+        "SportsTrackerTotalDurationForCategoryThisWeek_20260806_cb22dbb9"
+      ]
+    },
+    "a8v2_expense": {
+      "suite_id": "official_qwen_20260811T234137_09c0ac7b",
+      "episodes": [
+        "ExpenseDeleteMultiple2_20260806_d3ed25c7"
+      ]
+    },
+    "a9_retro": {
+      "suite_id": "official_qwen_20260811T230354_8f9f65b8",
+      "episodes": [
+        "RetroSavePlaylist_20260806_a1a07e4e"
+      ]
+    }
+  }
+}
