@@ -39,6 +39,15 @@ def file_sha256(path: Path) -> str:
     return sha256(path.read_bytes()).hexdigest()
 
 
+def canonical_json_sha256(path: Path) -> str:
+    value = load_json(path)
+    return sha256(
+        json.dumps(
+            value, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+        ).encode("utf-8")
+    ).hexdigest()
+
+
 def load_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -65,9 +74,11 @@ def parse_sources(values: list[str]) -> dict[str, Path]:
 
 def _provenance_errors(spec: dict[str, Any]) -> list[str]:
     errors: list[str] = []
-    for relative, expected in ((spec.get("provenance") or {}).get("evidence_files") or {}).items():
+    for relative, expected in (
+        (spec.get("provenance") or {}).get("evidence_json_canonical_sha256") or {}
+    ).items():
         path = ROOT / str(relative)
-        if not path.is_file() or file_sha256(path) != expected:
+        if not path.is_file() or canonical_json_sha256(path) != expected:
             errors.append(f"provenance_evidence_hash_mismatch:{relative}")
     return errors
 

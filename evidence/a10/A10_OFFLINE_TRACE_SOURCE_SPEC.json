@@ -2,10 +2,10 @@
   "schema": "a10_offline_trace_source_spec_v1",
   "task_seed": 20260806,
   "provenance": {
-    "evidence_files": {
-      "evidence/a2/A0_A1_PAIRED_REFERENCE_20260810.json": "ad0799334c887693b51e9769495d3f38055458141e3da1f66956a0db73495116",
-      "evidence/a678/A8_V2_OFFLINE_TRACE_AUDIT_2026-08-11.json": "28f0198ff3acb52aef1b4d2f379871efc79066bcaae8e01bc22504e71bef6eeb",
-      "evidence/a678/A89_INITIAL_GATE_RESULTS_2026-08-12.json": "039dd8f6237fb7b2045f7df2c53512b4b5bbdbc16bd45720bd2430ba46e946f5"
+    "evidence_json_canonical_sha256": {
+      "evidence/a2/A0_A1_PAIRED_REFERENCE_20260810.json": "8ff8ad02e27ac394db330ec5f0d042482c9cb6f55794bce80db6592ea78f3b92",
+      "evidence/a678/A8_V2_OFFLINE_TRACE_AUDIT_2026-08-11.json": "af732166cafe440721d80d39a877c01d2883ac10442d9344421fdebdfbb2c5d4",
+      "evidence/a678/A89_INITIAL_GATE_RESULTS_2026-08-12.json": "0ee70434538283c11a6588759a435d911ff69a369a314658213b90125fd536f1"
     },
     "suite_metadata_sha256": {
       "a0/aggregate.json": "d80f1528073886876203576dc39c25898fd7a2c3e7abba2ed8fc9f92febc863c",
