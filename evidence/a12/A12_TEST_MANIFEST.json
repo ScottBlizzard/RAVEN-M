@@ -1,0 +1,17 @@
+{
+  "schema": "a12_test_manifest_v1",
+  "status": "implementation_tests_defined_but_scientific_protocol_invalid",
+  "test_files": [
+    "implementation/tests/official_qwen_mobile/test_a12_visual.py",
+    "implementation/tests/official_qwen_mobile/test_a12_action_family.py",
+    "implementation/tests/official_qwen_mobile/test_a12_state_machine.py",
+    "implementation/tests/official_qwen_mobile/test_a12_replay_binding.py",
+    "implementation/tests/official_qwen_mobile/test_a12_controller_integration.py",
+    "implementation/tests/official_qwen_mobile/test_a12_contract.py",
+    "implementation/tests/official_qwen_mobile/test_a12_capacity.py",
+    "implementation/tests/official_qwen_mobile/test_a12_leakage.py"
+  ],
+  "formal_replay_authorized": false,
+  "live_generation_authorized": false,
+  "generation_calls": 0
+}

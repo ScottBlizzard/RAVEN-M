@@ -1,0 +1,24 @@
+{
+  "schema": "a12_offline_trace_source_spec_v1",
+  "generation_calls": 0,
+  "trace_role": "pre_implementation_reference_feasibility_only",
+  "materialized_manifest": "evidence/a10/A10_OFFLINE_TRACE_MANIFEST.json",
+  "materialized_manifest_sha256": "07a326ff4379d51c0d5261e5bf1f28e89ed4176b2130b8fda580079e48e6ff51",
+  "frozen_reference_source": "evidence/a10/A10_OFFLINE_REPLAY_REPORT.json",
+  "frozen_reference_source_sha256": "952e7fc589c849ad5617b2e20cf36c1ebdba6477c51cfe6ebafffacacc82bbfb",
+  "expected_episode_count": 27,
+  "expected_file_count": 1668,
+  "expected_total_bytes": 442138413,
+  "materialized_trace_verification": {
+    "status": "pass",
+    "verified_file_count": 1668,
+    "verified_total_bytes": 442138413,
+    "size_or_sha256_mismatches": 0
+  },
+  "required_a6_reference_segments": 23,
+  "required_a6_qualifiable_segments": 20,
+  "builder": "implementation/scripts/build_a12_reference_segments.py",
+  "builder_must_not_import_production_memory": true,
+  "formal_replay_authorized": false,
+  "reason": "Independent raw-RGB feasibility found 16/23 loose pairwise matches and only 11/23 chronologically qualifiable reads after maturity, cooldown, one-shot, and episode caps."
+}

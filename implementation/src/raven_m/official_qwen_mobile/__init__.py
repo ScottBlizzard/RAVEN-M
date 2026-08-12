@@ -26,6 +26,7 @@ __all__ = [
     "EvidenceCalibratedObligationBranchFrontierMemory",
     "EvidenceMaturedObligationBranchFrontierMemory",
     "ConfirmedRouteContractionECOBFMemory",
+    "MinimalActionDivergenceMemory",
 ]
 
 
@@ -43,4 +44,8 @@ def __getattr__(name: str):
         )
 
         return ConfirmedRouteContractionECOBFMemory
+    if name == "MinimalActionDivergenceMemory":
+        from .a12_minimal_action_divergence import MinimalActionDivergenceMemory
+
+        return MinimalActionDivergenceMemory
     raise AttributeError(name)

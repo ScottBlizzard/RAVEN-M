@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a frozen A6-A11 runner command; execute only with --execute."""
+"""Build a frozen A6-A12 runner command; execute only with --execute."""
 
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ ANDROIDWORLD_PYTHON = (
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--arm", required=True, choices=("a6", "a7", "a8", "a8v2", "a9", "a10", "a10v2", "a11")
+        "--arm", required=True, choices=("a6", "a7", "a8", "a8v2", "a9", "a10", "a10v2", "a11", "a12")
     )
     parser.add_argument("--adb-path", required=True)
     parser.add_argument("--launch-receipt", type=Path, required=True)
@@ -40,6 +40,19 @@ def main() -> int:
         )
     if args.a7_continuation_plan is not None and args.arm != "a7":
         parser.error("A7 continuation arguments require --arm a7")
+    if args.arm == "a12":
+        preflight_path = (
+            REPOSITORY_ROOT / "evidence/a12/A12_ZERO_GENERATION_PREFLIGHT.json"
+        )
+        if preflight_path.is_file():
+            import json
+
+            preflight = json.loads(preflight_path.read_text(encoding="utf-8"))
+            if preflight.get("status") != "PASS" or preflight.get("errors") != []:
+                raise RuntimeError(
+                    "A12 live execution is forbidden: the frozen preflight is "
+                    f"{preflight.get('status')} with errors={preflight.get('errors')}"
+                )
     if args.four_task_diagnostic_replication:
         if args.arm not in {"a8v2", "a9"}:
             parser.error("four-task diagnostic replication requires a8v2 or a9")
@@ -64,6 +77,7 @@ def main() -> int:
                 "a10": "runs/a10_ecobf",
                 "a10v2": "runs/a10_v2_emobf",
                 "a11": "runs/a11_crc_ecobf",
+                "a12": "runs/a12_madm",
             }.get(args.arm, "runs/a678_memory")
         ),
     ]
@@ -94,6 +108,16 @@ def main() -> int:
                 "--a11-preflight-report",
                 str(REPOSITORY_ROOT / "evidence/a11/A11_ZERO_GENERATION_PREFLIGHT.json"),
                 "--a11-launch-receipt",
+                str(args.launch_receipt.resolve()),
+            ]
+        )
+    elif args.arm == "a12":
+        command.extend(
+            [
+                "--a12-madm",
+                "--a12-preflight-report",
+                str(REPOSITORY_ROOT / "evidence/a12/A12_ZERO_GENERATION_PREFLIGHT.json"),
+                "--a12-launch-receipt",
                 str(args.launch_receipt.resolve()),
             ]
         )

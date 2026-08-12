@@ -154,8 +154,8 @@ A7_REMAINING_AFTER_GATE_TASKS = (
 
 
 # New prospective arms are loaded only after CLI selection.  This keeps the
-# historical A10-v1 runner importable while A10-v2/A11 maintain independent
-# mechanism and contract modules, and makes it impossible to compose both
+# historical A10-v1 runner importable while A10-v2/A11/A12 maintain independent
+# mechanism and contract modules, and makes it impossible to compose multiple
 # memories in one controller.
 DUAL_ARM_SPECS = {
     "a10v2": {
@@ -180,13 +180,60 @@ DUAL_ARM_SPECS = {
         "result_key": "a11_result",
         "result_schema": "a11_crc_ecobf_result_v1",
     },
+    "a12": {
+        "flag": "a12_madm",
+        "label": "A12",
+        "memory_module": "raven_m.official_qwen_mobile.a12_minimal_action_divergence",
+        "memory_class": "MinimalActionDivergenceMemory",
+        "contract_module": "raven_m.official_qwen_mobile.a12_contract",
+        "entry_key": "a12_valid_entries",
+        "checkpoint_schema": "a12_suite_checkpoint_v1",
+        "result_key": "a12_result",
+        "result_schema": "a12_madm_result_v1",
+        "reference_segments_path": REPOSITORY_ROOT
+        / "evidence/a12/A12_REFERENCE_SEGMENTS.json",
+    },
 }
 
 
 def _contract_preservation_report(contract: object, summaries: list[dict]) -> dict:
     report = getattr(contract, "preservation_report", None)
     if report is not None:
-        return report(summaries)
+        # Prospective mechanisms expose the immutable intervention boundary in
+        # their memory audit.  Present a flat compatibility projection to arm
+        # contracts without changing the stored episode evidence.
+        projected: list[dict] = []
+        for summary in summaries:
+            audit = summary.get("memory_mechanism") or {}
+            boundary = (
+                audit.get("decision_boundary")
+                or audit.get("causal_boundary")
+                or {}
+            )
+            item = dict(summary)
+            item.setdefault(
+                "memory_added_model_calls",
+                audit.get("model_calls_added", boundary.get("model_calls_added", 0)),
+            )
+            item.setdefault(
+                "guard_enabled",
+                audit.get("guard_enabled", boundary.get("guard_enabled", False)),
+            )
+            item.setdefault(
+                "action_override_count",
+                audit.get(
+                    "action_override_count", boundary.get("action_override_count", 0)
+                ),
+            )
+            item.setdefault(
+                "forced_termination_count",
+                audit.get(
+                    "forced_termination_count",
+                    boundary.get("forced_termination_count", 0),
+                ),
+            )
+            projected.append(item)
+        return report(projected)
     task_names = tuple(
         getattr(
             contract,
@@ -231,6 +278,11 @@ def _load_dual_arm(arm: str) -> dict:
                 "PARENT_EVIDENCE_COMMIT",
                 getattr(contract, "DESIGN_PARENT_COMMIT", None),
             ),
+            "review_commit": getattr(
+                contract,
+                "REVIEW_COMMIT",
+                getattr(contract, "DESIGN_REVIEW_COMMIT", None),
+            ),
             "task_seed": contract.TASK_SEED,
             "model_realpath": getattr(contract, "MODEL_REALPATH", A10_MODEL_REALPATH),
             "preservation_report": lambda summaries: _contract_preservation_report(
@@ -246,6 +298,66 @@ def _load_dual_arm(arm: str) -> dict:
 
 def _gate_passed(report: dict) -> bool:
     return str(report.get("status")) in {"pass", "passed"}
+
+
+def _memory_protocol_violation(summary: dict) -> bool:
+    audit = summary.get("memory_mechanism") or {}
+    boundary = audit.get("decision_boundary") or audit.get("causal_boundary") or {}
+    return bool(
+        int(audit.get("model_calls_added", boundary.get("model_calls_added", 0)) or 0)
+        or bool(audit.get("guard_enabled", boundary.get("guard_enabled", False)))
+        or int(
+            audit.get(
+                "action_override_count", boundary.get("action_override_count", 0)
+            )
+            or 0
+        )
+        or int(
+            audit.get(
+                "forced_termination_count",
+                boundary.get("forced_termination_count", 0),
+            )
+            or 0
+        )
+        or bool(boundary.get("hidden_ui_used_for_decision"))
+        or bool(boundary.get("evaluator_used_for_decision"))
+        or bool(boundary.get("future_information_used"))
+    )
+
+
+def _memory_active(summary: dict) -> bool:
+    audit = summary.get("memory_mechanism") or {}
+    counters = audit.get("counters") or {}
+    return bool(
+        audit.get("active")
+        or int(audit.get("nonempty_read_count") or 0)
+        or int(counters.get("nonempty_read_count") or 0)
+        or any(bool(item.get("actual_nonempty")) for item in audit.get("read_events") or [])
+    )
+
+
+def _a12_memory_record_mismatch(summary: dict) -> bool:
+    audit = summary.get("memory_mechanism") or {}
+    steps = {
+        int(item.get("step_index", item.get("step", -1))): item
+        for item in summary.get("steps", [])
+    }
+    for event in audit.get("read_events") or []:
+        if event.get("actual_nonempty") is not True:
+            continue
+        read_step = int(event.get("read_step", event.get("step", -1)))
+        actual = str(
+            ((steps.get(read_step) or {}).get("memory_read") or {}).get(
+                "exact_injected_text"
+            )
+            or ""
+        )
+        expected = str(event.get("exact_injected_text") or "")
+        if not actual or actual != expected:
+            return True
+    return False
+
+
 def _atomic_json(path: Path, value: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(path.suffix + ".tmp")
@@ -311,7 +423,11 @@ def _usage_totals(summaries: list[dict]) -> dict[str, int]:
     return totals
 
 
-def _a10_memory_token_counts(summaries: list[dict]) -> dict[str, int]:
+def _a10_memory_token_counts(
+    summaries: list[dict],
+    *,
+    per_read: dict[tuple[str, int], int] | None = None,
+) -> dict[str, int]:
     from transformers import AutoTokenizer
 
     tokenizer = AutoTokenizer.from_pretrained(
@@ -323,7 +439,15 @@ def _a10_memory_token_counts(summaries: list[dict]) -> dict[str, int]:
         for step in summary.get("steps", []):
             text = str((step.get("memory_read") or {}).get("exact_injected_text") or "")
             if text:
-                total += len(tokenizer.encode(text, add_special_tokens=False))
+                token_count = len(tokenizer.encode(text, add_special_tokens=False))
+                total += token_count
+                if per_read is not None:
+                    per_read[
+                        (
+                            str(summary["episode_id"]),
+                            int(step.get("step_index", step.get("step", -1))),
+                        )
+                    ] = token_count
         counts[str(summary["episode_id"])] = total
     return counts
 
@@ -484,6 +608,95 @@ def _dual_causal_read_analysis(summaries: list[dict]) -> list[dict]:
                     "final_success": summary.get("success"),
                     "arm_native_event": event,
                     "analysis_class": event.get("analysis_class", "requires_arm_native_causal_review"),
+                }
+            )
+    return records
+
+
+def _a12_causal_read_analysis(
+    summaries: list[dict],
+    per_read_token_counts: dict[tuple[str, int], int] | None = None,
+) -> list[dict]:
+    """Join A12 read events, post-read watches, executed actions and reward.
+
+    Post-read fields are audit-only. Missing watch evidence is retained as
+    unknown/false and can never be promoted into productive memory evidence by
+    the result aggregator.
+    """
+    records: list[dict] = []
+    for summary in summaries:
+        audit = summary.get("memory_mechanism") or {}
+        read_events = list(audit.get("read_events") or [])
+        watches = list(audit.get("post_read_watches") or [])
+        watches_by_read = {
+            str(item.get("read_id")): item
+            for item in watches
+            if item.get("read_id")
+        }
+        steps = {
+            int(item.get("step_index", item.get("step", -1))): item
+            for item in summary.get("steps", [])
+        }
+        for event in read_events:
+            read_step = int(event.get("read_step", event.get("step", -1)))
+            watch = watches_by_read.get(str(event.get("read_id"))) or {}
+            step = steps.get(read_step) or {}
+            memory_read = step.get("memory_read") or {}
+            support_steps = [int(value) for value in event.get("support_steps") or []]
+            next_diverged = watch.get("next_action_diverged") is True
+            material_progress = watch.get("material_progress_within_2") is True
+            relapsed = watch.get("same_failed_action_within_4") is True
+            productive = bool(
+                event.get("actual_nonempty") is True
+                and next_diverged
+                and material_progress
+                and not relapsed
+                and summary.get("success") is True
+            )
+            # The controller record is the authoritative prompt-side evidence;
+            # the arm-native event remains a deterministic cross-check.
+            exact_text = memory_read.get("exact_injected_text") or event.get(
+                "exact_injected_text"
+            )
+            exact_text = str(exact_text or "")
+            records.append(
+                {
+                    "task": summary.get("task_name"),
+                    "episode_id": summary.get("episode_id"),
+                    "read_step": read_step,
+                    "failed_screen_descriptor": watch.get("failed_screen_descriptor"),
+                    "failed_action_family": watch.get("failed_action_family", event.get("action_family")),
+                    "failed_action_label": event.get("action_label"),
+                    "first_support_step": support_steps[0] if support_steps else None,
+                    "second_support_step": support_steps[1] if len(support_steps) > 1 else None,
+                    "support_count": int(event.get("support_count") or 0),
+                    "maturity_step": event.get("maturity_step"),
+                    "eligible_read_step": event.get("eligible_read_step"),
+                    "actual_nonempty": bool(event.get("actual_nonempty")),
+                    "exact_injected_text": exact_text,
+                    "rendered_sha256": sha256(exact_text.encode("utf-8")).hexdigest(),
+                    "rendered_chars": len(exact_text),
+                    "rendered_tokens": (
+                        event.get("rendered_tokens")
+                        if event.get("rendered_tokens") is not None
+                        else (per_read_token_counts or {}).get(
+                            (str(summary.get("episode_id")), read_step)
+                        )
+                    ),
+                    "next_action_step": watch.get("next_action_step"),
+                    "next_action_family": watch.get("next_action_family"),
+                    "next_action_diverged": watch.get("next_action_diverged"),
+                    "material_progress_within_2": watch.get("material_progress_within_2"),
+                    "context_loss_within_2": watch.get("context_loss_within_2"),
+                    "same_failed_action_within_4": watch.get("same_failed_action_within_4"),
+                    "episode_reward": summary.get("evaluator_reward"),
+                    "episode_success": summary.get("success"),
+                    "productive_divergence_hypothesis": productive,
+                    "analysis_class": (
+                        "trace_grounded_productive_divergence_hypothesis"
+                        if productive
+                        else "activation_without_productive_divergence"
+                    ),
                 }
             )
     return records
@@ -707,6 +920,21 @@ def main() -> None:
         help="Fresh A11 receipt bound only to its own preflight.",
     )
     parser.add_argument(
+        "--a12-madm",
+        action="store_true",
+        help="Run the independently frozen A12 Minimal Action-Divergence Memory arm.",
+    )
+    parser.add_argument(
+        "--a12-preflight-report",
+        type=Path,
+        default=REPOSITORY_ROOT / "evidence/a12/A12_ZERO_GENERATION_PREFLIGHT.json",
+    )
+    parser.add_argument(
+        "--a12-launch-receipt",
+        type=Path,
+        help="Fresh A12 receipt bound only to its own preflight and process.",
+    )
+    parser.add_argument(
         "--a678-preflight-report",
         type=Path,
         default=REPOSITORY_ROOT / "evidence/a678/A678_ZERO_GENERATION_PREFLIGHT.json",
@@ -922,6 +1150,7 @@ def main() -> None:
             args.a10_ecobf,
             args.a10_v2_emobf,
             args.a11_crc_ecobf,
+            args.a12_madm,
         )
     )
     if diagnostic_modes > 1:
@@ -930,7 +1159,7 @@ def main() -> None:
             "--evidence-qualified-progress, and --source-document-coverage "
             "--source-document-coverage-gate, --a1-working-memory, and "
             "--a2-verified-progress-memory, --a345-arm, --a678-arm, --a10-ecobf, "
-            "--a10-v2-emobf, and --a11-crc-ecobf are mutually exclusive"
+            "--a10-v2-emobf, --a11-crc-ecobf, and --a12-madm are mutually exclusive"
         )
     held_out_eligible = not bool(args.diagnostic) and not bool(
         args.held_out_ineligible_reason
@@ -938,8 +1167,17 @@ def main() -> None:
     a345_scored_arm = bool(args.a345_arm)
     a678_memory_arm = bool(args.a678_arm)
     a10_scored_arm = bool(args.a10_ecobf)
-    dual_arm_name = (
-        "a10v2" if args.a10_v2_emobf else "a11" if args.a11_crc_ecobf else None
+    dual_arm_name = next(
+        (
+            name
+            for name, selected in (
+                ("a10v2", args.a10_v2_emobf),
+                ("a11", args.a11_crc_ecobf),
+                ("a12", args.a12_madm),
+            )
+            if selected
+        ),
+        None,
     )
     dual_arm = _load_dual_arm(dual_arm_name) if dual_arm_name else None
     dual_scored_arm = dual_arm is not None
@@ -948,6 +1186,8 @@ def main() -> None:
         if dual_arm_name == "a10v2"
         else args.a11_preflight_report
         if dual_arm_name == "a11"
+        else args.a12_preflight_report
+        if dual_arm_name == "a12"
         else None
     )
     dual_receipt_path = (
@@ -955,6 +1195,8 @@ def main() -> None:
         if dual_arm_name == "a10v2"
         else args.a11_launch_receipt
         if dual_arm_name == "a11"
+        else args.a12_launch_receipt
+        if dual_arm_name == "a12"
         else None
     )
     dual_preflight: dict | None = None
@@ -1410,13 +1652,20 @@ def main() -> None:
                 "experiment_id": dual_arm["experiment_id"],
                 "prospective_config_sha256": _sha256(dual_arm["config_path"]),
                 "prospective_preflight_sha256": _sha256(dual_preflight_path),
-                "prospective_source_freeze_sha256": dual_preflight["source_freeze_sha256"],
+                "prospective_source_freeze_sha256": dual_preflight.get(
+                    "source_freeze_sha256",
+                    dual_preflight.get("source_freeze_payload_sha256"),
+                ),
                 "prospective_live_server_stable_identity": {
                     "served_model_id": dual_launch["served_model_id"],
                     "model_realpath": dual_launch["model_realpath"],
                     "model_manifest_sha256": dual_launch["model_manifest_sha256"],
                     "port": dual_launch["port"],
-                    "packages": dual_launch["packages"],
+                    "packages": dual_launch.get("packages") or {
+                        "vllm": dual_launch.get("vllm_version"),
+                        "torch": dual_launch.get("torch_version"),
+                        "transformers": dual_launch.get("transformers_version"),
+                    },
                 },
                 "task_order": "blocking_A0_4_task_gate_then_frozen_manifest_remainder",
                 "reward_fail_fast": True,
@@ -1585,6 +1834,13 @@ def main() -> None:
                     f"{dual_arm['label'] if dual_scored_arm else 'A10' if a10_scored_arm else str(args.a678_arm).upper()} capability-preservation failure is terminal and cannot be resumed"
                 )
             if dual_scored_arm:
+                if (
+                    dual_arm_name == "a12"
+                    and checkpoint.get("status") == "infrastructure_incomplete"
+                ):
+                    raise RuntimeError(
+                        "A12 exceeded the frozen infrastructure-invalid attempt limit; resume is forbidden"
+                    )
                 summaries, dual_valid_entries, invalid_attempts = _load_dual_arm_checkpoint(
                     suite_dir=suite_dir,
                     checkpoint=checkpoint,
@@ -1836,7 +2092,7 @@ def main() -> None:
                 )
             elif dual_scored_arm:
                 # A fresh instance per episode; state is never shared across
-                # tasks and the two prospective arms can never be composed.
+                # tasks and prospective arms can never be composed.
                 a678_memory = dual_arm["memory_class_object"]()
             controller = OfficialQwenMobileController(
                 client,
@@ -1999,17 +2255,35 @@ def main() -> None:
             if not _episode_infrastructure_valid(
                 result, require_single_transport=(a10_scored_arm or dual_scored_arm)
             ):
-                invalid_attempts.append(
-                    {
-                        "episode_id": episode_id,
-                        "task_name": task_name,
-                        "seed": episode_seed,
-                        "reason": "controller_or_lifecycle_invalid",
-                        "error": result.get("error"),
-                        "lifecycle_errors": result.get("lifecycle_errors"),
-                    }
+                invalid_attempt = {
+                    "episode_id": episode_id,
+                    "task_name": task_name,
+                    "seed": episode_seed,
+                    "reason": "controller_or_lifecycle_invalid",
+                    "error": result.get("error"),
+                    "lifecycle_errors": result.get("lifecycle_errors"),
+                }
+                invalid_attempts.append(invalid_attempt)
+                same_task_invalid_count = sum(
+                    int(
+                        str(attempt.get("task_name")) == task_name
+                        and int(attempt.get("seed", -1)) == episode_seed
+                    )
+                    for attempt in invalid_attempts
                 )
-                checkpoint("stopped_invalid_episode")
+                attempt_limit_exceeded = bool(
+                    dual_arm_name == "a12" and same_task_invalid_count > 2
+                )
+                checkpoint(
+                    "infrastructure_incomplete"
+                    if attempt_limit_exceeded
+                    else "stopped_invalid_episode"
+                )
+                if attempt_limit_exceeded:
+                    raise RuntimeError(
+                        f"A12 task {task_name} produced a third infrastructure-invalid "
+                        "attempt; the suite is terminally infrastructure-incomplete"
+                    )
                 raise RuntimeError(
                     f"Scored memory arm stopped after infrastructure-invalid episode {episode_id}; "
                     "resume will rerun only this task"
@@ -2084,7 +2358,16 @@ def main() -> None:
             if (
                 (a7_gated_continuation or prospective_gate_arm)
                 and task_name in A0_PRESERVATION_TASKS
-                and not bool(result.get("success"))
+                and (
+                    not bool(result.get("success"))
+                    or (
+                        dual_arm_name == "a12"
+                        and (
+                            _memory_protocol_violation(result)
+                            or _a12_memory_record_mismatch(result)
+                        )
+                    )
+                )
             ):
                 checkpoint("stopped_capability_gate_failure")
                 raise RuntimeError(
@@ -2106,7 +2389,11 @@ def main() -> None:
             invalid_attempts.append(
                 {"reason": "suite_lifecycle_error", "error": lifecycle_error}
             )
-            checkpoint("stopped_invalid_episode")
+            checkpoint(
+                "infrastructure_incomplete"
+                if dual_arm_name == "a12"
+                else "stopped_invalid_episode"
+            )
             if active_exception is None:
                 raise
         else:
@@ -2188,7 +2475,11 @@ def main() -> None:
             lifecycle_errors=suite_lifecycle_errors,
         )
         if closure_errors:
-            checkpoint("stopped_incomplete_or_invalid")
+            checkpoint(
+                "infrastructure_incomplete"
+                if dual_arm_name == "a12"
+                else "stopped_incomplete_or_invalid"
+            )
             raise RuntimeError(
                 f"{dual_arm['label']} cannot aggregate: {closure_errors}"
             )
@@ -2405,6 +2696,15 @@ def main() -> None:
             if dual_scored_arm
             else A10_PARENT_EVIDENCE_COMMIT
         )
+        result_review_commit = (
+            dual_arm.get("review_commit") or result_parent_commit
+            if dual_scored_arm
+            else None
+        )
+        result_source_freeze_sha256 = result_preflight.get(
+            "source_freeze_sha256",
+            result_preflight.get("source_freeze_payload_sha256"),
+        )
         result_task_seed = dual_arm["task_seed"] if dual_scored_arm else A10_TASK_SEED
         implementation_commit = next(
             (
@@ -2421,7 +2721,10 @@ def main() -> None:
         )
         reward_sum = sum(float(item.get("evaluator_reward") or 0.0) for item in summaries)
         success_count = sum(int(bool(item.get("success"))) for item in summaries)
-        memory_token_counts = _a10_memory_token_counts(summaries)
+        per_read_token_counts: dict[tuple[str, int], int] = {}
+        memory_token_counts = _a10_memory_token_counts(
+            summaries, per_read=per_read_token_counts
+        )
         manifest_payload = json.loads(args.manifest.read_text(encoding="utf-8"))
         task_ids = {
             (str(item["task_class"]), int(item["task_seed"])): str(item["task_id"])
@@ -2437,11 +2740,13 @@ def main() -> None:
             for item in summaries
         )
         active_success_count = sum(
-            int(bool(item.get("success")) and bool((item.get("memory_mechanism") or {}).get("active")))
+            int(bool(item.get("success")) and _memory_active(item))
             for item in summaries
         )
         causal_read_analysis = (
-            _dual_causal_read_analysis(summaries)
+            _a12_causal_read_analysis(summaries, per_read_token_counts)
+            if dual_arm_name == "a12"
+            else _dual_causal_read_analysis(summaries)
             if dual_scored_arm
             else _a10_causal_read_analysis(summaries)
         )
@@ -2450,22 +2755,41 @@ def main() -> None:
             == "trace_grounded_productive_divergence_hypothesis"
             for item in causal_read_analysis
         )
-        protocol_boundary_invalid = bool(
-            any(
-                int((item.get("memory_mechanism") or {}).get("model_calls_added") or 0)
-                or bool((item.get("memory_mechanism") or {}).get("guard_enabled"))
-                or int((item.get("memory_mechanism") or {}).get("action_override_count") or 0)
-                or int((item.get("memory_mechanism") or {}).get("forced_termination_count") or 0)
-                or bool(((item.get("memory_mechanism") or {}).get("decision_boundary") or {}).get("hidden_ui_used_for_decision"))
-                or bool(((item.get("memory_mechanism") or {}).get("decision_boundary") or {}).get("evaluator_used_for_decision"))
-                for item in summaries
+        protocol_boundary_invalid = any(
+            _memory_protocol_violation(item) for item in summaries
+        ) or bool(
+            dual_arm_name == "a12"
+            and any(_a12_memory_record_mismatch(item) for item in summaries)
+        )
+        usage_totals = _usage_totals(summaries)
+        executed_action_total = sum(
+            int(item.get("executed_action_count") or 0) for item in summaries
+        )
+        model_call_total = sum(int(item.get("model_call_count") or 0) for item in summaries)
+        a12_nonempty_read_total = sum(
+            int(
+                (item.get("memory_mechanism") or {}).get("nonempty_read_count")
+                or (
+                    (item.get("memory_mechanism") or {}).get("counters") or {}
+                ).get("nonempty_read_count")
+                or 0
             )
+            for item in summaries
+        )
+        a12_rendered_token_total = sum(memory_token_counts.values())
+        a12_cost_target = bool(
+            model_call_total < 603
+            and executed_action_total < 596
+            and usage_totals["total_tokens"] < 3_464_267
+            and a12_nonempty_read_total <= 95
+            and a12_rendered_token_total <= 9_500
         )
         performance_target = bool(
             len(summaries) == 19
             and success_count >= 6
             and reward_sum > 5.5
             and _gate_passed(result_gate)
+            and (dual_arm_name != "a12" or a12_cost_target)
         )
         if dual_arm_name == "a10v2":
             final_verdict = (
@@ -2485,6 +2809,15 @@ def main() -> None:
                 if active_success_count < 1 or productive_divergence_count < 1
                 else "A11_OVERALL_PASS"
             )
+        elif dual_arm_name == "a12":
+            final_verdict = (
+                "A12_SUITE_INFRASTRUCTURE_INCOMPLETE" if closure_errors
+                else "A12_PROTOCOL_INVALID" if protocol_boundary_invalid
+                else "A12_SCIENTIFIC_FAILURE" if not performance_target
+                else "A12_PERFORMANCE_PASS_MECHANISM_EVIDENCE_FAIL"
+                if active_success_count < 1 or productive_divergence_count < 1
+                else "A12_OVERALL_PASS"
+            )
         elif closure_errors:
             final_verdict = f"{result_prefix} INFRASTRUCTURE INVALID"
         elif protocol_boundary_invalid:
@@ -2502,7 +2835,7 @@ def main() -> None:
             "experiment_id": run_signature["experiment_id"],
             "parent_evidence_commit": result_parent_commit,
             "implementation_commit": implementation_commit,
-            "source_freeze_sha256": result_preflight["source_freeze_sha256"],
+            "source_freeze_sha256": result_source_freeze_sha256,
             "preflight_sha256": _sha256(result_preflight_path),
             "live_receipt_sha256": _sha256(result_receipt_path),
             "live_receipt_sha256s": aggregate["live_server_receipt_sha256s"],
@@ -2655,7 +2988,7 @@ def main() -> None:
                 row["route_eviction_count"] = audit_metric(
                     audit, ("routes", "eviction_count")
                 )
-                boundary = audit.get("decision_boundary") or {}
+                boundary = audit.get("decision_boundary") or audit.get("causal_boundary") or {}
                 row["forced_termination_count"] = int(boundary.get("forced_termination_count") or 0)
                 row["hidden_ui_used"] = bool(boundary.get("hidden_ui_used_for_decision"))
                 row["evaluator_used"] = bool(boundary.get("evaluator_used_for_decision"))
@@ -2726,7 +3059,7 @@ def main() -> None:
                         "implementation_commit": implementation_commit,
                         "mechanism_id": run_signature["method"],
                         "experiment_id": run_signature["experiment_id"],
-                        "source_freeze_sha256": result_preflight["source_freeze_sha256"],
+                        "source_freeze_sha256": result_source_freeze_sha256,
                         "preflight_sha256": _sha256(result_preflight_path),
                         "live_receipt_chain": aggregate["live_server_receipt_sha256s"],
                     },
@@ -2764,7 +3097,7 @@ def main() -> None:
                     "tasks": task_rows,
                     "errors": [],
                 }
-            else:
+            elif dual_arm_name == "a11":
                 common_memory.update(
                     {
                         "provisional_route_count": total_metric(
@@ -2789,7 +3122,7 @@ def main() -> None:
                     "experiment_id": run_signature["experiment_id"],
                     "parent_evidence_commit": result_parent_commit,
                     "implementation_commit": implementation_commit,
-                    "source_freeze_sha256": result_preflight["source_freeze_sha256"],
+                    "source_freeze_sha256": result_source_freeze_sha256,
                     "preflight_sha256": _sha256(result_preflight_path),
                     "live_receipt_sha256": _sha256(result_receipt_path),
                     "historical_a10v1_report_sha256": _sha256(historical_a10v1),
@@ -2812,6 +3145,194 @@ def main() -> None:
                     "invalid_attempts": invalid_attempts,
                     "causal_read_analysis": causal_read_analysis,
                     "overall_verdict": final_verdict,
+                    "errors": [],
+                }
+            else:
+                for row, summary in zip(task_rows, summaries, strict=True):
+                    audit = summary.get("memory_mechanism") or {}
+                    counters = audit.get("counters") or {}
+                    boundary = audit.get("causal_boundary") or {}
+                    episode_id = str(summary.get("episode_id"))
+                    episode_reads = [
+                        item
+                        for item in causal_read_analysis
+                        if str(item.get("episode_id")) == episode_id
+                    ]
+                    row.update(
+                        {
+                            "resolves_invalid_episode_ids": list(
+                                summary.get("resolves_invalid_episode_ids") or []
+                            ),
+                            "first_support_count": int(counters.get("support_created_count") or 0),
+                            "candidate_matured_count": int(counters.get("candidate_matured_count") or 0),
+                            "eligible_candidate_count": int(counters.get("eligible_candidate_count") or 0),
+                            "actual_nonempty_read_count": int(audit.get("nonempty_read_count") or counters.get("nonempty_read_count") or 0),
+                            "first_nonempty_read_step": min(
+                                [
+                                    int(event.get("read_step", -1))
+                                    for event in audit.get("read_events") or []
+                                    if event.get("actual_nonempty") is True
+                                ]
+                                or [None],
+                                key=lambda value: (
+                                    float("inf") if value is None else value
+                                ),
+                            ),
+                            "rendered_chars": int(
+                                audit.get("rendered_chars_total")
+                                or sum(
+                                    int(event.get("rendered_chars") or 0)
+                                    for event in audit.get("read_events") or []
+                                )
+                            ),
+                            "rendered_tokens": memory_token_counts[episode_id],
+                            "context_reset_count": int(counters.get("context_loss_count") or 0)
+                            + int(counters.get("material_progress_reset_count") or 0),
+                            "cooldown_suppressed_count": int(counters.get("cooldown_suppressed_count") or 0),
+                            "cap_suppressed_count": int(counters.get("cap_suppressed_count") or 0),
+                            "one_shot_suppressed_count": int(counters.get("one_shot_suppressed_count") or 0),
+                            "next_action_divergence_count": sum(item.get("next_action_diverged") is True for item in episode_reads),
+                            "material_progress_after_read_count": sum(item.get("material_progress_within_2") is True for item in episode_reads),
+                            "same_failed_action_relapse_count": sum(item.get("same_failed_action_within_4") is True for item in episode_reads),
+                            "model_calls_added": int(
+                                audit.get("model_calls_added")
+                                or boundary.get("model_calls_added")
+                                or 0
+                            ),
+                            "guard_enabled": bool(
+                                audit.get("guard_enabled")
+                                or boundary.get("guard_enabled")
+                            ),
+                            "action_override_count": int(
+                                audit.get("action_override_count")
+                                or boundary.get("action_override_count")
+                                or 0
+                            ),
+                            "forced_termination_count": int(
+                                audit.get("forced_termination_count")
+                                or boundary.get("forced_termination_count")
+                                or 0
+                            ),
+                            "hidden_ui_used": bool(
+                                boundary.get("hidden_ui_used_for_decision")
+                            ),
+                            "evaluator_used": bool(
+                                boundary.get("evaluator_used_for_decision")
+                            ),
+                            "future_used": bool(
+                                boundary.get("future_information_used")
+                            ),
+                        }
+                    )
+
+                successful_active = [
+                    str(item["episode_id"])
+                    for item in summaries
+                    if item.get("success") and _memory_active(item)
+                ]
+                a12_memory = {
+                    "first_support_count": total_metric(("counters", "support_created_count")),
+                    "candidate_matured_count": total_metric(("counters", "candidate_matured_count")),
+                    "eligible_candidate_count": total_metric(("counters", "eligible_candidate_count")),
+                    "actual_nonempty_read_count": sum(
+                        int(
+                            (item.get("memory_mechanism") or {}).get("nonempty_read_count")
+                            or ((item.get("memory_mechanism") or {}).get("counters") or {}).get("nonempty_read_count")
+                            or 0
+                        )
+                        for item in summaries
+                    ),
+                    "context_reset_count": total_metric(("counters", "context_loss_count"))
+                    + total_metric(("counters", "material_progress_reset_count")),
+                    "cooldown_suppressed_count": total_metric(("counters", "cooldown_suppressed_count")),
+                    "cap_suppressed_count": total_metric(("counters", "cap_suppressed_count")),
+                    "one_shot_suppressed_count": total_metric(("counters", "one_shot_suppressed_count")),
+                    "rendered_chars_total": sum(
+                        int(
+                            (item.get("memory_mechanism") or {}).get("rendered_chars_total")
+                            or sum(
+                                int(event.get("rendered_chars") or 0)
+                                for event in (item.get("memory_mechanism") or {}).get("read_events") or []
+                            )
+                        )
+                        for item in summaries
+                    ),
+                    "rendered_tokens_total": a12_rendered_token_total,
+                    "successful_active_memory_episodes": successful_active,
+                    "productive_divergence_count": productive_divergence_count,
+                    "model_calls_added": sum(
+                        int(
+                            (item.get("memory_mechanism") or {}).get("model_calls_added")
+                            or ((item.get("memory_mechanism") or {}).get("causal_boundary") or {}).get("model_calls_added")
+                            or 0
+                        )
+                        for item in summaries
+                    ),
+                    "guard_enabled": any(
+                        bool(
+                            (item.get("memory_mechanism") or {}).get("guard_enabled")
+                            or ((item.get("memory_mechanism") or {}).get("causal_boundary") or {}).get("guard_enabled")
+                        )
+                        for item in summaries
+                    ),
+                    "action_override_count": sum(
+                        int(
+                            (item.get("memory_mechanism") or {}).get("action_override_count")
+                            or ((item.get("memory_mechanism") or {}).get("causal_boundary") or {}).get("action_override_count")
+                            or 0
+                        )
+                        for item in summaries
+                    ),
+                    "forced_termination_count": sum(
+                        int(
+                            (item.get("memory_mechanism") or {}).get("forced_termination_count")
+                            or ((item.get("memory_mechanism") or {}).get("causal_boundary") or {}).get("forced_termination_count")
+                            or 0
+                        )
+                        for item in summaries
+                    ),
+                }
+                aggregate[result_key] = {
+                    "schema": result_schema,
+                    "status": final_verdict,
+                    "identity": {
+                        "mechanism_id": run_signature["method"],
+                        "experiment_id": run_signature["experiment_id"],
+                        "review_commit": result_review_commit,
+                        "implementation_commit": implementation_commit,
+                        "source_freeze_payload_sha256": result_preflight.get("source_freeze_payload_sha256", result_preflight.get("source_freeze_sha256")),
+                        "reference_segments_sha256": _sha256(
+                            dual_arm["reference_segments_path"]
+                        ),
+                        "offline_replay_sha256": result_preflight.get("offline_replay_sha256"),
+                        "preflight_sha256": _sha256(result_preflight_path),
+                        "live_receipt_chain": aggregate["live_server_receipt_sha256s"],
+                    },
+                    "benchmark": {
+                        "task_seed": result_task_seed,
+                        "generation_seed": args.generation_seed,
+                        "valid_episode_count": len(summaries),
+                        "invalid_attempt_count": len(invalid_attempts),
+                        "exact_order": True,
+                    },
+                    "gate": {
+                        "status": result_gate.get("status"),
+                        "success_count": int(result_gate.get("success_count") or 0),
+                        "required": int(result_gate.get("required") or 4),
+                        "memory_active_success_count": sum(
+                            int(bool(item.get("success")) and _memory_active(item))
+                            for item in summaries[:4]
+                        ),
+                    },
+                    "performance": base_result["summary"],
+                    "memory": a12_memory,
+                    "pairwise": {
+                        "versus_a0": base_result["pairwise"]["A0"],
+                        "versus_a1": base_result["pairwise"]["A1"],
+                    },
+                    "episodes": task_rows,
+                    "invalid_attempts": invalid_attempts,
+                    "read_causal_records": causal_read_analysis,
                     "errors": [],
                 }
     _atomic_json(suite_dir / "aggregate.json", aggregate)

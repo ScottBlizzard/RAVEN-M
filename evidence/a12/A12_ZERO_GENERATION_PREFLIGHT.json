@@ -1,0 +1,34 @@
+{
+  "schema": "a12_zero_generation_preflight_v1",
+  "status": "PROTOCOL_INVALID",
+  "verdict": "A12_PROTOCOL_INVALID",
+  "mechanism_id": "a12_minimal_action_divergence_memory_v1",
+  "experiment_id": "A12_MADM_QWEN3VL32B_AW_HARD_T20260806_G3407_V1",
+  "review_commit": "ee30db3692bd7797722b3ea29a70266eb6256c7e",
+  "implementation_commit": null,
+  "source_freeze_payload_sha256": null,
+  "offline_replay_sha256": null,
+  "generation_calls": 0,
+  "live_generation_authorized": false,
+  "formal_replay_executed": false,
+  "reference_freeze": {
+    "path": "evidence/a12/A12_REFERENCE_SEGMENTS.json",
+    "status": "protocol_invalid",
+    "frozen_reference_segment_count": 23,
+    "pairwise_support_valid_segment_count": 16,
+    "independently_valid_segment_count": 11,
+    "theoretical_max_after_chronology_cooldown_one_shot_and_cap": 11,
+    "required_qualifiable_segment_count": 20
+  },
+  "materialized_trace_verification": {
+    "status": "pass",
+    "verified_file_count": 1668,
+    "verified_total_bytes": 442138413,
+    "size_or_sha256_mismatches": 0
+  },
+  "errors": [
+    "frozen_a6_reference_segments_not_all_independently_valid",
+    "a12_theoretical_max_qualifiable_segments_below_20"
+  ],
+  "stop_rule": "Do not continue to formal replay, server qualification, receipt issuance, or GPU generation."
+}
