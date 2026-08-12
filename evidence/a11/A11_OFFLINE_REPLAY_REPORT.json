@@ -1,6 +1,6 @@
 {
-  "a6_qualification_rate": 0.6956521739130435,
-  "a6_qualified_segments": 16,
+  "a6_qualification_rate": 0.21739130434782608,
+  "a6_qualified_segments": 5,
   "a6_qualifying_segments": 23,
   "competent_sparse_gate": {
     "errors": [],
@@ -116,7 +116,7 @@
       "rendered_chars": 346,
       "replayed_actions": 17,
       "role": "a0",
-      "serialized_audit_bytes": 60743,
+      "serialized_audit_bytes": 35858,
       "task_name": "ExpenseDeleteMultiple2"
     },
     {
@@ -159,7 +159,7 @@
       "rendered_chars": 0,
       "replayed_actions": 31,
       "role": "a0",
-      "serialized_audit_bytes": 78445,
+      "serialized_audit_bytes": 46217,
       "task_name": "RetroSavePlaylist"
     },
     {
@@ -202,7 +202,7 @@
       "rendered_chars": 0,
       "replayed_actions": 16,
       "role": "a0",
-      "serialized_audit_bytes": 48800,
+      "serialized_audit_bytes": 27383,
       "task_name": "SimpleCalendarAddOneEvent"
     },
     {
@@ -245,7 +245,7 @@
       "rendered_chars": 0,
       "replayed_actions": 3,
       "role": "a0",
-      "serialized_audit_bytes": 14928,
+      "serialized_audit_bytes": 9163,
       "task_name": "SportsTrackerTotalDurationForCategoryThisWeek"
     },
     {
@@ -288,7 +288,7 @@
       "rendered_chars": 0,
       "replayed_actions": 14,
       "role": "a0",
-      "serialized_audit_bytes": 40589,
+      "serialized_audit_bytes": 24085,
       "task_name": "RecipeDeleteMultipleRecipesWithConstraint"
     },
     {
@@ -331,7 +331,7 @@
       "rendered_chars": 0,
       "replayed_actions": 25,
       "role": "a1_recipe",
-      "serialized_audit_bytes": 67241,
+      "serialized_audit_bytes": 39028,
       "task_name": "RecipeDeleteMultipleRecipesWithConstraint"
     },
     {
@@ -654,7 +654,7 @@
       "rendered_chars": 706,
       "replayed_actions": 22,
       "role": "a6",
-      "serialized_audit_bytes": 58522,
+      "serialized_audit_bytes": 38264,
       "task_name": "BrowserMultiply"
     },
     {
@@ -1138,7 +1138,7 @@
       "rendered_chars": 694,
       "replayed_actions": 60,
       "role": "a6",
-      "serialized_audit_bytes": 74305,
+      "serialized_audit_bytes": 38785,
       "task_name": "ExpenseAddMultipleFromGallery"
     },
     {
@@ -1181,7 +1181,7 @@
       "rendered_chars": 0,
       "replayed_actions": 8,
       "role": "a6",
-      "serialized_audit_bytes": 29082,
+      "serialized_audit_bytes": 15435,
       "task_name": "ExpenseAddMultipleFromMarkor"
     },
     {
@@ -1230,7 +1230,7 @@
       "rendered_chars": 0,
       "replayed_actions": 34,
       "role": "a6",
-      "serialized_audit_bytes": 53116,
+      "serialized_audit_bytes": 28546,
       "task_name": "ExpenseDeleteMultiple2"
     },
     {
@@ -1273,7 +1273,7 @@
       "rendered_chars": 0,
       "replayed_actions": 18,
       "role": "a6",
-      "serialized_audit_bytes": 53158,
+      "serialized_audit_bytes": 28626,
       "task_name": "MarkorCreateNoteAndSms"
     },
     {
@@ -1386,7 +1386,7 @@
       "rendered_chars": 346,
       "replayed_actions": 45,
       "role": "a6",
-      "serialized_audit_bytes": 81920,
+      "serialized_audit_bytes": 47153,
       "task_name": "MarkorMergeNotes"
     },
     {
@@ -1429,7 +1429,7 @@
       "rendered_chars": 0,
       "replayed_actions": 20,
       "role": "a6",
-      "serialized_audit_bytes": 44390,
+      "serialized_audit_bytes": 22666,
       "task_name": "MarkorTranscribeVideo"
     },
     {
@@ -1564,7 +1564,7 @@
       "rendered_chars": 350,
       "replayed_actions": 20,
       "role": "a6",
-      "serialized_audit_bytes": 55676,
+      "serialized_audit_bytes": 32402,
       "task_name": "OsmAndMarker"
     },
     {
@@ -2426,7 +2426,7 @@
       "rendered_chars": 676,
       "replayed_actions": 120,
       "role": "a6",
-      "serialized_audit_bytes": 82619,
+      "serialized_audit_bytes": 42187,
       "task_name": "OsmAndTrack"
     },
     {
@@ -2758,7 +2758,7 @@
       "rendered_chars": 694,
       "replayed_actions": 60,
       "role": "a6",
-      "serialized_audit_bytes": 53976,
+      "serialized_audit_bytes": 30956,
       "task_name": "RecipeAddMultipleRecipesFromImage"
     },
     {
@@ -2801,7 +2801,7 @@
       "rendered_chars": 0,
       "replayed_actions": 7,
       "role": "a6",
-      "serialized_audit_bytes": 21352,
+      "serialized_audit_bytes": 11585,
       "task_name": "RecipeAddMultipleRecipesFromMarkor2"
     },
     {
@@ -3037,7 +3037,7 @@
       "rendered_chars": 694,
       "replayed_actions": 60,
       "role": "a6",
-      "serialized_audit_bytes": 74889,
+      "serialized_audit_bytes": 40614,
       "task_name": "RecipeAddMultipleRecipesFromMarkor"
     },
     {
@@ -3147,7 +3147,7 @@
       "rendered_chars": 362,
       "replayed_actions": 31,
       "role": "a6",
-      "serialized_audit_bytes": 60673,
+      "serialized_audit_bytes": 35338,
       "task_name": "RecipeDeleteMultipleRecipesWithConstraint"
     },
     {
@@ -3348,7 +3348,7 @@
       "rendered_chars": 706,
       "replayed_actions": 50,
       "role": "a6",
-      "serialized_audit_bytes": 77959,
+      "serialized_audit_bytes": 41442,
       "task_name": "RetroSavePlaylist"
     },
     {
@@ -3454,7 +3454,7 @@
       "rendered_chars": 333,
       "replayed_actions": 16,
       "role": "a6",
-      "serialized_audit_bytes": 40139,
+      "serialized_audit_bytes": 20910,
       "task_name": "SaveCopyOfReceiptTaskEval"
     },
     {
@@ -3621,7 +3621,7 @@
       "rendered_chars": 728,
       "replayed_actions": 34,
       "role": "a6",
-      "serialized_audit_bytes": 78922,
+      "serialized_audit_bytes": 43867,
       "task_name": "SimpleCalendarAddOneEvent"
     },
     {
@@ -3664,7 +3664,7 @@
       "rendered_chars": 0,
       "replayed_actions": 6,
       "role": "a6",
-      "serialized_audit_bytes": 26572,
+      "serialized_audit_bytes": 14341,
       "task_name": "SportsTrackerActivitiesOnDate"
     },
     {
@@ -3707,7 +3707,7 @@
       "rendered_chars": 0,
       "replayed_actions": 8,
       "role": "a6",
-      "serialized_audit_bytes": 29863,
+      "serialized_audit_bytes": 15636,
       "task_name": "SportsTrackerTotalDistanceForCategoryOverInterval"
     },
     {
@@ -3750,7 +3750,7 @@
       "rendered_chars": 0,
       "replayed_actions": 6,
       "role": "a6",
-      "serialized_audit_bytes": 23361,
+      "serialized_audit_bytes": 11784,
       "task_name": "SportsTrackerTotalDurationForCategoryThisWeek"
     },
     {
@@ -3966,7 +3966,7 @@
       "rendered_chars": 704,
       "replayed_actions": 34,
       "role": "a8v2_expense",
-      "serialized_audit_bytes": 51757,
+      "serialized_audit_bytes": 29456,
       "task_name": "ExpenseDeleteMultiple2"
     },
     {
@@ -4090,17 +4090,19 @@
       "rendered_chars": 366,
       "replayed_actions": 50,
       "role": "a9_retro",
-      "serialized_audit_bytes": 83724,
+      "serialized_audit_bytes": 47985,
       "task_name": "RetroSavePlaylist"
     }
   ],
   "errors": [
-    "a6_confirmed_segment_timing_gate_failed"
+    "a6_confirmed_segment_timing_gate_failed",
+    "a8v2_expense_independent_segment_gate_failed",
+    "a9_retro_independent_segment_gate_failed"
   ],
   "generation_calls": 0,
   "manifest_sha256": "07a326ff4379d51c0d5261e5bf1f28e89ed4176b2130b8fda580079e48e6ff51",
-  "mechanism_source_sha256": "9e6f8c83e6eb6e4233ab4bf276735932c3983c6f80994efb4128004442d898b5",
-  "replay_source_sha256": "6046d861c86ca291818493dc59ac4d63df9efaf17aa02ddf3f3fefe96b108f4e",
+  "mechanism_source_sha256": "19cb0a80b9cdd1fac8a857288dd4a7cebbb68dad299d6ea08f88f9473129c598",
+  "replay_source_sha256": "73dcb257020bb3e445849a124f2536e308ff9148330cc3dddc692178e7a2898e",
   "schema": "a11_offline_replay_report_v1",
   "source_spec_sha256": "febf1fcdd76907be17c1b9d6208e24c9a66a6efbecc35b2bd605a1fc1a59cffa",
   "status": "fail",
