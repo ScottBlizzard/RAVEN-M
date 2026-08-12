@@ -1689,18 +1689,76 @@ class ConfirmedRouteContractionECOBFMemory:
             value = asdict(candidate)
             value["expected_descriptor"] = _descriptor_audit(candidate.expected_descriptor)
             candidates.append(value)
+        # Full raw evidence remains available in the bounded runtime objects and
+        # hashed receipts.  The audit is intentionally a compact provenance
+        # projection so every simultaneous legal capacity state stays <=128KiB.
+        compact_frontiers = [
+            {
+                "frontier_id": item["frontier_id"],
+                "phase_id": item["phase_id"],
+                "item_open_mask": item["item_open_mask"],
+                "constraint_mask": item["constraint_mask"],
+                "first_step": item["first_step"],
+                "last_visit_step": item["last_visit_step"],
+                "visit_count": item["visit_count"],
+                "visual_exemplar_sha256s": [entry["exact_sha256"] for entry in item["visual_exemplars"]],
+                "branches": [
+                    {
+                        "branch_id": branch["branch_id"],
+                        "branch_key_sha256": sha256(str(branch["branch_key"]).encode()).hexdigest(),
+                        "intent_class": branch["intent_class"],
+                        "target_anchor_mask": branch["target_anchor_mask"],
+                        "attempt_count": branch["attempt_count"],
+                        "raw_no_progress_count": branch["raw_no_progress_count"],
+                        "confirmed_adverse_return_count": branch["confirmed_adverse_return_count"],
+                        "failure_confidence": branch["failure_confidence"],
+                        "escape_confidence": branch["escape_confidence"],
+                    }
+                    for branch in item["branches"].values()
+                ],
+            }
+            for item in frontiers
+        ]
+        compact_receipts = [
+            {
+                "attempt_id": item.attempt_id,
+                "source_step": item.source_step,
+                "resolve_step": item.resolve_step,
+                "frontier_id": item.frontier_id,
+                "branch_id": item.branch_id,
+                "phase_id": item.phase_id,
+                "resolved_outcome": item.resolved_outcome,
+                "route_length": item.route_length,
+                "anchor_gain": item.anchor_gain,
+                "residual_work_credit": item.residual_work_credit,
+                "source_exact_sha256": item.source_exact_sha256,
+                "destination_exact_sha256": item.destination_exact_sha256,
+            }
+            for item in self.attempt_receipts
+        ]
+        compact_candidates = [
+            {
+                "trigger_id": item["trigger_id"], "kind": item["kind"], "state": item["state"],
+                "created_step": item["created_step"], "maturity_step": item["maturity_step"],
+                "expires_step": item["expires_step"], "query_frontier_id": item["query_frontier_id"],
+                "support_count": item["support_count"], "support_receipt_ids": item["support_receipt_ids"],
+                "evidence_strength": item["evidence_strength"], "contraction_confidence": item["contraction_confidence"],
+                "evidence_signature": item["evidence_signature"], "expected_exact_sha256": item["expected_descriptor"]["exact_sha256"],
+            }
+            for item in candidates
+        ]
         record: dict[str, Any] = {
             "schema": AUDIT_SCHEMA, "mechanism_id": self.mechanism_id, "experiment_id": self.experiment_id,
             "parameters": {"max_anchors": self.max_anchors, "max_anchor_events": self.max_anchor_events, "max_frontiers": self.max_frontiers, "max_visual_exemplars": self.max_visual_exemplars, "max_branches_per_frontier": self.max_branches_per_frontier, "max_attempt_receipts": self.max_attempt_receipts, "max_pending_routes": self.max_pending_routes, "max_closed_routes": self.max_closed_routes, "max_post_return_watches": self.max_post_return_watches, "max_late_route_watches": self.max_late_route_watches, "max_escape_watches": self.max_escape_watches, "max_typed_value_keys": self.max_typed_value_keys, "max_trigger_candidates": self.max_trigger_candidates, "max_nonempty_reads": self.max_nonempty_reads, "max_reads_per_phase": self.max_reads_per_phase, "read_cooldown_steps": self.read_cooldown_steps, "retrieval_score_threshold": self.retrieval_score_threshold, "near": {"dl": .05, "de": .10, "dv": .045}, "route_horizons": {"return": 4, "late_return": 8, "recurrence": 12}},
             "decision_boundary": {"allowed_inputs": ["goal", "before.pixels", "after.pixels", "canonical_action", "action_summary", "source_step"], "ignored_snapshot_fields": ["evaluator_reward", "task_success", "ui_tree", "accessibility", "foreground", "activity", "package", "database_state", "transition"], "model_calls_added": 0, "evaluator_used_for_decision": False, "hidden_ui_used_for_decision": False, "future_information_used": False, "guard_enabled": False, "action_override_count": 0, "forced_termination_count": 0},
             "goal": {"goal_sha256": self.goal_sha256, "operation_class": self.operation_class, "anchor_count": len(self.anchors), "item_anchor_count": sum(item.role == "ITEM" for item in self.anchors), "value_anchor_count": sum(item.role == "VALUE" for item in self.anchors), "constraint_anchor_count": sum(item.role == "CONSTRAINT" for item in self.anchors), "anchors": [asdict(item) for item in self.anchors]},
             "phase": {"current_phase_id": self.phase_id, "item_open_mask": self.item_open_mask(), "constraint_mask": self.constraint_mask(), "phase_switch_count": self.phase_switch_count, "phase_switch_events": self.phase_switch_events},
-            "frontiers": {"current_count": len(frontiers), "maximum_observed": self.max_observed_frontiers, "merge_count": self.frontier_merge_count, "eviction_count": self.frontier_eviction_count, "records": frontiers},
+            "frontiers": {"current_count": len(frontiers), "maximum_observed": self.max_observed_frontiers, "merge_count": self.frontier_merge_count, "eviction_count": self.frontier_eviction_count, "records": compact_frontiers},
             "branches": {"current_count": sum(len(item.branches) for item in self.frontiers.values()), "maximum_observed": self.max_observed_branches, "eviction_count": self.branch_eviction_count},
-            "attempts": {"retained_count": len(self.attempt_receipts), "raw_outcome_counts": self.raw_outcome_counts, "receipts": [asdict(item) for item in self.attempt_receipts]},
+            "attempts": {"retained_count": len(self.attempt_receipts), "raw_outcome_counts": self.raw_outcome_counts, "receipts": compact_receipts},
             "routes": {"pending_count": len(self.pending_routes), "pending_records": [pending_audit(item) for item in self.pending_routes], "late_watch_count": len(self.late_route_watches), "late_watches": [{"durable_step": item.durable_step, "expires_step": item.expires_step, "attempt_id": item.route.attempt_id, "source_frontier_id": item.route.source_frontier_id, "source_descriptor": _descriptor_audit(item.route.source_descriptor)} for item in self.late_route_watches], "closed_count": len(self.closed_routes), "post_return_watch_count": len(self.post_return_watches), "post_return_watches": [post_watch_audit(item) for item in self.post_return_watches], "classification_counts": self.route_classification_counts, "confirmation_counts": self.route_confirmation_counts, "eviction_count": self.route_eviction_count, "records": [route_audit(item) for item in self.closed_routes]},
             "watches": {"escape_watches": [{"source_step": item.source_step, "source_frontier_id": item.source_frontier_id, "anchor_id": item.anchor_id, "remaining_open_mask": item.remaining_open_mask, "source_descriptor": _descriptor_audit(item.source_descriptor), "offscreen_count": item.offscreen_count} for item in self.escape_watches], "commit_phase_watch": ({"source_step": self.commit_phase_watch.source_step, "source_descriptor": _descriptor_audit(self.commit_phase_watch.source_descriptor), "left_source": self.commit_phase_watch.left_source} if self.commit_phase_watch else None), "typed_value_records": {key: {"value_sha256": value.value_sha256, "normalized_length": value.normalized_length, "occurrences": [{"source_step": item.source_step, "phase_id": item.phase_id, "item_open_mask": item.item_open_mask, "constraint_mask": item.constraint_mask, "frontier_id": item.frontier_id, "source_descriptor": _descriptor_audit(item.source_descriptor), "attempt_id": item.attempt_id, "branch_id": item.branch_id, "outcome": item.outcome, "left_source": item.left_source, "reentered_source": item.reentered_source} for item in value.occurrences]} for key, value in self.typed_value_records.items()}},
-            "triggers": {"candidate_count": len(candidates), "mature_count": sum(item.state == "MATURE" for item in self.trigger_candidates), "delivered_count": sum(item.state == "DELIVERED" for item in self.trigger_candidates), "invalidated_count": self.invalidated_trigger_count, "expired_count": self.expired_trigger_count, "duplicate_suppressed_count": self.duplicate_suppressed_count, "created_counts_by_kind": self.created_counts_by_kind, "delivered_counts_by_kind": self.delivered_counts_by_kind, "candidates": candidates},
+            "triggers": {"candidate_count": len(candidates), "mature_count": sum(item.state == "MATURE" for item in self.trigger_candidates), "delivered_count": sum(item.state == "DELIVERED" for item in self.trigger_candidates), "invalidated_count": self.invalidated_trigger_count, "expired_count": self.expired_trigger_count, "duplicate_suppressed_count": self.duplicate_suppressed_count, "created_counts_by_kind": self.created_counts_by_kind, "delivered_counts_by_kind": self.delivered_counts_by_kind, "candidates": compact_candidates},
             "reads": {"read_count": self.read_count, "nonempty_read_count": self.nonempty_read_count, "last_nonempty_read_step": self.last_nonempty_read_step, "delivered_signatures": self.delivered_signatures, "read_events": self.read_events},
             "capacity": {"max_rendered_chars": self.max_rendered_chars, "max_rendered_utf8_bytes": self.max_rendered_utf8_bytes, "max_rendered_tokens": None, "serialized_audit_bytes": 0},
             "write_attempt_count": self.write_attempt_count, "write_success_count": self.write_success_count,

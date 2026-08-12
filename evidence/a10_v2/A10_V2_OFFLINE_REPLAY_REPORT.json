@@ -1,7 +1,7 @@
 {
   "a6_qualifying_segments": 23,
-  "a6_t1_t2_segments": 18,
-  "a6_timely_segments": 19,
+  "a6_t1_t2_segments": 0,
+  "a6_timely_segments": 0,
   "episode_count": 27,
   "episodes": [
     {
@@ -29,7 +29,7 @@
       "replayed_actions": 17,
       "role": "a0",
       "second_bad_steps": [],
-      "serialized_audit_bytes": 44234,
+      "serialized_audit_bytes": 44756,
       "task_name": "ExpenseDeleteMultiple2"
     },
     {
@@ -57,7 +57,7 @@
       "replayed_actions": 31,
       "role": "a0",
       "second_bad_steps": [],
-      "serialized_audit_bytes": 64156,
+      "serialized_audit_bytes": 65025,
       "task_name": "RetroSavePlaylist"
     },
     {
@@ -85,7 +85,7 @@
       "replayed_actions": 16,
       "role": "a0",
       "second_bad_steps": [],
-      "serialized_audit_bytes": 39956,
+      "serialized_audit_bytes": 40460,
       "task_name": "SimpleCalendarAddOneEvent"
     },
     {
@@ -113,7 +113,7 @@
       "replayed_actions": 3,
       "role": "a0",
       "second_bad_steps": [],
-      "serialized_audit_bytes": 11860,
+      "serialized_audit_bytes": 11976,
       "task_name": "SportsTrackerTotalDurationForCategoryThisWeek"
     },
     {
@@ -141,7 +141,7 @@
       "replayed_actions": 14,
       "role": "a0",
       "second_bad_steps": [],
-      "serialized_audit_bytes": 31348,
+      "serialized_audit_bytes": 31718,
       "task_name": "RecipeDeleteMultipleRecipesWithConstraint"
     },
     {
@@ -169,7 +169,7 @@
       "replayed_actions": 25,
       "role": "a1_recipe",
       "second_bad_steps": [],
-      "serialized_audit_bytes": 49416,
+      "serialized_audit_bytes": 49930,
       "task_name": "RecipeDeleteMultipleRecipesWithConstraint"
     },
     {
@@ -271,9 +271,9 @@
             "a10b_de4a854ce33e6a86"
           ],
           "returned_within_4": true,
-          "score": 0.994125,
+          "score": 0.949125,
           "score_components": {
-            "E": 1.0,
+            "E": 0.85,
             "F": 0.882497,
             "G": 1.0,
             "M": 1.0,
@@ -325,7 +325,7 @@
       "second_bad_steps": [
         7
       ],
-      "serialized_audit_bytes": 37377,
+      "serialized_audit_bytes": 37558,
       "task_name": "BrowserMultiply"
     },
     {
@@ -485,8 +485,8 @@
       "episode_id": "ExpenseAddMultipleFromGallery_20260806_d0a46e60",
       "group_count": 0,
       "mature_trigger_count": 27,
-      "max_rendered_chars": 385,
-      "max_rendered_utf8_bytes": 385,
+      "max_rendered_chars": 355,
+      "max_rendered_utf8_bytes": 355,
       "nonempty_read_count": 2,
       "read_events": [
         {
@@ -523,36 +523,36 @@
           "visual_distance": 0.0
         },
         {
-          "escaped_frontier_within_3": true,
-          "evidence_signature": "60ad441c2f99143e1509db5b9e3d3616da5f759ffe246a6ff4efe7281c9f2113",
-          "frontier_id": "a10f_0_37587a1d8f95b1a2",
-          "next_action_branch_id": "a10b_25aa97150b65cbb6",
-          "next_action_was_novel": true,
+          "escaped_frontier_within_3": false,
+          "evidence_signature": "84bfc704849f4ae43e217aef12a229a1aa6e109650e784a4d8b8f058e1e38adb",
+          "frontier_id": "a10f_0_7bcd2f49811c4e9c",
+          "next_action_branch_id": "a10b_54a91a8344c17749",
+          "next_action_was_novel": false,
           "open_anchor_confidence_delta_within_4": 0.0,
           "open_anchor_mask": 0,
           "phase_id": 0,
-          "read_id": "a10r_13_60ad441c",
-          "rendered_chars": 385,
-          "rendered_sha256": "0242ed913c148c261417a5cc3154c14d6537d1fa487c825552723b6a9d43db53",
-          "rendered_utf8_bytes": 385,
+          "read_id": "a10r_37_84bfc704",
+          "rendered_chars": 350,
+          "rendered_sha256": "cbc71056a791dec7afa72abf856b3b5a2d733ca6c0d982fcf183eac7b8b9723e",
+          "rendered_utf8_bytes": 350,
           "retrieved_anchor_ids": [],
           "retrieved_branch_ids": [
-            ""
+            "a10b_54a91a8344c17749"
           ],
           "returned_within_4": false,
-          "score": 0.980327,
+          "score": 0.904735,
           "score_components": {
-            "E": 1.0,
-            "F": 0.606531,
+            "E": 0.702035,
+            "F": 0.882497,
             "G": 1.0,
             "M": 1.0,
             "S": 1.0,
             "U": 1.0,
             "W": 1.0
           },
-          "step": 13,
-          "trigger_id": "a10v2t_ma_9_60ad441c2f",
-          "trigger_kind": "MATURED_FRONTIER_EXHAUSTION",
+          "step": 37,
+          "trigger_id": "a10v2t_ba_36_84bfc70484",
+          "trigger_kind": "BAD_BRANCH_REPEAT",
           "visual_distance": 0.0
         }
       ],
@@ -562,7 +562,7 @@
         8,
         35
       ],
-      "serialized_audit_bytes": 63983,
+      "serialized_audit_bytes": 64715,
       "task_name": "ExpenseAddMultipleFromGallery"
     },
     {
@@ -590,7 +590,7 @@
       "replayed_actions": 8,
       "role": "a6",
       "second_bad_steps": [],
-      "serialized_audit_bytes": 19950,
+      "serialized_audit_bytes": 20238,
       "task_name": "ExpenseAddMultipleFromMarkor"
     },
     {
@@ -620,7 +620,7 @@
       "second_bad_steps": [
         19
       ],
-      "serialized_audit_bytes": 48757,
+      "serialized_audit_bytes": 49280,
       "task_name": "ExpenseDeleteMultiple2"
     },
     {
@@ -698,7 +698,7 @@
       "replayed_actions": 18,
       "role": "a6",
       "second_bad_steps": [],
-      "serialized_audit_bytes": 37776,
+      "serialized_audit_bytes": 38298,
       "task_name": "MarkorCreateNoteAndSms"
     },
     {
@@ -728,7 +728,7 @@
       "second_bad_steps": [
         15
       ],
-      "serialized_audit_bytes": 60730,
+      "serialized_audit_bytes": 61534,
       "task_name": "MarkorMergeNotes"
     },
     {
@@ -756,7 +756,7 @@
       "replayed_actions": 20,
       "role": "a6",
       "second_bad_steps": [],
-      "serialized_audit_bytes": 37293,
+      "serialized_audit_bytes": 37636,
       "task_name": "MarkorTranscribeVideo"
     },
     {
@@ -841,7 +841,7 @@
       "second_bad_steps": [
         8
       ],
-      "serialized_audit_bytes": 38377,
+      "serialized_audit_bytes": 38762,
       "task_name": "OsmAndMarker"
     },
     {
@@ -1238,7 +1238,7 @@
         75,
         89
       ],
-      "serialized_audit_bytes": 73674,
+      "serialized_audit_bytes": 74601,
       "task_name": "OsmAndTrack"
     },
     {
@@ -1345,35 +1345,35 @@
           "visual_distance": 0.0
         },
         {
-          "escaped_frontier_within_3": true,
-          "evidence_signature": "b8d8665b4474ad33b8ccfcb1731a72aeee90a9fd4c00cd343f9ae905a44e6d01",
+          "escaped_frontier_within_3": false,
+          "evidence_signature": "6b2cf18888be8c918e32f0c171a8740cc323403a9fb0b8c6a901fc6879d91284",
           "frontier_id": "a10f_0_d3b1191e3110f3db",
           "next_action_branch_id": "a10b_4dd99269430b077e",
           "next_action_was_novel": false,
           "open_anchor_confidence_delta_within_4": 0.0,
           "open_anchor_mask": 0,
           "phase_id": 0,
-          "read_id": "a10r_30_b8d8665b",
+          "read_id": "a10r_41_6b2cf188",
           "rendered_chars": 348,
-          "rendered_sha256": "3312ffac1fedde7112d5889cdd0a396011104a4a73d13e0ccb49268d8f8f0619",
+          "rendered_sha256": "f63293862d4cb1faf46e299ea917ee1a8046867146ddd7f0e5db46b67d77f8bb",
           "rendered_utf8_bytes": 348,
           "retrieved_anchor_ids": [],
           "retrieved_branch_ids": [
             "a10b_4dd99269430b077e"
           ],
-          "returned_within_4": true,
-          "score": 0.885144,
+          "returned_within_4": false,
+          "score": 0.903914,
           "score_components": {
-            "E": 0.669265,
-            "F": 0.687289,
+            "E": 0.699298,
+            "F": 0.882497,
             "G": 1.0,
             "M": 1.0,
             "S": 1.0,
             "U": 1.0,
             "W": 1.0
           },
-          "step": 30,
-          "trigger_id": "a10v2t_ba_27_b8d8665b44",
+          "step": 41,
+          "trigger_id": "a10v2t_ba_40_6b2cf18888",
           "trigger_kind": "BAD_BRANCH_REPEAT",
           "visual_distance": 0.0
         }
@@ -1383,7 +1383,7 @@
       "second_bad_steps": [
         25
       ],
-      "serialized_audit_bytes": 40655,
+      "serialized_audit_bytes": 40837,
       "task_name": "RecipeAddMultipleRecipesFromImage"
     },
     {
@@ -1411,7 +1411,7 @@
       "replayed_actions": 7,
       "role": "a6",
       "second_bad_steps": [],
-      "serialized_audit_bytes": 15922,
+      "serialized_audit_bytes": 16056,
       "task_name": "RecipeAddMultipleRecipesFromMarkor2"
     },
     {
@@ -1547,9 +1547,9 @@
             "a10b_f5a5f00df40be388"
           ],
           "returned_within_4": false,
-          "score": 0.994125,
+          "score": 0.949125,
           "score_components": {
-            "E": 1.0,
+            "E": 0.85,
             "F": 0.882497,
             "G": 1.0,
             "M": 1.0,
@@ -1570,7 +1570,7 @@
         21,
         36
       ],
-      "serialized_audit_bytes": 63873,
+      "serialized_audit_bytes": 64577,
       "task_name": "RecipeAddMultipleRecipesFromMarkor"
     },
     {
@@ -1644,7 +1644,7 @@
       "second_bad_steps": [
         11
       ],
-      "serialized_audit_bytes": 50453,
+      "serialized_audit_bytes": 51075,
       "task_name": "RecipeDeleteMultipleRecipesWithConstraint"
     },
     {
@@ -1695,7 +1695,7 @@
       "mature_trigger_count": 5,
       "max_rendered_chars": 381,
       "max_rendered_utf8_bytes": 381,
-      "nonempty_read_count": 2,
+      "nonempty_read_count": 1,
       "read_events": [
         {
           "escaped_frontier_within_3": false,
@@ -1733,43 +1733,6 @@
           "trigger_id": "a10v2t_ba_42_b8c70164e5",
           "trigger_kind": "BAD_BRANCH_REPEAT",
           "visual_distance": 0.0
-        },
-        {
-          "escaped_frontier_within_3": null,
-          "evidence_signature": "c56c82e62bbeef6d661f498f8035f2541e37551a0bdd3b4af83ba043a0de1897",
-          "frontier_id": "a10f_0_4de1c0a7b0478c87",
-          "next_action_branch_id": "a10b_ca65a3f2b2b61b10",
-          "next_action_was_novel": false,
-          "open_anchor_confidence_delta_within_4": 0.0,
-          "open_anchor_mask": 31,
-          "phase_id": 0,
-          "read_id": "a10r_47_c56c82e6",
-          "rendered_chars": 381,
-          "rendered_sha256": "1329de652c66082293acfdfa1d96311bd5525fd7476cc85f364755f044b9c624",
-          "rendered_utf8_bytes": 381,
-          "retrieved_anchor_ids": [
-            "a10v2a_bdef31e60348",
-            "a10v2a_f09f08f1aec2",
-            "a10v2a_56cf6f36f8f2"
-          ],
-          "retrieved_branch_ids": [
-            "a10b_ca65a3f2b2b61b10"
-          ],
-          "returned_within_4": null,
-          "score": 0.875756,
-          "score_components": {
-            "E": 0.637971,
-            "F": 0.687289,
-            "G": 1.0,
-            "M": 1.0,
-            "S": 1.0,
-            "U": 1.0,
-            "W": 1.0
-          },
-          "step": 47,
-          "trigger_id": "a10v2t_ba_44_c56c82e62b",
-          "trigger_kind": "BAD_BRANCH_REPEAT",
-          "visual_distance": 0.0
         }
       ],
       "replayed_actions": 50,
@@ -1779,7 +1742,7 @@
         33,
         41
       ],
-      "serialized_audit_bytes": 68978,
+      "serialized_audit_bytes": 70193,
       "task_name": "RetroSavePlaylist"
     },
     {
@@ -1851,7 +1814,7 @@
       "second_bad_steps": [
         11
       ],
-      "serialized_audit_bytes": 30741,
+      "serialized_audit_bytes": 31173,
       "task_name": "SaveCopyOfReceiptTaskEval"
     },
     {
@@ -1925,7 +1888,7 @@
       "replayed_actions": 34,
       "role": "a6",
       "second_bad_steps": [],
-      "serialized_audit_bytes": 59069,
+      "serialized_audit_bytes": 59932,
       "task_name": "SimpleCalendarAddOneEvent"
     },
     {
@@ -1953,7 +1916,7 @@
       "replayed_actions": 6,
       "role": "a6",
       "second_bad_steps": [],
-      "serialized_audit_bytes": 19333,
+      "serialized_audit_bytes": 19559,
       "task_name": "SportsTrackerActivitiesOnDate"
     },
     {
@@ -1981,7 +1944,7 @@
       "replayed_actions": 8,
       "role": "a6",
       "second_bad_steps": [],
-      "serialized_audit_bytes": 20800,
+      "serialized_audit_bytes": 21016,
       "task_name": "SportsTrackerTotalDistanceForCategoryOverInterval"
     },
     {
@@ -2009,7 +1972,7 @@
       "replayed_actions": 6,
       "role": "a6",
       "second_bad_steps": [],
-      "serialized_audit_bytes": 16801,
+      "serialized_audit_bytes": 17041,
       "task_name": "SportsTrackerTotalDurationForCategoryThisWeek"
     },
     {
@@ -2111,16 +2074,16 @@
         },
         {
           "escaped_frontier_within_3": false,
-          "evidence_signature": "f13a8c76f6a715204719805348bf86f64d9d424bab689cc08178fadcbea90e66",
+          "evidence_signature": "c6831cd5daa41b7d7f7e1eb4744073c839da1a50c3f209559540ea8c6f5b4ea9",
           "frontier_id": "a10f_0_a3b475bb0fd38423",
           "next_action_branch_id": "a10b_31eda8cdfccaad10",
           "next_action_was_novel": false,
           "open_anchor_confidence_delta_within_4": 0.0,
           "open_anchor_mask": 7,
           "phase_id": 0,
-          "read_id": "a10r_18_f13a8c76",
+          "read_id": "a10r_20_c6831cd5",
           "rendered_chars": 356,
-          "rendered_sha256": "8befb0b303dd823f7c5cc89df251095b586e4f94006f574d1cde696812413543",
+          "rendered_sha256": "4d50a14fda1eae6a57a053fb4f902fb77d094635d781ea5ddf9c08e1fad04319",
           "rendered_utf8_bytes": 356,
           "retrieved_anchor_ids": [
             "a10v2a_fcfb6a61ffee",
@@ -2131,18 +2094,18 @@
             "a10b_31eda8cdfccaad10"
           ],
           "returned_within_4": false,
-          "score": 0.860327,
+          "score": 0.874125,
           "score_components": {
             "E": 0.6,
-            "F": 0.606531,
+            "F": 0.882497,
             "G": 1.0,
             "M": 1.0,
             "S": 1.0,
             "U": 1.0,
             "W": 1.0
           },
-          "step": 18,
-          "trigger_id": "a10v2t_ba_14_f13a8c76f6",
+          "step": 20,
+          "trigger_id": "a10v2t_ba_19_c6831cd5da",
           "trigger_kind": "BAD_BRANCH_REPEAT",
           "visual_distance": 0.0
         }
@@ -2152,7 +2115,7 @@
       "second_bad_steps": [
         13
       ],
-      "serialized_audit_bytes": 38380,
+      "serialized_audit_bytes": 38635,
       "task_name": "ExpenseDeleteMultiple2"
     },
     {
@@ -2169,7 +2132,7 @@
         "task_name_used": false
       },
       "created_counts_by_kind": {
-        "BAD_BRANCH_REPEAT": 1,
+        "BAD_BRANCH_REPEAT": 2,
         "VALUE_REENTRY_AFTER_BAD_OUTCOME": 2
       },
       "created_trigger_steps": [
@@ -2187,11 +2150,16 @@
           "frontier_id": "a10f_0_eaf4636ac85808f7",
           "kind": "VALUE_REENTRY_AFTER_BAD_OUTCOME",
           "step": 35
+        },
+        {
+          "frontier_id": "a10f_0_159a61766587ea68",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 49
         }
       ],
       "episode_id": "RetroSavePlaylist_20260806_a1a07e4e",
       "group_count": 5,
-      "mature_trigger_count": 3,
+      "mature_trigger_count": 4,
       "max_rendered_chars": 0,
       "max_rendered_utf8_bytes": 0,
       "nonempty_read_count": 0,
@@ -2203,17 +2171,18 @@
         22,
         48
       ],
-      "serialized_audit_bytes": 65042,
+      "serialized_audit_bytes": 67337,
       "task_name": "RetroSavePlaylist"
     }
   ],
   "errors": [
-    "a6_timing_or_kind_gate_failed"
+    "a6_timing_or_kind_gate_failed",
+    "a9_exposure_or_pure_t3_gate_failed"
   ],
   "generation_calls": 0,
   "manifest_sha256": "07a326ff4379d51c0d5261e5bf1f28e89ed4176b2130b8fda580079e48e6ff51",
-  "mechanism_source_sha256": "02fdc5f58d15899306df02ccb355ba6f638549e43013cacacad425a55d88e67f",
-  "replay_source_sha256": "40c62257493bdba93f866de2a352cfe1d54b4981f74181ed156da69c51fcb516",
+  "mechanism_source_sha256": "81ad07713a32f04029f8aabd26071e45b6f15ee8097d4bffdc201ca24c75961d",
+  "replay_source_sha256": "cca7f8aec4f7d80ad4548babda1b5ffc1c3127a3342da712d86a93d508f88e89",
   "schema": "a10_v2_offline_replay_report_v1",
   "source_spec_sha256": "da7285bf461fbee6d1fb2e498d202bdb6e3d9f4da3d6eca59de7e879486fa4fe",
   "status": "fail",
