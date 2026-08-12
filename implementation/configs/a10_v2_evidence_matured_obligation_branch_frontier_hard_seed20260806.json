@@ -1,0 +1,24 @@
+{
+  "schema": "a10_v2_emobf_arm_v1",
+  "experiment_id": "A10_V2_EMOBF_QWEN3VL32B_AW_HARD_S20260806_G3407_V1",
+  "arm": "a10_v2_emobf",
+  "method": "Evidence-Matured Obligation-Branch Frontier Memory",
+  "mechanism_id": "a10_v2_evidence_matured_obligation_branch_frontier_v2",
+  "design_parent_commit": "4548b932bc3b189507e1442e312c73c8f35dbdb8",
+  "model": {"id": "Qwen/Qwen3-VL-32B-Instruct", "revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb", "generation_seed": 3407, "temperature": 0.7, "top_p": 0.8, "top_k": 20, "presence_penalty": 1.5, "repetition_penalty": 1.0, "max_tokens": 32768, "backend": "vLLM BF16"},
+  "benchmark": {"name": "AndroidWorld", "split": "Hard", "manifest": "implementation/configs/androidworld_hard_v2_instances.json", "task_seed": 20260806, "task_count": 19, "order": "four-task A0 preservation gate, then frozen manifest remainder", "action_budget": "unchanged native_max_steps"},
+  "intervention": {
+    "writer": "controller deterministic", "system_prompt": "exact OFFICIAL_SYSTEM_PROMPT", "history_policy": "official_text_action_summaries_only",
+    "max_anchors": 8, "max_obligation_groups": 8, "max_anchor_events": 6,
+    "max_frontiers": 16, "max_visual_exemplars_per_frontier": 3, "max_branches_per_frontier": 5,
+    "max_attempt_receipts": 32, "max_pending_routes": 4, "max_closed_route_watches": 4,
+    "max_partial_escape_watches": 2, "max_no_group_phase_watches": 1, "max_trigger_candidates": 8,
+    "max_nonempty_reads": 5, "max_reads_per_phase": 2, "read_cooldown_steps": 4,
+    "max_chars": 420, "max_utf8_bytes": 720, "max_frozen_tokens_per_read": 192,
+    "max_frozen_tokens_per_episode": 960, "max_serialized_audit_bytes": 131072,
+    "retrieval_score_threshold": 0.72, "route_visual_dv": 0.055, "frontier_merge_dv": 0.035, "retrieval_visual_dv": 0.040,
+    "extra_model_calls": 0, "guard": false, "action_override": false, "forced_termination": false,
+    "evaluator_input": false, "hidden_ui_input": false, "future_input": false, "completion_claim": false
+  },
+  "stopping": {"full_19_required": true, "capability_gate_required_reward": "4/4", "fail_fast": true, "scientific_failure_rerun": false, "infrastructure_invalid_attempts_per_task": 2, "performance_success_required": 6, "performance_reward_sum_strictly_greater_than": 5.5}
+}

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a frozen A6-A10 runner command; execute only with --execute."""
+"""Build a frozen A6-A11 runner command; execute only with --execute."""
 
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ ANDROIDWORLD_PYTHON = (
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--arm", required=True, choices=("a6", "a7", "a8", "a8v2", "a9", "a10")
+        "--arm", required=True, choices=("a6", "a7", "a8", "a8v2", "a9", "a10", "a10v2", "a11")
     )
     parser.add_argument("--adb-path", required=True)
     parser.add_argument("--launch-receipt", type=Path, required=True)
@@ -57,7 +57,15 @@ def main() -> int:
         "--url", args.url,
         "--console-port", str(args.console_port),
         "--grpc-port", str(args.grpc_port),
-        "--output-root", str(REPOSITORY_ROOT / ("runs/a10_ecobf" if args.arm == "a10" else "runs/a678_memory")),
+        "--output-root",
+        str(
+            REPOSITORY_ROOT
+            / {
+                "a10": "runs/a10_ecobf",
+                "a10v2": "runs/a10_v2_emobf",
+                "a11": "runs/a11_crc_ecobf",
+            }.get(args.arm, "runs/a678_memory")
+        ),
     ]
     if args.arm == "a10":
         command.extend(
@@ -66,6 +74,26 @@ def main() -> int:
                 "--a10-preflight-report",
                 str(REPOSITORY_ROOT / "evidence/a10/A10_ZERO_GENERATION_PREFLIGHT.json"),
                 "--a10-launch-receipt",
+                str(args.launch_receipt.resolve()),
+            ]
+        )
+    elif args.arm == "a10v2":
+        command.extend(
+            [
+                "--a10-v2-emobf",
+                "--a10-v2-preflight-report",
+                str(REPOSITORY_ROOT / "evidence/a10_v2/A10_V2_ZERO_GENERATION_PREFLIGHT.json"),
+                "--a10-v2-launch-receipt",
+                str(args.launch_receipt.resolve()),
+            ]
+        )
+    elif args.arm == "a11":
+        command.extend(
+            [
+                "--a11-crc-ecobf",
+                "--a11-preflight-report",
+                str(REPOSITORY_ROOT / "evidence/a11/A11_ZERO_GENERATION_PREFLIGHT.json"),
+                "--a11-launch-receipt",
                 str(args.launch_receipt.resolve()),
             ]
         )

@@ -1,0 +1,25 @@
+﻿{
+    "schema":  "a11_test_manifest_v1",
+    "tests":  [
+                  {
+                      "path":  "implementation/tests/official_qwen_mobile/test_a10_controller_integration.py",
+                      "sha256":  "9f4ea39c9b75e4b0185c4a1100e5b57bc6f661345862c801b4c7d10b6ac8fb3e"
+                  },
+                  {
+                      "path":  "implementation/tests/official_qwen_mobile/test_a10v2_a11_shared_integration.py",
+                      "sha256":  "b4a0cd09af3bb0bee6825929141c3684ddf84e6a0297dbfd54e4caa6d2ede7e4"
+                  },
+                  {
+                      "path":  "implementation/tests/official_qwen_mobile/test_a11_confirmed_route_contraction.py",
+                      "sha256":  "821f376948ac4ab152e4997247ca81ccbdc1aec16d99a50bec0de294c8946e09"
+                  },
+                  {
+                      "path":  "implementation/tests/official_qwen_mobile/test_a11_contract.py",
+                      "sha256":  "b3f0f34d92cd81efdb0f4f8e3163bb111d521e4382e28bd971f2496228b19a34"
+                  },
+                  {
+                      "path":  "implementation/tests/official_qwen_mobile/test_a11_offline_replay.py",
+                      "sha256":  "21168e8c4e74eeb29410494a7df5ffdb8086773e09eb70f32630180a580d390a"
+                  }
+              ]
+}

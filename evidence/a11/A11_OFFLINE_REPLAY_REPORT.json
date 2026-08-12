@@ -1,0 +1,4114 @@
+{
+  "a6_qualification_rate": 0.6956521739130435,
+  "a6_qualified_segments": 16,
+  "a6_qualifying_segments": 23,
+  "competent_sparse_gate": {
+    "errors": [],
+    "first_route_core_delivery_count": 0,
+    "immature_candidate_delivery_count": 0,
+    "normal_navigation_exemption_violation_count": 0,
+    "same_signature_redelivery_count": 0,
+    "single_closed_route_delivery_count": 0,
+    "status": "pass",
+    "support_count_below_two_delivery_count": 0,
+    "total_nonempty_reads": 1,
+    "total_read_density": 0.014925373134328358,
+    "total_rendered_chars": 346
+  },
+  "episode_count": 27,
+  "episodes": [
+    {
+      "anchor_count": 3,
+      "causal_boundary": {
+        "action_override_count": 0,
+        "allowed_inputs": [
+          "goal",
+          "before.pixels",
+          "after.pixels",
+          "canonical_action",
+          "action_summary",
+          "source_step"
+        ],
+        "evaluator_used_for_decision": false,
+        "forced_termination_count": 0,
+        "future_information_used": false,
+        "guard_enabled": false,
+        "hidden_ui_used_for_decision": false,
+        "ignored_snapshot_fields": [
+          "evaluator_reward",
+          "task_success",
+          "ui_tree",
+          "accessibility",
+          "foreground",
+          "activity",
+          "package",
+          "database_state",
+          "transition"
+        ],
+        "model_calls_added": 0
+      },
+      "constraint_anchor_count": 0,
+      "created_trigger_steps": [
+        {
+          "frontier_id": "a11f_2f19695515466e62",
+          "kind": "PARTIAL_OBLIGATION_ESCAPE",
+          "step": 12,
+          "support_count": 2
+        }
+      ],
+      "episode_id": "ExpenseDeleteMultiple2_20260806_0eeb0637",
+      "nonempty_read_count": 1,
+      "normal_navigation_exemption_violation_count": 0,
+      "qualifying_segments": [],
+      "read_events": [
+        {
+          "anchor_confidence_delta_within_4": 0.0,
+          "candidate_state_before_read": "MATURE",
+          "confirmation_path": "",
+          "constraint_confidence_delta_within_4": 0.0,
+          "constraint_mask": 0,
+          "contraction_confidence": 0.75,
+          "escaped_frontier_within_3": true,
+          "evidence_signature": "fdcc756379ef84db0595e12f433e1eba02f107ef53a086e7cdfdef331ea6da03",
+          "frontier_id": "a11f_2f19695515466e62",
+          "item_open_mask": 1,
+          "maturity_step": 12,
+          "next_action_branch_id": "a11b_d4b55d7731efaad1",
+          "next_action_was_novel": true,
+          "phase_id": 2,
+          "read_id": "a11r_13_fdcc7563",
+          "rendered_chars": 346,
+          "rendered_sha256": "006b013d35afea9cf687c3388e841227f61cc35f256c383ad8e516aefb69a467",
+          "rendered_text": "A11 frontier; past visible evidence only, current screen wins.\nOpen: \"expenses from p...\". Constraint: none. Evidence: \"Tuition Fees\" gained local support; another item stayed open after l....\nConfirmed by 2+ adverse observations after navigation credit. Reassess another action family or target; retry is allowed. Nothing is blocked or selected.",
+          "rendered_utf8_bytes": 346,
+          "retrieved_anchor_ids": [
+            "a11a_695dbc3320b4",
+            "a11a_d9d4978d2376",
+            "a11a_421f180eeca8"
+          ],
+          "retrieved_branch_ids": [],
+          "retrieved_constraint_ids": [],
+          "retrieved_route_ids": [],
+          "returned_within_4": true,
+          "score": 0.75025,
+          "score_components": {
+            "C": 0.75,
+            "E": 0.85,
+            "F": 0.882497,
+            "G": 1.0,
+            "M": 1.0,
+            "O": 0.333333,
+            "X": 0.0
+          },
+          "step": 13,
+          "support_count": 2,
+          "support_receipt_ids": [
+            "a11p_11_75cf15_2f45ad",
+            "a11p_12_466e62_164519"
+          ],
+          "trigger_id": "a11t_12_fdcc756379ef",
+          "trigger_kind": "PARTIAL_OBLIGATION_ESCAPE",
+          "visual_distance": 0.0,
+          "visual_match_kind": "EXACT",
+          "workflow_credit": 0.0
+        }
+      ],
+      "rendered_chars": 346,
+      "replayed_actions": 17,
+      "role": "a0",
+      "serialized_audit_bytes": 60743,
+      "task_name": "ExpenseDeleteMultiple2"
+    },
+    {
+      "anchor_count": 4,
+      "causal_boundary": {
+        "action_override_count": 0,
+        "allowed_inputs": [
+          "goal",
+          "before.pixels",
+          "after.pixels",
+          "canonical_action",
+          "action_summary",
+          "source_step"
+        ],
+        "evaluator_used_for_decision": false,
+        "forced_termination_count": 0,
+        "future_information_used": false,
+        "guard_enabled": false,
+        "hidden_ui_used_for_decision": false,
+        "ignored_snapshot_fields": [
+          "evaluator_reward",
+          "task_success",
+          "ui_tree",
+          "accessibility",
+          "foreground",
+          "activity",
+          "package",
+          "database_state",
+          "transition"
+        ],
+        "model_calls_added": 0
+      },
+      "constraint_anchor_count": 0,
+      "created_trigger_steps": [],
+      "episode_id": "RetroSavePlaylist_20260806_c44b826d",
+      "nonempty_read_count": 0,
+      "normal_navigation_exemption_violation_count": 0,
+      "qualifying_segments": [],
+      "read_events": [],
+      "rendered_chars": 0,
+      "replayed_actions": 31,
+      "role": "a0",
+      "serialized_audit_bytes": 78445,
+      "task_name": "RetroSavePlaylist"
+    },
+    {
+      "anchor_count": 4,
+      "causal_boundary": {
+        "action_override_count": 0,
+        "allowed_inputs": [
+          "goal",
+          "before.pixels",
+          "after.pixels",
+          "canonical_action",
+          "action_summary",
+          "source_step"
+        ],
+        "evaluator_used_for_decision": false,
+        "forced_termination_count": 0,
+        "future_information_used": false,
+        "guard_enabled": false,
+        "hidden_ui_used_for_decision": false,
+        "ignored_snapshot_fields": [
+          "evaluator_reward",
+          "task_success",
+          "ui_tree",
+          "accessibility",
+          "foreground",
+          "activity",
+          "package",
+          "database_state",
+          "transition"
+        ],
+        "model_calls_added": 0
+      },
+      "constraint_anchor_count": 0,
+      "created_trigger_steps": [],
+      "episode_id": "SimpleCalendarAddOneEvent_20260806_739e8ebf",
+      "nonempty_read_count": 0,
+      "normal_navigation_exemption_violation_count": 0,
+      "qualifying_segments": [],
+      "read_events": [],
+      "rendered_chars": 0,
+      "replayed_actions": 16,
+      "role": "a0",
+      "serialized_audit_bytes": 48800,
+      "task_name": "SimpleCalendarAddOneEvent"
+    },
+    {
+      "anchor_count": 2,
+      "causal_boundary": {
+        "action_override_count": 0,
+        "allowed_inputs": [
+          "goal",
+          "before.pixels",
+          "after.pixels",
+          "canonical_action",
+          "action_summary",
+          "source_step"
+        ],
+        "evaluator_used_for_decision": false,
+        "forced_termination_count": 0,
+        "future_information_used": false,
+        "guard_enabled": false,
+        "hidden_ui_used_for_decision": false,
+        "ignored_snapshot_fields": [
+          "evaluator_reward",
+          "task_success",
+          "ui_tree",
+          "accessibility",
+          "foreground",
+          "activity",
+          "package",
+          "database_state",
+          "transition"
+        ],
+        "model_calls_added": 0
+      },
+      "constraint_anchor_count": 0,
+      "created_trigger_steps": [],
+      "episode_id": "SportsTrackerTotalDurationForCategoryThisWeek_20260806_a575f564",
+      "nonempty_read_count": 0,
+      "normal_navigation_exemption_violation_count": 0,
+      "qualifying_segments": [],
+      "read_events": [],
+      "rendered_chars": 0,
+      "replayed_actions": 3,
+      "role": "a0",
+      "serialized_audit_bytes": 14928,
+      "task_name": "SportsTrackerTotalDurationForCategoryThisWeek"
+    },
+    {
+      "anchor_count": 1,
+      "causal_boundary": {
+        "action_override_count": 0,
+        "allowed_inputs": [
+          "goal",
+          "before.pixels",
+          "after.pixels",
+          "canonical_action",
+          "action_summary",
+          "source_step"
+        ],
+        "evaluator_used_for_decision": false,
+        "forced_termination_count": 0,
+        "future_information_used": false,
+        "guard_enabled": false,
+        "hidden_ui_used_for_decision": false,
+        "ignored_snapshot_fields": [
+          "evaluator_reward",
+          "task_success",
+          "ui_tree",
+          "accessibility",
+          "foreground",
+          "activity",
+          "package",
+          "database_state",
+          "transition"
+        ],
+        "model_calls_added": 0
+      },
+      "constraint_anchor_count": 1,
+      "created_trigger_steps": [],
+      "episode_id": "RecipeDeleteMultipleRecipesWithConstraint_20260806_ad293d85",
+      "nonempty_read_count": 0,
+      "normal_navigation_exemption_violation_count": 0,
+      "qualifying_segments": [],
+      "read_events": [],
+      "rendered_chars": 0,
+      "replayed_actions": 14,
+      "role": "a0",
+      "serialized_audit_bytes": 40589,
+      "task_name": "RecipeDeleteMultipleRecipesWithConstraint"
+    },
+    {
+      "anchor_count": 1,
+      "causal_boundary": {
+        "action_override_count": 0,
+        "allowed_inputs": [
+          "goal",
+          "before.pixels",
+          "after.pixels",
+          "canonical_action",
+          "action_summary",
+          "source_step"
+        ],
+        "evaluator_used_for_decision": false,
+        "forced_termination_count": 0,
+        "future_information_used": false,
+        "guard_enabled": false,
+        "hidden_ui_used_for_decision": false,
+        "ignored_snapshot_fields": [
+          "evaluator_reward",
+          "task_success",
+          "ui_tree",
+          "accessibility",
+          "foreground",
+          "activity",
+          "package",
+          "database_state",
+          "transition"
+        ],
+        "model_calls_added": 0
+      },
+      "constraint_anchor_count": 1,
+      "created_trigger_steps": [],
+      "episode_id": "RecipeDeleteMultipleRecipesWithConstraint_20260806_5e42fb32",
+      "nonempty_read_count": 0,
+      "normal_navigation_exemption_violation_count": 0,
+      "qualifying_segments": [],
+      "read_events": [],
+      "rendered_chars": 0,
+      "replayed_actions": 25,
+      "role": "a1_recipe",
+      "serialized_audit_bytes": 67241,
+      "task_name": "RecipeDeleteMultipleRecipesWithConstraint"
+    },
+    {
+      "anchor_count": 0,
+      "causal_boundary": {
+        "action_override_count": 0,
+        "allowed_inputs": [
+          "goal",
+          "before.pixels",
+          "after.pixels",
+          "canonical_action",
+          "action_summary",
+          "source_step"
+        ],
+        "evaluator_used_for_decision": false,
+        "forced_termination_count": 0,
+        "future_information_used": false,
+        "guard_enabled": false,
+        "hidden_ui_used_for_decision": false,
+        "ignored_snapshot_fields": [
+          "evaluator_reward",
+          "task_success",
+          "ui_tree",
+          "accessibility",
+          "foreground",
+          "activity",
+          "package",
+          "database_state",
+          "transition"
+        ],
+        "model_calls_added": 0
+      },
+      "constraint_anchor_count": 0,
+      "created_trigger_steps": [
+        {
+          "frontier_id": "a11f_9ec558cfcac5b7f2",
+          "kind": "CONFIRMED_ROUTE_TRAP",
+          "step": 7,
+          "support_count": 2
+        },
+        {
+          "frontier_id": "a11f_9ec558cfcac5b7f2",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 7,
+          "support_count": 3
+        },
+        {
+          "frontier_id": "a11f_9ec558cfcac5b7f2",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 7,
+          "support_count": 3
+        },
+        {
+          "frontier_id": "a11f_9ec558cfcac5b7f2",
+          "kind": "CONFIRMED_ROUTE_TRAP",
+          "step": 9,
+          "support_count": 3
+        },
+        {
+          "frontier_id": "a11f_9ec558cfcac5b7f2",
+          "kind": "CONFIRMED_ROUTE_TRAP",
+          "step": 10,
+          "support_count": 2
+        },
+        {
+          "frontier_id": "a11f_9ec558cfcac5b7f2",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 10,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_9ec558cfcac5b7f2",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 10,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_0fb66c9039a6b2b3",
+          "kind": "CONFIRMED_ROUTE_TRAP",
+          "step": 11,
+          "support_count": 2
+        },
+        {
+          "frontier_id": "a11f_9ec558cfcac5b7f2",
+          "kind": "CONFIRMED_ROUTE_TRAP",
+          "step": 12,
+          "support_count": 3
+        },
+        {
+          "frontier_id": "a11f_9ec558cfcac5b7f2",
+          "kind": "CONFIRMED_ROUTE_TRAP",
+          "step": 13,
+          "support_count": 2
+        },
+        {
+          "frontier_id": "a11f_9ec558cfcac5b7f2",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 13,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_9ec558cfcac5b7f2",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 13,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_0fb66c9039a6b2b3",
+          "kind": "CONFIRMED_ROUTE_TRAP",
+          "step": 14,
+          "support_count": 3
+        },
+        {
+          "frontier_id": "a11f_0fb66c9039a6b2b3",
+          "kind": "CONFIRMED_ROUTE_TRAP",
+          "step": 14,
+          "support_count": 2
+        },
+        {
+          "frontier_id": "a11f_9ec558cfcac5b7f2",
+          "kind": "CONFIRMED_ROUTE_TRAP",
+          "step": 15,
+          "support_count": 3
+        },
+        {
+          "frontier_id": "a11f_9ec558cfcac5b7f2",
+          "kind": "CONFIRMED_ROUTE_TRAP",
+          "step": 16,
+          "support_count": 2
+        },
+        {
+          "frontier_id": "a11f_9ec558cfcac5b7f2",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 16,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_9ec558cfcac5b7f2",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 16,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_0fb66c9039a6b2b3",
+          "kind": "CONFIRMED_ROUTE_TRAP",
+          "step": 17,
+          "support_count": 3
+        },
+        {
+          "frontier_id": "a11f_0fb66c9039a6b2b3",
+          "kind": "CONFIRMED_ROUTE_TRAP",
+          "step": 17,
+          "support_count": 2
+        },
+        {
+          "frontier_id": "a11f_9ec558cfcac5b7f2",
+          "kind": "CONFIRMED_ROUTE_TRAP",
+          "step": 18,
+          "support_count": 3
+        },
+        {
+          "frontier_id": "a11f_9ec558cfcac5b7f2",
+          "kind": "CONFIRMED_ROUTE_TRAP",
+          "step": 19,
+          "support_count": 2
+        },
+        {
+          "frontier_id": "a11f_9ec558cfcac5b7f2",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 19,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_9ec558cfcac5b7f2",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 19,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_9ec558cfcac5b7f2",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 20,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_9ec558cfcac5b7f2",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 20,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_9ec558cfcac5b7f2",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 21,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_9ec558cfcac5b7f2",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 21,
+          "support_count": 4
+        }
+      ],
+      "episode_id": "BrowserMultiply_20260806_a29e4eb9",
+      "nonempty_read_count": 2,
+      "normal_navigation_exemption_violation_count": 0,
+      "qualifying_segments": [
+        {
+          "branch_id": "a11b_be008b9f55992d3e",
+          "deadline": 10,
+          "frontier_id": "a11f_9ec558cfcac5b7f2"
+        }
+      ],
+      "read_events": [
+        {
+          "anchor_confidence_delta_within_4": 0.0,
+          "candidate_state_before_read": "MATURE",
+          "confirmation_path": "",
+          "constraint_confidence_delta_within_4": 0.0,
+          "constraint_mask": 0,
+          "contraction_confidence": 0.708333,
+          "escaped_frontier_within_3": true,
+          "evidence_signature": "c08af49c588c170c9a9c962c67cca317ae43919e9522ea0ce24fb94e264f7cf9",
+          "frontier_id": "a11f_9ec558cfcac5b7f2",
+          "item_open_mask": 0,
+          "maturity_step": 7,
+          "next_action_branch_id": "a11b_be008b9f55992d3e",
+          "next_action_was_novel": false,
+          "phase_id": 0,
+          "read_id": "a11r_8_c08af49c",
+          "rendered_chars": 347,
+          "rendered_sha256": "f48d0d57a7bdff02cef257d8bd128a682bd7e4cd0a36e256ac9f265f3dace7e9",
+          "rendered_text": "A11 frontier; past visible evidence only, current screen wins.\nOpen: task completion is not established. Constraint: none. Evidence: 4 visits/8 actions; 3.0 adverse receipts; branches repeated.\nConfirmed by 2+ adverse observations after navigation credit. Reassess another action family or target; retry is allowed. Nothing is blocked or selected.",
+          "rendered_utf8_bytes": 347,
+          "retrieved_anchor_ids": [],
+          "retrieved_branch_ids": [
+            "a11b_523b82114b32d3b6",
+            "a11b_be008b9f55992d3e"
+          ],
+          "retrieved_constraint_ids": [],
+          "retrieved_route_ids": [],
+          "returned_within_4": true,
+          "score": 0.906583,
+          "score_components": {
+            "C": 0.708333,
+            "E": 1.0,
+            "F": 0.882497,
+            "G": 1.0,
+            "M": 1.0,
+            "O": 1.0,
+            "X": 0.0
+          },
+          "step": 8,
+          "support_count": 3,
+          "support_receipt_ids": [
+            "a11p_4_c5b7f2_992d3e",
+            "a11p_5_c5b7f2_992d3e",
+            "a11p_7_c5b7f2_992d3e"
+          ],
+          "trigger_id": "a11t_7_c08af49c588c",
+          "trigger_kind": "CONTRACTED_FRONTIER",
+          "visual_distance": 0.0,
+          "visual_match_kind": "EXACT",
+          "workflow_credit": 0.0
+        },
+        {
+          "anchor_confidence_delta_within_4": 0.0,
+          "candidate_state_before_read": "MATURE",
+          "confirmation_path": "route_recurrence",
+          "constraint_confidence_delta_within_4": 0.0,
+          "constraint_mask": 0,
+          "contraction_confidence": 0.8,
+          "escaped_frontier_within_3": true,
+          "evidence_signature": "359505b063230859bc9b064ab347c7208902ed28bb46a5a2d208ab8574eddc4d",
+          "frontier_id": "a11f_0fb66c9039a6b2b3",
+          "item_open_mask": 0,
+          "maturity_step": 11,
+          "next_action_branch_id": "a11b_c78b25078dc125da",
+          "next_action_was_novel": false,
+          "phase_id": 0,
+          "read_id": "a11r_12_359505b0",
+          "rendered_chars": 359,
+          "rendered_sha256": "5550e5ce30b382e4f50ea252913156dcb723dc534148c5f409f068e2e67a0658",
+          "rendered_text": "A11 frontier; past visible evidence only, current screen wins.\nOpen: task completion is not established. Constraint: none. Evidence: a closed route was confirmed by recurrence or a following bad branch....\nConfirmed by 2+ adverse observations after navigation credit. Reassess another action family or target; retry is allowed. Nothing is blocked or selected.",
+          "rendered_utf8_bytes": 359,
+          "retrieved_anchor_ids": [],
+          "retrieved_branch_ids": [
+            "a11b_c78b25078dc125da",
+            "a11b_c78b25078dc125da"
+          ],
+          "retrieved_constraint_ids": [],
+          "retrieved_route_ids": [
+            "a11route_3d8e90771b_8",
+            "a11route_3d8e90771b_11"
+          ],
+          "returned_within_4": true,
+          "score": 0.867095,
+          "score_components": {
+            "C": 0.8,
+            "E": 0.796393,
+            "F": 0.882497,
+            "G": 1.0,
+            "M": 1.0,
+            "O": 1.0,
+            "X": 0.0
+          },
+          "step": 12,
+          "support_count": 2,
+          "support_receipt_ids": [
+            "a11p_6_a6b2b3_c125da",
+            "a11p_9_a6b2b3_c125da"
+          ],
+          "trigger_id": "a11t_11_359505b06323",
+          "trigger_kind": "CONFIRMED_ROUTE_TRAP",
+          "visual_distance": 0.0,
+          "visual_match_kind": "EXACT",
+          "workflow_credit": 0.0
+        }
+      ],
+      "rendered_chars": 706,
+      "replayed_actions": 22,
+      "role": "a6",
+      "serialized_audit_bytes": 58522,
+      "task_name": "BrowserMultiply"
+    },
+    {
+      "anchor_count": 0,
+      "causal_boundary": {
+        "action_override_count": 0,
+        "allowed_inputs": [
+          "goal",
+          "before.pixels",
+          "after.pixels",
+          "canonical_action",
+          "action_summary",
+          "source_step"
+        ],
+        "evaluator_used_for_decision": false,
+        "forced_termination_count": 0,
+        "future_information_used": false,
+        "guard_enabled": false,
+        "hidden_ui_used_for_decision": false,
+        "ignored_snapshot_fields": [
+          "evaluator_reward",
+          "task_success",
+          "ui_tree",
+          "accessibility",
+          "foreground",
+          "activity",
+          "package",
+          "database_state",
+          "transition"
+        ],
+        "model_calls_added": 0
+      },
+      "constraint_anchor_count": 0,
+      "created_trigger_steps": [
+        {
+          "frontier_id": "a11f_830a7072a1e5add7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 9,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_830a7072a1e5add7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 10,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_830a7072a1e5add7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 11,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_830a7072a1e5add7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 11,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_830a7072a1e5add7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 12,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_830a7072a1e5add7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 13,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 36,
+          "support_count": 3
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 36,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 37,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 37,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 38,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 38,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 39,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 39,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 40,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 40,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 41,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 41,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 42,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 42,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 43,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 43,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 44,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 44,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 45,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 45,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 46,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 46,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 47,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 47,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 48,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 48,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 49,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 49,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 50,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 50,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 51,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 51,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 52,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 52,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 53,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 53,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 54,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 54,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 55,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 55,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 56,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 56,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 57,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 57,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 58,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 58,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 59,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_2c6ed1b0cb515264",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 59,
+          "support_count": 4
+        }
+      ],
+      "episode_id": "ExpenseAddMultipleFromGallery_20260806_d0a46e60",
+      "nonempty_read_count": 2,
+      "normal_navigation_exemption_violation_count": 0,
+      "qualifying_segments": [
+        {
+          "branch_id": "a11b_bcb215de5b0a2375",
+          "deadline": 9,
+          "frontier_id": "a11f_830a7072a1e5add7"
+        },
+        {
+          "branch_id": "a11b_cca579aab35c203d",
+          "deadline": 36,
+          "frontier_id": "a11f_2c6ed1b0cb515264"
+        }
+      ],
+      "read_events": [
+        {
+          "anchor_confidence_delta_within_4": 0.0,
+          "candidate_state_before_read": "MATURE",
+          "confirmation_path": "",
+          "constraint_confidence_delta_within_4": 0.0,
+          "constraint_mask": 0,
+          "contraction_confidence": 0.708333,
+          "escaped_frontier_within_3": false,
+          "evidence_signature": "5f55d7ab9906c217e62a656d553b72358ce641b74458fbae2a95100071cda7d5",
+          "frontier_id": "a11f_830a7072a1e5add7",
+          "item_open_mask": 0,
+          "maturity_step": 9,
+          "next_action_branch_id": "a11b_bcb215de5b0a2375",
+          "next_action_was_novel": false,
+          "phase_id": 0,
+          "read_id": "a11r_10_5f55d7ab",
+          "rendered_chars": 347,
+          "rendered_sha256": "3cccc4d8efb28bfdbd34e4d56f1d133824d525b533ea0a86bd6842d5500af629",
+          "rendered_text": "A11 frontier; past visible evidence only, current screen wins.\nOpen: task completion is not established. Constraint: none. Evidence: 4 visits/8 actions; 4.0 adverse receipts; branches repeated.\nConfirmed by 2+ adverse observations after navigation credit. Reassess another action family or target; retry is allowed. Nothing is blocked or selected.",
+          "rendered_utf8_bytes": 347,
+          "retrieved_anchor_ids": [],
+          "retrieved_branch_ids": [
+            "a11b_bcb215de5b0a2375",
+            "a11b_ca31a713d67d0e24"
+          ],
+          "retrieved_constraint_ids": [],
+          "retrieved_route_ids": [],
+          "returned_within_4": false,
+          "score": 0.770596,
+          "score_components": {
+            "C": 0.708333,
+            "E": 1.0,
+            "F": 0.882497,
+            "G": 1.0,
+            "M": 0.85,
+            "O": 1.0,
+            "X": 0.0
+          },
+          "step": 10,
+          "support_count": 4,
+          "support_receipt_ids": [
+            "a11p_6_e5add7_0a2375",
+            "a11p_7_e5add7_7d0e24",
+            "a11p_8_e5add7_0a2375",
+            "a11p_9_e5add7_0a2375"
+          ],
+          "trigger_id": "a11t_9_5f55d7ab9906",
+          "trigger_kind": "CONTRACTED_FRONTIER",
+          "visual_distance": 0.0,
+          "visual_match_kind": "NEAR",
+          "workflow_credit": 0.0
+        },
+        {
+          "anchor_confidence_delta_within_4": 0.0,
+          "candidate_state_before_read": "MATURE",
+          "confirmation_path": "",
+          "constraint_confidence_delta_within_4": 0.0,
+          "constraint_mask": 0,
+          "contraction_confidence": 0.770833,
+          "escaped_frontier_within_3": true,
+          "evidence_signature": "fe688998337a3fcc5c99b9281ea81679f22d9af5089ddc95df9eb12960c907ab",
+          "frontier_id": "a11f_830a7072a1e5add7",
+          "item_open_mask": 0,
+          "maturity_step": 13,
+          "next_action_branch_id": "a11b_4b9a872a3b25b77b",
+          "next_action_was_novel": true,
+          "phase_id": 0,
+          "read_id": "a11r_14_fe688998",
+          "rendered_chars": 347,
+          "rendered_sha256": "5ba723546fb91587e5221c5b46c3d598b31f87650a7e9de2d88ee674f1e1ac45",
+          "rendered_text": "A11 frontier; past visible evidence only, current screen wins.\nOpen: task completion is not established. Constraint: none. Evidence: 8 visits/8 actions; 6.0 adverse receipts; branches repeated.\nConfirmed by 2+ adverse observations after navigation credit. Reassess another action family or target; retry is allowed. Nothing is blocked or selected.",
+          "rendered_utf8_bytes": 347,
+          "retrieved_anchor_ids": [],
+          "retrieved_branch_ids": [
+            "a11b_bcb215de5b0a2375",
+            "a11b_ca31a713d67d0e24"
+          ],
+          "retrieved_constraint_ids": [],
+          "retrieved_route_ids": [],
+          "returned_within_4": false,
+          "score": 0.924083,
+          "score_components": {
+            "C": 0.770833,
+            "E": 1.0,
+            "F": 0.882497,
+            "G": 1.0,
+            "M": 1.0,
+            "O": 1.0,
+            "X": 0.0
+          },
+          "step": 14,
+          "support_count": 4,
+          "support_receipt_ids": [
+            "a11p_8_e5add7_0a2375",
+            "a11p_9_e5add7_0a2375",
+            "a11p_10_e5add7_0a2375",
+            "a11p_13_e5add7_0a2375"
+          ],
+          "trigger_id": "a11t_13_fe688998337a",
+          "trigger_kind": "CONTRACTED_FRONTIER",
+          "visual_distance": 0.0,
+          "visual_match_kind": "EXACT",
+          "workflow_credit": 0.0
+        }
+      ],
+      "rendered_chars": 694,
+      "replayed_actions": 60,
+      "role": "a6",
+      "serialized_audit_bytes": 74305,
+      "task_name": "ExpenseAddMultipleFromGallery"
+    },
+    {
+      "anchor_count": 0,
+      "causal_boundary": {
+        "action_override_count": 0,
+        "allowed_inputs": [
+          "goal",
+          "before.pixels",
+          "after.pixels",
+          "canonical_action",
+          "action_summary",
+          "source_step"
+        ],
+        "evaluator_used_for_decision": false,
+        "forced_termination_count": 0,
+        "future_information_used": false,
+        "guard_enabled": false,
+        "hidden_ui_used_for_decision": false,
+        "ignored_snapshot_fields": [
+          "evaluator_reward",
+          "task_success",
+          "ui_tree",
+          "accessibility",
+          "foreground",
+          "activity",
+          "package",
+          "database_state",
+          "transition"
+        ],
+        "model_calls_added": 0
+      },
+      "constraint_anchor_count": 0,
+      "created_trigger_steps": [],
+      "episode_id": "ExpenseAddMultipleFromMarkor_20260806_222885ba",
+      "nonempty_read_count": 0,
+      "normal_navigation_exemption_violation_count": 0,
+      "qualifying_segments": [],
+      "read_events": [],
+      "rendered_chars": 0,
+      "replayed_actions": 8,
+      "role": "a6",
+      "serialized_audit_bytes": 29082,
+      "task_name": "ExpenseAddMultipleFromMarkor"
+    },
+    {
+      "anchor_count": 3,
+      "causal_boundary": {
+        "action_override_count": 0,
+        "allowed_inputs": [
+          "goal",
+          "before.pixels",
+          "after.pixels",
+          "canonical_action",
+          "action_summary",
+          "source_step"
+        ],
+        "evaluator_used_for_decision": false,
+        "forced_termination_count": 0,
+        "future_information_used": false,
+        "guard_enabled": false,
+        "hidden_ui_used_for_decision": false,
+        "ignored_snapshot_fields": [
+          "evaluator_reward",
+          "task_success",
+          "ui_tree",
+          "accessibility",
+          "foreground",
+          "activity",
+          "package",
+          "database_state",
+          "transition"
+        ],
+        "model_calls_added": 0
+      },
+      "constraint_anchor_count": 0,
+      "created_trigger_steps": [],
+      "episode_id": "ExpenseDeleteMultiple2_20260806_b9572c71",
+      "nonempty_read_count": 0,
+      "normal_navigation_exemption_violation_count": 0,
+      "qualifying_segments": [
+        {
+          "branch_id": "a11b_f13d51507408ad22",
+          "deadline": 20,
+          "frontier_id": "a11f_0331892be6846829"
+        }
+      ],
+      "read_events": [],
+      "rendered_chars": 0,
+      "replayed_actions": 34,
+      "role": "a6",
+      "serialized_audit_bytes": 53116,
+      "task_name": "ExpenseDeleteMultiple2"
+    },
+    {
+      "anchor_count": 1,
+      "causal_boundary": {
+        "action_override_count": 0,
+        "allowed_inputs": [
+          "goal",
+          "before.pixels",
+          "after.pixels",
+          "canonical_action",
+          "action_summary",
+          "source_step"
+        ],
+        "evaluator_used_for_decision": false,
+        "forced_termination_count": 0,
+        "future_information_used": false,
+        "guard_enabled": false,
+        "hidden_ui_used_for_decision": false,
+        "ignored_snapshot_fields": [
+          "evaluator_reward",
+          "task_success",
+          "ui_tree",
+          "accessibility",
+          "foreground",
+          "activity",
+          "package",
+          "database_state",
+          "transition"
+        ],
+        "model_calls_added": 0
+      },
+      "constraint_anchor_count": 0,
+      "created_trigger_steps": [],
+      "episode_id": "MarkorCreateNoteAndSms_20260806_0d806f12",
+      "nonempty_read_count": 0,
+      "normal_navigation_exemption_violation_count": 0,
+      "qualifying_segments": [],
+      "read_events": [],
+      "rendered_chars": 0,
+      "replayed_actions": 18,
+      "role": "a6",
+      "serialized_audit_bytes": 53158,
+      "task_name": "MarkorCreateNoteAndSms"
+    },
+    {
+      "anchor_count": 2,
+      "causal_boundary": {
+        "action_override_count": 0,
+        "allowed_inputs": [
+          "goal",
+          "before.pixels",
+          "after.pixels",
+          "canonical_action",
+          "action_summary",
+          "source_step"
+        ],
+        "evaluator_used_for_decision": false,
+        "forced_termination_count": 0,
+        "future_information_used": false,
+        "guard_enabled": false,
+        "hidden_ui_used_for_decision": false,
+        "ignored_snapshot_fields": [
+          "evaluator_reward",
+          "task_success",
+          "ui_tree",
+          "accessibility",
+          "foreground",
+          "activity",
+          "package",
+          "database_state",
+          "transition"
+        ],
+        "model_calls_added": 0
+      },
+      "constraint_anchor_count": 0,
+      "created_trigger_steps": [
+        {
+          "frontier_id": "a11f_dcd910f9b488e2af",
+          "kind": "CONFIRMED_ROUTE_TRAP",
+          "step": 22,
+          "support_count": 2
+        }
+      ],
+      "episode_id": "MarkorMergeNotes_20260806_87ebe9b4",
+      "nonempty_read_count": 1,
+      "normal_navigation_exemption_violation_count": 0,
+      "qualifying_segments": [
+        {
+          "branch_id": "a11b_fa2c677b966b12d0",
+          "deadline": 15,
+          "frontier_id": "a11f_22b2b44d72fc8f84"
+        }
+      ],
+      "read_events": [
+        {
+          "anchor_confidence_delta_within_4": 0.0,
+          "candidate_state_before_read": "MATURE",
+          "confirmation_path": "route_recurrence",
+          "constraint_confidence_delta_within_4": 0.0,
+          "constraint_mask": 0,
+          "contraction_confidence": 0.8,
+          "escaped_frontier_within_3": true,
+          "evidence_signature": "033a43ac7e047eaebc4f5b9832f20eb512a1fc3e5ef4f53062fa0ffeb1ad11e4",
+          "frontier_id": "a11f_dcd910f9b488e2af",
+          "item_open_mask": 3,
+          "maturity_step": 22,
+          "next_action_branch_id": "a11b_4e3a6784c5247b6b",
+          "next_action_was_novel": false,
+          "phase_id": 0,
+          "read_id": "a11r_23_033a43ac",
+          "rendered_chars": 346,
+          "rendered_sha256": "293e496cd82cf7eb80ba68a99036bc101bc29f146ec818c5090e7eaba168d147",
+          "rendered_text": "A11 frontier; past visible evidence only, current screen wins.\nOpen: \"2zo4n6Ho\", \"save it\". Constraint: none. Evidence: a closed route was confirmed by recurrence or a following bad branch....\nConfirmed by 2+ adverse observations after navigation credit. Reassess another action family or target; retry is allowed. Nothing is blocked or selected.",
+          "rendered_utf8_bytes": 346,
+          "retrieved_anchor_ids": [
+            "a11a_bfb5f4e74fb3",
+            "a11a_49c26d04c4af"
+          ],
+          "retrieved_branch_ids": [
+            "a11b_60618fac5e4499f3",
+            "a11b_60618fac5e4499f3"
+          ],
+          "retrieved_constraint_ids": [],
+          "retrieved_route_ids": [
+            "a11route_4ca4e6b515_10",
+            "a11route_4ca4e6b515_22"
+          ],
+          "returned_within_4": true,
+          "score": 0.735942,
+          "score_components": {
+            "C": 0.8,
+            "E": 0.792387,
+            "F": 0.882497,
+            "G": 1.0,
+            "M": 0.85,
+            "O": 1.0,
+            "X": 0.0
+          },
+          "step": 23,
+          "support_count": 2,
+          "support_receipt_ids": [
+            "a11p_6_88e2af_4499f3",
+            "a11p_19_88e2af_4499f3"
+          ],
+          "trigger_id": "a11t_22_033a43ac7e04",
+          "trigger_kind": "CONFIRMED_ROUTE_TRAP",
+          "visual_distance": 0.004394,
+          "visual_match_kind": "NEAR",
+          "workflow_credit": 0.0
+        }
+      ],
+      "rendered_chars": 346,
+      "replayed_actions": 45,
+      "role": "a6",
+      "serialized_audit_bytes": 81920,
+      "task_name": "MarkorMergeNotes"
+    },
+    {
+      "anchor_count": 4,
+      "causal_boundary": {
+        "action_override_count": 0,
+        "allowed_inputs": [
+          "goal",
+          "before.pixels",
+          "after.pixels",
+          "canonical_action",
+          "action_summary",
+          "source_step"
+        ],
+        "evaluator_used_for_decision": false,
+        "forced_termination_count": 0,
+        "future_information_used": false,
+        "guard_enabled": false,
+        "hidden_ui_used_for_decision": false,
+        "ignored_snapshot_fields": [
+          "evaluator_reward",
+          "task_success",
+          "ui_tree",
+          "accessibility",
+          "foreground",
+          "activity",
+          "package",
+          "database_state",
+          "transition"
+        ],
+        "model_calls_added": 0
+      },
+      "constraint_anchor_count": 0,
+      "created_trigger_steps": [],
+      "episode_id": "MarkorTranscribeVideo_20260806_72c52c56",
+      "nonempty_read_count": 0,
+      "normal_navigation_exemption_violation_count": 0,
+      "qualifying_segments": [],
+      "read_events": [],
+      "rendered_chars": 0,
+      "replayed_actions": 20,
+      "role": "a6",
+      "serialized_audit_bytes": 44390,
+      "task_name": "MarkorTranscribeVideo"
+    },
+    {
+      "anchor_count": 2,
+      "causal_boundary": {
+        "action_override_count": 0,
+        "allowed_inputs": [
+          "goal",
+          "before.pixels",
+          "after.pixels",
+          "canonical_action",
+          "action_summary",
+          "source_step"
+        ],
+        "evaluator_used_for_decision": false,
+        "forced_termination_count": 0,
+        "future_information_used": false,
+        "guard_enabled": false,
+        "hidden_ui_used_for_decision": false,
+        "ignored_snapshot_fields": [
+          "evaluator_reward",
+          "task_success",
+          "ui_tree",
+          "accessibility",
+          "foreground",
+          "activity",
+          "package",
+          "database_state",
+          "transition"
+        ],
+        "model_calls_added": 0
+      },
+      "constraint_anchor_count": 0,
+      "created_trigger_steps": [
+        {
+          "frontier_id": "a11f_9745815882ae3d6d",
+          "kind": "CONFIRMED_ROUTE_TRAP",
+          "step": 8,
+          "support_count": 2
+        },
+        {
+          "frontier_id": "a11f_9745815882ae3d6d",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 8,
+          "support_count": 2
+        },
+        {
+          "frontier_id": "a11f_9745815882ae3d6d",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 9,
+          "support_count": 3
+        },
+        {
+          "frontier_id": "a11f_9745815882ae3d6d",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 10,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_9745815882ae3d6d",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 10,
+          "support_count": 4
+        }
+      ],
+      "episode_id": "OsmAndMarker_20260806_984cb06d",
+      "nonempty_read_count": 1,
+      "normal_navigation_exemption_violation_count": 0,
+      "qualifying_segments": [
+        {
+          "branch_id": "a11b_dd43ee0990c5022c",
+          "deadline": 9,
+          "frontier_id": "a11f_9745815882ae3d6d"
+        }
+      ],
+      "read_events": [
+        {
+          "anchor_confidence_delta_within_4": 0.0,
+          "candidate_state_before_read": "MATURE",
+          "confirmation_path": "post_return_reversion",
+          "constraint_confidence_delta_within_4": 0.0,
+          "constraint_mask": 0,
+          "contraction_confidence": 0.8,
+          "escaped_frontier_within_3": true,
+          "evidence_signature": "afb8ca99b72b71c841a041176d7d35f164e482054d08362e19f70cbfb98fafd7",
+          "frontier_id": "a11f_9745815882ae3d6d",
+          "item_open_mask": 3,
+          "maturity_step": 8,
+          "next_action_branch_id": "a11b_dd43ee0990c5022c",
+          "next_action_was_novel": false,
+          "phase_id": 0,
+          "read_id": "a11r_9_afb8ca99",
+          "rendered_chars": 350,
+          "rendered_sha256": "e2d18da44ea4c3901eefdac1d5c7f65adba12291b1baa4a3e631fdc7980cb3b3",
+          "rendered_text": "A11 frontier; past visible evidence only, current screen wins.\nOpen: \"47.1858882\", \"9.5452201\". Constraint: none. Evidence: a closed route was confirmed by recurrence or a following bad branch....\nConfirmed by 2+ adverse observations after navigation credit. Reassess another action family or target; retry is allowed. Nothing is blocked or selected.",
+          "rendered_utf8_bytes": 350,
+          "retrieved_anchor_ids": [
+            "a11a_8479232484a5",
+            "a11a_f595a1087c5a"
+          ],
+          "retrieved_branch_ids": [
+            "a11b_00392c57a7509419"
+          ],
+          "retrieved_constraint_ids": [],
+          "retrieved_route_ids": [
+            "a11route_b96aaa8e37_7"
+          ],
+          "returned_within_4": false,
+          "score": 0.855628,
+          "score_components": {
+            "C": 0.8,
+            "E": 0.760557,
+            "F": 0.882497,
+            "G": 1.0,
+            "M": 1.0,
+            "O": 1.0,
+            "X": 0.0
+          },
+          "step": 9,
+          "support_count": 2,
+          "support_receipt_ids": [
+            "a11p_5_ae3d6d_509419",
+            "a11p_8_ae3d6d_c5022c"
+          ],
+          "trigger_id": "a11t_8_afb8ca99b72b",
+          "trigger_kind": "CONFIRMED_ROUTE_TRAP",
+          "visual_distance": 0.0,
+          "visual_match_kind": "EXACT",
+          "workflow_credit": 0.0
+        }
+      ],
+      "rendered_chars": 350,
+      "replayed_actions": 20,
+      "role": "a6",
+      "serialized_audit_bytes": 55676,
+      "task_name": "OsmAndMarker"
+    },
+    {
+      "anchor_count": 0,
+      "causal_boundary": {
+        "action_override_count": 0,
+        "allowed_inputs": [
+          "goal",
+          "before.pixels",
+          "after.pixels",
+          "canonical_action",
+          "action_summary",
+          "source_step"
+        ],
+        "evaluator_used_for_decision": false,
+        "forced_termination_count": 0,
+        "future_information_used": false,
+        "guard_enabled": false,
+        "hidden_ui_used_for_decision": false,
+        "ignored_snapshot_fields": [
+          "evaluator_reward",
+          "task_success",
+          "ui_tree",
+          "accessibility",
+          "foreground",
+          "activity",
+          "package",
+          "database_state",
+          "transition"
+        ],
+        "model_calls_added": 0
+      },
+      "constraint_anchor_count": 0,
+      "created_trigger_steps": [
+        {
+          "frontier_id": "a11f_87556ae96d2edcc5",
+          "kind": "CONFIRMED_ROUTE_TRAP",
+          "step": 9,
+          "support_count": 2
+        },
+        {
+          "frontier_id": "a11f_2706956a8d3c20fd",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 9,
+          "support_count": 2
+        },
+        {
+          "frontier_id": "a11f_6201e70de17af2bd",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 14,
+          "support_count": 2
+        },
+        {
+          "frontier_id": "a11f_6201e70de17af2bd",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 16,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_6201e70de17af2bd",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 18,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_6201e70de17af2bd",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 19,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_6201e70de17af2bd",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 20,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_6201e70de17af2bd",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 21,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_6201e70de17af2bd",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 22,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_6201e70de17af2bd",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 23,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_6201e70de17af2bd",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 23,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_6201e70de17af2bd",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 24,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_6201e70de17af2bd",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 25,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_6201e70de17af2bd",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 25,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_6201e70de17af2bd",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 26,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_6201e70de17af2bd",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 26,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_6201e70de17af2bd",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 27,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_6201e70de17af2bd",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 28,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_6201e70de17af2bd",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 28,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_6201e70de17af2bd",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 29,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_6201e70de17af2bd",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 30,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_6201e70de17af2bd",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 31,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_6201e70de17af2bd",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 31,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_6201e70de17af2bd",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 32,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_6201e70de17af2bd",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 33,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_6201e70de17af2bd",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 34,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_6201e70de17af2bd",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 35,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_6201e70de17af2bd",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 36,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_6201e70de17af2bd",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 37,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_6201e70de17af2bd",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 38,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_6201e70de17af2bd",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 38,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_87556ae96d2edcc5",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 52,
+          "support_count": 3
+        },
+        {
+          "frontier_id": "a11f_6f670c3d60e59a04",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 61,
+          "support_count": 2
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 75,
+          "support_count": 2
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 76,
+          "support_count": 3
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 77,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 77,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 78,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 78,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 79,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 79,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 80,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 80,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 81,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 81,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 82,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 82,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 83,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 83,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 85,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 86,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 86,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 87,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 87,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 88,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 88,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 89,
+          "support_count": 2
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 89,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 90,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 90,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 91,
+          "support_count": 3
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 91,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 92,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 92,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 93,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 94,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 95,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 95,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 96,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 96,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 97,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 97,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 98,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 98,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 99,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 99,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 100,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 101,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 101,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 102,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 102,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 103,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 103,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 104,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 104,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 105,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 105,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 106,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 106,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 107,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 107,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 108,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 108,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 109,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 109,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 110,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 110,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 111,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 111,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 112,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 113,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 114,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 114,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 115,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 115,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 116,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 116,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 117,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 117,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 118,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 118,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 119,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_f325ce370a9683d7",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 119,
+          "support_count": 4
+        }
+      ],
+      "episode_id": "OsmAndTrack_20260806_7b0f1f71",
+      "nonempty_read_count": 2,
+      "normal_navigation_exemption_violation_count": 0,
+      "qualifying_segments": [
+        {
+          "branch_id": "a11b_42a2f86b536521bf",
+          "deadline": 43,
+          "frontier_id": "a11f_87556ae96d2edcc5"
+        },
+        {
+          "branch_id": "a11b_f82c64f8f1f45e2c",
+          "deadline": 54,
+          "frontier_id": "a11f_2706956a8d3c20fd"
+        },
+        {
+          "branch_id": "a11b_3f737bab89a1dc7c",
+          "deadline": 55,
+          "frontier_id": "a11f_2706956a8d3c20fd"
+        },
+        {
+          "branch_id": "a11b_a878727144f8edcf",
+          "deadline": 15,
+          "frontier_id": "a11f_6201e70de17af2bd"
+        },
+        {
+          "branch_id": "a11b_af27cd2b1c4a0331",
+          "deadline": 20,
+          "frontier_id": "a11f_6201e70de17af2bd"
+        },
+        {
+          "branch_id": "a11b_0b342492b5f873cd",
+          "deadline": 61,
+          "frontier_id": "a11f_6f670c3d60e59a04"
+        },
+        {
+          "branch_id": "a11b_ef506545ff99415f",
+          "deadline": 76,
+          "frontier_id": "a11f_f325ce370a9683d7"
+        },
+        {
+          "branch_id": "a11b_8474cffc5b02d09d",
+          "deadline": 91,
+          "frontier_id": "a11f_f325ce370a9683d7"
+        }
+      ],
+      "read_events": [
+        {
+          "anchor_confidence_delta_within_4": 0.0,
+          "candidate_state_before_read": "MATURE",
+          "confirmation_path": "",
+          "constraint_confidence_delta_within_4": 0.0,
+          "constraint_mask": 0,
+          "contraction_confidence": 1.0,
+          "escaped_frontier_within_3": true,
+          "evidence_signature": "ec6cc3c2b6ed1f90c1b62691b23761328366be4f38708c02d36e18c4140b445d",
+          "frontier_id": "a11f_2706956a8d3c20fd",
+          "item_open_mask": 0,
+          "maturity_step": 9,
+          "next_action_branch_id": "a11b_3f737bab89a1dc7c",
+          "next_action_was_novel": true,
+          "phase_id": 0,
+          "read_id": "a11r_10_ec6cc3c2",
+          "rendered_chars": 338,
+          "rendered_sha256": "875d575ab36912cf4629e6c2e9b77cb6a90b4040be964bcb6e4250bdf3293d2f",
+          "rendered_text": "A11 frontier; past visible evidence only, current screen wins.\nOpen: task completion is not established. Constraint: none. Evidence: tap lower-right had no/negligible screen change 2x.\nConfirmed by 2+ adverse observations after navigation credit. Reassess another action family or target; retry is allowed. Nothing is blocked or selected.",
+          "rendered_utf8_bytes": 338,
+          "retrieved_anchor_ids": [],
+          "retrieved_branch_ids": [
+            "a11b_f82c64f8f1f45e2c"
+          ],
+          "retrieved_constraint_ids": [],
+          "retrieved_route_ids": [],
+          "returned_within_4": false,
+          "score": 0.849066,
+          "score_components": {
+            "C": 1.0,
+            "E": 0.565052,
+            "F": 0.882497,
+            "G": 1.0,
+            "M": 1.0,
+            "O": 1.0,
+            "X": 0.0
+          },
+          "step": 10,
+          "support_count": 2,
+          "support_receipt_ids": [
+            "a11p_8_3c20fd_f45e2c",
+            "a11p_9_3c20fd_f45e2c"
+          ],
+          "trigger_id": "a11t_9_ec6cc3c2b6ed",
+          "trigger_kind": "BAD_BRANCH_REPEAT",
+          "visual_distance": 0.0,
+          "visual_match_kind": "EXACT",
+          "workflow_credit": 0.0
+        },
+        {
+          "anchor_confidence_delta_within_4": 0.0,
+          "candidate_state_before_read": "MATURE",
+          "confirmation_path": "",
+          "constraint_confidence_delta_within_4": 0.0,
+          "constraint_mask": 0,
+          "contraction_confidence": 1.0,
+          "escaped_frontier_within_3": false,
+          "evidence_signature": "33fc65351df8beeac3308e735c230ca408deb2ff8e18b5c0e178debe9e7a972c",
+          "frontier_id": "a11f_6201e70de17af2bd",
+          "item_open_mask": 0,
+          "maturity_step": 14,
+          "next_action_branch_id": "a11b_a878727144f8edcf",
+          "next_action_was_novel": false,
+          "phase_id": 0,
+          "read_id": "a11r_15_33fc6535",
+          "rendered_chars": 338,
+          "rendered_sha256": "d3cc961684e7cfdf66ca1ff4131b0d8fc84e7917efe8b997f05a694d57c51a8f",
+          "rendered_text": "A11 frontier; past visible evidence only, current screen wins.\nOpen: task completion is not established. Constraint: none. Evidence: tap middle-left had no/negligible screen change 2x.\nConfirmed by 2+ adverse observations after navigation credit. Reassess another action family or target; retry is allowed. Nothing is blocked or selected.",
+          "rendered_utf8_bytes": 338,
+          "retrieved_anchor_ids": [],
+          "retrieved_branch_ids": [
+            "a11b_a878727144f8edcf"
+          ],
+          "retrieved_constraint_ids": [],
+          "retrieved_route_ids": [],
+          "returned_within_4": false,
+          "score": 0.721706,
+          "score_components": {
+            "C": 1.0,
+            "E": 0.565052,
+            "F": 0.882497,
+            "G": 1.0,
+            "M": 0.85,
+            "O": 1.0,
+            "X": 0.0
+          },
+          "step": 15,
+          "support_count": 2,
+          "support_receipt_ids": [
+            "a11p_13_7af2bd_f8edcf",
+            "a11p_14_7af2bd_f8edcf"
+          ],
+          "trigger_id": "a11t_14_33fc65351df8",
+          "trigger_kind": "BAD_BRANCH_REPEAT",
+          "visual_distance": 0.0,
+          "visual_match_kind": "NEAR",
+          "workflow_credit": 0.0
+        }
+      ],
+      "rendered_chars": 676,
+      "replayed_actions": 120,
+      "role": "a6",
+      "serialized_audit_bytes": 82619,
+      "task_name": "OsmAndTrack"
+    },
+    {
+      "anchor_count": 0,
+      "causal_boundary": {
+        "action_override_count": 0,
+        "allowed_inputs": [
+          "goal",
+          "before.pixels",
+          "after.pixels",
+          "canonical_action",
+          "action_summary",
+          "source_step"
+        ],
+        "evaluator_used_for_decision": false,
+        "forced_termination_count": 0,
+        "future_information_used": false,
+        "guard_enabled": false,
+        "hidden_ui_used_for_decision": false,
+        "ignored_snapshot_fields": [
+          "evaluator_reward",
+          "task_success",
+          "ui_tree",
+          "accessibility",
+          "foreground",
+          "activity",
+          "package",
+          "database_state",
+          "transition"
+        ],
+        "model_calls_added": 0
+      },
+      "constraint_anchor_count": 0,
+      "created_trigger_steps": [
+        {
+          "frontier_id": "a11f_a05c1069b63d7615",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 26,
+          "support_count": 3
+        },
+        {
+          "frontier_id": "a11f_a05c1069b63d7615",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 26,
+          "support_count": 3
+        },
+        {
+          "frontier_id": "a11f_a05c1069b63d7615",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 27,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_a05c1069b63d7615",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 27,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_a05c1069b63d7615",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 32,
+          "support_count": 3
+        },
+        {
+          "frontier_id": "a11f_a05c1069b63d7615",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 34,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_a05c1069b63d7615",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 39,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_a05c1069b63d7615",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 40,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_a05c1069b63d7615",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 40,
+          "support_count": 3
+        },
+        {
+          "frontier_id": "a11f_a05c1069b63d7615",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 41,
+          "support_count": 3
+        },
+        {
+          "frontier_id": "a11f_a05c1069b63d7615",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 44,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_a05c1069b63d7615",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 44,
+          "support_count": 3
+        },
+        {
+          "frontier_id": "a11f_a05c1069b63d7615",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 45,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_a05c1069b63d7615",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 45,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_a05c1069b63d7615",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 46,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_a05c1069b63d7615",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 46,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_a05c1069b63d7615",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 47,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_a05c1069b63d7615",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 49,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_a05c1069b63d7615",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 49,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_a05c1069b63d7615",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 50,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_a05c1069b63d7615",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 52,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_a05c1069b63d7615",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 52,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_a05c1069b63d7615",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 53,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_a05c1069b63d7615",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 53,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_a05c1069b63d7615",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 54,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_a05c1069b63d7615",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 54,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_a05c1069b63d7615",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 58,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_a05c1069b63d7615",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 58,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_a05c1069b63d7615",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 59,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_a05c1069b63d7615",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 59,
+          "support_count": 4
+        }
+      ],
+      "episode_id": "RecipeAddMultipleRecipesFromImage_20260806_208de610",
+      "nonempty_read_count": 2,
+      "normal_navigation_exemption_violation_count": 0,
+      "qualifying_segments": [
+        {
+          "branch_id": "a11b_c45de396b98845fe",
+          "deadline": 26,
+          "frontier_id": "a11f_a05c1069b63d7615"
+        }
+      ],
+      "read_events": [
+        {
+          "anchor_confidence_delta_within_4": 0.0,
+          "candidate_state_before_read": "MATURE",
+          "confirmation_path": "",
+          "constraint_confidence_delta_within_4": 0.0,
+          "constraint_mask": 0,
+          "contraction_confidence": 1.0,
+          "escaped_frontier_within_3": true,
+          "evidence_signature": "505479b5b02afa0b09e706afc397aaaaa17fca543e5d0ce835cb3bdcd5bea4b3",
+          "frontier_id": "a11f_a05c1069b63d7615",
+          "item_open_mask": 0,
+          "maturity_step": 26,
+          "next_action_branch_id": "a11b_c45de396b98845fe",
+          "next_action_was_novel": false,
+          "phase_id": 0,
+          "read_id": "a11r_27_505479b5",
+          "rendered_chars": 347,
+          "rendered_sha256": "f48d0d57a7bdff02cef257d8bd128a682bd7e4cd0a36e256ac9f265f3dace7e9",
+          "rendered_text": "A11 frontier; past visible evidence only, current screen wins.\nOpen: task completion is not established. Constraint: none. Evidence: 4 visits/8 actions; 3.0 adverse receipts; branches repeated.\nConfirmed by 2+ adverse observations after navigation credit. Reassess another action family or target; retry is allowed. Nothing is blocked or selected.",
+          "rendered_utf8_bytes": 347,
+          "retrieved_anchor_ids": [],
+          "retrieved_branch_ids": [
+            "a11b_c45de396b98845fe"
+          ],
+          "retrieved_constraint_ids": [],
+          "retrieved_route_ids": [],
+          "returned_within_4": true,
+          "score": 0.98825,
+          "score_components": {
+            "C": 1.0,
+            "E": 1.0,
+            "F": 0.882497,
+            "G": 1.0,
+            "M": 1.0,
+            "O": 1.0,
+            "X": 0.0
+          },
+          "step": 27,
+          "support_count": 3,
+          "support_receipt_ids": [
+            "a11p_24_3d7615_8845fe",
+            "a11p_25_3d7615_8845fe",
+            "a11p_26_3d7615_8845fe"
+          ],
+          "trigger_id": "a11t_26_505479b5b02a",
+          "trigger_kind": "CONTRACTED_FRONTIER",
+          "visual_distance": 0.0,
+          "visual_match_kind": "EXACT",
+          "workflow_credit": 0.0
+        },
+        {
+          "anchor_confidence_delta_within_4": 0.0,
+          "candidate_state_before_read": "MATURE",
+          "confirmation_path": "",
+          "constraint_confidence_delta_within_4": 0.0,
+          "constraint_mask": 0,
+          "contraction_confidence": 1.0,
+          "escaped_frontier_within_3": false,
+          "evidence_signature": "9e3861dc5839c17347edc7f88aee76cc80beeeeeb19835678b5dcdbe0d47eca2",
+          "frontier_id": "a11f_a05c1069b63d7615",
+          "item_open_mask": 0,
+          "maturity_step": 27,
+          "next_action_branch_id": "a11b_c45de396b98845fe",
+          "next_action_was_novel": false,
+          "phase_id": 0,
+          "read_id": "a11r_32_9e3861dc",
+          "rendered_chars": 347,
+          "rendered_sha256": "274f01bef4f673e00bb2cfed2a1fabf45f27073b72e0db47d333a0dda9cbef98",
+          "rendered_text": "A11 frontier; past visible evidence only, current screen wins.\nOpen: task completion is not established. Constraint: none. Evidence: 5 visits/8 actions; 4.0 adverse receipts; branches repeated.\nConfirmed by 2+ adverse observations after navigation credit. Reassess another action family or target; retry is allowed. Nothing is blocked or selected.",
+          "rendered_utf8_bytes": 347,
+          "retrieved_anchor_ids": [],
+          "retrieved_branch_ids": [
+            "a11b_c45de396b98845fe"
+          ],
+          "retrieved_constraint_ids": [],
+          "retrieved_route_ids": [],
+          "returned_within_4": false,
+          "score": 0.953526,
+          "score_components": {
+            "C": 1.0,
+            "E": 1.0,
+            "F": 0.535261,
+            "G": 1.0,
+            "M": 1.0,
+            "O": 1.0,
+            "X": 0.0
+          },
+          "step": 32,
+          "support_count": 4,
+          "support_receipt_ids": [
+            "a11p_24_3d7615_8845fe",
+            "a11p_25_3d7615_8845fe",
+            "a11p_26_3d7615_8845fe",
+            "a11p_27_3d7615_8845fe"
+          ],
+          "trigger_id": "a11t_27_9e3861dc5839",
+          "trigger_kind": "CONTRACTED_FRONTIER",
+          "visual_distance": 0.0,
+          "visual_match_kind": "EXACT",
+          "workflow_credit": 0.0
+        }
+      ],
+      "rendered_chars": 694,
+      "replayed_actions": 60,
+      "role": "a6",
+      "serialized_audit_bytes": 53976,
+      "task_name": "RecipeAddMultipleRecipesFromImage"
+    },
+    {
+      "anchor_count": 1,
+      "causal_boundary": {
+        "action_override_count": 0,
+        "allowed_inputs": [
+          "goal",
+          "before.pixels",
+          "after.pixels",
+          "canonical_action",
+          "action_summary",
+          "source_step"
+        ],
+        "evaluator_used_for_decision": false,
+        "forced_termination_count": 0,
+        "future_information_used": false,
+        "guard_enabled": false,
+        "hidden_ui_used_for_decision": false,
+        "ignored_snapshot_fields": [
+          "evaluator_reward",
+          "task_success",
+          "ui_tree",
+          "accessibility",
+          "foreground",
+          "activity",
+          "package",
+          "database_state",
+          "transition"
+        ],
+        "model_calls_added": 0
+      },
+      "constraint_anchor_count": 1,
+      "created_trigger_steps": [],
+      "episode_id": "RecipeAddMultipleRecipesFromMarkor2_20260806_49b8ce7c",
+      "nonempty_read_count": 0,
+      "normal_navigation_exemption_violation_count": 0,
+      "qualifying_segments": [],
+      "read_events": [],
+      "rendered_chars": 0,
+      "replayed_actions": 7,
+      "role": "a6",
+      "serialized_audit_bytes": 21352,
+      "task_name": "RecipeAddMultipleRecipesFromMarkor2"
+    },
+    {
+      "anchor_count": 0,
+      "causal_boundary": {
+        "action_override_count": 0,
+        "allowed_inputs": [
+          "goal",
+          "before.pixels",
+          "after.pixels",
+          "canonical_action",
+          "action_summary",
+          "source_step"
+        ],
+        "evaluator_used_for_decision": false,
+        "forced_termination_count": 0,
+        "future_information_used": false,
+        "guard_enabled": false,
+        "hidden_ui_used_for_decision": false,
+        "ignored_snapshot_fields": [
+          "evaluator_reward",
+          "task_success",
+          "ui_tree",
+          "accessibility",
+          "foreground",
+          "activity",
+          "package",
+          "database_state",
+          "transition"
+        ],
+        "model_calls_added": 0
+      },
+      "constraint_anchor_count": 0,
+      "created_trigger_steps": [
+        {
+          "frontier_id": "a11f_696c34b8c9634982",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 22,
+          "support_count": 2
+        },
+        {
+          "frontier_id": "a11f_07dcd08efd3d3113",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 41,
+          "support_count": 3
+        },
+        {
+          "frontier_id": "a11f_07dcd08efd3d3113",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 54,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_07dcd08efd3d3113",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 55,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_07dcd08efd3d3113",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 55,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_07dcd08efd3d3113",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 56,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_07dcd08efd3d3113",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 56,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_07dcd08efd3d3113",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 57,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_07dcd08efd3d3113",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 57,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_07dcd08efd3d3113",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 58,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_07dcd08efd3d3113",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 58,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_07dcd08efd3d3113",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 59,
+          "support_count": 4
+        }
+      ],
+      "episode_id": "RecipeAddMultipleRecipesFromMarkor_20260806_c5bac209",
+      "nonempty_read_count": 2,
+      "normal_navigation_exemption_violation_count": 0,
+      "qualifying_segments": [
+        {
+          "branch_id": "a11b_c075e2bf5f9dfadf",
+          "deadline": 9,
+          "frontier_id": "a11f_e1c60b23bd131669"
+        },
+        {
+          "branch_id": "a11b_5698322653672eea",
+          "deadline": 21,
+          "frontier_id": "a11f_696c34b8c9634982"
+        },
+        {
+          "branch_id": "a11b_207bd7b6427de184",
+          "deadline": 41,
+          "frontier_id": "a11f_07dcd08efd3d3113"
+        }
+      ],
+      "read_events": [
+        {
+          "anchor_confidence_delta_within_4": 0.0,
+          "candidate_state_before_read": "MATURE",
+          "confirmation_path": "",
+          "constraint_confidence_delta_within_4": 0.0,
+          "constraint_mask": 0,
+          "contraction_confidence": 0.708333,
+          "escaped_frontier_within_3": false,
+          "evidence_signature": "297af207ee815b33803388cd2c1f697f3b2e1e1da98a61ef0060107df7ae1719",
+          "frontier_id": "a11f_07dcd08efd3d3113",
+          "item_open_mask": 0,
+          "maturity_step": 41,
+          "next_action_branch_id": "a11b_207bd7b6427de184",
+          "next_action_was_novel": false,
+          "phase_id": 0,
+          "read_id": "a11r_42_297af207",
+          "rendered_chars": 347,
+          "rendered_sha256": "b3cc78cf4f894a6d779080edba7cd1f3fdfdd4adff1c050388875f44eb9435e1",
+          "rendered_text": "A11 frontier; past visible evidence only, current screen wins.\nOpen: task completion is not established. Constraint: none. Evidence: 8 visits/8 actions; 3.0 adverse receipts; branches repeated.\nConfirmed by 2+ adverse observations after navigation credit. Reassess another action family or target; retry is allowed. Nothing is blocked or selected.",
+          "rendered_utf8_bytes": 347,
+          "retrieved_anchor_ids": [],
+          "retrieved_branch_ids": [
+            "a11b_207bd7b6427de184",
+            "a11b_0fa424b2b4072fa8"
+          ],
+          "retrieved_constraint_ids": [],
+          "retrieved_route_ids": [],
+          "returned_within_4": false,
+          "score": 0.770596,
+          "score_components": {
+            "C": 0.708333,
+            "E": 1.0,
+            "F": 0.882497,
+            "G": 1.0,
+            "M": 0.85,
+            "O": 1.0,
+            "X": 0.0
+          },
+          "step": 42,
+          "support_count": 3,
+          "support_receipt_ids": [
+            "a11p_34_3d3113_7de184",
+            "a11p_36_3d3113_7de184",
+            "a11p_41_3d3113_7de184"
+          ],
+          "trigger_id": "a11t_41_297af207ee81",
+          "trigger_kind": "CONTRACTED_FRONTIER",
+          "visual_distance": 0.001465,
+          "visual_match_kind": "NEAR",
+          "workflow_credit": 0.0
+        },
+        {
+          "anchor_confidence_delta_within_4": 0.0,
+          "candidate_state_before_read": "MATURE",
+          "confirmation_path": "",
+          "constraint_confidence_delta_within_4": 0.0,
+          "constraint_mask": 0,
+          "contraction_confidence": 0.770833,
+          "escaped_frontier_within_3": false,
+          "evidence_signature": "50a0ebfc10a4a318187f2ca11416f8a4586a2d6f14153003c5c9759eef507ecc",
+          "frontier_id": "a11f_07dcd08efd3d3113",
+          "item_open_mask": 0,
+          "maturity_step": 54,
+          "next_action_branch_id": "a11b_207bd7b6427de184",
+          "next_action_was_novel": false,
+          "phase_id": 0,
+          "read_id": "a11r_55_50a0ebfc",
+          "rendered_chars": 347,
+          "rendered_sha256": "1d8a6df9cc3f42106a9d80d1595228f5d540af14f0b2f50ab64fbfaf503ad227",
+          "rendered_text": "A11 frontier; past visible evidence only, current screen wins.\nOpen: task completion is not established. Constraint: none. Evidence: 8 visits/8 actions; 4.0 adverse receipts; branches repeated.\nConfirmed by 2+ adverse observations after navigation credit. Reassess another action family or target; retry is allowed. Nothing is blocked or selected.",
+          "rendered_utf8_bytes": 347,
+          "retrieved_anchor_ids": [],
+          "retrieved_branch_ids": [
+            "a11b_207bd7b6427de184",
+            "a11b_0fa424b2b4072fa8"
+          ],
+          "retrieved_constraint_ids": [],
+          "retrieved_route_ids": [],
+          "returned_within_4": false,
+          "score": 0.924083,
+          "score_components": {
+            "C": 0.770833,
+            "E": 1.0,
+            "F": 0.882497,
+            "G": 1.0,
+            "M": 1.0,
+            "O": 1.0,
+            "X": 0.0
+          },
+          "step": 55,
+          "support_count": 4,
+          "support_receipt_ids": [
+            "a11p_50_3d3113_7de184",
+            "a11p_52_3d3113_7de184",
+            "a11p_53_3d3113_7de184",
+            "a11p_54_3d3113_7de184"
+          ],
+          "trigger_id": "a11t_54_50a0ebfc10a4",
+          "trigger_kind": "CONTRACTED_FRONTIER",
+          "visual_distance": 0.0,
+          "visual_match_kind": "EXACT",
+          "workflow_credit": 0.0
+        }
+      ],
+      "rendered_chars": 694,
+      "replayed_actions": 60,
+      "role": "a6",
+      "serialized_audit_bytes": 74889,
+      "task_name": "RecipeAddMultipleRecipesFromMarkor"
+    },
+    {
+      "anchor_count": 1,
+      "causal_boundary": {
+        "action_override_count": 0,
+        "allowed_inputs": [
+          "goal",
+          "before.pixels",
+          "after.pixels",
+          "canonical_action",
+          "action_summary",
+          "source_step"
+        ],
+        "evaluator_used_for_decision": false,
+        "forced_termination_count": 0,
+        "future_information_used": false,
+        "guard_enabled": false,
+        "hidden_ui_used_for_decision": false,
+        "ignored_snapshot_fields": [
+          "evaluator_reward",
+          "task_success",
+          "ui_tree",
+          "accessibility",
+          "foreground",
+          "activity",
+          "package",
+          "database_state",
+          "transition"
+        ],
+        "model_calls_added": 0
+      },
+      "constraint_anchor_count": 1,
+      "created_trigger_steps": [
+        {
+          "frontier_id": "a11f_d718fbf2f8124cb0",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 11,
+          "support_count": 2
+        }
+      ],
+      "episode_id": "RecipeDeleteMultipleRecipesWithConstraint_20260806_379a5e29",
+      "nonempty_read_count": 1,
+      "normal_navigation_exemption_violation_count": 0,
+      "qualifying_segments": [
+        {
+          "branch_id": "a11b_44a377a6767a44f5",
+          "deadline": 28,
+          "frontier_id": "a11f_d718fbf2f8124cb0"
+        }
+      ],
+      "read_events": [
+        {
+          "anchor_confidence_delta_within_4": 0.0,
+          "candidate_state_before_read": "MATURE",
+          "confirmation_path": "",
+          "constraint_confidence_delta_within_4": 0.0,
+          "constraint_mask": 1,
+          "contraction_confidence": 1.0,
+          "escaped_frontier_within_3": true,
+          "evidence_signature": "35ddfb25c2cb54ff1afcb515c28ba1aa5456940754b25626d7aecf72fe598d08",
+          "frontier_id": "a11f_d718fbf2f8124cb0",
+          "item_open_mask": 0,
+          "maturity_step": 11,
+          "next_action_branch_id": "a11b_44a377a6767a44f5",
+          "next_action_was_novel": false,
+          "phase_id": 0,
+          "read_id": "a11r_12_35ddfb25",
+          "rendered_chars": 362,
+          "rendered_sha256": "d72b2bb7305d24bb69d9ee26f11e0f1c6ae8795ba8fec541c738d6998d6c516b",
+          "rendered_text": "A11 frontier; past visible evidence only, current screen wins.\nOpen: task completion is not established. Constraint: use \"zucchini\" in directions. Evidence: tap upper-right had no/negligible screen change 2x.\nConfirmed by 2+ adverse observations after navigation credit. Reassess another action family or target; retry is allowed. Nothing is blocked or selected.",
+          "rendered_utf8_bytes": 362,
+          "retrieved_anchor_ids": [
+            "a11a_346687f282a7"
+          ],
+          "retrieved_branch_ids": [
+            "a11b_44a377a6767a44f5"
+          ],
+          "retrieved_constraint_ids": [
+            "a11a_346687f282a7"
+          ],
+          "retrieved_route_ids": [],
+          "returned_within_4": true,
+          "score": 0.804066,
+          "score_components": {
+            "C": 1.0,
+            "E": 0.565052,
+            "F": 0.882497,
+            "G": 1.0,
+            "M": 1.0,
+            "O": 0.75,
+            "X": 0.0
+          },
+          "step": 12,
+          "support_count": 2,
+          "support_receipt_ids": [
+            "a11p_10_124cb0_7a44f5",
+            "a11p_11_124cb0_7a44f5"
+          ],
+          "trigger_id": "a11t_11_35ddfb25c2cb",
+          "trigger_kind": "BAD_BRANCH_REPEAT",
+          "visual_distance": 0.0,
+          "visual_match_kind": "EXACT",
+          "workflow_credit": 0.0
+        }
+      ],
+      "rendered_chars": 362,
+      "replayed_actions": 31,
+      "role": "a6",
+      "serialized_audit_bytes": 60673,
+      "task_name": "RecipeDeleteMultipleRecipesWithConstraint"
+    },
+    {
+      "anchor_count": 4,
+      "causal_boundary": {
+        "action_override_count": 0,
+        "allowed_inputs": [
+          "goal",
+          "before.pixels",
+          "after.pixels",
+          "canonical_action",
+          "action_summary",
+          "source_step"
+        ],
+        "evaluator_used_for_decision": false,
+        "forced_termination_count": 0,
+        "future_information_used": false,
+        "guard_enabled": false,
+        "hidden_ui_used_for_decision": false,
+        "ignored_snapshot_fields": [
+          "evaluator_reward",
+          "task_success",
+          "ui_tree",
+          "accessibility",
+          "foreground",
+          "activity",
+          "package",
+          "database_state",
+          "transition"
+        ],
+        "model_calls_added": 0
+      },
+      "constraint_anchor_count": 0,
+      "created_trigger_steps": [
+        {
+          "frontier_id": "a11f_a79f10f6a9c0e1c5",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 43,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_a79f10f6a9c0e1c5",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 44,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_a79f10f6a9c0e1c5",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 47,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_a79f10f6a9c0e1c5",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 48,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_a79f10f6a9c0e1c5",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 49,
+          "support_count": 4
+        }
+      ],
+      "episode_id": "RetroSavePlaylist_20260806_b2cf1c61",
+      "nonempty_read_count": 2,
+      "normal_navigation_exemption_violation_count": 0,
+      "qualifying_segments": [
+        {
+          "branch_id": "a11b_1f2f04b545323362",
+          "deadline": 15,
+          "frontier_id": "a11f_10e73e46bcbce260"
+        },
+        {
+          "branch_id": "a11b_5a5fd8147ebcefff",
+          "deadline": 33,
+          "frontier_id": "a11f_97d4dd3aaf228c29"
+        },
+        {
+          "branch_id": "a11b_0fa9d39f14061f74",
+          "deadline": 42,
+          "frontier_id": "a11f_a79f10f6a9c0e1c5"
+        }
+      ],
+      "read_events": [
+        {
+          "anchor_confidence_delta_within_4": 0.0,
+          "candidate_state_before_read": "MATURE",
+          "confirmation_path": "",
+          "constraint_confidence_delta_within_4": 0.0,
+          "constraint_mask": 0,
+          "contraction_confidence": 1.0,
+          "escaped_frontier_within_3": false,
+          "evidence_signature": "3f81a92124ab15b4b95200ac4e11afdc93ab096161a9d19241efaae68d054f58",
+          "frontier_id": "a11f_a79f10f6a9c0e1c5",
+          "item_open_mask": 15,
+          "maturity_step": 43,
+          "next_action_branch_id": "a11b_0fa9d39f14061f74",
+          "next_action_was_novel": false,
+          "phase_id": 0,
+          "read_id": "a11r_44_3f81a921",
+          "rendered_chars": 353,
+          "rendered_sha256": "fb3030aa0b5cac938d01805fcd5b4e856dc398da82a7db735169c197d8ad5fee",
+          "rendered_text": "A11 frontier; past visible evidence only, current screen wins.\nOpen: \"Metal Mayhem 375\", \"in order: Heart..... Constraint: none. Evidence: 8 visits/8 actions; 4.0 adverse receipts; branches repeated.\nConfirmed by 2+ adverse observations after navigation credit. Reassess another action family or target; retry is allowed. Nothing is blocked or selected.",
+          "rendered_utf8_bytes": 353,
+          "retrieved_anchor_ids": [
+            "a11a_2f611c374d41",
+            "a11a_43f7144c5099",
+            "a11a_ad5b5e217e35"
+          ],
+          "retrieved_branch_ids": [
+            "a11b_0fa9d39f14061f74"
+          ],
+          "retrieved_constraint_ids": [],
+          "retrieved_route_ids": [],
+          "returned_within_4": false,
+          "score": 0.840012,
+          "score_components": {
+            "C": 1.0,
+            "E": 1.0,
+            "F": 0.882497,
+            "G": 1.0,
+            "M": 0.85,
+            "O": 1.0,
+            "X": 0.0
+          },
+          "step": 44,
+          "support_count": 4,
+          "support_receipt_ids": [
+            "a11p_40_c0e1c5_061f74",
+            "a11p_41_c0e1c5_061f74",
+            "a11p_42_c0e1c5_061f74",
+            "a11p_43_c0e1c5_061f74"
+          ],
+          "trigger_id": "a11t_43_3f81a92124ab",
+          "trigger_kind": "CONTRACTED_FRONTIER",
+          "visual_distance": 0.0,
+          "visual_match_kind": "NEAR",
+          "workflow_credit": 0.0
+        },
+        {
+          "anchor_confidence_delta_within_4": 0.0,
+          "candidate_state_before_read": "MATURE",
+          "confirmation_path": "",
+          "constraint_confidence_delta_within_4": 0.0,
+          "constraint_mask": 0,
+          "contraction_confidence": 1.0,
+          "escaped_frontier_within_3": null,
+          "evidence_signature": "b1e46f39732edef3515650cb1007a2631353e377973af14d2da5e538fe8d94dc",
+          "frontier_id": "a11f_a79f10f6a9c0e1c5",
+          "item_open_mask": 15,
+          "maturity_step": 47,
+          "next_action_branch_id": "a11b_0fa9d39f14061f74",
+          "next_action_was_novel": false,
+          "phase_id": 0,
+          "read_id": "a11r_48_b1e46f39",
+          "rendered_chars": 353,
+          "rendered_sha256": "3e95c8bc095266eae20a8cc90c1573a230262de5589b02fc55cb24bd236ccad6",
+          "rendered_text": "A11 frontier; past visible evidence only, current screen wins.\nOpen: \"Metal Mayhem 375\", \"in order: Heart..... Constraint: none. Evidence: 8 visits/8 actions; 6.0 adverse receipts; branches repeated.\nConfirmed by 2+ adverse observations after navigation credit. Reassess another action family or target; retry is allowed. Nothing is blocked or selected.",
+          "rendered_utf8_bytes": 353,
+          "retrieved_anchor_ids": [
+            "a11a_2f611c374d41",
+            "a11a_43f7144c5099",
+            "a11a_ad5b5e217e35"
+          ],
+          "retrieved_branch_ids": [
+            "a11b_0fa9d39f14061f74"
+          ],
+          "retrieved_constraint_ids": [],
+          "retrieved_route_ids": [],
+          "returned_within_4": null,
+          "score": 0.840012,
+          "score_components": {
+            "C": 1.0,
+            "E": 1.0,
+            "F": 0.882497,
+            "G": 1.0,
+            "M": 0.85,
+            "O": 1.0,
+            "X": 0.0
+          },
+          "step": 48,
+          "support_count": 4,
+          "support_receipt_ids": [
+            "a11p_42_c0e1c5_061f74",
+            "a11p_43_c0e1c5_061f74",
+            "a11p_44_c0e1c5_061f74",
+            "a11p_47_c0e1c5_061f74"
+          ],
+          "trigger_id": "a11t_47_b1e46f39732e",
+          "trigger_kind": "CONTRACTED_FRONTIER",
+          "visual_distance": 0.0,
+          "visual_match_kind": "NEAR",
+          "workflow_credit": 0.0
+        }
+      ],
+      "rendered_chars": 706,
+      "replayed_actions": 50,
+      "role": "a6",
+      "serialized_audit_bytes": 77959,
+      "task_name": "RetroSavePlaylist"
+    },
+    {
+      "anchor_count": 0,
+      "causal_boundary": {
+        "action_override_count": 0,
+        "allowed_inputs": [
+          "goal",
+          "before.pixels",
+          "after.pixels",
+          "canonical_action",
+          "action_summary",
+          "source_step"
+        ],
+        "evaluator_used_for_decision": false,
+        "forced_termination_count": 0,
+        "future_information_used": false,
+        "guard_enabled": false,
+        "hidden_ui_used_for_decision": false,
+        "ignored_snapshot_fields": [
+          "evaluator_reward",
+          "task_success",
+          "ui_tree",
+          "accessibility",
+          "foreground",
+          "activity",
+          "package",
+          "database_state",
+          "transition"
+        ],
+        "model_calls_added": 0
+      },
+      "constraint_anchor_count": 0,
+      "created_trigger_steps": [
+        {
+          "frontier_id": "a11f_ac78c181994fd3b9",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 11,
+          "support_count": 2
+        }
+      ],
+      "episode_id": "SaveCopyOfReceiptTaskEval_20260806_4b5581c4",
+      "nonempty_read_count": 1,
+      "normal_navigation_exemption_violation_count": 0,
+      "qualifying_segments": [
+        {
+          "branch_id": "a11b_3d266944d14a1963",
+          "deadline": 11,
+          "frontier_id": "a11f_ac78c181994fd3b9"
+        }
+      ],
+      "read_events": [
+        {
+          "anchor_confidence_delta_within_4": 0.0,
+          "candidate_state_before_read": "MATURE",
+          "confirmation_path": "",
+          "constraint_confidence_delta_within_4": 0.0,
+          "constraint_mask": 0,
+          "contraction_confidence": 1.0,
+          "escaped_frontier_within_3": true,
+          "evidence_signature": "bc30f2c85c2f3fcbaf716ff2334bd5524a21fb96582411ffa2c86451e78d0377",
+          "frontier_id": "a11f_ac78c181994fd3b9",
+          "item_open_mask": 0,
+          "maturity_step": 11,
+          "next_action_branch_id": "a11b_3d266944d14a1963",
+          "next_action_was_novel": false,
+          "phase_id": 0,
+          "read_id": "a11r_12_bc30f2c8",
+          "rendered_chars": 333,
+          "rendered_sha256": "00068bcd2620539a2a912bae330a7b22b57c6ea6a13987f662193177008514c7",
+          "rendered_text": "A11 frontier; past visible evidence only, current screen wins.\nOpen: task completion is not established. Constraint: none. Evidence: press_back had no/negligible screen change 2x.\nConfirmed by 2+ adverse observations after navigation credit. Reassess another action family or target; retry is allowed. Nothing is blocked or selected.",
+          "rendered_utf8_bytes": 333,
+          "retrieved_anchor_ids": [],
+          "retrieved_branch_ids": [
+            "a11b_3d266944d14a1963"
+          ],
+          "retrieved_constraint_ids": [],
+          "retrieved_route_ids": [],
+          "returned_within_4": null,
+          "score": 0.849066,
+          "score_components": {
+            "C": 1.0,
+            "E": 0.565052,
+            "F": 0.882497,
+            "G": 1.0,
+            "M": 1.0,
+            "O": 1.0,
+            "X": 0.0
+          },
+          "step": 12,
+          "support_count": 2,
+          "support_receipt_ids": [
+            "a11p_10_4fd3b9_4a1963",
+            "a11p_11_4fd3b9_4a1963"
+          ],
+          "trigger_id": "a11t_11_bc30f2c85c2f",
+          "trigger_kind": "BAD_BRANCH_REPEAT",
+          "visual_distance": 0.0,
+          "visual_match_kind": "EXACT",
+          "workflow_credit": 0.0
+        }
+      ],
+      "rendered_chars": 333,
+      "replayed_actions": 16,
+      "role": "a6",
+      "serialized_audit_bytes": 40139,
+      "task_name": "SaveCopyOfReceiptTaskEval"
+    },
+    {
+      "anchor_count": 4,
+      "causal_boundary": {
+        "action_override_count": 0,
+        "allowed_inputs": [
+          "goal",
+          "before.pixels",
+          "after.pixels",
+          "canonical_action",
+          "action_summary",
+          "source_step"
+        ],
+        "evaluator_used_for_decision": false,
+        "forced_termination_count": 0,
+        "future_information_used": false,
+        "guard_enabled": false,
+        "hidden_ui_used_for_decision": false,
+        "ignored_snapshot_fields": [
+          "evaluator_reward",
+          "task_success",
+          "ui_tree",
+          "accessibility",
+          "foreground",
+          "activity",
+          "package",
+          "database_state",
+          "transition"
+        ],
+        "model_calls_added": 0
+      },
+      "constraint_anchor_count": 0,
+      "created_trigger_steps": [
+        {
+          "frontier_id": "a11f_f7ca888d2a7d0b84",
+          "kind": "CONFIRMED_ROUTE_TRAP",
+          "step": 27,
+          "support_count": 2
+        },
+        {
+          "frontier_id": "a11f_f7ca888d2a7d0b84",
+          "kind": "CONFIRMED_ROUTE_TRAP",
+          "step": 33,
+          "support_count": 2
+        }
+      ],
+      "episode_id": "SimpleCalendarAddOneEvent_20260806_6164a204",
+      "nonempty_read_count": 2,
+      "normal_navigation_exemption_violation_count": 0,
+      "qualifying_segments": [],
+      "read_events": [
+        {
+          "anchor_confidence_delta_within_4": 0.0,
+          "candidate_state_before_read": "MATURE",
+          "confirmation_path": "post_return_reversion",
+          "constraint_confidence_delta_within_4": 0.0,
+          "constraint_mask": 0,
+          "contraction_confidence": 0.8,
+          "escaped_frontier_within_3": true,
+          "evidence_signature": "1d6ab409befd76ed27549ee194f96986533d87eca5a6cfe1175f9466b6698369",
+          "frontier_id": "a11f_f7ca888d2a7d0b84",
+          "item_open_mask": 15,
+          "maturity_step": 27,
+          "next_action_branch_id": "a11b_02aba387cf6d92fe",
+          "next_action_was_novel": true,
+          "phase_id": 0,
+          "read_id": "a11r_28_1d6ab409",
+          "rendered_chars": 364,
+          "rendered_sha256": "dd9b2c75455f5a9c3a95a022426d89e90f2f636a2db222d5aefd3408d95ed65b",
+          "rendered_text": "A11 frontier; past visible evidence only, current screen wins.\nOpen: \"Workshop on Pro...\", \"2023-10-26\" (+2). Constraint: none. Evidence: a closed route was confirmed by recurrence or a following bad branch....\nConfirmed by 2+ adverse observations after navigation credit. Reassess another action family or target; retry is allowed. Nothing is blocked or selected.",
+          "rendered_utf8_bytes": 364,
+          "retrieved_anchor_ids": [
+            "a11a_1e8e43c37f69",
+            "a11a_ef01c525b12d",
+            "a11a_31e85777c6b0"
+          ],
+          "retrieved_branch_ids": [
+            "a11b_6a4484fb2accb57e"
+          ],
+          "retrieved_constraint_ids": [],
+          "retrieved_route_ids": [
+            "a11route_f408adf28c_23"
+          ],
+          "returned_within_4": false,
+          "score": 0.735554,
+          "score_components": {
+            "C": 0.8,
+            "E": 0.790961,
+            "F": 0.882497,
+            "G": 1.0,
+            "M": 0.85,
+            "O": 1.0,
+            "X": 0.0
+          },
+          "step": 28,
+          "support_count": 2,
+          "support_receipt_ids": [
+            "a11p_21_7d0b84_ccb57e",
+            "a11p_24_7d0b84_ccb57e"
+          ],
+          "trigger_id": "a11t_27_1d6ab409befd",
+          "trigger_kind": "CONFIRMED_ROUTE_TRAP",
+          "visual_distance": 0.003746,
+          "visual_match_kind": "NEAR",
+          "workflow_credit": 0.0
+        },
+        {
+          "anchor_confidence_delta_within_4": 0.0,
+          "candidate_state_before_read": "MATURE",
+          "confirmation_path": "post_return_reversion",
+          "constraint_confidence_delta_within_4": 0.0,
+          "constraint_mask": 0,
+          "contraction_confidence": 0.8,
+          "escaped_frontier_within_3": null,
+          "evidence_signature": "7f801c281c145b9ef1867b1b3196952f20b3bf68aee3f92e4bc2a4f8b1e3179f",
+          "frontier_id": "a11f_f7ca888d2a7d0b84",
+          "item_open_mask": 15,
+          "maturity_step": 33,
+          "next_action_branch_id": null,
+          "next_action_was_novel": null,
+          "phase_id": 0,
+          "read_id": "a11r_34_7f801c28",
+          "rendered_chars": 364,
+          "rendered_sha256": "dd9b2c75455f5a9c3a95a022426d89e90f2f636a2db222d5aefd3408d95ed65b",
+          "rendered_text": "A11 frontier; past visible evidence only, current screen wins.\nOpen: \"Workshop on Pro...\", \"2023-10-26\" (+2). Constraint: none. Evidence: a closed route was confirmed by recurrence or a following bad branch....\nConfirmed by 2+ adverse observations after navigation credit. Reassess another action family or target; retry is allowed. Nothing is blocked or selected.",
+          "rendered_utf8_bytes": 364,
+          "retrieved_anchor_ids": [
+            "a11a_1e8e43c37f69",
+            "a11a_ef01c525b12d",
+            "a11a_31e85777c6b0"
+          ],
+          "retrieved_branch_ids": [
+            "a11b_6a4484fb2accb57e"
+          ],
+          "retrieved_constraint_ids": [],
+          "retrieved_route_ids": [
+            "a11route_087888080e_27"
+          ],
+          "returned_within_4": null,
+          "score": 0.740114,
+          "score_components": {
+            "C": 0.8,
+            "E": 0.807726,
+            "F": 0.882497,
+            "G": 1.0,
+            "M": 0.85,
+            "O": 1.0,
+            "X": 0.0
+          },
+          "step": 34,
+          "support_count": 2,
+          "support_receipt_ids": [
+            "a11p_24_7d0b84_ccb57e",
+            "a11p_29_7d0b84_ccb57e"
+          ],
+          "trigger_id": "a11t_33_7f801c281c14",
+          "trigger_kind": "CONFIRMED_ROUTE_TRAP",
+          "visual_distance": 0.003746,
+          "visual_match_kind": "NEAR",
+          "workflow_credit": 0.0
+        }
+      ],
+      "rendered_chars": 728,
+      "replayed_actions": 34,
+      "role": "a6",
+      "serialized_audit_bytes": 78922,
+      "task_name": "SimpleCalendarAddOneEvent"
+    },
+    {
+      "anchor_count": 2,
+      "causal_boundary": {
+        "action_override_count": 0,
+        "allowed_inputs": [
+          "goal",
+          "before.pixels",
+          "after.pixels",
+          "canonical_action",
+          "action_summary",
+          "source_step"
+        ],
+        "evaluator_used_for_decision": false,
+        "forced_termination_count": 0,
+        "future_information_used": false,
+        "guard_enabled": false,
+        "hidden_ui_used_for_decision": false,
+        "ignored_snapshot_fields": [
+          "evaluator_reward",
+          "task_success",
+          "ui_tree",
+          "accessibility",
+          "foreground",
+          "activity",
+          "package",
+          "database_state",
+          "transition"
+        ],
+        "model_calls_added": 0
+      },
+      "constraint_anchor_count": 0,
+      "created_trigger_steps": [],
+      "episode_id": "SportsTrackerActivitiesOnDate_20260806_3e23131c",
+      "nonempty_read_count": 0,
+      "normal_navigation_exemption_violation_count": 0,
+      "qualifying_segments": [],
+      "read_events": [],
+      "rendered_chars": 0,
+      "replayed_actions": 6,
+      "role": "a6",
+      "serialized_audit_bytes": 26572,
+      "task_name": "SportsTrackerActivitiesOnDate"
+    },
+    {
+      "anchor_count": 4,
+      "causal_boundary": {
+        "action_override_count": 0,
+        "allowed_inputs": [
+          "goal",
+          "before.pixels",
+          "after.pixels",
+          "canonical_action",
+          "action_summary",
+          "source_step"
+        ],
+        "evaluator_used_for_decision": false,
+        "forced_termination_count": 0,
+        "future_information_used": false,
+        "guard_enabled": false,
+        "hidden_ui_used_for_decision": false,
+        "ignored_snapshot_fields": [
+          "evaluator_reward",
+          "task_success",
+          "ui_tree",
+          "accessibility",
+          "foreground",
+          "activity",
+          "package",
+          "database_state",
+          "transition"
+        ],
+        "model_calls_added": 0
+      },
+      "constraint_anchor_count": 0,
+      "created_trigger_steps": [],
+      "episode_id": "SportsTrackerTotalDistanceForCategoryOverInterval_20260806_8b80e84f",
+      "nonempty_read_count": 0,
+      "normal_navigation_exemption_violation_count": 0,
+      "qualifying_segments": [],
+      "read_events": [],
+      "rendered_chars": 0,
+      "replayed_actions": 8,
+      "role": "a6",
+      "serialized_audit_bytes": 29863,
+      "task_name": "SportsTrackerTotalDistanceForCategoryOverInterval"
+    },
+    {
+      "anchor_count": 2,
+      "causal_boundary": {
+        "action_override_count": 0,
+        "allowed_inputs": [
+          "goal",
+          "before.pixels",
+          "after.pixels",
+          "canonical_action",
+          "action_summary",
+          "source_step"
+        ],
+        "evaluator_used_for_decision": false,
+        "forced_termination_count": 0,
+        "future_information_used": false,
+        "guard_enabled": false,
+        "hidden_ui_used_for_decision": false,
+        "ignored_snapshot_fields": [
+          "evaluator_reward",
+          "task_success",
+          "ui_tree",
+          "accessibility",
+          "foreground",
+          "activity",
+          "package",
+          "database_state",
+          "transition"
+        ],
+        "model_calls_added": 0
+      },
+      "constraint_anchor_count": 0,
+      "created_trigger_steps": [],
+      "episode_id": "SportsTrackerTotalDurationForCategoryThisWeek_20260806_cb22dbb9",
+      "nonempty_read_count": 0,
+      "normal_navigation_exemption_violation_count": 0,
+      "qualifying_segments": [],
+      "read_events": [],
+      "rendered_chars": 0,
+      "replayed_actions": 6,
+      "role": "a6",
+      "serialized_audit_bytes": 23361,
+      "task_name": "SportsTrackerTotalDurationForCategoryThisWeek"
+    },
+    {
+      "anchor_count": 3,
+      "causal_boundary": {
+        "action_override_count": 0,
+        "allowed_inputs": [
+          "goal",
+          "before.pixels",
+          "after.pixels",
+          "canonical_action",
+          "action_summary",
+          "source_step"
+        ],
+        "evaluator_used_for_decision": false,
+        "forced_termination_count": 0,
+        "future_information_used": false,
+        "guard_enabled": false,
+        "hidden_ui_used_for_decision": false,
+        "ignored_snapshot_fields": [
+          "evaluator_reward",
+          "task_success",
+          "ui_tree",
+          "accessibility",
+          "foreground",
+          "activity",
+          "package",
+          "database_state",
+          "transition"
+        ],
+        "model_calls_added": 0
+      },
+      "constraint_anchor_count": 0,
+      "created_trigger_steps": [
+        {
+          "frontier_id": "a11f_0331892be6846829",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 20,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_0331892be6846829",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 20,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_0331892be6846829",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 21,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_0331892be6846829",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 21,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_0331892be6846829",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 22,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_0331892be6846829",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 22,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_0331892be6846829",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 23,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_0331892be6846829",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 24,
+          "support_count": 4
+        },
+        {
+          "frontier_id": "a11f_0331892be6846829",
+          "kind": "CONTRACTED_FRONTIER",
+          "step": 26,
+          "support_count": 4
+        }
+      ],
+      "episode_id": "ExpenseDeleteMultiple2_20260806_d3ed25c7",
+      "nonempty_read_count": 2,
+      "normal_navigation_exemption_violation_count": 0,
+      "qualifying_segments": [
+        {
+          "branch_id": "a11b_f03dcff197a9ff51",
+          "deadline": 14,
+          "frontier_id": "a11f_0331892be6846829"
+        }
+      ],
+      "read_events": [
+        {
+          "anchor_confidence_delta_within_4": 0.0,
+          "candidate_state_before_read": "MATURE",
+          "confirmation_path": "",
+          "constraint_confidence_delta_within_4": 0.0,
+          "constraint_mask": 0,
+          "contraction_confidence": 0.770833,
+          "escaped_frontier_within_3": false,
+          "evidence_signature": "79fc8c0a7a13502c14ffbbc3c9eed66329f506d08ba2b1d125f42dba3b4a133f",
+          "frontier_id": "a11f_0331892be6846829",
+          "item_open_mask": 7,
+          "maturity_step": 20,
+          "next_action_branch_id": "a11b_f03dcff197a9ff51",
+          "next_action_was_novel": false,
+          "phase_id": 0,
+          "read_id": "a11r_21_79fc8c0a",
+          "rendered_chars": 352,
+          "rendered_sha256": "95d96ca5025907a6050ee565ee0a20f42d6b62ad5abca555312228f7d7651939",
+          "rendered_text": "A11 frontier; past visible evidence only, current screen wins.\nOpen: \"expenses from p...\", \"Tuition Fees\".... Constraint: none. Evidence: 8 visits/8 actions; 5.0 adverse receipts; branches repeated.\nConfirmed by 2+ adverse observations after navigation credit. Reassess another action family or target; retry is allowed. Nothing is blocked or selected.",
+          "rendered_utf8_bytes": 352,
+          "retrieved_anchor_ids": [
+            "a11a_695dbc3320b4",
+            "a11a_d9d4978d2376",
+            "a11a_421f180eeca8"
+          ],
+          "retrieved_branch_ids": [
+            "a11b_f03dcff197a9ff51",
+            "a11b_bd7dd85f2822e3e0"
+          ],
+          "retrieved_constraint_ids": [],
+          "retrieved_route_ids": [],
+          "returned_within_4": false,
+          "score": 0.924083,
+          "score_components": {
+            "C": 0.770833,
+            "E": 1.0,
+            "F": 0.882497,
+            "G": 1.0,
+            "M": 1.0,
+            "O": 1.0,
+            "X": 0.0
+          },
+          "step": 21,
+          "support_count": 4,
+          "support_receipt_ids": [
+            "a11p_14_846829_a9ff51",
+            "a11p_18_846829_a9ff51",
+            "a11p_19_846829_a9ff51",
+            "a11p_20_846829_a9ff51"
+          ],
+          "trigger_id": "a11t_20_79fc8c0a7a13",
+          "trigger_kind": "CONTRACTED_FRONTIER",
+          "visual_distance": 0.0,
+          "visual_match_kind": "EXACT",
+          "workflow_credit": 0.0
+        },
+        {
+          "anchor_confidence_delta_within_4": 0.0,
+          "candidate_state_before_read": "MATURE",
+          "confirmation_path": "",
+          "constraint_confidence_delta_within_4": 0.0,
+          "constraint_mask": 0,
+          "contraction_confidence": 1.0,
+          "escaped_frontier_within_3": false,
+          "evidence_signature": "d138c75e4c020a4a7216a75f269dd2e21c0a3a98a9abb1352724026ca548e0a3",
+          "frontier_id": "a11f_0331892be6846829",
+          "item_open_mask": 7,
+          "maturity_step": 24,
+          "next_action_branch_id": "a11b_f03dcff197a9ff51",
+          "next_action_was_novel": false,
+          "phase_id": 0,
+          "read_id": "a11r_25_d138c75e",
+          "rendered_chars": 352,
+          "rendered_sha256": "95d96ca5025907a6050ee565ee0a20f42d6b62ad5abca555312228f7d7651939",
+          "rendered_text": "A11 frontier; past visible evidence only, current screen wins.\nOpen: \"expenses from p...\", \"Tuition Fees\".... Constraint: none. Evidence: 8 visits/8 actions; 5.0 adverse receipts; branches repeated.\nConfirmed by 2+ adverse observations after navigation credit. Reassess another action family or target; retry is allowed. Nothing is blocked or selected.",
+          "rendered_utf8_bytes": 352,
+          "retrieved_anchor_ids": [
+            "a11a_695dbc3320b4",
+            "a11a_d9d4978d2376",
+            "a11a_421f180eeca8"
+          ],
+          "retrieved_branch_ids": [
+            "a11b_f03dcff197a9ff51"
+          ],
+          "retrieved_constraint_ids": [],
+          "retrieved_route_ids": [],
+          "returned_within_4": false,
+          "score": 0.840012,
+          "score_components": {
+            "C": 1.0,
+            "E": 1.0,
+            "F": 0.882497,
+            "G": 1.0,
+            "M": 0.85,
+            "O": 1.0,
+            "X": 0.0
+          },
+          "step": 25,
+          "support_count": 4,
+          "support_receipt_ids": [
+            "a11p_19_846829_a9ff51",
+            "a11p_20_846829_a9ff51",
+            "a11p_21_846829_a9ff51",
+            "a11p_22_846829_a9ff51"
+          ],
+          "trigger_id": "a11t_24_d138c75e4c02",
+          "trigger_kind": "CONTRACTED_FRONTIER",
+          "visual_distance": 0.0,
+          "visual_match_kind": "NEAR",
+          "workflow_credit": 0.0
+        }
+      ],
+      "rendered_chars": 704,
+      "replayed_actions": 34,
+      "role": "a8v2_expense",
+      "serialized_audit_bytes": 51757,
+      "task_name": "ExpenseDeleteMultiple2"
+    },
+    {
+      "anchor_count": 4,
+      "causal_boundary": {
+        "action_override_count": 0,
+        "allowed_inputs": [
+          "goal",
+          "before.pixels",
+          "after.pixels",
+          "canonical_action",
+          "action_summary",
+          "source_step"
+        ],
+        "evaluator_used_for_decision": false,
+        "forced_termination_count": 0,
+        "future_information_used": false,
+        "guard_enabled": false,
+        "hidden_ui_used_for_decision": false,
+        "ignored_snapshot_fields": [
+          "evaluator_reward",
+          "task_success",
+          "ui_tree",
+          "accessibility",
+          "foreground",
+          "activity",
+          "package",
+          "database_state",
+          "transition"
+        ],
+        "model_calls_added": 0
+      },
+      "constraint_anchor_count": 0,
+      "created_trigger_steps": [
+        {
+          "frontier_id": "a11f_bbe5d3379c1407ca",
+          "kind": "BAD_BRANCH_REPEAT",
+          "step": 23,
+          "support_count": 2
+        },
+        {
+          "frontier_id": "a11f_1110f46ec6979acb",
+          "kind": "PARTIAL_OBLIGATION_ESCAPE",
+          "step": 44,
+          "support_count": 2
+        }
+      ],
+      "episode_id": "RetroSavePlaylist_20260806_a1a07e4e",
+      "nonempty_read_count": 1,
+      "normal_navigation_exemption_violation_count": 0,
+      "qualifying_segments": [
+        {
+          "branch_id": "a11b_bb0267d864137815",
+          "deadline": 11,
+          "frontier_id": "a11f_0e6288db76ed9549"
+        },
+        {
+          "branch_id": "a11b_44fa271dde08ff48",
+          "deadline": 22,
+          "frontier_id": "a11f_bbe5d3379c1407ca"
+        },
+        {
+          "branch_id": "a11b_f2f57517c5a07242",
+          "deadline": 48,
+          "frontier_id": "a11f_da0e1188b1c58d82"
+        }
+      ],
+      "read_events": [
+        {
+          "anchor_confidence_delta_within_4": 0.0,
+          "candidate_state_before_read": "MATURE",
+          "confirmation_path": "",
+          "constraint_confidence_delta_within_4": 0.0,
+          "constraint_mask": 0,
+          "contraction_confidence": 0.75,
+          "escaped_frontier_within_3": true,
+          "evidence_signature": "79d72a7ec552dc938d553ebe10b789bab2004969dd77ad31fc2c70ddcf5413c8",
+          "frontier_id": "a11f_1110f46ec6979acb",
+          "item_open_mask": 15,
+          "maturity_step": 44,
+          "next_action_branch_id": "a11b_71652d30962f6b83",
+          "next_action_was_novel": true,
+          "phase_id": 0,
+          "read_id": "a11r_45_79d72a7e",
+          "rendered_chars": 366,
+          "rendered_sha256": "d69fb9953fafee8a4b688fe924979c39dc552eb1f857a074c9e03be2e855fcbe",
+          "rendered_text": "A11 frontier; past visible evidence only, current screen wins.\nOpen: \"Metal Mayhem 375\", \"in order: Heart..... Constraint: none. Evidence: \"Metal Mayhem 375\" gained local support; another item stayed open aft....\nConfirmed by 2+ adverse observations after navigation credit. Reassess another action family or target; retry is allowed. Nothing is blocked or selected.",
+          "rendered_utf8_bytes": 366,
+          "retrieved_anchor_ids": [
+            "a11a_2f611c374d41",
+            "a11a_43f7144c5099",
+            "a11a_ad5b5e217e35"
+          ],
+          "retrieved_branch_ids": [],
+          "retrieved_constraint_ids": [],
+          "retrieved_route_ids": [],
+          "returned_within_4": true,
+          "score": 0.87025,
+          "score_components": {
+            "C": 0.75,
+            "E": 0.85,
+            "F": 0.882497,
+            "G": 1.0,
+            "M": 1.0,
+            "O": 1.0,
+            "X": 0.0
+          },
+          "step": 45,
+          "support_count": 2,
+          "support_receipt_ids": [
+            "a11p_43_979acb_8896ba",
+            "a11p_44_979acb_8896ba"
+          ],
+          "trigger_id": "a11t_44_79d72a7ec552",
+          "trigger_kind": "PARTIAL_OBLIGATION_ESCAPE",
+          "visual_distance": 0.0,
+          "visual_match_kind": "EXACT",
+          "workflow_credit": 0.0
+        }
+      ],
+      "rendered_chars": 366,
+      "replayed_actions": 50,
+      "role": "a9_retro",
+      "serialized_audit_bytes": 83724,
+      "task_name": "RetroSavePlaylist"
+    }
+  ],
+  "errors": [
+    "a6_confirmed_segment_timing_gate_failed"
+  ],
+  "generation_calls": 0,
+  "manifest_sha256": "07a326ff4379d51c0d5261e5bf1f28e89ed4176b2130b8fda580079e48e6ff51",
+  "mechanism_source_sha256": "9e6f8c83e6eb6e4233ab4bf276735932c3983c6f80994efb4128004442d898b5",
+  "replay_source_sha256": "6046d861c86ca291818493dc59ac4d63df9efaf17aa02ddf3f3fefe96b108f4e",
+  "schema": "a11_offline_replay_report_v1",
+  "source_spec_sha256": "febf1fcdd76907be17c1b9d6208e24c9a66a6efbecc35b2bd605a1fc1a59cffa",
+  "status": "fail",
+  "verification": {
+    "errors": [],
+    "manifest_sha256": "07a326ff4379d51c0d5261e5bf1f28e89ed4176b2130b8fda580079e48e6ff51",
+    "status": "pass",
+    "verified_file_count": 1668,
+    "verified_total_bytes": 442138413
+  }
+}

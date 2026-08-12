@@ -34,8 +34,8 @@ def test_runner_constructs_a10_without_guard_or_override() -> None:
     assert "or a10_scored_arm" in source
     assert "if args.a2_verified_progress_memory\n                    else None" in source
     assert '"causal_read_analysis": causal_read_analysis' in source
-    assert '"A10 PERFORMANCE PASS / MECHANISM EVIDENCE FAIL"' in source
-    assert '"A10 OVERALL PASS"' in source
+    assert 'f"{result_prefix} PERFORMANCE PASS / MECHANISM EVIDENCE FAIL"' in source
+    assert 'f"{result_prefix} OVERALL PASS"' in source
 
 
 def test_launcher_receipt_binds_exact_launch_intent_command() -> None:

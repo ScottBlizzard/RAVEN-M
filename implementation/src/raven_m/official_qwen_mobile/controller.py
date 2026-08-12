@@ -417,14 +417,13 @@ class OfficialQwenMobileController:
                     rendered_memory, memory_read = self.working_memory.read(
                         context={"before": before, "goal": effective_goal}
                     )
-                    if (
-                        memory_read is not None
-                        and memory_read.get("mechanism_id")
-                        == "a10_evidence_calibrated_obligation_branch_frontier_v1"
-                    ):
-                        # Required A10 causal-audit field.  This is exactly the
-                        # bounded text already appended to the visible prompt;
-                        # it is not a new input or model call.
+                    if memory_read is not None and rendered_memory:
+                        # Causal-audit field for sparse controller-authored
+                        # memory arms.  This is exactly the bounded text already
+                        # appended to the visible prompt; it is not a new input
+                        # or model call.  Keeping this generic prevents a new
+                        # prospective arm from being silently omitted merely
+                        # because its frozen mechanism ID differs from A10-v1.
                         memory_read["exact_injected_text"] = rendered_memory
                 user_prompt = append_working_memory(
                     build_user_prompt(effective_goal, history),

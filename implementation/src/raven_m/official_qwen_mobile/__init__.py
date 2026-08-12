@@ -24,4 +24,23 @@ __all__ = [
     "build_user_prompt",
     "parse_official_response",
     "EvidenceCalibratedObligationBranchFrontierMemory",
+    "EvidenceMaturedObligationBranchFrontierMemory",
+    "ConfirmedRouteContractionECOBFMemory",
 ]
+
+
+def __getattr__(name: str):
+    """Lazily expose prospective memories without coupling their modules."""
+    if name == "EvidenceMaturedObligationBranchFrontierMemory":
+        from .a10_v2_obligation_branch_frontier import (
+            EvidenceMaturedObligationBranchFrontierMemory,
+        )
+
+        return EvidenceMaturedObligationBranchFrontierMemory
+    if name == "ConfirmedRouteContractionECOBFMemory":
+        from .a11_confirmed_route_contraction import (
+            ConfirmedRouteContractionECOBFMemory,
+        )
+
+        return ConfirmedRouteContractionECOBFMemory
+    raise AttributeError(name)

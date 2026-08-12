@@ -151,6 +151,101 @@ A7_REMAINING_AFTER_GATE_TASKS = (
     "SportsTrackerActivitiesOnDate",
     "SportsTrackerTotalDistanceForCategoryOverInterval",
 )
+
+
+# New prospective arms are loaded only after CLI selection.  This keeps the
+# historical A10-v1 runner importable while A10-v2/A11 maintain independent
+# mechanism and contract modules, and makes it impossible to compose both
+# memories in one controller.
+DUAL_ARM_SPECS = {
+    "a10v2": {
+        "flag": "a10_v2_emobf",
+        "label": "A10-v2",
+        "memory_module": "raven_m.official_qwen_mobile.a10_v2_obligation_branch_frontier",
+        "memory_class": "EvidenceMaturedObligationBranchFrontierMemory",
+        "contract_module": "raven_m.official_qwen_mobile.a10_v2_contract",
+        "entry_key": "a10v2_valid_entries",
+        "checkpoint_schema": "a10_v2_emobf_checkpoint_v1",
+        "result_key": "a10v2_result",
+        "result_schema": "a10_v2_emobf_result_v1",
+    },
+    "a11": {
+        "flag": "a11_crc_ecobf",
+        "label": "A11",
+        "memory_module": "raven_m.official_qwen_mobile.a11_confirmed_route_contraction",
+        "memory_class": "ConfirmedRouteContractionECOBFMemory",
+        "contract_module": "raven_m.official_qwen_mobile.a11_contract",
+        "entry_key": "a11_valid_entries",
+        "checkpoint_schema": "a11_crc_ecobf_checkpoint_v1",
+        "result_key": "a11_result",
+        "result_schema": "a11_crc_ecobf_result_v1",
+    },
+}
+
+
+def _contract_preservation_report(contract: object, summaries: list[dict]) -> dict:
+    report = getattr(contract, "preservation_report", None)
+    if report is not None:
+        return report(summaries)
+    task_names = tuple(
+        getattr(
+            contract,
+            "A0_PRESERVATION_TASKS",
+            getattr(contract, "A0_GATE_TASKS", A0_PRESERVATION_TASKS),
+        )
+    )
+    observed = {str(item.get("task_name")): item for item in summaries}
+    tasks = [
+        {
+            "task_name": name,
+            "reward": (observed.get(name) or {}).get("evaluator_reward"),
+            "pass": (observed.get(name) or {}).get("evaluator_reward") == 1.0,
+        }
+        for name in task_names
+    ]
+    successes = sum(int(item["pass"]) for item in tasks)
+    return {
+        "status": "pass" if successes == len(task_names) else "fail",
+        "success_count": successes,
+        "required": len(task_names),
+        "tasks": tasks,
+    }
+
+
+def _load_dual_arm(arm: str) -> dict:
+    from importlib import import_module
+
+    spec = dict(DUAL_ARM_SPECS[arm])
+    memory_module = import_module(spec["memory_module"])
+    contract = import_module(spec["contract_module"])
+    spec.update(
+        {
+            "arm": arm,
+            "memory_class_object": getattr(memory_module, spec["memory_class"]),
+            "contract": contract,
+            "mechanism_id": contract.MECHANISM_ID,
+            "experiment_id": contract.EXPERIMENT_ID,
+            "config_path": contract.CONFIG_PATH,
+            "parent_evidence_commit": getattr(
+                contract,
+                "PARENT_EVIDENCE_COMMIT",
+                getattr(contract, "DESIGN_PARENT_COMMIT", None),
+            ),
+            "task_seed": contract.TASK_SEED,
+            "model_realpath": getattr(contract, "MODEL_REALPATH", A10_MODEL_REALPATH),
+            "preservation_report": lambda summaries: _contract_preservation_report(
+                contract, summaries
+            ),
+            "completion_errors": contract.exact_completion_errors,
+            "validate_preflight": contract.validate_preflight_report,
+            "validate_receipt": contract.validate_launch_receipt,
+        }
+    )
+    return spec
+
+
+def _gate_passed(report: dict) -> bool:
+    return str(report.get("status")) in {"pass", "passed"}
 def _atomic_json(path: Path, value: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(path.suffix + ".tmp")
@@ -241,6 +336,34 @@ def _a10_pairwise(
         str(item["task_name"]): item[reference_arm]
         for item in reference.get("tasks") or []
     }
+    wins = losses = ties = 0
+    for task_name, summary in current.items():
+        ref = reference_tasks[task_name]
+        delta = int(bool(summary.get("success"))) - int(bool(ref.get("success")))
+        wins += int(delta > 0)
+        losses += int(delta < 0)
+        ties += int(delta == 0)
+    usage = _usage_totals(summaries)
+    ref_summary = reference["summaries"][reference_arm]
+    elapsed = sum(
+        (
+            datetime.fromisoformat(item["finished_at"])
+            - datetime.fromisoformat(item["started_at"])
+        ).total_seconds()
+        for item in summaries
+    )
+    return {
+        "wins": wins,
+        "losses": losses,
+        "ties": ties,
+        "success_delta": sum(int(bool(item.get("success"))) for item in summaries) - int(ref_summary["success_count"]),
+        "reward_delta": sum(float(item["evaluator_reward"]) for item in summaries) - float(ref_summary["reward_sum"]),
+        "action_delta": sum(int(item["executed_action_count"]) for item in summaries) - int(ref_summary["executed_actions"]),
+        "call_delta": sum(int(item["model_call_count"]) for item in summaries) - int(ref_summary["model_calls"]),
+        "prompt_token_delta": usage["prompt_tokens"] - int(ref_summary["prompt_tokens"]),
+        "total_token_delta": usage["total_tokens"] - int(ref_summary["total_tokens"]),
+        "elapsed_delta": elapsed - float(ref_summary["valid_elapsed_seconds"]),
+    }
 
 
 def _a10_causal_read_analysis(summaries: list[dict]) -> list[dict]:
@@ -329,34 +452,41 @@ def _a10_causal_read_analysis(summaries: list[dict]) -> list[dict]:
                 }
             )
     return records
-    wins = losses = ties = 0
-    for task_name, summary in current.items():
-        ref = reference_tasks[task_name]
-        delta = int(bool(summary.get("success"))) - int(bool(ref.get("success")))
-        wins += int(delta > 0)
-        losses += int(delta < 0)
-        ties += int(delta == 0)
-    usage = _usage_totals(summaries)
-    ref_summary = reference["summaries"][reference_arm]
-    elapsed = sum(
-        (
-            datetime.fromisoformat(item["finished_at"])
-            - datetime.fromisoformat(item["started_at"])
-        ).total_seconds()
-        for item in summaries
-    )
-    return {
-        "wins": wins,
-        "losses": losses,
-        "ties": ties,
-        "success_delta": sum(int(bool(item.get("success"))) for item in summaries) - int(ref_summary["success_count"]),
-        "reward_delta": sum(float(item["evaluator_reward"]) for item in summaries) - float(ref_summary["reward_sum"]),
-        "action_delta": sum(int(item["executed_action_count"]) for item in summaries) - int(ref_summary["executed_actions"]),
-        "call_delta": sum(int(item["model_call_count"]) for item in summaries) - int(ref_summary["model_calls"]),
-        "prompt_token_delta": usage["prompt_tokens"] - int(ref_summary["prompt_tokens"]),
-        "total_token_delta": usage["total_tokens"] - int(ref_summary["total_tokens"]),
-        "elapsed_delta": elapsed - float(ref_summary["valid_elapsed_seconds"]),
-    }
+
+
+def _dual_causal_read_analysis(summaries: list[dict]) -> list[dict]:
+    """Join arm-native read audits to the exact injected prompt and next action.
+
+    The two mechanisms intentionally have different internal frontier schemas,
+    so shared integration records the stable causal boundary without guessing
+    or rewriting arm-native evidence fields.
+    """
+    records: list[dict] = []
+    for summary in summaries:
+        audit = summary.get("memory_mechanism") or {}
+        steps = {int(item.get("step_index", item.get("step", -1))): item for item in summary.get("steps", [])}
+        read_events = ((audit.get("reads") or {}).get("read_events") or audit.get("read_events") or [])
+        for event in read_events:
+            read_step = int(event.get("step", event.get("step_index", -1)))
+            step = steps.get(read_step) or {}
+            memory_read = step.get("memory_read") or {}
+            records.append(
+                {
+                    "task": summary.get("task_name"),
+                    "episode": summary.get("episode_id"),
+                    "read_step": read_step,
+                    "trigger_kind": event.get("trigger_kind", event.get("kind")),
+                    "trigger_score": event.get("score"),
+                    "exact_injected_text": memory_read.get("exact_injected_text"),
+                    "rendered_sha256": event.get("rendered_sha256", memory_read.get("rendered_sha256")),
+                    "next_action": (step.get("decision") or {}).get("canonical_action"),
+                    "episode_reward": summary.get("evaluator_reward"),
+                    "final_success": summary.get("success"),
+                    "arm_native_event": event,
+                    "analysis_class": event.get("analysis_class", "requires_arm_native_causal_review"),
+                }
+            )
+    return records
 
 
 def _json_digest(value: object) -> str:
@@ -418,6 +548,55 @@ def _load_a10_checkpoint(
             or not _episode_infrastructure_valid(on_disk, require_single_transport=True)
         ):
             raise RuntimeError("A10 checkpoint episode validity closure failed")
+    return summaries, entries, invalid_attempts
+
+
+def _load_dual_arm_checkpoint(
+    *,
+    suite_dir: Path,
+    checkpoint: dict,
+    run_signature_sha256: str,
+    arm: dict,
+) -> tuple[list[dict], list[dict], list[dict]]:
+    if (
+        checkpoint.get("schema") != arm["checkpoint_schema"]
+        or checkpoint.get("prospective_arm") != arm["arm"]
+        or checkpoint.get("experiment_id") != arm["experiment_id"]
+        or checkpoint.get("mechanism_id") != arm["mechanism_id"]
+    ):
+        raise RuntimeError(
+            f"{arm['label']} checkpoint identity mismatch; cross-arm resume is forbidden"
+        )
+    summaries = list(checkpoint.get("valid_summaries") or [])
+    entries = list(checkpoint.get(arm["entry_key"]) or [])
+    invalid_attempts = list(checkpoint.get("invalid_attempts") or [])
+    if len(entries) != len(summaries):
+        raise RuntimeError(f"{arm['label']} checkpoint entry/summary cardinality mismatch")
+    for summary, entry in zip(summaries, entries, strict=True):
+        if entry.get("run_signature_sha256") != run_signature_sha256:
+            raise RuntimeError(f"{arm['label']} checkpoint entry signature drift")
+        expected_identity = (
+            str(summary.get("task_name")),
+            int(summary.get("seed", -1)),
+            str(summary.get("episode_id")),
+        )
+        entry_identity = (
+            str(entry.get("task_name")),
+            int(entry.get("seed", -1)),
+            str(entry.get("episode_id")),
+        )
+        if entry_identity != expected_identity:
+            raise RuntimeError(f"{arm['label']} checkpoint entry identity mismatch")
+        episode_path = suite_dir / "episodes" / entry_identity[2] / "episode.json"
+        if not episode_path.is_file() or _sha256(episode_path) != entry.get("episode_json_sha256"):
+            raise RuntimeError(f"{arm['label']} checkpoint episode artifact hash mismatch")
+        on_disk = json.loads(episode_path.read_text(encoding="utf-8"))
+        if (
+            _json_digest(on_disk) != entry.get("summary_sha256")
+            or _json_digest(summary) != entry.get("summary_sha256")
+            or not _episode_infrastructure_valid(on_disk, require_single_transport=True)
+        ):
+            raise RuntimeError(f"{arm['label']} checkpoint episode validity closure failed")
     return summaries, entries, invalid_attempts
 
 
@@ -496,6 +675,36 @@ def main() -> None:
         "--a10-launch-receipt",
         type=Path,
         help="Fresh A10 live receipt bound to the A10 zero-generation preflight.",
+    )
+    parser.add_argument(
+        "--a10-v2-emobf",
+        action="store_true",
+        help="Run the independently frozen A10-v2 EM-OBF prospective arm.",
+    )
+    parser.add_argument(
+        "--a10-v2-preflight-report",
+        type=Path,
+        default=REPOSITORY_ROOT / "evidence/a10_v2/A10_V2_ZERO_GENERATION_PREFLIGHT.json",
+    )
+    parser.add_argument(
+        "--a10-v2-launch-receipt",
+        type=Path,
+        help="Fresh A10-v2 receipt bound only to its own preflight.",
+    )
+    parser.add_argument(
+        "--a11-crc-ecobf",
+        action="store_true",
+        help="Run the independently frozen A11 CRC-ECOBF prospective arm.",
+    )
+    parser.add_argument(
+        "--a11-preflight-report",
+        type=Path,
+        default=REPOSITORY_ROOT / "evidence/a11/A11_ZERO_GENERATION_PREFLIGHT.json",
+    )
+    parser.add_argument(
+        "--a11-launch-receipt",
+        type=Path,
+        help="Fresh A11 receipt bound only to its own preflight.",
     )
     parser.add_argument(
         "--a678-preflight-report",
@@ -711,6 +920,8 @@ def main() -> None:
             args.a345_arm,
             args.a678_arm,
             args.a10_ecobf,
+            args.a10_v2_emobf,
+            args.a11_crc_ecobf,
         )
     )
     if diagnostic_modes > 1:
@@ -718,7 +929,8 @@ def main() -> None:
             "--transient-observation-carry, --transition-attested-history, "
             "--evidence-qualified-progress, and --source-document-coverage "
             "--source-document-coverage-gate, --a1-working-memory, and "
-            "--a2-verified-progress-memory, --a345-arm, and --a678-arm are mutually exclusive"
+            "--a2-verified-progress-memory, --a345-arm, --a678-arm, --a10-ecobf, "
+            "--a10-v2-emobf, and --a11-crc-ecobf are mutually exclusive"
         )
     held_out_eligible = not bool(args.diagnostic) and not bool(
         args.held_out_ineligible_reason
@@ -726,17 +938,39 @@ def main() -> None:
     a345_scored_arm = bool(args.a345_arm)
     a678_memory_arm = bool(args.a678_arm)
     a10_scored_arm = bool(args.a10_ecobf)
+    dual_arm_name = (
+        "a10v2" if args.a10_v2_emobf else "a11" if args.a11_crc_ecobf else None
+    )
+    dual_arm = _load_dual_arm(dual_arm_name) if dual_arm_name else None
+    dual_scored_arm = dual_arm is not None
+    dual_preflight_path = (
+        args.a10_v2_preflight_report
+        if dual_arm_name == "a10v2"
+        else args.a11_preflight_report
+        if dual_arm_name == "a11"
+        else None
+    )
+    dual_receipt_path = (
+        args.a10_v2_launch_receipt
+        if dual_arm_name == "a10v2"
+        else args.a11_launch_receipt
+        if dual_arm_name == "a11"
+        else None
+    )
+    dual_preflight: dict | None = None
+    dual_launch: dict | None = None
     a10_launch: dict | None = None
     a10_preflight: dict | None = None
-    controller_memory_arm = a678_memory_arm or a10_scored_arm
+    controller_memory_arm = a678_memory_arm or a10_scored_arm or dual_scored_arm
     a678_post_gate_diagnostic = a7_post_gate_diagnostic or a89_four_task_diagnostic
     a678_scored_arm = a678_memory_arm and not a678_post_gate_diagnostic
     prospective_gate_arm = (
         (args.a678_arm in {"a8v2", "a9"} and not a89_four_task_diagnostic)
         or a10_scored_arm
+        or dual_scored_arm
     )
     held_out_ineligible_reason = args.held_out_ineligible_reason
-    if a678_scored_arm or a10_scored_arm:
+    if a678_scored_arm or a10_scored_arm or dual_scored_arm:
         # This seed and its A0/A1/A2/A3-A5 outcomes have already been inspected.
         # A6-A8 are valid paired mechanism comparisons, not held-out evidence.
         held_out_eligible = False
@@ -747,6 +981,7 @@ def main() -> None:
         or a345_scored_arm
         or a678_scored_arm
         or a10_scored_arm
+        or dual_scored_arm
     )
     if (
         args.resume_suite_dir is not None
@@ -765,7 +1000,31 @@ def main() -> None:
             parser.error("scored memory hidden observation backend must match A0 uiautomator")
         if _sha256(args.manifest.resolve()) != _sha256(A1_MANIFEST.resolve()):
             parser.error("memory-arm manifest differs from the frozen A0 first-seed manifest")
-        if a10_scored_arm:
+        if dual_scored_arm:
+            assert dual_arm is not None
+            assert dual_preflight_path is not None
+            if not dual_preflight_path.is_file():
+                parser.error(
+                    f"{dual_arm['label']} preflight is missing: {dual_preflight_path}"
+                )
+            try:
+                dual_preflight = dual_arm["validate_preflight"](
+                    dual_preflight_path.resolve()
+                )
+            except Exception as exc:
+                parser.error(str(exc))
+            if dual_receipt_path is None or not dual_receipt_path.is_file():
+                parser.error(
+                    f"{dual_arm['label']} scored generation requires its own fresh live receipt"
+                )
+            try:
+                dual_launch = dual_arm["validate_receipt"](
+                    dual_receipt_path.resolve(),
+                    preflight_path=dual_preflight_path.resolve(),
+                )
+            except Exception as exc:
+                parser.error(str(exc))
+        elif a10_scored_arm:
             if not args.a10_preflight_report.is_file():
                 parser.error(f"A10 preflight is missing: {args.a10_preflight_report}")
             try:
@@ -922,7 +1181,7 @@ def main() -> None:
             missing_gate = sorted(set(A0_PRESERVATION_TASKS) - set(by_name))
             if missing_gate:
                 raise RuntimeError(
-                    f"{'A10' if a10_scored_arm else str(args.a678_arm).upper()} gate tasks missing from manifest: {missing_gate}"
+                    f"{dual_arm['label'] if dual_scored_arm else 'A10' if a10_scored_arm else str(args.a678_arm).upper()} gate tasks missing from manifest: {missing_gate}"
                 )
             remaining = [
                 item
@@ -998,6 +1257,8 @@ def main() -> None:
             if a89_four_task_diagnostic
             else "A2_VERIFIED_PROGRESS_MEMORY_QWEN3VL32B_AW_HARD_S20260806_V1R1"
             if args.a2_verified_progress_memory
+            else dual_arm["experiment_id"]
+            if dual_scored_arm
             else A10_EXPERIMENT_ID
             if a10_scored_arm
             else (
@@ -1022,6 +1283,8 @@ def main() -> None:
         "method": (
             A678_MECHANISMS[str(args.a678_arm)]
             if a678_post_gate_diagnostic
+            else dual_arm["mechanism_id"]
+            if dual_scored_arm
             else A10_MECHANISM_ID
             if a10_scored_arm
             else "a2_verified_progress_memory_v1r1"
@@ -1136,6 +1399,39 @@ def main() -> None:
                     "claim_boundary": a7_continuation_plan["claim_boundary"],
                 }
             )
+    if dual_scored_arm:
+        assert dual_arm is not None
+        assert dual_preflight_path is not None
+        assert dual_launch is not None
+        run_signature.update(
+            {
+                "prospective_arm": dual_arm["arm"],
+                "mechanism_id": dual_arm["mechanism_id"],
+                "experiment_id": dual_arm["experiment_id"],
+                "prospective_config_sha256": _sha256(dual_arm["config_path"]),
+                "prospective_preflight_sha256": _sha256(dual_preflight_path),
+                "prospective_source_freeze_sha256": dual_preflight["source_freeze_sha256"],
+                "prospective_live_server_stable_identity": {
+                    "served_model_id": dual_launch["served_model_id"],
+                    "model_realpath": dual_launch["model_realpath"],
+                    "model_manifest_sha256": dual_launch["model_manifest_sha256"],
+                    "port": dual_launch["port"],
+                    "packages": dual_launch["packages"],
+                },
+                "task_order": "blocking_A0_4_task_gate_then_frozen_manifest_remainder",
+                "reward_fail_fast": True,
+                "scientific_failure_rerun": False,
+                "A0_preservation_tasks": list(A0_PRESERVATION_TASKS),
+                "A0_preservation_required_for_continuation": True,
+                "controller_authored_memory": True,
+                "response_prefix_required": False,
+                "official_system_prompt_unchanged": True,
+                "extra_model_calls": 0,
+                "guard": False,
+                "action_override": False,
+                "forced_termination": False,
+            }
+        )
     if a10_scored_arm:
         run_signature.update(
             {
@@ -1248,6 +1544,7 @@ def main() -> None:
     invalid_attempts: list[dict] = []
     valid_entries: list[dict] = []
     a10_valid_entries: list[dict] = []
+    dual_valid_entries: list[dict] = []
     orphan_episode_directories: list[str] = []
     if args.resume_suite_dir is not None:
         suite_dir = args.resume_suite_dir.resolve()
@@ -1285,9 +1582,16 @@ def main() -> None:
                 and checkpoint.get("status") == "stopped_capability_gate_failure"
             ):
                 raise RuntimeError(
-                    f"{str(args.a678_arm).upper()} capability-preservation failure is terminal and cannot be resumed"
+                    f"{dual_arm['label'] if dual_scored_arm else 'A10' if a10_scored_arm else str(args.a678_arm).upper()} capability-preservation failure is terminal and cannot be resumed"
                 )
-            if a10_scored_arm:
+            if dual_scored_arm:
+                summaries, dual_valid_entries, invalid_attempts = _load_dual_arm_checkpoint(
+                    suite_dir=suite_dir,
+                    checkpoint=checkpoint,
+                    run_signature_sha256=run_signature_sha256,
+                    arm=dual_arm,
+                )
+            elif a10_scored_arm:
                 summaries, a10_valid_entries, invalid_attempts = _load_a10_checkpoint(
                     suite_dir=suite_dir,
                     checkpoint=checkpoint,
@@ -1344,7 +1648,26 @@ def main() -> None:
                 "valid_summaries": summaries,
                 "invalid_attempts": invalid_attempts,
             }
-            if a10_scored_arm:
+            if dual_scored_arm:
+                payload.update(
+                    {
+                        "run_signature_sha256": run_signature_sha256,
+                        "schema": dual_arm["checkpoint_schema"],
+                        "prospective_arm": dual_arm["arm"],
+                        "experiment_id": dual_arm["experiment_id"],
+                        "mechanism_id": dual_arm["mechanism_id"],
+                        dual_arm["entry_key"]: dual_valid_entries,
+                        "live_server_receipt_sha256s": sorted(
+                            {
+                                str((item.get("run_metadata") or {}).get("live_server_receipt_sha256"))
+                                for item in summaries
+                                if (item.get("run_metadata") or {}).get("live_server_receipt_sha256")
+                            }
+                            | {_sha256(dual_receipt_path)}
+                        ),
+                    }
+                )
+            elif a10_scored_arm:
                 payload.update(
                     {
                         "run_signature_sha256": run_signature_sha256,
@@ -1372,7 +1695,13 @@ def main() -> None:
                     }
                 )
             elif prospective_gate_arm:
-                payload["capability_gate"] = a7_gate_report(summaries)
+                payload["capability_gate"] = (
+                    dual_arm["preservation_report"](summaries)
+                    if dual_scored_arm
+                    else a10_preservation_report(summaries)
+                    if a10_scored_arm
+                    else a7_gate_report(summaries)
+                )
             elif a89_four_task_diagnostic:
                 payload.update(
                     {
@@ -1403,6 +1732,7 @@ def main() -> None:
             or a345_scored_arm
             or a678_memory_arm
             or a10_scored_arm
+            or dual_scored_arm
         ),
     )
     health = client.health()
@@ -1433,11 +1763,17 @@ def main() -> None:
                 (a7_gated_continuation or prospective_gate_arm)
                 and task_name not in A0_PRESERVATION_TASKS
             ):
-                gate = a7_gate_report(summaries)
-                if gate["status"] != "passed":
+                gate = (
+                    dual_arm["preservation_report"](summaries)
+                    if dual_scored_arm
+                    else a10_preservation_report(summaries)
+                    if a10_scored_arm
+                    else a7_gate_report(summaries)
+                )
+                if not _gate_passed(gate):
                     checkpoint("stopped_capability_gate_incomplete")
                     raise RuntimeError(
-                        f"{'A10' if a10_scored_arm else str(args.a678_arm).upper()} remaining tasks are locked until the A0 preservation gate is 4/4"
+                        f"{dual_arm['label'] if dual_scored_arm else 'A10' if a10_scored_arm else str(args.a678_arm).upper()} remaining tasks are locked until the A0 preservation gate is 4/4"
                     )
             if "task_params_hash" in spec and "goal_hash" in spec:
                 task = instantiate_verified(available, spec)
@@ -1498,6 +1834,10 @@ def main() -> None:
                     max_chars=420,
                     max_utf8_bytes=720,
                 )
+            elif dual_scored_arm:
+                # A fresh instance per episode; state is never shared across
+                # tasks and the two prospective arms can never be composed.
+                a678_memory = dual_arm["memory_class_object"]()
             controller = OfficialQwenMobileController(
                 client,
                 max_steps=effective_limit,
@@ -1536,8 +1876,12 @@ def main() -> None:
                             _sha256(args.a10_launch_receipt)
                             if a10_scored_arm
                             else (
-                                _sha256(args.a678_launch_receipt)
-                                if a678_memory_arm else None
+                                _sha256(dual_receipt_path)
+                                if dual_scored_arm
+                                else (
+                                    _sha256(args.a678_launch_receipt)
+                                    if a678_memory_arm else None
+                                )
                             )
                         )
                     ),
@@ -1653,7 +1997,7 @@ def main() -> None:
                 seed=episode_seed,
             )
             if not _episode_infrastructure_valid(
-                result, require_single_transport=a10_scored_arm
+                result, require_single_transport=(a10_scored_arm or dual_scored_arm)
             ):
                 invalid_attempts.append(
                     {
@@ -1689,7 +2033,7 @@ def main() -> None:
                     and not attempt.get("resolved_by_episode_id")
                 ):
                     attempt["resolved_by_episode_id"] = episode_id
-            if a10_scored_arm:
+            if a10_scored_arm or dual_scored_arm:
                 _atomic_json(
                     suite_dir / "episodes" / episode_id / "episode.json",
                     result,
@@ -1706,6 +2050,14 @@ def main() -> None:
                 )
             elif a10_scored_arm:
                 a10_valid_entries.append(
+                    _a10_episode_entry(
+                        suite_dir=suite_dir,
+                        summary=result,
+                        run_signature_sha256=run_signature_sha256,
+                    )
+                )
+            elif dual_scored_arm:
+                dual_valid_entries.append(
                     _a10_episode_entry(
                         suite_dir=suite_dir,
                         summary=result,
@@ -1736,7 +2088,7 @@ def main() -> None:
             ):
                 checkpoint("stopped_capability_gate_failure")
                 raise RuntimeError(
-                    f"{'A10' if a10_scored_arm else str(args.a678_arm).upper()} capability-preservation gate failed on "
+                    f"{dual_arm['label'] if dual_scored_arm else 'A10' if a10_scored_arm else str(args.a678_arm).upper()} capability-preservation gate failed on "
                     f"{task_name}; scientific failures are terminal and cannot be rerun"
                 )
             checkpoint("running")
@@ -1823,6 +2175,23 @@ def main() -> None:
             raise RuntimeError(
                 f"{args.a678_arm.upper()} cannot aggregate: {closure_errors}"
             )
+    if dual_scored_arm:
+        gate = dual_arm["preservation_report"](summaries)
+        if not _gate_passed(gate):
+            checkpoint("stopped_capability_gate_incomplete")
+            raise RuntimeError(
+                f"{dual_arm['label']} cannot aggregate before the blocking 4/4 preservation gate passes"
+            )
+        closure_errors = dual_arm["completion_errors"](
+            summaries=summaries,
+            invalid_attempts=invalid_attempts,
+            lifecycle_errors=suite_lifecycle_errors,
+        )
+        if closure_errors:
+            checkpoint("stopped_incomplete_or_invalid")
+            raise RuntimeError(
+                f"{dual_arm['label']} cannot aggregate: {closure_errors}"
+            )
     if a10_scored_arm:
         gate = a10_preservation_report(summaries)
         if gate["status"] != "pass":
@@ -1886,13 +2255,15 @@ def main() -> None:
             if a89_four_task_diagnostic
             else
             (
-                a10_preservation_report(summaries)
+                dual_arm["preservation_report"](summaries)
+                if dual_scored_arm
+                else a10_preservation_report(summaries)
                 if a10_scored_arm
                 else a7_gate_report(summaries)
                 if (a7_gated_continuation or prospective_gate_arm)
                 else a678_preservation_report(summaries)
             )
-            if (a678_scored_arm or a10_scored_arm)
+            if (a678_scored_arm or a10_scored_arm or dual_scored_arm)
             else None
         ),
         "token_usage": _usage_totals(summaries),
@@ -2016,7 +2387,38 @@ def main() -> None:
             for item in summaries
         ],
     }
-    if a10_scored_arm:
+    if a10_scored_arm or dual_scored_arm:
+        result_label = dual_arm["label"] if dual_scored_arm else "A10"
+        result_prefix = result_label.upper()
+        result_key = dual_arm["result_key"] if dual_scored_arm else "a10_result"
+        result_schema = dual_arm["result_schema"] if dual_scored_arm else "a10_ecobf_result_v1"
+        result_preflight = dual_preflight if dual_scored_arm else a10_preflight
+        result_preflight_path = dual_preflight_path if dual_scored_arm else args.a10_preflight_report
+        result_receipt_path = dual_receipt_path if dual_scored_arm else args.a10_launch_receipt
+        result_gate = (
+            dual_arm["preservation_report"](summaries)
+            if dual_scored_arm
+            else a10_preservation_report(summaries)
+        )
+        result_parent_commit = (
+            dual_arm["parent_evidence_commit"]
+            if dual_scored_arm
+            else A10_PARENT_EVIDENCE_COMMIT
+        )
+        result_task_seed = dual_arm["task_seed"] if dual_scored_arm else A10_TASK_SEED
+        implementation_commit = next(
+            (
+                str(result_preflight[key])
+                for key in (
+                    "implementation_commit",
+                    "a10_v2_implementation_commit",
+                    "a11_implementation_commit",
+                    "a10_implementation_commit",
+                )
+                if result_preflight.get(key)
+            ),
+            None,
+        )
         reward_sum = sum(float(item.get("evaluator_reward") or 0.0) for item in summaries)
         success_count = sum(int(bool(item.get("success"))) for item in summaries)
         memory_token_counts = _a10_memory_token_counts(summaries)
@@ -2038,7 +2440,11 @@ def main() -> None:
             int(bool(item.get("success")) and bool((item.get("memory_mechanism") or {}).get("active")))
             for item in summaries
         )
-        causal_read_analysis = _a10_causal_read_analysis(summaries)
+        causal_read_analysis = (
+            _dual_causal_read_analysis(summaries)
+            if dual_scored_arm
+            else _a10_causal_read_analysis(summaries)
+        )
         productive_divergence_count = sum(
             item["analysis_class"]
             == "trace_grounded_productive_divergence_hypothesis"
@@ -2059,32 +2465,53 @@ def main() -> None:
             len(summaries) == 19
             and success_count >= 6
             and reward_sum > 5.5
-            and a10_preservation_report(summaries)["status"] == "pass"
+            and _gate_passed(result_gate)
         )
-        if closure_errors:
-            final_verdict = "A10 INFRASTRUCTURE INVALID"
+        if dual_arm_name == "a10v2":
+            final_verdict = (
+                "A10_V2_INFRASTRUCTURE_INVALID" if closure_errors
+                else "A10_V2_PROTOCOL_INVALID" if protocol_boundary_invalid
+                else "A10_V2_SCIENTIFIC_FAILURE" if not performance_target
+                else "A10_V2_PERFORMANCE_PASS_MECHANISM_EVIDENCE_FAIL"
+                if active_success_count < 1 or productive_divergence_count < 1
+                else "A10_V2_OVERALL_PASS"
+            )
+        elif dual_arm_name == "a11":
+            final_verdict = (
+                "SUITE_INFRASTRUCTURE_INCOMPLETE" if closure_errors
+                else "PROTOCOL_INVALID" if protocol_boundary_invalid
+                else "A11_SCIENTIFIC_FAILURE" if not performance_target
+                else "PERFORMANCE_PASS_MECHANISM_EVIDENCE_FAIL"
+                if active_success_count < 1 or productive_divergence_count < 1
+                else "A11_OVERALL_PASS"
+            )
+        elif closure_errors:
+            final_verdict = f"{result_prefix} INFRASTRUCTURE INVALID"
         elif protocol_boundary_invalid:
-            final_verdict = "A10 PROTOCOL INVALID"
+            final_verdict = f"{result_prefix} PROTOCOL INVALID"
         elif not performance_target:
-            final_verdict = "A10 SCIENTIFIC FAILURE"
+            final_verdict = f"{result_prefix} SCIENTIFIC FAILURE"
         elif active_success_count < 1 or productive_divergence_count < 1:
-            final_verdict = "A10 PERFORMANCE PASS / MECHANISM EVIDENCE FAIL"
+            final_verdict = f"{result_prefix} PERFORMANCE PASS / MECHANISM EVIDENCE FAIL"
         else:
-            final_verdict = "A10 OVERALL PASS"
-        aggregate["a10_result"] = {
-            "schema": "a10_ecobf_result_v1",
-            "parent_evidence_commit": A10_PARENT_EVIDENCE_COMMIT,
-            "a10_implementation_commit": a10_preflight["a10_implementation_commit"],
-            "source_freeze_sha256": a10_preflight["source_freeze_sha256"],
-            "preflight_sha256": _sha256(args.a10_preflight_report),
-            "live_receipt_sha256": _sha256(args.a10_launch_receipt),
+            final_verdict = f"{result_prefix} OVERALL PASS"
+        aggregate[result_key] = {
+            "schema": result_schema,
+            "arm": dual_arm["arm"] if dual_scored_arm else "a10",
+            "mechanism_id": run_signature["method"],
+            "experiment_id": run_signature["experiment_id"],
+            "parent_evidence_commit": result_parent_commit,
+            "implementation_commit": implementation_commit,
+            "source_freeze_sha256": result_preflight["source_freeze_sha256"],
+            "preflight_sha256": _sha256(result_preflight_path),
+            "live_receipt_sha256": _sha256(result_receipt_path),
             "live_receipt_sha256s": aggregate["live_server_receipt_sha256s"],
             "run_signature_sha256": run_signature_sha256,
-            "task_seed": A10_TASK_SEED,
+            "task_seed": result_task_seed,
             "generation_seed": args.generation_seed,
             "valid_episode_count": len(summaries),
             "invalid_episode_count": len(invalid_attempts),
-            "gate": a10_preservation_report(summaries),
+            "gate": result_gate,
             "summary": {
                 "success_count": success_count,
                 "reward_sum": reward_sum,
@@ -2159,6 +2586,234 @@ def main() -> None:
             "performance_target_reached": performance_target,
             "overall_verdict": final_verdict,
         }
+        if dual_scored_arm:
+            base_result = aggregate[result_key]
+
+            def audit_metric(audit: dict, *paths: tuple[str, ...]) -> int:
+                for path in paths:
+                    value: object = audit
+                    for key in path:
+                        if not isinstance(value, dict) or key not in value:
+                            value = None
+                            break
+                        value = value[key]
+                    if value is not None:
+                        if isinstance(value, dict):
+                            return sum(int(item or 0) for item in value.values())
+                        return int(value or 0)
+                return 0
+
+            def total_metric(*paths: tuple[str, ...]) -> int:
+                return sum(
+                    audit_metric(item.get("memory_mechanism") or {}, *paths)
+                    for item in summaries
+                )
+
+            task_rows = list(base_result["per_task"])
+            for index, (row, summary) in enumerate(zip(task_rows, summaries, strict=True)):
+                audit = summary.get("memory_mechanism") or {}
+                row["task_index"] = index
+                row["resolves_invalid_episode_id"] = summary.get("resolves_invalid_episode_id")
+                row["provisional_route_watch_count"] = audit_metric(
+                    audit, ("closed_route_watches", "created_count")
+                )
+                row["mature_route_watch_count"] = audit_metric(
+                    audit, ("closed_route_watches", "matured_count")
+                )
+                row["normal_workflow_dismissal_count"] = audit_metric(
+                    audit, ("closed_route_watches", "dismissed_count")
+                )
+                row["provisional_route_count"] = audit_metric(
+                    audit,
+                    ("routes", "provisional_count"),
+                    ("routes", "closed_count"),
+                    ("route_evidence", "provisional_route_count"),
+                )
+                row["confirmed_route_count"] = audit_metric(
+                    audit,
+                    ("routes", "confirmed_count"),
+                    ("routes", "confirmation_counts"),
+                    ("route_evidence", "confirmed_route_count"),
+                )
+                classifications = ((audit.get("routes") or {}).get("classification_counts") or {})
+                row["normal_navigation_exemption_count"] = (
+                    audit_metric(
+                        audit,
+                        ("routes", "normal_navigation_exemption_count"),
+                        ("route_evidence", "normal_navigation_exemption_count"),
+                    )
+                    + int(classifications.get("WORKFLOW_ADVANCE") or 0)
+                    + int(classifications.get("NOVEL_EXPLORATION_RETURN") or 0)
+                )
+                row["mature_trigger_count"] = audit_metric(
+                    audit,
+                    ("triggers", "mature_count"),
+                    ("triggers", "matured_count"),
+                    ("triggers", "delivered_count"),
+                    ("triggers", "delivered_counts_by_kind"),
+                )
+                row["route_eviction_count"] = audit_metric(
+                    audit, ("routes", "eviction_count")
+                )
+                boundary = audit.get("decision_boundary") or {}
+                row["forced_termination_count"] = int(boundary.get("forced_termination_count") or 0)
+                row["hidden_ui_used"] = bool(boundary.get("hidden_ui_used_for_decision"))
+                row["evaluator_used"] = bool(boundary.get("evaluator_used_for_decision"))
+                row["future_used"] = bool(boundary.get("future_information_used"))
+
+            common_memory = dict(base_result["memory"])
+            common_memory.update(
+                {
+                    "mature_trigger_count": total_metric(
+                        ("triggers", "mature_count"),
+                        ("triggers", "matured_count"),
+                        ("triggers", "delivered_count"),
+                        ("triggers", "delivered_counts_by_kind"),
+                    ),
+                    "productive_divergence_count": productive_divergence_count,
+                }
+            )
+            if dual_arm_name == "a10v2":
+                common_memory.update(
+                    {
+                        "provisional_route_watch_count": total_metric(
+                            ("closed_route_watches", "created_count")
+                        ),
+                        "mature_route_watch_count": total_metric(
+                            ("closed_route_watches", "matured_count")
+                        ),
+                        "normal_workflow_dismissal_count": total_metric(
+                            ("closed_route_watches", "dismissed_count")
+                        ),
+                        "max_reads_per_phase": max(
+                            [
+                                max(
+                                    [
+                                        sum(
+                                            int(event.get("phase_id") == phase)
+                                            for event in ((item.get("memory_mechanism") or {}).get("reads") or {}).get("read_events") or []
+                                        )
+                                        for phase in {
+                                            event.get("phase_id")
+                                            for event in ((item.get("memory_mechanism") or {}).get("reads") or {}).get("read_events") or []
+                                        }
+                                    ]
+                                    or [0]
+                                )
+                                for item in summaries
+                            ]
+                            or [0]
+                        ),
+                        "minimum_read_cooldown": min(
+                            [
+                                later - earlier
+                                for item in summaries
+                                for earlier, later in zip(
+                                    [int(event.get("step", -1)) for event in ((item.get("memory_mechanism") or {}).get("reads") or {}).get("read_events") or []],
+                                    [int(event.get("step", -1)) for event in ((item.get("memory_mechanism") or {}).get("reads") or {}).get("read_events") or []][1:],
+                                )
+                            ]
+                            or [None],
+                            key=lambda value: float("inf") if value is None else value,
+                        ),
+                    }
+                )
+                aggregate[result_key] = {
+                    "schema": result_schema,
+                    "status": final_verdict,
+                    "identity": {
+                        "design_parent_commit": result_parent_commit,
+                        "implementation_commit": implementation_commit,
+                        "mechanism_id": run_signature["method"],
+                        "experiment_id": run_signature["experiment_id"],
+                        "source_freeze_sha256": result_preflight["source_freeze_sha256"],
+                        "preflight_sha256": _sha256(result_preflight_path),
+                        "live_receipt_chain": aggregate["live_server_receipt_sha256s"],
+                    },
+                    "benchmark": {
+                        "task_seed": result_task_seed,
+                        "generation_seed": args.generation_seed,
+                        "valid_episode_count": len(summaries),
+                        "invalid_attempt_count": len(invalid_attempts),
+                        "exact_order": True,
+                    },
+                    "gate": {
+                        "status": result_gate.get("status"),
+                        "required_success": int(result_gate.get("required", result_gate.get("required_success", 4))),
+                        "observed_success": int(result_gate.get("success_count", result_gate.get("observed_success", 0))),
+                        "tasks": result_gate.get("tasks") or [],
+                    },
+                    "performance": base_result["summary"],
+                    "memory": common_memory,
+                    "mechanism_evidence": {
+                        "successful_active_memory_episodes": [
+                            item["episode_id"]
+                            for item in summaries
+                            if item.get("success") and (item.get("memory_mechanism") or {}).get("active")
+                        ],
+                        "productive_divergence_hypotheses": [
+                            item for item in causal_read_analysis
+                            if item.get("analysis_class") == "trace_grounded_productive_divergence_hypothesis"
+                        ],
+                    },
+                    "comparison": {
+                        "versus_A0": base_result["pairwise"]["A0"],
+                        "versus_A1": base_result["pairwise"]["A1"],
+                    },
+                    "invalid_attempts": invalid_attempts,
+                    "tasks": task_rows,
+                    "errors": [],
+                }
+            else:
+                common_memory.update(
+                    {
+                        "provisional_route_count": total_metric(
+                            ("routes", "provisional_count"),
+                            ("routes", "closed_count"),
+                            ("route_evidence", "provisional_route_count"),
+                        ),
+                        "confirmed_route_count": total_metric(
+                            ("routes", "confirmed_count"),
+                            ("routes", "confirmation_counts"),
+                            ("route_evidence", "confirmed_route_count"),
+                        ),
+                        "normal_navigation_exemption_count": sum(
+                            row["normal_navigation_exemption_count"] for row in task_rows
+                        ),
+                    }
+                )
+                historical_a10v1 = REPOSITORY_ROOT / "evidence/a10/A10_OFFLINE_REPLAY_REPORT.json"
+                aggregate[result_key] = {
+                    "schema": result_schema,
+                    "mechanism_id": run_signature["method"],
+                    "experiment_id": run_signature["experiment_id"],
+                    "parent_evidence_commit": result_parent_commit,
+                    "implementation_commit": implementation_commit,
+                    "source_freeze_sha256": result_preflight["source_freeze_sha256"],
+                    "preflight_sha256": _sha256(result_preflight_path),
+                    "live_receipt_sha256": _sha256(result_receipt_path),
+                    "historical_a10v1_report_sha256": _sha256(historical_a10v1),
+                    "task_seed": result_task_seed,
+                    "generation_seed": args.generation_seed,
+                    "gate": result_gate,
+                    "closure": {
+                        "status": "exact_19_closed",
+                        "valid_episode_count": len(summaries),
+                        "invalid_attempt_count": len(invalid_attempts),
+                        "ordered_tasks_exact": True,
+                    },
+                    "summary": base_result["summary"],
+                    "memory": common_memory,
+                    "pairwise": {
+                        "versus_a0": base_result["pairwise"]["A0"],
+                        "versus_a1": base_result["pairwise"]["A1"],
+                    },
+                    "episodes": task_rows,
+                    "invalid_attempts": invalid_attempts,
+                    "causal_read_analysis": causal_read_analysis,
+                    "overall_verdict": final_verdict,
+                    "errors": [],
+                }
     _atomic_json(suite_dir / "aggregate.json", aggregate)
     checkpoint("complete")
     print(json.dumps({"suite_dir": str(suite_dir), **aggregate}, indent=2, ensure_ascii=False))

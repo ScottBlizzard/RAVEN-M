@@ -1,0 +1,20 @@
+{
+  "schema": "a10_v2_offline_trace_source_spec_v1",
+  "generation_calls": 0,
+  "task_seed": 20260806,
+  "parent_evidence_commit": "4548b932bc3b189507e1442e312c73c8f35dbdb8",
+  "materialized_manifest": "evidence/a10/A10_OFFLINE_TRACE_MANIFEST.json",
+  "materialized_manifest_sha256": "07a326ff4379d51c0d5261e5bf1f28e89ed4176b2130b8fda580079e48e6ff51",
+  "episode_count": 27,
+  "file_count": 1668,
+  "total_bytes": 442138413,
+  "historical_inputs": {
+    "evidence/a10/A10_FROZEN_QUERY_SET.json": "29cff0b352129c48425d02568d4ce657658c858d14606885f6fbe88df4e5e742",
+    "evidence/a10/A10_OFFLINE_TRACE_SOURCE_SPEC.json": "f446881479fecc425dd07f590c3a1a94edcd75240baa0dc15a84370831fdb6bf",
+    "evidence/a10/A10_OFFLINE_TRACE_MANIFEST.json": "07a326ff4379d51c0d5261e5bf1f28e89ed4176b2130b8fda580079e48e6ff51",
+    "evidence/a2/A0_A1_PAIRED_REFERENCE_20260810.json": "ad0799334c887693b51e9769495d3f38055458141e3da1f66956a0db73495116",
+    "evidence/a678/A8_V2_OFFLINE_TRACE_AUDIT_2026-08-11.json": "28f0198ff3acb52aef1b4d2f379871efc79066bcaae8e01bc22504e71bef6eeb",
+    "evidence/a678/A89_INITIAL_GATE_RESULTS_2026-08-12.json": "039dd8f6237fb7b2045f7df2c53512b4b5bbdbc16bd45720bd2430ba46e946f5"
+  },
+  "roles": ["a0", "a1_recipe", "a6", "a8v2_expense", "a9_retro"]
+}
