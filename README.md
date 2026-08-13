@@ -8,6 +8,11 @@ horizontal comparison to a minimal vertical refinement of A1. The A10-v2/A11/
 A12 enriched six-task study remains explicitly post-hoc and does not repair any
 failed formal arm.
 
+In parallel, `GPT_PRO_COMPOSITE_TRACKS_INDEX_2026-08-13.md` defines seven
+independent Pro design studies beyond pure memory. Their common evidence ledger
+is `evidence/composite/COMPONENT_EVIDENCE_LEDGER_2026-08-13.md`. They are
+unreviewed design requests, not registered or authorized experiment arms.
+
 This branch is the clean audit packet for a Zhejiang University summer-camp study of memory mechanisms in long-horizon AndroidWorld tasks. It replaces the earlier public-framework selection packet. Superseded MobileUse/B2/C0 explorations remain recoverable in Git history but are intentionally absent from this branch so that an independent reviewer can focus on the current paired experiment.
 
 ## Research progression

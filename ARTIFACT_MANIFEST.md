@@ -1,4 +1,4 @@
-# A0–A2-v1r1 Audit Artifact Manifest
+# RAVEN-M A0-A12 Research Artifact Manifest
 
 ## 2026-08-13 current entry points
 
@@ -17,6 +17,46 @@
   failure boundary, and required narrow revision.
 - `GPT_PRO_A1_VERTICAL_BPR_V2_REVISION_REQUEST_2026-08-13.md` - constrained
   request for a newly identified, evidence-valid BPR v2 design.
+- `evidence/composite/COMPONENT_EVIDENCE_LEDGER_2026-08-13.md` - evidence-classed
+  component ledger and common boundary for post-memory system proposals.
+- `GPT_PRO_COMPOSITE_TRACKS_INDEX_2026-08-13.md` - launcher and coordination
+  rules for seven independent `SYS-*` Pro design studies.
+- `GPT_PRO_SYS_HMP_DESIGN_REQUEST_2026-08-13.md` - hierarchical milestone
+  planning request.
+- `GPT_PRO_SYS_VOV_DESIGN_REQUEST_2026-08-13.md` - visible-outcome verification
+  request.
+- `GPT_PRO_SYS_TRC_DESIGN_REQUEST_2026-08-13.md` - triggered recovery critic
+  request.
+- `GPT_PRO_SYS_CAA_DESIGN_REQUEST_2026-08-13.md` - candidate-action arbitration
+  request.
+- `GPT_PRO_SYS_BTM_DESIGN_REQUEST_2026-08-13.md` - zero-call trajectory monitor
+  request.
+- `GPT_PRO_SYS_EPHC_DESIGN_REQUEST_2026-08-13.md` - evidence-preserving history
+  compression request.
+- `GPT_PRO_SYS_FWRE_DESIGN_REQUEST_2026-08-13.md` - frozen workflow retrieval
+  executor request.
+
+The seven request documents are `UNREVIEWED_PROPOSAL` inputs. They do not create
+experiment identities, preregistrations, preflights, or live authorization.
+
+## Evidence classes
+
+- `FORMAL_SCORED_PAIRED`: complete seed-matched scored evidence such as A0-A2.
+- `FORMAL_GATE_TERMINAL`: a prospective arm stopped by its frozen gate.
+- `FULL_SCORED_NEGATIVE_WITH_PROTOCOL_CAVEAT`: complete negative evidence whose
+  execution schedule had a documented protocol defect, such as A6.
+- `TRANSPARENT_STITCHED_CONTROL`: auditable results joined across explicitly
+  disclosed run/amendment boundaries, such as A7.
+- `FORMAL_OFFLINE_REPLAY_FAIL`: qualification failed before authorized live
+  generation, including A10-v1, A10-v2, and A11.
+- `FORMAL_PROTOCOL_INVALID`: the frozen experiment contract is infeasible or
+  invalid, including A12.
+- `POST_HOC_ENRICHED_DIAGNOSTIC`: exploratory diagnostic evidence that cannot
+  repair a formal arm, including A10-v2/A11/A12 diagnostic six.
+- `HISTORICAL_STRUCTURAL_SUPPORT`: retrospective trace structure that motivates
+  a hypothesis but is not prospective causal evidence.
+- `UNREVIEWED_PROPOSAL`: a design request or response not independently
+  adjudicated.
 
 ## 2026-08-12 historical entry points
 
