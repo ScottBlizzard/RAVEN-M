@@ -2,13 +2,11 @@
 
 ## Current research handoff
 
-The current project state is in `HANDOFF_2026-08-12.md`. The specification for
-GPT Pro to design a new standalone memory mechanism is
-`GPT_PRO_MEMORY_MECHANISM_DESIGN_REQUEST_2026-08-12.md`. Initial A8-v2/A9 gate
-results are preserved in
-`evidence/a678/A89_INITIAL_GATE_RESULTS_2026-08-12.json`, and their fresh
-four-task diagnostic replication is governed by
-`protocols/A89_FOUR_TASK_DIAGNOSTIC_REPLICATION_AMENDMENT_2026-08-12.md`.
+The current project state is in `HANDOFF_2026-08-13.md`. The next design request,
+`GPT_PRO_A1_VERTICAL_REFINEMENT_DESIGN_REQUEST_2026-08-13.md`, moves from broad
+horizontal comparison to a minimal vertical refinement of A1. The A10-v2/A11/
+A12 enriched six-task study remains explicitly post-hoc and does not repair any
+failed formal arm.
 
 This branch is the clean audit packet for a Zhejiang University summer-camp study of memory mechanisms in long-horizon AndroidWorld tasks. It replaces the earlier public-framework selection packet. Superseded MobileUse/B2/C0 explorations remain recoverable in Git history but are intentionally absent from this branch so that an independent reviewer can focus on the current paired experiment.
 
@@ -16,7 +14,7 @@ This branch is the clean audit packet for a Zhejiang University summer-camp stud
 
 1. **A0 — official Qwen mobile baseline.** The public Qwen3-VL mobile-agent prompt and action protocol were ported to AndroidWorld with Qwen3-VL-32B. On the frozen first seed it achieved 4/19 full successes.
 2. **A1 — simple Action Working Memory.** Six recent `observed / verified / pending` records were injected within each episode. It achieved 5/19 but increased steps from 329 to 603 and tokens from 1.27M to 3.46M.
-3. **A2-v1r1 — proposed verified-progress memory.** One compact progress state records the model's own screenshot-visible assertions, pending work, expected effect, and exact screenshot outcome. A separately logged guard blocks a third exact mapped tap/long-press/swipe only after two byte-identical no-change executions. A2 adds no model calls and is not yet a scored result.
+3. **A2-v1r1 — scored verified-progress compound arm.** It completed the 19-task suite at 0/19, with 705 calls and 3,170,413 tokens. It is retained as a negative comparison rather than an improvement over A0 or A1.
 
 The A2 guard is not claimed as memory intelligence. It only limits obvious repeated-action waste. All memory reads/writes and guard assessments/blocks/stops are recorded separately so the final trace analysis can attribute changes.
 

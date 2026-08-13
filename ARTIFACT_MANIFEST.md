@@ -1,6 +1,16 @@
 # A0–A2-v1r1 Audit Artifact Manifest
 
-## 2026-08-12 current entry points
+## 2026-08-13 current entry points
+
+- `HANDOFF_2026-08-13.md` - current verified status and vertical research direction.
+- `GPT_PRO_A1_VERTICAL_REFINEMENT_DESIGN_REQUEST_2026-08-13.md` - constrained
+  request for the next A1-derived prospective arm.
+- `evidence/diag6/A10V2_DIAGNOSTIC6_RESULT_2026-08-13.md` - compact, hash-bound
+  post-hoc A10-v2 six-task result; explicitly not a formal-arm repair.
+- `protocols/ENRICHED_MEMORY_DIAGNOSTIC6_PROTOCOL_2026-08-13.md` - immutable
+  post-hoc diagnostic protocol for A10-v2, A11, and A12.
+
+## 2026-08-12 historical entry points
 
 - `HANDOFF_2026-08-12.md` — current verified status and next execution.
 - `GPT_PRO_MEMORY_MECHANISM_DESIGN_REQUEST_2026-08-12.md` — constrained design
