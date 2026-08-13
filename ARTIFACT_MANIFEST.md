@@ -7,6 +7,8 @@
   request for the next A1-derived prospective arm.
 - `evidence/diag6/A10V2_DIAGNOSTIC6_RESULT_2026-08-13.md` - compact, hash-bound
   post-hoc A10-v2 six-task result; explicitly not a formal-arm repair.
+- `evidence/diag6/A11_A12_DIAGNOSTIC6_RESULTS_2026-08-13.md` - compact,
+  hash-bound post-hoc A11/A12 terminal results and read-causality audit.
 - `protocols/ENRICHED_MEMORY_DIAGNOSTIC6_PROTOCOL_2026-08-13.md` - immutable
   post-hoc diagnostic protocol for A10-v2, A11, and A12.
 
