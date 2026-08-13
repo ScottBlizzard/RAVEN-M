@@ -39,7 +39,7 @@
   },
   "formal_arm_status_repaired": false,
   "generation_calls": 0,
-  "implementation_commit": "9bd4c6589b1635c6a42f09863cda8ab676bed98b",
+  "implementation_commit": "ad1b3b3caea46569d873a8e33ea1c49743dbeebb",
   "manifest_sha256": "5d05ea4ac6de25a12f4378e26a53dff4872710554cbe83a4c84e503c41d0b6fc",
   "offline_opportunity_summary": {
     "a10v2_a6_read_active_task_count": 11,
@@ -56,19 +56,19 @@
   "source_sha256": {
     "implementation/configs/enriched_memory_diagnostic6_instances.json": "5d05ea4ac6de25a12f4378e26a53dff4872710554cbe83a4c84e503c41d0b6fc",
     "implementation/scripts/preflight_enriched_memory_diagnostic.py": "335860e4e26c636293388a798f6d89ccfc5e64cb0727b1c39668d4911284b916",
-    "implementation/scripts/qualify_enriched_memory_diagnostic_server.py": "caedd6e264fae9c26c8474ddc8f40eba72f03c6fcae0e5ba6b2e86cdf582c7ab",
+    "implementation/scripts/qualify_enriched_memory_diagnostic_server.py": "4514a8e4e5268fadf734acba9c0d3e88144e114836729cb49502b94cb41c0953",
     "implementation/scripts/run_enriched_memory_diagnostic.py": "29b15f5ce0f654e9486001fc33294153bcb12ff5cef0f0d30ab1bdea1fd9eb73",
     "implementation/scripts/run_official_qwen_mobile.py": "d0fe83c43674c0d7759a1dfa8a9296ec40675e17c3783fe7490b3ab21a01a774",
-    "implementation/scripts/start_enriched_memory_diagnostic_server.sh": "495503bd6a50df231a0a786a1de78a9d01a45e4ab85610a4bf975aba89c43541",
+    "implementation/scripts/start_enriched_memory_diagnostic_server.sh": "3c3873998fb3bfc7177f59e658537b6781838ca929f03214643e5813f72513ba",
     "implementation/src/raven_m/official_qwen_mobile/a10_v2_obligation_branch_frontier.py": "81ad07713a32f04029f8aabd26071e45b6f15ee8097d4bffdc201ca24c75961d",
     "implementation/src/raven_m/official_qwen_mobile/a11_confirmed_route_contraction.py": "19cb0a80b9cdd1fac8a857288dd4a7cebbb68dad299d6ea08f88f9473129c598",
     "implementation/src/raven_m/official_qwen_mobile/a12_minimal_action_divergence.py": "628491030e807e8c36d5300a91dc0817d52dbb6d6531400fe3b8a04e78d1bb6c",
     "implementation/src/raven_m/official_qwen_mobile/controller.py": "34ec9babe099a3f2ae614eb35440a944bcc4c129109281ee2e213f97774c3762",
-    "implementation/src/raven_m/official_qwen_mobile/enriched_diagnostic_contract.py": "b978e847eab9ce7e49062e8a03bfcaa18f9f8ea8c4142d2f1ab49f8b86738188",
+    "implementation/src/raven_m/official_qwen_mobile/enriched_diagnostic_contract.py": "9c627579fef8cad78a7830dedf09562845766eaf92b78e4d16c20896d3af2c15",
     "implementation/tests/official_qwen_mobile/test_a10v2_a11_shared_integration.py": "017a8b6c646d044bb312ebcf3a62baec0a9933f72a9fe0984dc1db2c86c43666",
     "implementation/tests/official_qwen_mobile/test_a12_controller_integration.py": "29f4bb00c7dab2b4cd3711244add74e5371270b25403149f1d6f03348376dba8",
-    "implementation/tests/official_qwen_mobile/test_enriched_memory_diagnostic.py": "45c986bcd55cad02ab02513249fa3762085296e446a401ea40e36824e616c1a0",
-    "protocols/ENRICHED_MEMORY_DIAGNOSTIC6_PROTOCOL_2026-08-13.md": "c9a9ca4229c24e66f46086365ed35b7d782466ac8d5fa925200dcd75850dbca4"
+    "implementation/tests/official_qwen_mobile/test_enriched_memory_diagnostic.py": "7fd1e854b6c29d4354c422f12195d77922d275ae325ac16d58b1ae8258eb0ce7",
+    "protocols/ENRICHED_MEMORY_DIAGNOSTIC6_PROTOCOL_2026-08-13.md": "863a8c44627ba01e1fbfe95a978d7d9058e97e5794605190a5e30bdf84d7f033"
   },
   "status": "pass",
   "task_order": [
