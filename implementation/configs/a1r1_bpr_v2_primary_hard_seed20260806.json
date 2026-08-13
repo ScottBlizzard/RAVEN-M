@@ -1,0 +1,14 @@
+{
+  "schema": "a1r1_bpr_v2_config_v1",
+  "arm": "primary",
+  "read_enabled": true,
+  "mechanism_id": "a1r1_bounded_pending_receipt_v2",
+  "experiment_id": "A1R1_BPRV2_QWEN3VL32B_AW_HARD_T20260806_G3407_V1",
+  "task_seed": 20260806,
+  "generation_seed": 3407,
+  "model_id": "Qwen/Qwen3-VL-32B-Instruct",
+  "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+  "task_count": 19,
+  "additional_model_calls": 0,
+  "transport_attempt_max": 1
+}

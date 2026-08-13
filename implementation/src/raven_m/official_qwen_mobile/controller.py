@@ -410,6 +410,7 @@ class OfficialQwenMobileController:
                 screenshot = episode_dir / str(before["screenshot"])
                 memory_read: dict[str, Any] | None = None
                 rendered_memory = ""
+                base_user_prompt = build_user_prompt(effective_goal, history)
                 if self.working_memory is not None:
                     # The memory receives only the same pixels available to the
                     # policy.  Raw pixels are needed by A5's deterministic
@@ -425,10 +426,45 @@ class OfficialQwenMobileController:
                         # prospective arm from being silently omitted merely
                         # because its frozen mechanism ID differs from A10-v1.
                         memory_read["exact_injected_text"] = rendered_memory
-                user_prompt = append_working_memory(
-                    build_user_prompt(effective_goal, history),
-                    rendered_memory,
-                )
+                    if memory_read is not None:
+                        memory_read["read_step"] = step_index
+                        memory_read["resident_history_sha256"] = sha256(
+                            json.dumps(
+                                history,
+                                ensure_ascii=False,
+                                sort_keys=False,
+                                separators=(",", ":"),
+                            ).encode("utf-8")
+                        ).hexdigest()
+                        memory_read["base_user_prompt_sha256"] = sha256(
+                            base_user_prompt.encode("utf-8")
+                        ).hexdigest()
+                try:
+                    user_prompt = append_working_memory(
+                        base_user_prompt,
+                        rendered_memory,
+                    )
+                except Exception as exc:
+                    ticket_id = (memory_read or {}).get("ticket_id")
+                    if ticket_id and hasattr(self.working_memory, "cancel_injection"):
+                        self.working_memory.cancel_injection(
+                            str(ticket_id), f"prompt_build_failure:{type(exc).__name__}"
+                        )
+                    raise
+                if memory_read is not None:
+                    memory_read["final_user_prompt_sha256"] = sha256(
+                        user_prompt.encode("utf-8")
+                    ).hexdigest()
+                    ticket_id = memory_read.get("ticket_id")
+                    if rendered_memory and ticket_id and hasattr(
+                        self.working_memory, "commit_injection"
+                    ):
+                        memory_read["injection_commit"] = (
+                            self.working_memory.commit_injection(
+                                str(ticket_id),
+                                memory_read["final_user_prompt_sha256"],
+                            )
+                        )
                 call = self.client.generate(
                     image_path=screenshot,
                     system_prompt=self.system_prompt,
@@ -668,9 +704,13 @@ class OfficialQwenMobileController:
                     committed_summary = self.working_memory.history_summary(
                         decision.action_summary
                     )
-                    attestation_applied = True
+                    attestation_applied = (
+                        committed_summary != decision.action_summary
+                    )
                     attestation_reason = (
                         "memory_prefix_stored_once_not_duplicated_in_action_history"
+                        if attestation_applied
+                        else None
                     )
                 if gate_decision and gate_decision.get("overridden"):
                     committed_summary = (

@@ -90,6 +90,13 @@ Rules:
 A1_WORKING_MEMORY_SYSTEM_PROMPT = OFFICIAL_SYSTEM_PROMPT + A1_WORKING_MEMORY_SUFFIX
 
 
+# A1-R1 BPR v2 remains a separate prospective identity. Importing the literal
+# from its mechanism module keeps one exact byte source without changing A1.
+from .a1r1_bpr_v2 import A1R1_BPR_V2_SUFFIX  # noqa: E402
+
+A1R1_BPR_V2_SYSTEM_PROMPT = OFFICIAL_SYSTEM_PROMPT + A1R1_BPR_V2_SUFFIX
+
+
 # A2 replaces A1's recency list with one compact, outcome-aware progress state.
 # The expected field makes the next screenshot comparison explicit without an
 # extra model call.  Controller-observed screen change is never called task

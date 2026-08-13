@@ -27,6 +27,7 @@ __all__ = [
     "EvidenceMaturedObligationBranchFrontierMemory",
     "ConfirmedRouteContractionECOBFMemory",
     "MinimalActionDivergenceMemory",
+    "BoundedPendingReceiptV2",
 ]
 
 
@@ -48,4 +49,8 @@ def __getattr__(name: str):
         from .a12_minimal_action_divergence import MinimalActionDivergenceMemory
 
         return MinimalActionDivergenceMemory
+    if name == "BoundedPendingReceiptV2":
+        from .a1r1_bpr_v2 import BoundedPendingReceiptV2
+
+        return BoundedPendingReceiptV2
     raise AttributeError(name)

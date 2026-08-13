@@ -60,6 +60,7 @@ from raven_m.official_qwen_mobile.protocol import (  # noqa: E402
     A3_CONACT_SYSTEM_PROMPT,
     A4_WORKFLOW_SYSTEM_PROMPT,
     A5_VISUAL_GRAPH_SYSTEM_PROMPT,
+    A1R1_BPR_V2_SYSTEM_PROMPT,
     EVIDENCE_QUALIFIED_PROGRESS_SYSTEM_PROMPT,
     OFFICIAL_SYSTEM_PROMPT,
     SOURCE_DOCUMENT_COVERAGE_SYSTEM_PROMPT,
@@ -159,6 +160,17 @@ A7_REMAINING_AFTER_GATE_TASKS = (
 # mechanism and contract modules, and makes it impossible to compose multiple
 # memories in one controller.
 DUAL_ARM_SPECS = {
+    "bprv2": {
+        "flag": "a1r1_bpr_v2_mode",
+        "label": "A1-R1 BPR-v2",
+        "memory_module": "raven_m.official_qwen_mobile.a1r1_bpr_v2",
+        "memory_class": "BoundedPendingReceiptV2",
+        "contract_module": "raven_m.official_qwen_mobile.a1r1_bpr_v2_contract",
+        "entry_key": "a1r1_valid_entries",
+        "checkpoint_schema": "a1r1_bpr_v2_primary_checkpoint_v1",
+        "result_key": "a1r1_bpr_v2_result",
+        "result_schema": "a1r1_bpr_v2_primary_result_v1",
+    },
     "a10v2": {
         "flag": "a10_v2_emobf",
         "label": "A10-v2",
@@ -294,6 +306,9 @@ def _load_dual_arm(arm: str) -> dict:
             "validate_receipt": contract.validate_launch_receipt,
         }
     )
+    if arm == "bprv2":
+        spec["completion_errors"] = contract.exact_completion_errors
+        spec["preservation_report"] = contract.preservation_report
     return spec
 
 
@@ -408,6 +423,60 @@ def _atomic_json(path: Path, value: dict) -> None:
         encoding="utf-8",
     )
     temporary.replace(path)
+
+
+def _append_bpr_checkpoint(suite_dir: Path, payload: dict) -> None:
+    """Persist the authoritative append-only BPR checkpoint and a mutable pointer."""
+    checkpoint_dir = suite_dir / "checkpoints"
+    checkpoint_dir.mkdir(parents=True, exist_ok=True)
+    existing = sorted(checkpoint_dir.glob("A1R1_BPR_V2_CHECKPOINT_*.json"))
+    ordinal = len(existing)
+    previous = _sha256(existing[-1]) if existing else None
+    authoritative = dict(payload)
+    authoritative.update(
+        {
+            "checkpoint_ordinal": ordinal,
+            "previous_checkpoint_file_sha256": previous,
+            "content_sha256": None,
+        }
+    )
+    authoritative["content_sha256"] = sha256(
+        json.dumps(
+            {key: value for key, value in authoritative.items() if key != "content_sha256"},
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()
+    path = checkpoint_dir / f"A1R1_BPR_V2_CHECKPOINT_{ordinal:04d}.json"
+    _atomic_json(path, authoritative)
+    pointer = {
+        "schema": "a1r1_bpr_v2_checkpoint_pointer_v1",
+        "latest_checkpoint": str(path.relative_to(suite_dir)).replace("\\", "/"),
+        "latest_checkpoint_file_sha256": _sha256(path),
+    }
+    _atomic_json(suite_dir / "checkpoint.json", pointer)
+
+
+def _load_bpr_checkpoint_pointer(suite_dir: Path) -> dict:
+    pointer = json.loads((suite_dir / "checkpoint.json").read_text(encoding="utf-8"))
+    if pointer.get("schema") != "a1r1_bpr_v2_checkpoint_pointer_v1":
+        raise RuntimeError("BPR-v2 checkpoint pointer schema mismatch")
+    path = suite_dir / str(pointer.get("latest_checkpoint") or "")
+    if not path.is_file() or _sha256(path) != pointer.get("latest_checkpoint_file_sha256"):
+        raise RuntimeError("BPR-v2 checkpoint pointer hash mismatch")
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    canonical = sha256(
+        json.dumps(
+            {key: value for key, value in payload.items() if key != "content_sha256"},
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()
+    if payload.get("content_sha256") != canonical:
+        raise RuntimeError("BPR-v2 checkpoint content hash mismatch")
+    return payload
 
 
 def _sha256(path: Path) -> str:
@@ -1034,6 +1103,26 @@ def main() -> None:
         help="Fresh A12 receipt bound only to its own preflight and process.",
     )
     parser.add_argument(
+        "--a1r1-bpr-v2-mode",
+        choices=("primary", "empty_read"),
+        help="Run the frozen A1-R1 BPR-v2 primary or five-task empty-read arm.",
+    )
+    parser.add_argument(
+        "--a1r1-bpr-v2-preflight-report",
+        type=Path,
+        default=REPOSITORY_ROOT / "evidence/a1r1_v2/A1R1_BPR_V2_ZERO_GENERATION_PREFLIGHT.json",
+    )
+    parser.add_argument(
+        "--a1r1-bpr-v2-launch-receipt",
+        type=Path,
+        help="Fresh arm-specific BPR-v2 live receipt.",
+    )
+    parser.add_argument(
+        "--a1r1-bpr-v2-primary-result",
+        type=Path,
+        help="Immutable complete primary result required before empty-read generation.",
+    )
+    parser.add_argument(
         "--enriched-memory-diagnostic",
         choices=diag6_contract.ARM_ORDER,
         help=(
@@ -1268,6 +1357,7 @@ def main() -> None:
             args.a10_v2_emobf,
             args.a11_crc_ecobf,
             args.a12_madm,
+            args.a1r1_bpr_v2_mode,
             args.enriched_memory_diagnostic,
         )
     )
@@ -1277,7 +1367,7 @@ def main() -> None:
             "--evidence-qualified-progress, and --source-document-coverage "
             "--source-document-coverage-gate, --a1-working-memory, and "
             "--a2-verified-progress-memory, --a345-arm, --a678-arm, --a10-ecobf, "
-            "--a10-v2-emobf, --a11-crc-ecobf, --a12-madm, and "
+            "--a10-v2-emobf, --a11-crc-ecobf, --a12-madm, --a1r1-bpr-v2-mode, and "
             "--enriched-memory-diagnostic are mutually exclusive"
         )
     held_out_eligible = not bool(args.diagnostic) and not bool(
@@ -1294,12 +1384,31 @@ def main() -> None:
                 ("a10v2", args.a10_v2_emobf),
                 ("a11", args.a11_crc_ecobf),
                 ("a12", args.a12_madm),
+                ("bprv2", args.a1r1_bpr_v2_mode),
             )
             if selected
         ),
         None,
     )
     dual_arm = _load_dual_arm(dual_arm_name) if dual_arm_name else None
+    bpr_mode = str(args.a1r1_bpr_v2_mode or "") or None
+    if dual_arm_name == "bprv2":
+        assert dual_arm is not None and bpr_mode is not None
+        bpr_contract = dual_arm["contract"]
+        is_primary = bpr_mode == "primary"
+        dual_arm.update(
+            {
+                "arm": f"bprv2_{bpr_mode}",
+                "label": f"A1-R1 BPR-v2 {bpr_mode}",
+                "experiment_id": bpr_contract.PRIMARY_EXPERIMENT_ID if is_primary else bpr_contract.EMPTY_EXPERIMENT_ID,
+                "config_path": bpr_contract.PRIMARY_CONFIG_PATH if is_primary else bpr_contract.EMPTY_CONFIG_PATH,
+                "checkpoint_schema": bpr_contract.PRIMARY_CHECKPOINT_SCHEMA if is_primary else bpr_contract.EMPTY_CHECKPOINT_SCHEMA,
+                "result_schema": bpr_contract.PRIMARY_RESULT_SCHEMA if is_primary else bpr_contract.EMPTY_RESULT_SCHEMA,
+                "result_key": "a1r1_bpr_v2_primary_result" if is_primary else "a1r1_bpr_v2_empty_read_result",
+                "read_enabled": is_primary,
+                "expected_count": 19 if is_primary else 5,
+            }
+        )
     dual_memory_arm = dual_arm is not None
     dual_scored_arm = dual_memory_arm and enriched_diag_arm is None
     dual_preflight_path = (
@@ -1311,6 +1420,8 @@ def main() -> None:
         if dual_arm_name == "a11"
         else args.a12_preflight_report
         if dual_arm_name == "a12"
+        else args.a1r1_bpr_v2_preflight_report
+        if dual_arm_name == "bprv2"
         else None
     )
     dual_receipt_path = (
@@ -1322,6 +1433,8 @@ def main() -> None:
         if dual_arm_name == "a11"
         else args.a12_launch_receipt
         if dual_arm_name == "a12"
+        else args.a1r1_bpr_v2_launch_receipt
+        if dual_arm_name == "bprv2"
         else None
     )
     dual_preflight: dict | None = None
@@ -1335,7 +1448,7 @@ def main() -> None:
         (args.a678_arm in {"a8v2", "a9"} and not a89_four_task_diagnostic)
         or a10_scored_arm
         or dual_scored_arm
-    )
+    ) and not (dual_arm_name == "bprv2" and bpr_mode == "empty_read")
     held_out_ineligible_reason = args.held_out_ineligible_reason
     if a678_scored_arm or a10_scored_arm or dual_scored_arm:
         # This seed and its A0/A1/A2/A3-A5 outcomes have already been inspected.
@@ -1386,12 +1499,31 @@ def main() -> None:
                     f"{dual_arm['label']} scored generation requires its own fresh live receipt"
                 )
             try:
+                receipt_kwargs = {"preflight_path": dual_preflight_path.resolve()}
+                if dual_arm_name == "bprv2":
+                    receipt_kwargs.update(
+                        expected_read_enabled=dual_arm["read_enabled"],
+                        expected_experiment_id=dual_arm["experiment_id"],
+                    )
                 dual_launch = dual_arm["validate_receipt"](
-                    dual_receipt_path.resolve(),
-                    preflight_path=dual_preflight_path.resolve(),
+                    dual_receipt_path.resolve(), **receipt_kwargs
                 )
             except Exception as exc:
                 parser.error(str(exc))
+            if dual_arm_name == "bprv2" and bpr_mode == "empty_read":
+                if args.a1r1_bpr_v2_primary_result is None or not args.a1r1_bpr_v2_primary_result.is_file():
+                    parser.error("BPR-v2 empty-read requires the immutable complete primary aggregate")
+                primary_aggregate = json.loads(
+                    args.a1r1_bpr_v2_primary_result.read_text(encoding="utf-8")
+                )
+                primary_result = primary_aggregate.get("a1r1_bpr_v2_primary_result") or {}
+                if (
+                    primary_result.get("schema") != dual_arm["contract"].PRIMARY_RESULT_SCHEMA
+                    or primary_result.get("completion_status") != "COMPLETE_19"
+                    or primary_result.get("valid_episode_count") != 19
+                    or primary_result.get("mechanism_id") != dual_arm["mechanism_id"]
+                ):
+                    parser.error("BPR-v2 primary aggregate is not an immutable complete 19-task result")
         elif a10_scored_arm:
             if not args.a10_preflight_report.is_file():
                 parser.error(f"A10 preflight is missing: {args.a10_preflight_report}")
@@ -1589,6 +1721,17 @@ def main() -> None:
                 raise RuntimeError(f"A3/A4/A5 gate tasks missing from manifest: {missing_gate}")
             remaining = [item for item in specs if str(item["task_class"]) not in A345_GATE_TASKS]
             specs = [by_name[name] for name in A345_GATE_TASKS] + remaining
+        elif dual_arm_name == "bprv2":
+            by_name = {str(item["task_class"]): item for item in specs}
+            missing_gate = sorted(set(dual_arm["contract"].GATE5_TASKS) - set(by_name))
+            if missing_gate:
+                raise RuntimeError(f"BPR-v2 five-task gate missing from manifest: {missing_gate}")
+            remaining = [
+                item for item in specs
+                if str(item["task_class"]) not in dual_arm["contract"].GATE5_TASKS
+            ]
+            gate5 = [by_name[name] for name in dual_arm["contract"].GATE5_TASKS]
+            specs = gate5 + remaining if bpr_mode == "primary" else gate5
         elif prospective_gate_arm:
             by_name = {str(item["task_class"]): item for item in specs}
             missing_gate = sorted(set(A0_PRESERVATION_TASKS) - set(by_name))
@@ -1867,8 +2010,14 @@ def main() -> None:
                         "transformers": dual_launch.get("transformers_version"),
                     },
                 },
-                "task_order": "blocking_A0_4_task_gate_then_frozen_manifest_remainder",
-                "reward_fail_fast": True,
+                "task_order": (
+                    "blocking_A0_4_then_Recipe_1_then_frozen_manifest_remainder"
+                    if dual_arm_name == "bprv2" and bpr_mode == "primary"
+                    else "fixed_five_task_non_fail_fast_after_primary_complete"
+                    if dual_arm_name == "bprv2"
+                    else "blocking_A0_4_task_gate_then_frozen_manifest_remainder"
+                ),
+                "reward_fail_fast": not (dual_arm_name == "bprv2" and bpr_mode == "empty_read"),
                 "scientific_failure_rerun": False,
                 "A0_preservation_tasks": list(A0_PRESERVATION_TASKS),
                 "A0_preservation_required_for_continuation": True,
@@ -1881,6 +2030,21 @@ def main() -> None:
                 "forced_termination": False,
             }
         )
+        if dual_arm_name == "bprv2":
+            run_signature.update(
+                {
+                    "bpr_mode": bpr_mode,
+                    "read_enabled": dual_arm["read_enabled"],
+                    "expected_valid_episode_count": dual_arm["expected_count"],
+                    "gate5_tasks": list(dual_arm["contract"].GATE5_TASKS),
+                    "primary_result_sha256": (
+                        _sha256(args.a1r1_bpr_v2_primary_result)
+                        if bpr_mode == "empty_read" else None
+                    ),
+                    "ordinary_history_deduplicated": True,
+                    "response_prefix_required": True,
+                }
+            )
     if a10_scored_arm:
         run_signature.update(
             {
@@ -2014,8 +2178,10 @@ def main() -> None:
                 run_signature_sha256=run_signature_sha256,
             )
         else:
-            checkpoint = json.loads(
-                (suite_dir / "checkpoint.json").read_text(encoding="utf-8")
+            checkpoint = (
+                _load_bpr_checkpoint_pointer(suite_dir)
+                if dual_arm_name == "bprv2"
+                else json.loads((suite_dir / "checkpoint.json").read_text(encoding="utf-8"))
             )
             if a345_scored_arm and checkpoint.get("status") in A345_TERMINAL_CHECKPOINT_STATUSES:
                 raise RuntimeError("A3/A4/A5 scientific or activation gate failure is terminal and cannot be resumed")
@@ -2050,11 +2216,11 @@ def main() -> None:
                 invalid_attempts = list(checkpoint.get("invalid_attempts") or [])
             elif dual_scored_arm:
                 if (
-                    dual_arm_name == "a12"
+                    dual_arm_name in {"a12", "bprv2"}
                     and checkpoint.get("status") == "infrastructure_incomplete"
                 ):
                     raise RuntimeError(
-                        "A12 exceeded the frozen infrastructure-invalid attempt limit; resume is forbidden"
+                        f"{dual_arm['label']} exceeded the frozen infrastructure-invalid attempt limit; resume is forbidden"
                     )
                 summaries, dual_valid_entries, invalid_attempts = _load_dual_arm_checkpoint(
                     suite_dir=suite_dir,
@@ -2184,6 +2350,9 @@ def main() -> None:
                         "capability_gate": a7_gate_report(summaries),
                     }
                 )
+            elif dual_arm_name == "bprv2":
+                payload["capability_gate"] = dual_arm["preservation_report"](summaries)
+                payload["gate5"] = dual_arm["contract"].gate5_report(summaries)
             elif prospective_gate_arm:
                 payload["capability_gate"] = (
                     dual_arm["preservation_report"](summaries)
@@ -2199,10 +2368,10 @@ def main() -> None:
                         "four_task_diagnostic": a89_diagnostic_report(summaries),
                     }
                 )
-        _atomic_json(
-            suite_dir / "checkpoint.json",
-            payload,
-        )
+        if dual_arm_name == "bprv2":
+            _append_bpr_checkpoint(suite_dir, payload)
+        else:
+            _atomic_json(suite_dir / "checkpoint.json", payload)
 
     checkpoint("running")
     client = VLLMClient(
@@ -2249,7 +2418,19 @@ def main() -> None:
             episode_seed = int(spec["task_seed"])
             if (task_name, episode_seed) in completed_keys:
                 continue
-            if (
+            if dual_arm_name == "bprv2" and bpr_mode == "primary" and task_name not in A0_PRESERVATION_TASKS:
+                gate = dual_arm["preservation_report"](summaries)
+                if not _gate_passed(gate):
+                    checkpoint("stopped_capability_gate_incomplete")
+                    raise RuntimeError(
+                        "BPR-v2 Recipe and remaining tasks are locked until the A0 gate is 4/4"
+                    )
+                if task_name != dual_arm["contract"].RECIPE_TASK:
+                    gate5 = dual_arm["contract"].gate5_report(summaries)
+                    if not _gate_passed(gate5):
+                        checkpoint("stopped_gate5_incomplete")
+                        raise RuntimeError("BPR-v2 remaining fourteen tasks are locked until Gate5 is 5/5")
+            elif (
                 (a7_gated_continuation or prospective_gate_arm)
                 and task_name not in A0_PRESERVATION_TASKS
             ):
@@ -2327,7 +2508,12 @@ def main() -> None:
             elif dual_memory_arm:
                 # A fresh instance per episode; state is never shared across
                 # tasks and prospective arms can never be composed.
-                a678_memory = dual_arm["memory_class_object"]()
+                if dual_arm_name == "bprv2":
+                    a678_memory = dual_arm["memory_class_object"](
+                        read_enabled=dual_arm["read_enabled"]
+                    )
+                else:
+                    a678_memory = dual_arm["memory_class_object"]()
             controller = OfficialQwenMobileController(
                 client,
                 max_steps=effective_limit,
@@ -2405,7 +2591,9 @@ def main() -> None:
                     A3_CONACT_SYSTEM_PROMPT if args.a345_arm == "a3" else (
                     A4_WORKFLOW_SYSTEM_PROMPT if args.a345_arm == "a4" else (
                     A5_VISUAL_GRAPH_SYSTEM_PROMPT if args.a345_arm == "a5" else (
-                    A1_WORKING_MEMORY_SYSTEM_PROMPT
+                    A1R1_BPR_V2_SYSTEM_PROMPT
+                    if dual_arm_name == "bprv2"
+                    else A1_WORKING_MEMORY_SYSTEM_PROMPT
                     if args.a1_working_memory
                     else (
                         SOURCE_DOCUMENT_COVERAGE_SYSTEM_PROMPT
@@ -2511,9 +2699,13 @@ def main() -> None:
                     )
                     for attempt in invalid_attempts
                 )
+                bpr_arm_invalid_count = sum(
+                    int(attempt.get("reason") == "controller_or_lifecycle_invalid")
+                    for attempt in invalid_attempts
+                )
                 attempt_limit_exceeded = bool(
-                    (dual_arm_name == "a12" or enriched_diag_arm)
-                    and same_task_invalid_count > 2
+                    ((dual_arm_name == "bprv2" and bpr_arm_invalid_count > 2)
+                    or ((dual_arm_name == "a12" or enriched_diag_arm) and same_task_invalid_count > 2))
                 )
                 checkpoint(
                     "infrastructure_incomplete"
@@ -2522,7 +2714,7 @@ def main() -> None:
                 )
                 if attempt_limit_exceeded:
                     raise RuntimeError(
-                        f"{('DIAG6 ' + str(enriched_diag_arm)) if enriched_diag_arm else 'A12'} "
+                        f"{('DIAG6 ' + str(enriched_diag_arm)) if enriched_diag_arm else dual_arm['label']} "
                         f"task {task_name} produced a third infrastructure-invalid "
                         "attempt; the suite is terminally infrastructure-incomplete"
                     )
@@ -2616,6 +2808,16 @@ def main() -> None:
                     f"{dual_arm['label'] if dual_scored_arm else 'A10' if a10_scored_arm else str(args.a678_arm).upper()} capability-preservation gate failed on "
                     f"{task_name}; scientific failures are terminal and cannot be rerun"
                 )
+            if (
+                dual_arm_name == "bprv2"
+                and bpr_mode == "primary"
+                and task_name == dual_arm["contract"].RECIPE_TASK
+                and not bool(result.get("success"))
+            ):
+                checkpoint("stopped_gate5_failure")
+                raise RuntimeError(
+                    "BPR-v2 Recipe gain-preservation gate failed; scientific failure is terminal"
+                )
             checkpoint("running")
     except BaseException as exc:
         active_exception = exc
@@ -2633,7 +2835,7 @@ def main() -> None:
             )
             checkpoint(
                 "infrastructure_incomplete"
-                if dual_arm_name == "a12"
+                if dual_arm_name in {"a12", "bprv2"}
                 else "stopped_invalid_episode"
             )
             if active_exception is None:
@@ -2706,20 +2908,29 @@ def main() -> None:
             )
     if dual_scored_arm:
         gate = dual_arm["preservation_report"](summaries)
-        if not _gate_passed(gate):
-            checkpoint("stopped_capability_gate_incomplete")
-            raise RuntimeError(
-                f"{dual_arm['label']} cannot aggregate before the blocking 4/4 preservation gate passes"
-            )
-        closure_errors = dual_arm["completion_errors"](
-            summaries=summaries,
-            invalid_attempts=invalid_attempts,
-            lifecycle_errors=suite_lifecycle_errors,
-        )
+        if dual_arm_name != "bprv2" or bpr_mode == "primary":
+            if not _gate_passed(gate):
+                checkpoint("stopped_capability_gate_incomplete")
+                raise RuntimeError(
+                    f"{dual_arm['label']} cannot aggregate before the blocking 4/4 preservation gate passes"
+                )
+        if dual_arm_name == "bprv2" and bpr_mode == "primary":
+            gate5 = dual_arm["contract"].gate5_report(summaries)
+            if not _gate_passed(gate5):
+                checkpoint("stopped_gate5_incomplete")
+                raise RuntimeError("BPR-v2 primary cannot aggregate before Gate5 is 5/5")
+        completion_kwargs = {
+            "summaries": summaries,
+            "invalid_attempts": invalid_attempts,
+            "lifecycle_errors": suite_lifecycle_errors,
+        }
+        if dual_arm_name == "bprv2":
+            completion_kwargs["expected_count"] = dual_arm["expected_count"]
+        closure_errors = dual_arm["completion_errors"](**completion_kwargs)
         if closure_errors:
             checkpoint(
                 "infrastructure_incomplete"
-                if dual_arm_name == "a12"
+                if dual_arm_name in {"a12", "bprv2"}
                 else "stopped_incomplete_or_invalid"
             )
             raise RuntimeError(
@@ -2998,7 +3209,58 @@ def main() -> None:
             ],
             "errors": [],
         }
-    if a10_scored_arm or dual_scored_arm:
+    if dual_arm_name == "bprv2":
+        bpr_counters: dict[str, int] = {}
+        for summary in summaries:
+            for key, value in ((summary.get("memory_mechanism") or {}).get("counters") or {}).items():
+                if isinstance(value, int):
+                    bpr_counters[key] = bpr_counters.get(key, 0) + value
+        bpr_result = {
+            "schema": dual_arm["result_schema"],
+            "arm": bpr_mode,
+            "mechanism_id": dual_arm["mechanism_id"],
+            "experiment_id": dual_arm["experiment_id"],
+            "implementation_commit": dual_preflight.get("implementation_commit"),
+            "source_freeze_content_sha256": dual_preflight.get("source_freeze_content_sha256"),
+            "preflight_file_sha256": _sha256(dual_preflight_path),
+            "live_receipt_file_sha256": _sha256(dual_receipt_path),
+            "primary_result_sha256": (
+                _sha256(args.a1r1_bpr_v2_primary_result) if bpr_mode == "empty_read" else None
+            ),
+            "completion_status": "COMPLETE_19" if bpr_mode == "primary" else "COMPLETE_5_EMPTY_READ",
+            "valid_episode_count": len(summaries),
+            "invalid_attempt_count": len(invalid_attempts),
+            "success_count": aggregate["success_count"],
+            "reward_sum": sum(float(item.get("evaluator_reward") or 0) for item in summaries),
+            "gate4": dual_arm["preservation_report"](summaries),
+            "gate5": (
+                dual_arm["contract"].gate5_report(summaries)
+                if bpr_mode == "primary" else None
+            ),
+            "accuracy_verdict": (
+                "PASS" if bpr_mode == "primary" and aggregate["success_count"] >= 6
+                else "FAIL" if bpr_mode == "primary" else "NOT_APPLICABLE_ABLATION"
+            ),
+            "cost_verdict": (
+                "PASS" if bpr_mode == "primary"
+                and aggregate["total_model_calls"] < 603
+                and int(aggregate["token_usage"]["total_tokens"]) < 3464267
+                and float(aggregate["exact_valid_elapsed_seconds"]) < 14595.492
+                else "FAIL" if bpr_mode == "primary" else "NOT_APPLICABLE_ABLATION"
+            ),
+            "mechanism_verdict": (
+                "MECHANISM_PENDING_ABLATION" if bpr_mode == "primary" else "PENDING_CAUSAL_ADJUDICATION"
+            ),
+            "counters": bpr_counters,
+            "ordered_tasks": [item["task_name"] for item in summaries],
+            "episode_json_sha256s": {
+                item["episode_id"]: _sha256(suite_dir / "episodes" / item["episode_id"] / "episode.json")
+                for item in summaries
+            },
+            "errors": [],
+        }
+        aggregate[dual_arm["result_key"]] = bpr_result
+    if a10_scored_arm or (dual_scored_arm and dual_arm_name != "bprv2"):
         result_label = dual_arm["label"] if dual_scored_arm else "A10"
         result_prefix = result_label.upper()
         result_key = dual_arm["result_key"] if dual_scored_arm else "a10_result"
