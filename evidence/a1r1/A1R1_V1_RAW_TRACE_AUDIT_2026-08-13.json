@@ -1,0 +1,96 @@
+{
+  "schema": "a1r1_v1_raw_trace_audit_v1",
+  "audit_date": "2026-08-13",
+  "generation_calls": 0,
+  "design": {
+    "path_outside_repository_at_audit_time": "D:/ZJU/Summer_Camp/GPT_PRO_A1_VERTICAL_MINIMAL_MEMORY_DESIGN_2026-08-13.md",
+    "sha256": "e248b8dbdeaaf49fd3d49dea6fd7270ea8f57443df8e080203c487942f2cfcbd",
+    "bytes": 69820,
+    "mechanism_id": "a1r1_bounded_pending_receipt_v1"
+  },
+  "source": {
+    "suite_id": "official_qwen_20260810T122419_26573d7c",
+    "aggregate_sha256": "7a4ebaad754802fcf3350e83ca13032a16de609f2904c96c7b5ecd0efc006f51",
+    "ledger_aggregate_sha256": "7a4ebaad754802fcf3350e83ca13032a16de609f2904c96c7b5ecd0efc006f51",
+    "episode_directories": 19,
+    "episode_json_files": 19,
+    "episode_json_hash_mismatches": 0,
+    "png_files": 1199,
+    "all_files": 2440,
+    "all_bytes": 381429354,
+    "raw_tree_committed": false
+  },
+  "historical_pending_distribution": {
+    "definition": "non-none pending field extracted from valid A1 MEMORY prefixes",
+    "count": 514,
+    "within_v1_48_chars_and_72_utf8_bytes": 365,
+    "coverage_percent": 71.011673,
+    "chars": {
+      "p50": 45,
+      "p75": 57,
+      "p90": 100,
+      "p95": 100,
+      "p99": 100,
+      "max": 122
+    },
+    "utf8_bytes": {
+      "p95": 100,
+      "max": 122
+    }
+  },
+  "a1_success_tail_pending": [
+    {
+      "task": "ExpenseDeleteMultiple2",
+      "last_step": 17,
+      "pending": "confirm deletion of Bike Repairs",
+      "chars": 32,
+      "utf8_bytes": 32
+    },
+    {
+      "task": "RecipeDeleteMultipleRecipesWithConstraint",
+      "last_step": 24,
+      "pending": "confirm deletion",
+      "chars": 16,
+      "utf8_bytes": 16,
+      "next_call_step": 25,
+      "next_call_terminal_status": "success",
+      "episode_reward": 1.0
+    },
+    {
+      "task": "RetroSavePlaylist",
+      "last_step": 26,
+      "pending": "save playlist to Downloads directory",
+      "chars": 36,
+      "utf8_bytes": 36
+    },
+    {
+      "task": "SimpleCalendarAddOneEvent",
+      "last_step": 33,
+      "pending": "dismiss disclaimer and save the event",
+      "chars": 37,
+      "utf8_bytes": 37
+    },
+    {
+      "task": "SportsTrackerTotalDurationForCategoryThisWeek",
+      "last_step": 6,
+      "pending": "find weekly summary of mountain biking activities",
+      "chars": 49,
+      "utf8_bytes": 49
+    }
+  ],
+  "v1_gate_audit": {
+    "R1_source_materialization": "pass_for_episode_json_and_aggregate",
+    "R3_p95_fits_48_chars_72_bytes": "fail",
+    "R4_recipe_gain_read_within_source_plus_1_to_4": "supported_at_source_plus_1",
+    "R5_episode_cap_not_exhausted_before_recipe_key_receipt": "not_identifiable_from_a1_outputs_without_counterfactual_bpr_write_mapping",
+    "v1_verdict": "A1R1_OFFLINE_QUALIFICATION_FAIL",
+    "live_generation_authorized": false
+  },
+  "interpretation_boundary": {
+    "preserve_core_design": true,
+    "same_mechanism_id_may_be_silently_retuned": false,
+    "raw_a1_pending_is_equivalent_to_future_bpr_op_proof": false,
+    "historical_replay_proves_future_effectiveness": false,
+    "required_next_action": "freeze_a_new_v2_design_with_revised_evidence-valid_gates"
+  }
+}

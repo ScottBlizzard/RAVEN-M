@@ -11,6 +11,12 @@
   hash-bound post-hoc A11/A12 terminal results and read-causality audit.
 - `protocols/ENRICHED_MEMORY_DIAGNOSTIC6_PROTOCOL_2026-08-13.md` - immutable
   post-hoc diagnostic protocol for A10-v2, A11, and A12.
+- `evidence/a1r1/A1R1_V1_RAW_TRACE_AUDIT_2026-08-13.json` - zero-generation,
+  hash-bound raw A1 distribution audit that deterministically rejects BPR v1 R3.
+- `evidence/a1r1/A1R1_V1_DESIGN_AUDIT_2026-08-13.md` - retained BPR core, v1
+  failure boundary, and required narrow revision.
+- `GPT_PRO_A1_VERTICAL_BPR_V2_REVISION_REQUEST_2026-08-13.md` - constrained
+  request for a newly identified, evidence-valid BPR v2 design.
 
 ## 2026-08-12 historical entry points
 
