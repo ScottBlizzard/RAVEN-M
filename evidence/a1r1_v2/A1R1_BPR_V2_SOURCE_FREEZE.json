@@ -1,5 +1,5 @@
 {
-  "content_sha256": "3865275fb64ded6356692d68224a14758e8668379afddc926f8757262a9d277c",
+  "content_sha256": "6793ccb54903a0a230c49889b70af1ba367e47f9a0b90d287a4926ed7f56054f",
   "design_sha256": "e6ff3a975484502e2b7368dd3f9775956957a613e3cf4a355e4e7e1c8d1ffc07",
   "files": {
     "GPT_PRO_A1_VERTICAL_BPR_V2_DESIGN_2026-08-13.md": "e6ff3a975484502e2b7368dd3f9775956957a613e3cf4a355e4e7e1c8d1ffc07",
@@ -14,11 +14,11 @@
     "implementation/configs/a1r1_bpr_v2_primary_hard_seed20260806.json": "06de1a9be0ab17dee5dd268b565a06d07d5cb6f2637e181557fa9d84d68928d1",
     "implementation/configs/androidworld_hard_v2_instances.json": "c1d718e9d380e443d12d2c29ab2182ae801a3befc53881b864cd830f2ad0440a",
     "implementation/scripts/preflight_a1r1_bpr_v2.py": "484a7a6d73a4e96e2e6c5a585d9d62d2617ff63e0a116c1d3a64c91f8639fea1",
-    "implementation/scripts/qualify_a1r1_bpr_v2_server.py": "64f82383964d49336a88612347dc85b438489d4d6ff136a9d70672a858348e43",
+    "implementation/scripts/qualify_a1r1_bpr_v2_server.py": "9c661191357f8ad2e1b3c82db88a7196328deb3323d68191c671cba3b24faf87",
     "implementation/scripts/replay_a1r1_bpr_v2_offline.py": "b60d73410d44675addd148ccd8200ce538b4124ceff2059cd0de9d2deb5ca370",
     "implementation/scripts/run_a1r1_bpr_v2.py": "346a94488f3403e8967b777e2b60fa4b5b88abc0ad12be43f4213b2e66663aed",
     "implementation/scripts/run_official_qwen_mobile.py": "2b77f9dda0998531b2e49443d9e29aa9daa810130bd8bc78c10c425211665bf6",
-    "implementation/scripts/start_a1r1_bpr_v2_server.sh": "a7e7aa54341da09229cf695d6397689126505ce596f0a38f992eeabc61ff3321",
+    "implementation/scripts/start_a1r1_bpr_v2_server.sh": "35e2b14138ab7c1856da715f858595228605f90a14959ea512cd5578ff8e4dce",
     "implementation/src/raven_m/env/androidworld_adapter.py": "ad4ecbee9430326ca7380334c49372911a1c6b1c217ee12bb3714d2fb1219c33",
     "implementation/src/raven_m/models/vllm_client.py": "7e590c410850909b46fa49e9bc267c23478f60c5f560ba53a7901d095c96c367",
     "implementation/src/raven_m/multi_framework_benchmark/task_instances.py": "fd0772a3ba9b973911dfbb055b25c8dab6e34d0fa640cf6ab4d7b540595f05be",
@@ -34,7 +34,7 @@
     "implementation/tests/official_qwen_mobile/test_a1r1_bpr_v2_offline_replay.py": "9e94aa97649f449426199be78d147d812b22c2195bf65b5ded5e757105bb29c7",
     "protocols/A1R1_BPR_V2_IMPLEMENTATION_BINDING_2026-08-14.md": "64459ec460d2e65492e3b8d56a1d68bcf0d7d51f266282522aab7b85be6c89f4"
   },
-  "implementation_commit": "36b9d0afb7ca7a33aa6a491ad47993646fac3240",
+  "implementation_commit": "75a52684a0f46eabef856271dce13d0f2e59ae88",
   "normative_bundle_sha256": "61adeb079ac1b0ff286c5dff5e15ef258f3465ccbf9a888e161569d0e547fcb4",
   "schema": "a1r1_bpr_v2_source_freeze_v1"
 }
