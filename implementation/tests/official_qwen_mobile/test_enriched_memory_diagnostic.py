@@ -112,6 +112,9 @@ def test_preflight_is_fail_closed_and_cannot_repair_formal_arms(
 def test_receipt_binds_exact_preflight_and_model(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
+    # This unit test exercises the immutable receipt fields only. Live POSIX
+    # process binding is covered by qualification and deployment validation.
+    monkeypatch.setattr(contract.os, "name", "nt")
     preflight_path = tmp_path / "preflight.json"
     preflight_path.write_text("{}", encoding="utf-8")
     preflight = {"implementation_commit": "c" * 40}
