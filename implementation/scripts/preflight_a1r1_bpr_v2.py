@@ -26,7 +26,8 @@ from replay_a1r1_bpr_v2_offline import reconstruct  # noqa: E402
 
 def write_json(path: Path, value: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(value, indent=2, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
+    with path.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(json.dumps(value, indent=2, ensure_ascii=False, sort_keys=True) + "\n")
 
 
 def runtime_canary() -> dict:

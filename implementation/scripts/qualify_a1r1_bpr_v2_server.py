@@ -69,7 +69,8 @@ def main() -> int:
     }
     receipt = {**payload, "content_sha256": contract.content_sha256(payload)}
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(receipt, indent=2, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
+    with args.output.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(json.dumps(receipt, indent=2, ensure_ascii=False, sort_keys=True) + "\n")
     contract.validate_launch_receipt(
         args.output, expected_read_enabled=read_enabled, expected_experiment_id=experiment
     )

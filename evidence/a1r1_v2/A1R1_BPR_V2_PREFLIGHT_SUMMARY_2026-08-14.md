@@ -5,7 +5,8 @@ Date: 2026-08-14 (Asia/Hong_Kong)
 Status: **PASS; live generation authorized only after a fresh arm-specific
 server receipt is produced.**
 
-- frozen implementation commit: `cbbca60d656e1ac16a892e4977696ec85442413b`
+- frozen implementation commit: recorded exactly in the source-freeze and
+  zero-generation preflight artifacts
 - design SHA-256: `e6ff3a975484502e2b7368dd3f9775956957a613e3cf4a355e4e7e1c8d1ffc07`
 - formal offline replay: `PASS`, `generation_calls=0`
 - R3 reconstruction: 511/514 legacy non-none pending records satisfy both

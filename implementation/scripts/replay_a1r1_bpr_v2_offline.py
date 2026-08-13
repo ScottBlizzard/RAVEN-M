@@ -140,7 +140,8 @@ def main() -> int:
     args = parser.parse_args()
     report = reconstruct(args.source_suite.resolve())
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(report, indent=2, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
+    with args.output.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(json.dumps(report, indent=2, ensure_ascii=False, sort_keys=True) + "\n")
     print(json.dumps({"output": str(args.output), "status": report["status"], "R3": report["R3"]}, indent=2))
     return 0 if report["status"] == "PASS" else 1
 
