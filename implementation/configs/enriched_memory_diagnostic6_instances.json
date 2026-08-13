@@ -1,0 +1,57 @@
+{
+  "manifest_id": "androidworld_hard_enriched_memory_diagnostic6_seed20260806_v1",
+  "protocol_id": "ENRICHED_MEMORY_DIAGNOSTIC6_V1",
+  "source_manifest": "implementation/configs/androidworld_hard_v2_instances.json",
+  "selection_rule": "post_hoc_common_memory_opportunity_in_a10v2_a11_a12_offline_evidence",
+  "held_out_eligible": false,
+  "instances": [
+    {
+      "goal_hash": "7c744894d0ab2c8a404402b3313f2df7d8ad031f9c00ca52d5165d6f6cbe19d9",
+      "native_max_steps": 120,
+      "task_class": "OsmAndTrack",
+      "task_id": "H09",
+      "task_params_hash": "7311b605a9bb160833e05ae8a697547d9f34975efa6d3954179a946efe2f1877",
+      "task_seed": 20260806
+    },
+    {
+      "goal_hash": "91acfd100d02748127379ca6ba9e7780bef9178a05d1a5fae68b65d4bb8cdfd5",
+      "native_max_steps": 60,
+      "task_class": "RecipeAddMultipleRecipesFromImage",
+      "task_id": "H10",
+      "task_params_hash": "502c06fe5ba2aac44117d665aa91b586c366ea06cfa97d1969e6e2c71ef57959",
+      "task_seed": 20260806
+    },
+    {
+      "goal_hash": "baf52bb034f0deb6093a2cc267df77c12db96bfbf511fe6fd1b9f40608865154",
+      "native_max_steps": 60,
+      "task_class": "RecipeAddMultipleRecipesFromMarkor",
+      "task_id": "H11",
+      "task_params_hash": "502c06fe5ba2aac44117d665aa91b586c366ea06cfa97d1969e6e2c71ef57959",
+      "task_seed": 20260806
+    },
+    {
+      "goal_hash": "c1f5b920736ba875394087568db3baead27eefea9fb7d2690e9159925642a280",
+      "native_max_steps": 40,
+      "task_class": "RecipeDeleteMultipleRecipesWithConstraint",
+      "task_id": "H13",
+      "task_params_hash": "5bd72d50d0de420eb0fbbc07257fd0f75c03e0dcabbc3ba15cb64acfda8b857a",
+      "task_seed": 20260806
+    },
+    {
+      "goal_hash": "a6c5ceb9173aa9fbe0458f9eff30412f100aa241510fb4d3f403fce8fb8c89f8",
+      "native_max_steps": 50,
+      "task_class": "RetroSavePlaylist",
+      "task_id": "H14",
+      "task_params_hash": "238fe1e1c9b8be07c4f57b5658312772ec6dda5363b90f6f35c732162fbec62e",
+      "task_seed": 20260806
+    },
+    {
+      "goal_hash": "0dabc605c1c35fbe6fb532611957f35e4fb1decfa0da87c35affa49a82ae8cf6",
+      "native_max_steps": 16,
+      "task_class": "SaveCopyOfReceiptTaskEval",
+      "task_id": "H15",
+      "task_params_hash": "7cd53710c6c06ccb09f1dd103de37b7d61544c8d8194ebba05758fa1a5c89402",
+      "task_seed": 20260806
+    }
+  ]
+}

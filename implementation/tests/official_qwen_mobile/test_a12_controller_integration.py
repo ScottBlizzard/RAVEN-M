@@ -86,7 +86,7 @@ def test_a12_runner_freezes_gate_resume_and_result_namespaces() -> None:
         assert required in runner
     assert '"task_order": "blocking_A0_4_task_gate_then_frozen_manifest_remainder"' in runner
     assert '"scientific_failure_rerun": False' in runner
-    assert "require_single_transport=(a10_scored_arm or dual_scored_arm)" in runner
+    assert "require_single_transport=(a10_scored_arm or dual_memory_arm)" in runner
     assert "same_task_invalid_count > 2" in runner
 
 

@@ -135,6 +135,7 @@ from raven_m.official_qwen_mobile.a89_diagnostic import (  # noqa: E402
     report as a89_diagnostic_report,
     select_four_task_specs as select_a89_diagnostic_specs,
 )
+from raven_m.official_qwen_mobile import enriched_diagnostic_contract as diag6_contract  # noqa: E402
 
 
 MODEL_ID = "Qwen/Qwen3-VL-32B-Instruct"
@@ -358,6 +359,47 @@ def _a12_memory_record_mismatch(summary: dict) -> bool:
     return False
 
 
+def _diag6_completion_errors(
+    summaries: list[dict],
+    invalid_attempts: list[dict],
+    lifecycle_errors: list[dict],
+) -> list[str]:
+    errors: list[str] = []
+    observed = tuple((str(item.get("task_name")), int(item.get("seed", -1))) for item in summaries)
+    expected = tuple((name, diag6_contract.TASK_SEED) for name in diag6_contract.TASKS)
+    if observed != expected:
+        errors.append("ordered_six_task_closure_failed")
+    if lifecycle_errors:
+        errors.append("suite_lifecycle_errors_present")
+    if any(
+        not _episode_infrastructure_valid(item, require_single_transport=True)
+        for item in summaries
+    ):
+        errors.append("valid_episode_infrastructure_closure_failed")
+    if any(_memory_protocol_violation(item) for item in summaries):
+        errors.append("memory_intervention_boundary_violation")
+    valid_by_id = {str(item.get("episode_id")): item for item in summaries}
+    for task in diag6_contract.TASKS:
+        attempts = [
+            item for item in invalid_attempts
+            if str(item.get("task_name")) == task
+            and int(item.get("seed", -1)) == diag6_contract.TASK_SEED
+        ]
+        if len(attempts) > 2:
+            errors.append("infrastructure_invalid_attempt_limit_exceeded")
+        for attempt in attempts:
+            replacement_id = str(attempt.get("resolved_by_episode_id") or "")
+            replacement = valid_by_id.get(replacement_id)
+            if replacement is None:
+                errors.append("unresolved_infrastructure_invalid_attempt")
+                continue
+            if str(attempt.get("episode_id")) not in (
+                replacement.get("resolves_invalid_episode_ids") or []
+            ):
+                errors.append("invalid_replacement_bidirectional_link_mismatch")
+    return sorted(set(errors))
+
+
 def _atomic_json(path: Path, value: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(path.suffix + ".tmp")
@@ -487,6 +529,37 @@ def _a10_pairwise(
         "prompt_token_delta": usage["prompt_tokens"] - int(ref_summary["prompt_tokens"]),
         "total_token_delta": usage["total_tokens"] - int(ref_summary["total_tokens"]),
         "elapsed_delta": elapsed - float(ref_summary["valid_elapsed_seconds"]),
+    }
+
+
+def _diag6_pairwise(
+    summaries: list[dict], reference_arm: str, reference: dict
+) -> dict[str, float | int]:
+    current = {str(item["task_name"]): item for item in summaries}
+    references = {
+        str(item["task_name"]): item[reference_arm]
+        for item in reference.get("tasks") or []
+        if str(item["task_name"]) in current
+    }
+    if set(current) != set(references):
+        raise RuntimeError(f"DIAG6 paired {reference_arm} task identity mismatch")
+    wins = losses = ties = 0
+    for task_name, summary in current.items():
+        delta = int(bool(summary.get("success"))) - int(bool(references[task_name].get("success")))
+        wins += int(delta > 0); losses += int(delta < 0); ties += int(delta == 0)
+    def total(key: str) -> float:
+        return sum(float(item.get(key) or 0) for item in references.values())
+    usage = _usage_totals(summaries)
+    return {
+        "wins": wins,
+        "losses": losses,
+        "ties": ties,
+        "success_delta": sum(int(bool(item.get("success"))) for item in summaries) - int(total("success")),
+        "reward_delta": sum(float(item.get("evaluator_reward") or 0) for item in summaries) - total("reward"),
+        "action_delta": sum(int(item.get("executed_action_count") or 0) for item in summaries) - int(total("executed_actions")),
+        "call_delta": sum(int(item.get("model_call_count") or 0) for item in summaries) - int(total("model_calls")),
+        "prompt_token_delta": usage["prompt_tokens"] - int(total("prompt_tokens")),
+        "total_token_delta": usage["total_tokens"] - int(total("total_tokens")),
     }
 
 
@@ -699,6 +772,32 @@ def _a12_causal_read_analysis(
                     ),
                 }
             )
+    return records
+
+
+def _diag6_causal_read_analysis(arm: str, summaries: list[dict]) -> list[dict]:
+    if arm == "a12":
+        return _a12_causal_read_analysis(summaries)
+    records = _dual_causal_read_analysis(summaries)
+    for record in records:
+        event = record.get("arm_native_event") or {}
+        diverged = event.get("next_action_was_novel") is True
+        escaped = event.get("escaped_frontier_within_3") is True
+        relapsed = event.get("returned_within_4") is True
+        productive = bool(diverged and escaped and not relapsed)
+        record.update(
+            {
+                "next_action_diverged": event.get("next_action_was_novel"),
+                "short_horizon_escape_or_progress": event.get("escaped_frontier_within_3"),
+                "relapse_within_4": event.get("returned_within_4"),
+                "productive_divergence_hypothesis": productive,
+                "analysis_class": (
+                    "trace_grounded_productive_divergence_hypothesis"
+                    if productive
+                    else "activation_without_productive_divergence"
+                ),
+            }
+        )
     return records
 
 
@@ -935,6 +1034,24 @@ def main() -> None:
         help="Fresh A12 receipt bound only to its own preflight and process.",
     )
     parser.add_argument(
+        "--enriched-memory-diagnostic",
+        choices=diag6_contract.ARM_ORDER,
+        help=(
+            "Run one source mechanism on the frozen post-hoc enriched six-task "
+            "diagnostic panel; this never repairs the formal arm status."
+        ),
+    )
+    parser.add_argument(
+        "--enriched-diagnostic-preflight-report",
+        type=Path,
+        default=diag6_contract.PREFLIGHT_PATH,
+    )
+    parser.add_argument(
+        "--enriched-diagnostic-launch-receipt",
+        type=Path,
+        help="Shared live server receipt bound only to the diagnostic preflight.",
+    )
+    parser.add_argument(
         "--a678-preflight-report",
         type=Path,
         default=REPOSITORY_ROOT / "evidence/a678/A678_ZERO_GENERATION_PREFLIGHT.json",
@@ -1151,6 +1268,7 @@ def main() -> None:
             args.a10_v2_emobf,
             args.a11_crc_ecobf,
             args.a12_madm,
+            args.enriched_memory_diagnostic,
         )
     )
     if diagnostic_modes > 1:
@@ -1159,7 +1277,8 @@ def main() -> None:
             "--evidence-qualified-progress, and --source-document-coverage "
             "--source-document-coverage-gate, --a1-working-memory, and "
             "--a2-verified-progress-memory, --a345-arm, --a678-arm, --a10-ecobf, "
-            "--a10-v2-emobf, --a11-crc-ecobf, and --a12-madm are mutually exclusive"
+            "--a10-v2-emobf, --a11-crc-ecobf, --a12-madm, and "
+            "--enriched-memory-diagnostic are mutually exclusive"
         )
     held_out_eligible = not bool(args.diagnostic) and not bool(
         args.held_out_ineligible_reason
@@ -1167,7 +1286,8 @@ def main() -> None:
     a345_scored_arm = bool(args.a345_arm)
     a678_memory_arm = bool(args.a678_arm)
     a10_scored_arm = bool(args.a10_ecobf)
-    dual_arm_name = next(
+    enriched_diag_arm = str(args.enriched_memory_diagnostic or "") or None
+    dual_arm_name = enriched_diag_arm or next(
         (
             name
             for name, selected in (
@@ -1180,9 +1300,12 @@ def main() -> None:
         None,
     )
     dual_arm = _load_dual_arm(dual_arm_name) if dual_arm_name else None
-    dual_scored_arm = dual_arm is not None
+    dual_memory_arm = dual_arm is not None
+    dual_scored_arm = dual_memory_arm and enriched_diag_arm is None
     dual_preflight_path = (
-        args.a10_v2_preflight_report
+        args.enriched_diagnostic_preflight_report
+        if enriched_diag_arm
+        else args.a10_v2_preflight_report
         if dual_arm_name == "a10v2"
         else args.a11_preflight_report
         if dual_arm_name == "a11"
@@ -1191,7 +1314,9 @@ def main() -> None:
         else None
     )
     dual_receipt_path = (
-        args.a10_v2_launch_receipt
+        args.enriched_diagnostic_launch_receipt
+        if enriched_diag_arm
+        else args.a10_v2_launch_receipt
         if dual_arm_name == "a10v2"
         else args.a11_launch_receipt
         if dual_arm_name == "a11"
@@ -1203,7 +1328,7 @@ def main() -> None:
     dual_launch: dict | None = None
     a10_launch: dict | None = None
     a10_preflight: dict | None = None
-    controller_memory_arm = a678_memory_arm or a10_scored_arm or dual_scored_arm
+    controller_memory_arm = a678_memory_arm or a10_scored_arm or dual_memory_arm
     a678_post_gate_diagnostic = a7_post_gate_diagnostic or a89_four_task_diagnostic
     a678_scored_arm = a678_memory_arm and not a678_post_gate_diagnostic
     prospective_gate_arm = (
@@ -1229,6 +1354,7 @@ def main() -> None:
         args.resume_suite_dir is not None
         and not scored_memory_arm
         and not a678_post_gate_diagnostic
+        and not enriched_diag_arm
     ):
         parser.error("--resume-suite-dir is restricted to scored memory arms")
     if scored_memory_arm:
@@ -1346,6 +1472,40 @@ def main() -> None:
             if args.a2_launch_receipt is None or not args.a2_launch_receipt.is_file():
                 parser.error("scored A2 requires --a2-launch-receipt from the live frozen server")
 
+    if enriched_diag_arm:
+        if not args.diagnostic:
+            parser.error("--enriched-memory-diagnostic requires --diagnostic")
+        if args.task or args.manifest is None:
+            parser.error("enriched diagnostic requires its frozen six-task manifest")
+        if args.step_cap is not None:
+            parser.error("enriched diagnostic forbids altered native task budgets")
+        if args.generation_seed != diag6_contract.GENERATION_SEED or args.max_tokens != 32768:
+            parser.error("enriched diagnostic generation parameters drifted")
+        if args.observation_backend != "uiautomator":
+            parser.error("enriched diagnostic must use uiautomator")
+        if _sha256(args.manifest.resolve()) != _sha256(diag6_contract.MANIFEST_PATH.resolve()):
+            parser.error("enriched diagnostic manifest drifted")
+        assert dual_preflight_path is not None
+        try:
+            dual_preflight = diag6_contract.validate_preflight_report(
+                dual_preflight_path.resolve()
+            )
+        except Exception as exc:
+            parser.error(str(exc))
+        if dual_receipt_path is None or not dual_receipt_path.is_file():
+            parser.error("enriched diagnostic requires its qualified live receipt")
+        try:
+            dual_launch = diag6_contract.validate_launch_receipt(
+                dual_receipt_path.resolve(),
+                preflight_path=dual_preflight_path.resolve(),
+            )
+        except Exception as exc:
+            parser.error(str(exc))
+        held_out_eligible = False
+        held_out_ineligible_reason = (
+            "post_hoc_common_memory_opportunity_enriched_diagnostic_not_formal_arm_repair"
+        )
+
     if a678_post_gate_diagnostic:
         if _sha256(args.manifest.resolve()) != _sha256(A1_MANIFEST.resolve()):
             parser.error("A678 diagnostic manifest differs from the frozen manifest")
@@ -1407,6 +1567,17 @@ def main() -> None:
             )
     elif a89_four_task_diagnostic:
         specs = select_a89_diagnostic_specs(specs)
+    elif enriched_diag_arm:
+        keys = tuple(
+            (str(item["task_class"]), int(item["task_seed"])) for item in specs
+        )
+        expected_diag_keys = tuple(
+            (name, diag6_contract.TASK_SEED) for name in diag6_contract.TASKS
+        )
+        if keys != expected_diag_keys:
+            raise RuntimeError(
+                "enriched diagnostic did not resolve the exact ordered six-task panel"
+            )
     if scored_memory_arm:
         specs = [item for item in specs if int(item["task_seed"]) == 20260806]
         if len(specs) != 19 or len({item["task_class"] for item in specs}) != 19:
@@ -1489,7 +1660,9 @@ def main() -> None:
 
     run_signature = {
         "experiment_id": (
-            (
+            diag6_contract.ARM_BINDINGS[enriched_diag_arm]["experiment_id"]
+            if enriched_diag_arm
+            else (
                 "A7_POST_GATE_SPORTS_DIAGNOSTIC_QWEN3VL32B_AW_HARD_S20260806_V1"
                 if a7_sports_diagnostic
                 else "A7_POST_GATE_REMAINING9_DIAGNOSTIC_QWEN3VL32B_AW_HARD_S20260806_V1"
@@ -1525,6 +1698,8 @@ def main() -> None:
         "method": (
             A678_MECHANISMS[str(args.a678_arm)]
             if a678_post_gate_diagnostic
+            else diag6_contract.ARM_BINDINGS[enriched_diag_arm]["source_mechanism_id"]
+            if enriched_diag_arm
             else dual_arm["mechanism_id"]
             if dual_scored_arm
             else A10_MECHANISM_ID
@@ -1565,6 +1740,31 @@ def main() -> None:
         "grpc_port": args.grpc_port,
         "adb_path": str(Path(args.adb_path).resolve()),
     }
+    if enriched_diag_arm:
+        assert dual_preflight is not None and dual_preflight_path is not None
+        assert dual_launch is not None
+        run_signature.update(
+            {
+                "diagnostic_protocol_id": diag6_contract.PROTOCOL_ID,
+                "diagnostic_arm": enriched_diag_arm,
+                "source_mechanism_id": diag6_contract.ARM_BINDINGS[enriched_diag_arm]["source_mechanism_id"],
+                "formal_arm_status_repaired": False,
+                "selection_rule": "post_hoc_common_memory_opportunity_enrichment",
+                "task_order": list(diag6_contract.TASKS),
+                "diagnostic_preflight_sha256": _sha256(dual_preflight_path),
+                "implementation_commit": dual_preflight["implementation_commit"],
+                "source_sha256": dual_preflight["source_sha256"],
+                "evidence_sha256": dual_preflight["evidence_sha256"],
+                "live_server_identity": {
+                    "served_model_id": dual_launch["served_model_id"],
+                    "model_realpath": dual_launch["model_realpath"],
+                    "model_manifest_sha256": dual_launch["model_manifest_sha256"],
+                    "packages": dual_launch["packages"],
+                    "port": dual_launch["port"],
+                },
+                "transport_policy": "single_http_attempt_no_automatic_retry",
+            }
+        )
     if a345_scored_arm:
         run_signature.update(
             {
@@ -1833,7 +2033,22 @@ def main() -> None:
                 raise RuntimeError(
                     f"{dual_arm['label'] if dual_scored_arm else 'A10' if a10_scored_arm else str(args.a678_arm).upper()} capability-preservation failure is terminal and cannot be resumed"
                 )
-            if dual_scored_arm:
+            if enriched_diag_arm:
+                expected_diag_identity = {
+                    "schema": "enriched_memory_diagnostic6_checkpoint_v1",
+                    "run_signature_sha256": run_signature_sha256,
+                    "diagnostic_protocol_id": diag6_contract.PROTOCOL_ID,
+                    "diagnostic_arm": enriched_diag_arm,
+                    "experiment_id": diag6_contract.ARM_BINDINGS[enriched_diag_arm]["experiment_id"],
+                    "formal_arm_status_repaired": False,
+                }
+                if any(checkpoint.get(key) != value for key, value in expected_diag_identity.items()):
+                    raise RuntimeError("DIAG6 checkpoint identity mismatch")
+                if checkpoint.get("status") == "infrastructure_incomplete":
+                    raise RuntimeError("DIAG6 infrastructure-invalid attempt limit is terminal")
+                summaries = list(checkpoint.get("valid_summaries") or [])
+                invalid_attempts = list(checkpoint.get("invalid_attempts") or [])
+            elif dual_scored_arm:
                 if (
                     dual_arm_name == "a12"
                     and checkpoint.get("status") == "infrastructure_incomplete"
@@ -1904,7 +2119,26 @@ def main() -> None:
                 "valid_summaries": summaries,
                 "invalid_attempts": invalid_attempts,
             }
-            if dual_scored_arm:
+            if enriched_diag_arm:
+                payload.update(
+                    {
+                        "schema": "enriched_memory_diagnostic6_checkpoint_v1",
+                        "run_signature_sha256": run_signature_sha256,
+                        "diagnostic_protocol_id": diag6_contract.PROTOCOL_ID,
+                        "diagnostic_arm": enriched_diag_arm,
+                        "experiment_id": diag6_contract.ARM_BINDINGS[enriched_diag_arm]["experiment_id"],
+                        "formal_arm_status_repaired": False,
+                        "live_server_receipt_sha256s": sorted(
+                            {
+                                str((item.get("run_metadata") or {}).get("live_server_receipt_sha256"))
+                                for item in summaries
+                                if (item.get("run_metadata") or {}).get("live_server_receipt_sha256")
+                            }
+                            | {_sha256(dual_receipt_path)}
+                        ),
+                    }
+                )
+            elif dual_scored_arm:
                 payload.update(
                     {
                         "run_signature_sha256": run_signature_sha256,
@@ -1988,7 +2222,7 @@ def main() -> None:
             or a345_scored_arm
             or a678_memory_arm
             or a10_scored_arm
-            or dual_scored_arm
+            or dual_memory_arm
         ),
     )
     health = client.health()
@@ -2090,7 +2324,7 @@ def main() -> None:
                     max_chars=420,
                     max_utf8_bytes=720,
                 )
-            elif dual_scored_arm:
+            elif dual_memory_arm:
                 # A fresh instance per episode; state is never shared across
                 # tasks and prospective arms can never be composed.
                 a678_memory = dual_arm["memory_class_object"]()
@@ -2101,6 +2335,11 @@ def main() -> None:
                 run_metadata={
                     "run_stage": args.run_stage,
                     "diagnostic": bool(args.diagnostic),
+                    "diagnostic_protocol_id": (
+                        diag6_contract.PROTOCOL_ID if enriched_diag_arm else None
+                    ),
+                    "diagnostic_arm": enriched_diag_arm,
+                    "formal_arm_status_repaired": False if enriched_diag_arm else None,
                     "held_out_eligible": held_out_eligible,
                     "held_out_ineligible_reason": held_out_ineligible_reason,
                     "native_max_steps": native_limit,
@@ -2133,7 +2372,7 @@ def main() -> None:
                             if a10_scored_arm
                             else (
                                 _sha256(dual_receipt_path)
-                                if dual_scored_arm
+                                if dual_memory_arm
                                 else (
                                     _sha256(args.a678_launch_receipt)
                                     if a678_memory_arm else None
@@ -2253,7 +2492,8 @@ def main() -> None:
                 seed=episode_seed,
             )
             if not _episode_infrastructure_valid(
-                result, require_single_transport=(a10_scored_arm or dual_scored_arm)
+                result,
+                require_single_transport=(a10_scored_arm or dual_memory_arm),
             ):
                 invalid_attempt = {
                     "episode_id": episode_id,
@@ -2272,7 +2512,8 @@ def main() -> None:
                     for attempt in invalid_attempts
                 )
                 attempt_limit_exceeded = bool(
-                    dual_arm_name == "a12" and same_task_invalid_count > 2
+                    (dual_arm_name == "a12" or enriched_diag_arm)
+                    and same_task_invalid_count > 2
                 )
                 checkpoint(
                     "infrastructure_incomplete"
@@ -2281,11 +2522,12 @@ def main() -> None:
                 )
                 if attempt_limit_exceeded:
                     raise RuntimeError(
-                        f"A12 task {task_name} produced a third infrastructure-invalid "
+                        f"{('DIAG6 ' + str(enriched_diag_arm)) if enriched_diag_arm else 'A12'} "
+                        f"task {task_name} produced a third infrastructure-invalid "
                         "attempt; the suite is terminally infrastructure-incomplete"
                     )
                 raise RuntimeError(
-                    f"Scored memory arm stopped after infrastructure-invalid episode {episode_id}; "
+                    f"Memory run stopped after infrastructure-invalid episode {episode_id}; "
                     "resume will rerun only this task"
                 )
             resolved_invalid_ids = [
@@ -2307,7 +2549,7 @@ def main() -> None:
                     and not attempt.get("resolved_by_episode_id")
                 ):
                     attempt["resolved_by_episode_id"] = episode_id
-            if a10_scored_arm or dual_scored_arm:
+            if a10_scored_arm or dual_memory_arm:
                 _atomic_json(
                     suite_dir / "episodes" / episode_id / "episode.json",
                     result,
@@ -2509,6 +2751,15 @@ def main() -> None:
                 f"{str(args.a678_arm).upper()} four-task diagnostic cannot "
                 f"aggregate: {closure_errors}"
             )
+    if enriched_diag_arm:
+        closure_errors = _diag6_completion_errors(
+            summaries, invalid_attempts, suite_lifecycle_errors
+        )
+        if closure_errors:
+            checkpoint("stopped_incomplete_or_invalid")
+            raise RuntimeError(
+                f"DIAG6 {enriched_diag_arm} cannot aggregate: {closure_errors}"
+            )
 
     aggregate = {
         "suite_id": suite_id,
@@ -2678,6 +2929,75 @@ def main() -> None:
             for item in summaries
         ],
     }
+    if enriched_diag_arm:
+        reference_path = REPOSITORY_ROOT / "evidence/a2/A0_A1_PAIRED_REFERENCE_20260810.json"
+        reference = json.loads(reference_path.read_text(encoding="utf-8"))
+        causal_records = _diag6_causal_read_analysis(enriched_diag_arm, summaries)
+        active_episode_count = sum(int(_memory_active(item)) for item in summaries)
+        nonempty_read_count = len(causal_records)
+        productive_count = sum(
+            int(item.get("productive_divergence_hypothesis") is True)
+            for item in causal_records
+        )
+        diagnostically_active = active_episode_count >= 3 and nonempty_read_count >= 3
+        productive_signal = productive_count >= 2
+        if not diagnostically_active:
+            scientific_label = "insufficient_diagnostic_activation"
+        elif productive_signal:
+            scientific_label = "productive_divergence_signal_observed"
+        else:
+            scientific_label = "activation_without_productive_divergence_signal"
+        aggregate["enriched_memory_diagnostic6_result"] = {
+            "schema": "enriched_memory_diagnostic6_result_v1",
+            "protocol_id": diag6_contract.PROTOCOL_ID,
+            "diagnostic_arm": enriched_diag_arm,
+            "experiment_id": diag6_contract.ARM_BINDINGS[enriched_diag_arm]["experiment_id"],
+            "source_mechanism_id": diag6_contract.ARM_BINDINGS[enriched_diag_arm]["source_mechanism_id"],
+            "selection_rule": "post_hoc_common_memory_opportunity_enrichment",
+            "held_out_eligible": False,
+            "formal_arm_status_repaired": False,
+            "task_order": list(diag6_contract.TASKS),
+            "valid_episode_count": len(summaries),
+            "success_count": sum(int(bool(item.get("success"))) for item in summaries),
+            "reward_sum": sum(float(item.get("evaluator_reward") or 0) for item in summaries),
+            "active_episode_count": active_episode_count,
+            "actual_nonempty_read_count": nonempty_read_count,
+            "productive_divergence_hypothesis_count": productive_count,
+            "diagnostically_active": diagnostically_active,
+            "productive_divergence_signal": productive_signal,
+            "scientific_label": scientific_label,
+            "pairwise": {
+                "reference_sha256": _sha256(reference_path),
+                "versus_a0": _diag6_pairwise(summaries, "A0", reference),
+                "versus_a1": _diag6_pairwise(summaries, "A1", reference),
+            },
+            "intervention_boundary": {
+                "model_calls_added": 0,
+                "guard_enabled": False,
+                "action_override_count": 0,
+                "forced_termination_count": 0,
+                "protocol_violation": any(_memory_protocol_violation(item) for item in summaries),
+            },
+            "causal_read_records": causal_records,
+            "episodes": [
+                {
+                    "task_name": item["task_name"],
+                    "episode_id": item["episode_id"],
+                    "reward": item["evaluator_reward"],
+                    "success": item["success"],
+                    "memory_active": _memory_active(item),
+                    "nonempty_read_count": sum(
+                        int(str(record.get("episode", record.get("episode_id"))) == str(item["episode_id"]))
+                        for record in causal_records
+                    ),
+                    "model_calls": item["model_call_count"],
+                    "executed_actions": item["executed_action_count"],
+                    "token_usage": _usage_totals([item]),
+                }
+                for item in summaries
+            ],
+            "errors": [],
+        }
     if a10_scored_arm or dual_scored_arm:
         result_label = dual_arm["label"] if dual_scored_arm else "A10"
         result_prefix = result_label.upper()

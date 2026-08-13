@@ -80,8 +80,8 @@ def test_new_arms_bind_own_preflight_receipt_and_cross_arm_resume_identity() -> 
 
 def test_new_arms_use_single_transport_no_retry_and_blocking_four_task_gate() -> None:
     source = _source(RUNNER)
-    assert "or dual_scored_arm\n        )," in source
-    assert "require_single_transport=(a10_scored_arm or dual_scored_arm)" in source
+    assert "or dual_memory_arm\n        )," in source
+    assert "require_single_transport=(a10_scored_arm or dual_memory_arm)" in source
     assert '"task_order": "blocking_A0_4_task_gate_then_frozen_manifest_remainder"' in source
     assert "if not _gate_passed(gate):" in source
     assert 'and task_name in A0_PRESERVATION_TASKS' in source
