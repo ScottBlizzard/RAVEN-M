@@ -39,7 +39,7 @@
   },
   "formal_arm_status_repaired": false,
   "generation_calls": 0,
-  "implementation_commit": "48cd2df7e79e19a7b379a9c37c886964ba5b7d33",
+  "implementation_commit": "9bd4c6589b1635c6a42f09863cda8ab676bed98b",
   "manifest_sha256": "5d05ea4ac6de25a12f4378e26a53dff4872710554cbe83a4c84e503c41d0b6fc",
   "offline_opportunity_summary": {
     "a10v2_a6_read_active_task_count": 11,
@@ -67,7 +67,7 @@
     "implementation/src/raven_m/official_qwen_mobile/enriched_diagnostic_contract.py": "b978e847eab9ce7e49062e8a03bfcaa18f9f8ea8c4142d2f1ab49f8b86738188",
     "implementation/tests/official_qwen_mobile/test_a10v2_a11_shared_integration.py": "017a8b6c646d044bb312ebcf3a62baec0a9933f72a9fe0984dc1db2c86c43666",
     "implementation/tests/official_qwen_mobile/test_a12_controller_integration.py": "29f4bb00c7dab2b4cd3711244add74e5371270b25403149f1d6f03348376dba8",
-    "implementation/tests/official_qwen_mobile/test_enriched_memory_diagnostic.py": "61af4f074e6c12be71870d92235472d16be408da201402c45ab98e1473f48045",
+    "implementation/tests/official_qwen_mobile/test_enriched_memory_diagnostic.py": "45c986bcd55cad02ab02513249fa3762085296e446a401ea40e36824e616c1a0",
     "protocols/ENRICHED_MEMORY_DIAGNOSTIC6_PROTOCOL_2026-08-13.md": "c9a9ca4229c24e66f46086365ed35b7d782466ac8d5fa925200dcd75850dbca4"
   },
   "status": "pass",
