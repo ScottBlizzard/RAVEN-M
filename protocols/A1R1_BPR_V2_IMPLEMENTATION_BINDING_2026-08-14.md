@@ -150,7 +150,9 @@ Early primary scientific stop makes Accuracy FAIL, Cost
 
 Source freeze binds the implementation commit's Git blobs. The implementation
 commit must be an ancestor of the evidence commit and current production source
-bytes must match its blobs; generated evidence is excluded from the source map.
+bytes, after Git's declared clean filter (for example checkout CRLF to repository
+LF normalization), must match its blobs; generated evidence is excluded from
+the source map.
 
 ## 8. Live qualification
 

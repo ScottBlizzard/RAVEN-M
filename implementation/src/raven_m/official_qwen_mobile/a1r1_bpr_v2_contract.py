@@ -131,7 +131,9 @@ def source_freeze_payload(implementation_commit: str) -> dict[str, Any]:
         except subprocess.CalledProcessError as exc:
             raise RuntimeError(f"source file absent from implementation commit: {name}") from exc
         digest = sha256(frozen).hexdigest()
-        if file_sha256(path) != digest:
+        frozen_blob = _git("rev-parse", f"{implementation_commit}:{name}")
+        current_clean_blob = _git("hash-object", "--path", name, str(path))
+        if current_clean_blob != frozen_blob:
             raise RuntimeError(f"current source bytes drifted from implementation commit: {name}")
         files[name] = digest
     payload = {
