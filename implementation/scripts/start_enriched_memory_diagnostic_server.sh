@@ -23,6 +23,9 @@ preflight = contract.validate_preflight_report(preflight_path)
 model = str(Path(os.environ["MODEL_DIR"]).resolve())
 if model != contract.MODEL_REALPATH:
     raise RuntimeError("diagnostic model path drift")
+model_manifest = Path(model + ".sha256")
+if not model_manifest.is_file() or contract.file_sha256(model_manifest) != contract.MODEL_MANIFEST_SHA256:
+    raise RuntimeError("diagnostic model manifest drift")
 port = int(os.environ["PORT"])
 if port != contract.PORT:
     raise RuntimeError("diagnostic server port drift")

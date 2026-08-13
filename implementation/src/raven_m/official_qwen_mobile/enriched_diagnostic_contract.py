@@ -78,7 +78,10 @@ EVIDENCE_FILES = (
 
 
 def file_sha256(path: Path) -> str:
-    return sha256(path.read_bytes()).hexdigest()
+    payload = path.read_bytes()
+    if path.suffix.casefold() in {".json", ".md", ".py", ".sh"}:
+        payload = payload.replace(b"\r\n", b"\n")
+    return sha256(payload).hexdigest()
 
 
 def canonical_sha256(value: Any) -> str:

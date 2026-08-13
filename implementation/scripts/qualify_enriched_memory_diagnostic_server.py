@@ -38,6 +38,9 @@ def main() -> None:
     drift = [key for key, value in expected_intent.items() if intent.get(key) != value]
     if drift:
         raise RuntimeError(f"diagnostic launch intent drift: {drift}")
+    model_manifest = Path(contract.MODEL_REALPATH + ".sha256")
+    if not model_manifest.is_file() or contract.file_sha256(model_manifest) != contract.MODEL_MANIFEST_SHA256:
+        raise RuntimeError("diagnostic model manifest drift")
     pid = int(intent["process_pid"])
     command = [part.decode() for part in Path(f"/proc/{pid}/cmdline").read_bytes().split(b"\0") if part]
     if command != intent.get("process_cmdline"):
@@ -76,4 +79,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
