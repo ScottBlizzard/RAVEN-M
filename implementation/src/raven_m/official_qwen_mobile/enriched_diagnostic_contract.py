@@ -21,6 +21,7 @@ MODEL_MANIFEST_SHA256 = "18e0909c7d993853d6d0f62443461a74009754f90db026a1723cab8
 TASK_SEED = 20260806
 GENERATION_SEED = 3407
 PORT = 18000
+SERVER_ENVIRONMENT = {"VLLM_USE_FLASHINFER_SAMPLER": "0"}
 
 TASKS = (
     "OsmAndTrack",
@@ -202,6 +203,7 @@ def validate_launch_receipt(
         "served_model_id": MODEL_ID,
         "model_realpath": MODEL_REALPATH,
         "model_manifest_sha256": MODEL_MANIFEST_SHA256,
+        "server_environment": SERVER_ENVIRONMENT,
         "port": PORT,
     }
     for key, value in expected.items():
@@ -229,6 +231,13 @@ def validate_launch_receipt(
             live_command = Path(f"/proc/{pid}/cmdline").read_bytes().split(b"\0")
             if [item.decode(errors="replace") for item in live_command if item] != command:
                 errors.append("live_process_cmdline_drift")
+            live_environment = {
+                item.split(b"=", 1)[0].decode(errors="replace"): item.split(b"=", 1)[1].decode(errors="replace")
+                for item in Path(f"/proc/{pid}/environ").read_bytes().split(b"\0")
+                if b"=" in item
+            }
+            if any(live_environment.get(key) != value for key, value in SERVER_ENVIRONMENT.items()):
+                errors.append("live_process_environment_drift")
         except (OSError, ValueError):
             errors.append("live_process_not_running")
     if errors:
@@ -241,7 +250,7 @@ __all__ = [
     "INTENT_SCHEMA", "MANIFEST_PATH", "MODEL_ID", "MODEL_MANIFEST_SHA256",
     "MODEL_REALPATH", "MODEL_REVISION", "PARENT_COMMIT", "PORT",
     "PREFLIGHT_PATH", "PREFLIGHT_SCHEMA", "PROTOCOL_ID", "RECEIPT_SCHEMA",
-    "SOURCE_FILES", "TASKS", "TASK_SEED", "canonical_sha256", "evidence_hashes",
+    "SERVER_ENVIRONMENT", "SOURCE_FILES", "TASKS", "TASK_SEED", "canonical_sha256", "evidence_hashes",
     "file_sha256", "load_manifest", "source_hashes", "validate_launch_receipt",
     "validate_preflight_report",
 ]

@@ -4,6 +4,12 @@ Status: prospective diagnostic binding, not a formal-arm repair.
 
 Protocol ID: `ENRICHED_MEMORY_DIAGNOSTIC6_V1`
 
+Infrastructure binding: the live server must set
+`VLLM_USE_FLASHINFER_SAMPLER=0` and record it in both launch intent and live
+receipt. This is a fail-closed Blackwell compatibility fallback for vLLM's
+top-k/top-p sampler; it does not change the model, prompt, seeds, sampling
+parameters, memory mechanism, action schema, or model-call count.
+
 This protocol asks a narrower question than the frozen A10-v2, A11, and A12
 preregistrations: when a task is enriched for a historically observed memory
 opportunity, does a nonempty memory read change the next action and produce

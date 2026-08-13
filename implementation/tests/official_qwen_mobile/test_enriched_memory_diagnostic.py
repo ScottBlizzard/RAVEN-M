@@ -129,6 +129,7 @@ def test_receipt_binds_exact_preflight_and_model(
         "served_model_id": contract.MODEL_ID,
         "model_realpath": contract.MODEL_REALPATH,
         "model_manifest_sha256": contract.MODEL_MANIFEST_SHA256,
+        "server_environment": contract.SERVER_ENVIRONMENT,
         "process_pid": 12345,
         "process_cmdline": ["python", "vllm", "serve", contract.MODEL_REALPATH],
         "port": contract.PORT,

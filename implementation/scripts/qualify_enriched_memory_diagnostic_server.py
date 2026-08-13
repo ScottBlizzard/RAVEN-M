@@ -33,6 +33,7 @@ def main() -> None:
         "served_model_id": contract.MODEL_ID,
         "model_realpath": contract.MODEL_REALPATH,
         "model_manifest_sha256": contract.MODEL_MANIFEST_SHA256,
+        "server_environment": contract.SERVER_ENVIRONMENT,
         "port": contract.PORT,
     }
     drift = [key for key, value in expected_intent.items() if intent.get(key) != value]
@@ -45,6 +46,13 @@ def main() -> None:
     command = [part.decode() for part in Path(f"/proc/{pid}/cmdline").read_bytes().split(b"\0") if part]
     if command != intent.get("process_cmdline"):
         raise RuntimeError("diagnostic live process command drift")
+    live_environment = {
+        item.split(b"=", 1)[0].decode(errors="replace"): item.split(b"=", 1)[1].decode(errors="replace")
+        for item in Path(f"/proc/{pid}/environ").read_bytes().split(b"\0")
+        if b"=" in item
+    }
+    if any(live_environment.get(key) != value for key, value in contract.SERVER_ENVIRONMENT.items()):
+        raise RuntimeError("diagnostic live process environment drift")
     with urllib.request.urlopen(f"http://127.0.0.1:{contract.PORT}/v1/models", timeout=30) as response:
         served = json.loads(response.read())
     ids = [item.get("id") for item in served.get("data") or []]
@@ -64,6 +72,7 @@ def main() -> None:
         "served_model_id": contract.MODEL_ID,
         "model_realpath": contract.MODEL_REALPATH,
         "model_manifest_sha256": contract.MODEL_MANIFEST_SHA256,
+        "server_environment": contract.SERVER_ENVIRONMENT,
         "process_pid": pid,
         "process_cmdline": command,
         "port": contract.PORT,

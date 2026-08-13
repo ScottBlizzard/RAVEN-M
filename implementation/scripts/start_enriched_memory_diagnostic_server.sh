@@ -10,6 +10,7 @@ INTENT="${DIAG6_LAUNCH_INTENT:-${RUNTIME_DIR}/ENRICHED_MEMORY_DIAGNOSTIC6_SERVER
 PORT="${RAVEN_SERVER_PORT:-18000}"
 mkdir -p "${RUNTIME_DIR}"
 export PYTHONPATH="${REPO_DIR}/implementation/src"
+export VLLM_USE_FLASHINFER_SAMPLER="${VLLM_USE_FLASHINFER_SAMPLER:-0}"
 
 REPO_DIR="${REPO_DIR}" ENV_DIR="${ENV_DIR}" MODEL_DIR="${MODEL_DIR}" PREFLIGHT="${PREFLIGHT}" INTENT="${INTENT}" PORT="${PORT}" "${ENV_DIR}/bin/python" - <<'PY'
 import importlib.metadata
@@ -29,6 +30,11 @@ if not model_manifest.is_file() or contract.file_sha256(model_manifest) != contr
 port = int(os.environ["PORT"])
 if port != contract.PORT:
     raise RuntimeError("diagnostic server port drift")
+server_environment = {
+    key: os.environ.get(key) for key in contract.SERVER_ENVIRONMENT
+}
+if server_environment != contract.SERVER_ENVIRONMENT:
+    raise RuntimeError("diagnostic server environment drift")
 env_dir = Path(os.environ["ENV_DIR"])
 command = [
     str(env_dir / "bin/python"), str(env_dir / "bin/vllm"), "serve", model,
@@ -48,6 +54,7 @@ intent = {
     "served_model_id": contract.MODEL_ID,
     "model_realpath": model,
     "model_manifest_sha256": contract.MODEL_MANIFEST_SHA256,
+    "server_environment": server_environment,
     "process_pid": os.getppid(),
     "process_cmdline": command,
     "port": port,
