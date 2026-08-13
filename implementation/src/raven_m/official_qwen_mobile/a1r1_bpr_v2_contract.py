@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from hashlib import sha256
 import json
+import os
 from pathlib import Path
 import subprocess
 from typing import Any
@@ -171,6 +172,15 @@ def validate_preflight_report(
     freeze = validate_source_freeze(source_freeze_path)
     replay = json.loads(offline_replay_path.read_text(encoding="utf-8"))
     errors: list[str] = []
+    exact_fields = {
+        "schema", "status", "errors", "mechanism_id", "implementation_commit",
+        "source_freeze_content_sha256", "source_freeze_file_sha256",
+        "offline_replay_file_sha256", "generation_calls",
+        "live_generation_authorized", "R5_status", "task_manifest", "tests",
+        "runtime_canary", "token_bound", "created_at", "content_sha256",
+    }
+    if set(report) != exact_fields:
+        errors.append("preflight_field_set_drift")
     expected = {
         "schema": PREFLIGHT_SCHEMA,
         "status": "PASS",
@@ -195,6 +205,17 @@ def validate_preflight_report(
         or replay.get("R5_status") != "PROSPECTIVE_UNKNOWN_PRELIVE"
         or replay.get("live_generation_authorized") is not True
         or replay.get("content_sha256") != content_sha256(replay)
+        or replay.get("mechanism_id") != MECHANISM_ID
+        or replay.get("design_sha256") != DESIGN_SHA256
+        or (replay.get("source") or {}).get("suite_id") != "official_qwen_20260810T122419_26573d7c"
+        or (replay.get("source") or {}).get("aggregate_sha256") != "7a4ebaad754802fcf3350e83ca13032a16de609f2904c96c7b5ecd0efc006f51"
+        or (replay.get("source") or {}).get("episode_json_count") != 19
+        or (replay.get("R3") or {}).get("record_count") != 514
+        or (replay.get("R3") or {}).get("joint_fit_count") != 511
+        or (replay.get("R3") or {}).get("required_minimum") != 489
+        or (replay.get("R3") or {}).get("pass") is not True
+        or (replay.get("suffix") or {}).get("utf8_bytes") != 686
+        or (replay.get("suffix") or {}).get("sha256") != "6d399443083139e0aad8241cc0e4a949e311348a09d68c032397104e163d610b"
     ):
         errors.append("offline_replay_not_authorizing")
     if errors:
@@ -212,6 +233,16 @@ def validate_launch_receipt(
     receipt = json.loads(path.read_text(encoding="utf-8"))
     preflight = validate_preflight_report(preflight_path)
     errors: list[str] = []
+    exact_fields = {
+        "schema", "status", "errors", "generation_calls", "mechanism_id",
+        "experiment_id", "read_enabled", "implementation_commit",
+        "preflight_file_sha256", "config_file_sha256", "served_model_id",
+        "served_model_ids_observed", "model_realpath", "model_manifest_sha256",
+        "process_pid", "process_cmdline", "port", "packages", "qualified_at",
+        "content_sha256",
+    }
+    if set(receipt) != exact_fields:
+        errors.append("receipt_field_set_drift")
     if receipt.get("schema") != LIVE_RECEIPT_SCHEMA or receipt.get("status") != "PASS":
         errors.append("receipt_status_or_schema")
     if receipt.get("errors") != [] or receipt.get("generation_calls") != 0:
@@ -228,6 +259,33 @@ def validate_launch_receipt(
         errors.append("experiment_id_drift")
     if receipt.get("served_model_id") != MODEL_ID or receipt.get("model_manifest_sha256") != MODEL_MANIFEST_SHA256:
         errors.append("model_identity_drift")
+    expected_config = PRIMARY_CONFIG_PATH if receipt.get("read_enabled") is True else EMPTY_CONFIG_PATH
+    if receipt.get("config_file_sha256") != file_sha256(expected_config):
+        errors.append("config_hash_drift")
+    if receipt.get("served_model_ids_observed") != [MODEL_ID] or int(receipt.get("port", -1)) != PORT:
+        errors.append("served_model_or_port_drift")
+    packages = receipt.get("packages") or {}
+    if set(packages) != {"vllm", "torch", "transformers"} or any(not str(value) for value in packages.values()):
+        errors.append("package_identity_missing")
+    try:
+        qualified = __import__("datetime").datetime.fromisoformat(str(receipt.get("qualified_at")))
+        preflight_created = __import__("datetime").datetime.fromisoformat(str(preflight.get("created_at")))
+        if qualified <= preflight_created:
+            errors.append("receipt_not_fresh_after_preflight")
+    except ValueError:
+        errors.append("qualification_timestamp_invalid")
+    pid = int(receipt.get("process_pid") or -1)
+    proc_cmdline = Path(f"/proc/{pid}/cmdline")
+    if os.name != "nt":
+        if not proc_cmdline.is_file():
+            errors.append("qualified_process_not_alive")
+        else:
+            current_cmdline = proc_cmdline.read_bytes().replace(b"\0", b" ").decode("utf-8")
+            if current_cmdline != receipt.get("process_cmdline"):
+                errors.append("qualified_process_cmdline_drift")
+    cmdline = str(receipt.get("process_cmdline") or "")
+    if "vllm" not in cmdline or MODEL_REALPATH not in cmdline or str(PORT) not in cmdline:
+        errors.append("process_cmdline_identity_drift")
     if receipt.get("content_sha256") != content_sha256(receipt):
         errors.append("receipt_content_hash")
     if errors:
