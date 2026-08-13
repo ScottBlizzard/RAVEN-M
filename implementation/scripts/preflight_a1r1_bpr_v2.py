@@ -73,7 +73,11 @@ def build(implementation_commit: str) -> dict:
         "implementation/tests/official_qwen_mobile/test_a1r1_bpr_v2_controller_integration.py",
         "implementation/tests/official_qwen_mobile/test_a1r1_bpr_v2_offline_replay.py",
     ]
-    test_run = subprocess.run(test_command, cwd=ROOT, text=True, capture_output=True, check=False)
+    test_env = dict(__import__("os").environ)
+    test_env["PYTHONPATH"] = str(ROOT / "implementation/src") + __import__("os").pathsep + str(ROOT)
+    test_run = subprocess.run(
+        test_command, cwd=ROOT, text=True, capture_output=True, check=False, env=test_env
+    )
     if test_run.returncode:
         errors.append("bpr_test_suite_fail")
 
