@@ -187,6 +187,7 @@ class BoundedPendingReceiptV2:
         self.counters = {name: 0 for name in COUNTER_NAMES}
         self._event_serial = 0
         self._last_committed_read: dict[str, Any] | None = None
+        self._committed_reads: list[dict[str, Any]] = []
 
     def _fresh_id(self, prefix: str) -> str:
         self._event_serial += 1
@@ -334,6 +335,9 @@ class BoundedPendingReceiptV2:
         }
         self.pending_ticket = None
         self._last_committed_read = event
+        self._committed_reads.append(event)
+        if len(self._committed_reads) > 8:
+            raise RuntimeError("BPR committed-read audit exceeded frozen episode cap")
         return event
 
     def cancel_injection(self, ticket_id: str, reason: str) -> dict[str, Any]:
@@ -450,6 +454,7 @@ class BoundedPendingReceiptV2:
             "rendered_chars_total": self.counters["injected_chars"],
             "pending_ticket": asdict(self.pending_ticket) if self.pending_ticket else None,
             "last_committed_read": self._last_committed_read,
+            "read_events": list(self._committed_reads),
             "decision_boundary": {
                 "model_calls_added": 0,
                 "guard_enabled": False,
