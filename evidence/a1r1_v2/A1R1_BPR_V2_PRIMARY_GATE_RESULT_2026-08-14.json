@@ -1,0 +1,55 @@
+{
+  "schema": "a1r1_bpr_v2_primary_gate_result_v1",
+  "status": "STOPPED_CAPABILITY_GATE_FAILURE",
+  "scientific_validity": "VALID_SCIENTIFIC_FAILURE",
+  "live_generation_authorized": false,
+  "mechanism_id": "a1r1_bounded_pending_receipt_v2",
+  "experiment_id": "A1R1_BPRV2_QWEN3VL32B_AW_HARD_T20260806_G3407_V1",
+  "suite_id": "official_qwen_20260814T015836_f72d42dc",
+  "task_seed": 20260806,
+  "generation_seed": 3407,
+  "gate": {
+    "name": "A0_CAPABILITY_PRESERVATION_GATE4",
+    "required_successes": 4,
+    "completed_tasks": 1,
+    "successes": 0,
+    "failed_task": "ExpenseDeleteMultiple2",
+    "decision": "FAIL_FAST_NO_FURTHER_PRIMARY_OR_EMPTY_READ_TASKS"
+  },
+  "episode": {
+    "episode_id": "ExpenseDeleteMultiple2_20260806_12d76de8",
+    "evaluator_reward": 0.0,
+    "success": false,
+    "model_claimed_status": "success",
+    "termination_reason": "model_terminate_success",
+    "model_calls": 15,
+    "executed_actions": 14,
+    "total_tokens": 57689,
+    "prompt_tokens": 56037,
+    "completion_tokens": 1652,
+    "maximum_transport_attempts_per_call": 1,
+    "episode_error": null,
+    "lifecycle_error_count": 0,
+    "started_at": "2026-08-13T17:58:40.316091+00:00",
+    "finished_at": "2026-08-13T18:04:25.989789+00:00",
+    "episode_json_sha256": "1a6fb0ce32f39da52cf9d52f84b8fc0fa68f2d71ded411e1bef05d8cb95e6934"
+  },
+  "memory": {
+    "accepted_writes": 1,
+    "nonempty_reads": 1,
+    "injected_chars": 184,
+    "extra_model_calls": 0,
+    "action_overrides": 0,
+    "forced_terminations": 0,
+    "causal_attribution": "ACTIVATION_CONFIRMED_OUTCOME_CAUSATION_NOT_ESTABLISHED"
+  },
+  "provenance": {
+    "repository_head_at_launch": "cf3ebefde75cf75fed664dd42916591bdf4c6853",
+    "run_signature_sha256": "b471a2555db9e326cfd29ef4eafb333f4971686d013be578d69d8509054b31a4",
+    "live_receipt_sha256": "e30a2a95afe61ca1f3d57dc7d04ce33b9f908b138f85bdbd5f01dd7f1fe5a306",
+    "terminal_checkpoint": "A1R1_BPR_V2_CHECKPOINT_0001.json",
+    "terminal_checkpoint_file_sha256": "33cb4fad45fd0f4ec2c118e5e7e049d18836c308bce7cb82bd1344ec8ede2cf2",
+    "raw_suite_location": "runs/a1r1_bpr_v2_primary/official_qwen_20260814T015836_f72d42dc",
+    "raw_suite_committed": false
+  }
+}
