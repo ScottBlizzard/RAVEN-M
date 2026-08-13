@@ -1,0 +1,49 @@
+{
+  "R5_status": "PROSPECTIVE_UNKNOWN_PRELIVE",
+  "content_sha256": "0d57a334e3f7ff2dc15d05fb52f27a2e66082ba198f7c688f20f820c5b4c7f6c",
+  "created_at": "2026-08-13T17:23:09.913528+00:00",
+  "errors": [],
+  "generation_calls": 0,
+  "implementation_commit": "cbbca60d656e1ac16a892e4977696ec85442413b",
+  "live_generation_authorized": true,
+  "mechanism_id": "a1r1_bounded_pending_receipt_v2",
+  "offline_replay_file_sha256": "cd1508ac734c220a81ae185b49c552f3605163cd8b94348e524c04d17040f341",
+  "runtime_canary": {
+    "iterations": 1000,
+    "max_ms": 0.3237,
+    "p50_ms": 0.0385,
+    "p99_ms": 0.1858,
+    "pass": true
+  },
+  "schema": "a1r1_bpr_v2_zero_generation_preflight_v1",
+  "source_freeze_content_sha256": "37586a8467b595450ebfc1622e206eb1e1c9ea67d618285207972d72fecbb73e",
+  "source_freeze_file_sha256": "8e81b5f20441b3ad461df1f70f1b8a0e5b62f019ded1a3fad06d8f8fdffbc5c0",
+  "status": "PASS",
+  "task_manifest": {
+    "generation_seed": 3407,
+    "task_count": 19,
+    "task_seed": 20260806
+  },
+  "tests": {
+    "command": [
+      "C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "implementation/tests/official_qwen_mobile/test_a1r1_bpr_v2.py",
+      "implementation/tests/official_qwen_mobile/test_a1r1_bpr_v2_contract.py",
+      "implementation/tests/official_qwen_mobile/test_a1r1_bpr_v2_controller_integration.py",
+      "implementation/tests/official_qwen_mobile/test_a1r1_bpr_v2_offline_replay.py"
+    ],
+    "returncode": 0,
+    "stderr_tail": "",
+    "stdout_tail": "...................                                                      [100%]\n============================== warnings summary ===============================\nC:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\requests\\__init__.py:113\n  C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\requests\\__init__.py:113: RequestsDependencyWarning: urllib3 (2.3.0) or chardet (7.0.1)/charset_normalizer (3.4.4) doesn't match a supported version!\n    warnings.warn(\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n"
+  },
+  "token_bound": {
+    "episode_model_token_upper_bound": 3168,
+    "max_chars_per_read": 340,
+    "max_model_token_upper_bound_per_read": 396,
+    "max_utf8_bytes_per_read": 396,
+    "method": "UTF-8 byte upper bound retained as fail-closed model-token accounting"
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "R3": {
+    "denominator_definition": "executed valid legacy MEMORY prefixes with pending != exact lowercase none; duplicates retained",
+    "joint_fit_count": 511,
+    "nonfit_records": [
+      {
+        "chars": 122,
+        "episode_id": "OsmAndTrack_20260806_e2520311",
+        "fits": false,
+        "ordinal": 206,
+        "pending": "Open OsmAnd app to save track with waypoints Oberplanken, Liechtenstein, Rotenboden, Liechtenstein, Planken, Liechtenstein",
+        "source_response_sha256": "b6f22b578d19cf29bd271206ec8be93e136af6eb4ac7afd2fa8e0c7eec2c21b2",
+        "source_step": 0,
+        "task_name": "OsmAndTrack",
+        "utf8_bytes": 122
+      },
+      {
+        "chars": 122,
+        "episode_id": "OsmAndTrack_20260806_e2520311",
+        "fits": false,
+        "ordinal": 207,
+        "pending": "Open OsmAnd app to save track with waypoints Oberplanken, Liechtenstein, Rotenboden, Liechtenstein, Planken, Liechtenstein",
+        "source_response_sha256": "f87dfe8821a71203d420fb3bce6fde9f72de1425c5c0166e5ae80e7fe622b3c3",
+        "source_step": 1,
+        "task_name": "OsmAndTrack",
+        "utf8_bytes": 122
+      },
+      {
+        "chars": 122,
+        "episode_id": "OsmAndTrack_20260806_e2520311",
+        "fits": false,
+        "ordinal": 208,
+        "pending": "Open OsmAnd app to save track with waypoints Oberplanken, Liechtenstein, Rotenboden, Liechtenstein, Planken, Liechtenstein",
+        "source_response_sha256": "ed429158b137e1fb5e9b6bccc6a8f49af4afa7a949c711bc2c07224655a932b2",
+        "source_step": 2,
+        "task_name": "OsmAndTrack",
+        "utf8_bytes": 122
+      }
+    ],
+    "ordered_records_sha256": "2e42b4f1ccffd4cc88f9f1ae19021cb0675eea5729235c03e4b74056f1640f99",
+    "pass": true,
+    "record_count": 514,
+    "required_minimum": 489
+  },
+  "R5_status": "PROSPECTIVE_UNKNOWN_PRELIVE",
+  "content_sha256": "1fb06126b0664d475354831663eec46fb098754a60246fd9cf2286796cb1c756",
+  "design_sha256": "e6ff3a975484502e2b7368dd3f9775956957a613e3cf4a355e4e7e1c8d1ffc07",
+  "errors": [],
+  "generation_calls": 0,
+  "live_generation_authorized": true,
+  "mechanism_id": "a1r1_bounded_pending_receipt_v2",
+  "schema": "a1r1_bpr_v2_offline_replay_v1",
+  "source": {
+    "aggregate_sha256": "7a4ebaad754802fcf3350e83ca13032a16de609f2904c96c7b5ecd0efc006f51",
+    "episode_json_count": 19,
+    "episode_json_hashes_sha256": "c655234d5fa4d6695c67cef7a6f9fd9638aa1d6fc711432e6deb5839e54f9e28",
+    "suite_id": "official_qwen_20260810T122419_26573d7c",
+    "terminal_or_unexecuted_valid_prefix_count": 7
+  },
+  "status": "PASS",
+  "suffix": {
+    "sha256": "6d399443083139e0aad8241cc0e4a949e311348a09d68c032397104e163d610b",
+    "utf8_bytes": 686
+  }
+}
