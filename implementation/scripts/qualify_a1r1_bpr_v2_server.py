@@ -34,6 +34,9 @@ def main() -> int:
     read_enabled = args.mode == "primary"
     experiment = contract.PRIMARY_EXPERIMENT_ID if read_enabled else contract.EMPTY_EXPERIMENT_ID
     config = contract.PRIMARY_CONFIG_PATH if read_enabled else contract.EMPTY_CONFIG_PATH
+    model_manifest = Path(contract.MODEL_REALPATH + ".sha256")
+    if not model_manifest.is_file() or contract.file_sha256(model_manifest) != contract.MODEL_MANIFEST_SHA256:
+        raise RuntimeError("live model manifest drift")
     cmdline = Path(f"/proc/{args.pid}/cmdline").read_bytes().replace(b"\0", b" ").decode("utf-8")
     if "vllm" not in cmdline or contract.MODEL_REALPATH not in cmdline or str(args.port) not in cmdline:
         raise RuntimeError("live process cmdline does not match frozen BPR-v2 server")
