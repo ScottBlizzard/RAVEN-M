@@ -2,6 +2,15 @@
 
 ## Current research handoff
 
+The latest vertical-iteration synthesis is
+`evidence/a1/A1_VERTICAL_ITERATION_R4_R12_SYNTHESIS_2026-08-15.md`.
+A1-R4 through A1-R12 each stopped on the first frozen capability task with a
+valid reward-0 result and were not expanded. R12 did produce a measurable cost
+effect (174 repeated history entries removed; total tokens −4.37% versus R11),
+but no capability gain. The next design boundary is therefore a separately
+preregistered decision-level verifier/repair intervention, not another
+prompt-memory hot patch.
+
 The current project state is in `HANDOFF_2026-08-13.md`. The next design request,
 `GPT_PRO_A1_VERTICAL_REFINEMENT_DESIGN_REQUEST_2026-08-13.md`, moves from broad
 horizontal comparison to a minimal vertical refinement of A1. The A10-v2/A11/
