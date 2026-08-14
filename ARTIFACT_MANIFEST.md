@@ -1,5 +1,25 @@
 # RAVEN-M A0-A12 Research Artifact Manifest
 
+## 2026-08-14 A1-R2 scored entry points
+
+- `evidence/a1r2/A1R2_CVP_SCORED_RESULT_2026-08-14.md` - concise scored
+  interpretation, independent accuracy/cost/mechanism verdicts, and explicit
+  result-layer repair boundary.
+- `evidence/a1r2/A1R2_CVP_SCORED_RESULT_2026-08-14.json` - hash-bound 19-task
+  result with per-episode IDs/hashes, paired A0/A1 deltas, memory totals, and
+  the resolved infrastructure-invalid attempt.
+- `implementation/scripts/finalize_a1r2_cvp.py` - zero-generation finalizer for
+  the already-complete suite. It exists because the frozen shared runner
+  misroutes A1-R2 into an A12-only result branch after episode completion.
+- `implementation/tests/official_qwen_mobile/test_a1r2_finalizer.py` - order,
+  gate, and deterministic-content-hash tests for the finalizer.
+
+A1-R2 is `FORMAL_SCORED_PAIRED_WITH_RESULT_LAYER_REPAIR`: all 19 prospective
+episodes are source-frozen and valid, while aggregate construction required a
+separate read-only finalizer. It scored 6/19 and reward 6.5. Accuracy passed;
+the strict cost rule failed because calls equalled A1's 603; causal mechanism
+attribution remains unestablished without a matched ablation.
+
 ## 2026-08-13 current entry points
 
 - `HANDOFF_2026-08-13.md` - current verified status and vertical research direction.
@@ -42,6 +62,10 @@ experiment identities, preregistrations, preflights, or live authorization.
 ## Evidence classes
 
 - `FORMAL_SCORED_PAIRED`: complete seed-matched scored evidence such as A0-A2.
+- `FORMAL_SCORED_PAIRED_WITH_RESULT_LAYER_REPAIR`: complete prospective paired
+  episodes whose frozen runner failed only after episode completion and whose
+  aggregate was rebuilt by a hash-validating, zero-generation finalizer, such
+  as A1-R2.
 - `FORMAL_GATE_TERMINAL`: a prospective arm stopped by its frozen gate.
 - `FULL_SCORED_NEGATIVE_WITH_PROTOCOL_CAVEAT`: complete negative evidence whose
   execution schedule had a documented protocol defect, such as A6.

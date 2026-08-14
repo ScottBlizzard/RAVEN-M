@@ -1,0 +1,691 @@
+{
+  "schema": "a1r2_cvp_post_run_aggregate_v1",
+  "suite_id": "official_qwen_20260814T145307_50081981",
+  "a1r2_result": {
+    "schema": "a1r2_cvp_result_v1",
+    "status": "COMPLETE",
+    "identity": {
+      "mechanism_id": "a1r2_compact_verified_pending_v1",
+      "experiment_id": "A1R2_CVP_QWEN3VL32B_AW_HARD_T20260806_G3407_V1",
+      "task_seed": 20260806,
+      "generation_seed": 3407,
+      "implementation_commit": "ad7a39b55926408aa4a3c7101c9ff5cd83af4d80",
+      "source_freeze_content_sha256": "42b5a30155468e3c2224198a6b921f80d779d7cf6029088f3c50223ef77b6ea2",
+      "preflight_content_sha256": "cfd70d927accda84e9a3f47f8a5e2a30a709eb291b9dc63fb410d52870b256b0",
+      "preflight_file_sha256": "6c4688c53b36eae3b4462d6af51fdc02d892cd525fb05d502f4a22bcda961109",
+      "run_signature_sha256": "cad7f5e6d25cfae17f712c4d42fb3572fb84c6660312e8660cf910b3d252bba5",
+      "live_receipt_content_sha256s": [
+        "38bc86b860b82bb9ec4050fd1e31bbb1e20025eaae45734c9c55dcd9d341ef90",
+        "6e2f657d2de82224473208c8514cf6b3535927878e65ae9c2d00b8d1be33840f"
+      ],
+      "paired_reference_sha256": "ad0799334c887693b51e9769495d3f38055458141e3da1f66956a0db73495116"
+    },
+    "closure": {
+      "status": "exact_19_closed",
+      "valid_episode_count": 19,
+      "invalid_attempt_count": 1,
+      "invalid_attempts_resolved": true,
+      "ordered_tasks_exact": true,
+      "single_transport_per_call": true,
+      "generation_calls_during_finalization": 0,
+      "source_checkpoint_status": "running"
+    },
+    "gates": {
+      "a0_four": {
+        "status": "pass",
+        "success_count": 4,
+        "required": 4,
+        "tasks": [
+          {
+            "task_name": "ExpenseDeleteMultiple2",
+            "reward": 1.0,
+            "pass": true
+          },
+          {
+            "task_name": "RetroSavePlaylist",
+            "reward": 1.0,
+            "pass": true
+          },
+          {
+            "task_name": "SimpleCalendarAddOneEvent",
+            "reward": 1.0,
+            "pass": true
+          },
+          {
+            "task_name": "SportsTrackerTotalDurationForCategoryThisWeek",
+            "reward": 1.0,
+            "pass": true
+          }
+        ]
+      },
+      "a1_five": {
+        "status": "pass",
+        "success_count": 5,
+        "required": 5,
+        "tasks": [
+          {
+            "task_name": "ExpenseDeleteMultiple2",
+            "reward": 1.0,
+            "pass": true
+          },
+          {
+            "task_name": "RetroSavePlaylist",
+            "reward": 1.0,
+            "pass": true
+          },
+          {
+            "task_name": "SimpleCalendarAddOneEvent",
+            "reward": 1.0,
+            "pass": true
+          },
+          {
+            "task_name": "SportsTrackerTotalDurationForCategoryThisWeek",
+            "reward": 1.0,
+            "pass": true
+          },
+          {
+            "task_name": "RecipeDeleteMultipleRecipesWithConstraint",
+            "reward": 1.0,
+            "pass": true
+          }
+        ]
+      }
+    },
+    "performance": {
+      "success_count": 6,
+      "reward_sum": 6.5,
+      "model_calls": 603,
+      "executed_actions": 595,
+      "token_usage": {
+        "prompt_tokens": 2613225,
+        "completion_tokens": 72505,
+        "total_tokens": 2685730
+      },
+      "valid_elapsed_seconds": 11230.182856
+    },
+    "verdicts": {
+      "accuracy": "PASS",
+      "cost": "FAIL",
+      "cost_components": {
+        "calls_below_a1": false,
+        "tokens_below_a1": true,
+        "elapsed_below_a1": true
+      },
+      "mechanism": "NOT_ESTABLISHED_NO_MATCHED_ABLATION",
+      "combined": "ACCURACY_PASS_COST_FAIL_MECHANISM_NOT_ESTABLISHED"
+    },
+    "pairwise": {
+      "versus_a0": {
+        "wins": 2,
+        "losses": 0,
+        "ties": 17,
+        "success_delta": 2,
+        "reward_delta": 2.0,
+        "action_delta": 279,
+        "call_delta": 274,
+        "prompt_token_delta": 1379904,
+        "completion_token_delta": 32465,
+        "total_token_delta": 1412369,
+        "elapsed_delta": 4688.362496000001
+      },
+      "versus_a1": {
+        "wins": 1,
+        "losses": 0,
+        "ties": 18,
+        "success_delta": 1,
+        "reward_delta": 1.0,
+        "action_delta": -1,
+        "call_delta": 0,
+        "prompt_token_delta": -763663,
+        "completion_token_delta": -14874,
+        "total_token_delta": -778537,
+        "elapsed_delta": -3365.309140000003
+      }
+    },
+    "memory": {
+      "active_episode_count": 19,
+      "nonempty_read_count": 436,
+      "rendered_chars_total": 108423,
+      "rendered_tokens_total": 21710,
+      "successful_read_active_tasks": [
+        "ExpenseDeleteMultiple2",
+        "RetroSavePlaylist",
+        "SimpleCalendarAddOneEvent",
+        "SportsTrackerTotalDurationForCategoryThisWeek",
+        "RecipeDeleteMultipleRecipesWithConstraint",
+        "OsmAndMarker"
+      ],
+      "successful_silent_tasks": [],
+      "counters": {
+        "cancelled_read_count": 0,
+        "clear_count": 1,
+        "expiry_count": 14,
+        "injected_chars": 108423,
+        "invalid_prefix_count": 389,
+        "nonempty_read_count": 436,
+        "read_call_count": 603,
+        "replacement_count": 46,
+        "same_state_refresh_count": 130,
+        "write_attempt_count": 595,
+        "write_success_count": 205
+      },
+      "decision_boundary": {
+        "extra_model_calls": 0,
+        "action_override_count": 0,
+        "forced_termination_count": 0,
+        "hidden_ui_used_for_decision": false,
+        "evaluator_used_for_decision": false
+      }
+    },
+    "episodes": [
+      {
+        "task_name": "ExpenseDeleteMultiple2",
+        "seed": 20260806,
+        "episode_id": "ExpenseDeleteMultiple2_20260806_a27af967",
+        "episode_json_sha256": "494d4ffaaefb6613f3ef614b696c766fd6038e6a666ab5cf45d2a197bb698447",
+        "native_max_steps": 34,
+        "success": true,
+        "reward": 1.0,
+        "termination_reason": "model_terminate_success",
+        "model_calls": 18,
+        "executed_actions": 17,
+        "token_usage": {
+          "prompt_tokens": 68800,
+          "completion_tokens": 2190,
+          "total_tokens": 70990
+        },
+        "elapsed_seconds": 348.774791,
+        "memory_active": true,
+        "active_at_episode_end": true,
+        "nonempty_read_count": 17,
+        "rendered_chars": 4150,
+        "rendered_tokens": 804,
+        "write_success_count": 10,
+        "same_state_refresh_count": 5
+      },
+      {
+        "task_name": "RetroSavePlaylist",
+        "seed": 20260806,
+        "episode_id": "RetroSavePlaylist_20260806_269b2c65",
+        "episode_json_sha256": "56ded696d6c6f0c13bbd0d8dcef9583b57af6ad8cb3176133ac36dede24c07e9",
+        "native_max_steps": 50,
+        "success": true,
+        "reward": 1.0,
+        "termination_reason": "model_terminate_success",
+        "model_calls": 25,
+        "executed_actions": 24,
+        "token_usage": {
+          "prompt_tokens": 97796,
+          "completion_tokens": 2861,
+          "total_tokens": 100657
+        },
+        "elapsed_seconds": 501.786633,
+        "memory_active": true,
+        "active_at_episode_end": true,
+        "nonempty_read_count": 14,
+        "rendered_chars": 3419,
+        "rendered_tokens": 646,
+        "write_success_count": 4,
+        "same_state_refresh_count": 0
+      },
+      {
+        "task_name": "SimpleCalendarAddOneEvent",
+        "seed": 20260806,
+        "episode_id": "SimpleCalendarAddOneEvent_20260806_728d3349",
+        "episode_json_sha256": "0756500a2c6efaa485cdd930c3b9e6ff58a75e3a34452e411db22377d52e158c",
+        "native_max_steps": 34,
+        "success": true,
+        "reward": 1.0,
+        "termination_reason": "model_terminate_success",
+        "model_calls": 23,
+        "executed_actions": 22,
+        "token_usage": {
+          "prompt_tokens": 90865,
+          "completion_tokens": 2711,
+          "total_tokens": 93576
+        },
+        "elapsed_seconds": 455.888243,
+        "memory_active": true,
+        "active_at_episode_end": true,
+        "nonempty_read_count": 21,
+        "rendered_chars": 5328,
+        "rendered_tokens": 1114,
+        "write_success_count": 5,
+        "same_state_refresh_count": 1
+      },
+      {
+        "task_name": "SportsTrackerTotalDurationForCategoryThisWeek",
+        "seed": 20260806,
+        "episode_id": "SportsTrackerTotalDurationForCategoryThisWeek_20260806_e34aeaf5",
+        "episode_json_sha256": "c236765bff60a417bdc0da69edec8e24d0625c2e9a4be7df5e995221c4b18035",
+        "native_max_steps": 16,
+        "success": true,
+        "reward": 1.0,
+        "termination_reason": "model_answer",
+        "model_calls": 6,
+        "executed_actions": 6,
+        "token_usage": {
+          "prompt_tokens": 22282,
+          "completion_tokens": 821,
+          "total_tokens": 23103
+        },
+        "elapsed_seconds": 130.192958,
+        "memory_active": true,
+        "active_at_episode_end": true,
+        "nonempty_read_count": 5,
+        "rendered_chars": 1168,
+        "rendered_tokens": 221,
+        "write_success_count": 4,
+        "same_state_refresh_count": 1
+      },
+      {
+        "task_name": "RecipeDeleteMultipleRecipesWithConstraint",
+        "seed": 20260806,
+        "episode_id": "RecipeDeleteMultipleRecipesWithConstraint_20260806_b4feab19",
+        "episode_json_sha256": "5d1dbf1e8e3ead7818ffd6aa67fb9ac02b4bcb40e91ab0294506ae6c8ccf4a4e",
+        "native_max_steps": 40,
+        "success": true,
+        "reward": 1.0,
+        "termination_reason": "model_terminate_success",
+        "model_calls": 18,
+        "executed_actions": 17,
+        "token_usage": {
+          "prompt_tokens": 68377,
+          "completion_tokens": 2012,
+          "total_tokens": 70389
+        },
+        "elapsed_seconds": 335.058283,
+        "memory_active": true,
+        "active_at_episode_end": true,
+        "nonempty_read_count": 16,
+        "rendered_chars": 4192,
+        "rendered_tokens": 791,
+        "write_success_count": 7,
+        "same_state_refresh_count": 2
+      },
+      {
+        "task_name": "BrowserMultiply",
+        "seed": 20260806,
+        "episode_id": "BrowserMultiply_20260806_54623170",
+        "episode_json_sha256": "149dc5fba971c7c75b7b975d3aa51e1d341fbcc03d0935070c21057bad2bb4ac",
+        "native_max_steps": 22,
+        "success": false,
+        "reward": 0.0,
+        "termination_reason": "max_steps",
+        "model_calls": 22,
+        "executed_actions": 22,
+        "token_usage": {
+          "prompt_tokens": 84696,
+          "completion_tokens": 2488,
+          "total_tokens": 87184
+        },
+        "elapsed_seconds": 426.63011,
+        "memory_active": true,
+        "active_at_episode_end": true,
+        "nonempty_read_count": 19,
+        "rendered_chars": 4623,
+        "rendered_tokens": 902,
+        "write_success_count": 12,
+        "same_state_refresh_count": 5
+      },
+      {
+        "task_name": "ExpenseAddMultipleFromGallery",
+        "seed": 20260806,
+        "episode_id": "ExpenseAddMultipleFromGallery_20260806_4caedc43",
+        "episode_json_sha256": "6bca92449b282a6d4de1b3169f3aa6a3ba261877f05ab4ced15f35f832b725a2",
+        "native_max_steps": 60,
+        "success": false,
+        "reward": 0.0,
+        "termination_reason": "model_terminate_success",
+        "model_calls": 14,
+        "executed_actions": 13,
+        "token_usage": {
+          "prompt_tokens": 52709,
+          "completion_tokens": 1611,
+          "total_tokens": 54320
+        },
+        "elapsed_seconds": 281.689963,
+        "memory_active": true,
+        "active_at_episode_end": true,
+        "nonempty_read_count": 13,
+        "rendered_chars": 3422,
+        "rendered_tokens": 637,
+        "write_success_count": 5,
+        "same_state_refresh_count": 2
+      },
+      {
+        "task_name": "ExpenseAddMultipleFromMarkor",
+        "seed": 20260806,
+        "episode_id": "ExpenseAddMultipleFromMarkor_20260806_faf5c468",
+        "episode_json_sha256": "e04beeca8719f41883b2e86918a153d07f5793e1caff8aa1b1a43fe1e2122d9c",
+        "native_max_steps": 60,
+        "success": false,
+        "reward": 0.0,
+        "termination_reason": "max_steps",
+        "model_calls": 60,
+        "executed_actions": 60,
+        "token_usage": {
+          "prompt_tokens": 303045,
+          "completion_tokens": 8154,
+          "total_tokens": 311199
+        },
+        "elapsed_seconds": 1166.406123,
+        "memory_active": true,
+        "active_at_episode_end": false,
+        "nonempty_read_count": 21,
+        "rendered_chars": 5243,
+        "rendered_tokens": 1011,
+        "write_success_count": 9,
+        "same_state_refresh_count": 6
+      },
+      {
+        "task_name": "MarkorCreateNoteAndSms",
+        "seed": 20260806,
+        "episode_id": "MarkorCreateNoteAndSms_20260806_150c1638",
+        "episode_json_sha256": "53e40dfdf96346e77601dffa091c9f97d3c8456ae7e1ec8b88c67748aade7ad8",
+        "native_max_steps": 18,
+        "success": false,
+        "reward": 0.5,
+        "termination_reason": "max_steps",
+        "model_calls": 18,
+        "executed_actions": 18,
+        "token_usage": {
+          "prompt_tokens": 69139,
+          "completion_tokens": 1932,
+          "total_tokens": 71071
+        },
+        "elapsed_seconds": 339.553181,
+        "memory_active": true,
+        "active_at_episode_end": false,
+        "nonempty_read_count": 14,
+        "rendered_chars": 3271,
+        "rendered_tokens": 631,
+        "write_success_count": 5,
+        "same_state_refresh_count": 1
+      },
+      {
+        "task_name": "MarkorMergeNotes",
+        "seed": 20260806,
+        "episode_id": "MarkorMergeNotes_20260806_6367b3d1",
+        "episode_json_sha256": "e32f186765487b37703497c121198df3c6141850069ca51c0d2bcf2988768176",
+        "native_max_steps": 78,
+        "success": false,
+        "reward": 0.0,
+        "termination_reason": "max_steps",
+        "model_calls": 78,
+        "executed_actions": 78,
+        "token_usage": {
+          "prompt_tokens": 357420,
+          "completion_tokens": 9594,
+          "total_tokens": 367014
+        },
+        "elapsed_seconds": 1396.820757,
+        "memory_active": true,
+        "active_at_episode_end": true,
+        "nonempty_read_count": 73,
+        "rendered_chars": 19350,
+        "rendered_tokens": 4095,
+        "write_success_count": 34,
+        "same_state_refresh_count": 27
+      },
+      {
+        "task_name": "MarkorTranscribeVideo",
+        "seed": 20260806,
+        "episode_id": "MarkorTranscribeVideo_20260806_737baf69",
+        "episode_json_sha256": "6e0f98632edaaa9256f21e87dbcb3c3689390c5d03e793392d67215353ae4f74",
+        "native_max_steps": 20,
+        "success": false,
+        "reward": 0.0,
+        "termination_reason": "model_answer",
+        "model_calls": 14,
+        "executed_actions": 14,
+        "token_usage": {
+          "prompt_tokens": 53782,
+          "completion_tokens": 1565,
+          "total_tokens": 55347
+        },
+        "elapsed_seconds": 322.854565,
+        "memory_active": true,
+        "active_at_episode_end": true,
+        "nonempty_read_count": 11,
+        "rendered_chars": 2541,
+        "rendered_tokens": 477,
+        "write_success_count": 7,
+        "same_state_refresh_count": 5
+      },
+      {
+        "task_name": "OsmAndMarker",
+        "seed": 20260806,
+        "episode_id": "OsmAndMarker_20260806_8517b31f",
+        "episode_json_sha256": "be3ded1024325388bc25c4701820575f3927756eadede7e4681cd2efc13d507d",
+        "native_max_steps": 20,
+        "success": true,
+        "reward": 1.0,
+        "termination_reason": "model_terminate_success",
+        "model_calls": 12,
+        "executed_actions": 11,
+        "token_usage": {
+          "prompt_tokens": 45564,
+          "completion_tokens": 1549,
+          "total_tokens": 47113
+        },
+        "elapsed_seconds": 327.251126,
+        "memory_active": true,
+        "active_at_episode_end": true,
+        "nonempty_read_count": 11,
+        "rendered_chars": 2833,
+        "rendered_tokens": 630,
+        "write_success_count": 6,
+        "same_state_refresh_count": 2
+      },
+      {
+        "task_name": "OsmAndTrack",
+        "seed": 20260806,
+        "episode_id": "OsmAndTrack_20260806_1823722c",
+        "episode_json_sha256": "cfa31b22d5608fb2306166724367347d65b017d346ce4352c39e95214e1270a2",
+        "native_max_steps": 120,
+        "success": false,
+        "reward": 0.0,
+        "termination_reason": "max_steps",
+        "model_calls": 120,
+        "executed_actions": 120,
+        "token_usage": {
+          "prompt_tokens": 580932,
+          "completion_tokens": 15442,
+          "total_tokens": 596374
+        },
+        "elapsed_seconds": 2273.116465,
+        "memory_active": true,
+        "active_at_episode_end": true,
+        "nonempty_read_count": 119,
+        "rendered_chars": 28262,
+        "rendered_tokens": 5776,
+        "write_success_count": 71,
+        "same_state_refresh_count": 67
+      },
+      {
+        "task_name": "RecipeAddMultipleRecipesFromImage",
+        "seed": 20260806,
+        "episode_id": "RecipeAddMultipleRecipesFromImage_20260806_4c0dccd5",
+        "episode_json_sha256": "43fe4d61c5d8c2cecc3d182a60816682edfdb0c640b1035289db01f411baf9e4",
+        "native_max_steps": 60,
+        "success": false,
+        "reward": 0.0,
+        "termination_reason": "max_steps",
+        "model_calls": 60,
+        "executed_actions": 60,
+        "token_usage": {
+          "prompt_tokens": 253354,
+          "completion_tokens": 6510,
+          "total_tokens": 259864
+        },
+        "elapsed_seconds": 838.072501,
+        "memory_active": true,
+        "active_at_episode_end": false,
+        "nonempty_read_count": 8,
+        "rendered_chars": 1984,
+        "rendered_tokens": 376,
+        "write_success_count": 2,
+        "same_state_refresh_count": 1
+      },
+      {
+        "task_name": "RecipeAddMultipleRecipesFromMarkor",
+        "seed": 20260806,
+        "episode_id": "RecipeAddMultipleRecipesFromMarkor_20260806_154a3c03",
+        "episode_json_sha256": "2c8099cba26a5876530cd0640bdc78c26e2d2bf12a217c8315e10e3349452089",
+        "native_max_steps": 60,
+        "success": false,
+        "reward": 0.0,
+        "termination_reason": "model_terminate_success",
+        "model_calls": 29,
+        "executed_actions": 28,
+        "token_usage": {
+          "prompt_tokens": 112751,
+          "completion_tokens": 3488,
+          "total_tokens": 116239
+        },
+        "elapsed_seconds": 532.373212,
+        "memory_active": true,
+        "active_at_episode_end": true,
+        "nonempty_read_count": 18,
+        "rendered_chars": 4318,
+        "rendered_tokens": 829,
+        "write_success_count": 6,
+        "same_state_refresh_count": 1
+      },
+      {
+        "task_name": "RecipeAddMultipleRecipesFromMarkor2",
+        "seed": 20260806,
+        "episode_id": "RecipeAddMultipleRecipesFromMarkor2_20260806_92d8511a",
+        "episode_json_sha256": "c9800fb672739760c221bfd1122ef2d192c582b492fc749660153cf40fc1020a",
+        "native_max_steps": 60,
+        "success": false,
+        "reward": 0.0,
+        "termination_reason": "max_steps",
+        "model_calls": 60,
+        "executed_actions": 60,
+        "token_usage": {
+          "prompt_tokens": 254253,
+          "completion_tokens": 6290,
+          "total_tokens": 260543
+        },
+        "elapsed_seconds": 1036.526237,
+        "memory_active": true,
+        "active_at_episode_end": false,
+        "nonempty_read_count": 33,
+        "rendered_chars": 8704,
+        "rendered_tokens": 1632,
+        "write_success_count": 7,
+        "same_state_refresh_count": 1
+      },
+      {
+        "task_name": "SaveCopyOfReceiptTaskEval",
+        "seed": 20260806,
+        "episode_id": "SaveCopyOfReceiptTaskEval_20260806_289b77f0",
+        "episode_json_sha256": "b43fd4358317f85653feb176c143111b99b60931892a2cc09aae4d41501c90a4",
+        "native_max_steps": 16,
+        "success": false,
+        "reward": 0.0,
+        "termination_reason": "model_terminate_success",
+        "model_calls": 11,
+        "executed_actions": 10,
+        "token_usage": {
+          "prompt_tokens": 41415,
+          "completion_tokens": 1379,
+          "total_tokens": 42794
+        },
+        "elapsed_seconds": 210.517144,
+        "memory_active": true,
+        "active_at_episode_end": true,
+        "nonempty_read_count": 10,
+        "rendered_chars": 2538,
+        "rendered_tokens": 528,
+        "write_success_count": 5,
+        "same_state_refresh_count": 2
+      },
+      {
+        "task_name": "SportsTrackerActivitiesOnDate",
+        "seed": 20260806,
+        "episode_id": "SportsTrackerActivitiesOnDate_20260806_d2df83f9",
+        "episode_json_sha256": "c711857eb1bbea7dddc8be28ffbbac9560b23383220a849cc0170f253fc43c14",
+        "native_max_steps": 20,
+        "success": false,
+        "reward": 0.0,
+        "termination_reason": "model_answer",
+        "model_calls": 7,
+        "executed_actions": 7,
+        "token_usage": {
+          "prompt_tokens": 26080,
+          "completion_tokens": 870,
+          "total_tokens": 26950
+        },
+        "elapsed_seconds": 145.447779,
+        "memory_active": true,
+        "active_at_episode_end": false,
+        "nonempty_read_count": 6,
+        "rendered_chars": 1398,
+        "rendered_tokens": 272,
+        "write_success_count": 3,
+        "same_state_refresh_count": 1
+      },
+      {
+        "task_name": "SportsTrackerTotalDistanceForCategoryOverInterval",
+        "seed": 20260806,
+        "episode_id": "SportsTrackerTotalDistanceForCategoryOverInterval_20260806_35bba8b5",
+        "episode_json_sha256": "3a3f8e7c3a4189e9961fcdf5366438c3413588c185cf0cd696752aa9e151e85d",
+        "native_max_steps": 22,
+        "success": false,
+        "reward": 0.0,
+        "termination_reason": "model_answer",
+        "model_calls": 8,
+        "executed_actions": 8,
+        "token_usage": {
+          "prompt_tokens": 29965,
+          "completion_tokens": 1038,
+          "total_tokens": 31003
+        },
+        "elapsed_seconds": 161.222785,
+        "memory_active": true,
+        "active_at_episode_end": true,
+        "nonempty_read_count": 7,
+        "rendered_chars": 1679,
+        "rendered_tokens": 338,
+        "write_success_count": 3,
+        "same_state_refresh_count": 0
+      }
+    ],
+    "invalid_attempts": [
+      {
+        "episode_id": "RecipeAddMultipleRecipesFromMarkor_20260806_ecdb1880",
+        "error": {
+          "message": "HTTPConnectionPool(host='127.0.0.1', port=18000): Max retries exceeded with url: /v1/chat/completions (Caused by NewConnectionError(\"HTTPConnection(host='127.0.0.1', port=18000): Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。\"))",
+          "traceback": "Traceback (most recent call last):\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\06_local_runtime\\envs\\androidworld\\Lib\\site-packages\\urllib3\\connection.py\", line 204, in _new_conn\n    sock = connection.create_connection(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\06_local_runtime\\envs\\androidworld\\Lib\\site-packages\\urllib3\\util\\connection.py\", line 85, in create_connection\n    raise err\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\06_local_runtime\\envs\\androidworld\\Lib\\site-packages\\urllib3\\util\\connection.py\", line 73, in create_connection\n    sock.connect(sa)\nConnectionRefusedError: [WinError 10061] 由于目标计算机积极拒绝，无法连接。\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\06_local_runtime\\envs\\androidworld\\Lib\\site-packages\\urllib3\\connectionpool.py\", line 788, in urlopen\n    response = self._make_request(\n               ^^^^^^^^^^^^^^^^^^^\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\06_local_runtime\\envs\\androidworld\\Lib\\site-packages\\urllib3\\connectionpool.py\", line 493, in _make_request\n    conn.request(\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\06_local_runtime\\envs\\androidworld\\Lib\\site-packages\\urllib3\\connection.py\", line 500, in request\n    self.endheaders()\n  File \"C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\http\\client.py\", line 1298, in endheaders\n    self._send_output(message_body, encode_chunked=encode_chunked)\n  File \"C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\http\\client.py\", line 1058, in _send_output\n    self.send(msg)\n  File \"C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\http\\client.py\", line 996, in send\n    self.connect()\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\06_local_runtime\\envs\\androidworld\\Lib\\site-packages\\urllib3\\connection.py\", line 331, in connect\n    self.sock = self._new_conn()\n                ^^^^^^^^^^^^^^^^\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\06_local_runtime\\envs\\androidworld\\Lib\\site-packages\\urllib3\\connection.py\", line 219, in _new_conn\n    raise NewConnectionError(\nurllib3.exceptions.NewConnectionError: HTTPConnection(host='127.0.0.1', port=18000): Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\06_local_runtime\\envs\\androidworld\\Lib\\site-packages\\requests\\adapters.py\", line 696, in send\n    resp = conn.urlopen(\n           ^^^^^^^^^^^^^\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\06_local_runtime\\envs\\androidworld\\Lib\\site-packages\\urllib3\\connectionpool.py\", line 842, in urlopen\n    retries = retries.increment(\n              ^^^^^^^^^^^^^^^^^^\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\06_local_runtime\\envs\\androidworld\\Lib\\site-packages\\urllib3\\util\\retry.py\", line 543, in increment\n    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nurllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='127.0.0.1', port=18000): Max retries exceeded with url: /v1/chat/completions (Caused by NewConnectionError(\"HTTPConnection(host='127.0.0.1', port=18000): Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。\"))\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\implementation\\src\\raven_m\\official_qwen_mobile\\controller.py\", line 468, in run\n    call = self.client.generate(\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\implementation\\src\\raven_m\\models\\vllm_client.py\", line 193, in generate\n    raise last_error\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\implementation\\src\\raven_m\\models\\vllm_client.py\", line 175, in generate\n    response = self.session.post(\n               ^^^^^^^^^^^^^^^^^^\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\06_local_runtime\\envs\\androidworld\\Lib\\site-packages\\requests\\sessions.py\", line 712, in post\n    return self.request(\"POST\", url, data=data, json=json, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\06_local_runtime\\envs\\androidworld\\Lib\\site-packages\\requests\\sessions.py\", line 651, in request\n    resp = self.send(prep, **send_kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\06_local_runtime\\envs\\androidworld\\Lib\\site-packages\\requests\\sessions.py\", line 784, in send\n    r = adapter.send(request, **kwargs)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\06_local_runtime\\envs\\androidworld\\Lib\\site-packages\\requests\\adapters.py\", line 729, in send\n    raise ConnectionError(e, request=request)\nrequests.exceptions.ConnectionError: HTTPConnectionPool(host='127.0.0.1', port=18000): Max retries exceeded with url: /v1/chat/completions (Caused by NewConnectionError(\"HTTPConnection(host='127.0.0.1', port=18000): Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。\"))\n",
+          "type": "ConnectionError"
+        },
+        "lifecycle_errors": [],
+        "reason": "controller_or_lifecycle_invalid",
+        "resolved_by_episode_id": "RecipeAddMultipleRecipesFromMarkor_20260806_154a3c03",
+        "seed": 20260806,
+        "task_name": "RecipeAddMultipleRecipesFromMarkor"
+      }
+    ],
+    "errors": [],
+    "aggregation_repair": {
+      "classification": "evidence_layer_only_no_generation",
+      "reason": "frozen_shared_runner_misroutes_a1r2_to_a12_reference_segments_result_branch",
+      "frozen_runner_sha256": "6edf6f06f6aad85a955850e33d4c1f160eefb153bf3f6aa476aba325b2d1c1a5",
+      "checkpoint_sha256": "5c4e433f8ce1fd53e1efc56c513c20116dd8479791391bc0b163c298dcecf621",
+      "tokenizer_model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+      "transformers_version": "5.14.1",
+      "tokenizer_files_sha256": {
+        "config.json": "d2dd0c60d01b9e195d9447c52da61c7302d28828524914c044d9c6e1b81d0427",
+        "merges.txt": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+        "tokenizer.json": "a5d85b6dcc535e6b93115a9ef287e6132fdbf30270da6218194ba742261173c7",
+        "tokenizer_config.json": "c2da771801886ad9ae98181793ffd3dfb7f1af30f6f7c6a4e15d7dbba52e2399",
+        "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+      }
+    },
+    "content_sha256": "33ccb1fe3ef95534a068d1700ce4cadcd6c68a451da63c5f08be927a466e7df0"
+  },
+  "content_sha256": "e18b7a935db123c12fbb4c1d17fa748ff9fb702de5aa0db6a416b957adb2f882"
+}

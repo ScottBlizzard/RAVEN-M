@@ -13,6 +13,13 @@ independent Pro design studies beyond pure memory. Their common evidence ledger
 is `evidence/composite/COMPONENT_EVIDENCE_LEDGER_2026-08-13.md`. They are
 unreviewed design requests, not registered or authorized experiment arms.
 
+The newest prospective vertical result is A1-R2 CVP: **6/19**, reward **6.5**,
+with all five A1 successes preserved and `OsmAndMarker` added. Its accuracy
+verdict passes, its strict cost verdict fails because calls equal rather than
+undercut A1, and causal mechanism attribution remains unestablished without a
+matched ablation. See
+`evidence/a1r2/A1R2_CVP_SCORED_RESULT_2026-08-14.md`.
+
 This branch is the clean audit packet for a Zhejiang University summer-camp study of memory mechanisms in long-horizon AndroidWorld tasks. It replaces the earlier public-framework selection packet. Superseded MobileUse/B2/C0 explorations remain recoverable in Git history but are intentionally absent from this branch so that an independent reviewer can focus on the current paired experiment.
 
 ## Research progression
@@ -20,6 +27,7 @@ This branch is the clean audit packet for a Zhejiang University summer-camp stud
 1. **A0 — official Qwen mobile baseline.** The public Qwen3-VL mobile-agent prompt and action protocol were ported to AndroidWorld with Qwen3-VL-32B. On the frozen first seed it achieved 4/19 full successes.
 2. **A1 — simple Action Working Memory.** Six recent `observed / verified / pending` records were injected within each episode. It achieved 5/19 but increased steps from 329 to 603 and tokens from 1.27M to 3.46M.
 3. **A2-v1r1 — scored verified-progress compound arm.** It completed the 19-task suite at 0/19, with 705 calls and 3,170,413 tokens. It is retained as a negative comparison rather than an improvement over A0 or A1.
+4. **A1-R2 compact vertical refinement.** It retained one latest verified/pending ledger, deduplicated the memory prefix from ordinary history, and scored 6/19 with 603 calls and 2.686M tokens. This is the first matched accuracy improvement beyond A1 in the vertical line, but not yet a causal mechanism result.
 
 The A2 guard is not claimed as memory intelligence. It only limits obvious repeated-action waste. All memory reads/writes and guard assessments/blocks/stops are recorded separately so the final trace analysis can attribute changes.
 
