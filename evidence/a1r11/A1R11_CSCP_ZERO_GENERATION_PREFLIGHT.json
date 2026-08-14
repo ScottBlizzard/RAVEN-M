@@ -1,0 +1,49 @@
+{
+  "checks": {
+    "banned_core_imports": [],
+    "git": {
+      "head": "64dab37bae34c36f5c1aee8fa4ecfa1d1dda949c",
+      "worktree_status": []
+    },
+    "offline_replay": {
+      "status": "PASS",
+      "totals": {
+        "a1r2_actual_rendered_chars": 108423,
+        "executed_actions": 595,
+        "failure_evidence_count": 6,
+        "failure_evidence_read_count": 23,
+        "failure_evidence_read_episode_count": 4,
+        "model_calls": 603,
+        "nonreinforcing_state_write_count": 130,
+        "projected_nonempty_reads": 603,
+        "projected_render_ratio_vs_a1r2": 4.725049113195539,
+        "projected_rendered_chars": 512304,
+        "semantic_memory_reads": 120,
+        "valid_episode_count": 19,
+        "valid_prefixes": 206,
+        "writer_reminder_reads": 483
+      }
+    },
+    "runtime_canary_ms": {
+      "maximum": 0.16519999917363748,
+      "p99": 0.10309999925084412
+    },
+    "tests": {
+      "returncode": 0,
+      "stderr_tail": "",
+      "stdout_tail": "........................................................................ [ 20%]\n........................................................................ [ 40%]\n........................................................................ [ 60%]\n........................................................................ [ 80%]\n.....................................................................    [100%]\n"
+    }
+  },
+  "content_sha256": "7598c0251ea3549bca2d460bd8a70fe89d8cc43e955996ea3525c4556652b234",
+  "created_at": "2026-08-14T22:01:07.615495+00:00",
+  "errors": [],
+  "experiment_id": "A1R11_CSCP_QWEN3VL32B_AW_HARD_T20260806_G3407_V1",
+  "generation_calls": 0,
+  "implementation_commit": "64dab37bae34c36f5c1aee8fa4ecfa1d1dda949c",
+  "live_generation_authorized": true,
+  "mechanism_id": "a1r11_coordinate_self_check_pending_v1",
+  "offline_replay_content_sha256": "2eb33e199c91ae6e6bb45a2aebdc79702b7c8db5c9412991b1cff269e3d51b45",
+  "schema": "a1r11_cscp_zero_generation_preflight_v1",
+  "source_freeze_content_sha256": "25ad4887fe7637b3cb4c14f2d2a516bd8652b380ec26514795e95b830182a1fc",
+  "status": "PASS"
+}
