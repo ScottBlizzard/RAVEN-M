@@ -1,0 +1,10 @@
+{
+  "schema": "a1r6_goal_anchored_pending_config_v1",
+  "mechanism_id": "a1r6_goal_anchored_pending_v1",
+  "experiment_id": "A1R6_GAPL_QWEN3VL32B_AW_HARD_T20260806_G3407_V1",
+  "parent_evidence_commit": "87d665a1021c6a1479bcbd80ff6a1716dd8f6cd8",
+  "model": {"id": "Qwen/Qwen3-VL-32B-Instruct", "revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb", "generation_seed": 3407, "temperature": 0.7, "top_p": 0.8, "top_k": 20, "presence_penalty": 1.5, "repetition_penalty": 1.0, "max_tokens": 32768},
+  "benchmark": {"manifest": "implementation/configs/androidworld_hard_v2_instances.json", "task_seed": 20260806, "task_count": 19, "order": "a1r2_six_then_remaining_thirteen", "native_step_budgets": true},
+  "memory": {"base": "a1r5_transition_invalidated_pending_v1", "goal_anchor_max_chars": 320, "visible_confirmation_required_before_requirement_removal": true, "locating_or_opening_is_not_completion": true, "ttl_requests": 8, "material_changed_pixel_fraction_gt": 0.001, "max_render_chars": 1100, "extra_model_calls": 0, "guard": false, "action_override": false, "forced_termination": false},
+  "prospective_gates": {"capability_successes_required": 6, "full_suite_accuracy_successes_gt": 6, "full_suite_reward_gt": 6.5, "model_calls_lt": 603, "total_tokens_lt": 2685730, "valid_elapsed_seconds_lt": 11230.182856}
+}
