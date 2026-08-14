@@ -160,6 +160,17 @@ A7_REMAINING_AFTER_GATE_TASKS = (
 # mechanism and contract modules, and makes it impossible to compose multiple
 # memories in one controller.
 DUAL_ARM_SPECS = {
+    "a1r3": {
+        "flag": "a1r3_srpl",
+        "label": "A1-R3 SRPL",
+        "memory_module": "raven_m.official_qwen_mobile.a1r3_stale_resistant_pending",
+        "memory_class": "StaleResistantPendingMemory",
+        "contract_module": "raven_m.official_qwen_mobile.a1r3_contract",
+        "entry_key": "a1r3_valid_entries",
+        "checkpoint_schema": "a1r3_srpl_checkpoint_v1",
+        "result_key": "a1r3_result",
+        "result_schema": "a1r3_srpl_result_v1",
+    },
     "a1r2": {
         "flag": "a1r2_cvp",
         "label": "A1-R2 CVP",
@@ -308,6 +319,13 @@ def _load_dual_arm(arm: str) -> dict:
                 getattr(contract, "DESIGN_REVIEW_COMMIT", None),
             ),
             "task_seed": contract.TASK_SEED,
+            "gate_tasks": tuple(
+                getattr(
+                    contract,
+                    "CAPABILITY_GATE_TASKS",
+                    getattr(contract, "GATE5_TASKS", A0_PRESERVATION_TASKS),
+                )
+            ),
             "model_realpath": getattr(contract, "MODEL_REALPATH", A10_MODEL_REALPATH),
             "preservation_report": lambda summaries: _contract_preservation_report(
                 contract, summaries
@@ -641,6 +659,82 @@ def _diag6_pairwise(
         "prompt_token_delta": usage["prompt_tokens"] - int(total("prompt_tokens")),
         "total_token_delta": usage["total_tokens"] - int(total("total_tokens")),
     }
+
+
+def _a1r3_failure_causal_analysis(summaries: list[dict]) -> list[dict]:
+    from raven_m.official_qwen_mobile.a1r3_stale_resistant_pending import (
+        canonical_action_family,
+    )
+
+    records: list[dict] = []
+    seen: set[tuple[str, int, str]] = set()
+    for summary in summaries:
+        steps = list(summary.get("steps") or [])
+        for index, step in enumerate(steps):
+            read = step.get("memory_read") or {}
+            if not read.get("failure_evidence_injected"):
+                continue
+            failed_family = str(read.get("failed_action_family") or "")
+            support_step = int(read.get("failure_second_support_step") or -1)
+            signature = (str(summary["episode_id"]), support_step, failed_family)
+            if not failed_family or signature in seen:
+                continue
+            seen.add(signature)
+            current = canonical_action_family(
+                (step.get("decision") or {}).get("canonical_action")
+            )
+            current_family = current[0] if current else None
+            diverged = current_family is not None and current_family != failed_family
+            executed_after_read: list[dict] = []
+            for later in steps[index:]:
+                if later.get("executed"):
+                    executed_after_read.append(later)
+                if len(executed_after_read) >= 8:
+                    break
+            progress_index = None
+            progress_step = None
+            for offset, later in enumerate(executed_after_read[:4]):
+                transition = later.get("transition") or {}
+                try:
+                    fraction = float(transition.get("changed_pixel_fraction_gt_5") or 0)
+                except (TypeError, ValueError):
+                    fraction = 0.0
+                if transition.get("same_shape") is False or fraction > 0.001:
+                    progress_index = offset
+                    progress_step = int(later.get("step", -1))
+                    break
+            relapse_step = None
+            if progress_index is not None:
+                for later in executed_after_read[progress_index + 1 : progress_index + 5]:
+                    family = canonical_action_family(
+                        (later.get("decision") or {}).get("canonical_action")
+                    )
+                    transition = later.get("transition") or {}
+                    try:
+                        fraction = float(transition.get("changed_pixel_fraction_gt_5") or 0)
+                    except (TypeError, ValueError):
+                        fraction = 0.0
+                    no_progress = transition.get("same_shape") is True and fraction <= 0.001
+                    if family and family[0] == failed_family and no_progress:
+                        relapse_step = int(later.get("step", -1))
+                        break
+            records.append(
+                {
+                    "episode_id": summary["episode_id"],
+                    "task_name": summary["task_name"],
+                    "failure_second_support_step": support_step,
+                    "first_injection_step": int(step.get("step", -1)),
+                    "failed_action_family": failed_family,
+                    "next_action_family": current_family,
+                    "next_action_diverged": diverged,
+                    "material_progress_step_within_4": progress_step,
+                    "same_failure_relapse_step_within_4": relapse_step,
+                    "productive_signal": bool(
+                        diverged and progress_step is not None and relapse_step is None
+                    ),
+                }
+            )
+    return records
 
 
 def _a10_causal_read_analysis(summaries: list[dict]) -> list[dict]:
@@ -1114,6 +1208,21 @@ def main() -> None:
         help="Fresh A12 receipt bound only to its own preflight and process.",
     )
     parser.add_argument(
+        "--a1r3-srpl",
+        action="store_true",
+        help="Run the prospective A1-R3 stale-resistant pending ledger arm.",
+    )
+    parser.add_argument(
+        "--a1r3-preflight-report",
+        type=Path,
+        default=REPOSITORY_ROOT / "evidence/a1r3/A1R3_SRPL_ZERO_GENERATION_PREFLIGHT.json",
+    )
+    parser.add_argument(
+        "--a1r3-launch-receipt",
+        type=Path,
+        help="Fresh A1-R3 receipt bound only to its own preflight and process.",
+    )
+    parser.add_argument(
         "--a1r2-cvp",
         action="store_true",
         help="Run the prospective A1-R2 compact verified/pending ledger arm.",
@@ -1383,6 +1492,7 @@ def main() -> None:
             args.a10_v2_emobf,
             args.a11_crc_ecobf,
             args.a12_madm,
+            args.a1r3_srpl,
             args.a1r2_cvp,
             args.a1r1_bpr_v2_mode,
             args.enriched_memory_diagnostic,
@@ -1394,7 +1504,7 @@ def main() -> None:
             "--evidence-qualified-progress, and --source-document-coverage "
             "--source-document-coverage-gate, --a1-working-memory, and "
             "--a2-verified-progress-memory, --a345-arm, --a678-arm, --a10-ecobf, "
-            "--a10-v2-emobf, --a11-crc-ecobf, --a12-madm, --a1r2-cvp, --a1r1-bpr-v2-mode, and "
+            "--a10-v2-emobf, --a11-crc-ecobf, --a12-madm, --a1r3-srpl, --a1r2-cvp, --a1r1-bpr-v2-mode, and "
             "--enriched-memory-diagnostic are mutually exclusive"
         )
     held_out_eligible = not bool(args.diagnostic) and not bool(
@@ -1411,6 +1521,7 @@ def main() -> None:
                 ("a10v2", args.a10_v2_emobf),
                 ("a11", args.a11_crc_ecobf),
                 ("a12", args.a12_madm),
+                ("a1r3", args.a1r3_srpl),
                 ("a1r2", args.a1r2_cvp),
                 ("bprv2", args.a1r1_bpr_v2_mode),
             )
@@ -1448,6 +1559,8 @@ def main() -> None:
         if dual_arm_name == "a11"
         else args.a12_preflight_report
         if dual_arm_name == "a12"
+        else args.a1r3_preflight_report
+        if dual_arm_name == "a1r3"
         else args.a1r2_preflight_report
         if dual_arm_name == "a1r2"
         else args.a1r1_bpr_v2_preflight_report
@@ -1463,6 +1576,8 @@ def main() -> None:
         if dual_arm_name == "a11"
         else args.a12_launch_receipt
         if dual_arm_name == "a12"
+        else args.a1r3_launch_receipt
+        if dual_arm_name == "a1r3"
         else args.a1r2_launch_receipt
         if dual_arm_name == "a1r2"
         else args.a1r1_bpr_v2_launch_receipt
@@ -1753,17 +1868,22 @@ def main() -> None:
                 raise RuntimeError(f"A3/A4/A5 gate tasks missing from manifest: {missing_gate}")
             remaining = [item for item in specs if str(item["task_class"]) not in A345_GATE_TASKS]
             specs = [by_name[name] for name in A345_GATE_TASKS] + remaining
-        elif dual_arm_name in {"bprv2", "a1r2"}:
+        elif dual_arm_name in {"bprv2", "a1r2"} or dual_arm_name == "a1r3":
             by_name = {str(item["task_class"]): item for item in specs}
-            missing_gate = sorted(set(dual_arm["contract"].GATE5_TASKS) - set(by_name))
+            gate_tasks = dual_arm["gate_tasks"]
+            missing_gate = sorted(set(gate_tasks) - set(by_name))
             if missing_gate:
-                raise RuntimeError(f"{dual_arm['label']} five-task gate missing from manifest: {missing_gate}")
+                raise RuntimeError(f"{dual_arm['label']} capability gate missing from manifest: {missing_gate}")
             remaining = [
                 item for item in specs
-                if str(item["task_class"]) not in dual_arm["contract"].GATE5_TASKS
+                if str(item["task_class"]) not in gate_tasks
             ]
-            gate5 = [by_name[name] for name in dual_arm["contract"].GATE5_TASKS]
-            specs = gate5 + remaining if dual_arm_name == "a1r2" or bpr_mode == "primary" else gate5
+            gate_specs = [by_name[name] for name in gate_tasks]
+            specs = (
+                gate_specs + remaining
+                if dual_arm_name in {"a1r2", "a1r3"} or bpr_mode == "primary"
+                else gate_specs
+            )
         elif prospective_gate_arm:
             by_name = {str(item["task_class"]): item for item in specs}
             missing_gate = sorted(set(A0_PRESERVATION_TASKS) - set(by_name))
@@ -2043,7 +2163,9 @@ def main() -> None:
                     },
                 },
                 "task_order": (
-                    "blocking_A0_4_then_Recipe_1_then_frozen_manifest_remainder"
+                    "blocking_A1R2_success_6_then_frozen_manifest_remainder"
+                    if dual_arm_name == "a1r3"
+                    else "blocking_A0_4_then_Recipe_1_then_frozen_manifest_remainder"
                     if dual_arm_name == "a1r2" or (dual_arm_name == "bprv2" and bpr_mode == "primary")
                     else "fixed_five_task_non_fail_fast_after_primary_complete"
                     if dual_arm_name == "bprv2"
@@ -2085,6 +2207,17 @@ def main() -> None:
                     "response_prefix_required": True,
                     "official_system_prompt_unchanged": False,
                     "system_prompt_identity": "exact_A1_WORKING_MEMORY_SYSTEM_PROMPT",
+                }
+            )
+        elif dual_arm_name == "a1r3":
+            run_signature.update(
+                {
+                    "capability_gate_tasks": list(dual_arm["gate_tasks"]),
+                    "ordinary_history_deduplicated": True,
+                    "response_prefix_required": True,
+                    "official_system_prompt_unchanged": False,
+                    "system_prompt_identity": "exact_A1_WORKING_MEMORY_SYSTEM_PROMPT",
+                    "a1r2_successes_required_for_continuation": True,
                 }
             )
     if a10_scored_arm:
@@ -2472,6 +2605,15 @@ def main() -> None:
                     if not _gate_passed(gate5):
                         checkpoint("stopped_gate5_incomplete")
                         raise RuntimeError("BPR-v2 remaining fourteen tasks are locked until Gate5 is 5/5")
+            elif dual_arm_name in {"a1r2", "a1r3"}:
+                if task_name not in dual_arm["gate_tasks"]:
+                    gate = dual_arm["preservation_report"](summaries)
+                    if not _gate_passed(gate):
+                        checkpoint("stopped_capability_gate_incomplete")
+                        raise RuntimeError(
+                            f"{dual_arm['label']} remaining tasks are locked until "
+                            f"its capability gate is {len(dual_arm['gate_tasks'])}/{len(dual_arm['gate_tasks'])}"
+                        )
             elif (
                 (a7_gated_continuation or prospective_gate_arm)
                 and task_name not in A0_PRESERVATION_TASKS
@@ -2871,6 +3013,16 @@ def main() -> None:
                 raise RuntimeError(
                     "A1-R2 Recipe gain-preservation gate failed; scientific failure is terminal"
                 )
+            if (
+                dual_arm_name == "a1r3"
+                and task_name in dual_arm["gate_tasks"]
+                and not bool(result.get("success"))
+            ):
+                checkpoint("stopped_capability_gate_failure")
+                raise RuntimeError(
+                    f"A1-R3 six-task capability gate failed on {task_name}; "
+                    "scientific failure is terminal"
+                )
             checkpoint("running")
     except BaseException as exc:
         active_exception = exc
@@ -2888,7 +3040,7 @@ def main() -> None:
             )
             checkpoint(
                 "infrastructure_incomplete"
-                if dual_arm_name in {"a12", "bprv2", "a1r2"}
+                if dual_arm_name in {"a12", "bprv2", "a1r2", "a1r3"}
                 else "stopped_invalid_episode"
             )
             if active_exception is None:
@@ -2965,7 +3117,8 @@ def main() -> None:
             if not _gate_passed(gate):
                 checkpoint("stopped_capability_gate_incomplete")
                 raise RuntimeError(
-                    f"{dual_arm['label']} cannot aggregate before the blocking 4/4 preservation gate passes"
+                    f"{dual_arm['label']} cannot aggregate before its blocking "
+                    f"{len(dual_arm['gate_tasks'])}/{len(dual_arm['gate_tasks'])} capability gate passes"
                 )
         if dual_arm_name == "bprv2" and bpr_mode == "primary":
             gate5 = dual_arm["contract"].gate5_report(summaries)
@@ -3313,7 +3466,196 @@ def main() -> None:
             "errors": [],
         }
         aggregate[dual_arm["result_key"]] = bpr_result
-    if a10_scored_arm or (dual_scored_arm and dual_arm_name != "bprv2"):
+    if dual_arm_name in {"a1r2", "a1r3"}:
+        vertical_counters: dict[str, int] = {}
+        for summary in summaries:
+            for key, value in (
+                ((summary.get("memory_mechanism") or {}).get("counters") or {}).items()
+            ):
+                if isinstance(value, int):
+                    vertical_counters[key] = vertical_counters.get(key, 0) + value
+        gate6 = dual_arm["preservation_report"](summaries)
+        success_count = sum(int(bool(item.get("success"))) for item in summaries)
+        reward_sum = sum(float(item.get("evaluator_reward") or 0.0) for item in summaries)
+        calls = sum(int(item.get("model_call_count") or 0) for item in summaries)
+        actions = sum(int(item.get("executed_action_count") or 0) for item in summaries)
+        usage = _usage_totals(summaries)
+        elapsed = sum(
+            (
+                datetime.fromisoformat(item["finished_at"])
+                - datetime.fromisoformat(item["started_at"])
+            ).total_seconds()
+            for item in summaries
+        )
+        if dual_arm_name == "a1r3":
+            accuracy_pass = bool(
+                success_count >= 7 and reward_sum > 6.5 and _gate_passed(gate6)
+            )
+            cost_components = {
+                "calls_below_a1r2": calls < 603,
+                "tokens_below_a1r2": int(usage["total_tokens"]) < 2_685_730,
+                "elapsed_below_a1r2": elapsed < 11_230.182856,
+            }
+            causal_records = _a1r3_failure_causal_analysis(summaries)
+            productive_count = sum(
+                int(item.get("productive_signal") is True) for item in causal_records
+            )
+            failure_injection_count = len(causal_records)
+            mechanism_verdict = (
+                "PASS"
+                if productive_count >= 2
+                else "FAIL_INSUFFICIENT_PRODUCTIVE_FAILURE_DIVERGENCE"
+                if failure_injection_count
+                else "NOT_OBSERVED_NO_FAILURE_EVIDENCE_INJECTION"
+            )
+            accuracy_verdict = "PASS" if accuracy_pass else "FAIL"
+            cost_verdict = "PASS" if all(cost_components.values()) else "FAIL"
+            combined = (
+                f"ACCURACY_{accuracy_verdict}_COST_{cost_verdict}_MECHANISM_{mechanism_verdict}"
+            )
+        else:
+            accuracy_pass = bool(
+                success_count >= 6 and reward_sum >= 6.5 and _gate_passed(gate6)
+            )
+            cost_components = {
+                "calls_below_a1": calls < 603,
+                "tokens_below_a1": int(usage["total_tokens"]) < 3_464_267,
+                "elapsed_below_a1": elapsed < 14_595.492,
+            }
+            causal_records = []
+            productive_count = 0
+            failure_injection_count = 0
+            mechanism_verdict = "NOT_ESTABLISHED_NO_MATCHED_ABLATION"
+            accuracy_verdict = "PASS" if accuracy_pass else "FAIL"
+            cost_verdict = "PASS" if all(cost_components.values()) else "FAIL"
+            combined = (
+                f"ACCURACY_{accuracy_verdict}_COST_{cost_verdict}_MECHANISM_NOT_ESTABLISHED"
+            )
+
+        pairwise_reference_path = (
+            REPOSITORY_ROOT / "evidence/a2/A0_A1_PAIRED_REFERENCE_20260810.json"
+        )
+        pairwise_reference = json.loads(pairwise_reference_path.read_text(encoding="utf-8"))
+        task_rows = []
+        for item in summaries:
+            audit = item.get("memory_mechanism") or {}
+            counters = audit.get("counters") or {}
+            task_rows.append(
+                {
+                    "task_name": item["task_name"],
+                    "seed": item["seed"],
+                    "episode_id": item["episode_id"],
+                    "episode_json_sha256": _sha256(
+                        suite_dir / "episodes" / item["episode_id"] / "episode.json"
+                    ),
+                    "native_max_steps": int(
+                        (item.get("run_metadata") or {})["native_max_steps"]
+                    ),
+                    "success": item["success"],
+                    "reward": item["evaluator_reward"],
+                    "termination_reason": item["termination_reason"],
+                    "model_calls": item["model_call_count"],
+                    "executed_actions": item["executed_action_count"],
+                    "token_usage": _usage_totals([item]),
+                    "elapsed_seconds": (
+                        datetime.fromisoformat(item["finished_at"])
+                        - datetime.fromisoformat(item["started_at"])
+                    ).total_seconds(),
+                    "memory_active": bool(audit.get("active")),
+                    "nonempty_read_count": int(counters.get("nonempty_read_count") or 0),
+                    "rendered_chars": int(counters.get("injected_chars") or 0),
+                    "valid_prefix_count": int(counters.get("valid_prefix_count") or 0),
+                    "same_state_nonrefresh_count": int(
+                        counters.get("same_state_nonrefresh_count") or 0
+                    ),
+                    "failure_evidence_count": int(
+                        counters.get("failure_evidence_count") or 0
+                    ),
+                    "failure_evidence_injection_count": sum(
+                        int(record.get("episode_id") == item["episode_id"])
+                        for record in causal_records
+                    ),
+                }
+            )
+        result_payload = {
+            "schema": dual_arm["result_schema"],
+            "status": "COMPLETE",
+            "identity": {
+                "mechanism_id": dual_arm["mechanism_id"],
+                "experiment_id": dual_arm["experiment_id"],
+                "task_seed": dual_arm["task_seed"],
+                "generation_seed": args.generation_seed,
+                "implementation_commit": dual_preflight.get("implementation_commit"),
+                "source_freeze_content_sha256": dual_preflight.get(
+                    "source_freeze_content_sha256"
+                ),
+                "preflight_content_sha256": dual_preflight.get("content_sha256"),
+                "preflight_file_sha256": _sha256(dual_preflight_path),
+                "run_signature_sha256": run_signature_sha256,
+                "live_receipt_content_sha256s": aggregate[
+                    "live_server_receipt_sha256s"
+                ],
+                "paired_reference_sha256": _sha256(pairwise_reference_path),
+            },
+            "closure": {
+                "status": "exact_19_closed",
+                "valid_episode_count": len(summaries),
+                "invalid_attempt_count": len(invalid_attempts),
+                "invalid_attempts_resolved": all(
+                    bool(item.get("resolved_by_episode_id")) for item in invalid_attempts
+                ),
+                "ordered_tasks_exact": True,
+                "single_transport_per_call": aggregate["transport_attempt_max"] == 1,
+            },
+            "gate6": gate6,
+            "performance": {
+                "success_count": success_count,
+                "reward_sum": reward_sum,
+                "model_calls": calls,
+                "executed_actions": actions,
+                "token_usage": usage,
+                "valid_elapsed_seconds": elapsed,
+            },
+            "verdicts": {
+                "accuracy": accuracy_verdict,
+                "cost": cost_verdict,
+                "cost_components": cost_components,
+                "mechanism": mechanism_verdict,
+                "combined": combined,
+            },
+            "pairwise": {
+                "versus_a0": _a10_pairwise(summaries, "A0", pairwise_reference),
+                "versus_a1": _a10_pairwise(summaries, "A1", pairwise_reference),
+            },
+            "memory": {
+                "active_episode_count": sum(
+                    int(bool((item.get("memory_mechanism") or {}).get("active")))
+                    for item in summaries
+                ),
+                "nonempty_read_count": int(
+                    vertical_counters.get("nonempty_read_count") or 0
+                ),
+                "rendered_chars_total": int(vertical_counters.get("injected_chars") or 0),
+                "failure_evidence_injection_count": failure_injection_count,
+                "productive_failure_divergence_count": productive_count,
+                "counters": vertical_counters,
+                "decision_boundary": {
+                    "extra_model_calls": 0,
+                    "action_override_count": 0,
+                    "forced_termination_count": 0,
+                    "hidden_ui_used_for_decision": False,
+                    "evaluator_used_for_decision": False,
+                },
+            },
+            "causal_failure_injections": causal_records,
+            "episodes": task_rows,
+            "invalid_attempts": invalid_attempts,
+            "errors": [],
+        }
+        aggregate[dual_arm["result_key"]] = result_payload
+    if a10_scored_arm or (
+        dual_scored_arm and dual_arm_name not in {"bprv2", "a1r2", "a1r3"}
+    ):
         result_label = dual_arm["label"] if dual_scored_arm else "A10"
         result_prefix = result_label.upper()
         result_key = dual_arm["result_key"] if dual_scored_arm else "a10_result"

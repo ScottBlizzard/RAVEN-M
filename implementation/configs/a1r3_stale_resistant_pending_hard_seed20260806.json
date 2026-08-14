@@ -1,0 +1,49 @@
+{
+  "schema": "a1r3_stale_resistant_pending_config_v1",
+  "mechanism_id": "a1r3_stale_resistant_pending_v1",
+  "experiment_id": "A1R3_SRPL_QWEN3VL32B_AW_HARD_T20260806_G3407_V1",
+  "parent_evidence_commit": "f7368bcb3628112e497045c398128ad383811a7c",
+  "model": {
+    "id": "Qwen/Qwen3-VL-32B-Instruct",
+    "revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+    "generation_seed": 3407,
+    "temperature": 0.7,
+    "top_p": 0.8,
+    "top_k": 20,
+    "presence_penalty": 1.5,
+    "repetition_penalty": 1.0,
+    "max_tokens": 32768
+  },
+  "benchmark": {
+    "manifest": "implementation/configs/androidworld_hard_v2_instances.json",
+    "task_seed": 20260806,
+    "task_count": 19,
+    "native_step_budgets": true,
+    "order": "a1r2_six_then_remaining_thirteen"
+  },
+  "memory": {
+    "system_prompt": "exact_A1_WORKING_MEMORY_SYSTEM_PROMPT",
+    "ttl_requests": 8,
+    "same_state_refresh": false,
+    "expired_state_requires_distinct_state_before_reentry": true,
+    "no_progress_changed_pixel_fraction_lte": 0.001,
+    "repeat_support": 2,
+    "tap_coordinate_bucket": 0.05,
+    "max_resident_ledgers": 1,
+    "max_tombstones": 1,
+    "max_failed_attempts": 1,
+    "max_render_chars": 1100,
+    "extra_model_calls": 0,
+    "guard": false,
+    "action_override": false,
+    "forced_termination": false
+  },
+  "prospective_gates": {
+    "capability_successes_required": 6,
+    "full_suite_accuracy_successes_gt": 6,
+    "full_suite_reward_gt": 6.5,
+    "model_calls_lt": 603,
+    "total_tokens_lt": 2685730,
+    "valid_elapsed_seconds_lt": 11230.182856
+  }
+}
