@@ -143,7 +143,7 @@ def validate_preflight_report(path: Path = PREFLIGHT_PATH) -> dict[str, Any]:
         "experiment_id": EXPERIMENT_ID,
         "implementation_commit": freeze["implementation_commit"],
         "source_freeze_content_sha256": freeze["content_sha256"],
-        "offline_replay_file_sha256": file_sha256(OFFLINE_REPLAY_PATH),
+        "offline_replay_content_sha256": replay.get("content_sha256"),
     }
     for key, value in expected.items():
         if report.get(key) != value:
@@ -181,8 +181,10 @@ def validate_launch_receipt(path: Path, *, preflight_path: Path = PREFLIGHT_PATH
         "mechanism_id": MECHANISM_ID,
         "experiment_id": EXPERIMENT_ID,
         "implementation_commit": preflight["implementation_commit"],
-        "preflight_file_sha256": file_sha256(preflight_path),
-        "config_file_sha256": file_sha256(CONFIG_PATH),
+        "preflight_content_sha256": preflight.get("content_sha256"),
+        "config_content_sha256": canonical_sha256(
+            json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
+        ),
         "served_model_id": MODEL_ID,
         "served_model_ids_observed": [MODEL_ID],
         "model_realpath": MODEL_REALPATH,

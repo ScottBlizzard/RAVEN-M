@@ -43,8 +43,10 @@ def main() -> int:
         "mechanism_id": contract.MECHANISM_ID,
         "experiment_id": contract.EXPERIMENT_ID,
         "implementation_commit": preflight["implementation_commit"],
-        "preflight_file_sha256": contract.file_sha256(contract.PREFLIGHT_PATH),
-        "config_file_sha256": contract.file_sha256(contract.CONFIG_PATH),
+        "preflight_content_sha256": preflight["content_sha256"],
+        "config_content_sha256": contract.canonical_sha256(
+            json.loads(contract.CONFIG_PATH.read_text(encoding="utf-8"))
+        ),
         "served_model_id": contract.MODEL_ID,
         "served_model_ids_observed": observed,
         "model_realpath": contract.MODEL_REALPATH,

@@ -94,3 +94,7 @@ Any A0-four failure rejects the arm immediately. Recipe failure rejects A1
 gain preservation. A successful task with no committed read is performance
 only and unattributed. Thresholds or syntax cannot be changed after the first
 valid live generation; any change creates a new version.
+
+All JSON-to-JSON artifact bindings use canonical object content hashes rather
+than platform-dependent file-byte hashes, so CRLF/LF checkout policy cannot
+change the scientific identity.

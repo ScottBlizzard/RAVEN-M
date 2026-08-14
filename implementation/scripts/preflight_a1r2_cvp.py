@@ -113,7 +113,7 @@ def main() -> int:
         "experiment_id": contract.EXPERIMENT_ID,
         "implementation_commit": args.implementation_commit,
         "source_freeze_content_sha256": freeze.get("content_sha256"),
-        "offline_replay_file_sha256": contract.file_sha256(contract.OFFLINE_REPLAY_PATH),
+        "offline_replay_content_sha256": replay_file.get("content_sha256"),
         "checks": checks,
         "created_at": datetime.now(timezone.utc).isoformat(),
     }
