@@ -4,7 +4,7 @@ Date: 2026-08-14 (Asia/Hong_Kong)
 
 Status: **PASS; live generation requires a fresh A1-R2 process receipt.**
 
-- implementation commit: `371aeed332d60312481d601100e2d7c9eb3c987d`
+- implementation commit: `ad7a39b55926408aa4a3c7101c9ff5cd83af4d80`
 - parent evidence: BPR-v2's valid first-task capability-gate failure
 - model writer protocol: exact frozen A1 `MEMORY[observed; verified; pending]`
 - new response syntax: none
@@ -14,6 +14,7 @@ Status: **PASS; live generation requires a fresh A1-R2 process receipt.**
 - complete official mobile regression: 287 passed
 - runtime canary: p99 0.1233 ms; maximum 0.4709 ms
 - generation calls during qualification: zero
+- artifact bindings: canonical JSON hashes, invariant to CRLF/LF checkout policy
 
 Real A1 trace replay covered 19 episodes and 596 executed actions. It parsed 515
 valid A1 prefixes. All four A0 successes and the Recipe gain retained projected
