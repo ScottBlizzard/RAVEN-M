@@ -1,0 +1,288 @@
+{
+  "content_sha256": "7238bf772c27368460a9c114761caa312b87af4e129b3b1b6fe994ec5a666e55",
+  "created_at": "2026-08-14T05:44:33.763361+00:00",
+  "episodes": [
+    {
+      "a1_rendered_chars": 17621,
+      "a1r2_projected_rendered_chars": 5064,
+      "episode_json_sha256": "15bbe24b0584724c9fd18c8465353aa6131c97347aa5e112e0a6370ea1825eb3",
+      "executed_actions": 22,
+      "pending_writes": 22,
+      "projected_nonempty_reads": 21,
+      "reward": 0.0,
+      "task_name": "BrowserMultiply",
+      "valid_prefixes": 22
+    },
+    {
+      "a1_rendered_chars": 17232,
+      "a1r2_projected_rendered_chars": 5003,
+      "episode_json_sha256": "08d32d3c9b7ab7d23ea3977756d80bdf34dde20fddbe95c05e14ae4e38cea797",
+      "executed_actions": 19,
+      "pending_writes": 19,
+      "projected_nonempty_reads": 19,
+      "reward": 0.0,
+      "task_name": "ExpenseAddMultipleFromGallery",
+      "valid_prefixes": 19
+    },
+    {
+      "a1_rendered_chars": 17742,
+      "a1r2_projected_rendered_chars": 4574,
+      "episode_json_sha256": "0c19caf050ac79791094116c163f876e2545422f943a745aab50b92d2e5dddf2",
+      "executed_actions": 17,
+      "pending_writes": 17,
+      "projected_nonempty_reads": 17,
+      "reward": 0.0,
+      "task_name": "ExpenseAddMultipleFromMarkor",
+      "valid_prefixes": 17
+    },
+    {
+      "a1_rendered_chars": 19201,
+      "a1r2_projected_rendered_chars": 5080,
+      "episode_json_sha256": "432fed782cc0f4da491c893e0efbe48bc33e442874d59d2abff9731d9f22cac0",
+      "executed_actions": 18,
+      "pending_writes": 18,
+      "projected_nonempty_reads": 18,
+      "reward": 1.0,
+      "task_name": "ExpenseDeleteMultiple2",
+      "valid_prefixes": 18
+    },
+    {
+      "a1_rendered_chars": 15952,
+      "a1r2_projected_rendered_chars": 4346,
+      "episode_json_sha256": "56f0a6f036a42d10130b24f8c4a28baa776e10faa3f4b24d613a912632c39fe6",
+      "executed_actions": 18,
+      "pending_writes": 18,
+      "projected_nonempty_reads": 17,
+      "reward": 0.5,
+      "task_name": "MarkorCreateNoteAndSms",
+      "valid_prefixes": 18
+    },
+    {
+      "a1_rendered_chars": 91988,
+      "a1r2_projected_rendered_chars": 21779,
+      "episode_json_sha256": "b48fd7da47a4b3cea85a619a01a51f5b0ce271e9f8a66bb9e90a46baf7737523",
+      "executed_actions": 78,
+      "pending_writes": 78,
+      "projected_nonempty_reads": 77,
+      "reward": 0.0,
+      "task_name": "MarkorMergeNotes",
+      "valid_prefixes": 78
+    },
+    {
+      "a1_rendered_chars": 12110,
+      "a1r2_projected_rendered_chars": 4257,
+      "episode_json_sha256": "46e96c4df9cb364f76d06bfb893bf5d36f8428657d528e93c741266a317df4ec",
+      "executed_actions": 20,
+      "pending_writes": 18,
+      "projected_nonempty_reads": 17,
+      "reward": 0.0,
+      "task_name": "MarkorTranscribeVideo",
+      "valid_prefixes": 18
+    },
+    {
+      "a1_rendered_chars": 11034,
+      "a1r2_projected_rendered_chars": 3748,
+      "episode_json_sha256": "7015a5a43fdf9a402c218783afafb030fbee3d77ecec2d81ff0aefb4df174db2",
+      "executed_actions": 16,
+      "pending_writes": 16,
+      "projected_nonempty_reads": 16,
+      "reward": 0.0,
+      "task_name": "OsmAndMarker",
+      "valid_prefixes": 16
+    },
+    {
+      "a1_rendered_chars": 107021,
+      "a1r2_projected_rendered_chars": 35999,
+      "episode_json_sha256": "0c47ca89524550871b34fcdb3feb21e4b5c9c9fada9f6be07f7a25a124744312",
+      "executed_actions": 120,
+      "pending_writes": 115,
+      "projected_nonempty_reads": 119,
+      "reward": 0.0,
+      "task_name": "OsmAndTrack",
+      "valid_prefixes": 115
+    },
+    {
+      "a1_rendered_chars": 30831,
+      "a1r2_projected_rendered_chars": 13144,
+      "episode_json_sha256": "327b52d220a6a22d0f168a89eb0c7bb710735bd24ec7f9c6250ddc1a77b47177",
+      "executed_actions": 60,
+      "pending_writes": 26,
+      "projected_nonempty_reads": 53,
+      "reward": 0.0,
+      "task_name": "RecipeAddMultipleRecipesFromImage",
+      "valid_prefixes": 26
+    },
+    {
+      "a1_rendered_chars": 5410,
+      "a1r2_projected_rendered_chars": 2187,
+      "episode_json_sha256": "addf65eec3b1987923a8f72ce0ab940918087db6b8f4ba2859f853294c94ca5f",
+      "executed_actions": 9,
+      "pending_writes": 9,
+      "projected_nonempty_reads": 9,
+      "reward": 0.0,
+      "task_name": "RecipeAddMultipleRecipesFromMarkor2",
+      "valid_prefixes": 9
+    },
+    {
+      "a1_rendered_chars": 74918,
+      "a1r2_projected_rendered_chars": 8794,
+      "episode_json_sha256": "b8d7deef0fdc37c36ed93b9db13ad4459165a6edc9e451c73b7ddcf4d2a8be7d",
+      "executed_actions": 60,
+      "pending_writes": 22,
+      "projected_nonempty_reads": 34,
+      "reward": 0.0,
+      "task_name": "RecipeAddMultipleRecipesFromMarkor",
+      "valid_prefixes": 22
+    },
+    {
+      "a1_rendered_chars": 22281,
+      "a1r2_projected_rendered_chars": 6087,
+      "episode_json_sha256": "6e2c6e68407bb0b5852fd89a569afc500e6f3ab7d062545741638becf2e662e3",
+      "executed_actions": 25,
+      "pending_writes": 25,
+      "projected_nonempty_reads": 25,
+      "reward": 1.0,
+      "task_name": "RecipeDeleteMultipleRecipesWithConstraint",
+      "valid_prefixes": 25
+    },
+    {
+      "a1_rendered_chars": 32161,
+      "a1r2_projected_rendered_chars": 7321,
+      "episode_json_sha256": "ab912b71969298d6921fc916fdde1e6a04525ef3885cfc7413914c1215440a13",
+      "executed_actions": 27,
+      "pending_writes": 25,
+      "projected_nonempty_reads": 25,
+      "reward": 1.0,
+      "task_name": "RetroSavePlaylist",
+      "valid_prefixes": 25
+    },
+    {
+      "a1_rendered_chars": 3606,
+      "a1r2_projected_rendered_chars": 3555,
+      "episode_json_sha256": "0c97c1c8f6fc2fde91361838347da74c7c97db6681925fcdd103bbbcefe3f60c",
+      "executed_actions": 16,
+      "pending_writes": 16,
+      "projected_nonempty_reads": 15,
+      "reward": 0.0,
+      "task_name": "SaveCopyOfReceiptTaskEval",
+      "valid_prefixes": 16
+    },
+    {
+      "a1_rendered_chars": 30018,
+      "a1r2_projected_rendered_chars": 8049,
+      "episode_json_sha256": "9763deab66e05af5e2f6976a89b39427a8174a0cbdf65f8a8b1cd25aa46d8be2",
+      "executed_actions": 34,
+      "pending_writes": 34,
+      "projected_nonempty_reads": 33,
+      "reward": 1.0,
+      "task_name": "SimpleCalendarAddOneEvent",
+      "valid_prefixes": 34
+    },
+    {
+      "a1_rendered_chars": 14530,
+      "a1r2_projected_rendered_chars": 4476,
+      "episode_json_sha256": "22156000ca2c9e1fdbe8af986dde30609476ed117650665b8165090e9eab078d",
+      "executed_actions": 20,
+      "pending_writes": 20,
+      "projected_nonempty_reads": 19,
+      "reward": 0.0,
+      "task_name": "SportsTrackerActivitiesOnDate",
+      "valid_prefixes": 20
+    },
+    {
+      "a1_rendered_chars": 4260,
+      "a1r2_projected_rendered_chars": 1804,
+      "episode_json_sha256": "8079fa51645268a8de8437285346aba5dd2873a2274d4e7a03164707e4368c4d",
+      "executed_actions": 9,
+      "pending_writes": 9,
+      "projected_nonempty_reads": 8,
+      "reward": 0.0,
+      "task_name": "SportsTrackerTotalDistanceForCategoryOverInterval",
+      "valid_prefixes": 9
+    },
+    {
+      "a1_rendered_chars": 3128,
+      "a1r2_projected_rendered_chars": 1658,
+      "episode_json_sha256": "e244102bf45aa4851f53436b45f1210ca5db87315eda9690570de0a0917e1861",
+      "executed_actions": 8,
+      "pending_writes": 7,
+      "projected_nonempty_reads": 7,
+      "reward": 1.0,
+      "task_name": "SportsTrackerTotalDurationForCategoryThisWeek",
+      "valid_prefixes": 8
+    }
+  ],
+  "errors": [],
+  "generation_calls": 0,
+  "mechanism_id": "a1r2_compact_verified_pending_v1",
+  "schema": "a1r2_compact_verified_pending_offline_replay_v1",
+  "sentinel_tasks": [
+    {
+      "a1_rendered_chars": 19201,
+      "a1r2_projected_rendered_chars": 5080,
+      "episode_json_sha256": "432fed782cc0f4da491c893e0efbe48bc33e442874d59d2abff9731d9f22cac0",
+      "executed_actions": 18,
+      "pending_writes": 18,
+      "projected_nonempty_reads": 18,
+      "reward": 1.0,
+      "task_name": "ExpenseDeleteMultiple2",
+      "valid_prefixes": 18
+    },
+    {
+      "a1_rendered_chars": 22281,
+      "a1r2_projected_rendered_chars": 6087,
+      "episode_json_sha256": "6e2c6e68407bb0b5852fd89a569afc500e6f3ab7d062545741638becf2e662e3",
+      "executed_actions": 25,
+      "pending_writes": 25,
+      "projected_nonempty_reads": 25,
+      "reward": 1.0,
+      "task_name": "RecipeDeleteMultipleRecipesWithConstraint",
+      "valid_prefixes": 25
+    },
+    {
+      "a1_rendered_chars": 32161,
+      "a1r2_projected_rendered_chars": 7321,
+      "episode_json_sha256": "ab912b71969298d6921fc916fdde1e6a04525ef3885cfc7413914c1215440a13",
+      "executed_actions": 27,
+      "pending_writes": 25,
+      "projected_nonempty_reads": 25,
+      "reward": 1.0,
+      "task_name": "RetroSavePlaylist",
+      "valid_prefixes": 25
+    },
+    {
+      "a1_rendered_chars": 30018,
+      "a1r2_projected_rendered_chars": 8049,
+      "episode_json_sha256": "9763deab66e05af5e2f6976a89b39427a8174a0cbdf65f8a8b1cd25aa46d8be2",
+      "executed_actions": 34,
+      "pending_writes": 34,
+      "projected_nonempty_reads": 33,
+      "reward": 1.0,
+      "task_name": "SimpleCalendarAddOneEvent",
+      "valid_prefixes": 34
+    },
+    {
+      "a1_rendered_chars": 3128,
+      "a1r2_projected_rendered_chars": 1658,
+      "episode_json_sha256": "e244102bf45aa4851f53436b45f1210ca5db87315eda9690570de0a0917e1861",
+      "executed_actions": 8,
+      "pending_writes": 7,
+      "projected_nonempty_reads": 7,
+      "reward": 1.0,
+      "task_name": "SportsTrackerTotalDurationForCategoryThisWeek",
+      "valid_prefixes": 8
+    }
+  ],
+  "source": {
+    "episode_count": 19,
+    "suite_id": "official_qwen_20260810T122419_26573d7c"
+  },
+  "status": "PASS",
+  "totals": {
+    "a1_rendered_chars": 531044,
+    "a1r2_projected_rendered_chars": 146925,
+    "executed_actions": 596,
+    "projected_ratio": 0.2766719895149931,
+    "valid_prefixes": 515
+  }
+}

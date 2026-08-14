@@ -160,6 +160,17 @@ A7_REMAINING_AFTER_GATE_TASKS = (
 # mechanism and contract modules, and makes it impossible to compose multiple
 # memories in one controller.
 DUAL_ARM_SPECS = {
+    "a1r2": {
+        "flag": "a1r2_cvp",
+        "label": "A1-R2 CVP",
+        "memory_module": "raven_m.official_qwen_mobile.a1r2_compact_verified_pending",
+        "memory_class": "CompactVerifiedPendingMemory",
+        "contract_module": "raven_m.official_qwen_mobile.a1r2_contract",
+        "entry_key": "a1r2_valid_entries",
+        "checkpoint_schema": "a1r2_cvp_checkpoint_v1",
+        "result_key": "a1r2_result",
+        "result_schema": "a1r2_cvp_result_v1",
+    },
     "bprv2": {
         "flag": "a1r1_bpr_v2_mode",
         "label": "A1-R1 BPR-v2",
@@ -1103,6 +1114,21 @@ def main() -> None:
         help="Fresh A12 receipt bound only to its own preflight and process.",
     )
     parser.add_argument(
+        "--a1r2-cvp",
+        action="store_true",
+        help="Run the prospective A1-R2 compact verified/pending ledger arm.",
+    )
+    parser.add_argument(
+        "--a1r2-preflight-report",
+        type=Path,
+        default=REPOSITORY_ROOT / "evidence/a1r2/A1R2_CVP_ZERO_GENERATION_PREFLIGHT.json",
+    )
+    parser.add_argument(
+        "--a1r2-launch-receipt",
+        type=Path,
+        help="Fresh A1-R2 receipt bound only to its own preflight and process.",
+    )
+    parser.add_argument(
         "--a1r1-bpr-v2-mode",
         choices=("primary", "empty_read"),
         help="Run the frozen A1-R1 BPR-v2 primary or five-task empty-read arm.",
@@ -1357,6 +1383,7 @@ def main() -> None:
             args.a10_v2_emobf,
             args.a11_crc_ecobf,
             args.a12_madm,
+            args.a1r2_cvp,
             args.a1r1_bpr_v2_mode,
             args.enriched_memory_diagnostic,
         )
@@ -1367,7 +1394,7 @@ def main() -> None:
             "--evidence-qualified-progress, and --source-document-coverage "
             "--source-document-coverage-gate, --a1-working-memory, and "
             "--a2-verified-progress-memory, --a345-arm, --a678-arm, --a10-ecobf, "
-            "--a10-v2-emobf, --a11-crc-ecobf, --a12-madm, --a1r1-bpr-v2-mode, and "
+            "--a10-v2-emobf, --a11-crc-ecobf, --a12-madm, --a1r2-cvp, --a1r1-bpr-v2-mode, and "
             "--enriched-memory-diagnostic are mutually exclusive"
         )
     held_out_eligible = not bool(args.diagnostic) and not bool(
@@ -1384,6 +1411,7 @@ def main() -> None:
                 ("a10v2", args.a10_v2_emobf),
                 ("a11", args.a11_crc_ecobf),
                 ("a12", args.a12_madm),
+                ("a1r2", args.a1r2_cvp),
                 ("bprv2", args.a1r1_bpr_v2_mode),
             )
             if selected
@@ -1420,6 +1448,8 @@ def main() -> None:
         if dual_arm_name == "a11"
         else args.a12_preflight_report
         if dual_arm_name == "a12"
+        else args.a1r2_preflight_report
+        if dual_arm_name == "a1r2"
         else args.a1r1_bpr_v2_preflight_report
         if dual_arm_name == "bprv2"
         else None
@@ -1433,6 +1463,8 @@ def main() -> None:
         if dual_arm_name == "a11"
         else args.a12_launch_receipt
         if dual_arm_name == "a12"
+        else args.a1r2_launch_receipt
+        if dual_arm_name == "a1r2"
         else args.a1r1_bpr_v2_launch_receipt
         if dual_arm_name == "bprv2"
         else None
@@ -1721,17 +1753,17 @@ def main() -> None:
                 raise RuntimeError(f"A3/A4/A5 gate tasks missing from manifest: {missing_gate}")
             remaining = [item for item in specs if str(item["task_class"]) not in A345_GATE_TASKS]
             specs = [by_name[name] for name in A345_GATE_TASKS] + remaining
-        elif dual_arm_name == "bprv2":
+        elif dual_arm_name in {"bprv2", "a1r2"}:
             by_name = {str(item["task_class"]): item for item in specs}
             missing_gate = sorted(set(dual_arm["contract"].GATE5_TASKS) - set(by_name))
             if missing_gate:
-                raise RuntimeError(f"BPR-v2 five-task gate missing from manifest: {missing_gate}")
+                raise RuntimeError(f"{dual_arm['label']} five-task gate missing from manifest: {missing_gate}")
             remaining = [
                 item for item in specs
                 if str(item["task_class"]) not in dual_arm["contract"].GATE5_TASKS
             ]
             gate5 = [by_name[name] for name in dual_arm["contract"].GATE5_TASKS]
-            specs = gate5 + remaining if bpr_mode == "primary" else gate5
+            specs = gate5 + remaining if dual_arm_name == "a1r2" or bpr_mode == "primary" else gate5
         elif prospective_gate_arm:
             by_name = {str(item["task_class"]): item for item in specs}
             missing_gate = sorted(set(A0_PRESERVATION_TASKS) - set(by_name))
@@ -2012,7 +2044,7 @@ def main() -> None:
                 },
                 "task_order": (
                     "blocking_A0_4_then_Recipe_1_then_frozen_manifest_remainder"
-                    if dual_arm_name == "bprv2" and bpr_mode == "primary"
+                    if dual_arm_name == "a1r2" or (dual_arm_name == "bprv2" and bpr_mode == "primary")
                     else "fixed_five_task_non_fail_fast_after_primary_complete"
                     if dual_arm_name == "bprv2"
                     else "blocking_A0_4_task_gate_then_frozen_manifest_remainder"
@@ -2043,6 +2075,16 @@ def main() -> None:
                     ),
                     "ordinary_history_deduplicated": True,
                     "response_prefix_required": True,
+                }
+            )
+        elif dual_arm_name == "a1r2":
+            run_signature.update(
+                {
+                    "gate5_tasks": list(dual_arm["contract"].GATE5_TASKS),
+                    "ordinary_history_deduplicated": True,
+                    "response_prefix_required": True,
+                    "official_system_prompt_unchanged": False,
+                    "system_prompt_identity": "exact_A1_WORKING_MEMORY_SYSTEM_PROMPT",
                 }
             )
     if a10_scored_arm:
@@ -2594,6 +2636,8 @@ def main() -> None:
                     A1R1_BPR_V2_SYSTEM_PROMPT
                     if dual_arm_name == "bprv2"
                     else A1_WORKING_MEMORY_SYSTEM_PROMPT
+                    if dual_arm_name == "a1r2"
+                    else A1_WORKING_MEMORY_SYSTEM_PROMPT
                     if args.a1_working_memory
                     else (
                         SOURCE_DOCUMENT_COVERAGE_SYSTEM_PROMPT
@@ -2818,6 +2862,15 @@ def main() -> None:
                 raise RuntimeError(
                     "BPR-v2 Recipe gain-preservation gate failed; scientific failure is terminal"
                 )
+            if (
+                dual_arm_name == "a1r2"
+                and task_name == dual_arm["contract"].RECIPE_TASK
+                and not bool(result.get("success"))
+            ):
+                checkpoint("stopped_gate5_failure")
+                raise RuntimeError(
+                    "A1-R2 Recipe gain-preservation gate failed; scientific failure is terminal"
+                )
             checkpoint("running")
     except BaseException as exc:
         active_exception = exc
@@ -2835,7 +2888,7 @@ def main() -> None:
             )
             checkpoint(
                 "infrastructure_incomplete"
-                if dual_arm_name in {"a12", "bprv2"}
+                if dual_arm_name in {"a12", "bprv2", "a1r2"}
                 else "stopped_invalid_episode"
             )
             if active_exception is None:
