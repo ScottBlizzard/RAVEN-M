@@ -410,7 +410,12 @@ class OfficialQwenMobileController:
                 screenshot = episode_dir / str(before["screenshot"])
                 memory_read: dict[str, Any] | None = None
                 rendered_memory = ""
-                base_user_prompt = build_user_prompt(effective_goal, history)
+                prompt_history = history
+                if self.working_memory is not None and hasattr(
+                    self.working_memory, "prompt_history"
+                ):
+                    prompt_history = self.working_memory.prompt_history(history)
+                base_user_prompt = build_user_prompt(effective_goal, prompt_history)
                 if self.working_memory is not None:
                     # The memory receives only the same pixels available to the
                     # policy.  Raw pixels are needed by A5's deterministic
@@ -431,6 +436,14 @@ class OfficialQwenMobileController:
                         memory_read["resident_history_sha256"] = sha256(
                             json.dumps(
                                 history,
+                                ensure_ascii=False,
+                                sort_keys=False,
+                                separators=(",", ":"),
+                            ).encode("utf-8")
+                        ).hexdigest()
+                        memory_read["prompt_history_sha256"] = sha256(
+                            json.dumps(
+                                prompt_history,
                                 ensure_ascii=False,
                                 sort_keys=False,
                                 separators=(",", ":"),
