@@ -28,6 +28,13 @@ implementation commit `4bbac3214c69d921912219f59f027424c921ec8e`.
 Live execution still requires a fresh server receipt and a blocking 6/6 gate.
 See `evidence/a1r3/A1R3_SRPL_PREFLIGHT_SUMMARY_2026-08-15.md`.
 
+Live execution then failed the first capability task: 0/1, reward 0, 34 calls,
+with no infrastructure error. The A1 writer produced zero valid memory prefixes,
+so A1-R3's new lifecycle never activated. The arm is formally terminal; this
+is a system-level regression but not evidence that the inactive negative-memory
+rule caused it. See
+`evidence/a1r3/A1R3_SRPL_PRIMARY_GATE_RESULT_2026-08-15.md`.
+
 This branch is the clean audit packet for a Zhejiang University summer-camp study of memory mechanisms in long-horizon AndroidWorld tasks. It replaces the earlier public-framework selection packet. Superseded MobileUse/B2/C0 explorations remain recoverable in Git history but are intentionally absent from this branch so that an independent reviewer can focus on the current paired experiment.
 
 ## Research progression

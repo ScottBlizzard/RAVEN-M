@@ -21,8 +21,17 @@
   `implementation/scripts/run_a1r3_srpl.py` - fresh server, receipt, and frozen
   six-first execution path.
 
-A1-R3 is `PROSPECTIVE_ZERO_GENERATION_QUALIFIED`. Replay exposure does not
-predict reward, and no live result exists yet.
+A1-R3 first reached `PROSPECTIVE_ZERO_GENERATION_QUALIFIED`. Replay exposure did
+not predict reward and authorized only the frozen live gate.
+
+Live status supersedes that qualification-only statement: A1-R3 is now
+`FORMAL_GATE_TERMINAL` after a valid 0-reward failure on the first capability
+task. Entry points:
+
+- `evidence/a1r3/A1R3_SRPL_PRIMARY_GATE_RESULT_2026-08-15.json` - exact scored
+  counters, mechanism inactivity, and raw-artifact hashes.
+- `evidence/a1r3/A1R3_SRPL_PRIMARY_GATE_RESULT_2026-08-15.md` - interpretation
+  boundary: the arm regressed, while the new lifecycle itself was never used.
 
 ## 2026-08-14 A1-R2 scored entry points
 

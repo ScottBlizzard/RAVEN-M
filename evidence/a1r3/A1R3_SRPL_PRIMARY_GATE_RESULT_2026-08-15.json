@@ -1,0 +1,59 @@
+{
+  "schema": "a1r3_srpl_gate_terminal_result_v1",
+  "status": "FORMAL_GATE_TERMINAL",
+  "scientific_rerun_allowed": false,
+  "continuation_allowed": false,
+  "mechanism_id": "a1r3_stale_resistant_pending_v1",
+  "experiment_id": "A1R3_SRPL_QWEN3VL32B_AW_HARD_T20260806_G3407_V1",
+  "implementation_commit": "4bbac3214c69d921912219f59f027424c921ec8e",
+  "repository_evidence_commit_before_run": "91726034b7e1bbd479973a6690a2356c1dbdd9bb",
+  "suite_id": "official_qwen_20260815T015804_ea09c9a4",
+  "checkpoint_status": "stopped_capability_gate_failure",
+  "task": {
+    "task_name": "ExpenseDeleteMultiple2",
+    "task_seed": 20260806,
+    "episode_id": "ExpenseDeleteMultiple2_20260806_33274904",
+    "success": false,
+    "reward": 0.0,
+    "termination_reason": "max_steps",
+    "model_calls": 34,
+    "executed_actions": 34,
+    "prompt_tokens": 128383,
+    "completion_tokens": 4392,
+    "total_tokens": 132775,
+    "episode_elapsed_seconds": 837.221526,
+    "transport_attempt_max": 1,
+    "lifecycle_error_count": 0,
+    "episode_error": null
+  },
+  "memory": {
+    "active": false,
+    "write_attempt_count": 34,
+    "valid_prefix_count": 0,
+    "invalid_prefix_count": 34,
+    "nonempty_read_count": 0,
+    "injected_chars": 0,
+    "same_state_nonrefresh_count": 0,
+    "expiry_count": 0,
+    "failure_support_count": 0,
+    "failure_evidence_count": 0,
+    "extra_model_calls": 0,
+    "action_override_count": 0,
+    "forced_termination_count": 0
+  },
+  "hashes": {
+    "checkpoint_sha256": "fd9b8c281bd3e790d7e90b4b0dca6bd511adb10a930f4ca604f7eeef965868ca",
+    "run_signature_file_sha256": "a1c7c569b1493bd5afd7100e2c99ba882d0fd259b74a66aef2dfe8dc2e54870f",
+    "run_signature_sha256": "58d710487e18b679d5dd1ff308d671d6470cd69835f90731b677a6e56df7c95d",
+    "episode_json_sha256": "97321270492a16471d59bfe401500e26ca9cbdfa20499b5f49c340f2ce7d78bb",
+    "live_receipt_file_sha256": "8c7bfe084ca6722b155306fc409d57417c6f2604fa55a557cfce51f6b7dce1c9",
+    "live_receipt_content_sha256": "a498c0b71b3efd4119c0e3062f8fca36e15ef3cd9ed8b9aa05113726c3a82a0c"
+  },
+  "interpretation": {
+    "system_arm_verdict": "SCIENTIFIC_FAILURE_AT_FIRST_CAPABILITY_TASK",
+    "a1r3_lifecycle_exercised": false,
+    "failure_attributable_to_new_failure_memory": false,
+    "reason": "All 34 executed responses failed the inherited A1 MEMORY prefix contract, so the A1-R3 ledger and repeated-failure fact were never written or read. This does not rescue the arm: the matched prospective system still lost an A0/A1/A1-R2 success and the frozen gate is terminal."
+  }
+}
+
