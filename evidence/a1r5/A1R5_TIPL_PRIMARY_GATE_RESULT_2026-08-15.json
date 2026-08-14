@@ -1,0 +1,31 @@
+{
+  "schema": "a1r5_tipl_primary_gate_result_v1",
+  "mechanism_id": "a1r5_transition_invalidated_pending_v1",
+  "experiment_id": "A1R5_TIPL_QWEN3VL32B_AW_HARD_T20260806_G3407_V1",
+  "status": "stopped_capability_gate_failure",
+  "scientific_valid": true,
+  "task_name": "ExpenseDeleteMultiple2",
+  "episode_id": "ExpenseDeleteMultiple2_20260806_962635da",
+  "reward": 0.0,
+  "termination_reason": "max_steps",
+  "model_calls": 34,
+  "executed_actions": 34,
+  "prompt_tokens": 129708,
+  "completion_tokens": 4858,
+  "total_tokens": 134566,
+  "elapsed_seconds": 863.232863,
+  "memory_counters": {
+    "valid_prefix_count": 13,
+    "invalid_prefix_count": 21,
+    "writer_reminder_read_count": 14,
+    "semantic_memory_read_count": 20,
+    "transition_invalidation_count": 12,
+    "expiry_count": 0
+  },
+  "observed_partial_progress": "The trajectory reached Expense Logs without the A1-R4 home-screen relapse and deleted Public Transit, but did not delete Tuition Fees and Bike Repairs before the native 34-step limit.",
+  "diagnosis": "Transition invalidation removed stale page guidance but also made the ledger depend on repeated free-text rewrites. The model retained the remaining item set in prose yet repeatedly re-entered item detail without preserving the immediate delete-confirm sub-obligation.",
+  "run_signature_sha256": "eff85631e28cae424d7cf2c5fd6cd0b967a2566aa2949bba126798331a944e7f",
+  "checkpoint_sha256": "874fba2a169c3eb1e1ef1568f80704c73198f0647c5cb371a6e940cb91499ac8",
+  "episode_json_sha256": "7a47ec6edc8d61fa5400af4695dc4f325077d2d098ca4c190969db2ec9cd836c",
+  "live_generation_authorized_for_a1r5": false
+}
