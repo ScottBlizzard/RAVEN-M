@@ -1,0 +1,7 @@
+{
+  "schema":"a1r6_gapl_primary_gate_result_v1","mechanism_id":"a1r6_goal_anchored_pending_v1","experiment_id":"A1R6_GAPL_QWEN3VL32B_AW_HARD_T20260806_G3407_V1","status":"stopped_capability_gate_failure","scientific_valid":true,
+  "task_name":"ExpenseDeleteMultiple2","episode_id":"ExpenseDeleteMultiple2_20260806_049f921d","reward":0.0,"termination_reason":"max_steps","model_calls":34,"executed_actions":34,"prompt_tokens":131553,"completion_tokens":4048,"total_tokens":135601,"elapsed_seconds":806.668484,
+  "memory_counters":{"valid_prefix_count":16,"invalid_prefix_count":18,"goal_anchored_read_count":34,"transition_invalidation_count":8,"failure_evidence_count":1},
+  "diagnosis":"The goal invariant preserved Public Transit, Tuition Fees, and Bike Repairs as pending and the model correctly recognized the Tuition Fees trash control. Its proposed coordinate [894,690] mapped below the visible trash icon on the full-height screenshot. It then repeated an incorrect Tuition Fees row coordinate despite an injected no-progress warning. The remaining observed bottleneck is spatial action grounding and weak compliance with recovery memory, not loss of goal requirements.",
+  "run_signature_sha256":"26e739c90bfc25e06e56e52329906e88da772318689ccf1c81100c65296ab55b","checkpoint_sha256":"bc79ecab417a9139d9b46cdf8bcc259e75001e08b8150932fca1f37daef5b9b0","episode_json_sha256":"8b84ec43f862dc57bf222784c7e2763ca948d373ff6ebd68a0018dbbd3a1ca90","live_generation_authorized_for_a1r6":false
+}
