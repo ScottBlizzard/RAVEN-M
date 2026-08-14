@@ -1,0 +1,49 @@
+{
+  "checks": {
+    "banned_core_imports": [],
+    "git": {
+      "head": "2b449f8ba66c5ceeb70a24114331b9ffbdd6b733",
+      "worktree_status": []
+    },
+    "offline_replay": {
+      "status": "PASS",
+      "totals": {
+        "a1r2_actual_rendered_chars": 108423,
+        "executed_actions": 595,
+        "failure_evidence_count": 6,
+        "failure_evidence_read_count": 23,
+        "failure_evidence_read_episode_count": 4,
+        "model_calls": 603,
+        "nonreinforcing_state_write_count": 130,
+        "projected_nonempty_reads": 603,
+        "projected_render_ratio_vs_a1r2": 4.725049113195539,
+        "projected_rendered_chars": 512304,
+        "semantic_memory_reads": 120,
+        "valid_episode_count": 19,
+        "valid_prefixes": 206,
+        "writer_reminder_reads": 483
+      }
+    },
+    "runtime_canary_ms": {
+      "maximum": 0.2868000010494143,
+      "p99": 0.14779999037273228
+    },
+    "tests": {
+      "returncode": 0,
+      "stderr_tail": "",
+      "stdout_tail": "........................................................................ [ 19%]\n........................................................................ [ 39%]\n........................................................................ [ 59%]\n........................................................................ [ 79%]\n........................................................................ [ 99%]\n...                                                                      [100%]\n"
+    }
+  },
+  "content_sha256": "efc41d3e55a09bf69cc71d3c671a590ce636473ea4f439e705ca6622ab444fb9",
+  "created_at": "2026-08-14T22:27:13.552314+00:00",
+  "errors": [],
+  "experiment_id": "A1R12_CHP_QWEN3VL32B_AW_HARD_T20260806_G3407_V1",
+  "generation_calls": 0,
+  "implementation_commit": "2b449f8ba66c5ceeb70a24114331b9ffbdd6b733",
+  "live_generation_authorized": true,
+  "mechanism_id": "a1r12_compacted_history_pending_v1",
+  "offline_replay_content_sha256": "dd9df1933b1694c972f29c43c101fc965c556bb0cd7607f4d426444dd1688236",
+  "schema": "a1r12_chp_zero_generation_preflight_v1",
+  "source_freeze_content_sha256": "e0c7be84a78bc5bd0fd64a82b784087731c6750e9772127d4abf428a72acea5b",
+  "status": "PASS"
+}
