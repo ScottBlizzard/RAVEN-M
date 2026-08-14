@@ -1,0 +1,49 @@
+{
+  "checks": {
+    "banned_core_imports": [],
+    "git": {
+      "head": "0ad4c50be3f7c4476fd275b1f778256605945d76",
+      "worktree_status": []
+    },
+    "offline_replay": {
+      "status": "PASS",
+      "totals": {
+        "a1r2_actual_rendered_chars": 108423,
+        "executed_actions": 595,
+        "failure_evidence_count": 6,
+        "failure_evidence_read_count": 23,
+        "failure_evidence_read_episode_count": 4,
+        "model_calls": 603,
+        "nonreinforcing_state_write_count": 130,
+        "projected_nonempty_reads": 603,
+        "projected_render_ratio_vs_a1r2": 4.499146859983583,
+        "projected_rendered_chars": 487811,
+        "semantic_memory_reads": 120,
+        "valid_episode_count": 19,
+        "valid_prefixes": 206,
+        "writer_reminder_reads": 483
+      }
+    },
+    "runtime_canary_ms": {
+      "maximum": 0.20249999943189323,
+      "p99": 0.08459999662591144
+    },
+    "tests": {
+      "returncode": 0,
+      "stderr_tail": "",
+      "stdout_tail": "........................................................................ [ 20%]\n........................................................................ [ 40%]\n........................................................................ [ 61%]\n........................................................................ [ 81%]\n.................................................................        [100%]\n============================== warnings summary ===============================\nC:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\requests\\__init__.py:113\n  C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\requests\\__init__.py:113: RequestsDependencyWarning: urllib3 (2.3.0) or chardet (7.0.1)/charset_normalizer (3.4.4) doesn't match a supported version!\n    warnings.warn(\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n"
+    }
+  },
+  "content_sha256": "a9b1e3ce7410b6dc1f583f47e7a7625bd0e5b3ab795eb6ac6419efa6e819dd5f",
+  "created_at": "2026-08-14T21:31:40.843785+00:00",
+  "errors": [],
+  "experiment_id": "A1R10_PACP_QWEN3VL32B_AW_HARD_T20260806_G3407_V1",
+  "generation_calls": 0,
+  "implementation_commit": "0ad4c50be3f7c4476fd275b1f778256605945d76",
+  "live_generation_authorized": true,
+  "mechanism_id": "a1r10_pre_action_calibrated_pending_v1",
+  "offline_replay_content_sha256": "ea2aad0262d03891313ef5d26277afbcafeb852b6e89126b2ed204ad6e8cf5ce",
+  "schema": "a1r10_pacp_zero_generation_preflight_v1",
+  "source_freeze_content_sha256": "d0286b42c055506788b9d6ed9d1a2c7b96eeadedefc1e5e0840aee9eb8fb1cfb",
+  "status": "PASS"
+}
