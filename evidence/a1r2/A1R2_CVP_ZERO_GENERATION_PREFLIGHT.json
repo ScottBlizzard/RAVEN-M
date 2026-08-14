@@ -1,0 +1,35 @@
+{
+  "checks": {
+    "a1_system_prompt_sha256": "653f727961a97d04176d3ddb9b1098355fe1fe8783473c2abc74967798f4a5b8",
+    "banned_core_imports": [],
+    "git": {
+      "head": "371aeed332d60312481d601100e2d7c9eb3c987d",
+      "worktree_status": []
+    },
+    "offline_replay": {
+      "content_sha256": "888f29343aa7ae5aef0528f72dcadead9169c3dbd64564981dd6a780d8dc494b",
+      "status": "PASS"
+    },
+    "runtime_canary_ms": {
+      "maximum": 0.47090000043681357,
+      "p99": 0.1233000002685003
+    },
+    "tests": {
+      "returncode": 0,
+      "stderr_tail": "",
+      "stdout_tail": "........................................................................ [ 25%]\n........................................................................ [ 50%]\n........................................................................ [ 75%]\n.......................................................................  [100%]\n"
+    }
+  },
+  "content_sha256": "d49ec60a1d1c566163a391c16e1a9fecd590639a8409b3be4a1505641e2c1256",
+  "created_at": "2026-08-14T05:56:35.576898+00:00",
+  "errors": [],
+  "experiment_id": "A1R2_CVP_QWEN3VL32B_AW_HARD_T20260806_G3407_V1",
+  "generation_calls": 0,
+  "implementation_commit": "371aeed332d60312481d601100e2d7c9eb3c987d",
+  "live_generation_authorized": true,
+  "mechanism_id": "a1r2_compact_verified_pending_v1",
+  "offline_replay_file_sha256": "f23662fd6f850711d2c2a3fc1d28e8aa4a1ddf4dac273586128ea7777f737257",
+  "schema": "a1r2_cvp_zero_generation_preflight_v1",
+  "source_freeze_content_sha256": "5c135618034267cdbd9cd3dc90d6e7fdd8a53d1d6aefd5370082fe8d5dca8168",
+  "status": "PASS"
+}
