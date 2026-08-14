@@ -1,5 +1,29 @@
 # RAVEN-M A0-A12 Research Artifact Manifest
 
+## 2026-08-15 A1-R3 prospective entry points
+
+- `protocols/A1R3_STALE_RESISTANT_PENDING_PREREG_2026-08-15.md` - frozen
+  evidence-derived mechanism, six-task gate, independent verdicts, and version
+  boundary.
+- `implementation/src/raven_m/official_qwen_mobile/a1r3_stale_resistant_pending.py`
+  - one compact pending ledger, non-refreshing TTL, one tombstone, and one
+  bounded repeated-failure fact.
+- `evidence/a1r3/A1R3_SRPL_OFFLINE_REPLAY_REPORT.json` - real zero-generation
+  replay of all 19 valid A1-R2 episodes.
+- `evidence/a1r3/A1R3_SRPL_SOURCE_FREEZE.json` - exact 24-file decision-source
+  closure at implementation commit `4bbac3214c69d921912219f59f027424c921ec8e`.
+- `evidence/a1r3/A1R3_SRPL_ZERO_GENERATION_PREFLIGHT.json` - formal PASS report;
+  it does not itself replace the required fresh live server receipt.
+- `evidence/a1r3/A1R3_SRPL_PREFLIGHT_SUMMARY_2026-08-15.md` - concise human
+  interpretation and live stopping boundary.
+- `implementation/scripts/start_a1r3_srpl_server.sh`,
+  `implementation/scripts/qualify_a1r3_srpl_server.py`, and
+  `implementation/scripts/run_a1r3_srpl.py` - fresh server, receipt, and frozen
+  six-first execution path.
+
+A1-R3 is `PROSPECTIVE_ZERO_GENERATION_QUALIFIED`. Replay exposure does not
+predict reward, and no live result exists yet.
+
 ## 2026-08-14 A1-R2 scored entry points
 
 - `evidence/a1r2/A1R2_CVP_SCORED_RESULT_2026-08-14.md` - concise scored

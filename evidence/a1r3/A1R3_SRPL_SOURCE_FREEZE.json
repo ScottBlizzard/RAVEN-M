@@ -1,0 +1,32 @@
+{
+  "content_sha256": "dbc7d08a080fea5f77cd68c83dce2612fe12c0081d06143bdf4bd9bb081ce4f8",
+  "files": {
+    "evidence/a1r2/A1R2_CVP_SCORED_RESULT_2026-08-14.json": "69704d3f71ef309c52cd7b00be12800945e90205cdba4d56a239003e70882ae2",
+    "evidence/a1r2/A1R2_CVP_SCORED_RESULT_2026-08-14.md": "795420fc31057d21e4623bb3aa84b51c35589c76f5b5ae71a45482b5f7d41b7a",
+    "evidence/a1r3/A1R3_SRPL_OFFLINE_REPLAY_REPORT.json": "b9c53ecf48f0ebd666c73cee879ddc9512fc885d62a499cf8f8713a2742045dc",
+    "implementation/configs/a1r3_stale_resistant_pending_hard_seed20260806.json": "60ba808b23a6ac7692bdcdb07a703218771e3e3b35fd46758fee76015f091efc",
+    "implementation/configs/androidworld_hard_v2_instances.json": "c1d718e9d380e443d12d2c29ab2182ae801a3befc53881b864cd830f2ad0440a",
+    "implementation/scripts/preflight_a1r3_srpl.py": "3acd82ebc4d494ced7b590e54c74ab1625e10d38a713425968d37b97337f6079",
+    "implementation/scripts/qualify_a1r3_srpl_server.py": "995fcc3d4fa2f068441913230fd722ae6b6b4915219779252401f3ec9c77c252",
+    "implementation/scripts/replay_a1r3_stale_resistant_pending.py": "aa0d81d3fd9cfd470480655eff12c51c512d6cb911346572a47601c30c827ab4",
+    "implementation/scripts/run_a1r3_srpl.py": "a4fd972e573f88b88b9fa419c454caf8acd65d2888682198850edd30fea5fc47",
+    "implementation/scripts/run_official_qwen_mobile.py": "7792de75801aa396cfeba88a8435c2890a382b6ac52029dc8c24611fdae0d66f",
+    "implementation/scripts/start_a1r3_srpl_server.sh": "5303e4317b4389fcba434984abb34f911cefef192dde049a5bbd220dfea93e49",
+    "implementation/src/raven_m/env/androidworld_adapter.py": "ad4ecbee9430326ca7380334c49372911a1c6b1c217ee12bb3714d2fb1219c33",
+    "implementation/src/raven_m/models/vllm_client.py": "7e590c410850909b46fa49e9bc267c23478f60c5f560ba53a7901d095c96c367",
+    "implementation/src/raven_m/multi_framework_benchmark/task_instances.py": "fd0772a3ba9b973911dfbb055b25c8dab6e34d0fa640cf6ab4d7b540595f05be",
+    "implementation/src/raven_m/official_qwen_mobile/a1r3_contract.py": "3caf50db3236fa39a48af5bb46066fb6f03d1f93fb843635b2afcbf1bde5e553",
+    "implementation/src/raven_m/official_qwen_mobile/a1r3_stale_resistant_pending.py": "97edf0b57fc9cad21d8a8a520880e6ed29e33a3a5a1944341c5a969dc4d35829",
+    "implementation/src/raven_m/official_qwen_mobile/controller.py": "83a05a4aa4df7cc509ae591fe6cdd257ad8d859a4cd36ca23cb7da2ed635b7d7",
+    "implementation/src/raven_m/official_qwen_mobile/protocol.py": "9eefe9dc089f076089377d7c5fb228cdcb12e676d404973441cbc6894865a689",
+    "implementation/src/raven_m/official_qwen_mobile/working_memory.py": "86589458c820a08a220c738ae3b55fdce40e7df37ade5b8b1d3c9631bea79ee3",
+    "implementation/tests/official_qwen_mobile/test_a1r3_contract.py": "5a11fbc7ea5a9c99e4616c9bb2bb77bff07a16b2b65c703ff59a36b3762ecc8a",
+    "implementation/tests/official_qwen_mobile/test_a1r3_controller_integration.py": "8cf38b1cbf1cfc0a124dbcdac19b12fb6228dac72d3b7c4c42e04330ec9e8f75",
+    "implementation/tests/official_qwen_mobile/test_a1r3_offline_replay.py": "39808c29c9c499eb229e460e34f44a0a2eab6cb89cea0738ba322325d6374d20",
+    "implementation/tests/official_qwen_mobile/test_a1r3_stale_resistant_pending.py": "3bdbf7ffd01e18fe4796979aa4d375a67ce76933f9a157b0b2c7f12346c94ffa",
+    "protocols/A1R3_STALE_RESISTANT_PENDING_PREREG_2026-08-15.md": "e0898fed3a9239014fb98c446007f41d5068c7f8fcfd80d15462b0578b8b0ce8"
+  },
+  "implementation_commit": "4bbac3214c69d921912219f59f027424c921ec8e",
+  "parent_evidence_commit": "f7368bcb3628112e497045c398128ad383811a7c",
+  "schema": "a1r3_srpl_source_freeze_v1"
+}

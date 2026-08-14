@@ -1,0 +1,49 @@
+{
+  "checks": {
+    "a1_system_prompt_sha256": "653f727961a97d04176d3ddb9b1098355fe1fe8783473c2abc74967798f4a5b8",
+    "banned_core_imports": [],
+    "git": {
+      "head": "4bbac3214c69d921912219f59f027424c921ec8e",
+      "worktree_status": []
+    },
+    "offline_replay": {
+      "content_sha256": "c58e7dc8df7a0418a7a7e81fd75bb025edbbeb5c5bdbdc96473b8762e4efd46e",
+      "status": "PASS",
+      "totals": {
+        "a1r2_actual_rendered_chars": 108423,
+        "executed_actions": 595,
+        "failure_evidence_count": 11,
+        "failure_evidence_read_count": 34,
+        "failure_evidence_read_episode_count": 6,
+        "model_calls": 603,
+        "nonreinforcing_state_write_count": 130,
+        "projected_nonempty_reads": 282,
+        "projected_render_ratio_vs_a1r2": 0.6973520378517474,
+        "projected_rendered_chars": 75609,
+        "valid_episode_count": 19,
+        "valid_prefixes": 206
+      }
+    },
+    "runtime_canary_ms": {
+      "maximum": 0.26029999571619555,
+      "p99": 0.13550000585382804
+    },
+    "tests": {
+      "returncode": 0,
+      "stderr_tail": "",
+      "stdout_tail": "........................................................................ [ 23%]\n........................................................................ [ 46%]\n........................................................................ [ 70%]\n........................................................................ [ 93%]\n....................                                                     [100%]\n============================== warnings summary ===============================\nC:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\requests\\__init__.py:113\n  C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\requests\\__init__.py:113: RequestsDependencyWarning: urllib3 (2.3.0) or chardet (7.0.1)/charset_normalizer (3.4.4) doesn't match a supported version!\n    warnings.warn(\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n"
+    }
+  },
+  "content_sha256": "ec9e7ba122e58a879f708e5eecaaad9be6e654fca183f8dfffb85c8daa2d69f2",
+  "created_at": "2026-08-14T17:44:06.822635+00:00",
+  "errors": [],
+  "experiment_id": "A1R3_SRPL_QWEN3VL32B_AW_HARD_T20260806_G3407_V1",
+  "generation_calls": 0,
+  "implementation_commit": "4bbac3214c69d921912219f59f027424c921ec8e",
+  "live_generation_authorized": true,
+  "mechanism_id": "a1r3_stale_resistant_pending_v1",
+  "offline_replay_content_sha256": "80ce48f2dc15884a801a10a63858a33616212ea108215400a9e3cc592f1399b6",
+  "schema": "a1r3_srpl_zero_generation_preflight_v1",
+  "source_freeze_content_sha256": "dbc7d08a080fea5f77cd68c83dce2612fe12c0081d06143bdf4bd9bb081ce4f8",
+  "status": "PASS"
+}

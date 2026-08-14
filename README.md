@@ -20,6 +20,14 @@ undercut A1, and causal mechanism attribution remains unestablished without a
 matched ablation. See
 `evidence/a1r2/A1R2_CVP_SCORED_RESULT_2026-08-14.md`.
 
+The next prospective pure-memory arm is A1-R3 SRPL. It directly targets the
+130 unchanged-state refreshes and repeated no-progress actions observed in
+A1-R2, without adding a planner, verifier, model call, guard, or action
+override. Its real-trace replay and zero-generation preflight pass at frozen
+implementation commit `4bbac3214c69d921912219f59f027424c921ec8e`.
+Live execution still requires a fresh server receipt and a blocking 6/6 gate.
+See `evidence/a1r3/A1R3_SRPL_PREFLIGHT_SUMMARY_2026-08-15.md`.
+
 This branch is the clean audit packet for a Zhejiang University summer-camp study of memory mechanisms in long-horizon AndroidWorld tasks. It replaces the earlier public-framework selection packet. Superseded MobileUse/B2/C0 explorations remain recoverable in Git history but are intentionally absent from this branch so that an independent reviewer can focus on the current paired experiment.
 
 ## Research progression
@@ -28,6 +36,10 @@ This branch is the clean audit packet for a Zhejiang University summer-camp stud
 2. **A1 — simple Action Working Memory.** Six recent `observed / verified / pending` records were injected within each episode. It achieved 5/19 but increased steps from 329 to 603 and tokens from 1.27M to 3.46M.
 3. **A2-v1r1 — scored verified-progress compound arm.** It completed the 19-task suite at 0/19, with 705 calls and 3,170,413 tokens. It is retained as a negative comparison rather than an improvement over A0 or A1.
 4. **A1-R2 compact vertical refinement.** It retained one latest verified/pending ledger, deduplicated the memory prefix from ordinary history, and scored 6/19 with 603 calls and 2.686M tokens. This is the first matched accuracy improvement beyond A1 in the vertical line, but not yet a causal mechanism result.
+5. **A1-R3 stale-resistant pending ledger.** It preserves A1-R2's positive
+   kernel, prevents unchanged-state TTL renewal, and remembers one repeated
+   visible failed attempt. It is preflight-qualified but has no live reward
+   result yet.
 
 The A2 guard is not claimed as memory intelligence. It only limits obvious repeated-action waste. All memory reads/writes and guard assessments/blocks/stops are recorded separately so the final trace analysis can attribute changes.
 
