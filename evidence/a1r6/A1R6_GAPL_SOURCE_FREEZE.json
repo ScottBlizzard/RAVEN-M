@@ -1,5 +1,5 @@
 {
-  "content_sha256": "04e12725e62f83e5ea84b6c4fcccfb55b2ea05cdd56312bdc8d68224c54c5fe7",
+  "content_sha256": "da89a37353266f1d4e7be0b057b8e1c708f6229daa892f5e74994059daef9e64",
   "files": {
     "evidence/a1r5/A1R5_TIPL_PRIMARY_GATE_RESULT_2026-08-15.json": "dc7027800dbef894614214ca00ee483db4891b180bf35bee239b0f2d6522994d",
     "evidence/a1r5/A1R5_TIPL_PRIMARY_GATE_RESULT_2026-08-15.md": "194928f339fa95fa3d48db2600be1020eb77b201a500c41735b27c573fd43124",
@@ -19,7 +19,7 @@
     "implementation/src/raven_m/official_qwen_mobile/a1r4_writer_resilient_pending.py": "9a8876862358e479d720a8af31f1ca61fe2aea7a04e86bbb92ce0bea824575ee",
     "implementation/src/raven_m/official_qwen_mobile/a1r5_contract.py": "91541a918eac1bbb58968a337ab7fe78ca85d4b1a22561c79d52af138a6e14d9",
     "implementation/src/raven_m/official_qwen_mobile/a1r5_transition_invalidated_pending.py": "080d72f0a7ddba252e59b1e020f0a50bb4ea86fb8d87dd72cf2aac96dee4041f",
-    "implementation/src/raven_m/official_qwen_mobile/a1r6_contract.py": "a249a95589c378d25731e7ac0f37a8cdba9abac564fafc5605e046b07c134fd7",
+    "implementation/src/raven_m/official_qwen_mobile/a1r6_contract.py": "b1ba23d0714c50bec195ba72910e2ee21cbe40de8e5d39b796ee85756a689c2b",
     "implementation/src/raven_m/official_qwen_mobile/a1r6_goal_anchored_pending.py": "c1d45607061f81541ed54b34a20cfe8139f8eeef4d901036ce7c900a206d3511",
     "implementation/src/raven_m/official_qwen_mobile/controller.py": "83a05a4aa4df7cc509ae591fe6cdd257ad8d859a4cd36ca23cb7da2ed635b7d7",
     "implementation/src/raven_m/official_qwen_mobile/protocol.py": "9eefe9dc089f076089377d7c5fb228cdcb12e676d404973441cbc6894865a689",
@@ -30,7 +30,7 @@
     "implementation/tests/official_qwen_mobile/test_a1r6_offline_replay.py": "43ae43c1f8b01dbdf6640cedf3ecc4f0d6f96ba0a6fe797d6eb341989b235c05",
     "protocols/A1R6_GOAL_ANCHORED_PENDING_PREREG_2026-08-15.md": "cd05100a663092473cb02fd8d2e27c2b7166ef8bce8127a53600afe97d80a713"
   },
-  "implementation_commit": "c0ae496904115ae4c13eb0fd3cf01484bfb7a9ae",
+  "implementation_commit": "c3445eb25ac4f21d211fb0f07136b5966a2517fe",
   "parent_evidence_commit": "87d665a1021c6a1479bcbd80ff6a1716dd8f6cd8",
   "schema": "a1r5_tipl_source_freeze_v1"
 }

@@ -2,7 +2,7 @@
   "checks": {
     "banned_core_imports": [],
     "git": {
-      "head": "c0ae496904115ae4c13eb0fd3cf01484bfb7a9ae",
+      "head": "c3445eb25ac4f21d211fb0f07136b5966a2517fe",
       "worktree_status": []
     },
     "offline_replay": {
@@ -25,8 +25,8 @@
       }
     },
     "runtime_canary_ms": {
-      "maximum": 0.4440000047907233,
-      "p99": 0.048300003982149065
+      "maximum": 0.12720000086119398,
+      "p99": 0.02559999848017469
     },
     "tests": {
       "returncode": 0,
@@ -34,16 +34,16 @@
       "stdout_tail": "........................................................................ [ 21%]\n........................................................................ [ 43%]\n........................................................................ [ 64%]\n........................................................................ [ 86%]\n..............................................                           [100%]\n============================== warnings summary ===============================\nC:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\requests\\__init__.py:113\n  C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\requests\\__init__.py:113: RequestsDependencyWarning: urllib3 (2.3.0) or chardet (7.0.1)/charset_normalizer (3.4.4) doesn't match a supported version!\n    warnings.warn(\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n"
     }
   },
-  "content_sha256": "4fe752c747dde82626be9a6761b2081cea34b488a9eb5731bd06f9a845e5d220",
-  "created_at": "2026-08-14T19:45:09.635208+00:00",
+  "content_sha256": "3ecd90c04676d8d2a9efb683675358ed5a2c978bca20013cfb5b8737eb4f8d2b",
+  "created_at": "2026-08-14T19:50:03.938766+00:00",
   "errors": [],
   "experiment_id": "A1R6_GAPL_QWEN3VL32B_AW_HARD_T20260806_G3407_V1",
   "generation_calls": 0,
-  "implementation_commit": "c0ae496904115ae4c13eb0fd3cf01484bfb7a9ae",
+  "implementation_commit": "c3445eb25ac4f21d211fb0f07136b5966a2517fe",
   "live_generation_authorized": true,
   "mechanism_id": "a1r6_goal_anchored_pending_v1",
   "offline_replay_content_sha256": "6ec26640bde5cc5fbcdb4b0d29d7072025f3fc262cd382fc4f7184cff937972e",
   "schema": "a1r6_gapl_zero_generation_preflight_v1",
-  "source_freeze_content_sha256": "04e12725e62f83e5ea84b6c4fcccfb55b2ea05cdd56312bdc8d68224c54c5fe7",
+  "source_freeze_content_sha256": "da89a37353266f1d4e7be0b057b8e1c708f6229daa892f5e74994059daef9e64",
   "status": "PASS"
 }
