@@ -1,0 +1,3 @@
+from raven_m.official_qwen_mobile.a1r11_coordinate_self_check_pending import CoordinateSelfCheckPendingMemory,MECHANISM_ID
+def test_self_check_replaces_static_calibration_and_commits_exact_text()->None:
+ m=CoordinateSelfCheckPendingMemory();text,a=m.read({"goal":"Delete A"});assert "COORDINATE SELF-CHECK FOR EVERY TAP" in text and "SPATIAL CALIBRATION BEFORE ANY TAP" not in text;event=m.commit_injection(a["ticket_id"],"p");assert event["exact_injected_text"]==text and event["mechanism_id"]==MECHANISM_ID and event["coordinate_self_check_injected"] is True;assert m.audit_record()["counters"]["coordinate_self_check_read_count"]==1

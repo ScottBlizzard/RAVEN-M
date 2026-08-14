@@ -1,0 +1,5 @@
+# A1-R11 Coordinate Self-Check Pending — Prospective Preregistration
+
+A1-R11 is a new composite arm frozen after A1-R10 failed its first capability task. It changes exactly one R10 intervention: the static coordinate calibration is replaced by an explicit per-tap percentage-to-0–1000 conversion self-check. All pending-ledger, invalidation, goal-anchor, recovery, controller, model, seeds, task instances, action budgets, and sampling settings remain fixed.
+
+The intervention is prompt-only, episode-local, deterministic, adds no model call, never blocks or overrides an action, never forces termination, and cannot use evaluator, UI tree, package/activity, future data, or task identity. Every nonempty read contains the exact frozen self-check text. The six-task capability gate is fixed in the inherited A1-R6 order; the first valid scientific failure stops the arm. Only six successes release the remaining thirteen. A failure means explicit prompt self-calibration did not repair the observed grounding bottleneck and no further prompt-only hot patch is allowed under this identity.

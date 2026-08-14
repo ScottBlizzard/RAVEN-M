@@ -160,6 +160,7 @@ A7_REMAINING_AFTER_GATE_TASKS = (
 # mechanism and contract modules, and makes it impossible to compose multiple
 # memories in one controller.
 DUAL_ARM_SPECS = {
+    "a1r11": {"flag":"a1r11_cscp","label":"A1-R11 CSCP","memory_module":"raven_m.official_qwen_mobile.a1r11_coordinate_self_check_pending","memory_class":"CoordinateSelfCheckPendingMemory","contract_module":"raven_m.official_qwen_mobile.a1r11_contract","entry_key":"a1r11_valid_entries","checkpoint_schema":"a1r11_cscp_checkpoint_v1","result_key":"a1r11_result","result_schema":"a1r11_cscp_result_v1"},
     "a1r10": {"flag":"a1r10_pacp","label":"A1-R10 PACP","memory_module":"raven_m.official_qwen_mobile.a1r10_pre_action_calibrated_pending","memory_class":"PreActionCalibratedPendingMemory","contract_module":"raven_m.official_qwen_mobile.a1r10_contract","entry_key":"a1r10_valid_entries","checkpoint_schema":"a1r10_pacp_checkpoint_v1","result_key":"a1r10_result","result_schema":"a1r10_pacp_result_v1"},
     "a1r9": {"flag":"a1r9_rlcr","label":"A1-R9 RLCR","memory_module":"raven_m.official_qwen_mobile.a1r9_run_length_cycle_recovery","memory_class":"RunLengthCycleRecoveryMemory","contract_module":"raven_m.official_qwen_mobile.a1r9_contract","entry_key":"a1r9_valid_entries","checkpoint_schema":"a1r9_rlcr_checkpoint_v1","result_key":"a1r9_result","result_schema":"a1r9_rlcr_result_v1"},
     "a1r8": {"flag":"a1r8_rcrp","label":"A1-R8 RCRP","memory_module":"raven_m.official_qwen_mobile.a1r8_route_cycle_recovery_pending","memory_class":"RouteCycleRecoveryPendingMemory","contract_module":"raven_m.official_qwen_mobile.a1r8_contract","entry_key":"a1r8_valid_entries","checkpoint_schema":"a1r8_rcrp_checkpoint_v1","result_key":"a1r8_result","result_schema":"a1r8_rcrp_result_v1"},
@@ -1242,6 +1243,11 @@ def main() -> None:
         help="Fresh A12 receipt bound only to its own preflight and process.",
     )
     parser.add_argument(
+        "--a1r11-cscp",action="store_true",help="Run prospective A1-R11 coordinate self-check composite."
+    )
+    parser.add_argument("--a1r11-preflight-report",type=Path,default=REPOSITORY_ROOT/"evidence/a1r11/A1R11_CSCP_ZERO_GENERATION_PREFLIGHT.json")
+    parser.add_argument("--a1r11-launch-receipt",type=Path)
+    parser.add_argument(
         "--a1r10-pacp",action="store_true",help="Run prospective A1-R10 pre-action calibrated composite."
     )
     parser.add_argument("--a1r10-preflight-report",type=Path,default=REPOSITORY_ROOT/"evidence/a1r10/A1R10_PACP_ZERO_GENERATION_PREFLIGHT.json")
@@ -1582,6 +1588,7 @@ def main() -> None:
             args.a10_v2_emobf,
             args.a11_crc_ecobf,
             args.a12_madm,
+            args.a1r11_cscp,
             args.a1r10_pacp,
             args.a1r9_rlcr,
             args.a1r8_rcrp,
@@ -1601,7 +1608,7 @@ def main() -> None:
             "--evidence-qualified-progress, and --source-document-coverage "
             "--source-document-coverage-gate, --a1-working-memory, and "
             "--a2-verified-progress-memory, --a345-arm, --a678-arm, --a10-ecobf, "
-            "--a10-v2-emobf, --a11-crc-ecobf, --a12-madm, --a1r10-pacp, --a1r9-rlcr, --a1r8-rcrp, --a1r7-grpl, --a1r6-gapl, --a1r5-tipl, --a1r4-wrpl, --a1r3-srpl, --a1r2-cvp, --a1r1-bpr-v2-mode, and "
+            "--a10-v2-emobf, --a11-crc-ecobf, --a12-madm, --a1r11-cscp, --a1r10-pacp, --a1r9-rlcr, --a1r8-rcrp, --a1r7-grpl, --a1r6-gapl, --a1r5-tipl, --a1r4-wrpl, --a1r3-srpl, --a1r2-cvp, --a1r1-bpr-v2-mode, and "
             "--enriched-memory-diagnostic are mutually exclusive"
         )
     held_out_eligible = not bool(args.diagnostic) and not bool(
@@ -1618,6 +1625,7 @@ def main() -> None:
                 ("a10v2", args.a10_v2_emobf),
                 ("a11", args.a11_crc_ecobf),
                 ("a12", args.a12_madm),
+                ("a1r11", args.a1r11_cscp),
                 ("a1r10", args.a1r10_pacp),
                 ("a1r9", args.a1r9_rlcr),
                 ("a1r8", args.a1r8_rcrp),
@@ -1663,6 +1671,8 @@ def main() -> None:
         if dual_arm_name == "a11"
         else args.a12_preflight_report
         if dual_arm_name == "a12"
+        else args.a1r11_preflight_report
+        if dual_arm_name == "a1r11"
         else args.a1r10_preflight_report
         if dual_arm_name == "a1r10"
         else args.a1r9_preflight_report
@@ -1694,6 +1704,8 @@ def main() -> None:
         if dual_arm_name == "a11"
         else args.a12_launch_receipt
         if dual_arm_name == "a12"
+        else args.a1r11_launch_receipt
+        if dual_arm_name == "a1r11"
         else args.a1r10_launch_receipt
         if dual_arm_name == "a1r10"
         else args.a1r9_launch_receipt
@@ -2000,7 +2012,7 @@ def main() -> None:
                 raise RuntimeError(f"A3/A4/A5 gate tasks missing from manifest: {missing_gate}")
             remaining = [item for item in specs if str(item["task_class"]) not in A345_GATE_TASKS]
             specs = [by_name[name] for name in A345_GATE_TASKS] + remaining
-        elif dual_arm_name in {"bprv2", "a1r2"} or dual_arm_name in {"a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10"}:
+        elif dual_arm_name in {"bprv2", "a1r2"} or dual_arm_name in {"a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11"}:
             by_name = {str(item["task_class"]): item for item in specs}
             gate_tasks = dual_arm["gate_tasks"]
             missing_gate = sorted(set(gate_tasks) - set(by_name))
@@ -2013,7 +2025,7 @@ def main() -> None:
             gate_specs = [by_name[name] for name in gate_tasks]
             specs = (
                 gate_specs + remaining
-                if dual_arm_name in {"a1r2", "a1r3"} or dual_arm_name in {"a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10"} or bpr_mode == "primary"
+                if dual_arm_name in {"a1r2", "a1r3"} or dual_arm_name in {"a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11"} or bpr_mode == "primary"
                 else gate_specs
             )
         elif prospective_gate_arm:
@@ -2296,7 +2308,7 @@ def main() -> None:
                 },
                 "task_order": (
                     "blocking_A1R2_success_6_then_frozen_manifest_remainder"
-                    if dual_arm_name in {"a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10"}
+                    if dual_arm_name in {"a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11"}
                     else "blocking_A0_4_then_Recipe_1_then_frozen_manifest_remainder"
                     if dual_arm_name == "a1r2" or (dual_arm_name == "bprv2" and bpr_mode == "primary")
                     else "fixed_five_task_non_fail_fast_after_primary_complete"
@@ -2341,7 +2353,7 @@ def main() -> None:
                     "system_prompt_identity": "exact_A1_WORKING_MEMORY_SYSTEM_PROMPT",
                 }
             )
-        elif dual_arm_name in {"a1r3", "a1r4"} or dual_arm_name in {"a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10"}:
+        elif dual_arm_name in {"a1r3", "a1r4"} or dual_arm_name in {"a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11"}:
             run_signature.update(
                 {
                     "capability_gate_tasks": list(dual_arm["gate_tasks"]),
@@ -2737,7 +2749,7 @@ def main() -> None:
                     if not _gate_passed(gate5):
                         checkpoint("stopped_gate5_incomplete")
                         raise RuntimeError("BPR-v2 remaining fourteen tasks are locked until Gate5 is 5/5")
-            elif dual_arm_name in {"a1r2", "a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10"}:
+            elif dual_arm_name in {"a1r2", "a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11"}:
                 if task_name not in dual_arm["gate_tasks"]:
                     gate = dual_arm["preservation_report"](summaries)
                     if not _gate_passed(gate):
@@ -3146,6 +3158,10 @@ def main() -> None:
                     "A1-R2 Recipe gain-preservation gate failed; scientific failure is terminal"
                 )
             if (
+                dual_arm_name == "a1r11" and task_name in dual_arm["gate_tasks"] and not bool(result.get("success"))
+            ):
+                checkpoint("stopped_capability_gate_failure");raise RuntimeError(f"A1-R11 six-task capability gate failed on {task_name}; scientific failure is terminal")
+            if (
                 dual_arm_name == "a1r10" and task_name in dual_arm["gate_tasks"] and not bool(result.get("success"))
             ):
                 checkpoint("stopped_capability_gate_failure");raise RuntimeError(f"A1-R10 six-task capability gate failed on {task_name}; scientific failure is terminal")
@@ -3213,7 +3229,7 @@ def main() -> None:
             )
             checkpoint(
                 "infrastructure_incomplete"
-                if dual_arm_name in {"a12", "bprv2", "a1r2", "a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10"}
+                if dual_arm_name in {"a12", "bprv2", "a1r2", "a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11"}
                 else "stopped_invalid_episode"
             )
             if active_exception is None:
@@ -3639,7 +3655,7 @@ def main() -> None:
             "errors": [],
         }
         aggregate[dual_arm["result_key"]] = bpr_result
-    if dual_arm_name in {"a1r2", "a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10"}:
+    if dual_arm_name in {"a1r2", "a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11"}:
         vertical_counters: dict[str, int] = {}
         for summary in summaries:
             for key, value in (
@@ -3660,7 +3676,7 @@ def main() -> None:
             ).total_seconds()
             for item in summaries
         )
-        if dual_arm_name in {"a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10"}:
+        if dual_arm_name in {"a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11"}:
             accuracy_pass = bool(
                 success_count >= 7 and reward_sum > 6.5 and _gate_passed(gate6)
             )
@@ -3836,6 +3852,7 @@ def main() -> None:
         and dual_arm_name != "a1r8"
         and dual_arm_name != "a1r9"
         and dual_arm_name != "a1r10"
+        and dual_arm_name != "a1r11"
     ):
         result_label = dual_arm["label"] if dual_scored_arm else "A10"
         result_prefix = result_label.upper()
