@@ -33,6 +33,65 @@ class AnswerClient:
         )
 
 
+def _response(summary: str, arguments: str) -> str:
+    return (
+        f"Thought: synthetic.\nAction: {summary}\n<tool_call>\n"
+        f'{{"name":"mobile_use","arguments":{arguments}}}'
+        "\n</tool_call>"
+    )
+
+
+class TerminalSequenceClient:
+    sampling = {}
+
+    def __init__(self):
+        self.contents = [
+            _response("Wait for export processing.", '{"action":"wait","time":2}'),
+            _response(
+                "MEMORY[verified=file exported; pending=None] | Terminate success.",
+                '{"action":"terminate","status":"success"}',
+            ),
+            _response("Tap the visible confirmation.", '{"action":"click","coordinate":[500,500]}'),
+        ]
+        self.prompts = []
+
+    def generate(self, **kwargs) -> ModelCall:
+        self.prompts.append(kwargs["user_prompt"])
+        index = len(self.prompts) - 1
+        content = self.contents[index]
+        return ModelCall(
+            call_id=f"call-{index}", episode_id="episode", idempotency_key=f"key-{index}",
+            image_sha256="image", image_sha256s=("image",),
+            prompt_sha256=f"prompt-{index}", request_sha256=f"request-{index}",
+            response_sha256=f"response-{index}", content=content,
+            usage={"prompt_tokens": 1, "completion_tokens": 1, "total_tokens": 2},
+            raven_meta={"latency_seconds": 0.1, "transport_attempts": 1},
+        )
+
+
+class PendingMemory:
+    def prompt_history(self, history):
+        return list(history)
+
+    def read(self, *, context):
+        del context
+        text = "VERIFIED: file prepared\nPENDING: save the prepared file"
+        return text, {"rendered_chars": len(text)}
+
+    def record_protocol(self, summary):
+        return {"summary": summary}
+
+    def history_summary(self, summary):
+        return summary.rsplit("|", 1)[-1].strip()
+
+    def observe_step(self, **kwargs):
+        del kwargs
+        return {"observed": True}
+
+    def audit_record(self):
+        return {"schema": "synthetic_pending", "active": True}
+
+
 class Mapped:
     def __init__(self, canonical):
         self.canonical = dict(canonical)
@@ -40,7 +99,7 @@ class Mapped:
     def audit_record(self):
         return {
             "canonical": dict(self.canonical), "screen_size": [10, 20],
-            "upstream_action": {"action_type": "answer", "text": self.canonical["text"]},
+            "upstream_action": {"action_type": self.canonical["type"]},
         }
 
 
@@ -114,3 +173,24 @@ def test_runner_wires_sys_nag_as_distinct_arm() -> None:
     assert '"sys_nag"' in runner
     assert "NumericAnswerConsistencyGuard" in runner
     assert "answer_consistency_guard=answer_consistency_guard" in runner
+    assert '"pending_terminal_suppression": True' in runner
+    assert '"task_order": "blocking_A1R2_success_6_then_frozen_manifest_remainder"' in runner
+
+
+def test_controller_blocks_one_pending_terminal_after_wait(tmp_path: Path) -> None:
+    client = TerminalSequenceClient()
+    adapter = CapturingAdapter()
+    summary = OfficialQwenMobileController(
+        client,
+        adapter=adapter,
+        max_steps=3,
+        working_memory=PendingMemory(),
+        answer_consistency_guard=NumericAnswerConsistencyGuard(),
+    ).run(
+        env=Env(), task=Task(adapter), episode_id="episode",
+        episode_dir=tmp_path / "terminal", seed=7,
+    )
+    assert summary["steps"][1]["pending_terminal_consistency_guard"]["blocked"] is True
+    assert summary["steps"][1]["executed"] is False
+    assert "TERMINAL CONSISTENCY CHECK" in client.prompts[2]
+    assert summary["answer_consistency_guard"]["counters"]["terminal_block_count"] == 1

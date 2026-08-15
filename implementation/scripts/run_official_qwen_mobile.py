@@ -162,14 +162,14 @@ A7_REMAINING_AFTER_GATE_TASKS = (
 DUAL_ARM_SPECS = {
     "sys_nag": {
         "flag": "sys_nag",
-        "label": "SYS-NAG V2 R2 Numeric Answer Guard",
+        "label": "SYS-NAG V3 R2 Composite Guards",
         "memory_module": "raven_m.official_qwen_mobile.a1r2_compact_verified_pending",
         "memory_class": "CompactVerifiedPendingMemory",
         "contract_module": "raven_m.official_qwen_mobile.sys_nag_contract",
         "entry_key": "sys_nag_valid_entries",
-        "checkpoint_schema": "sys_nag_v2_checkpoint_v1",
-        "result_key": "sys_nag_v2_result",
-        "result_schema": "sys_nag_v2_result_v1",
+        "checkpoint_schema": "sys_nag_v3_checkpoint_v1",
+        "result_key": "sys_nag_v3_result",
+        "result_schema": "sys_nag_v3_result_v1",
         "system_prompt_identity": "a1_working_memory",
     },
     "sys_trrc_base": {
@@ -1331,7 +1331,11 @@ def _load_dual_arm_checkpoint(
         raise RuntimeError(
             f"{arm['label']} checkpoint identity mismatch; cross-arm resume is forbidden"
         )
-    if arm["arm"].startswith("sys_trrc_") and checkpoint.get(
+    if arm["arm"] == "sys_nag" and checkpoint.get("system_id") != arm[
+        "contract"
+    ].SYSTEM_ID:
+        raise RuntimeError(f"{arm['label']} checkpoint system identity mismatch")
+    if (arm["arm"].startswith("sys_trrc_") or arm["arm"] == "sys_nag") and checkpoint.get(
         "content_sha256"
     ) != arm["contract"].content_sha256(checkpoint):
         raise RuntimeError(f"{arm['label']} checkpoint content hash mismatch")
@@ -1497,12 +1501,12 @@ def main() -> None:
     parser.add_argument(
         "--sys-nag",
         action="store_true",
-        help="Run R2 with the deterministic numeric-answer consistency guard.",
+        help="Run R2 with the SYS-NAG V3 numeric and pending-terminal guards.",
     )
     parser.add_argument(
         "--sys-nag-preflight-report",
         type=Path,
-        default=REPOSITORY_ROOT / "evidence/sys_nag_v2/SYS_NAG_V2_ZERO_GENERATION_PREFLIGHT.json",
+        default=REPOSITORY_ROOT / "evidence/sys_nag_v3/SYS_NAG_V3_ZERO_GENERATION_PREFLIGHT.json",
     )
     parser.add_argument("--sys-nag-launch-receipt", type=Path)
     parser.add_argument(
@@ -2762,7 +2766,7 @@ def main() -> None:
                 },
                 "task_order": (
                     "blocking_A1R2_success_6_then_frozen_manifest_remainder"
-                    if dual_arm_name in {"a1r3v3", "a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11", "a1r12"}
+                    if dual_arm_name in {"a1r3v3", "a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11", "a1r12", "sys_nag"}
                     else "blocking_A0_4_then_Recipe_1_then_frozen_manifest_remainder"
                     if dual_arm_name == "a1r2" or (dual_arm_name == "bprv2" and bpr_mode == "primary")
                     else "fixed_five_task_non_fail_fast_after_primary_complete"
@@ -2805,6 +2809,32 @@ def main() -> None:
                     "response_prefix_required": True,
                     "official_system_prompt_unchanged": False,
                     "system_prompt_identity": "exact_A1_WORKING_MEMORY_SYSTEM_PROMPT",
+                }
+            )
+        elif dual_arm_name == "sys_nag":
+            run_signature.update(
+                {
+                    "task_order": "blocking_A1R2_success_6_then_frozen_manifest_remainder",
+                    "system_id": dual_arm["contract"].SYSTEM_ID,
+                    "capability_gate_tasks": list(dual_arm["gate_tasks"]),
+                    "ordinary_history_deduplicated": True,
+                    "response_prefix_required": True,
+                    "official_system_prompt_unchanged": False,
+                    "system_prompt_identity": "exact_A1_WORKING_MEMORY_SYSTEM_PROMPT",
+                    "auxiliary_model_calls": 0,
+                    "guard_induced_continuation_normal_requests": "at_most_one_per_episode",
+                    "guard": True,
+                    "action_override": True,
+                    "numeric_answer_override": True,
+                    "pending_terminal_suppression": True,
+                    "pending_terminal_rule": {
+                        "same_request_exact_r2_pending_nonempty": True,
+                        "previous_executed_action_type": "wait",
+                        "minimum_remaining_native_decision_slots": 1,
+                        "max_blocks_per_episode": 1,
+                    },
+                    "forced_termination": False,
+                    "a1r2_successes_required_for_continuation": True,
                 }
             )
         elif dual_arm_name.startswith("sys_trrc_"):
@@ -3142,6 +3172,11 @@ def main() -> None:
                         "prospective_arm": dual_arm["arm"],
                         "experiment_id": dual_arm["experiment_id"],
                         "mechanism_id": dual_arm["mechanism_id"],
+                        "system_id": (
+                            dual_arm["contract"].SYSTEM_ID
+                            if dual_arm_name == "sys_nag"
+                            else None
+                        ),
                         "sys_trrc_stage": args.sys_trrc_stage if sys_trrc_arm else None,
                         dual_arm["entry_key"]: dual_valid_entries,
                         "live_server_receipt_sha256s": sorted(
@@ -3201,7 +3236,7 @@ def main() -> None:
                         "four_task_diagnostic": a89_diagnostic_report(summaries),
                     }
                 )
-        if sys_trrc_arm:
+        if sys_trrc_arm or dual_arm_name == "sys_nag":
             payload["content_sha256"] = dual_arm["contract"].content_sha256(payload)
         if dual_arm_name == "bprv2":
             _append_bpr_checkpoint(suite_dir, payload)

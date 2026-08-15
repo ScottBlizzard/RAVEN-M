@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Zero-generation replay for the numeric-answer consistency guard."""
+"""Zero-generation replay for the SYS-NAG V3 composite guards."""
 
 from __future__ import annotations
 
@@ -17,9 +17,14 @@ from raven_m.official_qwen_mobile.numeric_answer_guard import (  # noqa: E402
 )
 
 DEFAULT_SUITE = ROOT / "runs/a1r2_cvp/official_qwen_20260814T145307_50081981"
+DEFAULT_FIXTURE = ROOT / "evidence/sys_nag_v3/SYS_NAG_V3_REPLAY_FIXTURE.json"
 V2_FAILURE_EPISODE = (
     ROOT / "runs/sys_trrc_v2_full/official_qwen_20260816T005559_70b00ecd/episodes/"
     "SportsTrackerTotalDurationForCategoryThisWeek_20260806_aa0c6805/episode.json"
+)
+V2_TERMINAL_FAILURE_EPISODE = (
+    ROOT / "runs/sys_nag_v2/official_qwen_20260816T024642_c7867dfe/episodes/"
+    "RetroSavePlaylist_20260806_5d6494df/episode.json"
 )
 
 
@@ -31,24 +36,96 @@ def _write(path: Path, value: dict) -> None:
     )
 
 
-def replay(suite_dir: Path = DEFAULT_SUITE) -> dict:
-    errors: list[str] = []
-    episode_rows: list[dict] = []
-    total_reviews = total_eligible = total_overrides = 0
-    projected_rendered_chars = 0
-    checkpoint = json.loads((suite_dir / "checkpoint.json").read_text(encoding="utf-8"))
+def _step_projection(step: dict) -> dict:
+    mapped = step.get("mapped_action") or {}
+    return {
+        "step": step.get("step"),
+        "decision": step.get("decision"),
+        "memory_read": {
+            key: (step.get("memory_read") or {}).get(key)
+            for key in ("exact_injected_text", "rendered_chars")
+            if key in (step.get("memory_read") or {})
+        },
+        "executed": bool(step.get("executed")),
+        "mapped_canonical_action": (
+            mapped.get("canonical") if isinstance(mapped, dict) else None
+        ),
+    }
+
+
+def materialize_fixture(suite_dir: Path = DEFAULT_SUITE) -> dict:
+    checkpoint_path = suite_dir / "checkpoint.json"
+    checkpoint = json.loads(checkpoint_path.read_text(encoding="utf-8"))
     valid_ids = {
         str(item.get("episode_id")) for item in checkpoint.get("valid_summaries") or []
     }
-    episode_files = sorted(
-        path
-        for path in (suite_dir / "episodes").glob("*/episode.json")
-        if path.parent.name in valid_ids
-    )
-    for path in episode_files:
+    episodes = []
+    for path in sorted((suite_dir / "episodes").glob("*/episode.json")):
+        if path.parent.name not in valid_ids:
+            continue
         episode = json.loads(path.read_text(encoding="utf-8"))
+        episodes.append(
+            {
+                "task_name": episode.get("task_name"),
+                "episode_id": episode.get("episode_id"),
+                "success": episode.get("success"),
+                "native_max_steps": int(
+                    (episode.get("run_metadata") or {}).get("native_max_steps") or 0
+                ),
+                "source_episode_file_sha256": contract.file_sha256(path),
+                "steps": [_step_projection(step) for step in episode.get("steps") or []],
+            }
+        )
+    numeric_path = V2_FAILURE_EPISODE
+    terminal_path = V2_TERMINAL_FAILURE_EPISODE
+    numeric = json.loads(numeric_path.read_text(encoding="utf-8"))
+    terminal = json.loads(terminal_path.read_text(encoding="utf-8"))
+    payload = {
+        "schema": "sys_nag_v3_replay_fixture_v1",
+        "generation_calls": 0,
+        "source": {
+            "a1r2_checkpoint_file_sha256": contract.file_sha256(checkpoint_path),
+            "numeric_failure_episode_file_sha256": contract.file_sha256(numeric_path),
+            "terminal_failure_episode_file_sha256": contract.file_sha256(terminal_path),
+        },
+        "episodes": episodes,
+        "numeric_failure": {
+            "task_name": numeric.get("task_name"),
+            "episode_id": numeric.get("episode_id"),
+            "native_max_steps": int(
+                (numeric.get("run_metadata") or {}).get("native_max_steps") or 0
+            ),
+            "final_step": _step_projection((numeric.get("steps") or [])[-1]),
+        },
+        "terminal_failure": {
+            "task_name": terminal.get("task_name"),
+            "episode_id": terminal.get("episode_id"),
+            "native_max_steps": int(
+                (terminal.get("run_metadata") or {}).get("native_max_steps") or 0
+            ),
+            "steps": [_step_projection(step) for step in terminal.get("steps") or []],
+        },
+    }
+    return {**payload, "content_sha256": contract.content_sha256(payload)}
+
+
+def replay(fixture_path: Path = DEFAULT_FIXTURE) -> dict:
+    errors: list[str] = []
+    episode_rows: list[dict] = []
+    total_reviews = total_eligible = total_overrides = 0
+    historical_terminal_blocks = 0
+    projected_rendered_chars = 0
+    fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
+    if (
+        fixture.get("schema") != "sys_nag_v3_replay_fixture_v1"
+        or fixture.get("generation_calls") != 0
+        or fixture.get("content_sha256") != contract.content_sha256(fixture)
+    ):
+        errors.append("replay_fixture_invalid")
+    for episode in fixture.get("episodes") or []:
         guard = NumericAnswerConsistencyGuard()
         events: list[dict] = []
+        previous_executed_action: dict | None = None
         for step in episode.get("steps") or []:
             projected_rendered_chars += int(
                 ((step.get("memory_read") or {}).get("rendered_chars") or 0)
@@ -61,6 +138,23 @@ def replay(suite_dir: Path = DEFAULT_SUITE) -> dict:
             )
             if event.get("eligible"):
                 events.append({"step": step.get("step"), **event})
+            terminal_event = guard.review_terminal(
+                terminal_status=decision.get("terminal_status"),
+                memory_read=step.get("memory_read"),
+                previous_executed_action=previous_executed_action,
+                remaining_native_decision_slots=max(
+                    0,
+                    int(episode.get("native_max_steps") or 0)
+                    - int(step.get("step") or 0)
+                    - 1,
+                ),
+            )
+            if terminal_event.get("blocked"):
+                historical_terminal_blocks += 1
+                events.append({"step": step.get("step"), **terminal_event})
+            canonical = step.get("mapped_canonical_action")
+            if step.get("executed") and isinstance(canonical, dict):
+                previous_executed_action = dict(canonical)
         audit = guard.audit_record()
         counters = audit["counters"]
         total_reviews += counters["review_count"]
@@ -80,14 +174,14 @@ def replay(suite_dir: Path = DEFAULT_SUITE) -> dict:
     if len(episode_rows) != 19 or len({row["task_name"] for row in episode_rows}) != 19:
         errors.append("a1r2_suite_not_exact_19")
 
-    observed = json.loads(V2_FAILURE_EPISODE.read_text(encoding="utf-8"))
-    final_decision = (observed.get("steps") or [])[-1]["decision"]
+    observed = fixture.get("numeric_failure") or {}
+    final_decision = (observed.get("final_step") or {}).get("decision") or {}
     guard = NumericAnswerConsistencyGuard()
     corrected, event = guard.review(
         proposed_action=final_decision["canonical_action"],
         action_summary=final_decision["action_summary"],
     )
-    regression = {
+    numeric_regression = {
         "task_name": observed.get("task_name"),
         "episode_id": observed.get("episode_id"),
         "proposed_action": final_decision["canonical_action"],
@@ -99,6 +193,35 @@ def replay(suite_dir: Path = DEFAULT_SUITE) -> dict:
     if event.get("duration_minutes") != [105, 75] or not event.get("overridden"):
         errors.append("v2_failure_evidence_mismatch")
 
+    terminal_failure = fixture.get("terminal_failure") or {}
+    terminal_steps = terminal_failure.get("steps") or []
+    terminal_step = terminal_steps[-1]
+    previous_step = next(
+        step for step in reversed(terminal_steps[:-1]) if step.get("executed")
+    )
+    terminal_guard = NumericAnswerConsistencyGuard()
+    terminal_event = terminal_guard.review_terminal(
+        terminal_status=(terminal_step.get("decision") or {}).get("terminal_status"),
+        memory_read=terminal_step.get("memory_read"),
+        previous_executed_action=previous_step.get("mapped_canonical_action"),
+        remaining_native_decision_slots=max(
+            0,
+            int(terminal_failure.get("native_max_steps") or 0)
+            - int(terminal_step.get("step") or 0)
+            - 1,
+        ),
+    )
+    terminal_regression = {
+        "task_name": terminal_failure.get("task_name"),
+        "episode_id": terminal_failure.get("episode_id"),
+        "source_step": terminal_step.get("step"),
+        "event": terminal_event,
+    }
+    if not terminal_event.get("blocked"):
+        errors.append("v2_terminal_failure_not_blocked")
+    if historical_terminal_blocks:
+        errors.append("historical_a1r2_terminal_false_positive")
+
     payload = {
         "schema": contract.OFFLINE_REPLAY_SCHEMA,
         "status": "PASS" if not errors else "FAIL",
@@ -107,8 +230,8 @@ def replay(suite_dir: Path = DEFAULT_SUITE) -> dict:
         "mechanism_id": contract.MECHANISM_ID,
         "system_id": contract.SYSTEM_ID,
         "source": {
-            "a1r2_suite_dir": str(suite_dir.resolve()),
-            "v2_failure_episode": str(V2_FAILURE_EPISODE.resolve()),
+            "fixture_file": str(fixture_path.relative_to(ROOT)).replace("\\", "/"),
+            "fixture_content_sha256": fixture.get("content_sha256"),
         },
         "totals": {
             "valid_episode_count": len(episode_rows),
@@ -116,13 +239,15 @@ def replay(suite_dir: Path = DEFAULT_SUITE) -> dict:
             "eligible_count": total_eligible,
             "override_count": total_overrides,
             "projected_rendered_chars": projected_rendered_chars,
+            "historical_terminal_block_count": historical_terminal_blocks,
         },
         "sentinel_tasks": [
             "ExpenseDeleteMultiple2",
             "SportsTrackerTotalDurationForCategoryThisWeek",
             "RecipeDeleteMultipleRecipesWithConstraint",
         ],
-        "v2_failure_regression": regression,
+        "numeric_failure_regression": numeric_regression,
+        "terminal_failure_regression": terminal_regression,
         "episodes": episode_rows,
     }
     return {**payload, "content_sha256": contract.content_sha256(payload)}
@@ -130,10 +255,15 @@ def replay(suite_dir: Path = DEFAULT_SUITE) -> dict:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
+    parser.add_argument("--fixture", type=Path, default=DEFAULT_FIXTURE)
+    parser.add_argument("--materialize-fixture", action="store_true")
     parser.add_argument("--suite-dir", type=Path, default=DEFAULT_SUITE)
     parser.add_argument("--output", type=Path, default=contract.OFFLINE_REPLAY_PATH)
     args = parser.parse_args()
-    result = replay(args.suite_dir.resolve())
+    if args.materialize_fixture:
+        fixture = materialize_fixture(args.suite_dir.resolve())
+        _write(args.fixture.resolve(), fixture)
+    result = replay(args.fixture.resolve())
     _write(args.output, result)
     print(json.dumps({"status": result["status"], "errors": result["errors"], "totals": result["totals"]}, indent=2))
     return 0 if result["status"] == "PASS" else 1

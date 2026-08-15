@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Strict zero-generation preflight for SYS-NAG."""
+"""Strict zero-generation preflight for SYS-NAG V3."""
 
 from __future__ import annotations
 
@@ -59,12 +59,7 @@ def main() -> int:
         errors.append("worktree_dirty")
 
     config = json.loads(contract.CONFIG_PATH.read_text(encoding="utf-8"))
-    if (
-        config.get("schema") != contract.CONFIG_SCHEMA
-        or config.get("mechanism_id") != contract.MECHANISM_ID
-        or config.get("experiment_id") != contract.EXPERIMENT_ID
-        or config.get("system_id") != contract.SYSTEM_ID
-    ):
+    if config != contract.EXPECTED_CONFIG:
         errors.append("config_identity")
 
     replay_now = replay()
@@ -72,7 +67,8 @@ def main() -> int:
     checks["offline_replay"] = {
         "status": replay_now["status"],
         "totals": replay_now["totals"],
-        "v2_failure_regression": replay_now["v2_failure_regression"],
+        "numeric_failure_regression": replay_now["numeric_failure_regression"],
+        "terminal_failure_regression": replay_now["terminal_failure_regression"],
     }
     if replay_now != replay_file or replay_now["status"] != "PASS":
         errors.append("offline_replay_drift")
@@ -93,6 +89,15 @@ def main() -> int:
     checks["runtime_canary_ms"] = {"p99": timings[989], "maximum": timings[-1]}
     if timings[989] >= 2 or timings[-1] >= 10:
         errors.append("runtime_canary_cost")
+    terminal_canary = NumericAnswerConsistencyGuard().review_terminal(
+        terminal_status="success",
+        memory_read={"exact_injected_text": "PENDING: confirm visible save"},
+        previous_executed_action={"type": "wait", "duration_ms": 2000},
+        remaining_native_decision_slots=1,
+    )
+    checks["terminal_canary"] = terminal_canary
+    if not terminal_canary.get("blocked"):
+        errors.append("terminal_canary_semantics")
 
     env = dict(
         os.environ,

@@ -773,6 +773,34 @@ class OfficialQwenMobileController:
                         )
                     )
                     record["answer_consistency_guard"] = answer_guard_assessment
+                terminal_guard_assessment: dict[str, Any] | None = None
+                if (
+                    self.answer_consistency_guard is not None
+                    and hasattr(self.answer_consistency_guard, "review_terminal")
+                ):
+                    previous_executed_action: dict[str, Any] | None = None
+                    for previous_record in reversed(steps):
+                        if not bool(previous_record.get("executed")):
+                            continue
+                        mapped = previous_record.get("mapped_action")
+                        if isinstance(mapped, dict) and isinstance(
+                            mapped.get("canonical"), dict
+                        ):
+                            previous_executed_action = dict(mapped["canonical"])
+                        break
+                    terminal_guard_assessment = (
+                        self.answer_consistency_guard.review_terminal(
+                            terminal_status=decision.terminal_status,
+                            memory_read=memory_read,
+                            previous_executed_action=previous_executed_action,
+                            remaining_native_decision_slots=(
+                                self.max_steps - step_index - 1
+                            ),
+                        )
+                    )
+                    record["pending_terminal_consistency_guard"] = (
+                        terminal_guard_assessment
+                    )
                 gate_decision: dict[str, Any] | None = None
                 if self.source_document_coverage_gate is not None:
                     canonical_action, gate_decision = (
@@ -793,6 +821,36 @@ class OfficialQwenMobileController:
                     "model_canonical_action": decision.canonical_action,
                     "executed_canonical_action": canonical_action,
                 }
+                if bool((terminal_guard_assessment or {}).get("blocked")):
+                    guard_message = str(
+                        terminal_guard_assessment.get("history_message") or ""
+                    )
+                    if not guard_message:
+                        raise RuntimeError(
+                            "Pending-terminal guard blocked without an audit message"
+                        )
+                    history.append(guard_message)
+                    record["layers"]["L3_execution"] = {
+                        "attempted": False,
+                        "completed": False,
+                        "blocked_by_pending_terminal_consistency_guard": True,
+                    }
+                    record["layers"]["L5_completion_evaluator"][
+                        "terminal_claim"
+                    ] = decision.terminal_status
+                    record["history_commit"] = {
+                        "policy": "sys_nag_v3_pending_terminal_guard",
+                        "model_action_summary": decision.action_summary,
+                        "committed_history_summary": guard_message,
+                        "attestation_applied": True,
+                        "attestation_reason": (
+                            "pending_survived_wait_before_success_termination"
+                        ),
+                    }
+                    record["history_after"] = list(history)
+                    steps.append(record)
+                    log(record)
+                    continue
                 if canonical_action is None:
                     claimed_status = decision.terminal_status
                     termination_reason = f"model_terminate_{claimed_status}"

@@ -1,4 +1,4 @@
-"""Fail-closed contract for R2 plus the numeric-answer consistency guard."""
+"""Fail-closed contract for R2 plus the SYS-NAG V3 composite guards."""
 
 from __future__ import annotations
 
@@ -13,8 +13,8 @@ from . import a1r3_contract as engine
 from .a1r2_compact_verified_pending import MECHANISM_ID
 
 
-SYSTEM_ID = "sys_r2_numeric_answer_consistency_guard_v2"
-EXPERIMENT_ID = "SYS_NAG_V2_R2_QWEN3VL32B_AW_HARD_S20260806_G3407_V1"
+SYSTEM_ID = "sys_r2_numeric_and_pending_terminal_guard_v3"
+EXPERIMENT_ID = "SYS_NAG_V3_R2_QWEN3VL32B_AW_HARD_S20260806_G3407_V1"
 MODEL_ID = engine.MODEL_ID
 MODEL_REVISION = engine.MODEL_REVISION
 MODEL_REALPATH = engine.MODEL_REALPATH
@@ -22,18 +22,19 @@ MODEL_MANIFEST_SHA256 = engine.MODEL_MANIFEST_SHA256
 TASK_SEED = engine.TASK_SEED
 GENERATION_SEED = engine.GENERATION_SEED
 PORT = engine.PORT
-PARENT_EVIDENCE_COMMIT = "603d4088a7b3448df3472e8bfc6fa8bd1bba0e97"
-CONFIG_SCHEMA = "sys_nag_v2_r2_numeric_answer_guard_config_v1"
-OFFLINE_REPLAY_SCHEMA = "sys_nag_v2_offline_replay_v1"
-PREFLIGHT_SCHEMA = "sys_nag_v2_zero_generation_preflight_v1"
-LIVE_RECEIPT_SCHEMA = "sys_nag_v2_live_server_receipt_v1"
-RESULT_SCHEMA = "sys_nag_v2_result_v1"
-CHECKPOINT_SCHEMA = "sys_nag_v2_checkpoint_v1"
+PARENT_EVIDENCE_COMMIT = "0c0ad59b231119f4b15c28e093da8ebbabef3967"
+CONFIG_SCHEMA = "sys_nag_v3_r2_composite_guard_config_v1"
+OFFLINE_REPLAY_SCHEMA = "sys_nag_v3_offline_replay_v1"
+PREFLIGHT_SCHEMA = "sys_nag_v3_zero_generation_preflight_v1"
+LIVE_RECEIPT_SCHEMA = "sys_nag_v3_live_server_receipt_v1"
+RESULT_SCHEMA = "sys_nag_v3_result_v1"
+CHECKPOINT_SCHEMA = "sys_nag_v3_checkpoint_v1"
 REPOSITORY_ROOT = engine.REPOSITORY_ROOT
-CONFIG_PATH = REPOSITORY_ROOT / "implementation/configs/sys_nag_v2_r2_hard_seed20260806.json"
-OFFLINE_REPLAY_PATH = REPOSITORY_ROOT / "evidence/sys_nag_v2/SYS_NAG_V2_OFFLINE_REPLAY_REPORT.json"
-SOURCE_FREEZE_PATH = REPOSITORY_ROOT / "evidence/sys_nag_v2/SYS_NAG_V2_SOURCE_FREEZE.json"
-PREFLIGHT_PATH = REPOSITORY_ROOT / "evidence/sys_nag_v2/SYS_NAG_V2_ZERO_GENERATION_PREFLIGHT.json"
+CONFIG_PATH = REPOSITORY_ROOT / "implementation/configs/sys_nag_v3_r2_hard_seed20260806.json"
+OFFLINE_REPLAY_PATH = REPOSITORY_ROOT / "evidence/sys_nag_v3/SYS_NAG_V3_OFFLINE_REPLAY_REPORT.json"
+REPLAY_FIXTURE_PATH = REPOSITORY_ROOT / "evidence/sys_nag_v3/SYS_NAG_V3_REPLAY_FIXTURE.json"
+SOURCE_FREEZE_PATH = REPOSITORY_ROOT / "evidence/sys_nag_v3/SYS_NAG_V3_SOURCE_FREEZE.json"
+PREFLIGHT_PATH = REPOSITORY_ROOT / "evidence/sys_nag_v3/SYS_NAG_V3_ZERO_GENERATION_PREFLIGHT.json"
 
 A0_PRESERVATION_TASKS = engine.A0_PRESERVATION_TASKS
 RECIPE_TASK = engine.RECIPE_TASK
@@ -42,8 +43,8 @@ CAPABILITY_GATE_TASKS = engine.CAPABILITY_GATE_TASKS
 FULL_TASK_ORDER = engine.FULL_TASK_ORDER
 
 SOURCE_FILES = (
-    "protocols/SYS_NAG_V2_R2_NUMERIC_ANSWER_GUARD_PREREG_2026-08-16.md",
-    "implementation/configs/sys_nag_v2_r2_hard_seed20260806.json",
+    "protocols/SYS_NAG_V3_R2_COMPOSITE_GUARD_PREREG_2026-08-16.md",
+    "implementation/configs/sys_nag_v3_r2_hard_seed20260806.json",
     "implementation/configs/androidworld_hard_v2_instances.json",
     "implementation/src/raven_m/official_qwen_mobile/numeric_answer_guard.py",
     "implementation/src/raven_m/official_qwen_mobile/a1r2_compact_verified_pending.py",
@@ -60,13 +61,60 @@ SOURCE_FILES = (
     "implementation/scripts/replay_sys_nag.py",
     "implementation/scripts/preflight_sys_nag.py",
     "implementation/scripts/qualify_sys_nag_server.py",
+    "implementation/scripts/qualify_a1r5_tipl_server.py",
     "implementation/scripts/start_sys_nag_server.sh",
+    "implementation/scripts/finalize_sys_nag_v2_terminal.py",
     "implementation/tests/official_qwen_mobile/test_numeric_answer_guard.py",
     "implementation/tests/official_qwen_mobile/test_sys_nag_contract.py",
     "implementation/tests/official_qwen_mobile/test_sys_nag_controller_integration.py",
-    "evidence/sys_nag_v2/SYS_NAG_V2_OFFLINE_REPLAY_REPORT.json",
-    "evidence/sys_nag/SYS_NAG_V1_GATE4_RESULT_2026-08-16.json",
+    "implementation/tests/official_qwen_mobile/test_sys_nag_v2_terminal_finalizer.py",
+    "evidence/sys_nag_v3/SYS_NAG_V3_REPLAY_FIXTURE.json",
+    "evidence/sys_nag_v3/SYS_NAG_V3_OFFLINE_REPLAY_REPORT.json",
+    "evidence/sys_nag_v2/SYS_NAG_V2_TERMINAL_RESULT_2026-08-16.json",
 )
+
+EXPECTED_CONFIG = {
+    "schema": CONFIG_SCHEMA,
+    "mechanism_id": MECHANISM_ID,
+    "system_id": SYSTEM_ID,
+    "experiment_id": EXPERIMENT_ID,
+    "task_seed": TASK_SEED,
+    "generation_seed": GENERATION_SEED,
+    "model_id": MODEL_ID,
+    "model_revision": MODEL_REVISION,
+    "memory": {
+        "kind": "exact_a1r2_compact_verified_pending",
+        "ttl_requests": 8,
+        "max_render_chars": 1100,
+    },
+    "numeric_answer_guard": {
+        "enabled": True,
+        "answer_type": "single_integer_only",
+        "evidence_source": "current_model_action_summary_only",
+        "operation": "sum_two_or_more_explicit_durations",
+    },
+    "pending_terminal_guard": {
+        "enabled": True,
+        "terminal_status": "success_only",
+        "pending_source": "exact_r2_text_injected_into_same_request",
+        "previous_executed_action_type": "wait",
+        "minimum_remaining_native_decision_slots": 1,
+        "max_blocks_per_episode": 1,
+        "effect": "reject_terminal_without_executing_android_action",
+    },
+    "decision_boundary": {
+        "auxiliary_model_calls": 0,
+        "max_guard_induced_continuation_normal_requests": 1,
+        "task_name_rules": False,
+        "evaluator_access": False,
+        "hidden_ui_access": False,
+    },
+    "orchestration": {
+        "a0_gate_tasks": 4,
+        "capability_gate_tasks": 6,
+        "release_remaining_after": 6,
+    },
+}
 
 file_sha256 = engine.file_sha256
 canonical_sha256 = engine.canonical_sha256
@@ -110,6 +158,8 @@ def validate_preflight_report(path: Path = PREFLIGHT_PATH) -> dict[str, Any]:
     report = json.loads(path.read_text(encoding="utf-8"))
     freeze = validate_source_freeze(SOURCE_FREEZE_PATH)
     replay = json.loads(OFFLINE_REPLAY_PATH.read_text(encoding="utf-8"))
+    fixture = json.loads(REPLAY_FIXTURE_PATH.read_text(encoding="utf-8"))
+    config = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
     expected = {
         "schema": PREFLIGHT_SCHEMA,
         "status": "PASS",
@@ -117,29 +167,41 @@ def validate_preflight_report(path: Path = PREFLIGHT_PATH) -> dict[str, Any]:
         "generation_calls": 0,
         "live_generation_authorized": True,
         "mechanism_id": MECHANISM_ID,
+        "system_id": SYSTEM_ID,
         "experiment_id": EXPERIMENT_ID,
         "implementation_commit": freeze["implementation_commit"],
         "source_freeze_content_sha256": freeze["content_sha256"],
         "offline_replay_content_sha256": replay.get("content_sha256"),
     }
     errors = [key + "_drift" for key, value in expected.items() if report.get(key) != value]
+    if config != EXPECTED_CONFIG:
+        errors.append("config_semantic_drift")
     if report.get("content_sha256") != content_sha256(report):
         errors.append("preflight_content_hash")
-    regression = replay.get("v2_failure_regression") or {}
+    regression = replay.get("numeric_failure_regression") or {}
+    terminal_regression = replay.get("terminal_failure_regression") or {}
     if (
         replay.get("schema") != OFFLINE_REPLAY_SCHEMA
         or replay.get("status") != "PASS"
         or replay.get("errors") != []
         or replay.get("generation_calls") != 0
         or replay.get("mechanism_id") != MECHANISM_ID
+        or replay.get("system_id") != SYSTEM_ID
         or replay.get("content_sha256") != content_sha256(replay)
         or int((replay.get("totals") or {}).get("valid_episode_count") or 0) != 19
         or regression.get("corrected_action") != {"type": "answer", "text": "180"}
         or not bool((regression.get("event") or {}).get("overridden"))
+        or not bool((terminal_regression.get("event") or {}).get("blocked"))
+        or int((replay.get("totals") or {}).get("historical_terminal_block_count") or -1) != 0
+        or fixture.get("schema") != "sys_nag_v3_replay_fixture_v1"
+        or fixture.get("generation_calls") != 0
+        or fixture.get("content_sha256") != content_sha256(fixture)
+        or (replay.get("source") or {}).get("fixture_content_sha256")
+        != fixture.get("content_sha256")
     ):
         errors.append("offline_replay_not_authorizing")
     if errors:
-        raise RuntimeError(f"SYS-NAG preflight invalid: {errors}")
+        raise RuntimeError(f"SYS-NAG V3 preflight invalid: {errors}")
     return report
 
 
@@ -155,6 +217,7 @@ def validate_launch_receipt(
         "errors": [],
         "generation_calls": 0,
         "mechanism_id": MECHANISM_ID,
+        "system_id": SYSTEM_ID,
         "experiment_id": EXPERIMENT_ID,
         "implementation_commit": preflight["implementation_commit"],
         "preflight_content_sha256": preflight["content_sha256"],
@@ -190,7 +253,7 @@ def validate_launch_receipt(
         if observed != cmdline:
             errors.append("process_not_alive_or_drifted")
     if errors:
-        raise RuntimeError(f"SYS-NAG launch receipt invalid: {errors}")
+        raise RuntimeError(f"SYS-NAG V3 launch receipt invalid: {errors}")
     return receipt
 
 
@@ -202,8 +265,29 @@ def exact_completion_errors(**kwargs: Any) -> list[str]:
     errors = engine.exact_completion_errors(**kwargs)
     for summary in kwargs.get("summaries") or []:
         guard = summary.get("answer_consistency_guard")
-        if not isinstance(guard, dict) or guard.get("system_id") != SYSTEM_ID:
+        counters = (guard or {}).get("counters") if isinstance(guard, dict) else {}
+        if (
+            not isinstance(guard, dict)
+            or guard.get("schema") != "sys_nag_v3_composite_guard_audit_v1"
+            or guard.get("system_id") != SYSTEM_ID
+        ):
             errors.append(f"answer_guard_missing:{summary.get('task_name')}")
+            continue
+        if (
+            int((counters or {}).get("terminal_block_count") or 0) not in {0, 1}
+            or int((counters or {}).get("auxiliary_model_call_count") or 0) != 0
+            or int(
+                (counters or {}).get(
+                    "guard_induced_continuation_request_upper_bound"
+                )
+                or 0
+            )
+            not in {0, 1}
+            or int((counters or {}).get("forced_termination_count") or 0) != 0
+            or bool((counters or {}).get("hidden_ui_used_for_decision"))
+            or bool((counters or {}).get("evaluator_used_for_decision"))
+        ):
+            errors.append(f"composite_guard_boundary:{summary.get('task_name')}")
     return errors
 
 

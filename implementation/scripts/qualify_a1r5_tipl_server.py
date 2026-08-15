@@ -36,6 +36,8 @@ def main() -> int:
         "packages": {name: version(name) for name in ("vllm", "torch", "transformers")},
         "qualified_at": datetime.now(timezone.utc).isoformat(),
     }
+    if hasattr(contract, "SYSTEM_ID"):
+        payload["system_id"] = contract.SYSTEM_ID
     receipt = {**payload, "content_sha256": contract.content_sha256(payload)}
     args.output.parent.mkdir(parents=True, exist_ok=True); args.output.write_text(json.dumps(receipt, sort_keys=True, indent=2) + "\n", encoding="utf-8")
     contract.validate_launch_receipt(args.output); print(json.dumps({"status": "PASS", "output": str(args.output)}, indent=2)); return 0

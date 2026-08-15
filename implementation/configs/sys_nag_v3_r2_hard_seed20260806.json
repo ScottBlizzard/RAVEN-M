@@ -1,0 +1,42 @@
+{
+  "schema": "sys_nag_v3_r2_composite_guard_config_v1",
+  "mechanism_id": "a1r2_compact_verified_pending_v1",
+  "system_id": "sys_r2_numeric_and_pending_terminal_guard_v3",
+  "experiment_id": "SYS_NAG_V3_R2_QWEN3VL32B_AW_HARD_S20260806_G3407_V1",
+  "task_seed": 20260806,
+  "generation_seed": 3407,
+  "model_id": "Qwen/Qwen3-VL-32B-Instruct",
+  "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+  "memory": {
+    "kind": "exact_a1r2_compact_verified_pending",
+    "ttl_requests": 8,
+    "max_render_chars": 1100
+  },
+  "numeric_answer_guard": {
+    "enabled": true,
+    "answer_type": "single_integer_only",
+    "evidence_source": "current_model_action_summary_only",
+    "operation": "sum_two_or_more_explicit_durations"
+  },
+  "pending_terminal_guard": {
+    "enabled": true,
+    "terminal_status": "success_only",
+    "pending_source": "exact_r2_text_injected_into_same_request",
+    "previous_executed_action_type": "wait",
+    "minimum_remaining_native_decision_slots": 1,
+    "max_blocks_per_episode": 1,
+    "effect": "reject_terminal_without_executing_android_action"
+  },
+  "decision_boundary": {
+    "auxiliary_model_calls": 0,
+    "max_guard_induced_continuation_normal_requests": 1,
+    "task_name_rules": false,
+    "evaluator_access": false,
+    "hidden_ui_access": false
+  },
+  "orchestration": {
+    "a0_gate_tasks": 4,
+    "capability_gate_tasks": 6,
+    "release_remaining_after": 6
+  }
+}

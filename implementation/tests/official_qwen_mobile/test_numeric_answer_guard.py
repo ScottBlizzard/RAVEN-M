@@ -59,3 +59,55 @@ def test_memory_prefix_durations_are_not_double_counted() -> None:
     )
     assert action["text"] == "180"
     assert event["duration_minutes"] == [105, 75]
+
+
+def test_one_shot_terminal_block_requires_pending_r2_read_after_wait() -> None:
+    guard = NumericAnswerConsistencyGuard()
+    memory_read = {
+        "exact_injected_text": (
+            "Latest compact task ledger from your own previous Action:\n"
+            "VERIFIED: playlist and songs created\n"
+            "PENDING: export the playlist to Downloads"
+        )
+    }
+    first = guard.review_terminal(
+        terminal_status="success",
+        memory_read=memory_read,
+        previous_executed_action={"type": "wait", "duration_ms": 2000},
+        remaining_native_decision_slots=1,
+    )
+    assert first["blocked"] is True
+    assert "current screenshot" in first["history_message"]
+    second = guard.review_terminal(
+        terminal_status="success",
+        memory_read=memory_read,
+        previous_executed_action={"type": "wait", "duration_ms": 2000},
+        remaining_native_decision_slots=1,
+    )
+    assert second["blocked"] is False
+    assert guard.audit_record()["counters"]["terminal_block_count"] == 1
+
+
+def test_terminal_block_fails_closed_without_all_three_conditions() -> None:
+    cases = [
+        ("failure", "PENDING: export", {"type": "wait"}),
+        ("success", "PENDING: none", {"type": "wait"}),
+        ("success", "PENDING: export", {"type": "tap"}),
+    ]
+    for terminal, text, previous in cases:
+        guard = NumericAnswerConsistencyGuard()
+        event = guard.review_terminal(
+            terminal_status=terminal,
+            memory_read={"exact_injected_text": text},
+            previous_executed_action=previous,
+            remaining_native_decision_slots=1,
+        )
+        assert event["blocked"] is False
+
+    final_slot = NumericAnswerConsistencyGuard().review_terminal(
+        terminal_status="success",
+        memory_read={"exact_injected_text": "PENDING: save"},
+        previous_executed_action={"type": "wait"},
+        remaining_native_decision_slots=0,
+    )
+    assert final_slot["blocked"] is False

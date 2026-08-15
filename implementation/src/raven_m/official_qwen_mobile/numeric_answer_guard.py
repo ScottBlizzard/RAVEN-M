@@ -13,7 +13,7 @@ import re
 from typing import Any
 
 
-SYSTEM_ID = "sys_r2_numeric_answer_consistency_guard_v2"
+SYSTEM_ID = "sys_r2_numeric_and_pending_terminal_guard_v3"
 _INTEGER_RE = re.compile(r"^[+-]?\d+$")
 _WORD_DURATION_RE = re.compile(
     r"(?<!\w)(\d{1,3})\s*hours?\s*(?:and\s*)?(\d{1,2})\s*minutes?(?!\w)",
@@ -36,13 +36,24 @@ class DurationEvidence:
 
 
 class NumericAnswerConsistencyGuard:
-    """One-way, auditable correction of explicit duration-sum arithmetic."""
+    """Two narrow, auditable checks layered on the frozen A1-R2 memory.
+
+    The arithmetic rule is unchanged from SYS-NAG V2.  V3 additionally blocks
+    at most one success termination when the exact R2 text injected into that
+    request still contains a non-empty PENDING item and the immediately prior
+    executed action was ``wait``.  Blocking does not invent or execute an
+    Android action; it consumes the current decision slot and gives the normal
+    executor one transparent request to inspect the authoritative screenshot.
+    """
 
     def __init__(self) -> None:
         self.review_count = 0
         self.eligible_count = 0
         self.override_count = 0
+        self.terminal_review_count = 0
+        self.terminal_block_count = 0
         self.events: list[dict[str, Any]] = []
+        self.terminal_events: list[dict[str, Any]] = []
 
     @staticmethod
     def _decision_clause(action_summary: str) -> str:
@@ -129,20 +140,91 @@ class NumericAnswerConsistencyGuard:
         self.events.append(event)
         return proposed, event
 
+    @staticmethod
+    def _pending_line(memory_read: dict[str, Any] | None) -> str | None:
+        if not isinstance(memory_read, dict):
+            return None
+        text = str(memory_read.get("exact_injected_text") or "")
+        for line in text.splitlines():
+            if line.startswith("PENDING:"):
+                value = line.partition(":")[2].strip()
+                if value and value.casefold() not in {"none", "null", "no pending"}:
+                    return value
+        return None
+
+    def review_terminal(
+        self,
+        *,
+        terminal_status: str | None,
+        memory_read: dict[str, Any] | None,
+        previous_executed_action: dict[str, Any] | None,
+        remaining_native_decision_slots: int,
+    ) -> dict[str, Any]:
+        """Return a one-shot transparent block decision for a terminal claim."""
+
+        self.terminal_review_count += 1
+        pending = self._pending_line(memory_read)
+        previous_type = (
+            str(previous_executed_action.get("type") or "")
+            if isinstance(previous_executed_action, dict)
+            else ""
+        )
+        eligible = (
+            terminal_status == "success"
+            and pending is not None
+            and previous_type == "wait"
+            and self.terminal_block_count == 0
+            and int(remaining_native_decision_slots) >= 1
+        )
+        event: dict[str, Any] = {
+            "system_id": SYSTEM_ID,
+            "terminal_review_index": self.terminal_review_count - 1,
+            "terminal_status": terminal_status,
+            "pending_from_exact_r2_read": pending,
+            "previous_executed_action_type": previous_type or None,
+            "remaining_native_decision_slots": int(remaining_native_decision_slots),
+            "eligible": eligible,
+            "blocked": False,
+            "reason": "not_eligible",
+        }
+        if eligible:
+            self.terminal_block_count += 1
+            event.update(
+                {
+                    "blocked": True,
+                    "reason": "pending_survived_wait_before_success_termination",
+                    "history_message": (
+                        "TERMINAL CONSISTENCY CHECK: The exact task ledger injected "
+                        "for the rejected request still had a pending item, and the "
+                        "last executed action was only wait. Inspect the current "
+                        "screenshot and complete any visible confirmation before "
+                        "terminating."
+                    ),
+                }
+            )
+        self.terminal_events.append(event)
+        return event
+
     def audit_record(self) -> dict[str, Any]:
         return {
-            "schema": "sys_r2_numeric_answer_guard_audit_v1",
+            "schema": "sys_nag_v3_composite_guard_audit_v1",
             "system_id": SYSTEM_ID,
             "counters": {
                 "review_count": self.review_count,
                 "eligible_count": self.eligible_count,
                 "action_override_count": self.override_count,
-                "extra_model_calls": 0,
+                "terminal_review_count": self.terminal_review_count,
+                "terminal_block_count": self.terminal_block_count,
+                "auxiliary_model_call_count": 0,
+                "guard_induced_continuation_request_upper_bound": (
+                    self.terminal_block_count
+                ),
                 "forced_termination_count": 0,
                 "hidden_ui_used_for_decision": False,
                 "evaluator_used_for_decision": False,
             },
             "events": list(self.events),
+            "terminal_events": list(self.terminal_events),
         }
 
 
