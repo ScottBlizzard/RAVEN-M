@@ -192,7 +192,12 @@ def validate_preflight_report(path: Path = PREFLIGHT_PATH) -> dict[str, Any]:
         or regression.get("corrected_action") != {"type": "answer", "text": "180"}
         or not bool((regression.get("event") or {}).get("overridden"))
         or not bool((terminal_regression.get("event") or {}).get("blocked"))
-        or int((replay.get("totals") or {}).get("historical_terminal_block_count") or -1) != 0
+        or int(
+            (replay.get("totals") or {}).get(
+                "historical_terminal_block_count", -1
+            )
+        )
+        != 0
         or fixture.get("schema") != "sys_nag_v3_replay_fixture_v1"
         or fixture.get("generation_calls") != 0
         or fixture.get("content_sha256") != content_sha256(fixture)
