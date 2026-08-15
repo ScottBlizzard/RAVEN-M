@@ -4,6 +4,10 @@ Date: 2026-08-15 (Asia/Hong_Kong)
 
 Status: design selection only. No new composite arm is implemented, qualified, or authorized for live generation.
 
+Design-freedom correction: the named critic/planner/verifier mechanisms below
+are initial hypotheses, not mandatory algorithms. The authoritative openness
+rules are in `evidence/composite/TOP3_OPEN_DESIGN_CHARTER_2026-08-15.md`.
+
 ## Decision
 
 The earlier seven-track design space is narrowed to three independent Pro studies:

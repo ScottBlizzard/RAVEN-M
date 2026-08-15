@@ -1,5 +1,10 @@
 # GPT Pro Composite Top-3 Index
 
+The first request drafts were intentionally preserved but are superseded for
+new conversations by the forthcoming `OPEN_V2` requests. The v2 requests use
+the same three problem families while allowing Pro to reject or replace the
+investigator's initial mechanism hypothesis.
+
 Use three fresh GPT Pro conversations, one per request. Do not merge their contexts or ask one Pro to solve multiple tracks.
 
 Frozen evidence commit for all three: `9f9a611728826ada1daf809dccd7613de39660ac`.
