@@ -1,0 +1,74 @@
+{
+  "checks": {
+    "focused_tests": {
+      "returncode": 0,
+      "stderr_tail": "",
+      "stdout_tail": ".........                                                                [100%]\n"
+    },
+    "git": {
+      "head": "6c7b7f3405186ef0585b927853c5fc48b9bb5625",
+      "worktree_status": []
+    },
+    "offline_replay": {
+      "status": "PASS",
+      "totals": {
+        "eligible_count": 0,
+        "override_count": 0,
+        "projected_rendered_chars": 108423,
+        "review_count": 603,
+        "valid_episode_count": 19
+      },
+      "v2_failure_regression": {
+        "corrected_action": {
+          "text": "180",
+          "type": "answer"
+        },
+        "episode_id": "SportsTrackerTotalDurationForCategoryThisWeek_20260806_aa0c6805",
+        "event": {
+          "computed_total_minutes": 180,
+          "decision_clause": "Calculate the total duration of \"Intense day\" (1 hour 45 minutes) and \"Quick Sweat\" (1 hour 15 minutes) in minutes.",
+          "duration_minutes": [
+            105,
+            75
+          ],
+          "eligible": true,
+          "executed_action": {
+            "text": "180",
+            "type": "answer"
+          },
+          "overridden": true,
+          "proposed_action": {
+            "text": "165",
+            "type": "answer"
+          },
+          "proposed_integer": 165,
+          "reason": "explicit_duration_sum_mismatch",
+          "review_index": 0,
+          "system_id": "sys_r2_numeric_answer_consistency_guard_v2"
+        },
+        "proposed_action": {
+          "text": "165",
+          "type": "answer"
+        },
+        "task_name": "SportsTrackerTotalDurationForCategoryThisWeek"
+      }
+    },
+    "runtime_canary_ms": {
+      "maximum": 0.23290000171982683,
+      "p99": 0.07619999814778566
+    }
+  },
+  "content_sha256": "d61ff489aec4471d41f05e04fc4c50004eced81f50cfb238b2bd07e625d11e57",
+  "created_at": "2026-08-15T18:44:22.059372+00:00",
+  "errors": [],
+  "experiment_id": "SYS_NAG_V2_R2_QWEN3VL32B_AW_HARD_S20260806_G3407_V1",
+  "generation_calls": 0,
+  "implementation_commit": "6c7b7f3405186ef0585b927853c5fc48b9bb5625",
+  "live_generation_authorized": true,
+  "mechanism_id": "a1r2_compact_verified_pending_v1",
+  "offline_replay_content_sha256": "1164fcfecb8d41c0a13cc56bfddbe21731c2145740dd8de644ad082870f4a2ea",
+  "schema": "sys_nag_v2_zero_generation_preflight_v1",
+  "source_freeze_content_sha256": "84b1153182719bd1e3ca333d80f864a45a6a852cd9be18bf68bad0895c5d3962",
+  "status": "PASS",
+  "system_id": "sys_r2_numeric_answer_consistency_guard_v2"
+}
