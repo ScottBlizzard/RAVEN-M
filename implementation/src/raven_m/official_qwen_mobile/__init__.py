@@ -28,6 +28,7 @@ __all__ = [
     "ConfirmedRouteContractionECOBFMemory",
     "MinimalActionDivergenceMemory",
     "BoundedPendingReceiptV2",
+    "OneShotControllerNonprogressReceiptMemory",
 ]
 
 
@@ -53,4 +54,10 @@ def __getattr__(name: str):
         from .a1r1_bpr_v2 import BoundedPendingReceiptV2
 
         return BoundedPendingReceiptV2
+    if name == "OneShotControllerNonprogressReceiptMemory":
+        from .a1r3v3_one_shot_cnr import (
+            OneShotControllerNonprogressReceiptMemory,
+        )
+
+        return OneShotControllerNonprogressReceiptMemory
     raise AttributeError(name)

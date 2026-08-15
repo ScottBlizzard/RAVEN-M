@@ -12,16 +12,16 @@ RUNNER = ROOT / "implementation/scripts/run_official_qwen_mobile.py"
 CONTROLLER = ROOT / "implementation/src/raven_m/official_qwen_mobile/controller.py"
 
 
-def test_controller_binds_prepare_prompt_commit_before_generate() -> None:
+def test_controller_commits_only_after_transport_returns() -> None:
     memory = BoundedPendingReceiptV2()
     controller = OfficialQwenMobileController(object(), working_memory=memory)
     assert controller.working_memory is memory
     source = CONTROLLER.read_text(encoding="utf-8")
     read = source.index("rendered_memory, memory_read = self.working_memory.read(")
     prompt = source.index("user_prompt = append_working_memory(", read)
-    commit = source.index("self.working_memory.commit_injection(", prompt)
-    generate = source.index("call = self.client.generate(", commit)
-    assert read < prompt < commit < generate
+    generate = source.index("call = self.client.generate(", prompt)
+    commit = source.index("self.working_memory.commit_injection(", generate)
+    assert read < prompt < generate < commit
     assert 'memory_read["resident_history_sha256"]' in source
     assert 'memory_read["base_user_prompt_sha256"]' in source
     assert 'memory_read["final_user_prompt_sha256"]' in source

@@ -19,16 +19,16 @@ def test_a1_prompt_and_memory_remain_separate() -> None:
     assert memory.mechanism_id == "a1r2_compact_verified_pending_v1"
 
 
-def test_controller_uses_atomic_prepare_append_commit_order() -> None:
+def test_controller_uses_transport_confirmed_commit_order() -> None:
     memory = CompactVerifiedPendingMemory()
     controller = OfficialQwenMobileController(object(), working_memory=memory)
     assert controller.working_memory is memory
     source = CONTROLLER.read_text(encoding="utf-8")
     read = source.index("rendered_memory, memory_read = self.working_memory.read(")
     append = source.index("user_prompt = append_working_memory(", read)
-    commit = source.index("self.working_memory.commit_injection(", append)
-    generate = source.index("call = self.client.generate(", commit)
-    assert read < append < commit < generate
+    generate = source.index("call = self.client.generate(", append)
+    commit = source.index("self.working_memory.commit_injection(", generate)
+    assert read < append < generate < commit
 
 
 def test_runner_has_unique_arm_gate_and_prompt_binding() -> None:
@@ -39,7 +39,7 @@ def test_runner_has_unique_arm_gate_and_prompt_binding() -> None:
         '"--a1r2-cvp"',
         '("a1r2", args.a1r2_cvp)',
         'if dual_arm_name == "a1r2"',
-        'dual_arm_name in {"bprv2", "a1r2"}',
+        'dual_arm_name in {"bprv2", "a1r2", "a1r3v3"}',
         '"A1-R2 Recipe gain-preservation gate failed; scientific failure is terminal"',
         "require_single_transport=(a10_scored_arm or dual_memory_arm)",
     ):

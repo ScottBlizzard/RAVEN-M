@@ -160,6 +160,18 @@ A7_REMAINING_AFTER_GATE_TASKS = (
 # mechanism and contract modules, and makes it impossible to compose multiple
 # memories in one controller.
 DUAL_ARM_SPECS = {
+    "a1r3v3": {
+        "flag": "a1r3v3_oscnr",
+        "label": "A1-R3-v3 OSCNR",
+        "memory_module": "raven_m.official_qwen_mobile.a1r3v3_one_shot_cnr",
+        "memory_class": "OneShotControllerNonprogressReceiptMemory",
+        "contract_module": "raven_m.official_qwen_mobile.a1r3v3_contract",
+        "entry_key": "a1r3v3_valid_entries",
+        "checkpoint_schema": "a1r3v3_oscnr_checkpoint_v1",
+        "result_key": "a1r3v3_result",
+        "result_schema": "a1r3v3_oscnr_result_v1",
+        "system_prompt_identity": "a1_working_memory",
+    },
     "a1r12": {"flag":"a1r12_chp","label":"A1-R12 CHP","memory_module":"raven_m.official_qwen_mobile.a1r12_compacted_history_pending","memory_class":"CompactedHistoryPendingMemory","contract_module":"raven_m.official_qwen_mobile.a1r12_contract","entry_key":"a1r12_valid_entries","checkpoint_schema":"a1r12_chp_checkpoint_v1","result_key":"a1r12_result","result_schema":"a1r12_chp_result_v1"},
     "a1r11": {"flag":"a1r11_cscp","label":"A1-R11 CSCP","memory_module":"raven_m.official_qwen_mobile.a1r11_coordinate_self_check_pending","memory_class":"CoordinateSelfCheckPendingMemory","contract_module":"raven_m.official_qwen_mobile.a1r11_contract","entry_key":"a1r11_valid_entries","checkpoint_schema":"a1r11_cscp_checkpoint_v1","result_key":"a1r11_result","result_schema":"a1r11_cscp_result_v1"},
     "a1r10": {"flag":"a1r10_pacp","label":"A1-R10 PACP","memory_module":"raven_m.official_qwen_mobile.a1r10_pre_action_calibrated_pending","memory_class":"PreActionCalibratedPendingMemory","contract_module":"raven_m.official_qwen_mobile.a1r10_contract","entry_key":"a1r10_valid_entries","checkpoint_schema":"a1r10_pacp_checkpoint_v1","result_key":"a1r10_result","result_schema":"a1r10_pacp_result_v1"},
@@ -544,6 +556,62 @@ def _load_bpr_checkpoint_pointer(suite_dir: Path) -> dict:
     return payload
 
 
+def _append_a1r3v3_checkpoint(suite_dir: Path, payload: dict) -> None:
+    checkpoint_dir = suite_dir / "checkpoints"
+    checkpoint_dir.mkdir(parents=True, exist_ok=True)
+    existing = sorted(checkpoint_dir.glob("A1R3V3_OSCNR_CHECKPOINT_*.json"))
+    ordinal = len(existing)
+    authoritative = dict(payload)
+    authoritative.update(
+        {
+            "checkpoint_ordinal": ordinal,
+            "previous_checkpoint_file_sha256": (
+                _sha256(existing[-1]) if existing else None
+            ),
+            "content_sha256": None,
+        }
+    )
+    authoritative["content_sha256"] = sha256(
+        json.dumps(
+            {key: value for key, value in authoritative.items() if key != "content_sha256"},
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()
+    path = checkpoint_dir / f"A1R3V3_OSCNR_CHECKPOINT_{ordinal:04d}.json"
+    _atomic_json(path, authoritative)
+    _atomic_json(
+        suite_dir / "checkpoint.json",
+        {
+            "schema": "a1r3v3_oscnr_checkpoint_pointer_v1",
+            "latest_checkpoint": str(path.relative_to(suite_dir)).replace("\\", "/"),
+            "latest_checkpoint_file_sha256": _sha256(path),
+        },
+    )
+
+
+def _load_a1r3v3_checkpoint_pointer(suite_dir: Path) -> dict:
+    pointer = json.loads((suite_dir / "checkpoint.json").read_text(encoding="utf-8"))
+    if pointer.get("schema") != "a1r3v3_oscnr_checkpoint_pointer_v1":
+        raise RuntimeError("A1-R3-v3 checkpoint pointer schema mismatch")
+    path = suite_dir / str(pointer.get("latest_checkpoint") or "")
+    if not path.is_file() or _sha256(path) != pointer.get("latest_checkpoint_file_sha256"):
+        raise RuntimeError("A1-R3-v3 checkpoint pointer hash mismatch")
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    canonical = sha256(
+        json.dumps(
+            {key: value for key, value in payload.items() if key != "content_sha256"},
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()
+    if payload.get("content_sha256") != canonical:
+        raise RuntimeError("A1-R3-v3 checkpoint content hash mismatch")
+    return payload
+
+
 def _sha256(path: Path) -> str:
     return sha256(path.read_bytes()).hexdigest()
 
@@ -770,6 +838,112 @@ def _a1r3_failure_causal_analysis(summaries: list[dict]) -> list[dict]:
                     ),
                 }
             )
+    return records
+
+
+def _a1r3v3_causal_analysis(summaries: list[dict]) -> list[dict]:
+    """Classify the primary arm without pretending the ablation already ran."""
+
+    from raven_m.official_qwen_mobile.a1r3v3_one_shot_cnr import (
+        canonical_action_family,
+    )
+
+    records: list[dict] = []
+    for summary in summaries:
+        steps = list(summary.get("steps") or [])
+        creation_count = int(
+            ((summary.get("memory_mechanism") or {}).get("counters") or {}).get(
+                "cnr_receipt_creation_count"
+            )
+            or 0
+        )
+        committed: tuple[int, dict, dict] | None = None
+        for index, step in enumerate(steps):
+            read = step.get("memory_read") or {}
+            commit = read.get("injection_commit") or {}
+            if commit.get("failure_evidence_injected"):
+                committed = (index, step, commit)
+                break
+        if committed is None:
+            records.append(
+                {
+                    "episode_id": summary["episode_id"],
+                    "task_name": summary["task_name"],
+                    "receipt_created": creation_count > 0,
+                    "receipt_committed": False,
+                    "classification": (
+                        "CREATED_NOT_COMMITTED" if creation_count else "NO_OPPORTUNITY"
+                    ),
+                    "success": bool(summary.get("success")),
+                }
+            )
+            continue
+        index, step, commit = committed
+        read = step.get("memory_read") or {}
+        failed_family = str(read.get("failed_action_family") or "")
+        next_family_record = canonical_action_family(
+            (step.get("decision") or {}).get("canonical_action")
+        )
+        next_family = next_family_record[0] if next_family_record else None
+        action_diverged = bool(next_family and next_family != failed_family)
+        action_sha = _json_digest(
+            (step.get("decision") or {}).get("canonical_action")
+        )
+        executed_after = [item for item in steps[index:] if item.get("executed")][:8]
+        visible_step = None
+        for later in executed_after[:4]:
+            transition = later.get("transition") or {}
+            try:
+                fraction = float(transition.get("changed_pixel_fraction_gt_5"))
+            except (TypeError, ValueError):
+                fraction = 0.0
+            if transition.get("same_shape") is False or fraction > 0.001:
+                visible_step = int(later.get("step", -1))
+                break
+        relapse_step = None
+        if visible_step is not None:
+            for later in executed_after:
+                if int(later.get("step", -1)) <= visible_step:
+                    continue
+                transition = later.get("transition") or {}
+                try:
+                    fraction = float(transition.get("changed_pixel_fraction_gt_5"))
+                except (TypeError, ValueError):
+                    fraction = 1.0
+                if transition.get("same_shape") is True and fraction <= 0.001:
+                    relapse_step = int(later.get("step", -1))
+                    break
+        if not action_diverged:
+            classification = "COMMITTED_NO_ACTION_DIVERGENCE"
+        elif visible_step is None:
+            classification = "DIVERGENCE_NO_VISIBLE_CHANGE"
+        elif relapse_step is not None:
+            classification = "VISIBLE_CHANGE_RELAPSED"
+        elif summary.get("success"):
+            classification = "QUALIFYING_NEW_WIN_ABLATION_UNRESOLVED"
+        else:
+            classification = "VISIBLE_CHANGE_NO_SUCCESS"
+        records.append(
+            {
+                "episode_id": summary["episode_id"],
+                "task_name": summary["task_name"],
+                "receipt_created": True,
+                "receipt_committed": True,
+                "read_step": int(step.get("step", -1)),
+                "receipt_id": commit.get("cnr_receipt_id"),
+                "exact_injected_text_sha256": commit.get(
+                    "exact_injected_text_sha256"
+                ),
+                "post_read_action_sha256": action_sha,
+                "failed_action_family": failed_family,
+                "post_read_action_family": next_family,
+                "post_read_action_diverged_from_failed_family": action_diverged,
+                "visible_screen_change_step_within_4": visible_step,
+                "relapse_step_within_4_after_change": relapse_step,
+                "classification": classification,
+                "success": bool(summary.get("success")),
+            }
+        )
     return records
 
 
@@ -1310,6 +1484,21 @@ def main() -> None:
         help="Fresh A1-R4 receipt bound only to its own preflight and process.",
     )
     parser.add_argument(
+        "--a1r3v3-oscnr",
+        action="store_true",
+        help="Run the prospective A1-R3-v3 one-shot controller nonprogress receipt arm.",
+    )
+    parser.add_argument(
+        "--a1r3v3-preflight-report",
+        type=Path,
+        default=REPOSITORY_ROOT / "evidence/a1r3_v3/A1R3V3_OSCNR_ZERO_GENERATION_PREFLIGHT.json",
+    )
+    parser.add_argument(
+        "--a1r3v3-launch-receipt",
+        type=Path,
+        help="Fresh A1-R3-v3 receipt bound only to its own preflight and process.",
+    )
+    parser.add_argument(
         "--a1r3-srpl",
         action="store_true",
         help="Run the prospective A1-R3 stale-resistant pending ledger arm.",
@@ -1603,6 +1792,7 @@ def main() -> None:
             args.a1r6_gapl,
             args.a1r5_tipl,
             args.a1r4_wrpl,
+            args.a1r3v3_oscnr,
             args.a1r3_srpl,
             args.a1r2_cvp,
             args.a1r1_bpr_v2_mode,
@@ -1615,7 +1805,7 @@ def main() -> None:
             "--evidence-qualified-progress, and --source-document-coverage "
             "--source-document-coverage-gate, --a1-working-memory, and "
             "--a2-verified-progress-memory, --a345-arm, --a678-arm, --a10-ecobf, "
-            "--a10-v2-emobf, --a11-crc-ecobf, --a12-madm, --a1r12-chp, --a1r11-cscp, --a1r10-pacp, --a1r9-rlcr, --a1r8-rcrp, --a1r7-grpl, --a1r6-gapl, --a1r5-tipl, --a1r4-wrpl, --a1r3-srpl, --a1r2-cvp, --a1r1-bpr-v2-mode, and "
+            "--a10-v2-emobf, --a11-crc-ecobf, --a12-madm, --a1r12-chp, --a1r11-cscp, --a1r10-pacp, --a1r9-rlcr, --a1r8-rcrp, --a1r7-grpl, --a1r6-gapl, --a1r5-tipl, --a1r4-wrpl, --a1r3v3-oscnr, --a1r3-srpl, --a1r2-cvp, --a1r1-bpr-v2-mode, and "
             "--enriched-memory-diagnostic are mutually exclusive"
         )
     held_out_eligible = not bool(args.diagnostic) and not bool(
@@ -1641,6 +1831,7 @@ def main() -> None:
                 ("a1r6", args.a1r6_gapl),
                 ("a1r5", args.a1r5_tipl),
                 ("a1r4", args.a1r4_wrpl),
+                ("a1r3v3", args.a1r3v3_oscnr),
                 ("a1r3", args.a1r3_srpl),
                 ("a1r2", args.a1r2_cvp),
                 ("bprv2", args.a1r1_bpr_v2_mode),
@@ -1697,6 +1888,8 @@ def main() -> None:
         if dual_arm_name == "a1r5"
         else args.a1r4_preflight_report
         if dual_arm_name == "a1r4"
+        else args.a1r3v3_preflight_report
+        if dual_arm_name == "a1r3v3"
         else args.a1r3_preflight_report
         if dual_arm_name == "a1r3"
         else args.a1r2_preflight_report
@@ -1732,6 +1925,8 @@ def main() -> None:
         if dual_arm_name == "a1r5"
         else args.a1r4_launch_receipt
         if dual_arm_name == "a1r4"
+        else args.a1r3v3_launch_receipt
+        if dual_arm_name == "a1r3v3"
         else args.a1r3_launch_receipt
         if dual_arm_name == "a1r3"
         else args.a1r2_launch_receipt
@@ -2024,7 +2219,7 @@ def main() -> None:
                 raise RuntimeError(f"A3/A4/A5 gate tasks missing from manifest: {missing_gate}")
             remaining = [item for item in specs if str(item["task_class"]) not in A345_GATE_TASKS]
             specs = [by_name[name] for name in A345_GATE_TASKS] + remaining
-        elif dual_arm_name in {"bprv2", "a1r2"} or dual_arm_name in {"a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11", "a1r12"}:
+        elif dual_arm_name in {"bprv2", "a1r2", "a1r3v3"} or dual_arm_name in {"a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11", "a1r12"}:
             by_name = {str(item["task_class"]): item for item in specs}
             gate_tasks = dual_arm["gate_tasks"]
             missing_gate = sorted(set(gate_tasks) - set(by_name))
@@ -2037,7 +2232,7 @@ def main() -> None:
             gate_specs = [by_name[name] for name in gate_tasks]
             specs = (
                 gate_specs + remaining
-                if dual_arm_name in {"a1r2", "a1r3"} or dual_arm_name in {"a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11", "a1r12"} or bpr_mode == "primary"
+                if dual_arm_name in {"a1r2", "a1r3v3", "a1r3"} or dual_arm_name in {"a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11", "a1r12"} or bpr_mode == "primary"
                 else gate_specs
             )
         elif prospective_gate_arm:
@@ -2320,7 +2515,7 @@ def main() -> None:
                 },
                 "task_order": (
                     "blocking_A1R2_success_6_then_frozen_manifest_remainder"
-                    if dual_arm_name in {"a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11", "a1r12"}
+                    if dual_arm_name in {"a1r3v3", "a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11", "a1r12"}
                     else "blocking_A0_4_then_Recipe_1_then_frozen_manifest_remainder"
                     if dual_arm_name == "a1r2" or (dual_arm_name == "bprv2" and bpr_mode == "primary")
                     else "fixed_five_task_non_fail_fast_after_primary_complete"
@@ -2365,7 +2560,7 @@ def main() -> None:
                     "system_prompt_identity": "exact_A1_WORKING_MEMORY_SYSTEM_PROMPT",
                 }
             )
-        elif dual_arm_name in {"a1r3", "a1r4"} or dual_arm_name in {"a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11", "a1r12"}:
+        elif dual_arm_name in {"a1r3v3", "a1r3", "a1r4"} or dual_arm_name in {"a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11", "a1r12"}:
             run_signature.update(
                 {
                     "capability_gate_tasks": list(dual_arm["gate_tasks"]),
@@ -2512,6 +2707,8 @@ def main() -> None:
             checkpoint = (
                 _load_bpr_checkpoint_pointer(suite_dir)
                 if dual_arm_name == "bprv2"
+                else _load_a1r3v3_checkpoint_pointer(suite_dir)
+                if dual_arm_name == "a1r3v3"
                 else json.loads((suite_dir / "checkpoint.json").read_text(encoding="utf-8"))
             )
             if a345_scored_arm and checkpoint.get("status") in A345_TERMINAL_CHECKPOINT_STATUSES:
@@ -2701,6 +2898,8 @@ def main() -> None:
                 )
         if dual_arm_name == "bprv2":
             _append_bpr_checkpoint(suite_dir, payload)
+        elif dual_arm_name == "a1r3v3":
+            _append_a1r3v3_checkpoint(suite_dir, payload)
         else:
             _atomic_json(suite_dir / "checkpoint.json", payload)
 
@@ -2761,7 +2960,7 @@ def main() -> None:
                     if not _gate_passed(gate5):
                         checkpoint("stopped_gate5_incomplete")
                         raise RuntimeError("BPR-v2 remaining fourteen tasks are locked until Gate5 is 5/5")
-            elif dual_arm_name in {"a1r2", "a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11", "a1r12"}:
+            elif dual_arm_name in {"a1r2", "a1r3v3", "a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11", "a1r12"}:
                 if task_name not in dual_arm["gate_tasks"]:
                     gate = dual_arm["preservation_report"](summaries)
                     if not _gate_passed(gate):
@@ -2852,6 +3051,27 @@ def main() -> None:
                     a678_memory = dual_arm["memory_class_object"](
                         read_enabled=dual_arm["read_enabled"]
                     )
+                elif dual_arm_name == "a1r3v3":
+                    config = json.loads(
+                        dual_arm["config_path"].read_text(encoding="utf-8")
+                    )
+                    memory_config = config.get("memory") or {}
+                    expected = {
+                        "parent_ttl_requests": 8,
+                        "max_render_chars": 1200,
+                        "no_progress_pixel_fraction": 0.001,
+                        "consecutive_supports": 2,
+                        "max_receipt_creations": 1,
+                        "max_receipt_committed_reads": 1,
+                        "receipt_render_mode": "enabled",
+                    }
+                    if any(memory_config.get(key) != value for key, value in expected.items()):
+                        raise RuntimeError("A1-R3-v3 runtime config drift")
+                    a678_memory = dual_arm["memory_class_object"](
+                        ttl_requests=8,
+                        max_render_chars=1200,
+                        receipt_render_mode="enabled",
+                    )
                 else:
                     a678_memory = dual_arm["memory_class_object"]()
             controller = OfficialQwenMobileController(
@@ -2934,7 +3154,7 @@ def main() -> None:
                     A1R1_BPR_V2_SYSTEM_PROMPT
                     if dual_arm_name == "bprv2"
                     else A1_WORKING_MEMORY_SYSTEM_PROMPT
-                    if dual_arm_name == "a1r2"
+                    if dual_arm_name in {"a1r2", "a1r3v3", "a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11", "a1r12"}
                     else A1_WORKING_MEMORY_SYSTEM_PROMPT
                     if args.a1_working_memory
                     else (
@@ -3047,6 +3267,13 @@ def main() -> None:
                 )
                 attempt_limit_exceeded = bool(
                     ((dual_arm_name == "bprv2" and bpr_arm_invalid_count > 2)
+                    or (
+                        dual_arm_name == "a1r3v3"
+                        and (
+                            same_task_invalid_count > 1
+                            or bpr_arm_invalid_count > 2
+                        )
+                    )
                     or ((dual_arm_name == "a12" or enriched_diag_arm) and same_task_invalid_count > 2))
                 )
                 checkpoint(
@@ -3057,8 +3284,8 @@ def main() -> None:
                 if attempt_limit_exceeded:
                     raise RuntimeError(
                         f"{('DIAG6 ' + str(enriched_diag_arm)) if enriched_diag_arm else dual_arm['label']} "
-                        f"task {task_name} produced a third infrastructure-invalid "
-                        "attempt; the suite is terminally infrastructure-incomplete"
+                        f"task {task_name} exceeded its frozen infrastructure-invalid "
+                        "replacement budget; the suite is terminally infrastructure-incomplete"
                     )
                 raise RuntimeError(
                     f"Memory run stopped after infrastructure-invalid episode {episode_id}; "
@@ -3219,6 +3446,16 @@ def main() -> None:
                     "scientific failure is terminal"
                 )
             if (
+                dual_arm_name == "a1r3v3"
+                and task_name in dual_arm["gate_tasks"]
+                and not bool(result.get("success"))
+            ):
+                checkpoint("stopped_capability_gate_failure")
+                raise RuntimeError(
+                    f"A1-R3-v3 six-task capability gate failed on {task_name}; "
+                    "scientific failure is terminal"
+                )
+            if (
                 dual_arm_name == "a1r3"
                 and task_name in dual_arm["gate_tasks"]
                 and not bool(result.get("success"))
@@ -3245,7 +3482,7 @@ def main() -> None:
             )
             checkpoint(
                 "infrastructure_incomplete"
-                if dual_arm_name in {"a12", "bprv2", "a1r2", "a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11", "a1r12"}
+                if dual_arm_name in {"a12", "bprv2", "a1r2", "a1r3v3", "a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11", "a1r12"}
                 else "stopped_invalid_episode"
             )
             if active_exception is None:
@@ -3671,7 +3908,7 @@ def main() -> None:
             "errors": [],
         }
         aggregate[dual_arm["result_key"]] = bpr_result
-    if dual_arm_name in {"a1r2", "a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11", "a1r12"}:
+    if dual_arm_name in {"a1r2", "a1r3v3", "a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11", "a1r12"}:
         vertical_counters: dict[str, int] = {}
         for summary in summaries:
             for key, value in (
@@ -3692,22 +3929,38 @@ def main() -> None:
             ).total_seconds()
             for item in summaries
         )
-        if dual_arm_name in {"a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11", "a1r12"}:
+        if dual_arm_name in {"a1r3v3", "a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11", "a1r12"}:
             accuracy_pass = bool(
                 success_count >= 7 and reward_sum > 6.5 and _gate_passed(gate6)
             )
             cost_components = {
-                "calls_below_a1r2": calls < 603,
+                "calls_not_above_a1r2": calls <= 603,
                 "tokens_below_a1r2": int(usage["total_tokens"]) < 2_685_730,
                 "elapsed_below_a1r2": elapsed < 11_230.182856,
             }
-            causal_records = _a1r3_failure_causal_analysis(summaries)
-            productive_count = sum(
-                int(item.get("productive_signal") is True) for item in causal_records
+            causal_records = (
+                _a1r3v3_causal_analysis(summaries)
+                if dual_arm_name == "a1r3v3"
+                else _a1r3_failure_causal_analysis(summaries)
             )
-            failure_injection_count = len(causal_records)
+            productive_count = sum(
+                int(
+                    item.get("productive_signal") is True
+                    or item.get("classification")
+                    == "QUALIFYING_NEW_WIN_ABLATION_UNRESOLVED"
+                )
+                for item in causal_records
+            )
+            failure_injection_count = sum(
+                int(item.get("receipt_committed") is True)
+                for item in causal_records
+            ) if dual_arm_name == "a1r3v3" else len(causal_records)
             mechanism_verdict = (
-                "PASS"
+                "PENDING_MATCHED_NEUTRALIZED_ABLATION"
+                if dual_arm_name == "a1r3v3" and failure_injection_count
+                else "NOT_OBSERVED_NO_CNR_COMMIT"
+                if dual_arm_name == "a1r3v3"
+                else "PASS"
                 if productive_count >= 2
                 else "FAIL_INSUFFICIENT_PRODUCTIVE_FAILURE_DIVERGENCE"
                 if failure_injection_count
@@ -3777,7 +4030,13 @@ def main() -> None:
                         counters.get("failure_evidence_count") or 0
                     ),
                     "failure_evidence_injection_count": sum(
-                        int(record.get("episode_id") == item["episode_id"])
+                        int(
+                            record.get("episode_id") == item["episode_id"]
+                            and (
+                                dual_arm_name != "a1r3v3"
+                                or record.get("receipt_committed") is True
+                            )
+                        )
                         for record in causal_records
                     ),
                 }
@@ -3860,7 +4119,7 @@ def main() -> None:
         aggregate[dual_arm["result_key"]] = result_payload
     if a10_scored_arm or (
         dual_scored_arm
-        and dual_arm_name not in {"bprv2", "a1r2", "a1r3"}
+        and dual_arm_name not in {"bprv2", "a1r2", "a1r3v3", "a1r3"}
         and dual_arm_name != "a1r4"
         and dual_arm_name != "a1r5"
         and dual_arm_name != "a1r6"

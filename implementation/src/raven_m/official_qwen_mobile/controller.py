@@ -468,6 +468,35 @@ class OfficialQwenMobileController:
                     memory_read["final_user_prompt_sha256"] = sha256(
                         user_prompt.encode("utf-8")
                     ).hexdigest()
+                try:
+                    call = self.client.generate(
+                        image_path=screenshot,
+                        system_prompt=self.system_prompt,
+                        user_prompt=user_prompt,
+                        episode_id=episode_id,
+                        call_label=f"official_step_{step_index:03d}",
+                        max_tokens=self.max_tokens,
+                        context_images=[],
+                        user_prompt_before_image=True,
+                        current_image_label=None,
+                    )
+                except Exception as exc:
+                    ticket_id = (memory_read or {}).get("ticket_id")
+                    if ticket_id and hasattr(self.working_memory, "cancel_injection"):
+                        self.working_memory.cancel_injection(
+                            str(ticket_id),
+                            f"model_transport_failure:{type(exc).__name__}",
+                        )
+                    raise
+                if memory_read is not None:
+                    memory_read["transport_confirmation"] = {
+                        "model_call_id": call.call_id,
+                        "request_sha256": call.request_sha256,
+                        "response_sha256": call.response_sha256,
+                        "transport_attempts": call.raven_meta.get(
+                            "transport_attempts"
+                        ),
+                    }
                     ticket_id = memory_read.get("ticket_id")
                     if rendered_memory and ticket_id and hasattr(
                         self.working_memory, "commit_injection"
@@ -478,17 +507,6 @@ class OfficialQwenMobileController:
                                 memory_read["final_user_prompt_sha256"],
                             )
                         )
-                call = self.client.generate(
-                    image_path=screenshot,
-                    system_prompt=self.system_prompt,
-                    user_prompt=user_prompt,
-                    episode_id=episode_id,
-                    call_label=f"official_step_{step_index:03d}",
-                    max_tokens=self.max_tokens,
-                    context_images=[],
-                    user_prompt_before_image=True,
-                    current_image_label=None,
-                )
                 record: dict[str, Any] = {
                     "event": "step",
                     "step": step_index,
@@ -756,17 +774,43 @@ class OfficialQwenMobileController:
                             source_screenshot_sha256=str(before["screenshot_sha256"]),
                         )
                     elif hasattr(self.working_memory, "observe_step"):
-                        record["memory_write"] = self.working_memory.observe_step(
-                            source_step=step_index,
-                            action_summary=decision.action_summary,
-                            canonical_action=canonical_action,
-                            transition=transition,
-                            before=before,
-                            after=after,
-                            source_call_id=call.call_id,
-                            source_response_sha256=call.response_sha256,
-                            source_screenshot_sha256=str(before["screenshot_sha256"]),
-                        )
+                        if (
+                            getattr(self.working_memory, "mechanism_id", "")
+                            == "a1r3v3_one_shot_controller_nonprogress_receipt_v1"
+                        ):
+                            record["memory_write"] = self.working_memory.observe_step(
+                                source_step=step_index,
+                                action_summary=decision.action_summary,
+                                canonical_action=canonical_action,
+                                transition={
+                                    "same_shape": transition.get("same_shape"),
+                                    "changed_pixel_fraction_gt_5": transition.get(
+                                        "changed_pixel_fraction_gt_5"
+                                    ),
+                                },
+                                source_call_id=call.call_id,
+                                source_response_sha256=call.response_sha256,
+                                source_screenshot_sha256=str(
+                                    before["screenshot_sha256"]
+                                ),
+                                source_after_screenshot_sha256=str(
+                                    after["screenshot_sha256"]
+                                ),
+                            )
+                        else:
+                            record["memory_write"] = self.working_memory.observe_step(
+                                source_step=step_index,
+                                action_summary=decision.action_summary,
+                                canonical_action=canonical_action,
+                                transition=transition,
+                                before=before,
+                                after=after,
+                                source_call_id=call.call_id,
+                                source_response_sha256=call.response_sha256,
+                                source_screenshot_sha256=str(
+                                    before["screenshot_sha256"]
+                                ),
+                            )
                     else:
                         record["memory_write"] = self.working_memory.write(
                             source_step=step_index,

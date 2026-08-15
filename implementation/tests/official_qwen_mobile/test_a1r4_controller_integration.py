@@ -27,7 +27,7 @@ def test_runner_has_unique_r4_arm_gate_and_result_path() -> None:
         '"a1r4": {',
         '"--a1r4-wrpl"',
         '("a1r4", args.a1r4_wrpl)',
-        'dual_arm_name in {"a1r3", "a1r4"}',
+        'dual_arm_name in {"a1r3v3", "a1r3", "a1r4"}',
         '"A1-R4 six-task capability gate failed on',
         'dual_arm_name == "a1r4"',
         'and dual_arm_name != "a1r4"',

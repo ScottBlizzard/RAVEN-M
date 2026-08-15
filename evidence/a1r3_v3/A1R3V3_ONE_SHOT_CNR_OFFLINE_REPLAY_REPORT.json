@@ -1,0 +1,531 @@
+{
+  "content_sha256": "87add92646489efc13f557b302dfc9dd45742ee734f8fdafb7de04705575055a",
+  "created_at": "2026-08-14T10:22:59.654778+00:00",
+  "development_calibration_not_confirmation": true,
+  "episodes": [
+    {
+      "a1r2_actual_rendered_chars": 4150,
+      "a1r2_actual_rendered_tokens": 804,
+      "cnr_creations": [],
+      "cnr_reads": [],
+      "cnr_receipt_committed_read_count": 0,
+      "cnr_receipt_creation_count": 0,
+      "episode_id": "ExpenseDeleteMultiple2_20260806_a27af967",
+      "episode_json_sha256": "494d4ffaaefb6613f3ef614b696c766fd6038e6a666ab5cf45d2a197bb698447",
+      "executed_actions": 17,
+      "model_calls": 18,
+      "projected_nonempty_reads": 17,
+      "projected_rendered_chars": 4150,
+      "projected_rendered_tokens": 804,
+      "reward": 1.0,
+      "success": true,
+      "task_name": "ExpenseDeleteMultiple2"
+    },
+    {
+      "a1r2_actual_rendered_chars": 3419,
+      "a1r2_actual_rendered_tokens": 646,
+      "cnr_creations": [],
+      "cnr_reads": [],
+      "cnr_receipt_committed_read_count": 0,
+      "cnr_receipt_creation_count": 0,
+      "episode_id": "RetroSavePlaylist_20260806_269b2c65",
+      "episode_json_sha256": "56ded696d6c6f0c13bbd0d8dcef9583b57af6ad8cb3176133ac36dede24c07e9",
+      "executed_actions": 24,
+      "model_calls": 25,
+      "projected_nonempty_reads": 14,
+      "projected_rendered_chars": 3419,
+      "projected_rendered_tokens": 646,
+      "reward": 1.0,
+      "success": true,
+      "task_name": "RetroSavePlaylist"
+    },
+    {
+      "a1r2_actual_rendered_chars": 5328,
+      "a1r2_actual_rendered_tokens": 1114,
+      "cnr_creations": [],
+      "cnr_reads": [],
+      "cnr_receipt_committed_read_count": 0,
+      "cnr_receipt_creation_count": 0,
+      "episode_id": "SimpleCalendarAddOneEvent_20260806_728d3349",
+      "episode_json_sha256": "0756500a2c6efaa485cdd930c3b9e6ff58a75e3a34452e411db22377d52e158c",
+      "executed_actions": 22,
+      "model_calls": 23,
+      "projected_nonempty_reads": 21,
+      "projected_rendered_chars": 5328,
+      "projected_rendered_tokens": 1114,
+      "reward": 1.0,
+      "success": true,
+      "task_name": "SimpleCalendarAddOneEvent"
+    },
+    {
+      "a1r2_actual_rendered_chars": 1168,
+      "a1r2_actual_rendered_tokens": 221,
+      "cnr_creations": [],
+      "cnr_reads": [],
+      "cnr_receipt_committed_read_count": 0,
+      "cnr_receipt_creation_count": 0,
+      "episode_id": "SportsTrackerTotalDurationForCategoryThisWeek_20260806_e34aeaf5",
+      "episode_json_sha256": "c236765bff60a417bdc0da69edec8e24d0625c2e9a4be7df5e995221c4b18035",
+      "executed_actions": 6,
+      "model_calls": 6,
+      "projected_nonempty_reads": 5,
+      "projected_rendered_chars": 1168,
+      "projected_rendered_tokens": 221,
+      "reward": 1.0,
+      "success": true,
+      "task_name": "SportsTrackerTotalDurationForCategoryThisWeek"
+    },
+    {
+      "a1r2_actual_rendered_chars": 4192,
+      "a1r2_actual_rendered_tokens": 791,
+      "cnr_creations": [],
+      "cnr_reads": [],
+      "cnr_receipt_committed_read_count": 0,
+      "cnr_receipt_creation_count": 0,
+      "episode_id": "RecipeDeleteMultipleRecipesWithConstraint_20260806_b4feab19",
+      "episode_json_sha256": "5d1dbf1e8e3ead7818ffd6aa67fb9ac02b4bcb40e91ab0294506ae6c8ccf4a4e",
+      "executed_actions": 17,
+      "model_calls": 18,
+      "projected_nonempty_reads": 16,
+      "projected_rendered_chars": 4192,
+      "projected_rendered_tokens": 791,
+      "reward": 1.0,
+      "success": true,
+      "task_name": "RecipeDeleteMultipleRecipesWithConstraint"
+    },
+    {
+      "a1r2_actual_rendered_chars": 4623,
+      "a1r2_actual_rendered_tokens": 902,
+      "cnr_creations": [
+        {
+          "family_key": "tap:10:4",
+          "first_support_step": 12,
+          "receipt_id": "cnr_013_fdc677d3de58",
+          "second_support_step": 13
+        }
+      ],
+      "cnr_reads": [
+        {
+          "family_key": "tap:10:4",
+          "r2_ledger_active": true,
+          "receipt_id": "cnr_013_fdc677d3de58",
+          "rendered_chars": 376,
+          "rendered_sha256": "3d954d7d1545c7105f627b564a9aa53d343e7106c6efc49f96f21ae150f62b91",
+          "request_step": 14,
+          "second_support_step": 13
+        }
+      ],
+      "cnr_receipt_committed_read_count": 1,
+      "cnr_receipt_creation_count": 1,
+      "episode_id": "BrowserMultiply_20260806_54623170",
+      "episode_json_sha256": "149dc5fba971c7c75b7b975d3aa51e1d341fbcc03d0935070c21057bad2bb4ac",
+      "executed_actions": 22,
+      "model_calls": 22,
+      "projected_nonempty_reads": 19,
+      "projected_rendered_chars": 4716,
+      "projected_rendered_tokens": 922,
+      "reward": 0.0,
+      "success": false,
+      "task_name": "BrowserMultiply"
+    },
+    {
+      "a1r2_actual_rendered_chars": 3422,
+      "a1r2_actual_rendered_tokens": 637,
+      "cnr_creations": [],
+      "cnr_reads": [],
+      "cnr_receipt_committed_read_count": 0,
+      "cnr_receipt_creation_count": 0,
+      "episode_id": "ExpenseAddMultipleFromGallery_20260806_4caedc43",
+      "episode_json_sha256": "6bca92449b282a6d4de1b3169f3aa6a3ba261877f05ab4ced15f35f832b725a2",
+      "executed_actions": 13,
+      "model_calls": 14,
+      "projected_nonempty_reads": 13,
+      "projected_rendered_chars": 3422,
+      "projected_rendered_tokens": 637,
+      "reward": 0.0,
+      "success": false,
+      "task_name": "ExpenseAddMultipleFromGallery"
+    },
+    {
+      "a1r2_actual_rendered_chars": 5243,
+      "a1r2_actual_rendered_tokens": 1011,
+      "cnr_creations": [
+        {
+          "family_key": "type_text:6ce2a93768760cfed2f01db260c064864481162abe8887f9d0b6d94b67d651a8",
+          "first_support_step": 12,
+          "receipt_id": "cnr_013_fdeb02039891",
+          "second_support_step": 13
+        }
+      ],
+      "cnr_reads": [
+        {
+          "family_key": "type_text:6ce2a93768760cfed2f01db260c064864481162abe8887f9d0b6d94b67d651a8",
+          "r2_ledger_active": true,
+          "receipt_id": "cnr_013_fdeb02039891",
+          "rendered_chars": 346,
+          "rendered_sha256": "f91656162297c9486da12f5539e7cc211c46f1b6aa1465880b048c6f9991dcd2",
+          "request_step": 14,
+          "second_support_step": 13
+        }
+      ],
+      "cnr_receipt_committed_read_count": 1,
+      "cnr_receipt_creation_count": 1,
+      "episode_id": "ExpenseAddMultipleFromMarkor_20260806_faf5c468",
+      "episode_json_sha256": "e04beeca8719f41883b2e86918a153d07f5793e1caff8aa1b1a43fe1e2122d9c",
+      "executed_actions": 60,
+      "model_calls": 60,
+      "projected_nonempty_reads": 21,
+      "projected_rendered_chars": 5338,
+      "projected_rendered_tokens": 1031,
+      "reward": 0.0,
+      "success": false,
+      "task_name": "ExpenseAddMultipleFromMarkor"
+    },
+    {
+      "a1r2_actual_rendered_chars": 3271,
+      "a1r2_actual_rendered_tokens": 631,
+      "cnr_creations": [
+        {
+          "family_key": "swipe:left",
+          "first_support_step": 11,
+          "receipt_id": "cnr_012_53125e7c269e",
+          "second_support_step": 12
+        }
+      ],
+      "cnr_reads": [
+        {
+          "family_key": "swipe:left",
+          "r2_ledger_active": true,
+          "receipt_id": "cnr_012_53125e7c269e",
+          "rendered_chars": 338,
+          "rendered_sha256": "870dd66a75251ecac7757c272402441517a421ea1c5fc8feca04ce9b926d50f0",
+          "request_step": 13,
+          "second_support_step": 12
+        }
+      ],
+      "cnr_receipt_committed_read_count": 1,
+      "cnr_receipt_creation_count": 1,
+      "episode_id": "MarkorCreateNoteAndSms_20260806_150c1638",
+      "episode_json_sha256": "53e40dfdf96346e77601dffa091c9f97d3c8456ae7e1ec8b88c67748aade7ad8",
+      "executed_actions": 18,
+      "model_calls": 18,
+      "projected_nonempty_reads": 14,
+      "projected_rendered_chars": 3371,
+      "projected_rendered_tokens": 651,
+      "reward": 0.5,
+      "success": false,
+      "task_name": "MarkorCreateNoteAndSms"
+    },
+    {
+      "a1r2_actual_rendered_chars": 19350,
+      "a1r2_actual_rendered_tokens": 4095,
+      "cnr_creations": [
+        {
+          "family_key": "tap:9:2",
+          "first_support_step": 11,
+          "receipt_id": "cnr_012_9d09568ee20d",
+          "second_support_step": 12
+        }
+      ],
+      "cnr_reads": [
+        {
+          "family_key": "tap:9:2",
+          "r2_ledger_active": true,
+          "receipt_id": "cnr_012_9d09568ee20d",
+          "rendered_chars": 381,
+          "rendered_sha256": "697cd2619b243ed65ecab80f93ad4cbc8c06782a456a83465d2a603f2f90fdaa",
+          "request_step": 13,
+          "second_support_step": 12
+        }
+      ],
+      "cnr_receipt_committed_read_count": 1,
+      "cnr_receipt_creation_count": 1,
+      "episode_id": "MarkorMergeNotes_20260806_6367b3d1",
+      "episode_json_sha256": "e32f186765487b37703497c121198df3c6141850069ca51c0d2bcf2988768176",
+      "executed_actions": 78,
+      "model_calls": 78,
+      "projected_nonempty_reads": 73,
+      "projected_rendered_chars": 19443,
+      "projected_rendered_tokens": 4115,
+      "reward": 0.0,
+      "success": false,
+      "task_name": "MarkorMergeNotes"
+    },
+    {
+      "a1r2_actual_rendered_chars": 2541,
+      "a1r2_actual_rendered_tokens": 477,
+      "cnr_creations": [],
+      "cnr_reads": [],
+      "cnr_receipt_committed_read_count": 0,
+      "cnr_receipt_creation_count": 0,
+      "episode_id": "MarkorTranscribeVideo_20260806_737baf69",
+      "episode_json_sha256": "6e0f98632edaaa9256f21e87dbcb3c3689390c5d03e793392d67215353ae4f74",
+      "executed_actions": 14,
+      "model_calls": 14,
+      "projected_nonempty_reads": 11,
+      "projected_rendered_chars": 2541,
+      "projected_rendered_tokens": 477,
+      "reward": 0.0,
+      "success": false,
+      "task_name": "MarkorTranscribeVideo"
+    },
+    {
+      "a1r2_actual_rendered_chars": 2833,
+      "a1r2_actual_rendered_tokens": 630,
+      "cnr_creations": [],
+      "cnr_reads": [],
+      "cnr_receipt_committed_read_count": 0,
+      "cnr_receipt_creation_count": 0,
+      "episode_id": "OsmAndMarker_20260806_8517b31f",
+      "episode_json_sha256": "be3ded1024325388bc25c4701820575f3927756eadede7e4681cd2efc13d507d",
+      "executed_actions": 11,
+      "model_calls": 12,
+      "projected_nonempty_reads": 11,
+      "projected_rendered_chars": 2833,
+      "projected_rendered_tokens": 630,
+      "reward": 1.0,
+      "success": true,
+      "task_name": "OsmAndMarker"
+    },
+    {
+      "a1r2_actual_rendered_chars": 28262,
+      "a1r2_actual_rendered_tokens": 5776,
+      "cnr_creations": [
+        {
+          "family_key": "type_text:f941154c4f94f0851adfa3dcba30aec75e1cb0a153dc3d3fe4ae433b73cf6d53",
+          "first_support_step": 13,
+          "receipt_id": "cnr_014_94299324333b",
+          "second_support_step": 14
+        }
+      ],
+      "cnr_reads": [
+        {
+          "family_key": "type_text:f941154c4f94f0851adfa3dcba30aec75e1cb0a153dc3d3fe4ae433b73cf6d53",
+          "r2_ledger_active": true,
+          "receipt_id": "cnr_014_94299324333b",
+          "rendered_chars": 334,
+          "rendered_sha256": "260f9a469409f811782ea0fca0d854350c68c9fa001c3b4f1b53144df1bb0e59",
+          "request_step": 15,
+          "second_support_step": 14
+        }
+      ],
+      "cnr_receipt_committed_read_count": 1,
+      "cnr_receipt_creation_count": 1,
+      "episode_id": "OsmAndTrack_20260806_1823722c",
+      "episode_json_sha256": "cfa31b22d5608fb2306166724367347d65b017d346ce4352c39e95214e1270a2",
+      "executed_actions": 120,
+      "model_calls": 120,
+      "projected_nonempty_reads": 119,
+      "projected_rendered_chars": 28357,
+      "projected_rendered_tokens": 5796,
+      "reward": 0.0,
+      "success": false,
+      "task_name": "OsmAndTrack"
+    },
+    {
+      "a1r2_actual_rendered_chars": 1984,
+      "a1r2_actual_rendered_tokens": 376,
+      "cnr_creations": [
+        {
+          "family_key": "swipe:up",
+          "first_support_step": 4,
+          "receipt_id": "cnr_005_13fc80f9c255",
+          "second_support_step": 5
+        }
+      ],
+      "cnr_reads": [
+        {
+          "family_key": "swipe:up",
+          "r2_ledger_active": true,
+          "receipt_id": "cnr_005_13fc80f9c255",
+          "rendered_chars": 348,
+          "rendered_sha256": "62ae5416bd91892bcf5638ebccbffd4356ef7f187375c2b5d55a37c5320a7023",
+          "request_step": 6,
+          "second_support_step": 5
+        }
+      ],
+      "cnr_receipt_committed_read_count": 1,
+      "cnr_receipt_creation_count": 1,
+      "episode_id": "RecipeAddMultipleRecipesFromImage_20260806_4c0dccd5",
+      "episode_json_sha256": "43fe4d61c5d8c2cecc3d182a60816682edfdb0c640b1035289db01f411baf9e4",
+      "executed_actions": 60,
+      "model_calls": 60,
+      "projected_nonempty_reads": 8,
+      "projected_rendered_chars": 2084,
+      "projected_rendered_tokens": 396,
+      "reward": 0.0,
+      "success": false,
+      "task_name": "RecipeAddMultipleRecipesFromImage"
+    },
+    {
+      "a1r2_actual_rendered_chars": 4318,
+      "a1r2_actual_rendered_tokens": 829,
+      "cnr_creations": [
+        {
+          "family_key": "tap:10:8",
+          "first_support_step": 13,
+          "receipt_id": "cnr_014_5afa87dc95c1",
+          "second_support_step": 14
+        }
+      ],
+      "cnr_reads": [
+        {
+          "family_key": "tap:10:8",
+          "r2_ledger_active": true,
+          "receipt_id": "cnr_014_5afa87dc95c1",
+          "rendered_chars": 328,
+          "rendered_sha256": "5de2af2153875e6c4a7b0b4b603cfa16c5b189bdb70bf37e256d3d42d589ad95",
+          "request_step": 15,
+          "second_support_step": 14
+        }
+      ],
+      "cnr_receipt_committed_read_count": 1,
+      "cnr_receipt_creation_count": 1,
+      "episode_id": "RecipeAddMultipleRecipesFromMarkor_20260806_154a3c03",
+      "episode_json_sha256": "2c8099cba26a5876530cd0640bdc78c26e2d2bf12a217c8315e10e3349452089",
+      "executed_actions": 28,
+      "model_calls": 29,
+      "projected_nonempty_reads": 18,
+      "projected_rendered_chars": 4411,
+      "projected_rendered_tokens": 849,
+      "reward": 0.0,
+      "success": false,
+      "task_name": "RecipeAddMultipleRecipesFromMarkor"
+    },
+    {
+      "a1r2_actual_rendered_chars": 8704,
+      "a1r2_actual_rendered_tokens": 1632,
+      "cnr_creations": [
+        {
+          "family_key": "tap:10:11",
+          "first_support_step": 18,
+          "receipt_id": "cnr_019_f57da56ceb34",
+          "second_support_step": 19
+        }
+      ],
+      "cnr_reads": [
+        {
+          "family_key": "tap:10:11",
+          "r2_ledger_active": true,
+          "receipt_id": "cnr_019_f57da56ceb34",
+          "rendered_chars": 356,
+          "rendered_sha256": "0f97fe1a37e319571e5f895111f4a72cc23183c1cde9d3e2cd8b9e96d648272b",
+          "request_step": 20,
+          "second_support_step": 19
+        }
+      ],
+      "cnr_receipt_committed_read_count": 1,
+      "cnr_receipt_creation_count": 1,
+      "episode_id": "RecipeAddMultipleRecipesFromMarkor2_20260806_92d8511a",
+      "episode_json_sha256": "c9800fb672739760c221bfd1122ef2d192c582b492fc749660153cf40fc1020a",
+      "executed_actions": 60,
+      "model_calls": 60,
+      "projected_nonempty_reads": 33,
+      "projected_rendered_chars": 8797,
+      "projected_rendered_tokens": 1652,
+      "reward": 0.0,
+      "success": false,
+      "task_name": "RecipeAddMultipleRecipesFromMarkor2"
+    },
+    {
+      "a1r2_actual_rendered_chars": 2538,
+      "a1r2_actual_rendered_tokens": 528,
+      "cnr_creations": [],
+      "cnr_reads": [],
+      "cnr_receipt_committed_read_count": 0,
+      "cnr_receipt_creation_count": 0,
+      "episode_id": "SaveCopyOfReceiptTaskEval_20260806_289b77f0",
+      "episode_json_sha256": "b43fd4358317f85653feb176c143111b99b60931892a2cc09aae4d41501c90a4",
+      "executed_actions": 10,
+      "model_calls": 11,
+      "projected_nonempty_reads": 10,
+      "projected_rendered_chars": 2538,
+      "projected_rendered_tokens": 528,
+      "reward": 0.0,
+      "success": false,
+      "task_name": "SaveCopyOfReceiptTaskEval"
+    },
+    {
+      "a1r2_actual_rendered_chars": 1398,
+      "a1r2_actual_rendered_tokens": 272,
+      "cnr_creations": [],
+      "cnr_reads": [],
+      "cnr_receipt_committed_read_count": 0,
+      "cnr_receipt_creation_count": 0,
+      "episode_id": "SportsTrackerActivitiesOnDate_20260806_d2df83f9",
+      "episode_json_sha256": "c711857eb1bbea7dddc8be28ffbbac9560b23383220a849cc0170f253fc43c14",
+      "executed_actions": 7,
+      "model_calls": 7,
+      "projected_nonempty_reads": 6,
+      "projected_rendered_chars": 1398,
+      "projected_rendered_tokens": 272,
+      "reward": 0.0,
+      "success": false,
+      "task_name": "SportsTrackerActivitiesOnDate"
+    },
+    {
+      "a1r2_actual_rendered_chars": 1679,
+      "a1r2_actual_rendered_tokens": 338,
+      "cnr_creations": [],
+      "cnr_reads": [],
+      "cnr_receipt_committed_read_count": 0,
+      "cnr_receipt_creation_count": 0,
+      "episode_id": "SportsTrackerTotalDistanceForCategoryOverInterval_20260806_35bba8b5",
+      "episode_json_sha256": "3a3f8e7c3a4189e9961fcdf5366438c3413588c185cf0cd696752aa9e151e85d",
+      "executed_actions": 8,
+      "model_calls": 8,
+      "projected_nonempty_reads": 7,
+      "projected_rendered_chars": 1679,
+      "projected_rendered_tokens": 338,
+      "reward": 0.0,
+      "success": false,
+      "task_name": "SportsTrackerTotalDistanceForCategoryOverInterval"
+    }
+  ],
+  "errors": [],
+  "generation_calls": 0,
+  "mechanism_id": "a1r3v3_one_shot_controller_nonprogress_receipt_v1",
+  "schema": "a1r3v3_one_shot_cnr_offline_replay_v1",
+  "source": {
+    "checkpoint_content_sha256": "d2b1eeff7ab096bebe7865bb6f2fc7250d3de09d09fea2204443c4cc872f4456",
+    "checkpoint_sha256": "5c4e433f8ce1fd53e1efc56c513c20116dd8479791391bc0b163c298dcecf621",
+    "r2_result_sha256": "4c1c3af2ac2fcc522c11efae95975ff6df15e3da01218277bc224f62256c2ebc",
+    "source_files": {
+      "evidence/a1r2/A1R2_CVP_SCORED_RESULT_2026-08-14.json": "4c1c3af2ac2fcc522c11efae95975ff6df15e3da01218277bc224f62256c2ebc",
+      "implementation/scripts/replay_a1r3v3_one_shot_cnr.py": "86dc20dee803df8cde809707d3025b0a293a33ccc2b20aabe9668f334a550985",
+      "implementation/src/raven_m/official_qwen_mobile/a1r3v3_one_shot_cnr.py": "461d24f78121f5a013a68487212cf6f9a2e7817b989556158b72d57e36fb9d7b"
+    },
+    "suite_id": "official_qwen_20260814T145307_50081981",
+    "tokenizer_json_sha256": "a5d85b6dcc535e6b93115a9ef287e6132fdbf30270da6218194ba742261173c7",
+    "tokenizer_path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\cache\\qwen3_vl_32b_tokenizer\\models--Qwen--Qwen3-VL-32B-Instruct\\snapshots\\0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+    "trace_manifest": {
+      "content_sha256": "6222118162ae6fc9c0cf46f73d6441040fa6c481233334bad05a24477e3ab4e7",
+      "episode_count": 20,
+      "file_count": 2530,
+      "generation_calls": 0,
+      "read_only": true,
+      "schema": "a1r3v3_r2_trace_manifest_v1",
+      "suite_id": "official_qwen_20260814T145307_50081981",
+      "total_bytes": 328107484
+    },
+    "trace_manifest_file_sha256": "c31f9f06d49bb63cdb76691b91431696cc467643c64bb841fe2c9543c16c1c9a"
+  },
+  "status": "PASS",
+  "totals": {
+    "a1r2_actual_rendered_chars": 108423,
+    "a1r2_actual_rendered_tokens": 21710,
+    "cnr_receipt_committed_read_count": 8,
+    "cnr_receipt_creation_count": 8,
+    "executed_actions": 595,
+    "failure_tasks_with_receipt": 8,
+    "invalid_attempt_count": 1,
+    "model_calls": 603,
+    "non_expense_failure_tasks_with_receipt": 7,
+    "projected_nonempty_reads": 436,
+    "projected_rendered_chars": 109185,
+    "projected_rendered_tokens": 21870,
+    "success_task_receipt_creation_count": 0,
+    "success_task_receipt_read_count": 0,
+    "valid_episode_count": 19
+  }
+}

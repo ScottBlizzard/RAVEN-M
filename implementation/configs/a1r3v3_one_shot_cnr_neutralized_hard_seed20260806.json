@@ -1,0 +1,41 @@
+{
+  "schema": "a1r3v3_one_shot_cnr_config_v1",
+  "mechanism_id": "a1r3v3_one_shot_controller_nonprogress_receipt_v1",
+  "experiment_id": "A1R3V3_OSCNR_NEUTRALIZED_QWEN3VL32B_AW_HARD_T20260806_G3407_V1",
+  "parent_evidence_commit": "83c0de5bed18740719b46b5bdd1fccf7904ba0cb",
+  "model": {
+    "id": "Qwen/Qwen3-VL-32B-Instruct",
+    "revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+    "generation_seed": 3407,
+    "temperature": 0.7,
+    "top_p": 0.8,
+    "top_k": 20,
+    "presence_penalty": 1.5,
+    "repetition_penalty": 1.0,
+    "max_tokens": 32768
+  },
+  "benchmark": {
+    "manifest": "implementation/configs/androidworld_hard_v2_instances.json",
+    "task_seed": 20260806,
+    "task_count": 19,
+    "native_step_budgets": true,
+    "order": "matched_ablation_through_first_fixed_qualifying_new_win"
+  },
+  "memory": {
+    "system_prompt": "exact_A1_WORKING_MEMORY_SYSTEM_PROMPT",
+    "parent_ttl_requests": 8,
+    "max_render_chars": 1200,
+    "no_progress_pixel_fraction": 0.001,
+    "consecutive_supports": 2,
+    "max_receipt_creations": 1,
+    "max_receipt_committed_reads": 1,
+    "receipt_render_mode": "neutralized",
+    "renderer": "exact_R2_renderer_with_shadow_receipt_v1",
+    "ordinary_history_prefix_deduplication": true,
+    "extra_model_calls": 0,
+    "extra_screenshots": 0,
+    "guard": false,
+    "action_override": false,
+    "forced_termination": false
+  }
+}
