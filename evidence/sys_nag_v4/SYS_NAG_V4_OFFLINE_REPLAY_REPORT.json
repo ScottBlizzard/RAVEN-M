@@ -1,0 +1,320 @@
+{
+  "content_sha256": "f18d218ca6860aff28eb391f7e920a9e65b1ce43a56b1bdc8b0f64eea93e1827",
+  "episodes": [
+    {
+      "eligible_count": 0,
+      "episode_id": "BrowserMultiply_20260806_54623170",
+      "events": [],
+      "override_count": 0,
+      "review_count": 22,
+      "route_block_count": 0,
+      "success": false,
+      "task_name": "BrowserMultiply"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "ExpenseAddMultipleFromGallery_20260806_4caedc43",
+      "events": [],
+      "override_count": 0,
+      "review_count": 14,
+      "route_block_count": 0,
+      "success": false,
+      "task_name": "ExpenseAddMultipleFromGallery"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "ExpenseAddMultipleFromMarkor_20260806_faf5c468",
+      "events": [],
+      "override_count": 0,
+      "review_count": 60,
+      "route_block_count": 0,
+      "success": false,
+      "task_name": "ExpenseAddMultipleFromMarkor"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "ExpenseDeleteMultiple2_20260806_a27af967",
+      "events": [],
+      "override_count": 0,
+      "review_count": 18,
+      "route_block_count": 0,
+      "success": true,
+      "task_name": "ExpenseDeleteMultiple2"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "MarkorCreateNoteAndSms_20260806_150c1638",
+      "events": [
+        {
+          "action_family": [
+            "swipe",
+            "left",
+            "long",
+            2,
+            3
+          ],
+          "blocked": true,
+          "eligible": true,
+          "exploratory_cue": true,
+          "history_message": "ROUTE CONSISTENCY CHECK: Under the same pending item, this visually recurring page and action have already been explored twice. Do not select that same control again. Backtrack to the nearest task-relevant item or list and inspect a different visible control or item-specific menu.",
+          "pending_from_exact_r2_read": "share note content via SMS",
+          "reason": "third_exploratory_revisit_same_pending_screen_action",
+          "remaining_native_decision_slots": 4,
+          "representative_descriptor_sha256": "c047fc282ec03388bb1a398fed2e477cf65242322706e59f9da0d93cc935cf61",
+          "route_review_index": 13,
+          "step": 13,
+          "support_count": 3,
+          "system_id": "sys_r2_numeric_terminal_and_route_guard_v4",
+          "visual_distance": 0.0
+        }
+      ],
+      "override_count": 0,
+      "review_count": 18,
+      "route_block_count": 1,
+      "success": false,
+      "task_name": "MarkorCreateNoteAndSms"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "MarkorMergeNotes_20260806_6367b3d1",
+      "events": [],
+      "override_count": 0,
+      "review_count": 78,
+      "route_block_count": 0,
+      "success": false,
+      "task_name": "MarkorMergeNotes"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "MarkorTranscribeVideo_20260806_737baf69",
+      "events": [],
+      "override_count": 0,
+      "review_count": 14,
+      "route_block_count": 0,
+      "success": false,
+      "task_name": "MarkorTranscribeVideo"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "OsmAndMarker_20260806_8517b31f",
+      "events": [],
+      "override_count": 0,
+      "review_count": 12,
+      "route_block_count": 0,
+      "success": true,
+      "task_name": "OsmAndMarker"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "OsmAndTrack_20260806_1823722c",
+      "events": [],
+      "override_count": 0,
+      "review_count": 120,
+      "route_block_count": 0,
+      "success": false,
+      "task_name": "OsmAndTrack"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "RecipeAddMultipleRecipesFromImage_20260806_4c0dccd5",
+      "events": [],
+      "override_count": 0,
+      "review_count": 60,
+      "route_block_count": 0,
+      "success": false,
+      "task_name": "RecipeAddMultipleRecipesFromImage"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "RecipeAddMultipleRecipesFromMarkor2_20260806_92d8511a",
+      "events": [],
+      "override_count": 0,
+      "review_count": 60,
+      "route_block_count": 0,
+      "success": false,
+      "task_name": "RecipeAddMultipleRecipesFromMarkor2"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "RecipeAddMultipleRecipesFromMarkor_20260806_154a3c03",
+      "events": [],
+      "override_count": 0,
+      "review_count": 29,
+      "route_block_count": 0,
+      "success": false,
+      "task_name": "RecipeAddMultipleRecipesFromMarkor"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "RecipeDeleteMultipleRecipesWithConstraint_20260806_b4feab19",
+      "events": [],
+      "override_count": 0,
+      "review_count": 18,
+      "route_block_count": 0,
+      "success": true,
+      "task_name": "RecipeDeleteMultipleRecipesWithConstraint"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "RetroSavePlaylist_20260806_269b2c65",
+      "events": [],
+      "override_count": 0,
+      "review_count": 25,
+      "route_block_count": 0,
+      "success": true,
+      "task_name": "RetroSavePlaylist"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "SaveCopyOfReceiptTaskEval_20260806_289b77f0",
+      "events": [],
+      "override_count": 0,
+      "review_count": 11,
+      "route_block_count": 0,
+      "success": false,
+      "task_name": "SaveCopyOfReceiptTaskEval"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "SimpleCalendarAddOneEvent_20260806_728d3349",
+      "events": [],
+      "override_count": 0,
+      "review_count": 23,
+      "route_block_count": 0,
+      "success": true,
+      "task_name": "SimpleCalendarAddOneEvent"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "SportsTrackerActivitiesOnDate_20260806_d2df83f9",
+      "events": [],
+      "override_count": 0,
+      "review_count": 7,
+      "route_block_count": 0,
+      "success": false,
+      "task_name": "SportsTrackerActivitiesOnDate"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "SportsTrackerTotalDistanceForCategoryOverInterval_20260806_35bba8b5",
+      "events": [],
+      "override_count": 0,
+      "review_count": 8,
+      "route_block_count": 0,
+      "success": false,
+      "task_name": "SportsTrackerTotalDistanceForCategoryOverInterval"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "SportsTrackerTotalDurationForCategoryThisWeek_20260806_e34aeaf5",
+      "events": [],
+      "override_count": 0,
+      "review_count": 6,
+      "route_block_count": 0,
+      "success": true,
+      "task_name": "SportsTrackerTotalDurationForCategoryThisWeek"
+    }
+  ],
+  "errors": [],
+  "generation_calls": 0,
+  "mechanism_id": "a1r2_compact_verified_pending_v1",
+  "numeric_failure_regression": {
+    "corrected_action": {
+      "text": "180",
+      "type": "answer"
+    },
+    "episode_id": "SportsTrackerTotalDurationForCategoryThisWeek_20260806_aa0c6805",
+    "event": {
+      "computed_total_minutes": 180,
+      "decision_clause": "Calculate the total duration of \"Intense day\" (1 hour 45 minutes) and \"Quick Sweat\" (1 hour 15 minutes) in minutes.",
+      "duration_minutes": [
+        105,
+        75
+      ],
+      "eligible": true,
+      "executed_action": {
+        "text": "180",
+        "type": "answer"
+      },
+      "overridden": true,
+      "proposed_action": {
+        "text": "165",
+        "type": "answer"
+      },
+      "proposed_integer": 165,
+      "reason": "explicit_duration_sum_mismatch",
+      "review_index": 0,
+      "system_id": "sys_r2_numeric_terminal_and_route_guard_v4"
+    },
+    "proposed_action": {
+      "text": "165",
+      "type": "answer"
+    },
+    "task_name": "SportsTrackerTotalDurationForCategoryThisWeek"
+  },
+  "route_failure_regression": {
+    "blocked_events": [
+      {
+        "action_family": [
+          "tap",
+          4,
+          16
+        ],
+        "blocked": true,
+        "eligible": true,
+        "exploratory_cue": true,
+        "history_message": "ROUTE CONSISTENCY CHECK: Under the same pending item, this visually recurring page and action have already been explored twice. Do not select that same control again. Backtrack to the nearest task-relevant item or list and inspect a different visible control or item-specific menu.",
+        "pending_from_exact_r2_read": "export playlist to Downloads directory",
+        "reason": "third_exploratory_revisit_same_pending_screen_action",
+        "remaining_native_decision_slots": 10,
+        "representative_descriptor_sha256": "e3ede608034f9c371affb2e460c0c41f8fb75f23867715a82a35ef816705ab51",
+        "route_review_index": 39,
+        "step": 39,
+        "support_count": 3,
+        "system_id": "sys_r2_numeric_terminal_and_route_guard_v4",
+        "visual_distance": 0.0
+      }
+    ],
+    "episode_id": "RetroSavePlaylist_20260806_f93ea834",
+    "task_name": "RetroSavePlaylist"
+  },
+  "schema": "sys_nag_v4_offline_replay_v1",
+  "sentinel_tasks": [
+    "ExpenseDeleteMultiple2",
+    "SportsTrackerTotalDurationForCategoryThisWeek",
+    "RecipeDeleteMultipleRecipesWithConstraint"
+  ],
+  "source": {
+    "fixture_content_sha256": "7011a5955e0d7e4ccae7b91b965bb008b8f8cd3073de867925558d8e071d438b",
+    "fixture_file": "evidence/sys_nag_v4/SYS_NAG_V4_REPLAY_FIXTURE.json"
+  },
+  "status": "PASS",
+  "system_id": "sys_r2_numeric_terminal_and_route_guard_v4",
+  "terminal_failure_regression": {
+    "episode_id": "RetroSavePlaylist_20260806_5d6494df",
+    "event": {
+      "blocked": true,
+      "eligible": true,
+      "history_message": "TERMINAL CONSISTENCY CHECK: The exact task ledger injected for the rejected request still had a pending item, and the last executed action was only wait. Inspect the current screenshot and complete any visible confirmation before terminating.",
+      "pending_from_exact_r2_read": "export playlist to Downloads directory",
+      "previous_executed_action_type": "wait",
+      "reason": "pending_survived_wait_before_success_termination",
+      "remaining_native_decision_slots": 24,
+      "system_id": "sys_r2_numeric_terminal_and_route_guard_v4",
+      "terminal_review_index": 0,
+      "terminal_status": "success"
+    },
+    "source_step": 25,
+    "task_name": "RetroSavePlaylist"
+  },
+  "totals": {
+    "eligible_count": 0,
+    "historical_route_block_count": 1,
+    "historical_success_route_block_count": 0,
+    "historical_terminal_block_count": 0,
+    "override_count": 0,
+    "projected_rendered_chars": 108423,
+    "review_count": 603,
+    "valid_episode_count": 19
+  }
+}

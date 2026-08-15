@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
-"""Zero-generation replay for the SYS-NAG V3 composite guards."""
+"""Zero-generation replay for the SYS-NAG V4 composite guards."""
 
 from __future__ import annotations
 
 import argparse
+from dataclasses import asdict
 import json
 from pathlib import Path
 import sys
+
+import numpy as np
+from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path[:0] = [str(ROOT), str(ROOT / "implementation/src")]
@@ -15,9 +19,13 @@ from raven_m.official_qwen_mobile import sys_nag_contract as contract  # noqa: E
 from raven_m.official_qwen_mobile.numeric_answer_guard import (  # noqa: E402
     NumericAnswerConsistencyGuard,
 )
+from raven_m.official_qwen_mobile.a12_minimal_action_divergence import (  # noqa: E402
+    VisualDescriptor,
+    describe_visual_state,
+)
 
 DEFAULT_SUITE = ROOT / "runs/a1r2_cvp/official_qwen_20260814T145307_50081981"
-DEFAULT_FIXTURE = ROOT / "evidence/sys_nag_v3/SYS_NAG_V3_REPLAY_FIXTURE.json"
+DEFAULT_FIXTURE = ROOT / "evidence/sys_nag_v4/SYS_NAG_V4_REPLAY_FIXTURE.json"
 V2_FAILURE_EPISODE = (
     ROOT / "runs/sys_trrc_v2_full/official_qwen_20260816T005559_70b00ecd/episodes/"
     "SportsTrackerTotalDurationForCategoryThisWeek_20260806_aa0c6805/episode.json"
@@ -25,6 +33,10 @@ V2_FAILURE_EPISODE = (
 V2_TERMINAL_FAILURE_EPISODE = (
     ROOT / "runs/sys_nag_v2/official_qwen_20260816T024642_c7867dfe/episodes/"
     "RetroSavePlaylist_20260806_5d6494df/episode.json"
+)
+V3_ROUTE_FAILURE_EPISODE = (
+    ROOT / "runs/sys_nag_v3/official_qwen_20260816T033338_0021ddde/episodes/"
+    "RetroSavePlaylist_20260806_f93ea834/episode.json"
 )
 
 
@@ -36,8 +48,15 @@ def _write(path: Path, value: dict) -> None:
     )
 
 
-def _step_projection(step: dict) -> dict:
+def _step_projection(step: dict, episode_dir: Path) -> dict:
     mapped = step.get("mapped_action") or {}
+    descriptor = describe_visual_state(
+        np.asarray(
+            Image.open(episode_dir / str(step.get("before_screenshot"))).convert(
+                "RGB"
+            )
+        )
+    )
     return {
         "step": step.get("step"),
         "decision": step.get("decision"),
@@ -50,6 +69,7 @@ def _step_projection(step: dict) -> dict:
         "mapped_canonical_action": (
             mapped.get("canonical") if isinstance(mapped, dict) else None
         ),
+        "before_descriptor": asdict(descriptor),
     }
 
 
@@ -73,20 +93,26 @@ def materialize_fixture(suite_dir: Path = DEFAULT_SUITE) -> dict:
                     (episode.get("run_metadata") or {}).get("native_max_steps") or 0
                 ),
                 "source_episode_file_sha256": contract.file_sha256(path),
-                "steps": [_step_projection(step) for step in episode.get("steps") or []],
+                "steps": [
+                    _step_projection(step, path.parent)
+                    for step in episode.get("steps") or []
+                ],
             }
         )
     numeric_path = V2_FAILURE_EPISODE
     terminal_path = V2_TERMINAL_FAILURE_EPISODE
+    route_path = V3_ROUTE_FAILURE_EPISODE
     numeric = json.loads(numeric_path.read_text(encoding="utf-8"))
     terminal = json.loads(terminal_path.read_text(encoding="utf-8"))
+    route = json.loads(route_path.read_text(encoding="utf-8"))
     payload = {
-        "schema": "sys_nag_v3_replay_fixture_v1",
+        "schema": "sys_nag_v4_replay_fixture_v1",
         "generation_calls": 0,
         "source": {
             "a1r2_checkpoint_file_sha256": contract.file_sha256(checkpoint_path),
             "numeric_failure_episode_file_sha256": contract.file_sha256(numeric_path),
             "terminal_failure_episode_file_sha256": contract.file_sha256(terminal_path),
+            "route_failure_episode_file_sha256": contract.file_sha256(route_path),
         },
         "episodes": episodes,
         "numeric_failure": {
@@ -95,7 +121,9 @@ def materialize_fixture(suite_dir: Path = DEFAULT_SUITE) -> dict:
             "native_max_steps": int(
                 (numeric.get("run_metadata") or {}).get("native_max_steps") or 0
             ),
-            "final_step": _step_projection((numeric.get("steps") or [])[-1]),
+            "final_step": _step_projection(
+                (numeric.get("steps") or [])[-1], numeric_path.parent
+            ),
         },
         "terminal_failure": {
             "task_name": terminal.get("task_name"),
@@ -103,7 +131,21 @@ def materialize_fixture(suite_dir: Path = DEFAULT_SUITE) -> dict:
             "native_max_steps": int(
                 (terminal.get("run_metadata") or {}).get("native_max_steps") or 0
             ),
-            "steps": [_step_projection(step) for step in terminal.get("steps") or []],
+            "steps": [
+                _step_projection(step, terminal_path.parent)
+                for step in terminal.get("steps") or []
+            ],
+        },
+        "route_failure": {
+            "task_name": route.get("task_name"),
+            "episode_id": route.get("episode_id"),
+            "native_max_steps": int(
+                (route.get("run_metadata") or {}).get("native_max_steps") or 0
+            ),
+            "steps": [
+                _step_projection(step, route_path.parent)
+                for step in route.get("steps") or []
+            ],
         },
     }
     return {**payload, "content_sha256": contract.content_sha256(payload)}
@@ -114,10 +156,11 @@ def replay(fixture_path: Path = DEFAULT_FIXTURE) -> dict:
     episode_rows: list[dict] = []
     total_reviews = total_eligible = total_overrides = 0
     historical_terminal_blocks = 0
+    historical_route_blocks = 0
     projected_rendered_chars = 0
     fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
     if (
-        fixture.get("schema") != "sys_nag_v3_replay_fixture_v1"
+        fixture.get("schema") != "sys_nag_v4_replay_fixture_v1"
         or fixture.get("generation_calls") != 0
         or fixture.get("content_sha256") != contract.content_sha256(fixture)
     ):
@@ -152,6 +195,21 @@ def replay(fixture_path: Path = DEFAULT_FIXTURE) -> dict:
             if terminal_event.get("blocked"):
                 historical_terminal_blocks += 1
                 events.append({"step": step.get("step"), **terminal_event})
+            route_event = guard.review_route(
+                proposed_action=proposed,
+                action_summary=str(decision.get("action_summary") or ""),
+                memory_read=step.get("memory_read"),
+                before_descriptor=VisualDescriptor(**step["before_descriptor"]),
+                remaining_native_decision_slots=max(
+                    0,
+                    int(episode.get("native_max_steps") or 0)
+                    - int(step.get("step") or 0)
+                    - 1,
+                ),
+            )
+            if route_event.get("blocked"):
+                historical_route_blocks += 1
+                events.append({"step": step.get("step"), **route_event})
             canonical = step.get("mapped_canonical_action")
             if step.get("executed") and isinstance(canonical, dict):
                 previous_executed_action = dict(canonical)
@@ -168,6 +226,7 @@ def replay(fixture_path: Path = DEFAULT_FIXTURE) -> dict:
                 "review_count": counters["review_count"],
                 "eligible_count": counters["eligible_count"],
                 "override_count": counters["action_override_count"],
+                "route_block_count": counters["route_block_count"],
                 "events": events,
             }
         )
@@ -222,6 +281,40 @@ def replay(fixture_path: Path = DEFAULT_FIXTURE) -> dict:
     if historical_terminal_blocks:
         errors.append("historical_a1r2_terminal_false_positive")
 
+    route_failure = fixture.get("route_failure") or {}
+    route_guard = NumericAnswerConsistencyGuard()
+    route_events: list[dict] = []
+    for step in route_failure.get("steps") or []:
+        decision = step.get("decision") or {}
+        route_event = route_guard.review_route(
+            proposed_action=decision.get("canonical_action"),
+            action_summary=str(decision.get("action_summary") or ""),
+            memory_read=step.get("memory_read"),
+            before_descriptor=VisualDescriptor(**step["before_descriptor"]),
+            remaining_native_decision_slots=max(
+                0,
+                int(route_failure.get("native_max_steps") or 0)
+                - int(step.get("step") or 0)
+                - 1,
+            ),
+        )
+        if route_event.get("blocked"):
+            route_events.append({"step": step.get("step"), **route_event})
+    route_regression = {
+        "task_name": route_failure.get("task_name"),
+        "episode_id": route_failure.get("episode_id"),
+        "blocked_events": route_events,
+    }
+    if len(route_events) != 1 or route_events[0].get("step") != 39:
+        errors.append("v3_route_failure_not_blocked_once_at_step39")
+    historical_success_route_blocks = sum(
+        int(row.get("route_block_count") or 0)
+        for row in episode_rows
+        if row.get("task_name") in contract.CAPABILITY_GATE_TASKS
+    )
+    if historical_success_route_blocks:
+        errors.append("historical_a1r2_success_route_false_positive")
+
     payload = {
         "schema": contract.OFFLINE_REPLAY_SCHEMA,
         "status": "PASS" if not errors else "FAIL",
@@ -240,6 +333,8 @@ def replay(fixture_path: Path = DEFAULT_FIXTURE) -> dict:
             "override_count": total_overrides,
             "projected_rendered_chars": projected_rendered_chars,
             "historical_terminal_block_count": historical_terminal_blocks,
+            "historical_route_block_count": historical_route_blocks,
+            "historical_success_route_block_count": historical_success_route_blocks,
         },
         "sentinel_tasks": [
             "ExpenseDeleteMultiple2",
@@ -248,6 +343,7 @@ def replay(fixture_path: Path = DEFAULT_FIXTURE) -> dict:
         ],
         "numeric_failure_regression": numeric_regression,
         "terminal_failure_regression": terminal_regression,
+        "route_failure_regression": route_regression,
         "episodes": episode_rows,
     }
     return {**payload, "content_sha256": contract.content_sha256(payload)}

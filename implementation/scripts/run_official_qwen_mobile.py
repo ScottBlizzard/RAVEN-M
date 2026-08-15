@@ -162,14 +162,14 @@ A7_REMAINING_AFTER_GATE_TASKS = (
 DUAL_ARM_SPECS = {
     "sys_nag": {
         "flag": "sys_nag",
-        "label": "SYS-NAG V3 R2 Composite Guards",
+        "label": "SYS-NAG V4 R2 Route-Recurrence Composite",
         "memory_module": "raven_m.official_qwen_mobile.a1r2_compact_verified_pending",
         "memory_class": "CompactVerifiedPendingMemory",
         "contract_module": "raven_m.official_qwen_mobile.sys_nag_contract",
         "entry_key": "sys_nag_valid_entries",
-        "checkpoint_schema": "sys_nag_v3_checkpoint_v1",
-        "result_key": "sys_nag_v3_result",
-        "result_schema": "sys_nag_v3_result_v1",
+        "checkpoint_schema": "sys_nag_v4_checkpoint_v1",
+        "result_key": "sys_nag_v4_result",
+        "result_schema": "sys_nag_v4_result_v1",
         "system_prompt_identity": "a1_working_memory",
     },
     "sys_trrc_base": {
@@ -1501,12 +1501,12 @@ def main() -> None:
     parser.add_argument(
         "--sys-nag",
         action="store_true",
-        help="Run R2 with the SYS-NAG V3 numeric and pending-terminal guards.",
+        help="Run R2 with the SYS-NAG V4 composite route-recurrence guards.",
     )
     parser.add_argument(
         "--sys-nag-preflight-report",
         type=Path,
-        default=REPOSITORY_ROOT / "evidence/sys_nag_v3/SYS_NAG_V3_ZERO_GENERATION_PREFLIGHT.json",
+        default=REPOSITORY_ROOT / "evidence/sys_nag_v4/SYS_NAG_V4_ZERO_GENERATION_PREFLIGHT.json",
     )
     parser.add_argument("--sys-nag-launch-receipt", type=Path)
     parser.add_argument(
@@ -2827,6 +2827,7 @@ def main() -> None:
                     "action_override": True,
                     "numeric_answer_override": True,
                     "pending_terminal_suppression": True,
+                    "route_recurrence_suppression": True,
                     "pending_terminal_rule": {
                         "same_request_exact_r2_pending_nonempty": True,
                         "previous_executed_action_type": "wait",

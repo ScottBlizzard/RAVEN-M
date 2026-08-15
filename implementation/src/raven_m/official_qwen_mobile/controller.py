@@ -773,6 +773,23 @@ class OfficialQwenMobileController:
                         )
                     )
                     record["answer_consistency_guard"] = answer_guard_assessment
+                route_guard_assessment: dict[str, Any] | None = None
+                if (
+                    self.answer_consistency_guard is not None
+                    and hasattr(self.answer_consistency_guard, "review_route")
+                ):
+                    route_guard_assessment = self.answer_consistency_guard.review_route(
+                        proposed_action=canonical_action,
+                        action_summary=decision.action_summary,
+                        memory_read=memory_read,
+                        before_pixels=before["pixels"],
+                        remaining_native_decision_slots=(
+                            self.max_steps - step_index - 1
+                        ),
+                    )
+                    record["route_recurrence_consistency_guard"] = (
+                        route_guard_assessment
+                    )
                 terminal_guard_assessment: dict[str, Any] | None = None
                 if (
                     self.answer_consistency_guard is not None
@@ -821,6 +838,32 @@ class OfficialQwenMobileController:
                     "model_canonical_action": decision.canonical_action,
                     "executed_canonical_action": canonical_action,
                 }
+                if bool((route_guard_assessment or {}).get("blocked")):
+                    guard_message = str(
+                        route_guard_assessment.get("history_message") or ""
+                    )
+                    if not guard_message:
+                        raise RuntimeError(
+                            "Route-recurrence guard blocked without an audit message"
+                        )
+                    history.append(guard_message)
+                    record["layers"]["L3_execution"] = {
+                        "attempted": False,
+                        "completed": False,
+                        "blocked_by_route_recurrence_consistency_guard": True,
+                    }
+                    record["history_commit"] = {
+                        "policy": "sys_nag_v4_route_recurrence_guard",
+                        "model_action_summary": decision.action_summary,
+                        "committed_history_summary": guard_message,
+                        "attestation_applied": False,
+                        "controller_guidance_applied": True,
+                        "attestation_reason": None,
+                    }
+                    record["history_after"] = list(history)
+                    steps.append(record)
+                    log(record)
+                    continue
                 if bool((terminal_guard_assessment or {}).get("blocked")):
                     guard_message = str(
                         terminal_guard_assessment.get("history_message") or ""

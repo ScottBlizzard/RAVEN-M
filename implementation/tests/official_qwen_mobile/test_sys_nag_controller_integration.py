@@ -174,6 +174,7 @@ def test_runner_wires_sys_nag_as_distinct_arm() -> None:
     assert "NumericAnswerConsistencyGuard" in runner
     assert "answer_consistency_guard=answer_consistency_guard" in runner
     assert '"pending_terminal_suppression": True' in runner
+    assert '"route_recurrence_suppression": True' in runner
     assert '"task_order": "blocking_A1R2_success_6_then_frozen_manifest_remainder"' in runner
 
 

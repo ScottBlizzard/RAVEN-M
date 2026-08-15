@@ -12,8 +12,17 @@ from dataclasses import dataclass
 import re
 from typing import Any
 
+import numpy as np
 
-SYSTEM_ID = "sys_r2_numeric_and_pending_terminal_guard_v3"
+from .a12_minimal_action_divergence import (
+    VisualDescriptor,
+    canonical_action_family,
+    compare_screens,
+    describe_visual_state,
+)
+
+
+SYSTEM_ID = "sys_r2_numeric_terminal_and_route_guard_v4"
 _INTEGER_RE = re.compile(r"^[+-]?\d+$")
 _WORD_DURATION_RE = re.compile(
     r"(?<!\w)(\d{1,3})\s*hours?\s*(?:and\s*)?(\d{1,2})\s*minutes?(?!\w)",
@@ -23,6 +32,9 @@ _COLON_DURATION_RE = re.compile(
     r"(?<!\d)(\d{1,3}):(\d{2})(?::\d{2})?(?!\d)"
 )
 _ADDITIVE_CUE_RE = re.compile(r"\b(total|sum|calculate|combined|altogether)\b", re.IGNORECASE)
+_EXPLORATORY_CUE_RE = re.compile(
+    r"\b(explore|look for|alternative|try|search for)\b", re.IGNORECASE
+)
 
 
 @dataclass(frozen=True)
@@ -52,8 +64,12 @@ class NumericAnswerConsistencyGuard:
         self.override_count = 0
         self.terminal_review_count = 0
         self.terminal_block_count = 0
+        self.route_review_count = 0
+        self.route_block_count = 0
         self.events: list[dict[str, Any]] = []
         self.terminal_events: list[dict[str, Any]] = []
+        self.route_events: list[dict[str, Any]] = []
+        self._route_groups: list[dict[str, Any]] = []
 
     @staticmethod
     def _decision_clause(action_summary: str) -> str:
@@ -174,6 +190,7 @@ class NumericAnswerConsistencyGuard:
             and pending is not None
             and previous_type == "wait"
             and self.terminal_block_count == 0
+            and self.route_block_count == 0
             and int(remaining_native_decision_slots) >= 1
         )
         event: dict[str, Any] = {
@@ -205,9 +222,105 @@ class NumericAnswerConsistencyGuard:
         self.terminal_events.append(event)
         return event
 
+    def review_route(
+        self,
+        *,
+        proposed_action: dict[str, Any] | None,
+        action_summary: str,
+        memory_read: dict[str, Any] | None,
+        before_pixels: np.ndarray | None = None,
+        before_descriptor: VisualDescriptor | None = None,
+        remaining_native_decision_slots: int,
+    ) -> dict[str, Any]:
+        """Block the third exploratory revisit of the same visible decision."""
+
+        self.route_review_count += 1
+        pending = self._pending_line(memory_read)
+        clause = self._decision_clause(action_summary)
+        event: dict[str, Any] = {
+            "system_id": SYSTEM_ID,
+            "route_review_index": self.route_review_count - 1,
+            "pending_from_exact_r2_read": pending,
+            "exploratory_cue": bool(_EXPLORATORY_CUE_RE.search(clause)),
+            "remaining_native_decision_slots": int(remaining_native_decision_slots),
+            "eligible": False,
+            "blocked": False,
+            "reason": "not_eligible",
+        }
+        if (
+            not isinstance(proposed_action, dict)
+            or pending is None
+            or not event["exploratory_cue"]
+            or int(remaining_native_decision_slots) < 1
+            or self.route_block_count
+            or self.terminal_block_count
+        ):
+            self.route_events.append(event)
+            return event
+        try:
+            family = canonical_action_family(proposed_action)
+            descriptor = (
+                before_descriptor
+                if before_descriptor is not None
+                else describe_visual_state(before_pixels)
+            )
+        except Exception as exc:
+            event["reason"] = f"descriptor_or_action_rejected:{type(exc).__name__}"
+            self.route_events.append(event)
+            return event
+        match: dict[str, Any] | None = None
+        best_distance = float("inf")
+        for group in self._route_groups:
+            if group["pending"] != pending or group["family"] != family:
+                continue
+            relation, distance = compare_screens(descriptor, group["descriptor"])
+            if relation != "NONE" and distance < best_distance:
+                match, best_distance = group, distance
+        if match is None:
+            if len(self._route_groups) >= 8:
+                self._route_groups.pop(0)
+            match = {
+                "pending": pending,
+                "family": family,
+                "descriptor": descriptor,
+                "count": 0,
+            }
+            self._route_groups.append(match)
+        match["count"] += 1
+        event.update(
+            {
+                "eligible": True,
+                "reason": "support_recorded",
+                "action_family": list(family),
+                "representative_descriptor_sha256": match[
+                    "descriptor"
+                ].descriptor_sha256,
+                "support_count": match["count"],
+                "visual_distance": None if best_distance == float("inf") else best_distance,
+            }
+        )
+        if match["count"] >= 3:
+            self.route_block_count += 1
+            event.update(
+                {
+                    "blocked": True,
+                    "reason": "third_exploratory_revisit_same_pending_screen_action",
+                    "history_message": (
+                        "ROUTE CONSISTENCY CHECK: Under the same pending item, "
+                        "this visually recurring page and action have already "
+                        "been explored twice. Do not select that same control "
+                        "again. Backtrack to the nearest task-relevant item or "
+                        "list and inspect a different visible control or "
+                        "item-specific menu."
+                    ),
+                }
+            )
+        self.route_events.append(event)
+        return event
+
     def audit_record(self) -> dict[str, Any]:
         return {
-            "schema": "sys_nag_v3_composite_guard_audit_v1",
+            "schema": "sys_nag_v4_composite_guard_audit_v1",
             "system_id": SYSTEM_ID,
             "counters": {
                 "review_count": self.review_count,
@@ -215,9 +328,12 @@ class NumericAnswerConsistencyGuard:
                 "action_override_count": self.override_count,
                 "terminal_review_count": self.terminal_review_count,
                 "terminal_block_count": self.terminal_block_count,
+                "route_review_count": self.route_review_count,
+                "route_block_count": self.route_block_count,
                 "auxiliary_model_call_count": 0,
                 "guard_induced_continuation_request_upper_bound": (
                     self.terminal_block_count
+                    + self.route_block_count
                 ),
                 "forced_termination_count": 0,
                 "hidden_ui_used_for_decision": False,
@@ -225,6 +341,8 @@ class NumericAnswerConsistencyGuard:
             },
             "events": list(self.events),
             "terminal_events": list(self.terminal_events),
+            "route_events": list(self.route_events),
+            "route_group_count": len(self._route_groups),
         }
 
 

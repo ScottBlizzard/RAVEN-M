@@ -1,6 +1,7 @@
 from raven_m.official_qwen_mobile.numeric_answer_guard import (
     NumericAnswerConsistencyGuard,
 )
+import numpy as np
 
 
 def test_corrects_observed_v2_duration_sum_failure() -> None:
@@ -111,3 +112,20 @@ def test_terminal_block_fails_closed_without_all_three_conditions() -> None:
         remaining_native_decision_slots=0,
     )
     assert final_slot["blocked"] is False
+
+
+def test_third_exploratory_revisit_is_blocked_once() -> None:
+    guard = NumericAnswerConsistencyGuard()
+    pixels = np.zeros((100, 100, 3), dtype=np.uint8)
+    events = [
+        guard.review_route(
+            proposed_action={"type": "tap", "x": 0.5, "y": 0.5},
+            action_summary="Explore this option for an alternative route.",
+            memory_read={"exact_injected_text": "PENDING: export the file"},
+            before_pixels=pixels,
+            remaining_native_decision_slots=5,
+        )
+        for _ in range(4)
+    ]
+    assert [event["blocked"] for event in events] == [False, False, True, False]
+    assert guard.audit_record()["counters"]["route_block_count"] == 1
