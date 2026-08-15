@@ -1,0 +1,858 @@
+{
+  "arm_id": "SYS-TRRC-V2-R2-GENERIC",
+  "checks": {
+    "aux_max_tokens": 192,
+    "detector_replay_content_sha256": "23dcd8979a67584ec92c5206f5cea4d20fd52498b6da798bddb87e903fdc089f",
+    "dirty": [],
+    "eight_opportunity_token_projection": {
+      "maximum_projected_total_tokens": 3169,
+      "opportunities": [
+        {
+          "eligible_request_step": 14,
+          "episode_id": "BrowserMultiply_20260806_54623170",
+          "modes": {
+            "full": {
+              "add_generation_prompt": true,
+              "content_order": [
+                "system:text",
+                "user:text",
+                "user:image"
+              ],
+              "current_image_size": [
+                1080,
+                2400
+              ],
+              "current_screenshot_sha256": "a27b55b0da87e7fa139f263964640c54cead6037e7a78726be73d3ceb3c42772",
+              "exact_multimodal_input_tokens": 2918,
+              "expanded_image_token_count": 2550,
+              "image_grid_thw": [
+                [
+                  1,
+                  150,
+                  68
+                ]
+              ],
+              "messages_sha256": "e7e46f5e200e9a3f8ae13787ad6767f2bb67bbb346adf10ace2b665e380e258c",
+              "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+              "processor_files_sha256": {
+                "chat_template.json": "5c72a170d2a4a1a3bc5adad2e689ae28138a9700e5b8c96c0266331e86c0acce",
+                "config.json": "d2dd0c60d01b9e195d9447c52da61c7302d28828524914c044d9c6e1b81d0427",
+                "configuration.json": "2d4464e2ead06bc9bc718c781309ad1e7baded626d66e8dcdc8b469ba185faf0",
+                "generation_config.json": "1e241830b48b397cb0900101421df5450baddc7adf01e5fc86b5615865f3bae4",
+                "merges.txt": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+                "preprocessor_config.json": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516",
+                "tokenizer.json": "a5d85b6dcc535e6b93115a9ef287e6132fdbf30270da6218194ba742261173c7",
+                "tokenizer_config.json": "c2da771801886ad9ae98181793ffd3dfb7f1af30f6f7c6a4e15d7dbba52e2399",
+                "video_preprocessor_config.json": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13",
+                "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+              },
+              "projected_total_tokens": 3110,
+              "request_text_sha256": "7ad6d45fafdf9873cc3b0d403367c09f4e4309517fdf2d8deaae80e3031c51f2",
+              "reserved_output_tokens": 192,
+              "schema": "sys_trrc_exact_multimodal_token_projection_v1"
+            },
+            "generic": {
+              "add_generation_prompt": true,
+              "content_order": [
+                "system:text",
+                "user:text",
+                "user:image"
+              ],
+              "current_image_size": [
+                1080,
+                2400
+              ],
+              "current_screenshot_sha256": "a27b55b0da87e7fa139f263964640c54cead6037e7a78726be73d3ceb3c42772",
+              "exact_multimodal_input_tokens": 2908,
+              "expanded_image_token_count": 2550,
+              "image_grid_thw": [
+                [
+                  1,
+                  150,
+                  68
+                ]
+              ],
+              "messages_sha256": "8ce6e77ec8e3ec92275446c2228187138cd3d3b5dc32342315d77805b93d9661",
+              "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+              "processor_files_sha256": {
+                "chat_template.json": "5c72a170d2a4a1a3bc5adad2e689ae28138a9700e5b8c96c0266331e86c0acce",
+                "config.json": "d2dd0c60d01b9e195d9447c52da61c7302d28828524914c044d9c6e1b81d0427",
+                "configuration.json": "2d4464e2ead06bc9bc718c781309ad1e7baded626d66e8dcdc8b469ba185faf0",
+                "generation_config.json": "1e241830b48b397cb0900101421df5450baddc7adf01e5fc86b5615865f3bae4",
+                "merges.txt": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+                "preprocessor_config.json": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516",
+                "tokenizer.json": "a5d85b6dcc535e6b93115a9ef287e6132fdbf30270da6218194ba742261173c7",
+                "tokenizer_config.json": "c2da771801886ad9ae98181793ffd3dfb7f1af30f6f7c6a4e15d7dbba52e2399",
+                "video_preprocessor_config.json": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13",
+                "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+              },
+              "projected_total_tokens": 3100,
+              "request_text_sha256": "457aef4fe4b19d70f1aa8641241033fa108f36bb4decc58e39406daaf1398f9c",
+              "reserved_output_tokens": 192,
+              "schema": "sys_trrc_exact_multimodal_token_projection_v1"
+            }
+          },
+          "png_file": "01_BrowserMultiply_step_014.png",
+          "receipt_ids": {
+            "full": "trrc_013_99fe3b903d12",
+            "generic": "trrc_013_99fe3b903d12"
+          },
+          "screenshot_sha256": "a27b55b0da87e7fa139f263964640c54cead6037e7a78726be73d3ceb3c42772",
+          "task_name": "BrowserMultiply"
+        },
+        {
+          "eligible_request_step": 14,
+          "episode_id": "ExpenseAddMultipleFromMarkor_20260806_faf5c468",
+          "modes": {
+            "full": {
+              "add_generation_prompt": true,
+              "content_order": [
+                "system:text",
+                "user:text",
+                "user:image"
+              ],
+              "current_image_size": [
+                1080,
+                2400
+              ],
+              "current_screenshot_sha256": "6b3af25bb4af986149ab6f020248be9671848ba29ad14321c7fed590bcb70b29",
+              "exact_multimodal_input_tokens": 2915,
+              "expanded_image_token_count": 2550,
+              "image_grid_thw": [
+                [
+                  1,
+                  150,
+                  68
+                ]
+              ],
+              "messages_sha256": "4df66593c4818bf06d7ea14e22be37f40e5fb197302173904116ece2b2057fcc",
+              "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+              "processor_files_sha256": {
+                "chat_template.json": "5c72a170d2a4a1a3bc5adad2e689ae28138a9700e5b8c96c0266331e86c0acce",
+                "config.json": "d2dd0c60d01b9e195d9447c52da61c7302d28828524914c044d9c6e1b81d0427",
+                "configuration.json": "2d4464e2ead06bc9bc718c781309ad1e7baded626d66e8dcdc8b469ba185faf0",
+                "generation_config.json": "1e241830b48b397cb0900101421df5450baddc7adf01e5fc86b5615865f3bae4",
+                "merges.txt": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+                "preprocessor_config.json": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516",
+                "tokenizer.json": "a5d85b6dcc535e6b93115a9ef287e6132fdbf30270da6218194ba742261173c7",
+                "tokenizer_config.json": "c2da771801886ad9ae98181793ffd3dfb7f1af30f6f7c6a4e15d7dbba52e2399",
+                "video_preprocessor_config.json": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13",
+                "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+              },
+              "projected_total_tokens": 3107,
+              "request_text_sha256": "1cd9cf1e085d63d325752838aba282d20453ae5fcaa4e3e3b5bdb71ed4d979cd",
+              "reserved_output_tokens": 192,
+              "schema": "sys_trrc_exact_multimodal_token_projection_v1"
+            },
+            "generic": {
+              "add_generation_prompt": true,
+              "content_order": [
+                "system:text",
+                "user:text",
+                "user:image"
+              ],
+              "current_image_size": [
+                1080,
+                2400
+              ],
+              "current_screenshot_sha256": "6b3af25bb4af986149ab6f020248be9671848ba29ad14321c7fed590bcb70b29",
+              "exact_multimodal_input_tokens": 2905,
+              "expanded_image_token_count": 2550,
+              "image_grid_thw": [
+                [
+                  1,
+                  150,
+                  68
+                ]
+              ],
+              "messages_sha256": "703e54854c54c101c25875adee45bdb9e0d1f17979704b9228b7c7e27cc827c2",
+              "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+              "processor_files_sha256": {
+                "chat_template.json": "5c72a170d2a4a1a3bc5adad2e689ae28138a9700e5b8c96c0266331e86c0acce",
+                "config.json": "d2dd0c60d01b9e195d9447c52da61c7302d28828524914c044d9c6e1b81d0427",
+                "configuration.json": "2d4464e2ead06bc9bc718c781309ad1e7baded626d66e8dcdc8b469ba185faf0",
+                "generation_config.json": "1e241830b48b397cb0900101421df5450baddc7adf01e5fc86b5615865f3bae4",
+                "merges.txt": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+                "preprocessor_config.json": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516",
+                "tokenizer.json": "a5d85b6dcc535e6b93115a9ef287e6132fdbf30270da6218194ba742261173c7",
+                "tokenizer_config.json": "c2da771801886ad9ae98181793ffd3dfb7f1af30f6f7c6a4e15d7dbba52e2399",
+                "video_preprocessor_config.json": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13",
+                "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+              },
+              "projected_total_tokens": 3097,
+              "request_text_sha256": "6fad57bdc15def336f1f5b53eb151bf5867eed6d0ac5c7538d4ddae1e7e4f845",
+              "reserved_output_tokens": 192,
+              "schema": "sys_trrc_exact_multimodal_token_projection_v1"
+            }
+          },
+          "png_file": "02_ExpenseAddMultipleFromMarkor_step_014.png",
+          "receipt_ids": {
+            "full": "trrc_013_9c5b58571078",
+            "generic": "trrc_013_9c5b58571078"
+          },
+          "screenshot_sha256": "6b3af25bb4af986149ab6f020248be9671848ba29ad14321c7fed590bcb70b29",
+          "task_name": "ExpenseAddMultipleFromMarkor"
+        },
+        {
+          "eligible_request_step": 13,
+          "episode_id": "MarkorCreateNoteAndSms_20260806_150c1638",
+          "modes": {
+            "full": {
+              "add_generation_prompt": true,
+              "content_order": [
+                "system:text",
+                "user:text",
+                "user:image"
+              ],
+              "current_image_size": [
+                1080,
+                2400
+              ],
+              "current_screenshot_sha256": "b3c1eb9c06f53e73dcba33123edbdc0b4a85dea148403eaecb9555bed5f98699",
+              "exact_multimodal_input_tokens": 2943,
+              "expanded_image_token_count": 2550,
+              "image_grid_thw": [
+                [
+                  1,
+                  150,
+                  68
+                ]
+              ],
+              "messages_sha256": "21144963cebedbfb9a846e7cb15d8110d8dbe23234320fd22d52643c48cdcd8f",
+              "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+              "processor_files_sha256": {
+                "chat_template.json": "5c72a170d2a4a1a3bc5adad2e689ae28138a9700e5b8c96c0266331e86c0acce",
+                "config.json": "d2dd0c60d01b9e195d9447c52da61c7302d28828524914c044d9c6e1b81d0427",
+                "configuration.json": "2d4464e2ead06bc9bc718c781309ad1e7baded626d66e8dcdc8b469ba185faf0",
+                "generation_config.json": "1e241830b48b397cb0900101421df5450baddc7adf01e5fc86b5615865f3bae4",
+                "merges.txt": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+                "preprocessor_config.json": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516",
+                "tokenizer.json": "a5d85b6dcc535e6b93115a9ef287e6132fdbf30270da6218194ba742261173c7",
+                "tokenizer_config.json": "c2da771801886ad9ae98181793ffd3dfb7f1af30f6f7c6a4e15d7dbba52e2399",
+                "video_preprocessor_config.json": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13",
+                "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+              },
+              "projected_total_tokens": 3135,
+              "request_text_sha256": "dbc7a21bc4a5c0ab3f9c28e5f85ec071ead74794361cd06b34497161dda70e5d",
+              "reserved_output_tokens": 192,
+              "schema": "sys_trrc_exact_multimodal_token_projection_v1"
+            },
+            "generic": {
+              "add_generation_prompt": true,
+              "content_order": [
+                "system:text",
+                "user:text",
+                "user:image"
+              ],
+              "current_image_size": [
+                1080,
+                2400
+              ],
+              "current_screenshot_sha256": "b3c1eb9c06f53e73dcba33123edbdc0b4a85dea148403eaecb9555bed5f98699",
+              "exact_multimodal_input_tokens": 2933,
+              "expanded_image_token_count": 2550,
+              "image_grid_thw": [
+                [
+                  1,
+                  150,
+                  68
+                ]
+              ],
+              "messages_sha256": "3653fe2367d2935b938b8bc8ba1ac1d8d0d446cd5bb87fa7978cb3dfdf721659",
+              "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+              "processor_files_sha256": {
+                "chat_template.json": "5c72a170d2a4a1a3bc5adad2e689ae28138a9700e5b8c96c0266331e86c0acce",
+                "config.json": "d2dd0c60d01b9e195d9447c52da61c7302d28828524914c044d9c6e1b81d0427",
+                "configuration.json": "2d4464e2ead06bc9bc718c781309ad1e7baded626d66e8dcdc8b469ba185faf0",
+                "generation_config.json": "1e241830b48b397cb0900101421df5450baddc7adf01e5fc86b5615865f3bae4",
+                "merges.txt": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+                "preprocessor_config.json": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516",
+                "tokenizer.json": "a5d85b6dcc535e6b93115a9ef287e6132fdbf30270da6218194ba742261173c7",
+                "tokenizer_config.json": "c2da771801886ad9ae98181793ffd3dfb7f1af30f6f7c6a4e15d7dbba52e2399",
+                "video_preprocessor_config.json": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13",
+                "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+              },
+              "projected_total_tokens": 3125,
+              "request_text_sha256": "9b05f22fac9b130a5554e94cf5e99fbc9473c375fb463946c1fbd2173327069b",
+              "reserved_output_tokens": 192,
+              "schema": "sys_trrc_exact_multimodal_token_projection_v1"
+            }
+          },
+          "png_file": "03_MarkorCreateNoteAndSms_step_013.png",
+          "receipt_ids": {
+            "full": "trrc_012_70e4e2057e63",
+            "generic": "trrc_012_70e4e2057e63"
+          },
+          "screenshot_sha256": "b3c1eb9c06f53e73dcba33123edbdc0b4a85dea148403eaecb9555bed5f98699",
+          "task_name": "MarkorCreateNoteAndSms"
+        },
+        {
+          "eligible_request_step": 13,
+          "episode_id": "MarkorMergeNotes_20260806_6367b3d1",
+          "modes": {
+            "full": {
+              "add_generation_prompt": true,
+              "content_order": [
+                "system:text",
+                "user:text",
+                "user:image"
+              ],
+              "current_image_size": [
+                1080,
+                2400
+              ],
+              "current_screenshot_sha256": "e1e7bbe82c1693aa01b26f80671b96d7a0d52985790a557a977a1eb3f2e5bbd2",
+              "exact_multimodal_input_tokens": 2977,
+              "expanded_image_token_count": 2550,
+              "image_grid_thw": [
+                [
+                  1,
+                  150,
+                  68
+                ]
+              ],
+              "messages_sha256": "940e8ee32212f9244e5b69bc5d94f9cb1ad589169fe4ad7168e50f7fdbde0920",
+              "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+              "processor_files_sha256": {
+                "chat_template.json": "5c72a170d2a4a1a3bc5adad2e689ae28138a9700e5b8c96c0266331e86c0acce",
+                "config.json": "d2dd0c60d01b9e195d9447c52da61c7302d28828524914c044d9c6e1b81d0427",
+                "configuration.json": "2d4464e2ead06bc9bc718c781309ad1e7baded626d66e8dcdc8b469ba185faf0",
+                "generation_config.json": "1e241830b48b397cb0900101421df5450baddc7adf01e5fc86b5615865f3bae4",
+                "merges.txt": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+                "preprocessor_config.json": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516",
+                "tokenizer.json": "a5d85b6dcc535e6b93115a9ef287e6132fdbf30270da6218194ba742261173c7",
+                "tokenizer_config.json": "c2da771801886ad9ae98181793ffd3dfb7f1af30f6f7c6a4e15d7dbba52e2399",
+                "video_preprocessor_config.json": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13",
+                "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+              },
+              "projected_total_tokens": 3169,
+              "request_text_sha256": "313d743af0d025dfadc17078c7b340c6730af54e8bba5cad68ed28418b078c4f",
+              "reserved_output_tokens": 192,
+              "schema": "sys_trrc_exact_multimodal_token_projection_v1"
+            },
+            "generic": {
+              "add_generation_prompt": true,
+              "content_order": [
+                "system:text",
+                "user:text",
+                "user:image"
+              ],
+              "current_image_size": [
+                1080,
+                2400
+              ],
+              "current_screenshot_sha256": "e1e7bbe82c1693aa01b26f80671b96d7a0d52985790a557a977a1eb3f2e5bbd2",
+              "exact_multimodal_input_tokens": 2967,
+              "expanded_image_token_count": 2550,
+              "image_grid_thw": [
+                [
+                  1,
+                  150,
+                  68
+                ]
+              ],
+              "messages_sha256": "3bf1e660e57d95c15a100a13f9546bfcf299220e3e0f0981b72b310660e0a15c",
+              "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+              "processor_files_sha256": {
+                "chat_template.json": "5c72a170d2a4a1a3bc5adad2e689ae28138a9700e5b8c96c0266331e86c0acce",
+                "config.json": "d2dd0c60d01b9e195d9447c52da61c7302d28828524914c044d9c6e1b81d0427",
+                "configuration.json": "2d4464e2ead06bc9bc718c781309ad1e7baded626d66e8dcdc8b469ba185faf0",
+                "generation_config.json": "1e241830b48b397cb0900101421df5450baddc7adf01e5fc86b5615865f3bae4",
+                "merges.txt": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+                "preprocessor_config.json": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516",
+                "tokenizer.json": "a5d85b6dcc535e6b93115a9ef287e6132fdbf30270da6218194ba742261173c7",
+                "tokenizer_config.json": "c2da771801886ad9ae98181793ffd3dfb7f1af30f6f7c6a4e15d7dbba52e2399",
+                "video_preprocessor_config.json": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13",
+                "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+              },
+              "projected_total_tokens": 3159,
+              "request_text_sha256": "dadcc5705a5e37a24c2514936672edd68914e9753a47f9eda4f980d9056e8184",
+              "reserved_output_tokens": 192,
+              "schema": "sys_trrc_exact_multimodal_token_projection_v1"
+            }
+          },
+          "png_file": "04_MarkorMergeNotes_step_013.png",
+          "receipt_ids": {
+            "full": "trrc_012_50ba4d761341",
+            "generic": "trrc_012_50ba4d761341"
+          },
+          "screenshot_sha256": "e1e7bbe82c1693aa01b26f80671b96d7a0d52985790a557a977a1eb3f2e5bbd2",
+          "task_name": "MarkorMergeNotes"
+        },
+        {
+          "eligible_request_step": 15,
+          "episode_id": "OsmAndTrack_20260806_1823722c",
+          "modes": {
+            "full": {
+              "add_generation_prompt": true,
+              "content_order": [
+                "system:text",
+                "user:text",
+                "user:image"
+              ],
+              "current_image_size": [
+                1080,
+                2400
+              ],
+              "current_screenshot_sha256": "34ce06895d872ab53748cca27475169294e36f4b1c0a5eb6fe7c170bdec32e13",
+              "exact_multimodal_input_tokens": 2932,
+              "expanded_image_token_count": 2550,
+              "image_grid_thw": [
+                [
+                  1,
+                  150,
+                  68
+                ]
+              ],
+              "messages_sha256": "1170698f3153685d06446113b72b09076a2f8b7d76035781028eca819a929081",
+              "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+              "processor_files_sha256": {
+                "chat_template.json": "5c72a170d2a4a1a3bc5adad2e689ae28138a9700e5b8c96c0266331e86c0acce",
+                "config.json": "d2dd0c60d01b9e195d9447c52da61c7302d28828524914c044d9c6e1b81d0427",
+                "configuration.json": "2d4464e2ead06bc9bc718c781309ad1e7baded626d66e8dcdc8b469ba185faf0",
+                "generation_config.json": "1e241830b48b397cb0900101421df5450baddc7adf01e5fc86b5615865f3bae4",
+                "merges.txt": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+                "preprocessor_config.json": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516",
+                "tokenizer.json": "a5d85b6dcc535e6b93115a9ef287e6132fdbf30270da6218194ba742261173c7",
+                "tokenizer_config.json": "c2da771801886ad9ae98181793ffd3dfb7f1af30f6f7c6a4e15d7dbba52e2399",
+                "video_preprocessor_config.json": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13",
+                "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+              },
+              "projected_total_tokens": 3124,
+              "request_text_sha256": "94222b8ff1f382d7ea8ed94d6e6713d5f08eebc66335b619fe8731ab9b848418",
+              "reserved_output_tokens": 192,
+              "schema": "sys_trrc_exact_multimodal_token_projection_v1"
+            },
+            "generic": {
+              "add_generation_prompt": true,
+              "content_order": [
+                "system:text",
+                "user:text",
+                "user:image"
+              ],
+              "current_image_size": [
+                1080,
+                2400
+              ],
+              "current_screenshot_sha256": "34ce06895d872ab53748cca27475169294e36f4b1c0a5eb6fe7c170bdec32e13",
+              "exact_multimodal_input_tokens": 2922,
+              "expanded_image_token_count": 2550,
+              "image_grid_thw": [
+                [
+                  1,
+                  150,
+                  68
+                ]
+              ],
+              "messages_sha256": "ae2c91ef00ac6c487d7c4c83aa490c4215ece86a40be250bf14f3434771e1845",
+              "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+              "processor_files_sha256": {
+                "chat_template.json": "5c72a170d2a4a1a3bc5adad2e689ae28138a9700e5b8c96c0266331e86c0acce",
+                "config.json": "d2dd0c60d01b9e195d9447c52da61c7302d28828524914c044d9c6e1b81d0427",
+                "configuration.json": "2d4464e2ead06bc9bc718c781309ad1e7baded626d66e8dcdc8b469ba185faf0",
+                "generation_config.json": "1e241830b48b397cb0900101421df5450baddc7adf01e5fc86b5615865f3bae4",
+                "merges.txt": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+                "preprocessor_config.json": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516",
+                "tokenizer.json": "a5d85b6dcc535e6b93115a9ef287e6132fdbf30270da6218194ba742261173c7",
+                "tokenizer_config.json": "c2da771801886ad9ae98181793ffd3dfb7f1af30f6f7c6a4e15d7dbba52e2399",
+                "video_preprocessor_config.json": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13",
+                "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+              },
+              "projected_total_tokens": 3114,
+              "request_text_sha256": "96c8eb62e258ed5855346f572cf9c505a42d4737bdfe6c987815b913a13c1dda",
+              "reserved_output_tokens": 192,
+              "schema": "sys_trrc_exact_multimodal_token_projection_v1"
+            }
+          },
+          "png_file": "05_OsmAndTrack_step_015.png",
+          "receipt_ids": {
+            "full": "trrc_014_4a741530f182",
+            "generic": "trrc_014_4a741530f182"
+          },
+          "screenshot_sha256": "34ce06895d872ab53748cca27475169294e36f4b1c0a5eb6fe7c170bdec32e13",
+          "task_name": "OsmAndTrack"
+        },
+        {
+          "eligible_request_step": 6,
+          "episode_id": "RecipeAddMultipleRecipesFromImage_20260806_4c0dccd5",
+          "modes": {
+            "full": {
+              "add_generation_prompt": true,
+              "content_order": [
+                "system:text",
+                "user:text",
+                "user:image"
+              ],
+              "current_image_size": [
+                1080,
+                2400
+              ],
+              "current_screenshot_sha256": "d9906a42970fec9764f903b2a4a9edeaf7d47d713b996cacc40104113ba67351",
+              "exact_multimodal_input_tokens": 2905,
+              "expanded_image_token_count": 2550,
+              "image_grid_thw": [
+                [
+                  1,
+                  150,
+                  68
+                ]
+              ],
+              "messages_sha256": "2b6d282e563157cf0f6fb0e1ef61e28e654bb4f23b8d22b31f3459e32b77622a",
+              "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+              "processor_files_sha256": {
+                "chat_template.json": "5c72a170d2a4a1a3bc5adad2e689ae28138a9700e5b8c96c0266331e86c0acce",
+                "config.json": "d2dd0c60d01b9e195d9447c52da61c7302d28828524914c044d9c6e1b81d0427",
+                "configuration.json": "2d4464e2ead06bc9bc718c781309ad1e7baded626d66e8dcdc8b469ba185faf0",
+                "generation_config.json": "1e241830b48b397cb0900101421df5450baddc7adf01e5fc86b5615865f3bae4",
+                "merges.txt": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+                "preprocessor_config.json": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516",
+                "tokenizer.json": "a5d85b6dcc535e6b93115a9ef287e6132fdbf30270da6218194ba742261173c7",
+                "tokenizer_config.json": "c2da771801886ad9ae98181793ffd3dfb7f1af30f6f7c6a4e15d7dbba52e2399",
+                "video_preprocessor_config.json": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13",
+                "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+              },
+              "projected_total_tokens": 3097,
+              "request_text_sha256": "25d27d708e813ec2ad07d876f0c66ac29b1b2b7cc2cbf6c7c30d3c564d797e23",
+              "reserved_output_tokens": 192,
+              "schema": "sys_trrc_exact_multimodal_token_projection_v1"
+            },
+            "generic": {
+              "add_generation_prompt": true,
+              "content_order": [
+                "system:text",
+                "user:text",
+                "user:image"
+              ],
+              "current_image_size": [
+                1080,
+                2400
+              ],
+              "current_screenshot_sha256": "d9906a42970fec9764f903b2a4a9edeaf7d47d713b996cacc40104113ba67351",
+              "exact_multimodal_input_tokens": 2895,
+              "expanded_image_token_count": 2550,
+              "image_grid_thw": [
+                [
+                  1,
+                  150,
+                  68
+                ]
+              ],
+              "messages_sha256": "301fb72fb965d56f727f08517107db9cfefcc458ec703fe71bf5b29a9f77bef9",
+              "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+              "processor_files_sha256": {
+                "chat_template.json": "5c72a170d2a4a1a3bc5adad2e689ae28138a9700e5b8c96c0266331e86c0acce",
+                "config.json": "d2dd0c60d01b9e195d9447c52da61c7302d28828524914c044d9c6e1b81d0427",
+                "configuration.json": "2d4464e2ead06bc9bc718c781309ad1e7baded626d66e8dcdc8b469ba185faf0",
+                "generation_config.json": "1e241830b48b397cb0900101421df5450baddc7adf01e5fc86b5615865f3bae4",
+                "merges.txt": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+                "preprocessor_config.json": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516",
+                "tokenizer.json": "a5d85b6dcc535e6b93115a9ef287e6132fdbf30270da6218194ba742261173c7",
+                "tokenizer_config.json": "c2da771801886ad9ae98181793ffd3dfb7f1af30f6f7c6a4e15d7dbba52e2399",
+                "video_preprocessor_config.json": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13",
+                "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+              },
+              "projected_total_tokens": 3087,
+              "request_text_sha256": "ba84d53056583303f49b881973817b91941a2935519968dcfbe2ca0434e55aa8",
+              "reserved_output_tokens": 192,
+              "schema": "sys_trrc_exact_multimodal_token_projection_v1"
+            }
+          },
+          "png_file": "06_RecipeAddMultipleRecipesFromImage_step_006.png",
+          "receipt_ids": {
+            "full": "trrc_005_34b40e47f3e0",
+            "generic": "trrc_005_34b40e47f3e0"
+          },
+          "screenshot_sha256": "d9906a42970fec9764f903b2a4a9edeaf7d47d713b996cacc40104113ba67351",
+          "task_name": "RecipeAddMultipleRecipesFromImage"
+        },
+        {
+          "eligible_request_step": 15,
+          "episode_id": "RecipeAddMultipleRecipesFromMarkor_20260806_154a3c03",
+          "modes": {
+            "full": {
+              "add_generation_prompt": true,
+              "content_order": [
+                "system:text",
+                "user:text",
+                "user:image"
+              ],
+              "current_image_size": [
+                1080,
+                2400
+              ],
+              "current_screenshot_sha256": "221de9bb236b62c51cb96270db152ca5347c7e88dc94705628365d5b1afa9355",
+              "exact_multimodal_input_tokens": 2889,
+              "expanded_image_token_count": 2550,
+              "image_grid_thw": [
+                [
+                  1,
+                  150,
+                  68
+                ]
+              ],
+              "messages_sha256": "3041ddb7d5009b5c7b421259dd425a8d92d2d53a1fefcd7e63aa6088adce5f22",
+              "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+              "processor_files_sha256": {
+                "chat_template.json": "5c72a170d2a4a1a3bc5adad2e689ae28138a9700e5b8c96c0266331e86c0acce",
+                "config.json": "d2dd0c60d01b9e195d9447c52da61c7302d28828524914c044d9c6e1b81d0427",
+                "configuration.json": "2d4464e2ead06bc9bc718c781309ad1e7baded626d66e8dcdc8b469ba185faf0",
+                "generation_config.json": "1e241830b48b397cb0900101421df5450baddc7adf01e5fc86b5615865f3bae4",
+                "merges.txt": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+                "preprocessor_config.json": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516",
+                "tokenizer.json": "a5d85b6dcc535e6b93115a9ef287e6132fdbf30270da6218194ba742261173c7",
+                "tokenizer_config.json": "c2da771801886ad9ae98181793ffd3dfb7f1af30f6f7c6a4e15d7dbba52e2399",
+                "video_preprocessor_config.json": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13",
+                "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+              },
+              "projected_total_tokens": 3081,
+              "request_text_sha256": "21b28af9de013ec7c10c6599deeb5a99b45177ef87083eb3d6fc5efde60786f2",
+              "reserved_output_tokens": 192,
+              "schema": "sys_trrc_exact_multimodal_token_projection_v1"
+            },
+            "generic": {
+              "add_generation_prompt": true,
+              "content_order": [
+                "system:text",
+                "user:text",
+                "user:image"
+              ],
+              "current_image_size": [
+                1080,
+                2400
+              ],
+              "current_screenshot_sha256": "221de9bb236b62c51cb96270db152ca5347c7e88dc94705628365d5b1afa9355",
+              "exact_multimodal_input_tokens": 2879,
+              "expanded_image_token_count": 2550,
+              "image_grid_thw": [
+                [
+                  1,
+                  150,
+                  68
+                ]
+              ],
+              "messages_sha256": "a0ca14b701b5b44c5b6fd5891115bb8aafb97ce802dfda0bc19675090a903b86",
+              "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+              "processor_files_sha256": {
+                "chat_template.json": "5c72a170d2a4a1a3bc5adad2e689ae28138a9700e5b8c96c0266331e86c0acce",
+                "config.json": "d2dd0c60d01b9e195d9447c52da61c7302d28828524914c044d9c6e1b81d0427",
+                "configuration.json": "2d4464e2ead06bc9bc718c781309ad1e7baded626d66e8dcdc8b469ba185faf0",
+                "generation_config.json": "1e241830b48b397cb0900101421df5450baddc7adf01e5fc86b5615865f3bae4",
+                "merges.txt": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+                "preprocessor_config.json": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516",
+                "tokenizer.json": "a5d85b6dcc535e6b93115a9ef287e6132fdbf30270da6218194ba742261173c7",
+                "tokenizer_config.json": "c2da771801886ad9ae98181793ffd3dfb7f1af30f6f7c6a4e15d7dbba52e2399",
+                "video_preprocessor_config.json": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13",
+                "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+              },
+              "projected_total_tokens": 3071,
+              "request_text_sha256": "9222130be86e17f3ae3963525bf4e6893bb20e4f4ab46b97ab81186a87bd9966",
+              "reserved_output_tokens": 192,
+              "schema": "sys_trrc_exact_multimodal_token_projection_v1"
+            }
+          },
+          "png_file": "07_RecipeAddMultipleRecipesFromMarkor_step_015.png",
+          "receipt_ids": {
+            "full": "trrc_014_ed73d71a395d",
+            "generic": "trrc_014_ed73d71a395d"
+          },
+          "screenshot_sha256": "221de9bb236b62c51cb96270db152ca5347c7e88dc94705628365d5b1afa9355",
+          "task_name": "RecipeAddMultipleRecipesFromMarkor"
+        },
+        {
+          "eligible_request_step": 20,
+          "episode_id": "RecipeAddMultipleRecipesFromMarkor2_20260806_92d8511a",
+          "modes": {
+            "full": {
+              "add_generation_prompt": true,
+              "content_order": [
+                "system:text",
+                "user:text",
+                "user:image"
+              ],
+              "current_image_size": [
+                1080,
+                2400
+              ],
+              "current_screenshot_sha256": "435f407f7c048a28b235370c1d44aef26c1249dae0960a8ce0fdfaf5d0ea57d8",
+              "exact_multimodal_input_tokens": 2911,
+              "expanded_image_token_count": 2550,
+              "image_grid_thw": [
+                [
+                  1,
+                  150,
+                  68
+                ]
+              ],
+              "messages_sha256": "608d5f8df5e0ae8fea19735d8b1ce641c7790358b3e07b49e3a361f2ce9a230c",
+              "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+              "processor_files_sha256": {
+                "chat_template.json": "5c72a170d2a4a1a3bc5adad2e689ae28138a9700e5b8c96c0266331e86c0acce",
+                "config.json": "d2dd0c60d01b9e195d9447c52da61c7302d28828524914c044d9c6e1b81d0427",
+                "configuration.json": "2d4464e2ead06bc9bc718c781309ad1e7baded626d66e8dcdc8b469ba185faf0",
+                "generation_config.json": "1e241830b48b397cb0900101421df5450baddc7adf01e5fc86b5615865f3bae4",
+                "merges.txt": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+                "preprocessor_config.json": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516",
+                "tokenizer.json": "a5d85b6dcc535e6b93115a9ef287e6132fdbf30270da6218194ba742261173c7",
+                "tokenizer_config.json": "c2da771801886ad9ae98181793ffd3dfb7f1af30f6f7c6a4e15d7dbba52e2399",
+                "video_preprocessor_config.json": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13",
+                "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+              },
+              "projected_total_tokens": 3103,
+              "request_text_sha256": "9b7776194a4659c83e7ab33415caa00f19ac901166a1e7e415f291ed6613617e",
+              "reserved_output_tokens": 192,
+              "schema": "sys_trrc_exact_multimodal_token_projection_v1"
+            },
+            "generic": {
+              "add_generation_prompt": true,
+              "content_order": [
+                "system:text",
+                "user:text",
+                "user:image"
+              ],
+              "current_image_size": [
+                1080,
+                2400
+              ],
+              "current_screenshot_sha256": "435f407f7c048a28b235370c1d44aef26c1249dae0960a8ce0fdfaf5d0ea57d8",
+              "exact_multimodal_input_tokens": 2901,
+              "expanded_image_token_count": 2550,
+              "image_grid_thw": [
+                [
+                  1,
+                  150,
+                  68
+                ]
+              ],
+              "messages_sha256": "5a77efb53e585905ff1d478ce8dc81bc2f9317d65ccf9345042bc6c1813a57f5",
+              "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+              "processor_files_sha256": {
+                "chat_template.json": "5c72a170d2a4a1a3bc5adad2e689ae28138a9700e5b8c96c0266331e86c0acce",
+                "config.json": "d2dd0c60d01b9e195d9447c52da61c7302d28828524914c044d9c6e1b81d0427",
+                "configuration.json": "2d4464e2ead06bc9bc718c781309ad1e7baded626d66e8dcdc8b469ba185faf0",
+                "generation_config.json": "1e241830b48b397cb0900101421df5450baddc7adf01e5fc86b5615865f3bae4",
+                "merges.txt": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+                "preprocessor_config.json": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516",
+                "tokenizer.json": "a5d85b6dcc535e6b93115a9ef287e6132fdbf30270da6218194ba742261173c7",
+                "tokenizer_config.json": "c2da771801886ad9ae98181793ffd3dfb7f1af30f6f7c6a4e15d7dbba52e2399",
+                "video_preprocessor_config.json": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13",
+                "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+              },
+              "projected_total_tokens": 3093,
+              "request_text_sha256": "b247a4bf3615c2ec59821e1de4301054939805f8916871364e6db54686c094c7",
+              "reserved_output_tokens": 192,
+              "schema": "sys_trrc_exact_multimodal_token_projection_v1"
+            }
+          },
+          "png_file": "08_RecipeAddMultipleRecipesFromMarkor2_step_020.png",
+          "receipt_ids": {
+            "full": "trrc_019_d354af31072b",
+            "generic": "trrc_019_d354af31072b"
+          },
+          "screenshot_sha256": "435f407f7c048a28b235370c1d44aef26c1249dae0960a8ce0fdfaf5d0ea57d8",
+          "task_name": "RecipeAddMultipleRecipesFromMarkor2"
+        }
+      ],
+      "opportunity_count": 8,
+      "processor_files_sha256": {
+        "chat_template.json": "5c72a170d2a4a1a3bc5adad2e689ae28138a9700e5b8c96c0266331e86c0acce",
+        "config.json": "d2dd0c60d01b9e195d9447c52da61c7302d28828524914c044d9c6e1b81d0427",
+        "configuration.json": "2d4464e2ead06bc9bc718c781309ad1e7baded626d66e8dcdc8b469ba185faf0",
+        "generation_config.json": "1e241830b48b397cb0900101421df5450baddc7adf01e5fc86b5615865f3bae4",
+        "merges.txt": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+        "preprocessor_config.json": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516",
+        "tokenizer.json": "a5d85b6dcc535e6b93115a9ef287e6132fdbf30270da6218194ba742261173c7",
+        "tokenizer_config.json": "c2da771801886ad9ae98181793ffd3dfb7f1af30f6f7c6a4e15d7dbba52e2399",
+        "video_preprocessor_config.json": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13",
+        "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+      },
+      "schema": "sys_trrc_eight_opportunity_token_projection_v1",
+      "source_suite": "official_qwen_20260814T145307_50081981"
+    },
+    "exact_protocol_prompt_sha256s": {
+      "common": "a9c6169ad6396b10243f952be0e59867f27ffc727bac703b1fdd5aced9409f14",
+      "full": "1cfc2d854021ec0ed77b5fed01c6f2b4b2db5d5fc9ce27f1b75e2f84efd4381d",
+      "generic": "e030b55b0d23be1f215f002bb872eef5689d2207bc1c707a0e3f4d8be3405822",
+      "wrapper": "2c2163ddcbc4ee58d516fb3f4aa19ed1bb32258a46c85e5a8b3668ef3111de8b"
+    },
+    "focused_tests": {
+      "returncode": 0,
+      "stderr_tail": "",
+      "stdout_tail": "................................................s.                       [100%]\n"
+    },
+    "head": "bf2265a30a0ae0400f3f1a6fe6df2828163fc5e7",
+    "required_recovery_config": {
+      "aux_parser": "blank_line_tolerant_exact_three_fields_v2",
+      "exact_protocol_prompts": true,
+      "max_aux_calls_per_episode": 1,
+      "max_aux_tokens": 192,
+      "max_latency_seconds": 60,
+      "max_total_tokenizer_tokens": 8192,
+      "require_remaining_normal_decision_slot": true,
+      "retry": false,
+      "transport_attempts_per_call": 1
+    },
+    "source_files": {
+      "evidence/sys_trrc/SYS_TRRC_R2_DETECTOR_REPLAY.json": "02a564601310c7c476b07553bd8ea6cd8f541abf573eeefd5996b92b1ce25777",
+      "evidence/sys_trrc/token_projection_inputs/01_BrowserMultiply_step_014.png": "a27b55b0da87e7fa139f263964640c54cead6037e7a78726be73d3ceb3c42772",
+      "evidence/sys_trrc/token_projection_inputs/02_ExpenseAddMultipleFromMarkor_step_014.png": "6b3af25bb4af986149ab6f020248be9671848ba29ad14321c7fed590bcb70b29",
+      "evidence/sys_trrc/token_projection_inputs/03_MarkorCreateNoteAndSms_step_013.png": "b3c1eb9c06f53e73dcba33123edbdc0b4a85dea148403eaecb9555bed5f98699",
+      "evidence/sys_trrc/token_projection_inputs/04_MarkorMergeNotes_step_013.png": "e1e7bbe82c1693aa01b26f80671b96d7a0d52985790a557a977a1eb3f2e5bbd2",
+      "evidence/sys_trrc/token_projection_inputs/05_OsmAndTrack_step_015.png": "34ce06895d872ab53748cca27475169294e36f4b1c0a5eb6fe7c170bdec32e13",
+      "evidence/sys_trrc/token_projection_inputs/06_RecipeAddMultipleRecipesFromImage_step_006.png": "d9906a42970fec9764f903b2a4a9edeaf7d47d713b996cacc40104113ba67351",
+      "evidence/sys_trrc/token_projection_inputs/07_RecipeAddMultipleRecipesFromMarkor_step_015.png": "221de9bb236b62c51cb96270db152ca5347c7e88dc94705628365d5b1afa9355",
+      "evidence/sys_trrc/token_projection_inputs/08_RecipeAddMultipleRecipesFromMarkor2_step_020.png": "435f407f7c048a28b235370c1d44aef26c1249dae0960a8ce0fdfaf5d0ea57d8",
+      "evidence/sys_trrc/token_projection_inputs/manifest.json": "82767f665e9bf4f4f3f089b130111285fa8eef16e1f7155d9a6346db37889c86",
+      "evidence/sys_trrc_v2/SYS_TRRC_V2_R2_DETECTOR_REPLAY.json": "371743805736ebee4d88a303951afe95cc38816d2a32dab733914aadd2c3e940",
+      "implementation/configs/androidworld_hard_v2_instances.json": "c1d718e9d380e443d12d2c29ab2182ae801a3befc53881b864cd830f2ad0440a",
+      "implementation/configs/sys_trrc_v2_base_hard_seed20260806.json": "e52baf5814d59cf25fb625e0b8db05157af0ab17c9c3b64e12153cbd811787c3",
+      "implementation/configs/sys_trrc_v2_detector_hard_seed20260806.json": "eabeef7e84c73d2d5256eca9f45ef21cd7cea7c9dc75d21c3651ca8a6814abcc",
+      "implementation/configs/sys_trrc_v2_full_hard_seed20260806.json": "a7af1653d4cf9a90fe0913e778be93a1ae3c7051da6243584a662dae80acc693",
+      "implementation/configs/sys_trrc_v2_generic_hard_seed20260806.json": "0de529ddbefd146c282023dafbd9ffcc0f97cc0c34b1e58c102ed1ca40f4589e",
+      "implementation/scripts/preflight_sys_trrc.py": "4bae1990c9713013e7223a5c98dfd5f2dceab079861b38a9f1e18063d59fca27",
+      "implementation/scripts/qualify_sys_trrc_server.py": "43c4a970f349fed3fd110743152ad2d38f26e32abe5181c881a3e3644a4bc124",
+      "implementation/scripts/replay_sys_trrc_detector.py": "ce62a3231623136726a695d4fed7eb6d6fd1dec506cad668729ae93408857b76",
+      "implementation/scripts/run_official_qwen_mobile.py": "0477a6cde69c16abcf7364ac2380fbad18824d986b22f14a4f17efcfa5cf11e4",
+      "implementation/scripts/run_sys_trrc.py": "d7da38d707f2d2ca98dcc86c902e70ced59a90ae2aed1e4acb76674b2e906d11",
+      "implementation/scripts/start_sys_trrc_server.sh": "1e5a34abfa4c0183c4f27e6f22fea7238051f1e34b42aca352d086b1e2abbc58",
+      "implementation/src/raven_m/env/androidworld_adapter.py": "ad4ecbee9430326ca7380334c49372911a1c6b1c217ee12bb3714d2fb1219c33",
+      "implementation/src/raven_m/models/vllm_client.py": "a26bc79c3238eba1c0dac606316635b1592c957db44cbe6251ab9cf021327ad8",
+      "implementation/src/raven_m/multi_framework_benchmark/task_instances.py": "fd0772a3ba9b973911dfbb055b25c8dab6e34d0fa640cf6ab4d7b540595f05be",
+      "implementation/src/raven_m/official_qwen_mobile/a1r2_compact_verified_pending.py": "ed5a4e93d9fcc5938158b698c312f453205a361b48d7a5839c8b61375c506d1a",
+      "implementation/src/raven_m/official_qwen_mobile/a1r3v3_one_shot_cnr.py": "461d24f78121f5a013a68487212cf6f9a2e7817b989556158b72d57e36fb9d7b",
+      "implementation/src/raven_m/official_qwen_mobile/controller.py": "ca87250a42d2a7d88f9a7a4f501b00514657197c1a60b8eb03c4b88c6eed8efe",
+      "implementation/src/raven_m/official_qwen_mobile/protocol.py": "9eefe9dc089f076089377d7c5fb228cdcb12e676d404973441cbc6894865a689",
+      "implementation/src/raven_m/official_qwen_mobile/sys_trrc_contract.py": "e9cc11ae7c5ee5b99e7be55ebce19b293d72c3303b4d27262bba6c5fa2359262",
+      "implementation/src/raven_m/official_qwen_mobile/sys_trrc_recovery.py": "78706062e4036467d4c8acb09ac6ca7af5f6d4f837ed0751fdbaaa9ce8ac7d70",
+      "implementation/src/raven_m/official_qwen_mobile/sys_trrc_token_budget.py": "84331aceac5cd6ed85407eed663535ba6527a89aaaa802a0a755205c94592ddb",
+      "implementation/src/raven_m/official_qwen_mobile/working_memory.py": "86589458c820a08a220c738ae3b55fdce40e7df37ade5b8b1d3c9631bea79ee3",
+      "implementation/tests/models/test_sys_trrc_aux_timeout.py": "f5c32c7f0c2c1458a721004a3eecf63cc33ff90150846c4c1010c67e64c8221b",
+      "implementation/tests/official_qwen_mobile/test_recovery_policy_controller.py": "e8f7a67357d43f52c5dc754ccf83eac90c7db47643423067546c5f5738b6c996",
+      "implementation/tests/official_qwen_mobile/test_sys_trrc_contract_runner.py": "ce06463b3f511d4a6aa00418461e9122f9c994f99c4567c057f62dbf75d96f40",
+      "implementation/tests/official_qwen_mobile/test_sys_trrc_recovery.py": "b1b3324f910d40f4905235aa0b5082f11934f8ffdede113eb67a81ad76d1e3dc",
+      "implementation/tests/official_qwen_mobile/test_sys_trrc_token_budget.py": "40b4e441d47fffb52b9996ec84ae78be227b56b5ddbd5b83c684297269b11c1f",
+      "protocols/SYS_TRRC_R2_ONE_SHOT_RECOVERY_V2_PREREG_2026-08-15.md": "5fc71095da19b1dadacf69f7ee9b32bd4254498f2d55f3fcc3cf2b62cef347d0"
+    },
+    "v1_live_aux_parser_regression": {
+      "blank_only_lines_ignored": true,
+      "fixture_episode_id": "ExpenseDeleteMultiple2_20260806_4f40564b",
+      "parsed_render_sha256": "48d301f266091eb7197829933808d4b4cc561d5f1cad4196eeba04f9e81e2a2b",
+      "request_step": 7,
+      "response_sha256": "5f8c63ee635b460ce38f61dc00c67bf3eb9ed0b8d43c94decaf9e8ae404278a1",
+      "status": "PASS"
+    }
+  },
+  "config_content_sha256": "1ce51a6a3ee794f2611d107507df06a46c81841fd75416c5af2193a034287a1e",
+  "content_sha256": "494c9f9390fbe836db6d979bb9020603739bba72fb5a334543d8cc03d8ced093",
+  "created_at": "2026-08-15T16:28:25.351983+00:00",
+  "errors": [],
+  "experiment_id": "SYS_TRRC_V2_G_R2_GENERIC_RECOVERY_QWEN3VL32B_AW_HARD_S20260806_V1",
+  "generation_calls": 0,
+  "implementation_commit": "bf2265a30a0ae0400f3f1a6fe6df2828163fc5e7",
+  "live_generation_authorized": true,
+  "mode": "generic",
+  "protocol_id": "SYS_TRRC_R2_ONE_SHOT_RECOVERY_PREREG_V2",
+  "schema": "sys_trrc_v2_zero_generation_preflight_v1",
+  "source_freeze_content_sha256": "2e824af33949a11841d4d30f193e8173ad1ca97650483382b815a8fdc8848364",
+  "status": "PASS",
+  "system_id": "sys_trrc_r2_one_shot_triggered_recovery_v2"
+}
