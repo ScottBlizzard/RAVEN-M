@@ -116,6 +116,7 @@ class VLLMClient:
         context_images: list[tuple[str, Path]] | None = None,
         user_prompt_before_image: bool = True,
         current_image_label: str | None = None,
+        request_timeout_seconds: float | None = None,
     ) -> ModelCall:
         if context_images:
             raise ValueError("The official-public mobile arm accepts one current image only.")
@@ -180,7 +181,11 @@ class VLLMClient:
                         "X-Call-ID": call_id,
                         "X-Episode-ID": episode_id,
                     },
-                    timeout=self.timeout_seconds,
+                    timeout=(
+                        self.timeout_seconds
+                        if request_timeout_seconds is None
+                        else float(request_timeout_seconds)
+                    ),
                 )
                 response.raise_for_status()
                 break
@@ -221,6 +226,8 @@ class VLLMClient:
             "latency_seconds": latency_seconds,
             "transport_attempts": transport_attempts,
         }
+        if request_timeout_seconds is not None:
+            meta["request_timeout_seconds"] = float(request_timeout_seconds)
         return ModelCall(
             call_id=call_id,
             episode_id=episode_id,

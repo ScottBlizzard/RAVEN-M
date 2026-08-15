@@ -1,0 +1,331 @@
+{
+  "content_sha256": "ed47170cdceb0ea4354ac04c3761a9ae1a5d5a03458c027aea871ce0c739c55b",
+  "detector": {
+    "kind": "two_consecutive_same_family_no_rgb_progress",
+    "one_shot": true,
+    "required_supports": 2,
+    "threshold": 0.001
+  },
+  "episodes": [
+    {
+      "base_detector_byte_equivalent": true,
+      "detector_audit_sha256": "824cf19e68bbdce70ef0336ccd4243c0d05ecddee1a51e7ecea6f4a23e2d1525",
+      "episode_id": "ExpenseDeleteMultiple2_20260806_a27af967",
+      "history_mismatch_steps": [],
+      "memory_mismatch_steps": [],
+      "prompt_mismatch_steps": [],
+      "reward": 1.0,
+      "success": true,
+      "task_name": "ExpenseDeleteMultiple2",
+      "trigger_count": 0,
+      "triggers": []
+    },
+    {
+      "base_detector_byte_equivalent": true,
+      "detector_audit_sha256": "567ef53c8e7c015f67f0407653a3d04e974518e87cfcb6a76e630bdf60fff273",
+      "episode_id": "RetroSavePlaylist_20260806_269b2c65",
+      "history_mismatch_steps": [],
+      "memory_mismatch_steps": [],
+      "prompt_mismatch_steps": [],
+      "reward": 1.0,
+      "success": true,
+      "task_name": "RetroSavePlaylist",
+      "trigger_count": 0,
+      "triggers": []
+    },
+    {
+      "base_detector_byte_equivalent": true,
+      "detector_audit_sha256": "724a6cadd1b14f181099d8ae1811e494d8d7ee27cd1cb46f99927176c209ea8a",
+      "episode_id": "SimpleCalendarAddOneEvent_20260806_728d3349",
+      "history_mismatch_steps": [],
+      "memory_mismatch_steps": [],
+      "prompt_mismatch_steps": [],
+      "reward": 1.0,
+      "success": true,
+      "task_name": "SimpleCalendarAddOneEvent",
+      "trigger_count": 0,
+      "triggers": []
+    },
+    {
+      "base_detector_byte_equivalent": true,
+      "detector_audit_sha256": "3bded7b2fb59c8a4accfd72829f2b5593d00b538a53f1062e6b69ebf783ff35b",
+      "episode_id": "SportsTrackerTotalDurationForCategoryThisWeek_20260806_e34aeaf5",
+      "history_mismatch_steps": [],
+      "memory_mismatch_steps": [],
+      "prompt_mismatch_steps": [],
+      "reward": 1.0,
+      "success": true,
+      "task_name": "SportsTrackerTotalDurationForCategoryThisWeek",
+      "trigger_count": 0,
+      "triggers": []
+    },
+    {
+      "base_detector_byte_equivalent": true,
+      "detector_audit_sha256": "786ac7ffeb3ab487770e6235f387cc46ab40f71c7fc31f5dfc0d71606fb130d0",
+      "episode_id": "RecipeDeleteMultipleRecipesWithConstraint_20260806_b4feab19",
+      "history_mismatch_steps": [],
+      "memory_mismatch_steps": [],
+      "prompt_mismatch_steps": [],
+      "reward": 1.0,
+      "success": true,
+      "task_name": "RecipeDeleteMultipleRecipesWithConstraint",
+      "trigger_count": 0,
+      "triggers": []
+    },
+    {
+      "base_detector_byte_equivalent": true,
+      "detector_audit_sha256": "1f9fab3df6f5a39e679309be2a84187a87957dccb78b943ee96c33cee9c1aa6c",
+      "episode_id": "BrowserMultiply_20260806_54623170",
+      "history_mismatch_steps": [],
+      "memory_mismatch_steps": [],
+      "prompt_mismatch_steps": [],
+      "reward": 0.0,
+      "success": false,
+      "task_name": "BrowserMultiply",
+      "trigger_count": 1,
+      "triggers": [
+        {
+          "eligible_request_step": 14,
+          "evidence_sha256": "99fe3b903d12f2d076a727a70b0d9a569b9e955ce5a55d208752d909124a5254",
+          "receipt_id": "trrc_013_99fe3b903d12",
+          "source_step": 13
+        }
+      ]
+    },
+    {
+      "base_detector_byte_equivalent": true,
+      "detector_audit_sha256": "85b07a010d621b47c21e26710487779887f4cb2ad88792bb064d57ae10d2ac16",
+      "episode_id": "ExpenseAddMultipleFromGallery_20260806_4caedc43",
+      "history_mismatch_steps": [],
+      "memory_mismatch_steps": [],
+      "prompt_mismatch_steps": [],
+      "reward": 0.0,
+      "success": false,
+      "task_name": "ExpenseAddMultipleFromGallery",
+      "trigger_count": 0,
+      "triggers": []
+    },
+    {
+      "base_detector_byte_equivalent": true,
+      "detector_audit_sha256": "c74cba64ae0b5f187d8b7f51294715da712bd0037ff5bf321bfdad28f2046f18",
+      "episode_id": "ExpenseAddMultipleFromMarkor_20260806_faf5c468",
+      "history_mismatch_steps": [],
+      "memory_mismatch_steps": [],
+      "prompt_mismatch_steps": [],
+      "reward": 0.0,
+      "success": false,
+      "task_name": "ExpenseAddMultipleFromMarkor",
+      "trigger_count": 1,
+      "triggers": [
+        {
+          "eligible_request_step": 14,
+          "evidence_sha256": "9c5b585710780f6b3773e0775e426041604fa5b8ea861e472bac2c2c92813628",
+          "receipt_id": "trrc_013_9c5b58571078",
+          "source_step": 13
+        }
+      ]
+    },
+    {
+      "base_detector_byte_equivalent": true,
+      "detector_audit_sha256": "817114895213f1100c0374c5bd5bbe06c4daf607bfd2c6a7bb47b7448744c9db",
+      "episode_id": "MarkorCreateNoteAndSms_20260806_150c1638",
+      "history_mismatch_steps": [],
+      "memory_mismatch_steps": [],
+      "prompt_mismatch_steps": [],
+      "reward": 0.5,
+      "success": false,
+      "task_name": "MarkorCreateNoteAndSms",
+      "trigger_count": 1,
+      "triggers": [
+        {
+          "eligible_request_step": 13,
+          "evidence_sha256": "70e4e2057e6356c84848e27994ae7f1fdc6b207dd0501bb5c6ea3341eacad7e9",
+          "receipt_id": "trrc_012_70e4e2057e63",
+          "source_step": 12
+        }
+      ]
+    },
+    {
+      "base_detector_byte_equivalent": true,
+      "detector_audit_sha256": "57d4796af70a5a36b0fe1b7f4620e90ca457e1b1a01c812246318f2a5539db63",
+      "episode_id": "MarkorMergeNotes_20260806_6367b3d1",
+      "history_mismatch_steps": [],
+      "memory_mismatch_steps": [],
+      "prompt_mismatch_steps": [],
+      "reward": 0.0,
+      "success": false,
+      "task_name": "MarkorMergeNotes",
+      "trigger_count": 1,
+      "triggers": [
+        {
+          "eligible_request_step": 13,
+          "evidence_sha256": "50ba4d761341d59e76e710c87538f38abd5dd893fde08b63ba778a848a28d913",
+          "receipt_id": "trrc_012_50ba4d761341",
+          "source_step": 12
+        }
+      ]
+    },
+    {
+      "base_detector_byte_equivalent": true,
+      "detector_audit_sha256": "e0d7a2416c15488fcc3cfdb88fc7a79c3a77d88e6ca90e772eea9a7afefa33da",
+      "episode_id": "MarkorTranscribeVideo_20260806_737baf69",
+      "history_mismatch_steps": [],
+      "memory_mismatch_steps": [],
+      "prompt_mismatch_steps": [],
+      "reward": 0.0,
+      "success": false,
+      "task_name": "MarkorTranscribeVideo",
+      "trigger_count": 0,
+      "triggers": []
+    },
+    {
+      "base_detector_byte_equivalent": true,
+      "detector_audit_sha256": "04ac83c67ad53f1c9695399e2f7fb74019b6773853c45acbd44d7f092ebeb551",
+      "episode_id": "OsmAndMarker_20260806_8517b31f",
+      "history_mismatch_steps": [],
+      "memory_mismatch_steps": [],
+      "prompt_mismatch_steps": [],
+      "reward": 1.0,
+      "success": true,
+      "task_name": "OsmAndMarker",
+      "trigger_count": 0,
+      "triggers": []
+    },
+    {
+      "base_detector_byte_equivalent": true,
+      "detector_audit_sha256": "396c882720ba82271f1d5df171e990fb985288219d302115522c6f1025c94ff0",
+      "episode_id": "OsmAndTrack_20260806_1823722c",
+      "history_mismatch_steps": [],
+      "memory_mismatch_steps": [],
+      "prompt_mismatch_steps": [],
+      "reward": 0.0,
+      "success": false,
+      "task_name": "OsmAndTrack",
+      "trigger_count": 1,
+      "triggers": [
+        {
+          "eligible_request_step": 15,
+          "evidence_sha256": "4a741530f18204f6aabadc787634df5b7eb328055800b52ee7bec73faa334257",
+          "receipt_id": "trrc_014_4a741530f182",
+          "source_step": 14
+        }
+      ]
+    },
+    {
+      "base_detector_byte_equivalent": true,
+      "detector_audit_sha256": "49ec28588a8be9171137156428e3784779966e47fe0182c34496bce73e4096e8",
+      "episode_id": "RecipeAddMultipleRecipesFromImage_20260806_4c0dccd5",
+      "history_mismatch_steps": [],
+      "memory_mismatch_steps": [],
+      "prompt_mismatch_steps": [],
+      "reward": 0.0,
+      "success": false,
+      "task_name": "RecipeAddMultipleRecipesFromImage",
+      "trigger_count": 1,
+      "triggers": [
+        {
+          "eligible_request_step": 6,
+          "evidence_sha256": "34b40e47f3e02edca8847f26358410a5944b7000be9cf09ff6ddb2acded30ca3",
+          "receipt_id": "trrc_005_34b40e47f3e0",
+          "source_step": 5
+        }
+      ]
+    },
+    {
+      "base_detector_byte_equivalent": true,
+      "detector_audit_sha256": "2756e37e8ec035f6c0bbbe61312d1916a6fdcca5fad3e08ce3ff68f2991cd00e",
+      "episode_id": "RecipeAddMultipleRecipesFromMarkor_20260806_154a3c03",
+      "history_mismatch_steps": [],
+      "memory_mismatch_steps": [],
+      "prompt_mismatch_steps": [],
+      "reward": 0.0,
+      "success": false,
+      "task_name": "RecipeAddMultipleRecipesFromMarkor",
+      "trigger_count": 1,
+      "triggers": [
+        {
+          "eligible_request_step": 15,
+          "evidence_sha256": "ed73d71a395d230273f8ca8dd33146ee4d92f17df5ae090039074a0c92c1c5dd",
+          "receipt_id": "trrc_014_ed73d71a395d",
+          "source_step": 14
+        }
+      ]
+    },
+    {
+      "base_detector_byte_equivalent": true,
+      "detector_audit_sha256": "af58aab2a6c0f28a43066eba37f8296b9a23101638faf73258877fdefd37bec2",
+      "episode_id": "RecipeAddMultipleRecipesFromMarkor2_20260806_92d8511a",
+      "history_mismatch_steps": [],
+      "memory_mismatch_steps": [],
+      "prompt_mismatch_steps": [],
+      "reward": 0.0,
+      "success": false,
+      "task_name": "RecipeAddMultipleRecipesFromMarkor2",
+      "trigger_count": 1,
+      "triggers": [
+        {
+          "eligible_request_step": 20,
+          "evidence_sha256": "d354af31072b4b52fab4dd17ded97ecd790d980c75f3badce28cb951ffec2006",
+          "receipt_id": "trrc_019_d354af31072b",
+          "source_step": 19
+        }
+      ]
+    },
+    {
+      "base_detector_byte_equivalent": true,
+      "detector_audit_sha256": "4f033fb67a791928865ca25528c3631757a5c3cbd7d36c1f1a38d3205df55968",
+      "episode_id": "SaveCopyOfReceiptTaskEval_20260806_289b77f0",
+      "history_mismatch_steps": [],
+      "memory_mismatch_steps": [],
+      "prompt_mismatch_steps": [],
+      "reward": 0.0,
+      "success": false,
+      "task_name": "SaveCopyOfReceiptTaskEval",
+      "trigger_count": 0,
+      "triggers": []
+    },
+    {
+      "base_detector_byte_equivalent": true,
+      "detector_audit_sha256": "1b3570a3dc465d2598f8f808da99056801406f419256b5743d340aeb5fd0ccae",
+      "episode_id": "SportsTrackerActivitiesOnDate_20260806_d2df83f9",
+      "history_mismatch_steps": [],
+      "memory_mismatch_steps": [],
+      "prompt_mismatch_steps": [],
+      "reward": 0.0,
+      "success": false,
+      "task_name": "SportsTrackerActivitiesOnDate",
+      "trigger_count": 0,
+      "triggers": []
+    },
+    {
+      "base_detector_byte_equivalent": true,
+      "detector_audit_sha256": "1063a40e63085b19857cd26e7ee4e3ceab3788305f21075d83d1034b89178942",
+      "episode_id": "SportsTrackerTotalDistanceForCategoryOverInterval_20260806_35bba8b5",
+      "history_mismatch_steps": [],
+      "memory_mismatch_steps": [],
+      "prompt_mismatch_steps": [],
+      "reward": 0.0,
+      "success": false,
+      "task_name": "SportsTrackerTotalDistanceForCategoryOverInterval",
+      "trigger_count": 0,
+      "triggers": []
+    }
+  ],
+  "errors": [],
+  "generation_calls": 0,
+  "schema": "sys_trrc_r2_detector_replay_v1",
+  "source": {
+    "checkpoint_file_sha256": "5c4e433f8ce1fd53e1efc56c513c20116dd8479791391bc0b163c298dcecf621",
+    "suite_id": "official_qwen_20260814T145307_50081981",
+    "valid_episode_count": 19
+  },
+  "status": "PASS",
+  "success_preservation_risks": [],
+  "summary": {
+    "activation_task": "BrowserMultiply",
+    "all_base_detector_byte_equivalent": true,
+    "failed_positive_task_count": 8,
+    "positive_episode_count": 8,
+    "success_positive_task_count": 0
+  }
+}

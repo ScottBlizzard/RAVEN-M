@@ -1,0 +1,192 @@
+{
+  "content_sha256": "ab0fa6988d4d745139874b5af4d948943d06637023116443983984900250b75a",
+  "errors": [],
+  "generation_calls": 0,
+  "opportunities": [
+    {
+      "eligible_request_step": 14,
+      "episode_id": "BrowserMultiply_20260806_54623170",
+      "modes": {
+        "full": {
+          "receipt_id": "trrc_013_99fe3b903d12",
+          "request_text_sha256": "7ad6d45fafdf9873cc3b0d403367c09f4e4309517fdf2d8deaae80e3031c51f2",
+          "system_prompt": "You are a bounded auxiliary reasoner. You do not act, terminate, edit memory,\nor decide whether the task is complete.\n\nIdentify the currently recurring or visibly unsupported approach and provide\none materially different, screenshot-grounded recovery strategy for the next\ndecision.\n\nUse only the supplied task goal, current screenshot, exact R2 ledger, bounded\nrecent executed-action summaries, and detector evidence. The current screenshot\nis authoritative. Do not use hidden UI, evaluator information, future state,\nor outside task knowledge. Return exactly three single-line fields:\n\nASSESSMENT: <brief visible-evidence assessment>\nRECOMMENDATION: <one concise suggestion for the executor's next decision>\nVISIBLE_CHECK: <what visible evidence the executor should inspect next>",
+          "user_prompt": "TASK GOAL:\nOpen the file task.html in Downloads in the file manager; when prompted open it with Chrome. Then click the button 5 times, remember the numbers displayed, and enter their product in the form.\n\nCURRENT COMPACT R2 LEDGER:\nVERIFIED: page loaded with interactive button\nPENDING: click button 4 more times to record all 5 numbers\n\nRECENT EXECUTED ACTION SUMMARIES:\n1. Tap on \"Just once\" to open the task.html file with Chrome.\n2. Wait for 2 seconds to allow the page to load completely.\n3. Click on the \"Click Me\" button.\n4. Click on the \"Click Me\" button.\n\nDETERMINISTIC DETECTOR EVIDENCE:\nThe same canonical action family was executed twice consecutively. Each transition had the same RGB shape and at most 0.001 of pixels changed by more than five intensity levels. Family: same tap area.\n\nReturn exactly the required three fields."
+        },
+        "generic": {
+          "receipt_id": "trrc_013_99fe3b903d12",
+          "request_text_sha256": "457aef4fe4b19d70f1aa8641241033fa108f36bb4decc58e39406daaf1398f9c",
+          "system_prompt": "You are a bounded auxiliary reasoner. You do not act, terminate, edit memory,\nor decide whether the task is complete.\n\nIndependently review the supplied visible evidence and provide one concise\nnext-decision suggestion.\n\nUse only the supplied task goal, current screenshot, exact R2 ledger, bounded\nrecent executed-action summaries, and detector evidence. The current screenshot\nis authoritative. Do not use hidden UI, evaluator information, future state,\nor outside task knowledge. Return exactly three single-line fields:\n\nASSESSMENT: <brief visible-evidence assessment>\nRECOMMENDATION: <one concise suggestion for the executor's next decision>\nVISIBLE_CHECK: <what visible evidence the executor should inspect next>",
+          "user_prompt": "TASK GOAL:\nOpen the file task.html in Downloads in the file manager; when prompted open it with Chrome. Then click the button 5 times, remember the numbers displayed, and enter their product in the form.\n\nCURRENT COMPACT R2 LEDGER:\nVERIFIED: page loaded with interactive button\nPENDING: click button 4 more times to record all 5 numbers\n\nRECENT EXECUTED ACTION SUMMARIES:\n1. Tap on \"Just once\" to open the task.html file with Chrome.\n2. Wait for 2 seconds to allow the page to load completely.\n3. Click on the \"Click Me\" button.\n4. Click on the \"Click Me\" button.\n\nDETERMINISTIC DETECTOR EVIDENCE:\nThe same canonical action family was executed twice consecutively. Each transition had the same RGB shape and at most 0.001 of pixels changed by more than five intensity levels. Family: same tap area.\n\nReturn exactly the required three fields."
+        }
+      },
+      "ordinal": 1,
+      "png_file": "01_BrowserMultiply_step_014.png",
+      "png_sha256": "a27b55b0da87e7fa139f263964640c54cead6037e7a78726be73d3ceb3c42772",
+      "task_name": "BrowserMultiply"
+    },
+    {
+      "eligible_request_step": 14,
+      "episode_id": "ExpenseAddMultipleFromMarkor_20260806_faf5c468",
+      "modes": {
+        "full": {
+          "receipt_id": "trrc_013_9c5b58571078",
+          "request_text_sha256": "1cd9cf1e085d63d325752838aba282d20453ae5fcaa4e3e3b5bdb71ed4d979cd",
+          "system_prompt": "You are a bounded auxiliary reasoner. You do not act, terminate, edit memory,\nor decide whether the task is complete.\n\nIdentify the currently recurring or visibly unsupported approach and provide\none materially different, screenshot-grounded recovery strategy for the next\ndecision.\n\nUse only the supplied task goal, current screenshot, exact R2 ledger, bounded\nrecent executed-action summaries, and detector evidence. The current screenshot\nis authoritative. Do not use hidden UI, evaluator information, future state,\nor outside task knowledge. Return exactly three single-line fields:\n\nASSESSMENT: <brief visible-evidence assessment>\nRECOMMENDATION: <one concise suggestion for the executor's next decision>\nVISIBLE_CHECK: <what visible evidence the executor should inspect next>",
+          "user_prompt": "TASK GOAL:\nGo through the transactions in my_expenses.txt in Markor. Log the reimbursable transactions in the pro expense.\n\nCURRENT COMPACT R2 LEDGER:\nVERIFIED: none\nPENDING: log reimbursable transactions in pro expense app\n\nRECENT EXECUTED ACTION SUMMARIES:\n1. Type the name of the first reimbursable transaction in the 'Name' field.\n2. Type the amount of the first reimbursable transaction into the 'Amount' field.\n3. Complete typing \"Reimbursable Transaction\" in the 'Name' field.\n4. Complete typing \"Reimbursable Transaction\" in the 'Name' field.\n\nDETERMINISTIC DETECTOR EVIDENCE:\nThe same canonical action family was executed twice consecutively. Each transition had the same RGB shape and at most 0.001 of pixels changed by more than five intensity levels. Family: same typed-text.\n\nReturn exactly the required three fields."
+        },
+        "generic": {
+          "receipt_id": "trrc_013_9c5b58571078",
+          "request_text_sha256": "6fad57bdc15def336f1f5b53eb151bf5867eed6d0ac5c7538d4ddae1e7e4f845",
+          "system_prompt": "You are a bounded auxiliary reasoner. You do not act, terminate, edit memory,\nor decide whether the task is complete.\n\nIndependently review the supplied visible evidence and provide one concise\nnext-decision suggestion.\n\nUse only the supplied task goal, current screenshot, exact R2 ledger, bounded\nrecent executed-action summaries, and detector evidence. The current screenshot\nis authoritative. Do not use hidden UI, evaluator information, future state,\nor outside task knowledge. Return exactly three single-line fields:\n\nASSESSMENT: <brief visible-evidence assessment>\nRECOMMENDATION: <one concise suggestion for the executor's next decision>\nVISIBLE_CHECK: <what visible evidence the executor should inspect next>",
+          "user_prompt": "TASK GOAL:\nGo through the transactions in my_expenses.txt in Markor. Log the reimbursable transactions in the pro expense.\n\nCURRENT COMPACT R2 LEDGER:\nVERIFIED: none\nPENDING: log reimbursable transactions in pro expense app\n\nRECENT EXECUTED ACTION SUMMARIES:\n1. Type the name of the first reimbursable transaction in the 'Name' field.\n2. Type the amount of the first reimbursable transaction into the 'Amount' field.\n3. Complete typing \"Reimbursable Transaction\" in the 'Name' field.\n4. Complete typing \"Reimbursable Transaction\" in the 'Name' field.\n\nDETERMINISTIC DETECTOR EVIDENCE:\nThe same canonical action family was executed twice consecutively. Each transition had the same RGB shape and at most 0.001 of pixels changed by more than five intensity levels. Family: same typed-text.\n\nReturn exactly the required three fields."
+        }
+      },
+      "ordinal": 2,
+      "png_file": "02_ExpenseAddMultipleFromMarkor_step_014.png",
+      "png_sha256": "6b3af25bb4af986149ab6f020248be9671848ba29ad14321c7fed590bcb70b29",
+      "task_name": "ExpenseAddMultipleFromMarkor"
+    },
+    {
+      "eligible_request_step": 13,
+      "episode_id": "MarkorCreateNoteAndSms_20260806_150c1638",
+      "modes": {
+        "full": {
+          "receipt_id": "trrc_012_70e4e2057e63",
+          "request_text_sha256": "dbc7a21bc4a5c0ab3f9c28e5f85ec071ead74794361cd06b34497161dda70e5d",
+          "system_prompt": "You are a bounded auxiliary reasoner. You do not act, terminate, edit memory,\nor decide whether the task is complete.\n\nIdentify the currently recurring or visibly unsupported approach and provide\none materially different, screenshot-grounded recovery strategy for the next\ndecision.\n\nUse only the supplied task goal, current screenshot, exact R2 ledger, bounded\nrecent executed-action summaries, and detector evidence. The current screenshot\nis authoritative. Do not use hidden UI, evaluator information, future state,\nor outside task knowledge. Return exactly three single-line fields:\n\nASSESSMENT: <brief visible-evidence assessment>\nRECOMMENDATION: <one concise suggestion for the executor's next decision>\nVISIBLE_CHECK: <what visible evidence the executor should inspect next>",
+          "user_prompt": "TASK GOAL:\nCreate a new note in Markor named neat_rabbit_bS4V.md with the following text: Ignorance is bliss.. Share the entire content of the note with the phone number +14678402526 via SMS using Simple SMS Messenger\n\nCURRENT COMPACT R2 LEDGER:\nVERIFIED: note creation\nPENDING: share note content via SMS\n\nRECENT EXECUTED ACTION SUMMARIES:\n1. Tap on 'Plain Text' in the sharing menu to prepare the note content for SMS sharing.\n2. Swipe left or right on the sharing options to reveal more apps and look for Simple SMS Messenger.\n3. Swipe left on the sharing options to look for Simple SMS Messenger.\n4. Swipe left on the sharing options to look for Simple SMS Messenger.\n\nDETERMINISTIC DETECTOR EVIDENCE:\nThe same canonical action family was executed twice consecutively. Each transition had the same RGB shape and at most 0.001 of pixels changed by more than five intensity levels. Family: same swipe direction.\n\nReturn exactly the required three fields."
+        },
+        "generic": {
+          "receipt_id": "trrc_012_70e4e2057e63",
+          "request_text_sha256": "9b05f22fac9b130a5554e94cf5e99fbc9473c375fb463946c1fbd2173327069b",
+          "system_prompt": "You are a bounded auxiliary reasoner. You do not act, terminate, edit memory,\nor decide whether the task is complete.\n\nIndependently review the supplied visible evidence and provide one concise\nnext-decision suggestion.\n\nUse only the supplied task goal, current screenshot, exact R2 ledger, bounded\nrecent executed-action summaries, and detector evidence. The current screenshot\nis authoritative. Do not use hidden UI, evaluator information, future state,\nor outside task knowledge. Return exactly three single-line fields:\n\nASSESSMENT: <brief visible-evidence assessment>\nRECOMMENDATION: <one concise suggestion for the executor's next decision>\nVISIBLE_CHECK: <what visible evidence the executor should inspect next>",
+          "user_prompt": "TASK GOAL:\nCreate a new note in Markor named neat_rabbit_bS4V.md with the following text: Ignorance is bliss.. Share the entire content of the note with the phone number +14678402526 via SMS using Simple SMS Messenger\n\nCURRENT COMPACT R2 LEDGER:\nVERIFIED: note creation\nPENDING: share note content via SMS\n\nRECENT EXECUTED ACTION SUMMARIES:\n1. Tap on 'Plain Text' in the sharing menu to prepare the note content for SMS sharing.\n2. Swipe left or right on the sharing options to reveal more apps and look for Simple SMS Messenger.\n3. Swipe left on the sharing options to look for Simple SMS Messenger.\n4. Swipe left on the sharing options to look for Simple SMS Messenger.\n\nDETERMINISTIC DETECTOR EVIDENCE:\nThe same canonical action family was executed twice consecutively. Each transition had the same RGB shape and at most 0.001 of pixels changed by more than five intensity levels. Family: same swipe direction.\n\nReturn exactly the required three fields."
+        }
+      },
+      "ordinal": 3,
+      "png_file": "03_MarkorCreateNoteAndSms_step_013.png",
+      "png_sha256": "b3c1eb9c06f53e73dcba33123edbdc0b4a85dea148403eaecb9555bed5f98699",
+      "task_name": "MarkorCreateNoteAndSms"
+    },
+    {
+      "eligible_request_step": 13,
+      "episode_id": "MarkorMergeNotes_20260806_6367b3d1",
+      "modes": {
+        "full": {
+          "receipt_id": "trrc_012_50ba4d761341",
+          "request_text_sha256": "313d743af0d025dfadc17078c7b340c6730af54e8bba5cad68ed28418b078c4f",
+          "system_prompt": "You are a bounded auxiliary reasoner. You do not act, terminate, edit memory,\nor decide whether the task is complete.\n\nIdentify the currently recurring or visibly unsupported approach and provide\none materially different, screenshot-grounded recovery strategy for the next\ndecision.\n\nUse only the supplied task goal, current screenshot, exact R2 ledger, bounded\nrecent executed-action summaries, and detector evidence. The current screenshot\nis authoritative. Do not use hidden UI, evaluator information, future state,\nor outside task knowledge. Return exactly three single-line fields:\n\nASSESSMENT: <brief visible-evidence assessment>\nRECOMMENDATION: <one concise suggestion for the executor's next decision>\nVISIBLE_CHECK: <what visible evidence the executor should inspect next>",
+          "user_prompt": "TASK GOAL:\nMerge the contents of Markor notes neat_rabbit_bS4V.md, bright_bear_0kSk.md and real_house_2023_01_25.txt (in the same order) into a new Markor note named 2zo4n6Ho and save it. Add a new line between the content of each note.\n\nCURRENT COMPACT R2 LEDGER:\nVERIFIED: Content of neat_rabbit_bS4V.md copied\nPENDING: Return to main note list to open bright_bear_0kSk.md\n\nRECENT EXECUTED ACTION SUMMARIES:\n1. Tap on the back arrow to return to the main list of notes.\n2. Tap on the 'CANCEL' button to close the search interface and return to the main note list.\n3. Tap on the back arrow to return to the main list of notes.\n4. Tap on the back arrow to return to the main list of notes.\n\nDETERMINISTIC DETECTOR EVIDENCE:\nThe same canonical action family was executed twice consecutively. Each transition had the same RGB shape and at most 0.001 of pixels changed by more than five intensity levels. Family: same tap area.\n\nReturn exactly the required three fields."
+        },
+        "generic": {
+          "receipt_id": "trrc_012_50ba4d761341",
+          "request_text_sha256": "dadcc5705a5e37a24c2514936672edd68914e9753a47f9eda4f980d9056e8184",
+          "system_prompt": "You are a bounded auxiliary reasoner. You do not act, terminate, edit memory,\nor decide whether the task is complete.\n\nIndependently review the supplied visible evidence and provide one concise\nnext-decision suggestion.\n\nUse only the supplied task goal, current screenshot, exact R2 ledger, bounded\nrecent executed-action summaries, and detector evidence. The current screenshot\nis authoritative. Do not use hidden UI, evaluator information, future state,\nor outside task knowledge. Return exactly three single-line fields:\n\nASSESSMENT: <brief visible-evidence assessment>\nRECOMMENDATION: <one concise suggestion for the executor's next decision>\nVISIBLE_CHECK: <what visible evidence the executor should inspect next>",
+          "user_prompt": "TASK GOAL:\nMerge the contents of Markor notes neat_rabbit_bS4V.md, bright_bear_0kSk.md and real_house_2023_01_25.txt (in the same order) into a new Markor note named 2zo4n6Ho and save it. Add a new line between the content of each note.\n\nCURRENT COMPACT R2 LEDGER:\nVERIFIED: Content of neat_rabbit_bS4V.md copied\nPENDING: Return to main note list to open bright_bear_0kSk.md\n\nRECENT EXECUTED ACTION SUMMARIES:\n1. Tap on the back arrow to return to the main list of notes.\n2. Tap on the 'CANCEL' button to close the search interface and return to the main note list.\n3. Tap on the back arrow to return to the main list of notes.\n4. Tap on the back arrow to return to the main list of notes.\n\nDETERMINISTIC DETECTOR EVIDENCE:\nThe same canonical action family was executed twice consecutively. Each transition had the same RGB shape and at most 0.001 of pixels changed by more than five intensity levels. Family: same tap area.\n\nReturn exactly the required three fields."
+        }
+      },
+      "ordinal": 4,
+      "png_file": "04_MarkorMergeNotes_step_013.png",
+      "png_sha256": "e1e7bbe82c1693aa01b26f80671b96d7a0d52985790a557a977a1eb3f2e5bbd2",
+      "task_name": "MarkorMergeNotes"
+    },
+    {
+      "eligible_request_step": 15,
+      "episode_id": "OsmAndTrack_20260806_1823722c",
+      "modes": {
+        "full": {
+          "receipt_id": "trrc_014_4a741530f182",
+          "request_text_sha256": "94222b8ff1f382d7ea8ed94d6e6713d5f08eebc66335b619fe8731ab9b848418",
+          "system_prompt": "You are a bounded auxiliary reasoner. You do not act, terminate, edit memory,\nor decide whether the task is complete.\n\nIdentify the currently recurring or visibly unsupported approach and provide\none materially different, screenshot-grounded recovery strategy for the next\ndecision.\n\nUse only the supplied task goal, current screenshot, exact R2 ledger, bounded\nrecent executed-action summaries, and detector evidence. The current screenshot\nis authoritative. Do not use hidden UI, evaluator information, future state,\nor outside task knowledge. Return exactly three single-line fields:\n\nASSESSMENT: <brief visible-evidence assessment>\nRECOMMENDATION: <one concise suggestion for the executor's next decision>\nVISIBLE_CHECK: <what visible evidence the executor should inspect next>",
+          "user_prompt": "TASK GOAL:\nSave a track with waypoints Oberplanken, Liechtenstein, Rotenboden, Liechtenstein, Planken, Liechtenstein in the OsmAnd maps app in the same order as listed.\n\nCURRENT COMPACT R2 LEDGER:\nVERIFIED: none\nPENDING: Search for Rotenboden, Liechtenstein\n\nRECENT EXECUTED ACTION SUMMARIES:\n1. Tap on the 'X' icon in the search bar to clear the current search query.\n2. Type \"Rotenboden, Liechtenstein\" into the search bar.\n3. Type Rotenboden, Liechtenstein into the search bar.\n4. Type \"Rotenboden, Liechtenstein\" into the search bar.\n\nDETERMINISTIC DETECTOR EVIDENCE:\nThe same canonical action family was executed twice consecutively. Each transition had the same RGB shape and at most 0.001 of pixels changed by more than five intensity levels. Family: same typed-text.\n\nReturn exactly the required three fields."
+        },
+        "generic": {
+          "receipt_id": "trrc_014_4a741530f182",
+          "request_text_sha256": "96c8eb62e258ed5855346f572cf9c505a42d4737bdfe6c987815b913a13c1dda",
+          "system_prompt": "You are a bounded auxiliary reasoner. You do not act, terminate, edit memory,\nor decide whether the task is complete.\n\nIndependently review the supplied visible evidence and provide one concise\nnext-decision suggestion.\n\nUse only the supplied task goal, current screenshot, exact R2 ledger, bounded\nrecent executed-action summaries, and detector evidence. The current screenshot\nis authoritative. Do not use hidden UI, evaluator information, future state,\nor outside task knowledge. Return exactly three single-line fields:\n\nASSESSMENT: <brief visible-evidence assessment>\nRECOMMENDATION: <one concise suggestion for the executor's next decision>\nVISIBLE_CHECK: <what visible evidence the executor should inspect next>",
+          "user_prompt": "TASK GOAL:\nSave a track with waypoints Oberplanken, Liechtenstein, Rotenboden, Liechtenstein, Planken, Liechtenstein in the OsmAnd maps app in the same order as listed.\n\nCURRENT COMPACT R2 LEDGER:\nVERIFIED: none\nPENDING: Search for Rotenboden, Liechtenstein\n\nRECENT EXECUTED ACTION SUMMARIES:\n1. Tap on the 'X' icon in the search bar to clear the current search query.\n2. Type \"Rotenboden, Liechtenstein\" into the search bar.\n3. Type Rotenboden, Liechtenstein into the search bar.\n4. Type \"Rotenboden, Liechtenstein\" into the search bar.\n\nDETERMINISTIC DETECTOR EVIDENCE:\nThe same canonical action family was executed twice consecutively. Each transition had the same RGB shape and at most 0.001 of pixels changed by more than five intensity levels. Family: same typed-text.\n\nReturn exactly the required three fields."
+        }
+      },
+      "ordinal": 5,
+      "png_file": "05_OsmAndTrack_step_015.png",
+      "png_sha256": "34ce06895d872ab53748cca27475169294e36f4b1c0a5eb6fe7c170bdec32e13",
+      "task_name": "OsmAndTrack"
+    },
+    {
+      "eligible_request_step": 6,
+      "episode_id": "RecipeAddMultipleRecipesFromImage_20260806_4c0dccd5",
+      "modes": {
+        "full": {
+          "receipt_id": "trrc_005_34b40e47f3e0",
+          "request_text_sha256": "25d27d708e813ec2ad07d876f0c66ac29b1b2b7cc2cbf6c7c30d3c564d797e23",
+          "system_prompt": "You are a bounded auxiliary reasoner. You do not act, terminate, edit memory,\nor decide whether the task is complete.\n\nIdentify the currently recurring or visibly unsupported approach and provide\none materially different, screenshot-grounded recovery strategy for the next\ndecision.\n\nUse only the supplied task goal, current screenshot, exact R2 ledger, bounded\nrecent executed-action summaries, and detector evidence. The current screenshot\nis authoritative. Do not use hidden UI, evaluator information, future state,\nor outside task knowledge. Return exactly three single-line fields:\n\nASSESSMENT: <brief visible-evidence assessment>\nRECOMMENDATION: <one concise suggestion for the executor's next decision>\nVISIBLE_CHECK: <what visible evidence the executor should inspect next>",
+          "user_prompt": "TASK GOAL:\nAdd the recipes from recipes.jpg in Simple Gallery Pro to the Broccoli recipe app.\n\nCURRENT COMPACT R2 LEDGER:\nVERIFIED: none\nPENDING: Open Simple Gallery Pro to locate recipes.jpg\n\nRECENT EXECUTED ACTION SUMMARIES:\n1. Swipe up in the app drawer to reveal more apps and locate Simple Gallery Pro.\n2. Swipe up in the app drawer to reveal more apps and locate Simple Gallery Pro.\n3. Swipe up in the app drawer to reveal more apps and locate Simple Gallery Pro.\n4. Swipe up in the app drawer to reveal more apps and locate Simple Gallery Pro.\n\nDETERMINISTIC DETECTOR EVIDENCE:\nThe same canonical action family was executed twice consecutively. Each transition had the same RGB shape and at most 0.001 of pixels changed by more than five intensity levels. Family: same swipe direction.\n\nReturn exactly the required three fields."
+        },
+        "generic": {
+          "receipt_id": "trrc_005_34b40e47f3e0",
+          "request_text_sha256": "ba84d53056583303f49b881973817b91941a2935519968dcfbe2ca0434e55aa8",
+          "system_prompt": "You are a bounded auxiliary reasoner. You do not act, terminate, edit memory,\nor decide whether the task is complete.\n\nIndependently review the supplied visible evidence and provide one concise\nnext-decision suggestion.\n\nUse only the supplied task goal, current screenshot, exact R2 ledger, bounded\nrecent executed-action summaries, and detector evidence. The current screenshot\nis authoritative. Do not use hidden UI, evaluator information, future state,\nor outside task knowledge. Return exactly three single-line fields:\n\nASSESSMENT: <brief visible-evidence assessment>\nRECOMMENDATION: <one concise suggestion for the executor's next decision>\nVISIBLE_CHECK: <what visible evidence the executor should inspect next>",
+          "user_prompt": "TASK GOAL:\nAdd the recipes from recipes.jpg in Simple Gallery Pro to the Broccoli recipe app.\n\nCURRENT COMPACT R2 LEDGER:\nVERIFIED: none\nPENDING: Open Simple Gallery Pro to locate recipes.jpg\n\nRECENT EXECUTED ACTION SUMMARIES:\n1. Swipe up in the app drawer to reveal more apps and locate Simple Gallery Pro.\n2. Swipe up in the app drawer to reveal more apps and locate Simple Gallery Pro.\n3. Swipe up in the app drawer to reveal more apps and locate Simple Gallery Pro.\n4. Swipe up in the app drawer to reveal more apps and locate Simple Gallery Pro.\n\nDETERMINISTIC DETECTOR EVIDENCE:\nThe same canonical action family was executed twice consecutively. Each transition had the same RGB shape and at most 0.001 of pixels changed by more than five intensity levels. Family: same swipe direction.\n\nReturn exactly the required three fields."
+        }
+      },
+      "ordinal": 6,
+      "png_file": "06_RecipeAddMultipleRecipesFromImage_step_006.png",
+      "png_sha256": "d9906a42970fec9764f903b2a4a9edeaf7d47d713b996cacc40104113ba67351",
+      "task_name": "RecipeAddMultipleRecipesFromImage"
+    },
+    {
+      "eligible_request_step": 15,
+      "episode_id": "RecipeAddMultipleRecipesFromMarkor_20260806_154a3c03",
+      "modes": {
+        "full": {
+          "receipt_id": "trrc_014_ed73d71a395d",
+          "request_text_sha256": "21b28af9de013ec7c10c6599deeb5a99b45177ef87083eb3d6fc5efde60786f2",
+          "system_prompt": "You are a bounded auxiliary reasoner. You do not act, terminate, edit memory,\nor decide whether the task is complete.\n\nIdentify the currently recurring or visibly unsupported approach and provide\none materially different, screenshot-grounded recovery strategy for the next\ndecision.\n\nUse only the supplied task goal, current screenshot, exact R2 ledger, bounded\nrecent executed-action summaries, and detector evidence. The current screenshot\nis authoritative. Do not use hidden UI, evaluator information, future state,\nor outside task knowledge. Return exactly three single-line fields:\n\nASSESSMENT: <brief visible-evidence assessment>\nRECOMMENDATION: <one concise suggestion for the executor's next decision>\nVISIBLE_CHECK: <what visible evidence the executor should inspect next>",
+          "user_prompt": "TASK GOAL:\nAdd the recipes from recipes.txt in Markor to the Broccoli recipe app.\n\nCURRENT COMPACT R2 LEDGER:\nVERIFIED: content copied\nPENDING: switch to Broccoli app\n\nRECENT EXECUTED ACTION SUMMARIES:\n1. Tap on the green plus button at the bottom right corner to start adding a new recipe.\n2. Tap on the Title field to start pasting the recipe information.\n3. Paste the copied recipe content into the Title field.\n4. Paste the copied recipe content into the Title field.\n\nDETERMINISTIC DETECTOR EVIDENCE:\nThe same canonical action family was executed twice consecutively. Each transition had the same RGB shape and at most 0.001 of pixels changed by more than five intensity levels. Family: same tap area.\n\nReturn exactly the required three fields."
+        },
+        "generic": {
+          "receipt_id": "trrc_014_ed73d71a395d",
+          "request_text_sha256": "9222130be86e17f3ae3963525bf4e6893bb20e4f4ab46b97ab81186a87bd9966",
+          "system_prompt": "You are a bounded auxiliary reasoner. You do not act, terminate, edit memory,\nor decide whether the task is complete.\n\nIndependently review the supplied visible evidence and provide one concise\nnext-decision suggestion.\n\nUse only the supplied task goal, current screenshot, exact R2 ledger, bounded\nrecent executed-action summaries, and detector evidence. The current screenshot\nis authoritative. Do not use hidden UI, evaluator information, future state,\nor outside task knowledge. Return exactly three single-line fields:\n\nASSESSMENT: <brief visible-evidence assessment>\nRECOMMENDATION: <one concise suggestion for the executor's next decision>\nVISIBLE_CHECK: <what visible evidence the executor should inspect next>",
+          "user_prompt": "TASK GOAL:\nAdd the recipes from recipes.txt in Markor to the Broccoli recipe app.\n\nCURRENT COMPACT R2 LEDGER:\nVERIFIED: content copied\nPENDING: switch to Broccoli app\n\nRECENT EXECUTED ACTION SUMMARIES:\n1. Tap on the green plus button at the bottom right corner to start adding a new recipe.\n2. Tap on the Title field to start pasting the recipe information.\n3. Paste the copied recipe content into the Title field.\n4. Paste the copied recipe content into the Title field.\n\nDETERMINISTIC DETECTOR EVIDENCE:\nThe same canonical action family was executed twice consecutively. Each transition had the same RGB shape and at most 0.001 of pixels changed by more than five intensity levels. Family: same tap area.\n\nReturn exactly the required three fields."
+        }
+      },
+      "ordinal": 7,
+      "png_file": "07_RecipeAddMultipleRecipesFromMarkor_step_015.png",
+      "png_sha256": "221de9bb236b62c51cb96270db152ca5347c7e88dc94705628365d5b1afa9355",
+      "task_name": "RecipeAddMultipleRecipesFromMarkor"
+    },
+    {
+      "eligible_request_step": 20,
+      "episode_id": "RecipeAddMultipleRecipesFromMarkor2_20260806_92d8511a",
+      "modes": {
+        "full": {
+          "receipt_id": "trrc_019_d354af31072b",
+          "request_text_sha256": "9b7776194a4659c83e7ab33415caa00f19ac901166a1e7e415f291ed6613617e",
+          "system_prompt": "You are a bounded auxiliary reasoner. You do not act, terminate, edit memory,\nor decide whether the task is complete.\n\nIdentify the currently recurring or visibly unsupported approach and provide\none materially different, screenshot-grounded recovery strategy for the next\ndecision.\n\nUse only the supplied task goal, current screenshot, exact R2 ledger, bounded\nrecent executed-action summaries, and detector evidence. The current screenshot\nis authoritative. Do not use hidden UI, evaluator information, future state,\nor outside task knowledge. Return exactly three single-line fields:\n\nASSESSMENT: <brief visible-evidence assessment>\nRECOMMENDATION: <one concise suggestion for the executor's next decision>\nVISIBLE_CHECK: <what visible evidence the executor should inspect next>",
+          "user_prompt": "TASK GOAL:\nAdd the recipes from recipes.txt in Markor that take 2 hrs to prepare into the Broccoli recipe app.\n\nCURRENT COMPACT R2 LEDGER:\nVERIFIED: Broccoli app open and ready for adding recipes\nPENDING: add copied recipes\n\nRECENT EXECUTED ACTION SUMMARIES:\n1. Tap on the Title field to start entering the recipe title.\n2. Type \"Zucchini Noodles with Pesto\" into the Title field.\n3. Paste the copied Zucchini Noodles with Pesto recipe details into the Description field.\n4. Paste the copied Zucchini Noodles with Pesto recipe details into the Description field.\n\nDETERMINISTIC DETECTOR EVIDENCE:\nThe same canonical action family was executed twice consecutively. Each transition had the same RGB shape and at most 0.001 of pixels changed by more than five intensity levels. Family: same tap area.\n\nReturn exactly the required three fields."
+        },
+        "generic": {
+          "receipt_id": "trrc_019_d354af31072b",
+          "request_text_sha256": "b247a4bf3615c2ec59821e1de4301054939805f8916871364e6db54686c094c7",
+          "system_prompt": "You are a bounded auxiliary reasoner. You do not act, terminate, edit memory,\nor decide whether the task is complete.\n\nIndependently review the supplied visible evidence and provide one concise\nnext-decision suggestion.\n\nUse only the supplied task goal, current screenshot, exact R2 ledger, bounded\nrecent executed-action summaries, and detector evidence. The current screenshot\nis authoritative. Do not use hidden UI, evaluator information, future state,\nor outside task knowledge. Return exactly three single-line fields:\n\nASSESSMENT: <brief visible-evidence assessment>\nRECOMMENDATION: <one concise suggestion for the executor's next decision>\nVISIBLE_CHECK: <what visible evidence the executor should inspect next>",
+          "user_prompt": "TASK GOAL:\nAdd the recipes from recipes.txt in Markor that take 2 hrs to prepare into the Broccoli recipe app.\n\nCURRENT COMPACT R2 LEDGER:\nVERIFIED: Broccoli app open and ready for adding recipes\nPENDING: add copied recipes\n\nRECENT EXECUTED ACTION SUMMARIES:\n1. Tap on the Title field to start entering the recipe title.\n2. Type \"Zucchini Noodles with Pesto\" into the Title field.\n3. Paste the copied Zucchini Noodles with Pesto recipe details into the Description field.\n4. Paste the copied Zucchini Noodles with Pesto recipe details into the Description field.\n\nDETERMINISTIC DETECTOR EVIDENCE:\nThe same canonical action family was executed twice consecutively. Each transition had the same RGB shape and at most 0.001 of pixels changed by more than five intensity levels. Family: same tap area.\n\nReturn exactly the required three fields."
+        }
+      },
+      "ordinal": 8,
+      "png_file": "08_RecipeAddMultipleRecipesFromMarkor2_step_020.png",
+      "png_sha256": "435f407f7c048a28b235370c1d44aef26c1249dae0960a8ce0fdfaf5d0ea57d8",
+      "task_name": "RecipeAddMultipleRecipesFromMarkor2"
+    }
+  ],
+  "opportunity_count": 8,
+  "schema": "sys_trrc_token_projection_inputs_v1",
+  "source": {
+    "checkpoint_file_sha256": "5c4e433f8ce1fd53e1efc56c513c20116dd8479791391bc0b163c298dcecf621",
+    "detector_replay_content_sha256": "ed47170cdceb0ea4354ac04c3761a9ae1a5d5a03458c027aea871ce0c739c55b",
+    "suite_id": "official_qwen_20260814T145307_50081981",
+    "valid_episode_count": 19
+  },
+  "status": "PASS"
+}

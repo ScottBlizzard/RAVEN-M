@@ -203,6 +203,7 @@ class OfficialQwenMobileController:
         source_document_coverage_gate: SourceDocumentCoverageGate | None = None,
         stop_after_markor_source_exit: bool = False,
         working_memory: EpisodeMemory | None = None,
+        recovery_policy: Any | None = None,
         cost_guard: RepeatedNoProgressGuard | None = None,
     ) -> None:
         self.client = client
@@ -215,6 +216,7 @@ class OfficialQwenMobileController:
         self.source_document_coverage_gate = source_document_coverage_gate
         self.stop_after_markor_source_exit = bool(stop_after_markor_source_exit)
         self.working_memory = working_memory
+        self.recovery_policy = recovery_policy
         self.cost_guard = cost_guard
 
     def _committed_history_summary(
@@ -336,6 +338,9 @@ class OfficialQwenMobileController:
         effective_goal = initial_goal
         history: list[str] = []
         steps: list[dict[str, Any]] = []
+        auxiliary_model_call_attempts: list[dict[str, Any]] = []
+        recovery_detector_cpu_seconds = 0.0
+        recovery_projection_cpu_seconds = 0.0
         task_initialized = False
         termination_reason = "max_steps"
         claimed_status: str | None = None
@@ -343,40 +348,43 @@ class OfficialQwenMobileController:
         error: dict[str, Any] | None = None
         lifecycle_errors: list[dict[str, Any]] = []
 
-        log(
-            {
-                "event": "episode_start",
-                "episode_id": episode_id,
-                "seed": seed,
-                "task_name": str(task.name),
-                "task_goal_before_initialization": initial_goal,
-                "task_params": _json_safe(task.params),
-                "max_steps": self.max_steps,
-                "max_tokens": self.max_tokens,
-                "baseline": "qwen3_vl_32b_official_public_recipe_port",
-                "reference_notebook_model": "qwen3vl-235A22-instruct",
-                "experiment_model": "Qwen/Qwen3-VL-32B-Instruct",
-                "official_repository": OFFICIAL_QWEN_REPOSITORY,
-                "official_commit": OFFICIAL_QWEN_COMMIT,
-                "official_notebook": OFFICIAL_QWEN_NOTEBOOK,
-                "official_system_prompt_sha256": prompt_sha,
-                "generation_sampling": getattr(self.client, "sampling", None),
-                "history_policy": self.history_policy,
-                "image_policy": "current_screenshot_only",
-                "swipe_duration_ms": DEFAULT_SWIPE_DURATION_MS,
-                "run_metadata": self.run_metadata,
-                "memory_mechanism": (
-                    self.working_memory.audit_record()
-                    if self.working_memory is not None
-                    else None
-                ),
-                "cost_guard": (
-                    self.cost_guard.audit_record()
-                    if self.cost_guard is not None
-                    else None
-                ),
-            }
-        )
+        episode_start_event = {
+            "event": "episode_start",
+            "episode_id": episode_id,
+            "seed": seed,
+            "task_name": str(task.name),
+            "task_goal_before_initialization": initial_goal,
+            "task_params": _json_safe(task.params),
+            "max_steps": self.max_steps,
+            "max_tokens": self.max_tokens,
+            "baseline": "qwen3_vl_32b_official_public_recipe_port",
+            "reference_notebook_model": "qwen3vl-235A22-instruct",
+            "experiment_model": "Qwen/Qwen3-VL-32B-Instruct",
+            "official_repository": OFFICIAL_QWEN_REPOSITORY,
+            "official_commit": OFFICIAL_QWEN_COMMIT,
+            "official_notebook": OFFICIAL_QWEN_NOTEBOOK,
+            "official_system_prompt_sha256": prompt_sha,
+            "generation_sampling": getattr(self.client, "sampling", None),
+            "history_policy": self.history_policy,
+            "image_policy": "current_screenshot_only",
+            "swipe_duration_ms": DEFAULT_SWIPE_DURATION_MS,
+            "run_metadata": self.run_metadata,
+            "memory_mechanism": (
+                self.working_memory.audit_record()
+                if self.working_memory is not None
+                else None
+            ),
+            "cost_guard": (
+                self.cost_guard.audit_record()
+                if self.cost_guard is not None
+                else None
+            ),
+        }
+        if self.recovery_policy is not None:
+            episode_start_event["recovery_mechanism"] = (
+                self.recovery_policy.audit_record()
+            )
+        log(episode_start_event)
         try:
             env.reset(go_home=True)
             hide_automation_ui = getattr(env, "hide_automation_ui", None)
@@ -408,6 +416,132 @@ class OfficialQwenMobileController:
                     label=f"step_{step_index:03d}_before",
                 )
                 screenshot = episode_dir / str(before["screenshot"])
+                recovery_step: dict[str, Any] | None = None
+                recovery_text = ""
+                recovery_injection: dict[str, Any] | None = None
+                auxiliary_attempt: dict[str, Any] | None = None
+                if self.recovery_policy is not None:
+                    recovery_step = {
+                        "auxiliary_call_attempt_index": None,
+                        "normal_injection": None,
+                    }
+                    recovery_prepare_started = time.perf_counter()
+                    prepared_aux = self.recovery_policy.prepare_aux(
+                        context={
+                            "request_step": step_index,
+                            "goal": effective_goal,
+                            "history": list(history),
+                            "recent_action_summaries": list(history[-4:]),
+                            "r2_memory_audit": (
+                                self.working_memory.audit_record()
+                                if self.working_memory is not None
+                                else {}
+                            ),
+                            "current_screenshot_sha256": before["screenshot_sha256"],
+                            "current_screenshot_path": str(screenshot.resolve()),
+                            "current_pixel_sha256": before["pixel_sha256"],
+                        }
+                    )
+                    recovery_prepare_seconds = (
+                        time.perf_counter() - recovery_prepare_started
+                    )
+                    recovery_projection_cpu_seconds += recovery_prepare_seconds
+                    recovery_step["prepare_aux_seconds"] = recovery_prepare_seconds
+                    if prepared_aux is not None:
+                        if any(
+                            attempt.get("model_call") is not None
+                            for attempt in auxiliary_model_call_attempts
+                        ):
+                            raise RuntimeError(
+                                "Recovery policy attempted more than one auxiliary model call"
+                            )
+                        if not isinstance(prepared_aux, dict):
+                            raise RuntimeError("Recovery auxiliary preparation must be a dict")
+                        aux_ticket_id = str(prepared_aux.get("ticket_id") or "")
+                        aux_system_prompt = str(
+                            prepared_aux.get("system_prompt") or ""
+                        )
+                        aux_user_prompt = str(prepared_aux.get("user_prompt") or "")
+                        if not aux_ticket_id or not aux_system_prompt or not aux_user_prompt:
+                            raise RuntimeError(
+                                "Recovery auxiliary preparation is missing a required field"
+                            )
+                        try:
+                            aux_max_tokens = int(
+                                prepared_aux.get("max_tokens", self.max_tokens)
+                            )
+                        except (TypeError, ValueError) as exc:
+                            raise RuntimeError(
+                                "Recovery auxiliary max_tokens is invalid"
+                            ) from exc
+                        if aux_max_tokens < 1 or aux_max_tokens > self.max_tokens:
+                            raise RuntimeError(
+                                "Recovery auxiliary max_tokens exceeds controller bounds"
+                            )
+                        auxiliary_attempt = {
+                            "role": "aux_recovery",
+                            "request_step": step_index,
+                            "preparation": _json_safe(prepared_aux),
+                            "model_call": None,
+                        }
+                        auxiliary_model_call_attempts.append(auxiliary_attempt)
+                        recovery_step["auxiliary_call_attempt_index"] = (
+                            len(auxiliary_model_call_attempts) - 1
+                        )
+                        try:
+                            auxiliary_call = self.client.generate(
+                                image_path=screenshot,
+                                system_prompt=aux_system_prompt,
+                                user_prompt=aux_user_prompt,
+                                episode_id=episode_id,
+                                call_label=f"aux_recovery_{step_index:03d}",
+                                max_tokens=aux_max_tokens,
+                                context_images=[],
+                                user_prompt_before_image=True,
+                                current_image_label=None,
+                                request_timeout_seconds=60.0,
+                            )
+                        except Exception as exc:
+                            auxiliary_attempt["error"] = {
+                                "type": type(exc).__name__,
+                                "message": str(exc),
+                            }
+                            if hasattr(self.recovery_policy, "cancel_aux"):
+                                auxiliary_attempt["cancellation"] = (
+                                    self.recovery_policy.cancel_aux(
+                                        aux_ticket_id,
+                                        f"model_transport_failure:{type(exc).__name__}",
+                                    )
+                                )
+                            log({"event": "aux_recovery_call", **auxiliary_attempt})
+                            raise
+                        auxiliary_call_audit = auxiliary_call.audit_record()
+                        auxiliary_attempt["model_call"] = auxiliary_call_audit
+                        auxiliary_attempt["commit"] = self.recovery_policy.commit_aux(
+                            aux_ticket_id, auxiliary_call
+                        )
+                        aux_commit = auxiliary_attempt["commit"]
+                        if not isinstance(aux_commit, dict):
+                            raise RuntimeError(
+                                "Recovery auxiliary commit must be a dict"
+                            )
+                        recovery_text = str(aux_commit.get("injection_text") or "")
+                        injection_ticket_id = aux_commit.get("injection_ticket_id")
+                        if bool(recovery_text) != bool(injection_ticket_id):
+                            raise RuntimeError(
+                                "Recovery auxiliary text and injection ticket must be paired"
+                            )
+                        recovery_injection = {
+                            "ticket_id": injection_ticket_id,
+                            "source_auxiliary_call_id": auxiliary_call.call_id,
+                        }
+                        recovery_injection["exact_injected_text"] = recovery_text
+                        recovery_injection["exact_injected_text_sha256"] = sha256(
+                            recovery_text.encode("utf-8")
+                        ).hexdigest()
+                        recovery_injection["rendered_chars"] = len(recovery_text)
+                        recovery_step["normal_injection"] = recovery_injection
+                        log({"event": "aux_recovery_call", **auxiliary_attempt})
                 memory_read: dict[str, Any] | None = None
                 rendered_memory = ""
                 prompt_history = history
@@ -457,12 +591,30 @@ class OfficialQwenMobileController:
                         base_user_prompt,
                         rendered_memory,
                     )
+                    prompt_without_recovery = user_prompt
+                    user_prompt = append_working_memory(user_prompt, recovery_text)
+                    if recovery_injection is not None and recovery_text:
+                        recovery_injection["advice_induced_executor_prompt_tokens"] = (
+                            self.recovery_policy.count_advice_prompt_tokens(
+                                prompt_without_recovery, user_prompt
+                            )
+                        )
                 except Exception as exc:
                     ticket_id = (memory_read or {}).get("ticket_id")
                     if ticket_id and hasattr(self.working_memory, "cancel_injection"):
                         self.working_memory.cancel_injection(
                             str(ticket_id), f"prompt_build_failure:{type(exc).__name__}"
                         )
+                    recovery_ticket_id = (recovery_injection or {}).get("ticket_id")
+                    if recovery_ticket_id and hasattr(
+                        self.recovery_policy, "cancel_normal_injection"
+                    ):
+                        cancellation = self.recovery_policy.cancel_normal_injection(
+                            str(recovery_ticket_id),
+                            f"prompt_build_failure:{type(exc).__name__}",
+                        )
+                        if auxiliary_attempt is not None:
+                            auxiliary_attempt["normal_injection_cancellation"] = cancellation
                     raise
                 if memory_read is not None:
                     memory_read["final_user_prompt_sha256"] = sha256(
@@ -487,6 +639,16 @@ class OfficialQwenMobileController:
                             str(ticket_id),
                             f"model_transport_failure:{type(exc).__name__}",
                         )
+                    recovery_ticket_id = (recovery_injection or {}).get("ticket_id")
+                    if recovery_ticket_id and hasattr(
+                        self.recovery_policy, "cancel_normal_injection"
+                    ):
+                        cancellation = self.recovery_policy.cancel_normal_injection(
+                            str(recovery_ticket_id),
+                            f"model_transport_failure:{type(exc).__name__}",
+                        )
+                        if auxiliary_attempt is not None:
+                            auxiliary_attempt["normal_injection_cancellation"] = cancellation
                     raise
                 if memory_read is not None:
                     memory_read["transport_confirmation"] = {
@@ -507,6 +669,38 @@ class OfficialQwenMobileController:
                                 memory_read["final_user_prompt_sha256"],
                             )
                         )
+                if recovery_injection is not None:
+                    recovery_injection["final_user_prompt_sha256"] = sha256(
+                        user_prompt.encode("utf-8")
+                    ).hexdigest()
+                    recovery_injection["transport_confirmation"] = {
+                        "model_call_id": call.call_id,
+                        "request_sha256": call.request_sha256,
+                        "response_sha256": call.response_sha256,
+                        "transport_attempts": call.raven_meta.get(
+                            "transport_attempts"
+                        ),
+                    }
+                    recovery_ticket_id = str(
+                        recovery_injection.get("ticket_id") or ""
+                    )
+                    if recovery_text and not recovery_ticket_id:
+                        raise RuntimeError(
+                            "Recovery normal injection ticket is missing"
+                        )
+                    if recovery_text:
+                        injection_commit = (
+                            self.recovery_policy.commit_normal_injection(
+                                recovery_ticket_id,
+                                recovery_injection["final_user_prompt_sha256"],
+                                call,
+                            )
+                        )
+                        if not isinstance(injection_commit, dict):
+                            raise RuntimeError(
+                                "Recovery normal injection commit must be a dict"
+                            )
+                        recovery_injection["injection_commit"] = injection_commit
                 record: dict[str, Any] = {
                     "event": "step",
                     "step": step_index,
@@ -539,6 +733,8 @@ class OfficialQwenMobileController:
                         },
                     },
                 }
+                if recovery_step is not None:
+                    record["recovery"] = recovery_step
                 try:
                     decision = parse_official_response(call.content)
                 except OfficialProtocolError as exc:
@@ -819,6 +1015,41 @@ class OfficialQwenMobileController:
                             source_response_sha256=call.response_sha256,
                             source_screenshot_sha256=str(before["screenshot_sha256"]),
                         )
+                if self.recovery_policy is not None:
+                    recovery_transition = dict(transition)
+                    recovery_transition["remaining_native_decision_slots"] = (
+                        self.max_steps - step_index - 1
+                    )
+                    recovery_observe_started = time.perf_counter()
+                    recovery_observation = (
+                        self.recovery_policy.observe_transition(
+                            source_step=step_index,
+                            action_summary=decision.action_summary,
+                            canonical_action=canonical_action,
+                            # Give the detector isolated copies so it cannot
+                            # mutate the environment state reused by the next
+                            # normal decision.
+                            before_pixels=before["pixels"].copy(),
+                            after_pixels=after["pixels"].copy(),
+                            transition=recovery_transition,
+                            source_call_id=call.call_id,
+                            source_response_sha256=call.response_sha256,
+                            source_before_screenshot_sha256=str(
+                                before["screenshot_sha256"]
+                            ),
+                            source_after_screenshot_sha256=str(
+                                after["screenshot_sha256"]
+                            ),
+                        )
+                    )
+                    recovery_detector_cpu_seconds += (
+                        time.perf_counter() - recovery_observe_started
+                    )
+                    if not isinstance(recovery_observation, dict):
+                        raise RuntimeError(
+                            "Recovery transition observation must be a dict"
+                        )
+                    record["recovery_observation"] = recovery_observation
                 steps.append(record)
                 log(record)
                 if (
@@ -893,6 +1124,28 @@ class OfficialQwenMobileController:
                     }
                 )
 
+        recovery_episode_close: Any | None = None
+        if self.recovery_policy is not None and hasattr(
+            self.recovery_policy, "close_episode"
+        ):
+            try:
+                recovery_episode_close = self.recovery_policy.close_episode(
+                    termination_reason
+                )
+            except Exception as exc:
+                termination_reason = "infrastructure_or_controller_error"
+                if error is None:
+                    error = {
+                        "type": type(exc).__name__,
+                        "message": str(exc),
+                        "traceback": traceback.format_exc(),
+                    }
+                log({"event": "recovery_close_error", "error": error})
+
+        successful_auxiliary_calls = sum(
+            int(attempt.get("model_call") is not None)
+            for attempt in auxiliary_model_call_attempts
+        )
         summary = {
             "episode_id": episode_id,
             "baseline": "qwen3_vl_32b_official_public_recipe_port",
@@ -969,6 +1222,24 @@ class OfficialQwenMobileController:
                 else None
             ),
         }
+        if self.recovery_policy is not None:
+            summary.update(
+                {
+                    "normal_decision_call_count": len(steps),
+                    "aux_recovery_call_count": successful_auxiliary_calls,
+                    "model_call_count": len(steps) + successful_auxiliary_calls,
+                    "model_call_breakdown": {
+                        "normal_decision": len(steps),
+                        "aux_recovery": successful_auxiliary_calls,
+                        "total": len(steps) + successful_auxiliary_calls,
+                    },
+                    "auxiliary_model_call_attempts": auxiliary_model_call_attempts,
+                    "recovery_episode_close": recovery_episode_close,
+                    "recovery_mechanism": self.recovery_policy.audit_record(),
+                    "recovery_detector_cpu_seconds": recovery_detector_cpu_seconds,
+                    "recovery_projection_cpu_seconds": recovery_projection_cpu_seconds,
+                }
+            )
         _write_json(episode_dir / "episode.json", summary)
         log(
             {
