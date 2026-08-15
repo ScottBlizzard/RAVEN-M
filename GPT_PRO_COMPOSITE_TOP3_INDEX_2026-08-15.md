@@ -5,6 +5,14 @@ new conversations by the forthcoming `OPEN_V2` requests. The v2 requests use
 the same three problem families while allowing Pro to reject or replace the
 investigator's initial mechanism hypothesis.
 
+## Open V2 requests — use these
+
+| Problem family | Request | Required output |
+|---|---|---|
+| Recovery after recognized failure | `GPT_PRO_OPEN_V2_RECOVERY_AFTER_FAILURE_REQUEST_2026-08-15.md` | `GPT_PRO_OPEN_V2_RECOVERY_AFTER_FAILURE_DESIGN_2026-08-15.md` |
+| Long-horizon decomposition/coordination | `GPT_PRO_OPEN_V2_LONG_HORIZON_COORDINATION_REQUEST_2026-08-15.md` | `GPT_PRO_OPEN_V2_LONG_HORIZON_COORDINATION_DESIGN_2026-08-15.md` |
+| Action-outcome/completion judgment | `GPT_PRO_OPEN_V2_OUTCOME_JUDGMENT_REQUEST_2026-08-15.md` | `GPT_PRO_OPEN_V2_OUTCOME_JUDGMENT_DESIGN_2026-08-15.md` |
+
 Use three fresh GPT Pro conversations, one per request. Do not merge their contexts or ask one Pro to solve multiple tracks.
 
 Frozen evidence commit for all three: `9f9a611728826ada1daf809dccd7613de39660ac`.
