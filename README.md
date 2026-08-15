@@ -34,6 +34,8 @@ For near-term work, those seven tracks are narrowed to three evidence-selected
 directions—triggered recovery critic, hierarchical milestone planner, and
 sparse visible-outcome verifier—documented in
 `evidence/composite/TOP3_COMPONENT_SELECTION_2026-08-15.md`.
+The three fresh-conversation launch files are listed in
+`GPT_PRO_COMPOSITE_TOP3_INDEX_2026-08-15.md`.
 
 The newest prospective vertical result is A1-R2 CVP: **6/19**, reward **6.5**,
 with all five A1 successes preserved and `OsmAndMarker` added. Its accuracy
