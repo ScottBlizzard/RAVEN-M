@@ -10,6 +10,16 @@ from urllib.request import urlopen
 ROOT=Path(__file__).resolve().parents[2]; sys.path.insert(0,str(ROOT/"implementation/src"))
 from raven_m.official_qwen_mobile import sys_trrc_contract as contract  # noqa:E402
 
+SUPPLEMENTAL_MODEL_FILES = (".gitattributes", "README.md", "merges.txt")
+
+
+def _hash_file(path: Path) -> str:
+    hasher = sha256()
+    with path.open("rb") as stream:
+        for chunk in iter(lambda: stream.read(8 * 1024 * 1024), b""):
+            hasher.update(chunk)
+    return hasher.hexdigest()
+
 
 def verify_model_manifest(model_root: Path, manifest: Path) -> dict:
     model_root = model_root.resolve()
@@ -49,21 +59,27 @@ def verify_model_manifest(model_root: Path, manifest: Path) -> dict:
         path.relative_to(model_root).as_posix()
         for path in model_root.rglob("*") if path.is_file()
     }
-    if observed_paths != manifest_paths:
+    supplemental_paths = set(SUPPLEMENTAL_MODEL_FILES)
+    if observed_paths != manifest_paths | supplemental_paths:
         raise RuntimeError(
             "model manifest directory closure: "
             f"missing={sorted(manifest_paths - observed_paths)}, "
-            f"unmanifested={sorted(observed_paths - manifest_paths)}"
+            f"unexpected={sorted(observed_paths - manifest_paths - supplemental_paths)}, "
+            f"supplemental_missing={sorted(supplemental_paths - observed_paths)}"
         )
     rows.sort(key=lambda row: row["path"])
+    supplemental_rows = []
+    for relative in sorted(supplemental_paths):
+        target = model_root / relative
+        stat = target.stat()
+        supplemental_rows.append({
+            "path": relative, "sha256": _hash_file(target),
+            "size": stat.st_size, "mtime_ns": stat.st_mtime_ns,
+        })
     manifest_sha = contract.file_sha256(manifest)
     for row in rows:
         target = model_root / row["path"]
-        hasher = sha256()
-        with target.open("rb") as stream:
-            for chunk in iter(lambda: stream.read(8 * 1024 * 1024), b""):
-                hasher.update(chunk)
-        if hasher.hexdigest() != row["sha256"]:
+        if _hash_file(target) != row["sha256"]:
             raise RuntimeError(f"model content drift: {row['path']}")
         final_stat = target.stat()
         if (
@@ -75,7 +91,18 @@ def verify_model_manifest(model_root: Path, manifest: Path) -> dict:
         path.relative_to(model_root).as_posix()
         for path in model_root.rglob("*") if path.is_file()
     }
-    if final_observed_paths != manifest_paths:
+    for row in supplemental_rows:
+        target = model_root / row["path"]
+        final_stat = target.stat()
+        if (
+            _hash_file(target) != row["sha256"]
+            or final_stat.st_size != row["size"]
+            or final_stat.st_mtime_ns != row["mtime_ns"]
+        ):
+            raise RuntimeError(
+                f"supplemental model file changed during qualification: {row['path']}"
+            )
+    if final_observed_paths != manifest_paths | supplemental_paths:
         raise RuntimeError("model directory changed during qualification")
     payload = {"schema": "sys_trrc_model_content_verification_v1",
                "status": "PASS", "manifest_file_sha256": manifest_sha,
@@ -83,7 +110,14 @@ def verify_model_manifest(model_root: Path, manifest: Path) -> dict:
                "file_set_sha256": contract.canonical_sha256([
                    {"path": row["path"], "sha256": row["sha256"]}
                    for row in rows
-               ]), "files": rows}
+               ]), "files": rows,
+               "supplemental_file_count": len(supplemental_rows),
+               "supplemental_file_set_sha256": contract.canonical_sha256([
+                   {"path": row["path"], "sha256": row["sha256"]}
+                   for row in supplemental_rows
+               ]),
+               "supplemental_files": supplemental_rows,
+               "directory_file_count": len(rows) + len(supplemental_rows)}
     report = {**payload, "content_sha256": contract.content_sha256(payload)}
     return report
 

@@ -676,6 +676,7 @@ def validate_launch_receipt(path: Path, *, preflight_path: Path,
         errors.append("packages")
     model_verification = receipt.get("model_content_verification") or {}
     model_rows = list(model_verification.get("files") or [])
+    supplemental_rows = list(model_verification.get("supplemental_files") or [])
     model_file_set = [
         {"path": row.get("path"), "sha256": row.get("sha256")}
         for row in model_rows
@@ -688,6 +689,19 @@ def validate_launch_receipt(path: Path, *, preflight_path: Path,
         or len(model_rows)
         != int(model_verification.get("file_count") or 0)
         or model_verification.get("directory_closed") is not True
+        or int(model_verification.get("supplemental_file_count") or 0) != 3
+        or int(model_verification.get("directory_file_count") or 0)
+        != len(model_rows) + len(supplemental_rows)
+        or [str(row.get("path") or "") for row in supplemental_rows]
+        != [".gitattributes", "README.md", "merges.txt"]
+        or len(supplemental_rows) != 3
+        or any(
+            set(row) != {"path", "sha256", "size", "mtime_ns"}
+            or len(str(row.get("sha256") or "")) != 64
+            or int(row.get("size", -1)) < 0
+            or int(row.get("mtime_ns", -1)) < 0
+            for row in supplemental_rows
+        )
         or [str(row.get("path") or "") for row in model_rows]
         != sorted(str(row.get("path") or "") for row in model_rows)
         or len({str(row.get("path") or "") for row in model_rows}) != len(model_rows)
@@ -701,6 +715,11 @@ def validate_launch_receipt(path: Path, *, preflight_path: Path,
         )
         or model_verification.get("file_set_sha256")
         != canonical_sha256(model_file_set)
+        or model_verification.get("supplemental_file_set_sha256")
+        != canonical_sha256([
+            {"path": row.get("path"), "sha256": row.get("sha256")}
+            for row in supplemental_rows
+        ])
         or model_verification.get("content_sha256") != content_sha256(model_verification)
     ):
         errors.append("model_content_verification")

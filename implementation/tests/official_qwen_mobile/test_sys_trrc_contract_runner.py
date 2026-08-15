@@ -16,6 +16,7 @@ from raven_m.official_qwen_mobile import sys_trrc_token_budget
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "implementation/scripts"))
 from replay_sys_trrc_detector import collect_projection_inputs
+from qualify_sys_trrc_server import verify_model_manifest
 
 
 def _summary(task: str, *, trigger: int = 0, aux: int = 0, injection: int = 0) -> dict:
@@ -70,6 +71,28 @@ def test_independent_bindings_and_frozen_gate_order() -> None:
         ("base", "l3"), ("detector", "l3"), ("generic", "l3"), ("full", "l3"),
         ("generic", "l4"), ("full", "l4"),
     )
+
+
+def test_model_manifest_closes_exact_supplemental_files(tmp_path: Path) -> None:
+    model = tmp_path / "model"
+    model.mkdir()
+    payload = b"model-config"
+    (model / "config.json").write_bytes(payload)
+    for name in (".gitattributes", "README.md", "merges.txt"):
+        (model / name).write_text(name, encoding="utf-8")
+    manifest = tmp_path / "model.sha256"
+    manifest.write_text(
+        f"{sha256(payload).hexdigest()}  config.json\n", encoding="utf-8"
+    )
+    report = verify_model_manifest(model, manifest)
+    assert report["status"] == "PASS"
+    assert report["supplemental_file_count"] == 3
+    assert [row["path"] for row in report["supplemental_files"]] == [
+        ".gitattributes", "README.md", "merges.txt",
+    ]
+    (model / "unlisted.json").write_text("x", encoding="utf-8")
+    with pytest.raises(RuntimeError, match="directory closure"):
+        verify_model_manifest(model, manifest)
 
 
 def test_all_twelve_stage_invocations_have_exact_closure() -> None:
