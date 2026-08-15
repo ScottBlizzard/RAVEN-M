@@ -139,10 +139,13 @@ def main() -> int:
     controller_text=(ROOT/"implementation/src/raven_m/official_qwen_mobile/controller.py").read_text(encoding="utf-8")
     client_text=(ROOT/"implementation/src/raven_m/models/vllm_client.py").read_text(encoding="utf-8")
     runner_text=(ROOT/"implementation/scripts/run_official_qwen_mobile.py").read_text(encoding="utf-8")
+    start_text=(ROOT/"implementation/scripts/start_sys_trrc_server.sh").read_text(encoding="utf-8")
     if "8192" not in core_text or "60" not in core_text: errors.append("core_token_or_latency_enforcement_missing")
     if "remaining_native_decision_slots" not in controller_text or "remaining_native_decision_slots" not in core_text: errors.append("remaining_native_slot_enforcement_missing")
     if "request_timeout_seconds=60.0" not in controller_text or "request_timeout_seconds: float | None" not in client_text:
         errors.append("aux_http_60_second_timeout_missing")
+    if "export VLLM_USE_FLASHINFER_SAMPLER=0" not in start_text:
+        errors.append("native_vllm_sampler_freeze_missing")
     if "retry_transient_errors=not" not in runner_text or "or dual_memory_arm" not in runner_text:
         errors.append("single_transport_no_retry_missing")
     try:
