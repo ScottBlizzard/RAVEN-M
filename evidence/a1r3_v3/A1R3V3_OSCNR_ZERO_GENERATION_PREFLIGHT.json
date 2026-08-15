@@ -1,0 +1,51 @@
+{
+  "checks": {
+    "a1_system_prompt_sha256": "653f727961a97d04176d3ddb9b1098355fe1fe8783473c2abc74967798f4a5b8",
+    "banned_core_imports": [],
+    "git": {
+      "head": "665fe0d8b67f9a1ed39cd733b2bcf0dce847e7e5",
+      "worktree_status": []
+    },
+    "offline_replay": {
+      "status": "PASS",
+      "totals": {
+        "a1r2_actual_rendered_chars": 108423,
+        "a1r2_actual_rendered_tokens": 21710,
+        "cnr_receipt_committed_read_count": 8,
+        "cnr_receipt_creation_count": 8,
+        "executed_actions": 595,
+        "failure_tasks_with_receipt": 8,
+        "invalid_attempt_count": 1,
+        "model_calls": 603,
+        "non_expense_failure_tasks_with_receipt": 7,
+        "projected_nonempty_reads": 436,
+        "projected_rendered_chars": 109185,
+        "projected_rendered_tokens": 21870,
+        "success_task_receipt_creation_count": 0,
+        "success_task_receipt_read_count": 0,
+        "valid_episode_count": 19
+      }
+    },
+    "runtime_canary_ms": {
+      "maximum": 0.7449999975506216,
+      "p99": 0.45140000293031335
+    },
+    "tests": {
+      "returncode": 0,
+      "stderr_tail": "",
+      "stdout_tail": "........................................................................ [ 18%]\n........................................................................ [ 37%]\n........................................................................ [ 56%]\n........................................................................ [ 75%]\n........................................................................ [ 93%]\n........................                                                 [100%]\n============================== warnings summary ===============================\nC:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\requests\\__init__.py:113\n  C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\requests\\__init__.py:113: RequestsDependencyWarning: urllib3 (2.3.0) or chardet (7.0.1)/charset_normalizer (3.4.4) doesn't match a supported version!\n    warnings.warn(\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n"
+    }
+  },
+  "content_sha256": "571ab8669f909bf704d4a6875e691f2813f3467fc582d03485961fedbc5e2946",
+  "created_at": "2026-08-15T06:48:41.977479+00:00",
+  "errors": [],
+  "experiment_id": "A1R3V3_OSCNR_QWEN3VL32B_AW_HARD_T20260806_G3407_V1",
+  "generation_calls": 0,
+  "implementation_commit": "665fe0d8b67f9a1ed39cd733b2bcf0dce847e7e5",
+  "live_generation_authorized": true,
+  "mechanism_id": "a1r3v3_one_shot_controller_nonprogress_receipt_v1",
+  "offline_replay_content_sha256": "87add92646489efc13f557b302dfc9dd45742ee734f8fdafb7de04705575055a",
+  "schema": "a1r3v3_oscnr_zero_generation_preflight_v1",
+  "source_freeze_content_sha256": "cf356211a2281a5fb315108e9a789c5ddee1bbb8d7e73fd4ae575b5b1aa70ac4",
+  "status": "PASS"
+}
