@@ -490,9 +490,6 @@ def test_preflight_validator_rejects_any_nested_projection_row_drift(
     fixture_path = tmp_path / "evidence/sys_trrc/SYS_TRRC_FULL_L1_EXPENSE_EPISODE_2026-08-15.json"
     fixture_path.parent.mkdir(parents=True)
     shutil.copy2(fixture_source, fixture_path)
-    fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
-    attempt = fixture["auxiliary_model_call_attempts"][0]
-    parsed = contract.recovery.parse_auxiliary_response(attempt["model_call"]["content"])
     arm = contract.MODE_BINDINGS["generic"]
     payload = {
         "schema": contract.PREFLIGHT_SCHEMA, "status": "PASS", "errors": [],
@@ -515,14 +512,8 @@ def test_preflight_validator_rejects_any_nested_projection_row_drift(
                    },
                    "required_recovery_config": dict(expected_config["recovery"]),
                    "focused_tests": {"returncode": 0},
-                   "v1_live_aux_parser_regression": {
-                       "status": "PASS",
-                       "fixture_file_sha256": contract.file_sha256(fixture_path),
-                       "response_sha256": attempt["model_call"]["response_sha256"],
-                       "request_step": 7,
-                       "parsed_render_sha256": sha256(parsed["rendered"].encode()).hexdigest(),
-                       "blank_only_lines_ignored": True,
-                   },
+                   "v1_live_aux_parser_regression":
+                       contract.v1_live_aux_parser_regression(tmp_path),
                    "eight_opportunity_token_projection": json.loads(json.dumps(projection))},
     }
     report = {**payload, "content_sha256": contract.content_sha256(payload)}

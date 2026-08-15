@@ -149,25 +149,8 @@ def main() -> int:
         errors.append("native_vllm_sampler_freeze_missing")
     if "retry_transient_errors=not" not in runner_text or "or dual_memory_arm" not in runner_text:
         errors.append("single_transport_no_retry_missing")
-    v1_episode_path=ROOT/"evidence/sys_trrc/SYS_TRRC_FULL_L1_EXPENSE_EPISODE_2026-08-15.json"
     try:
-        v1_episode=json.loads(v1_episode_path.read_text(encoding="utf-8"))
-        attempt=(v1_episode.get("auxiliary_model_call_attempts") or [])[0]
-        model_call=attempt.get("model_call") or {}
-        if (int(attempt.get("request_step"))!=7
-            or model_call.get("response_sha256")!="5f8c63ee635b460ce38f61dc00c67bf3eb9ed0b8d43c94decaf9e8ae404278a1"):
-            raise RuntimeError("v1 fixture identity")
-        parsed_live_response=recovery.parse_auxiliary_response(str(model_call.get("content") or ""))
-        if not str(parsed_live_response.get("recommendation") or "").startswith('Tap the "MORE" link'):
-            raise RuntimeError("v1 fixture parser output")
-        parser_regression={
-            "status":"PASS",
-            "fixture_file_sha256":sha256(v1_episode_path.read_bytes()).hexdigest(),
-            "response_sha256":model_call["response_sha256"],
-            "request_step":7,
-            "parsed_render_sha256":sha256(parsed_live_response["rendered"].encode()).hexdigest(),
-            "blank_only_lines_ignored":True,
-        }
+        parser_regression=contract.v1_live_aux_parser_regression(ROOT)
     except Exception as exc:
         parser_regression={"status":"FAIL","error":f"{type(exc).__name__}:{exc}"}
         errors.append("v1_live_aux_parser_regression")

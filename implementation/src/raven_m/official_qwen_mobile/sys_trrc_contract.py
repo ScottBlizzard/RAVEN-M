@@ -58,7 +58,6 @@ SOURCE_FILES = (
     "implementation/configs/sys_trrc_v2_full_hard_seed20260806.json",
     "implementation/configs/androidworld_hard_v2_instances.json",
     "evidence/sys_trrc/SYS_TRRC_R2_DETECTOR_REPLAY.json",
-    "evidence/sys_trrc/SYS_TRRC_FULL_L1_EXPENSE_EPISODE_2026-08-15.json",
     "evidence/sys_trrc_v2/SYS_TRRC_V2_R2_DETECTOR_REPLAY.json",
     "evidence/sys_trrc/token_projection_inputs/manifest.json",
     "evidence/sys_trrc/token_projection_inputs/01_BrowserMultiply_step_014.png",
@@ -212,6 +211,38 @@ def content_sha256(value: dict[str, Any]) -> str:
 
 def file_sha256(path: Path) -> str:
     return sha256(path.read_bytes()).hexdigest()
+
+
+def v1_live_aux_parser_regression(root: Path | None = None) -> dict[str, Any]:
+    """Recompute the V2 delivery repair against the exact frozen V1 response."""
+    fixture_path = (root or REPOSITORY_ROOT) / (
+        "evidence/sys_trrc/SYS_TRRC_FULL_L1_EXPENSE_EPISODE_2026-08-15.json"
+    )
+    fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
+    fixture_episode_id = "ExpenseDeleteMultiple2_20260806_4f40564b"
+    if fixture.get("episode_id") != fixture_episode_id:
+        raise RuntimeError("V1 fixture episode identity")
+    attempt = (fixture.get("auxiliary_model_call_attempts") or [])[0]
+    model_call = attempt.get("model_call") or {}
+    response_sha = "5f8c63ee635b460ce38f61dc00c67bf3eb9ed0b8d43c94decaf9e8ae404278a1"
+    content = str(model_call.get("content") or "")
+    if (
+        int(attempt.get("request_step")) != 7
+        or model_call.get("response_sha256") != response_sha
+        or sha256(content.encode()).hexdigest() != response_sha
+    ):
+        raise RuntimeError("V1 fixture response identity")
+    parsed = recovery.parse_auxiliary_response(content)
+    if not str(parsed.get("recommendation") or "").startswith('Tap the "MORE" link'):
+        raise RuntimeError("V1 fixture parser output")
+    return {
+        "status": "PASS",
+        "fixture_episode_id": fixture_episode_id,
+        "response_sha256": response_sha,
+        "request_step": 7,
+        "parsed_render_sha256": sha256(parsed["rendered"].encode()).hexdigest(),
+        "blank_only_lines_ignored": True,
+    }
 
 
 def binding(mode: str) -> dict[str, Any]:
@@ -583,29 +614,8 @@ def validate_preflight_report(
     if checks.get("required_recovery_config") != required_config:
         errors.append("preflight_recovery_config_closure")
     try:
-        fixture_path = REPOSITORY_ROOT / (
-            "evidence/sys_trrc/"
-            "SYS_TRRC_FULL_L1_EXPENSE_EPISODE_2026-08-15.json"
-        )
-        fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
-        attempt = (fixture.get("auxiliary_model_call_attempts") or [])[0]
-        model_call = attempt.get("model_call") or {}
-        parsed = recovery.parse_auxiliary_response(str(model_call.get("content") or ""))
-        expected_parser_regression = {
-            "status": "PASS",
-            "fixture_file_sha256": file_sha256(fixture_path),
-            "response_sha256": "5f8c63ee635b460ce38f61dc00c67bf3eb9ed0b8d43c94decaf9e8ae404278a1",
-            "request_step": 7,
-            "parsed_render_sha256": sha256(parsed["rendered"].encode()).hexdigest(),
-            "blank_only_lines_ignored": True,
-        }
-        if (
-            int(attempt.get("request_step")) != 7
-            or model_call.get("response_sha256")
-            != expected_parser_regression["response_sha256"]
-            or checks.get("v1_live_aux_parser_regression")
-            != expected_parser_regression
-        ):
+        expected_parser_regression = v1_live_aux_parser_regression()
+        if checks.get("v1_live_aux_parser_regression") != expected_parser_regression:
             errors.append("v1_live_aux_parser_regression_closure")
     except Exception as exc:
         errors.append(
