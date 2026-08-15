@@ -1,0 +1,332 @@
+{
+  "capability_gate": {
+    "required": 6,
+    "status": "fail",
+    "success_count": 1,
+    "tasks": [
+      {
+        "pass": true,
+        "reward": 1.0,
+        "task_name": "ExpenseDeleteMultiple2"
+      },
+      {
+        "pass": false,
+        "reward": 0.5,
+        "task_name": "RetroSavePlaylist"
+      },
+      {
+        "pass": false,
+        "reward": null,
+        "task_name": "SimpleCalendarAddOneEvent"
+      },
+      {
+        "pass": false,
+        "reward": null,
+        "task_name": "SportsTrackerTotalDurationForCategoryThisWeek"
+      },
+      {
+        "pass": false,
+        "reward": null,
+        "task_name": "RecipeDeleteMultipleRecipesWithConstraint"
+      },
+      {
+        "pass": false,
+        "reward": null,
+        "task_name": "OsmAndMarker"
+      }
+    ]
+  },
+  "closure": {
+    "checkpoint_entry_summary_hashes_valid": true,
+    "checkpoint_summaries_equal_raw_episodes": true,
+    "generation_calls_during_finalization": 0,
+    "invalid_attempt_count": 0,
+    "network_calls_during_finalization": 0,
+    "not_run_by_protocol_count": 17,
+    "raw_episode_file_bindings_valid": true,
+    "raw_episode_or_checkpoint_modified": false,
+    "single_transport_per_call": true,
+    "source_checkpoint_status": "stopped_capability_gate_failure",
+    "valid_episode_count": 2
+  },
+  "completion": "GATE_STOPPED_2_OF_6",
+  "content_sha256": "5ef55dddad9a3d07e499fa66874a811f4bf85f25874c9c5bea2b4e01897a7682",
+  "errors": [],
+  "finalization": {
+    "classification": "POST_HOC_CPU_ONLY_EVIDENCE_LAYER",
+    "frozen_experiment_behavior_changed": false,
+    "known_stale_run_signature_labels": [
+      "task_order",
+      "A0_preservation_tasks"
+    ],
+    "reason": "terminal_gate_exception_preceded_runner_aggregate_branch"
+  },
+  "guard_observed": {
+    "eligible_count": 0,
+    "extra_model_calls": 0,
+    "override_count": 0,
+    "review_count": 44
+  },
+  "identity": {
+    "experiment_id": "SYS_NAG_V2_R2_QWEN3VL32B_AW_HARD_S20260806_G3407_V1",
+    "generation_seed": 3407,
+    "implementation_commit": "6c7b7f3405186ef0585b927853c5fc48b9bb5625",
+    "mechanism_id": "a1r2_compact_verified_pending_v1",
+    "prospective_arm": "sys_nag",
+    "source_freeze_content_sha256": "84b1153182719bd1e3ca333d80f864a45a6a852cd9be18bf68bad0895c5d3962",
+    "suite_id": "official_qwen_20260816T024642_c7867dfe",
+    "system_id": "sys_r2_numeric_answer_consistency_guard_v2",
+    "task_seed": 20260806
+  },
+  "integrity": {
+    "checkpoint_file_sha256": "8bf5f0063bde848aea09a6cab3f7555216818e4059c9aafbe01f3b7f08fabe32",
+    "disclosed_metadata_defects": [],
+    "episode_closure": [
+      {
+        "artifact_file_count": 72,
+        "episode_id": "ExpenseDeleteMultiple2_20260806_0fb5ace4",
+        "episode_json_file_sha256": "3780d60b497cd25b7bcabf5734d0893a66180aa1a095877ecb720464ea7b3406",
+        "episode_summary_canonical_sha256": "dc03baa10873269f755da84ad6f3ed2bf35313454cd1411aa2a8bf08d2034166",
+        "events_jsonl_file_sha256": "0d1f38414a9b55f5e6fdfa1fe1194d47a791c9afa9a9d795c981f9bd5195e7da",
+        "executed_actions": 17,
+        "guard_eligible_count": 0,
+        "guard_override_count": 0,
+        "model_calls": 18,
+        "model_latency_seconds": 114.32517829999779,
+        "token_usage": {
+          "completion_tokens": 2021,
+          "prompt_tokens": 68791,
+          "total_tokens": 70812
+        },
+        "transport_attempt_max": 1
+      },
+      {
+        "artifact_file_count": 104,
+        "episode_id": "RetroSavePlaylist_20260806_5d6494df",
+        "episode_json_file_sha256": "2b678557041d799066bec1be8f8f1ddae95f19b299d41e4b839928cbac941bc3",
+        "episode_summary_canonical_sha256": "2399259ed647522122fdf4ab3cc91e7af2d114056beac2a2556b4906a315b393",
+        "events_jsonl_file_sha256": "9ed194e7b80abfffb73570dbecded96e3a3f0eaa366c818c28f3732425b992c3",
+        "executed_actions": 25,
+        "guard_eligible_count": 0,
+        "guard_override_count": 0,
+        "model_calls": 26,
+        "model_latency_seconds": 164.13323670000682,
+        "token_usage": {
+          "completion_tokens": 2919,
+          "prompt_tokens": 102137,
+          "total_tokens": 105056
+        },
+        "transport_attempt_max": 1
+      }
+    ],
+    "evidence_integrity_status": "PASS",
+    "implementation_commit": "6c7b7f3405186ef0585b927853c5fc48b9bb5625",
+    "live_receipt_content_sha256": "83fdc7a42c31355dd9a9dc7cc0c3dbe97da2f87d6a5b034304d69fbda2a59a1c",
+    "live_receipt_file_sha256": "8f285b61f8d1321bd6e95011eb23442f3e5b3fe396fa90c541f222a2854b4921",
+    "manifest_snapshot_file_sha256": "c1d718e9d380e443d12d2c29ab2182ae801a3befc53881b864cd830f2ad0440a",
+    "offline_replay_content_sha256": "1164fcfecb8d41c0a13cc56bfddbe21731c2145740dd8de644ad082870f4a2ea",
+    "offline_replay_file_sha256": "b3cd25dc693daeb8543df1af0a2a61bcf74522ac3c76129314caad39e9aed715",
+    "preflight_content_sha256": "d61ff489aec4471d41f05e04fc4c50004eced81f50cfb238b2bd07e625d11e57",
+    "preflight_file_sha256": "1df0bb753b815c4dc31e8e5fe42c5383214c3a1f0df1b265c41a525fdcdfdbf5",
+    "run_signature_canonical_sha256": "5c7f44b103e98cc105b3504fca8b44d091ea47346005d29a9196809b7a6a0cfe",
+    "run_signature_file_sha256": "3e22066e3bb3c793bf4c23038636d78b66ee34d977820f76c2afabeedb1bdde0",
+    "source_freeze_content_sha256": "84b1153182719bd1e3ca333d80f864a45a6a852cd9be18bf68bad0895c5d3962",
+    "source_freeze_file_sha256": "e125ad4a89778948b9dd7b7d0577c9d8583f68d02c4f6e2200293064e834b31f"
+  },
+  "performance_observed_partial": {
+    "executed_actions": 42,
+    "model_calls": 44,
+    "reward_sum": 1.5,
+    "success_count": 1,
+    "token_usage": {
+      "completion_tokens": 4940,
+      "prompt_tokens": 170928,
+      "total_tokens": 175868
+    },
+    "valid_elapsed_seconds": 847.448039
+  },
+  "schema": "sys_nag_v2_result_v1",
+  "scientific_valid": true,
+  "status": "TERMINAL_VALID_SCIENTIFIC_FAILURE",
+  "tasks": [
+    {
+      "episode_id": "ExpenseDeleteMultiple2_20260806_0fb5ace4",
+      "execution_status": "VALID_SUCCESS",
+      "reward": 1.0,
+      "seed": 20260806,
+      "success": true,
+      "task_name": "ExpenseDeleteMultiple2",
+      "termination_reason": "model_terminate_success"
+    },
+    {
+      "episode_id": "RetroSavePlaylist_20260806_5d6494df",
+      "execution_status": "VALID_SCIENTIFIC_FAILURE",
+      "reward": 0.5,
+      "seed": 20260806,
+      "success": false,
+      "task_name": "RetroSavePlaylist",
+      "termination_reason": "model_terminate_success"
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "SimpleCalendarAddOneEvent",
+      "termination_reason": null
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "SportsTrackerTotalDurationForCategoryThisWeek",
+      "termination_reason": null
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "RecipeDeleteMultipleRecipesWithConstraint",
+      "termination_reason": null
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "OsmAndMarker",
+      "termination_reason": null
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "BrowserMultiply",
+      "termination_reason": null
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "ExpenseAddMultipleFromGallery",
+      "termination_reason": null
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "ExpenseAddMultipleFromMarkor",
+      "termination_reason": null
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "MarkorCreateNoteAndSms",
+      "termination_reason": null
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "MarkorMergeNotes",
+      "termination_reason": null
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "MarkorTranscribeVideo",
+      "termination_reason": null
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "OsmAndTrack",
+      "termination_reason": null
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "RecipeAddMultipleRecipesFromImage",
+      "termination_reason": null
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "RecipeAddMultipleRecipesFromMarkor",
+      "termination_reason": null
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "RecipeAddMultipleRecipesFromMarkor2",
+      "termination_reason": null
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "SaveCopyOfReceiptTaskEval",
+      "termination_reason": null
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "SportsTrackerActivitiesOnDate",
+      "termination_reason": null
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "SportsTrackerTotalDistanceForCategoryOverInterval",
+      "termination_reason": null
+    }
+  ],
+  "verdicts": {
+    "accuracy": "FAIL_CAPABILITY_GATE",
+    "causal_guard_benefit_claim_permitted": false,
+    "causal_guard_harm_claim_permitted": false,
+    "continuation_authorized": false,
+    "mechanism": "NOT_ACTIVATED_IN_TWO_EXECUTED_TASKS",
+    "same_identity_rerun_authorized": false
+  }
+}
