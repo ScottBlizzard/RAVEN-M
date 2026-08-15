@@ -171,6 +171,8 @@ def test_model_manifest_hashes_every_file_and_rejects_unlisted_files(tmp_path) -
     second = model / "weights.bin"
     first.write_bytes(b"config")
     second.write_bytes(b"weights")
+    for name in qualifier.SUPPLEMENTAL_MODEL_FILES:
+        (model / name).write_text(name, encoding="utf-8")
     manifest = tmp_path / "model.sha256"
     manifest.write_text(
         f"{sha256(first.read_bytes()).hexdigest()}  config.json\n"
@@ -182,7 +184,10 @@ def test_model_manifest_hashes_every_file_and_rejects_unlisted_files(tmp_path) -
     assert [row["path"] for row in report["files"]] == [
         "config.json", "weights.bin",
     ]
+    assert [row["path"] for row in report["supplemental_files"]] == [
+        ".gitattributes", "README.md", "merges.txt",
+    ]
 
     (model / "adapter_config.json").write_text("{}", encoding="utf-8")
-    with pytest.raises(RuntimeError, match="unmanifested=.*adapter_config.json"):
+    with pytest.raises(RuntimeError, match="unexpected=.*adapter_config.json"):
         qualifier.verify_model_manifest(model, manifest)
