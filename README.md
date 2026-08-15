@@ -39,9 +39,10 @@ The three fresh-conversation launch files are listed in
 Use the `OPEN_V2` requests governed by
 `evidence/composite/TOP3_OPEN_DESIGN_CHARTER_2026-08-15.md`; the original
 Top-3 requests are preserved as superseded, overly prescriptive drafts.
-Every selected Open V2 proposal must also satisfy
-`evidence/composite/TOP3_IMPLEMENTATION_READY_OUTPUT_CONTRACT_2026-08-15.md`
-so it can be implemented without inventing additional scientific decisions.
+Every Open V2 proposal should follow
+`evidence/composite/TOP3_COMPLETE_DESIGN_OUTLINE_REQUIREMENTS_2026-08-15.md`:
+a complete research blueprint, followed by our own implementation audit and
+preregistration work.
 
 The newest prospective vertical result is A1-R2 CVP: **6/19**, reward **6.5**,
 with all five A1 successes preserved and `OsmAndMarker` added. Its accuracy

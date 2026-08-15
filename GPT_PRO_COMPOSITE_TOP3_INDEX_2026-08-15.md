@@ -7,8 +7,8 @@ investigator's initial mechanism hypothesis.
 
 ## Open V2 requests — use these
 
-All three outputs must satisfy
-`evidence/composite/TOP3_IMPLEMENTATION_READY_OUTPUT_CONTRACT_2026-08-15.md`.
+All three outputs should follow
+`evidence/composite/TOP3_COMPLETE_DESIGN_OUTLINE_REQUIREMENTS_2026-08-15.md`.
 
 | Problem family | Request | Required output |
 |---|---|---|

@@ -1,5 +1,9 @@
 # Top-3 GPT Pro Implementation-Ready Output Contract
 
+> Superseded before any Pro output was accepted. This requirement was judged
+> overly prescriptive. New conversations must use
+> `TOP3_COMPLETE_DESIGN_OUTLINE_REQUIREMENTS_2026-08-15.md` instead.
+
 Date: 2026-08-15
 
 Purpose: every Open V2 Pro response must be detailed enough for an implementation agent to build, test, preregister, and qualify the selected system without inventing scientific decisions. “Detailed” means decision-complete and auditable, not merely long.

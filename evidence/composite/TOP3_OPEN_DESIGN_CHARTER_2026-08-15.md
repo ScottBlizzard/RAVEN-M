@@ -10,9 +10,10 @@ The first Top-3 requests correctly froze leakage, attribution, cost accounting, 
 
 The revised process freezes **the research problem and scientific contract**, while leaving **the mechanism** open to independent design.
 
-After selecting a mechanism, every Pro must satisfy
-`evidence/composite/TOP3_IMPLEMENTATION_READY_OUTPUT_CONTRACT_2026-08-15.md`.
-Mechanism choice is open; the final specification must be decision-complete.
+Every Pro should produce the complete research blueprint described in
+`evidence/composite/TOP3_COMPLETE_DESIGN_OUTLINE_REQUIREMENTS_2026-08-15.md`.
+It should be structured and detailed, but final implementation contracts remain
+the research team's responsibility.
 
 ## Hard boundaries that remain fixed
 

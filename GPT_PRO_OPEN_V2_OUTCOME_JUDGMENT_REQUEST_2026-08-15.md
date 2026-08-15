@@ -4,7 +4,7 @@ You are in a fresh research-design conversation. First audit <https://github.com
 
 Read `evidence/composite/TOP3_OPEN_DESIGN_CHARTER_2026-08-15.md`, `evidence/composite/TOP3_COMPONENT_SELECTION_2026-08-15.md`, `evidence/a1/A1_R1_R2_POSITIVE_AND_R3_R12_FAILURE_AUDIT_2026-08-15.md`, the A1/A1-R2 evidence and code, A2 verified-progress/guard evidence, A6 transition logs, and later confirmation/false-completion diagnostics. Verify evidence levels and missing trace access.
 
-Your final document must satisfy every section of `evidence/composite/TOP3_IMPLEMENTATION_READY_OUTPUT_CONTRACT_2026-08-15.md`. Design selection is open, but the selected design must be implementation-ready with no behavior-affecting decisions deferred.
+Your final document should follow `evidence/composite/TOP3_COMPLETE_DESIGN_OUTLINE_REQUIREMENTS_2026-08-15.md`: provide a complete, structured research blueprint, not production code or an exhaustive implementation contract.
 
 Research problem: what additional computation prevents the agent from treating an unsupported action as completed, abandoning an unconfirmed obligation, repeating an ineffective commitment, or terminating without sufficient visible evidence?
 
