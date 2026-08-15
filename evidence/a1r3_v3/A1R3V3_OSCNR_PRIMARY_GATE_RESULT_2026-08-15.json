@@ -1,0 +1,314 @@
+{
+  "capability_gate": {
+    "required": 6,
+    "status": "fail",
+    "success_count": 0,
+    "tasks": [
+      {
+        "pass": false,
+        "reward": 0.0,
+        "task_name": "ExpenseDeleteMultiple2"
+      },
+      {
+        "pass": false,
+        "reward": null,
+        "task_name": "RetroSavePlaylist"
+      },
+      {
+        "pass": false,
+        "reward": null,
+        "task_name": "SimpleCalendarAddOneEvent"
+      },
+      {
+        "pass": false,
+        "reward": null,
+        "task_name": "SportsTrackerTotalDurationForCategoryThisWeek"
+      },
+      {
+        "pass": false,
+        "reward": null,
+        "task_name": "RecipeDeleteMultipleRecipesWithConstraint"
+      },
+      {
+        "pass": false,
+        "reward": null,
+        "task_name": "OsmAndMarker"
+      }
+    ]
+  },
+  "closure": {
+    "checkpoint_chain_valid": true,
+    "episode_artifact_closure_valid": true,
+    "generation_calls_during_finalization": 0,
+    "invalid_attempt_count": 0,
+    "network_calls_during_finalization": 0,
+    "not_run_by_protocol_count": 18,
+    "raw_suite_modified": false,
+    "read_tickets_closed": true,
+    "single_transport_per_call": true,
+    "source_checkpoint_status": "stopped_capability_gate_failure",
+    "valid_episode_count": 1
+  },
+  "completion": "GATE_STOPPED_1_OF_6",
+  "content_sha256": "714d784e814ee4dec24a4030912c5ddfd46a921b1a146f97b11694d28ee4b911",
+  "errors": [],
+  "finalization": {
+    "classification": "CPU_ONLY_EVIDENCE_LAYER_FINALIZATION",
+    "reason": "terminal_gate_checkpoint_precedes_full_suite_aggregate_branch",
+    "source_run_signature_known_null_field": "prospective_source_freeze_sha256",
+    "source_run_signature_known_null_repaired_from": "validated_preflight.source_freeze_content_sha256"
+  },
+  "identity": {
+    "experiment_id": "A1R3V3_OSCNR_QWEN3VL32B_AW_HARD_T20260806_G3407_V1",
+    "generation_seed": 3407,
+    "implementation_commit": "665fe0d8b67f9a1ed39cd733b2bcf0dce847e7e5",
+    "mechanism_id": "a1r3v3_one_shot_controller_nonprogress_receipt_v1",
+    "prospective_arm": "a1r3v3",
+    "source_freeze_content_sha256": "cf356211a2281a5fb315108e9a789c5ddee1bbb8d7e73fd4ae575b5b1aa70ac4",
+    "suite_id": "official_qwen_20260815T150827_f10cb784",
+    "task_seed": 20260806
+  },
+  "integrity": {
+    "artifact_file_count": 138,
+    "checkpoint_chain": [
+      {
+        "content_sha256": "0b0ae15fb77dfeca8065da879c0288a28386d6dffce9bd3cb8cb3099d07df500",
+        "file_sha256": "deef51b45efff806df7de745906862cab924906b2cc1b27b13ebc6dd6e017928",
+        "ordinal": 0,
+        "relative_path": "checkpoints/A1R3V3_OSCNR_CHECKPOINT_0000.json"
+      },
+      {
+        "content_sha256": "41230a518cdc3a722af191e8dd464b621a7623a0b8d13d51fcc6a0f5dd808bba",
+        "file_sha256": "908927f696d2e917ec4124c48e262aa96738564a5bc170d76d6c9af08ba0d59a",
+        "ordinal": 1,
+        "relative_path": "checkpoints/A1R3V3_OSCNR_CHECKPOINT_0001.json"
+      }
+    ],
+    "checkpoint_pointer_file_sha256": "2fcecdf2c58b5fa92921b80e68ee0103b62ad49219a5e3c96281c1c0d7c8aa2b",
+    "config_file_sha256": "677cffa3c858721dccb1d0af2b8f56029112d631f358c2f1eaceef9c8e8b5053",
+    "episode_json_sha256": "28fd49d2582490e312f4ccc6057ff12a10c483872870275f230b17b9639822bb",
+    "episode_summary_sha256": "a74ad0d9721441cab4cd888879d90e07fa4dba99d66f86c3c4348b28ea6028d6",
+    "events_jsonl_sha256": "358614acc2fbbfaea4a8dc89b5b84e2414b15471d5c350d88b9d9b604bde0eb9",
+    "implementation_commit": "665fe0d8b67f9a1ed39cd733b2bcf0dce847e7e5",
+    "injected_chars": 8116,
+    "live_receipt_content_sha256": "d269f7cc390533b7419b5901a253a75b6041f14add098eea4706d65e2837876e",
+    "live_receipt_file_sha256": "456325c95a52434ee24d5533a0382f6f9ae488e5dc6af54500e26fe441eabe5e",
+    "manifest_snapshot_file_sha256": "c1d718e9d380e443d12d2c29ab2182ae801a3befc53881b864cd830f2ad0440a",
+    "model_calls": 34,
+    "nonempty_reads": 33,
+    "preflight_content_sha256": "571ab8669f909bf704d4a6875e691f2813f3467fc582d03485961fedbc5e2946",
+    "preflight_file_sha256": "bd52e89a549485c855960af28b6e7d00889de8e5a76ee254f9a7ba232f3b2c27",
+    "run_signature_canonical_sha256": "3f9e0add4ab9dab5f9b66cb89e629973dcbb056984b2966cf249912f1bcf1310",
+    "run_signature_file_sha256": "85780a6a0a8b99942088dcb3546371990639db758d9265004fb818e3ff16337a",
+    "source_freeze_content_sha256": "cf356211a2281a5fb315108e9a789c5ddee1bbb8d7e73fd4ae575b5b1aa70ac4",
+    "source_freeze_file_sha256": "66a3b252447251532996efd1119d899a9b60bb54d629702f5f63ec76d6295e94",
+    "terminal_checkpoint_content_sha256": "41230a518cdc3a722af191e8dd464b621a7623a0b8d13d51fcc6a0f5dd808bba",
+    "terminal_checkpoint_file_sha256": "908927f696d2e917ec4124c48e262aa96738564a5bc170d76d6c9af08ba0d59a",
+    "transport_attempts": 34
+  },
+  "memory_observed": {
+    "base_ledger_injected_chars": 8116,
+    "base_ledger_nonempty_read_count": 33,
+    "cnr_opportunity": "NONE_OBSERVED",
+    "cnr_receipt_committed_read_count": 0,
+    "cnr_receipt_creation_count": 0
+  },
+  "performance_observed_partial": {
+    "executed_actions": 34,
+    "model_calls": 34,
+    "reward_sum": 0.0,
+    "success_count": 0,
+    "token_usage": {
+      "completion_tokens": 3956,
+      "prompt_tokens": 136034,
+      "total_tokens": 139990
+    },
+    "valid_elapsed_seconds": 1147.996728
+  },
+  "schema": "a1r3v3_oscnr_result_v1",
+  "scientific_valid": true,
+  "status": "TERMINAL_VALID_SCIENTIFIC_FAILURE",
+  "tasks": [
+    {
+      "episode_id": "ExpenseDeleteMultiple2_20260806_d481ed6b",
+      "execution_status": "VALID_SCIENTIFIC_FAILURE",
+      "reward": 0.0,
+      "seed": 20260806,
+      "success": false,
+      "task_name": "ExpenseDeleteMultiple2",
+      "termination_reason": "max_steps"
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "RetroSavePlaylist",
+      "termination_reason": null
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "SimpleCalendarAddOneEvent",
+      "termination_reason": null
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "SportsTrackerTotalDurationForCategoryThisWeek",
+      "termination_reason": null
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "RecipeDeleteMultipleRecipesWithConstraint",
+      "termination_reason": null
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "OsmAndMarker",
+      "termination_reason": null
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "BrowserMultiply",
+      "termination_reason": null
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "ExpenseAddMultipleFromGallery",
+      "termination_reason": null
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "ExpenseAddMultipleFromMarkor",
+      "termination_reason": null
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "MarkorCreateNoteAndSms",
+      "termination_reason": null
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "MarkorMergeNotes",
+      "termination_reason": null
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "MarkorTranscribeVideo",
+      "termination_reason": null
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "OsmAndTrack",
+      "termination_reason": null
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "RecipeAddMultipleRecipesFromImage",
+      "termination_reason": null
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "RecipeAddMultipleRecipesFromMarkor",
+      "termination_reason": null
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "RecipeAddMultipleRecipesFromMarkor2",
+      "termination_reason": null
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "SaveCopyOfReceiptTaskEval",
+      "termination_reason": null
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "SportsTrackerActivitiesOnDate",
+      "termination_reason": null
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "SportsTrackerTotalDistanceForCategoryOverInterval",
+      "termination_reason": null
+    }
+  ],
+  "verdicts": {
+    "accuracy": "FAIL_GATE_STOPPED",
+    "causal_harm_claim_permitted": false,
+    "continuation_authorized": false,
+    "cost": "NOT_APPLICABLE_PARTIAL",
+    "episode_classification": "PRESERVATION_FAILURE_UNATTRIBUTED",
+    "matched_ablation_authorized": false,
+    "mechanism": "NOT_OBSERVED_NO_CNR_COMMIT",
+    "same_identity_rerun_authorized": false
+  }
+}
