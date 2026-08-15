@@ -1,0 +1,139 @@
+{
+  "campaign_id": "sys_trrc_campaign_456c3017839942189cbbc74624d1e17d",
+  "content_sha256": "3d09e7f31f7288a500ebc75f094b4268952c394e0e088093450ee543b945a8fa",
+  "entries": [
+    {
+      "advancement_authorized": true,
+      "checkpoint_path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\runs\\sys_trrc_campaign\\artifacts\\01_base_l1_checkpoint.json",
+      "checkpoint_path_sha256": "b821850add2c01d9cab285c73e2244ea6ed67c4d41524e001525e5235b968ac1",
+      "checkpoint_status": "stage_l1_complete",
+      "entry_sha256": "c27e929c203458f3953012a4a1841de3a01ebf6471e7f69f38a2a6c5c7eed7a0",
+      "mode": "base",
+      "ordinal": 1,
+      "preflight_path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\evidence\\sys_trrc\\SYS_TRRC_BASE_ZERO_GENERATION_PREFLIGHT.json",
+      "preflight_path_sha256": "88201dc0bfb6b7bdcc39bffa0a577d8808e3aac9f13bef1f18b0844c6d238fe2",
+      "previous_entry_sha256": null,
+      "recorded_at": "2026-08-15T14:49:19.760945+00:00",
+      "result_path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\runs\\sys_trrc_campaign\\artifacts\\01_base_l1_result.json",
+      "result_path_sha256": "d0d3fbabda25f346c3ffcdd873bfc02694edae7762c1a80e3c616acd669b9f2e",
+      "result_status": "STAGE_L1_COMPLETE",
+      "return_code": 0,
+      "run_signature_sha256": "a5f6c0baad95b7a4755638982d0c283e458b0c0c4120f9445dd5698ce46b932f",
+      "stage": "l1",
+      "suite_dir": "D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\runs\\sys_trrc_base\\official_qwen_20260815T223933_566f1a1f"
+    },
+    {
+      "advancement_authorized": true,
+      "checkpoint_path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\runs\\sys_trrc_campaign\\artifacts\\02_detector_l1_checkpoint.json",
+      "checkpoint_path_sha256": "5d72f9db9d486b1f3987a800d65f334ce58d9b6a5d254a3b7c97197744687428",
+      "checkpoint_status": "stage_l1_complete",
+      "entry_sha256": "f22cf304514985ee22117e37a21a288b18afbfe787a71eda2e709fcf9b31c704",
+      "mode": "detector",
+      "ordinal": 2,
+      "preflight_path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\evidence\\sys_trrc\\SYS_TRRC_DETECTOR_ZERO_GENERATION_PREFLIGHT.json",
+      "preflight_path_sha256": "b398c9cb88bd0638b6265bfa66095fd3ad5baeb80f177c253ca037541b0bb48c",
+      "previous_entry_sha256": "c27e929c203458f3953012a4a1841de3a01ebf6471e7f69f38a2a6c5c7eed7a0",
+      "recorded_at": "2026-08-15T15:00:25.328898+00:00",
+      "result_path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\runs\\sys_trrc_campaign\\artifacts\\02_detector_l1_result.json",
+      "result_path_sha256": "8b51790fd883333f7cdf1caca10de74232e5857e99c8f9efcca985f3a486e2fa",
+      "result_status": "STAGE_L1_COMPLETE",
+      "return_code": 0,
+      "run_signature_sha256": "83000287431b6137c4d193f2ed776eba6e096f9e81f73e71f5c2476bd6039559",
+      "stage": "l1",
+      "suite_dir": "D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\runs\\sys_trrc_detector\\official_qwen_20260815T225439_555ab39a"
+    },
+    {
+      "advancement_authorized": true,
+      "checkpoint_path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\runs\\sys_trrc_campaign\\artifacts\\03_generic_l1_checkpoint.json",
+      "checkpoint_path_sha256": "6c61c6e655f6419ac20bf7e7c3c17b633c34c7388f9fbe3d2da04402599324bf",
+      "checkpoint_status": "stage_l1_complete",
+      "entry_sha256": "3700e84058fbbca3f2ee5c7afae8f31aab0d35fe5fefc885f651c8a367eda12d",
+      "mode": "generic",
+      "ordinal": 3,
+      "preflight_path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\evidence\\sys_trrc\\SYS_TRRC_GENERIC_ZERO_GENERATION_PREFLIGHT.json",
+      "preflight_path_sha256": "e418088e56f9329b092e115421df13d2014eaa5bae003f276bb332fd0df2cf55",
+      "previous_entry_sha256": "f22cf304514985ee22117e37a21a288b18afbfe787a71eda2e709fcf9b31c704",
+      "recorded_at": "2026-08-15T15:11:14.251462+00:00",
+      "result_path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\runs\\sys_trrc_campaign\\artifacts\\03_generic_l1_result.json",
+      "result_path_sha256": "32a5b34ca2aadbcdf58dbeffb87682d791d717d5fe5040cc38af90c1b0de0d2d",
+      "result_status": "STAGE_L1_COMPLETE",
+      "return_code": 0,
+      "run_signature_sha256": "d4c50fca90b86c43697dffd509a017018fde54c3b2c26af261a3c88aa3cbd880",
+      "stage": "l1",
+      "suite_dir": "D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\runs\\sys_trrc_generic\\official_qwen_20260815T230515_7e7d35b0"
+    },
+    {
+      "advancement_authorized": false,
+      "checkpoint_path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\runs\\sys_trrc_campaign\\artifacts\\04_full_l1_checkpoint.json",
+      "checkpoint_path_sha256": "4719ef07ecca80d83cb321c3e216c464a76341b0669b5750a2eda870aa4327a1",
+      "checkpoint_status": "stopped_preservation_gate_failure",
+      "entry_sha256": "fd5491baec807b29c498c7f759b6987caddb77ff11e8d68718ac2e4ae59114eb",
+      "mode": "full",
+      "ordinal": 4,
+      "preflight_path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\evidence\\sys_trrc\\SYS_TRRC_FULL_ZERO_GENERATION_PREFLIGHT.json",
+      "preflight_path_sha256": "4a012011f2a3603b13c79d20726f735785cb196189bde3e5e607bb07704b80fc",
+      "previous_entry_sha256": "3700e84058fbbca3f2ee5c7afae8f31aab0d35fe5fefc885f651c8a367eda12d",
+      "recorded_at": "2026-08-15T15:27:11.673039+00:00",
+      "result_path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\runs\\sys_trrc_campaign\\artifacts\\04_full_l1_result.json",
+      "result_path_sha256": "71fa77182388bf1453da0e4cf56b0e24abe6279dd1318b537ea735f942a9d7f9",
+      "result_status": "TERMINAL_SCIENTIFIC_FAILURE_STOPPED_PRESERVATION_GATE_FAILURE",
+      "return_code": 1,
+      "run_signature_sha256": "380bfb4e64bebf8bf553648ebeda28cacd887d69a39d5aebf39b073aeca202a6",
+      "stage": "l1",
+      "suite_dir": "D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\runs\\sys_trrc_full\\official_qwen_20260815T231608_a1c88556"
+    }
+  ],
+  "pending_attempt": null,
+  "planned_order": [
+    [
+      "base",
+      "l1"
+    ],
+    [
+      "detector",
+      "l1"
+    ],
+    [
+      "generic",
+      "l1"
+    ],
+    [
+      "full",
+      "l1"
+    ],
+    [
+      "generic",
+      "l2"
+    ],
+    [
+      "full",
+      "l2"
+    ],
+    [
+      "base",
+      "l3"
+    ],
+    [
+      "detector",
+      "l3"
+    ],
+    [
+      "generic",
+      "l3"
+    ],
+    [
+      "full",
+      "l3"
+    ],
+    [
+      "generic",
+      "l4"
+    ],
+    [
+      "full",
+      "l4"
+    ]
+  ],
+  "protocol_id": "SYS_TRRC_R2_ONE_SHOT_RECOVERY_PREREG_V1",
+  "schema": "sys_trrc_campaign_ledger_v1"
+}

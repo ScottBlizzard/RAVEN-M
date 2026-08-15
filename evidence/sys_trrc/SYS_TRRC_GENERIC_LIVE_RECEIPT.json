@@ -1,0 +1,207 @@
+{
+  "arm_id": "SYS-TRRC-R2-GENERIC",
+  "content_sha256": "72f24103469b8292ede712212c2e8b8e679db85ba7843b64be8d08535227acb5",
+  "errors": [],
+  "experiment_id": "SYS_TRRC_G_R2_GENERIC_RECOVERY_QWEN3VL32B_AW_HARD_S20260806_V1",
+  "generation_calls": 0,
+  "implementation_commit": "e3394f0b0dc8ed0cab9fd15307ee7b9466412d03",
+  "mode": "generic",
+  "model_content_verification": {
+    "content_sha256": "f57c38ceb565f8394e529b45c80b0e40e42ac873ff881c478303236c5b6b3c77",
+    "directory_closed": true,
+    "directory_file_count": 27,
+    "file_count": 24,
+    "file_set_sha256": "cdc0780a2d319799b0d6a8dc146144c94ceb7266b2b4cca1ecab7aa36716c602",
+    "files": [
+      {
+        "mtime_ns": 1786099911371270799,
+        "path": "chat_template.json",
+        "sha256": "5c72a170d2a4a1a3bc5adad2e689ae28138a9700e5b8c96c0266331e86c0acce",
+        "size": 5499
+      },
+      {
+        "mtime_ns": 1786099895959255734,
+        "path": "config.json",
+        "sha256": "d2dd0c60d01b9e195d9447c52da61c7302d28828524914c044d9c6e1b81d0427",
+        "size": 1474
+      },
+      {
+        "mtime_ns": 1786099896503256266,
+        "path": "configuration.json",
+        "sha256": "2d4464e2ead06bc9bc718c781309ad1e7baded626d66e8dcdc8b469ba185faf0",
+        "size": 51
+      },
+      {
+        "mtime_ns": 1786099896263256031,
+        "path": "generation_config.json",
+        "sha256": "1e241830b48b397cb0900101421df5450baddc7adf01e5fc86b5615865f3bae4",
+        "size": 269
+      },
+      {
+        "mtime_ns": 1786105532794262629,
+        "path": "model-00001-of-00014.safetensors",
+        "sha256": "6b9dfbc930e505402ae9d7e5091a9d7d656cda5f34614f01cfe70bfb0cca27cb",
+        "size": 4932328944
+      },
+      {
+        "mtime_ns": 1786104989780593508,
+        "path": "model-00002-of-00014.safetensors",
+        "sha256": "d8bb44b4ff303fe76fe9e894022fb3dc71b15a2e716592790fe0e3c3e60478fa",
+        "size": 4875990528
+      },
+      {
+        "mtime_ns": 1786104979764452366,
+        "path": "model-00003-of-00014.safetensors",
+        "sha256": "54f22e8b3168f8dc962fac0d313607ebf52a12b433d4cf3098a0d82d9f042940",
+        "size": 4875990552
+      },
+      {
+        "mtime_ns": 1786105027573109972,
+        "path": "model-00004-of-00014.safetensors",
+        "sha256": "ad09c74d3c13ee29b5d0d84548fd8a3424a651564eaccd519946c296e59c557f",
+        "size": 4875990584
+      },
+      {
+        "mtime_ns": 1786105015264944500,
+        "path": "model-00005-of-00014.safetensors",
+        "sha256": "fc993c8a0e2a5b0570f383e1a95dc3a1281d1b224b6f3ee908f4827941e1dfc2",
+        "size": 4875990584
+      },
+      {
+        "mtime_ns": 1786105011656895501,
+        "path": "model-00006-of-00014.safetensors",
+        "sha256": "82f05620d1f718a90c362b221d6a184ff1a0f53301d706882d3df49695fa1974",
+        "size": 4875990584
+      },
+      {
+        "mtime_ns": 1786104970580321317,
+        "path": "model-00007-of-00014.safetensors",
+        "sha256": "fb91da8cb01ff4de3eef0eab1c3e769a734b3a1aafc61734068638a0d6c86934",
+        "size": 4875990584
+      },
+      {
+        "mtime_ns": 1786105504694037166,
+        "path": "model-00008-of-00014.safetensors",
+        "sha256": "431ca56535c8781944ce3801f5eb61c45531e853ecc5846d936ebaf4761b764f",
+        "size": 4875990584
+      },
+      {
+        "mtime_ns": 1786105103162072474,
+        "path": "model-00009-of-00014.safetensors",
+        "sha256": "3825e3f4302f4d2f7d76aa7430d2ce0864fde6b9e540a5806bf0d8e38e4d9f47",
+        "size": 4875990584
+      },
+      {
+        "mtime_ns": 1786105133166430802,
+        "path": "model-00010-of-00014.safetensors",
+        "sha256": "aded5a4d1d5e22dbd8b6f79266b6eb88c840411b09527c53917a1419ace22e2f",
+        "size": 4875990584
+      },
+      {
+        "mtime_ns": 1786104999660730951,
+        "path": "model-00011-of-00014.safetensors",
+        "sha256": "3820ffe8d8d6477f6fe8d614ef3c87abb264ee39accebf43a1507b970d80946f",
+        "size": 4875990584
+      },
+      {
+        "mtime_ns": 1786104965168243352,
+        "path": "model-00012-of-00014.safetensors",
+        "sha256": "05ad2d08ce71963121c9b03f1d9ec5d7641052f4b23c6c12b80d71065eb8e98e",
+        "size": 4875990584
+      },
+      {
+        "mtime_ns": 1786105085465855051,
+        "path": "model-00013-of-00014.safetensors",
+        "sha256": "b64f2289871261fdd1abbd3b78bcd66011b341de3dc8eeb2ed1a473ee7c8d95c",
+        "size": 4875990584
+      },
+      {
+        "mtime_ns": 1786103451307343135,
+        "path": "model-00014-of-00014.safetensors",
+        "sha256": "e45b6c9998c77ee5a6577f9f47bc76416c1d4d387169e50c4c9d3134ea51b13b",
+        "size": 3270697008
+      },
+      {
+        "mtime_ns": 1786099912795272190,
+        "path": "model.safetensors.index.json",
+        "sha256": "06c952c569285870b811989b794b9766493e280fb77fbcb957fc4e5fcf25403a",
+        "size": 97831
+      },
+      {
+        "mtime_ns": 1786099911499270925,
+        "path": "preprocessor_config.json",
+        "sha256": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516",
+        "size": 390
+      },
+      {
+        "mtime_ns": 1786099920647279856,
+        "path": "tokenizer.json",
+        "sha256": "a5d85b6dcc535e6b93115a9ef287e6132fdbf30270da6218194ba742261173c7",
+        "size": 7032403
+      },
+      {
+        "mtime_ns": 1786099912983272374,
+        "path": "tokenizer_config.json",
+        "sha256": "c2da771801886ad9ae98181793ffd3dfb7f1af30f6f7c6a4e15d7dbba52e2399",
+        "size": 10868
+      },
+      {
+        "mtime_ns": 1786099913087272476,
+        "path": "video_preprocessor_config.json",
+        "sha256": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13",
+        "size": 385
+      },
+      {
+        "mtime_ns": 1786099917815277092,
+        "path": "vocab.json",
+        "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+        "size": 2776833
+      }
+    ],
+    "manifest_file_sha256": "18e0909c7d993853d6d0f62443461a74009754f90db026a1723cab80121c7872",
+    "schema": "sys_trrc_model_content_verification_v1",
+    "status": "PASS",
+    "supplemental_file_count": 3,
+    "supplemental_file_set_sha256": "a52ea162dc8ad01a28d8f17e7594669670f08f20ad3dd1dd9530e03256063721",
+    "supplemental_files": [
+      {
+        "mtime_ns": 1786099911143270576,
+        "path": ".gitattributes",
+        "sha256": "b0d92479f53ad4b97123cd24cd830de48db021232a1c57587f652a6d73d64860",
+        "size": 3139
+      },
+      {
+        "mtime_ns": 1786099911903271319,
+        "path": "README.md",
+        "sha256": "edd67474bf6940a2f0a1204842faa8541ce75b1461f355acc1cc7572dd297ea8",
+        "size": 7140
+      },
+      {
+        "mtime_ns": 1786099903147262763,
+        "path": "merges.txt",
+        "sha256": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+        "size": 1671839
+      }
+    ]
+  },
+  "model_manifest_sha256": "18e0909c7d993853d6d0f62443461a74009754f90db026a1723cab80121c7872",
+  "model_realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope",
+  "packages": {
+    "torch": "2.11.0",
+    "transformers": "5.14.1",
+    "vllm": "0.26.0"
+  },
+  "port": 18000,
+  "preflight_content_sha256": "50ef7094eb52d42c88cc0a78d65033503ecc8723267aa6880a9d89429aa0f55e",
+  "process_cmdline": "/root/autodl-tmp/envs/qwen_vllm/bin/python /root/autodl-tmp/envs/qwen_vllm/bin/vllm serve /root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope --served-model-name Qwen/Qwen3-VL-32B-Instruct --host 127.0.0.1 --port 18000 --tensor-parallel-size 1 --dtype bfloat16 --gpu-memory-utilization 0.92 --max-model-len 65536 --max-num-seqs 1 --limit-mm-per-prompt {\"image\":1} --generation-config vllm --no-enable-log-requests ",
+  "process_pid": 7081,
+  "protocol_id": "SYS_TRRC_R2_ONE_SHOT_RECOVERY_PREREG_V1",
+  "qualified_at": "2026-08-15T15:03:18.398589+00:00",
+  "schema": "sys_trrc_live_server_receipt_v1",
+  "served_model_id": "Qwen/Qwen3-VL-32B-Instruct",
+  "served_model_ids_observed": [
+    "Qwen/Qwen3-VL-32B-Instruct"
+  ],
+  "status": "PASS",
+  "system_id": "sys_trrc_r2_one_shot_triggered_recovery_v1"
+}

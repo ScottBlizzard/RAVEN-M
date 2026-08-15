@@ -1,0 +1,147 @@
+{
+  "claim_boundary": {
+    "held_out": false,
+    "held_out_reason": "all_19_seed20260806_tasks_were_previously_observed",
+    "intervention_kind": "r2_memory_plus_triggered_auxiliary_recovery_reasoning",
+    "memory_improvement_claim_permitted": false
+  },
+  "closure": {
+    "campaign_stage": "l1",
+    "completion_errors": [],
+    "expected_episode_count": 2,
+    "invalid_attempt_count": 0,
+    "invalid_attempts": [],
+    "lifecycle_errors": [],
+    "not_run_by_protocol": [
+      "BrowserMultiply"
+    ],
+    "ordered_tasks": [
+      "ExpenseDeleteMultiple2"
+    ],
+    "valid_episode_count": 1
+  },
+  "content_sha256": "a15d24ba232349694dc7203030cb4aa6b3727db1db0d2ae665a6614912e0b52a",
+  "errors": [],
+  "gates": {
+    "activation": {
+      "aux_committed_count": 0,
+      "episode_present": false,
+      "immediate_normal_action_executed": false,
+      "injection_committed_count": 0,
+      "qualification": "NOT_RUN_BY_STAGE",
+      "qualifying_visible_window": false,
+      "status": "incomplete_by_stage",
+      "task_name": "BrowserMultiply",
+      "task_success": false,
+      "trigger_count": 0,
+      "valid_auxiliary_response": false,
+      "valid_committed_injection": false
+    },
+    "preservation": {
+      "observed_count": 1,
+      "required": 6,
+      "status": "fail",
+      "success_count": 0,
+      "tasks": [
+        {
+          "pass": false,
+          "reward": 0.0,
+          "task_name": "ExpenseDeleteMultiple2"
+        },
+        {
+          "pass": false,
+          "reward": null,
+          "task_name": "RetroSavePlaylist"
+        },
+        {
+          "pass": false,
+          "reward": null,
+          "task_name": "SimpleCalendarAddOneEvent"
+        },
+        {
+          "pass": false,
+          "reward": null,
+          "task_name": "SportsTrackerTotalDurationForCategoryThisWeek"
+        },
+        {
+          "pass": false,
+          "reward": null,
+          "task_name": "RecipeDeleteMultipleRecipesWithConstraint"
+        },
+        {
+          "pass": false,
+          "reward": null,
+          "task_name": "OsmAndMarker"
+        }
+      ]
+    }
+  },
+  "identity": {
+    "arm_id": "SYS-TRRC-R2-BASE",
+    "checkpoint_sha256": "b821850add2c01d9cab285c73e2244ea6ed67c4d41524e001525e5235b968ac1",
+    "experiment_id": "SYS_TRRC_B_R2_BASE_QWEN3VL32B_AW_HARD_S20260806_V1",
+    "generation_seed": 3407,
+    "implementation_commit": "e3394f0b0dc8ed0cab9fd15307ee7b9466412d03",
+    "mode": "base",
+    "preflight_content_sha256": "26b568cb68efc4d8847136864a7f8e86da9498d1db1da39a56c204c8b78a5951",
+    "preflight_file_sha256": "88201dc0bfb6b7bdcc39bffa0a577d8808e3aac9f13bef1f18b0844c6d238fe2",
+    "receipt_file_sha256s": [
+      "bdc7bd63c202914705e3f8712b05df425fa357dbe06c9e51c0a8af1a9aa6051f"
+    ],
+    "run_signature_sha256": "a5f6c0baad95b7a4755638982d0c283e458b0c0c4120f9445dd5698ce46b932f",
+    "source_freeze_content_sha256": "9eeca6cae0a6fe665901de57e6d7dc95e9d819dd85c7bf8c6120b5978fc75f47",
+    "system_id": "sys_trrc_r2_one_shot_triggered_recovery_v1",
+    "task_seed": 20260806
+  },
+  "performance": {
+    "advice_induced_executor_prompt_tokens": 0,
+    "advice_injected_chars": 0,
+    "detector_cpu_seconds": 0.0,
+    "model_calls": {
+      "aux": 0,
+      "combined": 34,
+      "normal": 34
+    },
+    "model_latency": {
+      "aux_seconds": 0.0,
+      "combined_seconds": 265.54579389999617,
+      "normal_seconds": 265.54579389999617
+    },
+    "reward_sum": 0.0,
+    "success_count": 0,
+    "token_projection_cpu_seconds": 0.0,
+    "token_usage": {
+      "aux": {
+        "completion_tokens": 0,
+        "prompt_tokens": 0,
+        "total_tokens": 0
+      },
+      "combined": {
+        "completion_tokens": 4962,
+        "prompt_tokens": 139831,
+        "total_tokens": 144793
+      },
+      "normal": {
+        "completion_tokens": 4962,
+        "prompt_tokens": 139831,
+        "total_tokens": 144793
+      }
+    },
+    "transport": {
+      "all_single_attempt": true,
+      "aux_call_count": 0,
+      "maximum_attempts": 1,
+      "normal_call_count": 34
+    },
+    "valid_elapsed_seconds": 582.057726
+  },
+  "protocol_id": "SYS_TRRC_R2_ONE_SHOT_RECOVERY_PREREG_V1",
+  "schema": "sys_trrc_result_v1",
+  "scientific_failure_terminal": false,
+  "status": "STAGE_L1_COMPLETE",
+  "verdicts": {
+    "accuracy": "NOT_PRIMARY_FULL_ARM",
+    "cost": "REPORTED_SEPARATELY_NO_SUBSTITUTION_FOR_ACCURACY",
+    "specialized_recovery_causality": "NOT_ADJUDICATED_REQUIRES_CROSS_ARM_EXACT_PREFIX_JOIN"
+  }
+}

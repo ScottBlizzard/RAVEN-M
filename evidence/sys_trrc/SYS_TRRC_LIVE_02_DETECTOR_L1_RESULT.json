@@ -1,0 +1,147 @@
+{
+  "claim_boundary": {
+    "held_out": false,
+    "held_out_reason": "all_19_seed20260806_tasks_were_previously_observed",
+    "intervention_kind": "r2_memory_plus_triggered_auxiliary_recovery_reasoning",
+    "memory_improvement_claim_permitted": false
+  },
+  "closure": {
+    "campaign_stage": "l1",
+    "completion_errors": [],
+    "expected_episode_count": 2,
+    "invalid_attempt_count": 0,
+    "invalid_attempts": [],
+    "lifecycle_errors": [],
+    "not_run_by_protocol": [
+      "BrowserMultiply"
+    ],
+    "ordered_tasks": [
+      "ExpenseDeleteMultiple2"
+    ],
+    "valid_episode_count": 1
+  },
+  "content_sha256": "22f5f7bd8130e0bd2cbe730106f444089b5010702c3105b9b218c425b64b1307",
+  "errors": [],
+  "gates": {
+    "activation": {
+      "aux_committed_count": 0,
+      "episode_present": false,
+      "immediate_normal_action_executed": false,
+      "injection_committed_count": 0,
+      "qualification": "NOT_RUN_BY_STAGE",
+      "qualifying_visible_window": false,
+      "status": "incomplete_by_stage",
+      "task_name": "BrowserMultiply",
+      "task_success": false,
+      "trigger_count": 0,
+      "valid_auxiliary_response": false,
+      "valid_committed_injection": false
+    },
+    "preservation": {
+      "observed_count": 1,
+      "required": 6,
+      "status": "incomplete_by_stage",
+      "success_count": 1,
+      "tasks": [
+        {
+          "pass": true,
+          "reward": 1.0,
+          "task_name": "ExpenseDeleteMultiple2"
+        },
+        {
+          "pass": false,
+          "reward": null,
+          "task_name": "RetroSavePlaylist"
+        },
+        {
+          "pass": false,
+          "reward": null,
+          "task_name": "SimpleCalendarAddOneEvent"
+        },
+        {
+          "pass": false,
+          "reward": null,
+          "task_name": "SportsTrackerTotalDurationForCategoryThisWeek"
+        },
+        {
+          "pass": false,
+          "reward": null,
+          "task_name": "RecipeDeleteMultipleRecipesWithConstraint"
+        },
+        {
+          "pass": false,
+          "reward": null,
+          "task_name": "OsmAndMarker"
+        }
+      ]
+    }
+  },
+  "identity": {
+    "arm_id": "SYS-TRRC-R2-DETECTOR",
+    "checkpoint_sha256": "5d72f9db9d486b1f3987a800d65f334ce58d9b6a5d254a3b7c97197744687428",
+    "experiment_id": "SYS_TRRC_D_R2_DETECTOR_QWEN3VL32B_AW_HARD_S20260806_V1",
+    "generation_seed": 3407,
+    "implementation_commit": "e3394f0b0dc8ed0cab9fd15307ee7b9466412d03",
+    "mode": "detector",
+    "preflight_content_sha256": "9889eedfb5e8833502399da500efc5ddcf724b96fa67c73a0332fe5ca299d47b",
+    "preflight_file_sha256": "b398c9cb88bd0638b6265bfa66095fd3ad5baeb80f177c253ca037541b0bb48c",
+    "receipt_file_sha256s": [
+      "37654f566078af16eda1683a8729ce0b4695a2daed2182bd47d49f10a4f44e83"
+    ],
+    "run_signature_sha256": "83000287431b6137c4d193f2ed776eba6e096f9e81f73e71f5c2476bd6039559",
+    "source_freeze_content_sha256": "9eeca6cae0a6fe665901de57e6d7dc95e9d819dd85c7bf8c6120b5978fc75f47",
+    "system_id": "sys_trrc_r2_one_shot_triggered_recovery_v1",
+    "task_seed": 20260806
+  },
+  "performance": {
+    "advice_induced_executor_prompt_tokens": 0,
+    "advice_injected_chars": 0,
+    "detector_cpu_seconds": 4.34632870000496,
+    "model_calls": {
+      "aux": 0,
+      "combined": 18,
+      "normal": 18
+    },
+    "model_latency": {
+      "aux_seconds": 0.0,
+      "combined_seconds": 120.71685759999855,
+      "normal_seconds": 120.71685759999855
+    },
+    "reward_sum": 1.0,
+    "success_count": 1,
+    "token_projection_cpu_seconds": 0.03931019999799901,
+    "token_usage": {
+      "aux": {
+        "completion_tokens": 0,
+        "prompt_tokens": 0,
+        "total_tokens": 0
+      },
+      "combined": {
+        "completion_tokens": 2144,
+        "prompt_tokens": 68833,
+        "total_tokens": 70977
+      },
+      "normal": {
+        "completion_tokens": 2144,
+        "prompt_tokens": 68833,
+        "total_tokens": 70977
+      }
+    },
+    "transport": {
+      "all_single_attempt": true,
+      "aux_call_count": 0,
+      "maximum_attempts": 1,
+      "normal_call_count": 18
+    },
+    "valid_elapsed_seconds": 342.540037
+  },
+  "protocol_id": "SYS_TRRC_R2_ONE_SHOT_RECOVERY_PREREG_V1",
+  "schema": "sys_trrc_result_v1",
+  "scientific_failure_terminal": false,
+  "status": "STAGE_L1_COMPLETE",
+  "verdicts": {
+    "accuracy": "NOT_PRIMARY_FULL_ARM",
+    "cost": "REPORTED_SEPARATELY_NO_SUBSTITUTION_FOR_ACCURACY",
+    "specialized_recovery_causality": "NOT_ADJUDICATED_REQUIRES_CROSS_ARM_EXACT_PREFIX_JOIN"
+  }
+}

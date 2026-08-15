@@ -1,0 +1,164 @@
+{
+  "claim_boundary": {
+    "held_out": false,
+    "held_out_reason": "all_19_seed20260806_tasks_were_previously_observed",
+    "intervention_kind": "r2_memory_plus_triggered_auxiliary_recovery_reasoning",
+    "memory_improvement_claim_permitted": false
+  },
+  "closure": {
+    "campaign_stage": "l1",
+    "completion_errors": [],
+    "expected_episode_count": 19,
+    "invalid_attempt_count": 0,
+    "invalid_attempts": [],
+    "lifecycle_errors": [],
+    "not_run_by_protocol": [
+      "RetroSavePlaylist",
+      "SimpleCalendarAddOneEvent",
+      "SportsTrackerTotalDurationForCategoryThisWeek",
+      "RecipeDeleteMultipleRecipesWithConstraint",
+      "OsmAndMarker",
+      "BrowserMultiply",
+      "ExpenseAddMultipleFromGallery",
+      "ExpenseAddMultipleFromMarkor",
+      "MarkorCreateNoteAndSms",
+      "MarkorMergeNotes",
+      "MarkorTranscribeVideo",
+      "OsmAndTrack",
+      "RecipeAddMultipleRecipesFromImage",
+      "RecipeAddMultipleRecipesFromMarkor",
+      "RecipeAddMultipleRecipesFromMarkor2",
+      "SaveCopyOfReceiptTaskEval",
+      "SportsTrackerActivitiesOnDate",
+      "SportsTrackerTotalDistanceForCategoryOverInterval"
+    ],
+    "ordered_tasks": [
+      "ExpenseDeleteMultiple2"
+    ],
+    "valid_episode_count": 1
+  },
+  "content_sha256": "7f546ee6a1ff9468dd5dcd364d49caee7990c59c0188795db957bc4070fa711d",
+  "errors": [],
+  "gates": {
+    "activation": {
+      "aux_committed_count": 0,
+      "episode_present": false,
+      "immediate_normal_action_executed": false,
+      "injection_committed_count": 0,
+      "qualification": "NOT_RUN_BY_STAGE",
+      "qualifying_visible_window": false,
+      "status": "incomplete_by_stage",
+      "task_name": "BrowserMultiply",
+      "task_success": false,
+      "trigger_count": 0,
+      "valid_auxiliary_response": false,
+      "valid_committed_injection": false
+    },
+    "preservation": {
+      "observed_count": 1,
+      "required": 6,
+      "status": "incomplete_by_stage",
+      "success_count": 1,
+      "tasks": [
+        {
+          "pass": true,
+          "reward": 1.0,
+          "task_name": "ExpenseDeleteMultiple2"
+        },
+        {
+          "pass": false,
+          "reward": null,
+          "task_name": "RetroSavePlaylist"
+        },
+        {
+          "pass": false,
+          "reward": null,
+          "task_name": "SimpleCalendarAddOneEvent"
+        },
+        {
+          "pass": false,
+          "reward": null,
+          "task_name": "SportsTrackerTotalDurationForCategoryThisWeek"
+        },
+        {
+          "pass": false,
+          "reward": null,
+          "task_name": "RecipeDeleteMultipleRecipesWithConstraint"
+        },
+        {
+          "pass": false,
+          "reward": null,
+          "task_name": "OsmAndMarker"
+        }
+      ]
+    }
+  },
+  "identity": {
+    "arm_id": "SYS-TRRC-R2-GENERIC",
+    "checkpoint_sha256": "6c61c6e655f6419ac20bf7e7c3c17b633c34c7388f9fbe3d2da04402599324bf",
+    "experiment_id": "SYS_TRRC_G_R2_GENERIC_RECOVERY_QWEN3VL32B_AW_HARD_S20260806_V1",
+    "generation_seed": 3407,
+    "implementation_commit": "e3394f0b0dc8ed0cab9fd15307ee7b9466412d03",
+    "mode": "generic",
+    "preflight_content_sha256": "50ef7094eb52d42c88cc0a78d65033503ecc8723267aa6880a9d89429aa0f55e",
+    "preflight_file_sha256": "e418088e56f9329b092e115421df13d2014eaa5bae003f276bb332fd0df2cf55",
+    "receipt_file_sha256s": [
+      "3be061167688644c00bb34c9a06f43cfd3c01f9b2b99d633807d873c0a0dd11e"
+    ],
+    "run_signature_sha256": "d4c50fca90b86c43697dffd509a017018fde54c3b2c26af261a3c88aa3cbd880",
+    "source_freeze_content_sha256": "9eeca6cae0a6fe665901de57e6d7dc95e9d819dd85c7bf8c6120b5978fc75f47",
+    "system_id": "sys_trrc_r2_one_shot_triggered_recovery_v1",
+    "task_seed": 20260806
+  },
+  "performance": {
+    "advice_induced_executor_prompt_tokens": 0,
+    "advice_injected_chars": 0,
+    "detector_cpu_seconds": 4.420506100001148,
+    "model_calls": {
+      "aux": 0,
+      "combined": 19,
+      "normal": 19
+    },
+    "model_latency": {
+      "aux_seconds": 0.0,
+      "combined_seconds": 122.57749040000454,
+      "normal_seconds": 122.57749040000454
+    },
+    "reward_sum": 1.0,
+    "success_count": 1,
+    "token_projection_cpu_seconds": 0.04233320000093954,
+    "token_usage": {
+      "aux": {
+        "completion_tokens": 0,
+        "prompt_tokens": 0,
+        "total_tokens": 0
+      },
+      "combined": {
+        "completion_tokens": 2188,
+        "prompt_tokens": 72771,
+        "total_tokens": 74959
+      },
+      "normal": {
+        "completion_tokens": 2188,
+        "prompt_tokens": 72771,
+        "total_tokens": 74959
+      }
+    },
+    "transport": {
+      "all_single_attempt": true,
+      "aux_call_count": 0,
+      "maximum_attempts": 1,
+      "normal_call_count": 19
+    },
+    "valid_elapsed_seconds": 355.263608
+  },
+  "protocol_id": "SYS_TRRC_R2_ONE_SHOT_RECOVERY_PREREG_V1",
+  "schema": "sys_trrc_result_v1",
+  "scientific_failure_terminal": false,
+  "status": "STAGE_L1_COMPLETE",
+  "verdicts": {
+    "accuracy": "NOT_PRIMARY_FULL_ARM",
+    "cost": "REPORTED_SEPARATELY_NO_SUBSTITUTION_FOR_ACCURACY",
+    "specialized_recovery_causality": "NOT_ADJUDICATED_REQUIRES_CROSS_ARM_EXACT_PREFIX_JOIN"
+  }
+}
