@@ -543,6 +543,9 @@ def test_runner_contains_aux_timeout_policy_and_recovery_hook() -> None:
     assert 'sys_trrc_result.json' in runner
     assert '--sys-trrc-stage' in runner
     assert 'stage skipping is forbidden' in runner
+    launcher = (root / "scripts/start_sys_trrc_server.sh").read_text(encoding="utf-8")
+    assert "export OMP_NUM_THREADS=16" in launcher
+    assert "export MKL_NUM_THREADS=16" in launcher
 
 
 @pytest.mark.skipif(

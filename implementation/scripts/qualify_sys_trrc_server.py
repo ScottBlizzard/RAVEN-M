@@ -130,7 +130,13 @@ def main()->int:
     model_verification=verify_model_manifest(Path(contract.MODEL_REALPATH),manifest)
     cmd=Path(f"/proc/{a.pid}/cmdline").read_bytes().replace(b"\0",b" ").decode()
     if "vllm" not in cmd or contract.MODEL_REALPATH not in cmd or str(a.port) not in cmd: raise RuntimeError("server cmdline drift")
+    process_environment={}
+    for item in Path(f"/proc/{a.pid}/environ").read_bytes().split(b"\0"):
+        if b"=" in item:
+            key,value=item.split(b"=",1); process_environment[key.decode(errors="replace")]=value.decode(errors="replace")
+    thread_environment={key:process_environment.get(key) for key in ("OMP_NUM_THREADS","MKL_NUM_THREADS")}
+    if thread_environment!={"OMP_NUM_THREADS":"16","MKL_NUM_THREADS":"16"}: raise RuntimeError("server thread environment drift")
     with urlopen(f"http://127.0.0.1:{a.port}/v1/models",timeout=10) as response: ids=[str(x.get("id")) for x in (json.load(response).get("data") or [])]
-    payload={"schema":contract.LIVE_RECEIPT_SCHEMA,"status":"PASS","errors":[],"generation_calls":0,"protocol_id":contract.PROTOCOL_ID,"system_id":contract.SYSTEM_ID,"mode":a.mode,"arm_id":arm["arm_id"],"experiment_id":arm["experiment_id"],"implementation_commit":pre["implementation_commit"],"preflight_content_sha256":pre["content_sha256"],"served_model_id":contract.MODEL_ID,"served_model_ids_observed":ids,"model_realpath":contract.MODEL_REALPATH,"model_manifest_sha256":contract.MODEL_MANIFEST_SHA256,"model_content_verification":model_verification,"process_pid":a.pid,"process_cmdline":cmd,"port":a.port,"packages":{n:version(n) for n in ("vllm","torch","transformers")},"qualified_at":datetime.now(timezone.utc).isoformat()}
+    payload={"schema":contract.LIVE_RECEIPT_SCHEMA,"status":"PASS","errors":[],"generation_calls":0,"protocol_id":contract.PROTOCOL_ID,"system_id":contract.SYSTEM_ID,"mode":a.mode,"arm_id":arm["arm_id"],"experiment_id":arm["experiment_id"],"implementation_commit":pre["implementation_commit"],"preflight_content_sha256":pre["content_sha256"],"served_model_id":contract.MODEL_ID,"served_model_ids_observed":ids,"model_realpath":contract.MODEL_REALPATH,"model_manifest_sha256":contract.MODEL_MANIFEST_SHA256,"model_content_verification":model_verification,"process_pid":a.pid,"process_cmdline":cmd,"thread_environment":thread_environment,"port":a.port,"packages":{n:version(n) for n in ("vllm","torch","transformers")},"qualified_at":datetime.now(timezone.utc).isoformat()}
     receipt={**payload,"content_sha256":contract.content_sha256(payload)}; a.output.parent.mkdir(parents=True,exist_ok=True); a.output.write_text(json.dumps(receipt,sort_keys=True,indent=2)+"\n",encoding="utf-8"); contract.validate_launch_receipt(a.output,preflight_path=a.preflight,expected_mode=a.mode); print(json.dumps({"status":"PASS","output":str(a.output)},indent=2)); return 0
 if __name__=="__main__": raise SystemExit(main())

@@ -6,6 +6,11 @@ case "$MODE" in base|detector|generic|full) ;; *) echo "invalid mode" >&2; exit 
 ENV_DIR="${RAVEN_ENV_DIR:-/root/autodl-tmp/envs/qwen_vllm}"
 MODEL_DIR="${RAVEN_MODEL_SOURCE:-/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope}"
 export PYTHONPATH="$ROOT/implementation/src"
+# AutoDL may expose OMP/MKL thread counts as zero when switching from no-card
+# to GPU mode.  PyTorch rejects that before model loading, so freeze a positive
+# server-only CPU thread count and bind it into the live receipt.
+export OMP_NUM_THREADS=16
+export MKL_NUM_THREADS=16
 "$ENV_DIR/bin/python" "$ROOT/implementation/scripts/preflight_sys_trrc.py" --mode "$MODE" --validate-existing
 export CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-0}"
 export PYTORCH_CUDA_ALLOC_CONF="${PYTORCH_CUDA_ALLOC_CONF:-expandable_segments:True}"

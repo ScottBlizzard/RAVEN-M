@@ -464,6 +464,12 @@ projection record, and its executable hash, processor hashes, projection time,
 expanded image-token count, and result are audited. This deployment split is
 an implementation boundary, not an additional reasoning component.
 
+The qualified remote vLLM process must expose `OMP_NUM_THREADS=16` and
+`MKL_NUM_THREADS=16`. This pre-live infrastructure binding prevents an AutoDL
+no-card-to-GPU transition from supplying the invalid value zero to
+`torch.set_num_threads`; it does not alter the model, prompts, sampler, task
+order, or scientific intervention.
+
 Any detector, prompt, schema, wrapper, budget, gate, or task-order change after
 source freeze requires a new protocol identity. A valid scientific failure is
 never rerun under the same identity.

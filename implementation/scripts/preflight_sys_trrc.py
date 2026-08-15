@@ -147,6 +147,8 @@ def main() -> int:
         errors.append("aux_http_60_second_timeout_missing")
     if "export VLLM_USE_FLASHINFER_SAMPLER=0" not in start_text:
         errors.append("native_vllm_sampler_freeze_missing")
+    if "export OMP_NUM_THREADS=16" not in start_text or "export MKL_NUM_THREADS=16" not in start_text:
+        errors.append("positive_server_thread_environment_missing")
     if "retry_transient_errors=not" not in runner_text or "or dual_memory_arm" not in runner_text:
         errors.append("single_transport_no_retry_missing")
     try:

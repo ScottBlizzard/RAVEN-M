@@ -707,6 +707,7 @@ def validate_launch_receipt(path: Path, *, preflight_path: Path,
         "preflight_content_sha256": preflight.get("content_sha256"),
         "served_model_id": MODEL_ID, "served_model_ids_observed": [MODEL_ID],
         "model_realpath": MODEL_REALPATH, "model_manifest_sha256": MODEL_MANIFEST_SHA256,
+        "thread_environment": {"OMP_NUM_THREADS": "16", "MKL_NUM_THREADS": "16"},
         "port": PORT,
     }
     errors = [f"{k}_drift" for k, v in expected.items() if receipt.get(k) != v]
