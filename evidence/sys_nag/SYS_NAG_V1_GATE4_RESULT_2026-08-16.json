@@ -1,0 +1,35 @@
+{
+  "schema": "sys_nag_v1_gate4_result_v1",
+  "system_id": "sys_r2_numeric_answer_consistency_guard_v1",
+  "experiment_id": "SYS_NAG_R2_QWEN3VL32B_AW_HARD_S20260806_G3407_V1",
+  "status": "VALID_GATE4_COMPLETE_ORCHESTRATION_LOCKED",
+  "implementation_commit": "dfbb561dc369a0ab7bc3fb36f932a382b73db631",
+  "valid_episode_count": 4,
+  "success_count": 4,
+  "reward_sum": 4.0,
+  "invalid_attempt_count": 0,
+  "tasks": [
+    {"task_name": "ExpenseDeleteMultiple2", "reward": 1.0},
+    {"task_name": "RetroSavePlaylist", "reward": 1.0},
+    {"task_name": "SimpleCalendarAddOneEvent", "reward": 1.0},
+    {"task_name": "SportsTrackerTotalDurationForCategoryThisWeek", "reward": 1.0}
+  ],
+  "guard_intervention": {
+    "task_name": "SportsTrackerTotalDurationForCategoryThisWeek",
+    "model_proposed_answer": "165",
+    "executed_answer": "180",
+    "duration_minutes": [105, 75],
+    "action_override_count": 1,
+    "extra_model_calls": 0,
+    "reward": 1.0,
+    "classification": "OVERRIDE_SUCCESS_ABLATION_UNRESOLVED"
+  },
+  "stop_reason": "The generic runner checked the six-task preservation report immediately after the four-task A0 gate and locked task five. No fifth-task model request was sent.",
+  "scientific_failure": false,
+  "artifacts": {
+    "checkpoint_file_sha256": "3215945eda4ad87e8e17bb45321684b9ac6fb005795a285183d567603cfeaa4f",
+    "sports_episode_file_sha256": "a3576c67d0b2139a875d0eaf19786e1fdf1746ba770428612b385707617b06e6",
+    "run_signature_file_sha256": "ca655d4df1479d47c2704d7d77efb9879bedf933981231d8364453f1556653a7",
+    "live_receipt_file_sha256": "06eebfbe2a1a538230f3cf90e7f455626cbc61ed788a901a87d08e42a931d513"
+  }
+}

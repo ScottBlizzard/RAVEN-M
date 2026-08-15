@@ -1,0 +1,27 @@
+{
+  "config_content_sha256": "d2cebaa2deb039da1683441d01719d51123e7a3c423185369e98b1cbb6d24091",
+  "content_sha256": "39cbb5837abd7a3d073036cd95c4fbaee089515578894653b5890d45314ff0a0",
+  "errors": [],
+  "experiment_id": "SYS_NAG_R2_QWEN3VL32B_AW_HARD_S20260806_G3407_V1",
+  "generation_calls": 0,
+  "implementation_commit": "dfbb561dc369a0ab7bc3fb36f932a382b73db631",
+  "mechanism_id": "a1r2_compact_verified_pending_v1",
+  "model_manifest_sha256": "18e0909c7d993853d6d0f62443461a74009754f90db026a1723cab80121c7872",
+  "model_realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope",
+  "packages": {
+    "torch": "2.11.0",
+    "transformers": "5.14.1",
+    "vllm": "0.26.0"
+  },
+  "port": 18000,
+  "preflight_content_sha256": "bfc4fa7298cdd476ff4e810b0f8ecab162c8325d9d100b41169b638caaf58cf6",
+  "process_cmdline": "/root/autodl-tmp/envs/qwen_vllm/bin/python /root/autodl-tmp/envs/qwen_vllm/bin/vllm serve /root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope --served-model-name Qwen/Qwen3-VL-32B-Instruct --host 127.0.0.1 --port 18000 --tensor-parallel-size 1 --dtype bfloat16 --gpu-memory-utilization 0.92 --max-model-len 65536 --max-num-seqs 1 --limit-mm-per-prompt {\"image\":1} --generation-config vllm --no-enable-log-requests ",
+  "process_pid": 3807,
+  "qualified_at": "2026-08-15T18:13:32.846531+00:00",
+  "schema": "sys_nag_live_server_receipt_v1",
+  "served_model_id": "Qwen/Qwen3-VL-32B-Instruct",
+  "served_model_ids_observed": [
+    "Qwen/Qwen3-VL-32B-Instruct"
+  ],
+  "status": "PASS"
+}
