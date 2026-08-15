@@ -24,8 +24,8 @@ from .a1r3v3_one_shot_cnr import (
 )
 
 
-SYSTEM_ID = "sys_trrc_r2_one_shot_triggered_recovery_v1"
-AUDIT_SCHEMA = "sys_trrc_r2_one_shot_triggered_recovery_audit_v1"
+SYSTEM_ID = "sys_trrc_r2_one_shot_triggered_recovery_v2"
+AUDIT_SCHEMA = "sys_trrc_r2_one_shot_triggered_recovery_audit_v2"
 MODES = ("detector", "generic", "full")
 MAX_AUX_TOKENS = 192
 MAX_AUX_TOTAL_TOKENS = 8192
@@ -76,10 +76,10 @@ RECOMMENDATION: {recommendation}
 VISIBLE_CHECK: {visible_check}
 The current screenshot is authoritative. The executor must decide the next action."""
 
-_AUX_RESPONSE = re.compile(
-    r"\AASSESSMENT: (?P<assessment>[^\r\n]+)\r?\n"
-    r"RECOMMENDATION: (?P<recommendation>[^\r\n]+)\r?\n"
-    r"VISIBLE_CHECK: (?P<visible_check>[^\r\n]+)\Z"
+_AUX_FIELD_PREFIXES = (
+    ("assessment", "ASSESSMENT: "),
+    ("recommendation", "RECOMMENDATION: "),
+    ("visible_check", "VISIBLE_CHECK: "),
 )
 _FORBIDDEN_AUX = re.compile(
     r"(?i)<\s*tool_call|\bAction\s*:|mobile_use|\bcoordinate2?\b|"
@@ -134,13 +134,17 @@ def parse_auxiliary_response(content: str) -> dict[str, str]:
     text = str(content).strip()
     if _FORBIDDEN_AUX.search(text):
         raise RecoveryIntegrityError("aux_forbidden_content")
-    match = _AUX_RESPONSE.fullmatch(text)
-    if match is None:
+    # V2's sole semantic delta from the frozen V1 interface: pure whitespace
+    # lines between the three required fields are ignored. Every nonblank line
+    # remains order-sensitive, uniquely keyed, and single-line.
+    lines = [line for line in text.splitlines() if line.strip()]
+    if len(lines) != len(_AUX_FIELD_PREFIXES):
         raise RecoveryIntegrityError("aux_schema")
-    fields = {
-        key: _clean_line(match.group(key), limit=240)
-        for key in ("assessment", "recommendation", "visible_check")
-    }
+    fields: dict[str, str] = {}
+    for line, (key, prefix) in zip(lines, _AUX_FIELD_PREFIXES, strict=True):
+        if not line.startswith(prefix):
+            raise RecoveryIntegrityError("aux_schema")
+        fields[key] = _clean_line(line[len(prefix):], limit=240)
     rendered = ADVICE_TEMPLATE.format(**fields)
     if len(rendered) > 900 or len(rendered.encode("utf-8")) > 1800:
         raise RecoveryIntegrityError("aux_render_boundary")

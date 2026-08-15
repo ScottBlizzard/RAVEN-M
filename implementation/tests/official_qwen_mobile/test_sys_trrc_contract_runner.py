@@ -58,18 +58,20 @@ def _summary(task: str, *, trigger: int = 0, aux: int = 0, injection: int = 0) -
 
 def test_independent_bindings_and_frozen_gate_order() -> None:
     assert [contract.binding(x)["arm_id"] for x in ("base", "detector", "generic", "full")] == [
-        "SYS-TRRC-R2-BASE", "SYS-TRRC-R2-DETECTOR",
-        "SYS-TRRC-R2-GENERIC", "SYS-TRRC-R2-FULL"
+        "SYS-TRRC-V2-R2-BASE", "SYS-TRRC-V2-R2-DETECTOR",
+        "SYS-TRRC-V2-R2-GENERIC", "SYS-TRRC-V2-R2-FULL"
     ]
     assert contract.FULL_TASK_ORDER[:7] == contract.CAPABILITY_GATE_TASKS
     assert len(contract.FULL_TASK_ORDER) == 19
     assert contract.CONTROL_TASK_ORDER == ("ExpenseDeleteMultiple2", "BrowserMultiply")
     assert [len(contract.STAGE_TASKS[x]) for x in ("l1", "l2", "l3", "l4")] == [1, 6, 7, 19]
     assert contract.CAMPAIGN_INVOCATION_ORDER == (
-        ("base", "l1"), ("detector", "l1"), ("generic", "l1"), ("full", "l1"),
-        ("generic", "l2"), ("full", "l2"),
-        ("base", "l3"), ("detector", "l3"), ("generic", "l3"), ("full", "l3"),
-        ("generic", "l4"), ("full", "l4"),
+        ("full", "l1"),
+        ("base", "l1"), ("detector", "l1"), ("generic", "l1"),
+        ("full", "l2"), ("generic", "l2"),
+        ("full", "l3"),
+        ("base", "l3"), ("detector", "l3"), ("generic", "l3"),
+        ("full", "l4"), ("generic", "l4"),
     )
 
 
@@ -126,13 +128,13 @@ def test_campaign_pending_infrastructure_attempt_does_not_consume_ordinal(
     tmp_path: Path,
 ) -> None:
     payload = {
-        "schema": "sys_trrc_campaign_ledger_v1",
+        "schema": "sys_trrc_v2_campaign_ledger_v1",
         "protocol_id": contract.PROTOCOL_ID,
         "campaign_id": "campaign-test",
         "planned_order": [list(item) for item in contract.CAMPAIGN_INVOCATION_ORDER],
         "entries": [],
         "pending_attempt": {
-            "ordinal": 1, "mode": "base", "stage": "l1",
+            "ordinal": 1, "mode": "full", "stage": "l1",
             "suite_dir": None, "started_at": datetime.now(timezone.utc).isoformat(),
         },
     }
@@ -202,7 +204,7 @@ def test_campaign_same_arm_later_stage_keeps_earlier_snapshot_valid(
     (suite / "checkpoint.json").write_text("later live checkpoint", encoding="utf-8")
     (suite / "sys_trrc_result.json").write_text("later live result", encoding="utf-8")
     payload = {
-        "schema": "sys_trrc_campaign_ledger_v1",
+        "schema": "sys_trrc_v2_campaign_ledger_v1",
         "protocol_id": contract.PROTOCOL_ID, "campaign_id": "campaign-test",
         "planned_order": [list(item) for item in contract.CAMPAIGN_INVOCATION_ORDER],
         "entries": entries, "pending_attempt": None,
@@ -406,7 +408,12 @@ def test_projection_closure_replays_every_manifest_row_and_fails_on_receipt_drif
     source_evidence = ROOT / "evidence/sys_trrc"
     target_evidence = tmp_path / "evidence/sys_trrc"
     target_evidence.mkdir(parents=True)
-    shutil.copy2(source_evidence / "SYS_TRRC_R2_DETECTOR_REPLAY.json", target_evidence)
+    target_v2_evidence = tmp_path / "evidence/sys_trrc_v2"
+    target_v2_evidence.mkdir(parents=True)
+    shutil.copy2(
+        ROOT / "evidence/sys_trrc_v2/SYS_TRRC_V2_R2_DETECTOR_REPLAY.json",
+        target_v2_evidence,
+    )
     shutil.copytree(source_evidence / "token_projection_inputs",
                     target_evidence / "token_projection_inputs")
 
@@ -457,7 +464,7 @@ def test_preflight_validator_rejects_any_nested_projection_row_drift(
     config_path = tmp_path / contract.MODE_BINDINGS["generic"]["config"]
     config_path.parent.mkdir(parents=True)
     config_path.write_text(json.dumps(expected_config) + "\n", encoding="utf-8")
-    replay_path = tmp_path / "evidence/sys_trrc/SYS_TRRC_R2_DETECTOR_REPLAY.json"
+    replay_path = tmp_path / "evidence/sys_trrc_v2/SYS_TRRC_V2_R2_DETECTOR_REPLAY.json"
     replay_path.parent.mkdir(parents=True)
     replay = {"content_sha256": "4" * 64}
     replay_path.write_text(json.dumps(replay), encoding="utf-8")
@@ -473,11 +480,19 @@ def test_preflight_validator_rejects_any_nested_projection_row_drift(
                           for i in range(8)],
     }
     commit = "a" * 40
-    freeze_payload = {"schema": "sys_trrc_source_freeze_v1",
+    freeze_payload = {"schema": "sys_trrc_v2_source_freeze_v1",
                       "implementation_commit": commit, "files": {}}
     freeze = {**freeze_payload, "content_sha256": contract.content_sha256(freeze_payload)}
-    freeze_path = tmp_path / "evidence/sys_trrc/SYS_TRRC_GENERIC_SOURCE_FREEZE.json"
+    freeze_path = tmp_path / "evidence/sys_trrc_v2/SYS_TRRC_V2_GENERIC_SOURCE_FREEZE.json"
+    freeze_path.parent.mkdir(parents=True, exist_ok=True)
     freeze_path.write_text(json.dumps(freeze), encoding="utf-8")
+    fixture_source = ROOT / "evidence/sys_trrc/SYS_TRRC_FULL_L1_EXPENSE_EPISODE_2026-08-15.json"
+    fixture_path = tmp_path / "evidence/sys_trrc/SYS_TRRC_FULL_L1_EXPENSE_EPISODE_2026-08-15.json"
+    fixture_path.parent.mkdir(parents=True)
+    shutil.copy2(fixture_source, fixture_path)
+    fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
+    attempt = fixture["auxiliary_model_call_attempts"][0]
+    parsed = contract.recovery.parse_auxiliary_response(attempt["model_call"]["content"])
     arm = contract.MODE_BINDINGS["generic"]
     payload = {
         "schema": contract.PREFLIGHT_SCHEMA, "status": "PASS", "errors": [],
@@ -500,6 +515,14 @@ def test_preflight_validator_rejects_any_nested_projection_row_drift(
                    },
                    "required_recovery_config": dict(expected_config["recovery"]),
                    "focused_tests": {"returncode": 0},
+                   "v1_live_aux_parser_regression": {
+                       "status": "PASS",
+                       "fixture_file_sha256": contract.file_sha256(fixture_path),
+                       "response_sha256": attempt["model_call"]["response_sha256"],
+                       "request_step": 7,
+                       "parsed_render_sha256": sha256(parsed["rendered"].encode()).hexdigest(),
+                       "blank_only_lines_ignored": True,
+                   },
                    "eight_opportunity_token_projection": json.loads(json.dumps(projection))},
     }
     report = {**payload, "content_sha256": contract.content_sha256(payload)}

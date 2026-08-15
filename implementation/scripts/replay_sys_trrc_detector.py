@@ -196,7 +196,7 @@ def materialize_projection_inputs(suite: Path, output_dir: Path) -> dict[str, An
         rows.append({"ordinal":ordinal,"task_name":g["task_name"],"episode_id":g["episode_id"],"eligible_request_step":g["eligible_request_step"],"png_file":filename,"png_sha256":g["screenshot_sha256"],"modes":{"generic":{"receipt_id":g["receipt_id"],"system_prompt":g["system_prompt"],"user_prompt":g["user_prompt"],"request_text_sha256":g["request_text_sha256"]},"full":{"receipt_id":f["receipt_id"],"system_prompt":f["system_prompt"],"user_prompt":f["user_prompt"],"request_text_sha256":f["request_text_sha256"]}}})
     replay_report=replay(suite)
     payload={"schema":"sys_trrc_token_projection_inputs_v1","status":"PASS","generation_calls":0,"source":{"suite_id":suite.name,"checkpoint_file_sha256":_file_sha(suite/"checkpoint.json"),"detector_replay_content_sha256":replay_report["content_sha256"],"valid_episode_count":19},"opportunity_count":len(rows),"opportunities":rows,"errors":[]}
-    manifest={**payload,"content_sha256":_canonical_sha(payload)}; manifest_path=output_dir/"manifest.json"; manifest_path.write_text(json.dumps(manifest,ensure_ascii=False,sort_keys=True,indent=2)+"\n",encoding="utf-8")
+    manifest={**payload,"content_sha256":_canonical_sha(payload)}; manifest_path=output_dir/"manifest.json"; manifest_path.write_text(json.dumps(manifest,ensure_ascii=False,sort_keys=True,indent=2)+"\n",encoding="utf-8",newline="\n")
     print(json.dumps({"status":"PASS","output_dir":str(output_dir),"manifest":str(manifest_path),"opportunity_count":len(rows)},indent=2)); return manifest
 
 
@@ -245,7 +245,7 @@ def replay(suite: Path) -> dict[str, Any]:
 def main()->None:
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument("--suite",type=Path,default=DEFAULT_SUITE);parser.add_argument("--output",type=Path,default=DEFAULT_OUTPUT);parser.add_argument("--materialize-token-projection-inputs",type=Path);args=parser.parse_args()
     if args.materialize_token_projection_inputs is not None: materialize_projection_inputs(args.suite,args.materialize_token_projection_inputs); return
-    report=replay(args.suite.resolve());args.output.parent.mkdir(parents=True,exist_ok=True);args.output.write_text(json.dumps(report,ensure_ascii=False,sort_keys=True,indent=2)+"\n",encoding="utf-8");print(json.dumps(report["summary"],ensure_ascii=False,indent=2));raise SystemExit(0 if report["status"]=="PASS" else 1)
+    report=replay(args.suite.resolve());args.output.parent.mkdir(parents=True,exist_ok=True);args.output.write_text(json.dumps(report,ensure_ascii=False,sort_keys=True,indent=2)+"\n",encoding="utf-8",newline="\n");print(json.dumps(report["summary"],ensure_ascii=False,indent=2));raise SystemExit(0 if report["status"]=="PASS" else 1)
 
 
 if __name__=="__main__": main()

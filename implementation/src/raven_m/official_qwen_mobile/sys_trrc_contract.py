@@ -14,9 +14,9 @@ from typing import Any
 from . import sys_trrc_recovery as recovery
 from .sys_trrc_recovery import MAX_AUX_TOKENS, SYSTEM_ID
 
-PROTOCOL_ID = "SYS_TRRC_R2_ONE_SHOT_RECOVERY_PREREG_V1"
+PROTOCOL_ID = "SYS_TRRC_R2_ONE_SHOT_RECOVERY_PREREG_V2"
 MECHANISM_ID = SYSTEM_ID
-PARENT_EVIDENCE_COMMIT = "83c0de5bed18740719b46b5bdd1fccf7904ba0cb"
+PARENT_EVIDENCE_COMMIT = "ad522db47a40421a08f64d1896d14b743149add1"
 TASK_SEED = 20260806
 GENERATION_SEED = 3407
 MODEL_ID = "Qwen/Qwen3-VL-32B-Instruct"
@@ -24,17 +24,17 @@ MODEL_REVISION = "0cfaf48183f594c314753d30a4c4974bc75f3ccb"
 MODEL_REALPATH = "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope"
 MODEL_MANIFEST_SHA256 = "18e0909c7d993853d6d0f62443461a74009754f90db026a1723cab80121c7872"
 PORT = 18000
-PREFLIGHT_SCHEMA = "sys_trrc_zero_generation_preflight_v1"
-LIVE_RECEIPT_SCHEMA = "sys_trrc_live_server_receipt_v1"
-CHECKPOINT_SCHEMA = "sys_trrc_checkpoint_v1"
-RESULT_SCHEMA = "sys_trrc_result_v1"
+PREFLIGHT_SCHEMA = "sys_trrc_v2_zero_generation_preflight_v1"
+LIVE_RECEIPT_SCHEMA = "sys_trrc_v2_live_server_receipt_v1"
+CHECKPOINT_SCHEMA = "sys_trrc_v2_checkpoint_v1"
+RESULT_SCHEMA = "sys_trrc_v2_result_v1"
 REPOSITORY_ROOT = Path(__file__).resolve().parents[4]
 
 # Exact authorization closure.  Keeping this in the contract (rather than only
 # in the report generator) prevents a forged preflight from silently omitting
 # files whose bytes participate in the experiment.
 SOURCE_FILES = (
-    "protocols/SYS_TRRC_R2_ONE_SHOT_RECOVERY_PREREG_2026-08-15.md",
+    "protocols/SYS_TRRC_R2_ONE_SHOT_RECOVERY_V2_PREREG_2026-08-15.md",
     "implementation/src/raven_m/official_qwen_mobile/a1r2_compact_verified_pending.py",
     "implementation/src/raven_m/official_qwen_mobile/a1r3v3_one_shot_cnr.py",
     "implementation/src/raven_m/official_qwen_mobile/protocol.py",
@@ -52,12 +52,14 @@ SOURCE_FILES = (
     "implementation/scripts/qualify_sys_trrc_server.py",
     "implementation/scripts/replay_sys_trrc_detector.py",
     "implementation/scripts/start_sys_trrc_server.sh",
-    "implementation/configs/sys_trrc_base_hard_seed20260806.json",
-    "implementation/configs/sys_trrc_detector_hard_seed20260806.json",
-    "implementation/configs/sys_trrc_generic_hard_seed20260806.json",
-    "implementation/configs/sys_trrc_full_hard_seed20260806.json",
+    "implementation/configs/sys_trrc_v2_base_hard_seed20260806.json",
+    "implementation/configs/sys_trrc_v2_detector_hard_seed20260806.json",
+    "implementation/configs/sys_trrc_v2_generic_hard_seed20260806.json",
+    "implementation/configs/sys_trrc_v2_full_hard_seed20260806.json",
     "implementation/configs/androidworld_hard_v2_instances.json",
     "evidence/sys_trrc/SYS_TRRC_R2_DETECTOR_REPLAY.json",
+    "evidence/sys_trrc/SYS_TRRC_FULL_L1_EXPENSE_EPISODE_2026-08-15.json",
+    "evidence/sys_trrc_v2/SYS_TRRC_V2_R2_DETECTOR_REPLAY.json",
     "evidence/sys_trrc/token_projection_inputs/manifest.json",
     "evidence/sys_trrc/token_projection_inputs/01_BrowserMultiply_step_014.png",
     "evidence/sys_trrc/token_projection_inputs/02_ExpenseAddMultipleFromMarkor_step_014.png",
@@ -76,24 +78,24 @@ SOURCE_FILES = (
 
 MODE_BINDINGS = {
     "base": {
-        "arm_id": "SYS-TRRC-R2-BASE",
-        "experiment_id": "SYS_TRRC_B_R2_BASE_QWEN3VL32B_AW_HARD_S20260806_V1",
-        "config": "implementation/configs/sys_trrc_base_hard_seed20260806.json",
+        "arm_id": "SYS-TRRC-V2-R2-BASE",
+        "experiment_id": "SYS_TRRC_V2_B_R2_BASE_QWEN3VL32B_AW_HARD_S20260806_V1",
+        "config": "implementation/configs/sys_trrc_v2_base_hard_seed20260806.json",
     },
     "detector": {
-        "arm_id": "SYS-TRRC-R2-DETECTOR",
-        "experiment_id": "SYS_TRRC_D_R2_DETECTOR_QWEN3VL32B_AW_HARD_S20260806_V1",
-        "config": "implementation/configs/sys_trrc_detector_hard_seed20260806.json",
+        "arm_id": "SYS-TRRC-V2-R2-DETECTOR",
+        "experiment_id": "SYS_TRRC_V2_D_R2_DETECTOR_QWEN3VL32B_AW_HARD_S20260806_V1",
+        "config": "implementation/configs/sys_trrc_v2_detector_hard_seed20260806.json",
     },
     "generic": {
-        "arm_id": "SYS-TRRC-R2-GENERIC",
-        "experiment_id": "SYS_TRRC_G_R2_GENERIC_RECOVERY_QWEN3VL32B_AW_HARD_S20260806_V1",
-        "config": "implementation/configs/sys_trrc_generic_hard_seed20260806.json",
+        "arm_id": "SYS-TRRC-V2-R2-GENERIC",
+        "experiment_id": "SYS_TRRC_V2_G_R2_GENERIC_RECOVERY_QWEN3VL32B_AW_HARD_S20260806_V1",
+        "config": "implementation/configs/sys_trrc_v2_generic_hard_seed20260806.json",
     },
     "full": {
-        "arm_id": "SYS-TRRC-R2-FULL",
-        "experiment_id": "SYS_TRRC_F_R2_TRIGGERED_RECOVERY_QWEN3VL32B_AW_HARD_S20260806_V1",
-        "config": "implementation/configs/sys_trrc_full_hard_seed20260806.json",
+        "arm_id": "SYS-TRRC-V2-R2-FULL",
+        "experiment_id": "SYS_TRRC_V2_F_R2_TRIGGERED_RECOVERY_QWEN3VL32B_AW_HARD_S20260806_V1",
+        "config": "implementation/configs/sys_trrc_v2_full_hard_seed20260806.json",
     },
 }
 
@@ -120,10 +122,12 @@ STAGE_TASKS = {
     "l4": FULL_TASK_ORDER,
 }
 CAMPAIGN_INVOCATION_ORDER = (
-    ("base", "l1"), ("detector", "l1"), ("generic", "l1"), ("full", "l1"),
-    ("generic", "l2"), ("full", "l2"),
-    ("base", "l3"), ("detector", "l3"), ("generic", "l3"), ("full", "l3"),
-    ("generic", "l4"), ("full", "l4"),
+    ("full", "l1"),
+    ("base", "l1"), ("detector", "l1"), ("generic", "l1"),
+    ("full", "l2"), ("generic", "l2"),
+    ("full", "l3"),
+    ("base", "l3"), ("detector", "l3"), ("generic", "l3"),
+    ("full", "l4"), ("generic", "l4"),
 )
 ALLOWED_STAGES = {
     "base": ("l1", "l3"), "detector": ("l1", "l3"),
@@ -168,11 +172,12 @@ def expected_config(mode: str) -> dict[str, Any]:
         "retry": False,
         "require_remaining_normal_decision_slot": True,
         "exact_protocol_prompts": True,
+        "aux_parser": "blank_line_tolerant_exact_three_fields_v2",
     }
     if mode == "base":
         recovery_config = {"enabled": False, **recovery_config}
     return {
-        "schema": "sys_trrc_config_v1",
+        "schema": "sys_trrc_v2_config_v1",
         "protocol_id": PROTOCOL_ID,
         "system_id": SYSTEM_ID,
         "arm_id": arm["arm_id"],
@@ -220,7 +225,7 @@ def binding(mode: str) -> dict[str, Any]:
 
 def source_freeze_path(mode: str) -> Path:
     binding(mode)
-    return REPOSITORY_ROOT / f"evidence/sys_trrc/SYS_TRRC_{mode.upper()}_SOURCE_FREEZE.json"
+    return REPOSITORY_ROOT / f"evidence/sys_trrc_v2/SYS_TRRC_V2_{mode.upper()}_SOURCE_FREEZE.json"
 
 
 def stage_contract(mode: str, stage: str) -> dict[str, Any]:
@@ -253,7 +258,7 @@ def stage_contract(mode: str, stage: str) -> dict[str, Any]:
 def validate_campaign_ledger(path: Path) -> dict[str, Any]:
     ledger = json.loads(path.read_text(encoding="utf-8"))
     if (
-        ledger.get("schema") != "sys_trrc_campaign_ledger_v1"
+        ledger.get("schema") != "sys_trrc_v2_campaign_ledger_v1"
         or ledger.get("protocol_id") != PROTOCOL_ID
         or ledger.get("planned_order") != [list(item) for item in CAMPAIGN_INVOCATION_ORDER]
         or ledger.get("content_sha256") != content_sha256(ledger)
@@ -360,7 +365,7 @@ def _recomputed_projection_evidence(
     package = REPOSITORY_ROOT / "evidence/sys_trrc/token_projection_inputs"
     manifest = json.loads((package / "manifest.json").read_text(encoding="utf-8"))
     replay = json.loads(
-        (REPOSITORY_ROOT / "evidence/sys_trrc/SYS_TRRC_R2_DETECTOR_REPLAY.json")
+        (REPOSITORY_ROOT / "evidence/sys_trrc_v2/SYS_TRRC_V2_R2_DETECTOR_REPLAY.json")
         .read_text(encoding="utf-8")
     )
     if (
@@ -378,8 +383,11 @@ def _recomputed_projection_evidence(
     if (
         manifest_source.get("checkpoint_file_sha256")
         != replay_source.get("checkpoint_file_sha256")
+        # The PNG package was materialized before V2 from the byte-identical
+        # V1 detector behavior. Its source hash remains immutable, while the
+        # current replay below carries the independent V2 audit identity.
         or manifest_source.get("detector_replay_content_sha256")
-        != replay.get("content_sha256")
+        != "ed47170cdceb0ea4354ac04c3761a9ae1a5d5a03458c027aea871ce0c739c55b"
         or manifest_source.get("suite_id") != replay_source.get("suite_id")
         or int(manifest_source.get("valid_episode_count") or 0) != 19
         or int(replay_source.get("valid_episode_count") or 0) != 19
@@ -574,6 +582,35 @@ def validate_preflight_report(
     required_config.pop("enabled", None)
     if checks.get("required_recovery_config") != required_config:
         errors.append("preflight_recovery_config_closure")
+    try:
+        fixture_path = REPOSITORY_ROOT / (
+            "evidence/sys_trrc/"
+            "SYS_TRRC_FULL_L1_EXPENSE_EPISODE_2026-08-15.json"
+        )
+        fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
+        attempt = (fixture.get("auxiliary_model_call_attempts") or [])[0]
+        model_call = attempt.get("model_call") or {}
+        parsed = recovery.parse_auxiliary_response(str(model_call.get("content") or ""))
+        expected_parser_regression = {
+            "status": "PASS",
+            "fixture_file_sha256": file_sha256(fixture_path),
+            "response_sha256": "5f8c63ee635b460ce38f61dc00c67bf3eb9ed0b8d43c94decaf9e8ae404278a1",
+            "request_step": 7,
+            "parsed_render_sha256": sha256(parsed["rendered"].encode()).hexdigest(),
+            "blank_only_lines_ignored": True,
+        }
+        if (
+            int(attempt.get("request_step")) != 7
+            or model_call.get("response_sha256")
+            != expected_parser_regression["response_sha256"]
+            or checks.get("v1_live_aux_parser_regression")
+            != expected_parser_regression
+        ):
+            errors.append("v1_live_aux_parser_regression_closure")
+    except Exception as exc:
+        errors.append(
+            f"v1_live_aux_parser_regression_recompute:{type(exc).__name__}:{exc}"
+        )
     focused_tests = checks.get("focused_tests") or {}
     if focused_tests.get("returncode") != 0:
         errors.append("focused_tests_not_passed")
@@ -602,7 +639,7 @@ def validate_preflight_report(
         ):
             errors.append("eight_opportunity_token_projection_runtime_binding")
         replay = json.loads(
-            (REPOSITORY_ROOT / "evidence/sys_trrc/SYS_TRRC_R2_DETECTOR_REPLAY.json")
+            (REPOSITORY_ROOT / "evidence/sys_trrc_v2/SYS_TRRC_V2_R2_DETECTOR_REPLAY.json")
             .read_text(encoding="utf-8")
         )
         if checks.get("detector_replay_content_sha256") != replay.get("content_sha256"):
@@ -625,7 +662,7 @@ def validate_preflight_report(
             except Exception:
                 errors.append(f"source_missing:{name}")
         freeze_payload = {
-            "schema": "sys_trrc_source_freeze_v1",
+            "schema": "sys_trrc_v2_source_freeze_v1",
             "implementation_commit": commit,
             "files": reported_sources,
         }

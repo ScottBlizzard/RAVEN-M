@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Execute one immutable next SYS-TRRC campaign stage with a hash ledger."""
+"""Execute one immutable next SYS-TRRC-v2 campaign stage with a hash ledger."""
 from __future__ import annotations
 
 import argparse
@@ -43,9 +43,9 @@ def _write(path: Path, value: dict) -> None:
 def _load_ledger(path: Path) -> dict:
     if not path.is_file():
         payload = {
-            "schema": "sys_trrc_campaign_ledger_v1",
+            "schema": "sys_trrc_v2_campaign_ledger_v1",
             "protocol_id": contract.PROTOCOL_ID,
-            "campaign_id": f"sys_trrc_campaign_{uuid4().hex}",
+            "campaign_id": f"sys_trrc_v2_campaign_{uuid4().hex}",
             "planned_order": [list(item) for item in contract.CAMPAIGN_INVOCATION_ORDER],
             "entries": [],
             "pending_attempt": None,
@@ -94,7 +94,7 @@ def main() -> int:
     parser.add_argument("--grpc-port", type=int, default=8554)
     parser.add_argument(
         "--campaign-ledger", type=Path,
-        default=ROOT / "runs/sys_trrc_campaign/ledger.json",
+        default=ROOT / "runs/sys_trrc_v2_campaign/ledger.json",
     )
     parser.add_argument("--processor-path", type=Path)
     parser.add_argument("--processor-python", type=Path)
@@ -147,9 +147,9 @@ def main() -> int:
         if prior_mode_entries else None
     )
     preflight = args.preflight or ROOT / (
-        f"evidence/sys_trrc/SYS_TRRC_{args.mode.upper()}_ZERO_GENERATION_PREFLIGHT.json"
+        f"evidence/sys_trrc_v2/SYS_TRRC_V2_{args.mode.upper()}_ZERO_GENERATION_PREFLIGHT.json"
     )
-    output_root = ROOT / f"runs/sys_trrc_{args.mode}"
+    output_root = ROOT / f"runs/sys_trrc_v2_{args.mode}"
     if isinstance(pending, dict) and resume_suite is None:
         resume_suite = _campaign_suite(
             output_root, str(ledger["campaign_id"]), args.mode

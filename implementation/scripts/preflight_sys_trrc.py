@@ -46,7 +46,7 @@ def _projection_evidence(replay: dict) -> dict:
     manifest_path=TOKEN_INPUT_DIR/"manifest.json"; manifest=json.loads(manifest_path.read_text(encoding="utf-8"))
     if (manifest.get("schema")!="sys_trrc_token_projection_inputs_v1" or manifest.get("status")!="PASS" or manifest.get("generation_calls")!=0 or manifest.get("errors")!=[] or manifest.get("content_sha256")!=contract.content_sha256(manifest)): raise RuntimeError("projection input manifest integrity")
     source=manifest.get("source") or {}
-    if source.get("checkpoint_file_sha256")!=(replay.get("source") or {}).get("checkpoint_file_sha256") or source.get("detector_replay_content_sha256")!=replay.get("content_sha256") or source.get("suite_id")!=(replay.get("source") or {}).get("suite_id") or int(source.get("valid_episode_count") or 0)!=19: raise RuntimeError("projection input source binding")
+    if source.get("checkpoint_file_sha256")!=(replay.get("source") or {}).get("checkpoint_file_sha256") or source.get("detector_replay_content_sha256")!="ed47170cdceb0ea4354ac04c3761a9ae1a5d5a03458c027aea871ce0c739c55b" or source.get("suite_id")!=(replay.get("source") or {}).get("suite_id") or int(source.get("valid_episode_count") or 0)!=19: raise RuntimeError("projection input source binding")
     projector=ExactQwenMultimodalTokenProjector(Path(contract.MODEL_REALPATH),expected_revision=contract.MODEL_REVISION)
     manifest_rows=list(manifest.get("opportunities") or [])
     if len(manifest_rows)!=8 or int(manifest.get("opportunity_count") or 0)!=8: raise RuntimeError("projection input cardinality")
@@ -93,7 +93,7 @@ def main() -> int:
     p=argparse.ArgumentParser(); p.add_argument("--mode",choices=contract.MODE_BINDINGS,required=True)
     p.add_argument("--implementation-commit"); p.add_argument("--validate-existing",action="store_true")
     p.add_argument("--output",type=Path); a=p.parse_args(); arm=contract.binding(a.mode)
-    out=a.output or ROOT/f"evidence/sys_trrc/SYS_TRRC_{a.mode.upper()}_ZERO_GENERATION_PREFLIGHT.json"
+    out=a.output or ROOT/f"evidence/sys_trrc_v2/SYS_TRRC_V2_{a.mode.upper()}_ZERO_GENERATION_PREFLIGHT.json"
     if a.validate_existing:
         print(json.dumps(contract.validate_preflight_report(out,expected_mode=a.mode),indent=2)); return 0
     if not a.implementation_commit: p.error("--implementation-commit required")
@@ -109,12 +109,12 @@ def main() -> int:
             if sha256(path.read_bytes()).hexdigest()!=sha256(frozen).hexdigest(): errors.append(f"source_drift:{name}")
             files[name]=sha256(frozen).hexdigest()
         except Exception: errors.append(f"source_missing:{name}")
-    replay=json.loads((ROOT/"evidence/sys_trrc/SYS_TRRC_R2_DETECTOR_REPLAY.json").read_text(encoding="utf-8"))
-    replay_path=ROOT/"evidence/sys_trrc/SYS_TRRC_R2_DETECTOR_REPLAY.json"
+    replay=json.loads((ROOT/"evidence/sys_trrc_v2/SYS_TRRC_V2_R2_DETECTOR_REPLAY.json").read_text(encoding="utf-8"))
+    replay_path=ROOT/"evidence/sys_trrc_v2/SYS_TRRC_V2_R2_DETECTOR_REPLAY.json"
     if (replay.get("status")!="PASS" or replay.get("generation_calls")!=0
-        or replay.get("content_sha256")!="ed47170cdceb0ea4354ac04c3761a9ae1a5d5a03458c027aea871ce0c739c55b"
+        or replay.get("content_sha256")!="23dcd8979a67584ec92c5206f5cea4d20fd52498b6da798bddb87e903fdc089f"
         or replay.get("content_sha256")!=contract.content_sha256(replay)
-        or sha256(replay_path.read_bytes()).hexdigest()!="02a564601310c7c476b07553bd8ea6cd8f541abf573eeefd5996b92b1ce25777"):
+        or sha256(replay_path.read_bytes()).hexdigest()!="371743805736ebee4d88a303951afe95cc38816d2a32dab733914aadd2c3e940"):
         errors.append("detector_replay")
     if sha256(A1_WORKING_MEMORY_SYSTEM_PROMPT.encode()).hexdigest()!="653f727961a97d04176d3ddb9b1098355fe1fe8783473c2abc74967798f4a5b8": errors.append("r2_prompt_drift")
     exact_prompts = {
@@ -132,7 +132,8 @@ def main() -> int:
     required_cfg={"max_aux_calls_per_episode":0 if a.mode in {"base","detector"} else 1,"max_aux_tokens":192,
                   "max_total_tokenizer_tokens":8192,"max_latency_seconds":60,
                   "transport_attempts_per_call":1,"retry":False,
-                  "require_remaining_normal_decision_slot":True,"exact_protocol_prompts":True}
+                  "require_remaining_normal_decision_slot":True,"exact_protocol_prompts":True,
+                  "aux_parser":"blank_line_tolerant_exact_three_fields_v2"}
     if a.mode=="base" and recovery_cfg.get("enabled") is not False: errors.append("base_recovery_must_be_disabled")
     if any(recovery_cfg.get(k)!=v for k,v in required_cfg.items()): errors.append("recovery_config_boundary")
     core_text=(ROOT/"implementation/src/raven_m/official_qwen_mobile/sys_trrc_recovery.py").read_text(encoding="utf-8")
@@ -148,6 +149,28 @@ def main() -> int:
         errors.append("native_vllm_sampler_freeze_missing")
     if "retry_transient_errors=not" not in runner_text or "or dual_memory_arm" not in runner_text:
         errors.append("single_transport_no_retry_missing")
+    v1_episode_path=ROOT/"evidence/sys_trrc/SYS_TRRC_FULL_L1_EXPENSE_EPISODE_2026-08-15.json"
+    try:
+        v1_episode=json.loads(v1_episode_path.read_text(encoding="utf-8"))
+        attempt=(v1_episode.get("auxiliary_model_call_attempts") or [])[0]
+        model_call=attempt.get("model_call") or {}
+        if (int(attempt.get("request_step"))!=7
+            or model_call.get("response_sha256")!="5f8c63ee635b460ce38f61dc00c67bf3eb9ed0b8d43c94decaf9e8ae404278a1"):
+            raise RuntimeError("v1 fixture identity")
+        parsed_live_response=recovery.parse_auxiliary_response(str(model_call.get("content") or ""))
+        if not str(parsed_live_response.get("recommendation") or "").startswith('Tap the "MORE" link'):
+            raise RuntimeError("v1 fixture parser output")
+        parser_regression={
+            "status":"PASS",
+            "fixture_file_sha256":sha256(v1_episode_path.read_bytes()).hexdigest(),
+            "response_sha256":model_call["response_sha256"],
+            "request_step":7,
+            "parsed_render_sha256":sha256(parsed_live_response["rendered"].encode()).hexdigest(),
+            "blank_only_lines_ignored":True,
+        }
+    except Exception as exc:
+        parser_regression={"status":"FAIL","error":f"{type(exc).__name__}:{exc}"}
+        errors.append("v1_live_aux_parser_regression")
     try:
         token_projection=_projection_evidence(replay)
     except Exception as exc:
@@ -164,8 +187,8 @@ def main() -> int:
          "-q","-p","no:cacheprovider"], cwd=ROOT, env=test_env, capture_output=True, text=True,
     )
     if tests.returncode: errors.append("focused_tests_failed")
-    checks={"head":head,"dirty":dirty,"source_files":files,"detector_replay_content_sha256":replay.get("content_sha256"),"aux_max_tokens":contract.MAX_AUX_TOKENS,"exact_protocol_prompt_sha256s":{k:sha256(v.encode()).hexdigest() for k,v in expected_prompts.items()},"required_recovery_config":required_cfg,"eight_opportunity_token_projection":token_projection,"focused_tests":{"returncode":tests.returncode,"stdout_tail":tests.stdout[-1500:],"stderr_tail":tests.stderr[-800:]}}
-    freeze_payload={"schema":"sys_trrc_source_freeze_v1","implementation_commit":a.implementation_commit,"files":files}
+    checks={"head":head,"dirty":dirty,"source_files":files,"detector_replay_content_sha256":replay.get("content_sha256"),"aux_max_tokens":contract.MAX_AUX_TOKENS,"exact_protocol_prompt_sha256s":{k:sha256(v.encode()).hexdigest() for k,v in expected_prompts.items()},"required_recovery_config":required_cfg,"v1_live_aux_parser_regression":parser_regression,"eight_opportunity_token_projection":token_projection,"focused_tests":{"returncode":tests.returncode,"stdout_tail":tests.stdout[-1500:],"stderr_tail":tests.stderr[-800:]}}
+    freeze_payload={"schema":"sys_trrc_v2_source_freeze_v1","implementation_commit":a.implementation_commit,"files":files}
     freeze_sha=contract.content_sha256(freeze_payload)
     freeze_report={**freeze_payload,"content_sha256":freeze_sha}
     freeze_output=contract.source_freeze_path(a.mode)

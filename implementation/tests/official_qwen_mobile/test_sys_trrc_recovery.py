@@ -214,6 +214,37 @@ def test_parser_and_transition_scalar_fail_closed() -> None:
         )
 
 
+def test_v2_accepts_exact_v1_live_response_with_blank_separator_lines() -> None:
+    content = (
+        "ASSESSMENT: The recent expenses list does not display the target entries "
+        "(Bike Repairs, Tuition Fees, Public Transit), and repeated swipes have "
+        "produced no visible change, indicating scrolling is ineffective or the "
+        "entries are not in the current view.\n\n"
+        "RECOMMENDATION: Tap the \"MORE\" link below the Recent section to expand "
+        "the full list of expenses and locate the target entries.\n\n"
+        "VISIBLE_CHECK: Check if tapping \"MORE\" reveals additional expense "
+        "entries including Bike Repairs, Tuition Fees, and Public Transit."
+    )
+    parsed = parse_auxiliary_response(content)
+    assert parsed["recommendation"].startswith('Tap the "MORE" link')
+    assert "\n\n" not in parsed["rendered"]
+
+
+@pytest.mark.parametrize(
+    "content",
+    [
+        "ASSESSMENT: x\nextra prose\nRECOMMENDATION: y\nVISIBLE_CHECK: z",
+        "ASSESSMENT: x\nASSESSMENT: x2\nVISIBLE_CHECK: z",
+        "RECOMMENDATION: y\nASSESSMENT: x\nVISIBLE_CHECK: z",
+        "ASSESSMENT: x\nRECOMMENDATION: y",
+        "ASSESSMENT: x\nRECOMMENDATION: y\ncontinued prose\nVISIBLE_CHECK: z",
+    ],
+)
+def test_v2_blank_line_tolerance_does_not_admit_schema_drift(content: str) -> None:
+    with pytest.raises(RecoveryIntegrityError, match="aux_schema"):
+        parse_auxiliary_response(content)
+
+
 def test_each_episode_has_fresh_state() -> None:
     left = _policy("full")
     right = _policy("full")
