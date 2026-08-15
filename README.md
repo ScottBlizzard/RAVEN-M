@@ -7,6 +7,8 @@ The clean vertical-reset audit is
 It treats A1-R2 as the executable positive parent, records R3–R12 as ten
 separate 0/1 gate failures, and explains why the next R3-v2 design must branch
 directly from frozen R2 rather than inherit the serial R3–R12 patch stack.
+The commit-pinned GPT Pro request for that redesign is
+`GPT_PRO_A1_R3_V2_CLEAN_REDESIGN_REQUEST_2026-08-15.md`.
 
 The latest vertical-iteration synthesis is
 `evidence/a1/A1_VERTICAL_ITERATION_R4_R12_SYNTHESIS_2026-08-15.md`.
