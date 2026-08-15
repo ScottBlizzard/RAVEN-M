@@ -4,6 +4,8 @@ You are in a fresh research-design conversation. First audit <https://github.com
 
 Read `evidence/composite/TOP3_OPEN_DESIGN_CHARTER_2026-08-15.md`, `evidence/composite/TOP3_COMPONENT_SELECTION_2026-08-15.md`, `evidence/a1/A1_R1_R2_POSITIVE_AND_R3_R12_FAILURE_AUDIT_2026-08-15.md`, the A1-R2 implementation/result, and formal plus diagnostic A7–A12 evidence. Verify repository facts independently.
 
+Your final document must satisfy every section of `evidence/composite/TOP3_IMPLEMENTATION_READY_OUTPUT_CONTRACT_2026-08-15.md`. Design selection is open, but the selected design must be implementation-ready with no behavior-affecting decisions deferred.
+
 Research problem: once the agent has visible evidence that its current approach is failing, recurring, or not producing progress, what additional computation or control mechanism most reliably produces a better next decision without destroying previously successful behavior?
 
 A triggered recovery critic is only the investigator's initial hypothesis. You may retain, redesign, rename, or reject it. You may instead propose structured diagnosis, counterfactual recovery, localized replanning, action arbitration, uncertainty escalation, a deterministic policy component, or another evidence-supported mechanism in this problem family. Do not merely optimize the initial critic prompt.

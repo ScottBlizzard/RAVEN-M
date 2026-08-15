@@ -7,6 +7,9 @@ investigator's initial mechanism hypothesis.
 
 ## Open V2 requests — use these
 
+All three outputs must satisfy
+`evidence/composite/TOP3_IMPLEMENTATION_READY_OUTPUT_CONTRACT_2026-08-15.md`.
+
 | Problem family | Request | Required output |
 |---|---|---|
 | Recovery after recognized failure | `GPT_PRO_OPEN_V2_RECOVERY_AFTER_FAILURE_REQUEST_2026-08-15.md` | `GPT_PRO_OPEN_V2_RECOVERY_AFTER_FAILURE_DESIGN_2026-08-15.md` |

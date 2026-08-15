@@ -10,6 +10,10 @@ The first Top-3 requests correctly froze leakage, attribution, cost accounting, 
 
 The revised process freezes **the research problem and scientific contract**, while leaving **the mechanism** open to independent design.
 
+After selecting a mechanism, every Pro must satisfy
+`evidence/composite/TOP3_IMPLEMENTATION_READY_OUTPUT_CONTRACT_2026-08-15.md`.
+Mechanism choice is open; the final specification must be decision-complete.
+
 ## Hard boundaries that remain fixed
 
 1. Audit the commit-pinned repository and distinguish formal, post-hoc, inferred, and missing evidence.

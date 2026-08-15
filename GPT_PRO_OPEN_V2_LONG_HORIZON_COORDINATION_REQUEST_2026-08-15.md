@@ -4,6 +4,8 @@ You are in a fresh research-design conversation. First audit <https://github.com
 
 Read `evidence/composite/TOP3_OPEN_DESIGN_CHARTER_2026-08-15.md`, `evidence/composite/TOP3_COMPONENT_SELECTION_2026-08-15.md`, `evidence/a1/A1_R1_R2_POSITIVE_AND_R3_R12_FAILURE_AUDIT_2026-08-15.md`, the A1-R2 implementation/result, and A6/A7/A10/A11 formal and diagnostic evidence. Verify all claims independently and identify unavailable raw evidence.
 
+Your final document must satisfy every section of `evidence/composite/TOP3_IMPLEMENTATION_READY_OUTPUT_CONTRACT_2026-08-15.md`. Design selection is open, but the selected design must be implementation-ready with no behavior-affecting decisions deferred.
+
 Research problem: what additional computation or state organization helps the mobile agent decompose a long goal, maintain phase and requirement coherence, and avoid local navigation drift while preserving its successful reactive behavior?
 
 A hierarchical milestone planner is only an initial hypothesis. You may retain, redesign, rename, or reject it. Alternatives may include subgoal scheduling, phase control, adaptive replanning, workflow state, plan-execute interleaving, option-like skills, or another evidence-supported architecture. Do not assume that a planner is required merely because the track name originally used “planner.”
