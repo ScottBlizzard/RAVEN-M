@@ -1,0 +1,106 @@
+{
+  "checks": {
+    "focused_tests": {
+      "returncode": 0,
+      "stderr_tail": "",
+      "stdout_tail": ".............                                                            [100%]\n============================== warnings summary ===============================\nC:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\requests\\__init__.py:113\n  C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\requests\\__init__.py:113: RequestsDependencyWarning: urllib3 (2.3.0) or chardet (7.0.1)/charset_normalizer (3.4.4) doesn't match a supported version!\n    warnings.warn(\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n"
+    },
+    "git": {
+      "head": "f0db557a2238901e5c7af6981e9ba4ae2fbf0abc",
+      "worktree_status": []
+    },
+    "offline_replay": {
+      "numeric_failure_regression": {
+        "corrected_action": {
+          "text": "180",
+          "type": "answer"
+        },
+        "episode_id": "SportsTrackerTotalDurationForCategoryThisWeek_20260806_aa0c6805",
+        "event": {
+          "computed_total_minutes": 180,
+          "decision_clause": "Calculate the total duration of \"Intense day\" (1 hour 45 minutes) and \"Quick Sweat\" (1 hour 15 minutes) in minutes.",
+          "duration_minutes": [
+            105,
+            75
+          ],
+          "eligible": true,
+          "executed_action": {
+            "text": "180",
+            "type": "answer"
+          },
+          "overridden": true,
+          "proposed_action": {
+            "text": "165",
+            "type": "answer"
+          },
+          "proposed_integer": 165,
+          "reason": "explicit_duration_sum_mismatch",
+          "review_index": 0,
+          "system_id": "sys_r2_numeric_terminal_and_route_guard_v4"
+        },
+        "proposed_action": {
+          "text": "165",
+          "type": "answer"
+        },
+        "task_name": "SportsTrackerTotalDurationForCategoryThisWeek"
+      },
+      "status": "PASS",
+      "terminal_failure_regression": {
+        "episode_id": "RetroSavePlaylist_20260806_5d6494df",
+        "event": {
+          "blocked": true,
+          "eligible": true,
+          "history_message": "TERMINAL CONSISTENCY CHECK: The exact task ledger injected for the rejected request still had a pending item, and the last executed action was only wait. Inspect the current screenshot and complete any visible confirmation before terminating.",
+          "pending_from_exact_r2_read": "export playlist to Downloads directory",
+          "previous_executed_action_type": "wait",
+          "reason": "pending_survived_wait_before_success_termination",
+          "remaining_native_decision_slots": 24,
+          "system_id": "sys_r2_numeric_terminal_and_route_guard_v4",
+          "terminal_review_index": 0,
+          "terminal_status": "success"
+        },
+        "source_step": 25,
+        "task_name": "RetroSavePlaylist"
+      },
+      "totals": {
+        "eligible_count": 0,
+        "historical_route_block_count": 1,
+        "historical_success_route_block_count": 0,
+        "historical_terminal_block_count": 0,
+        "override_count": 0,
+        "projected_rendered_chars": 108423,
+        "review_count": 603,
+        "valid_episode_count": 19
+      }
+    },
+    "runtime_canary_ms": {
+      "maximum": 0.29320000248844735,
+      "p99": 0.09579999823472463
+    },
+    "terminal_canary": {
+      "blocked": true,
+      "eligible": true,
+      "history_message": "TERMINAL CONSISTENCY CHECK: The exact task ledger injected for the rejected request still had a pending item, and the last executed action was only wait. Inspect the current screenshot and complete any visible confirmation before terminating.",
+      "pending_from_exact_r2_read": "confirm visible save",
+      "previous_executed_action_type": "wait",
+      "reason": "pending_survived_wait_before_success_termination",
+      "remaining_native_decision_slots": 1,
+      "system_id": "sys_r2_numeric_terminal_and_route_guard_v4",
+      "terminal_review_index": 0,
+      "terminal_status": "success"
+    }
+  },
+  "content_sha256": "10582427c0052364c0c63490eb939f9a2113e5cebdd9592617a52747163c3fab",
+  "created_at": "2026-08-15T20:16:23.515018+00:00",
+  "errors": [],
+  "experiment_id": "SYS_NAG_V4_R2_QWEN3VL32B_AW_HARD_S20260806_G3407_V1",
+  "generation_calls": 0,
+  "implementation_commit": "f0db557a2238901e5c7af6981e9ba4ae2fbf0abc",
+  "live_generation_authorized": true,
+  "mechanism_id": "a1r2_compact_verified_pending_v1",
+  "offline_replay_content_sha256": "f18d218ca6860aff28eb391f7e920a9e65b1ce43a56b1bdc8b0f64eea93e1827",
+  "schema": "sys_nag_v4_zero_generation_preflight_v1",
+  "source_freeze_content_sha256": "ac8fae6dc8c80303b308f4b1ececcb2aba0c6bfafbe11b476420fdba41c00ef7",
+  "status": "PASS",
+  "system_id": "sys_r2_numeric_terminal_and_route_guard_v4"
+}
