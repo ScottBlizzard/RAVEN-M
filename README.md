@@ -27,8 +27,12 @@ failed formal arm.
 
 In parallel, `GPT_PRO_COMPOSITE_TRACKS_INDEX_2026-08-13.md` defines seven
 independent Pro design studies beyond pure memory. Their common evidence ledger
-is `evidence/composite/COMPONENT_EVIDENCE_LEDGER_2026-08-13.md`. They are
-unreviewed design requests, not registered or authorized experiment arms.
+is `evidence/composite/COMPONENT_EVIDENCE_LEDGER_2026-08-13.md`. The triggered
+recovery track has now been promoted to the separately preregistered
+`SYS-TRRC` four-arm campaign; the other tracks remain unreviewed design inputs.
+SYS-TRRC's implementation commit is `340f9247e5506f97da6b79a6696d5b7a00c41113`,
+and all four zero-generation preflights passed with zero generation calls. No
+live reward result exists yet.
 
 For near-term work, those seven tracks are narrowed to three evidence-selected
 directions—triggered recovery critic, hierarchical milestone planner, and
@@ -74,10 +78,12 @@ This branch is the clean audit packet for a Zhejiang University summer-camp stud
 2. **A1 — simple Action Working Memory.** Six recent `observed / verified / pending` records were injected within each episode. It achieved 5/19 but increased steps from 329 to 603 and tokens from 1.27M to 3.46M.
 3. **A2-v1r1 — scored verified-progress compound arm.** It completed the 19-task suite at 0/19, with 705 calls and 3,170,413 tokens. It is retained as a negative comparison rather than an improvement over A0 or A1.
 4. **A1-R2 compact vertical refinement.** It retained one latest verified/pending ledger, deduplicated the memory prefix from ordinary history, and scored 6/19 with 603 calls and 2.686M tokens. This is the first matched accuracy improvement beyond A1 in the vertical line, but not yet a causal mechanism result.
-5. **A1-R3 stale-resistant pending ledger.** It preserves A1-R2's positive
-   kernel, prevents unchanged-state TTL renewal, and remembers one repeated
-   visible failed attempt. It is preflight-qualified but has no live reward
-   result yet.
+5. **A1-R3 stale-resistant pending ledger.** It preserved A1-R2's positive
+   kernel but failed the first capability task while its new ledger remained
+   inactive; the arm is terminal.
+6. **SYS-TRRC composite campaign.** Exact R2 memory is paired with detector-only,
+   generic-control, and specialized one-shot recovery conditions. All four
+   no-GPU preflights pass; live execution has not started.
 
 The A2 guard is not claimed as memory intelligence. It only limits obvious repeated-action waste. All memory reads/writes and guard assessments/blocks/stops are recorded separately so the final trace analysis can attribute changes.
 

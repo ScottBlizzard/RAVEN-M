@@ -2,7 +2,8 @@
 
 Date: 2026-08-13 (Asia/Hong_Kong)
 
-Status: design input only; no composite arm has been implemented or scored.
+Status: shared design ledger. SYS-TRRC has since been preregistered and
+zero-generation qualified; it has not yet produced a live reward result.
 
 This ledger supports seven independent GPT Pro design studies. It does not
 authorize combining all seven components into one arm, and it does not change
@@ -77,9 +78,10 @@ The remaining evidence levels must not be flattened into equivalent results:
 
 ## Seven independent design tracks
 
-These are `SYS-*` design tracks, not registered A13-A19 arms. An arm identity is
-assigned only after a proposal passes adjudication and zero-generation
-qualification.
+These began as `SYS-*` design tracks, not registered A13-A19 arms. One track,
+triggered recovery criticism, has since been promoted to the separately named
+four-arm `SYS-TRRC` campaign after adjudication and zero-generation
+qualification. The other tracks remain design inputs.
 
 | Track | Single research question | New component under test |
 |---|---|---|
