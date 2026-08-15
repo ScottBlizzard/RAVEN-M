@@ -13,8 +13,8 @@ from . import a1r3_contract as engine
 from .a1r2_compact_verified_pending import MECHANISM_ID
 
 
-SYSTEM_ID = "sys_r2_numeric_answer_consistency_guard_v1"
-EXPERIMENT_ID = "SYS_NAG_R2_QWEN3VL32B_AW_HARD_S20260806_G3407_V1"
+SYSTEM_ID = "sys_r2_numeric_answer_consistency_guard_v2"
+EXPERIMENT_ID = "SYS_NAG_V2_R2_QWEN3VL32B_AW_HARD_S20260806_G3407_V1"
 MODEL_ID = engine.MODEL_ID
 MODEL_REVISION = engine.MODEL_REVISION
 MODEL_REALPATH = engine.MODEL_REALPATH
@@ -22,18 +22,18 @@ MODEL_MANIFEST_SHA256 = engine.MODEL_MANIFEST_SHA256
 TASK_SEED = engine.TASK_SEED
 GENERATION_SEED = engine.GENERATION_SEED
 PORT = engine.PORT
-PARENT_EVIDENCE_COMMIT = "2649c61891cdfa53b8dba823d778a509bb642f33"
-CONFIG_SCHEMA = "sys_nag_r2_numeric_answer_guard_config_v1"
-OFFLINE_REPLAY_SCHEMA = "sys_nag_offline_replay_v1"
-PREFLIGHT_SCHEMA = "sys_nag_zero_generation_preflight_v1"
-LIVE_RECEIPT_SCHEMA = "sys_nag_live_server_receipt_v1"
-RESULT_SCHEMA = "sys_nag_result_v1"
-CHECKPOINT_SCHEMA = "sys_nag_checkpoint_v1"
+PARENT_EVIDENCE_COMMIT = "603d4088a7b3448df3472e8bfc6fa8bd1bba0e97"
+CONFIG_SCHEMA = "sys_nag_v2_r2_numeric_answer_guard_config_v1"
+OFFLINE_REPLAY_SCHEMA = "sys_nag_v2_offline_replay_v1"
+PREFLIGHT_SCHEMA = "sys_nag_v2_zero_generation_preflight_v1"
+LIVE_RECEIPT_SCHEMA = "sys_nag_v2_live_server_receipt_v1"
+RESULT_SCHEMA = "sys_nag_v2_result_v1"
+CHECKPOINT_SCHEMA = "sys_nag_v2_checkpoint_v1"
 REPOSITORY_ROOT = engine.REPOSITORY_ROOT
-CONFIG_PATH = REPOSITORY_ROOT / "implementation/configs/sys_nag_r2_hard_seed20260806.json"
-OFFLINE_REPLAY_PATH = REPOSITORY_ROOT / "evidence/sys_nag/SYS_NAG_OFFLINE_REPLAY_REPORT.json"
-SOURCE_FREEZE_PATH = REPOSITORY_ROOT / "evidence/sys_nag/SYS_NAG_SOURCE_FREEZE.json"
-PREFLIGHT_PATH = REPOSITORY_ROOT / "evidence/sys_nag/SYS_NAG_ZERO_GENERATION_PREFLIGHT.json"
+CONFIG_PATH = REPOSITORY_ROOT / "implementation/configs/sys_nag_v2_r2_hard_seed20260806.json"
+OFFLINE_REPLAY_PATH = REPOSITORY_ROOT / "evidence/sys_nag_v2/SYS_NAG_V2_OFFLINE_REPLAY_REPORT.json"
+SOURCE_FREEZE_PATH = REPOSITORY_ROOT / "evidence/sys_nag_v2/SYS_NAG_V2_SOURCE_FREEZE.json"
+PREFLIGHT_PATH = REPOSITORY_ROOT / "evidence/sys_nag_v2/SYS_NAG_V2_ZERO_GENERATION_PREFLIGHT.json"
 
 A0_PRESERVATION_TASKS = engine.A0_PRESERVATION_TASKS
 RECIPE_TASK = engine.RECIPE_TASK
@@ -42,8 +42,8 @@ CAPABILITY_GATE_TASKS = engine.CAPABILITY_GATE_TASKS
 FULL_TASK_ORDER = engine.FULL_TASK_ORDER
 
 SOURCE_FILES = (
-    "protocols/SYS_NAG_R2_NUMERIC_ANSWER_GUARD_PREREG_2026-08-16.md",
-    "implementation/configs/sys_nag_r2_hard_seed20260806.json",
+    "protocols/SYS_NAG_V2_R2_NUMERIC_ANSWER_GUARD_PREREG_2026-08-16.md",
+    "implementation/configs/sys_nag_v2_r2_hard_seed20260806.json",
     "implementation/configs/androidworld_hard_v2_instances.json",
     "implementation/src/raven_m/official_qwen_mobile/numeric_answer_guard.py",
     "implementation/src/raven_m/official_qwen_mobile/a1r2_compact_verified_pending.py",
@@ -64,8 +64,8 @@ SOURCE_FILES = (
     "implementation/tests/official_qwen_mobile/test_numeric_answer_guard.py",
     "implementation/tests/official_qwen_mobile/test_sys_nag_contract.py",
     "implementation/tests/official_qwen_mobile/test_sys_nag_controller_integration.py",
-    "evidence/sys_nag/SYS_NAG_OFFLINE_REPLAY_REPORT.json",
-    "evidence/sys_trrc_v2/SYS_TRRC_V2_TERMINAL_REPORT_2026-08-16.json",
+    "evidence/sys_nag_v2/SYS_NAG_V2_OFFLINE_REPLAY_REPORT.json",
+    "evidence/sys_nag/SYS_NAG_V1_GATE4_RESULT_2026-08-16.json",
 )
 
 file_sha256 = engine.file_sha256

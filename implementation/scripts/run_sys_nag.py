@@ -19,9 +19,9 @@ def main() -> int:
         "--manifest", str(ROOT / "implementation/configs/androidworld_hard_v2_instances.json"),
         "--url", "http://127.0.0.1:18000", "--console-port", "5554", "--grpc-port", "8554",
         "--sys-nag",
-        "--sys-nag-preflight-report", str(ROOT / "evidence/sys_nag/SYS_NAG_ZERO_GENERATION_PREFLIGHT.json"),
+        "--sys-nag-preflight-report", str(ROOT / "evidence/sys_nag_v2/SYS_NAG_V2_ZERO_GENERATION_PREFLIGHT.json"),
         "--sys-nag-launch-receipt", str(args.launch_receipt.resolve()),
-        "--output-root", str(ROOT / "runs/sys_nag"),
+        "--output-root", str(ROOT / "runs/sys_nag_v2"),
     ]
     print(subprocess.list2cmdline(command))
     return subprocess.call(command) if args.execute else 0

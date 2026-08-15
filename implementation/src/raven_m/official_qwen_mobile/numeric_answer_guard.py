@@ -13,7 +13,7 @@ import re
 from typing import Any
 
 
-SYSTEM_ID = "sys_r2_numeric_answer_consistency_guard_v1"
+SYSTEM_ID = "sys_r2_numeric_answer_consistency_guard_v2"
 _INTEGER_RE = re.compile(r"^[+-]?\d+$")
 _WORD_DURATION_RE = re.compile(
     r"(?<!\w)(\d{1,3})\s*hours?\s*(?:and\s*)?(\d{1,2})\s*minutes?(?!\w)",
@@ -75,13 +75,14 @@ class NumericAnswerConsistencyGuard:
         self.review_count += 1
         proposed = dict(proposed_action) if isinstance(proposed_action, dict) else None
         clause = self._decision_clause(action_summary)
+        model_proposed = dict(proposed) if proposed is not None else None
         event: dict[str, Any] = {
             "system_id": SYSTEM_ID,
             "review_index": self.review_count - 1,
             "eligible": False,
             "overridden": False,
             "reason": "not_integer_answer",
-            "proposed_action": proposed,
+            "proposed_action": model_proposed,
             "decision_clause": clause,
         }
         if not proposed or proposed.get("type") != "answer":

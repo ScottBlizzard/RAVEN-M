@@ -102,6 +102,8 @@ def test_controller_executes_corrected_action_and_audits_both_values(tmp_path: P
     assert step["decision"]["canonical_action"]["text"] == "165"
     assert step["mapped_action"]["canonical"]["text"] == "180"
     assert step["answer_consistency_guard"]["overridden"] is True
+    assert step["answer_consistency_guard"]["proposed_action"]["text"] == "165"
+    assert step["answer_consistency_guard"]["executed_action"]["text"] == "180"
     assert summary["answer_consistency_guard"]["counters"]["action_override_count"] == 1
 
 

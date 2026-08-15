@@ -5,7 +5,7 @@ from raven_m.official_qwen_mobile import sys_nag_contract as contract
 
 def test_identity_and_config_are_independent() -> None:
     config = json.loads(contract.CONFIG_PATH.read_text(encoding="utf-8"))
-    assert contract.EXPERIMENT_ID.startswith("SYS_NAG_R2_")
+    assert contract.EXPERIMENT_ID.startswith("SYS_NAG_V2_R2_")
     assert config["schema"] == contract.CONFIG_SCHEMA
     assert config["mechanism_id"] == contract.MECHANISM_ID
     assert config["system_id"] == contract.SYSTEM_ID

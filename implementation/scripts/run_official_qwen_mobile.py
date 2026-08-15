@@ -162,14 +162,14 @@ A7_REMAINING_AFTER_GATE_TASKS = (
 DUAL_ARM_SPECS = {
     "sys_nag": {
         "flag": "sys_nag",
-        "label": "SYS-NAG R2 Numeric Answer Guard",
+        "label": "SYS-NAG V2 R2 Numeric Answer Guard",
         "memory_module": "raven_m.official_qwen_mobile.a1r2_compact_verified_pending",
         "memory_class": "CompactVerifiedPendingMemory",
         "contract_module": "raven_m.official_qwen_mobile.sys_nag_contract",
         "entry_key": "sys_nag_valid_entries",
-        "checkpoint_schema": "sys_nag_checkpoint_v1",
-        "result_key": "sys_nag_result",
-        "result_schema": "sys_nag_result_v1",
+        "checkpoint_schema": "sys_nag_v2_checkpoint_v1",
+        "result_key": "sys_nag_v2_result",
+        "result_schema": "sys_nag_v2_result_v1",
         "system_prompt_identity": "a1_working_memory",
     },
     "sys_trrc_base": {
@@ -1502,7 +1502,7 @@ def main() -> None:
     parser.add_argument(
         "--sys-nag-preflight-report",
         type=Path,
-        default=REPOSITORY_ROOT / "evidence/sys_nag/SYS_NAG_ZERO_GENERATION_PREFLIGHT.json",
+        default=REPOSITORY_ROOT / "evidence/sys_nag_v2/SYS_NAG_V2_ZERO_GENERATION_PREFLIGHT.json",
     )
     parser.add_argument("--sys-nag-launch-receipt", type=Path)
     parser.add_argument(
@@ -3308,7 +3308,7 @@ def main() -> None:
                         raise RuntimeError("BPR-v2 remaining fourteen tasks are locked until Gate5 is 5/5")
             elif dual_arm_name and dual_arm_name.startswith("sys_trrc_"):
                 pass  # Stage progression, not within-stage outcome, authorizes tasks.
-            elif dual_arm_name in {"a1r2", "a1r3v3", "a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11", "a1r12"}:
+            elif dual_arm_name in {"a1r2", "a1r3v3", "a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11", "a1r12"} or dual_arm_name == "sys_nag":
                 if task_name not in dual_arm["gate_tasks"]:
                     gate = dual_arm["preservation_report"](summaries)
                     if not _gate_passed(gate):

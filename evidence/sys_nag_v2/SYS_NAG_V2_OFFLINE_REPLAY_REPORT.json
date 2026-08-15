@@ -1,0 +1,232 @@
+{
+  "content_sha256": "1164fcfecb8d41c0a13cc56bfddbe21731c2145740dd8de644ad082870f4a2ea",
+  "episodes": [
+    {
+      "eligible_count": 0,
+      "episode_id": "BrowserMultiply_20260806_54623170",
+      "events": [],
+      "override_count": 0,
+      "review_count": 22,
+      "success": false,
+      "task_name": "BrowserMultiply"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "ExpenseAddMultipleFromGallery_20260806_4caedc43",
+      "events": [],
+      "override_count": 0,
+      "review_count": 14,
+      "success": false,
+      "task_name": "ExpenseAddMultipleFromGallery"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "ExpenseAddMultipleFromMarkor_20260806_faf5c468",
+      "events": [],
+      "override_count": 0,
+      "review_count": 60,
+      "success": false,
+      "task_name": "ExpenseAddMultipleFromMarkor"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "ExpenseDeleteMultiple2_20260806_a27af967",
+      "events": [],
+      "override_count": 0,
+      "review_count": 18,
+      "success": true,
+      "task_name": "ExpenseDeleteMultiple2"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "MarkorCreateNoteAndSms_20260806_150c1638",
+      "events": [],
+      "override_count": 0,
+      "review_count": 18,
+      "success": false,
+      "task_name": "MarkorCreateNoteAndSms"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "MarkorMergeNotes_20260806_6367b3d1",
+      "events": [],
+      "override_count": 0,
+      "review_count": 78,
+      "success": false,
+      "task_name": "MarkorMergeNotes"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "MarkorTranscribeVideo_20260806_737baf69",
+      "events": [],
+      "override_count": 0,
+      "review_count": 14,
+      "success": false,
+      "task_name": "MarkorTranscribeVideo"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "OsmAndMarker_20260806_8517b31f",
+      "events": [],
+      "override_count": 0,
+      "review_count": 12,
+      "success": true,
+      "task_name": "OsmAndMarker"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "OsmAndTrack_20260806_1823722c",
+      "events": [],
+      "override_count": 0,
+      "review_count": 120,
+      "success": false,
+      "task_name": "OsmAndTrack"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "RecipeAddMultipleRecipesFromImage_20260806_4c0dccd5",
+      "events": [],
+      "override_count": 0,
+      "review_count": 60,
+      "success": false,
+      "task_name": "RecipeAddMultipleRecipesFromImage"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "RecipeAddMultipleRecipesFromMarkor2_20260806_92d8511a",
+      "events": [],
+      "override_count": 0,
+      "review_count": 60,
+      "success": false,
+      "task_name": "RecipeAddMultipleRecipesFromMarkor2"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "RecipeAddMultipleRecipesFromMarkor_20260806_154a3c03",
+      "events": [],
+      "override_count": 0,
+      "review_count": 29,
+      "success": false,
+      "task_name": "RecipeAddMultipleRecipesFromMarkor"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "RecipeDeleteMultipleRecipesWithConstraint_20260806_b4feab19",
+      "events": [],
+      "override_count": 0,
+      "review_count": 18,
+      "success": true,
+      "task_name": "RecipeDeleteMultipleRecipesWithConstraint"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "RetroSavePlaylist_20260806_269b2c65",
+      "events": [],
+      "override_count": 0,
+      "review_count": 25,
+      "success": true,
+      "task_name": "RetroSavePlaylist"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "SaveCopyOfReceiptTaskEval_20260806_289b77f0",
+      "events": [],
+      "override_count": 0,
+      "review_count": 11,
+      "success": false,
+      "task_name": "SaveCopyOfReceiptTaskEval"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "SimpleCalendarAddOneEvent_20260806_728d3349",
+      "events": [],
+      "override_count": 0,
+      "review_count": 23,
+      "success": true,
+      "task_name": "SimpleCalendarAddOneEvent"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "SportsTrackerActivitiesOnDate_20260806_d2df83f9",
+      "events": [],
+      "override_count": 0,
+      "review_count": 7,
+      "success": false,
+      "task_name": "SportsTrackerActivitiesOnDate"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "SportsTrackerTotalDistanceForCategoryOverInterval_20260806_35bba8b5",
+      "events": [],
+      "override_count": 0,
+      "review_count": 8,
+      "success": false,
+      "task_name": "SportsTrackerTotalDistanceForCategoryOverInterval"
+    },
+    {
+      "eligible_count": 0,
+      "episode_id": "SportsTrackerTotalDurationForCategoryThisWeek_20260806_e34aeaf5",
+      "events": [],
+      "override_count": 0,
+      "review_count": 6,
+      "success": true,
+      "task_name": "SportsTrackerTotalDurationForCategoryThisWeek"
+    }
+  ],
+  "errors": [],
+  "generation_calls": 0,
+  "mechanism_id": "a1r2_compact_verified_pending_v1",
+  "schema": "sys_nag_v2_offline_replay_v1",
+  "sentinel_tasks": [
+    "ExpenseDeleteMultiple2",
+    "SportsTrackerTotalDurationForCategoryThisWeek",
+    "RecipeDeleteMultipleRecipesWithConstraint"
+  ],
+  "source": {
+    "a1r2_suite_dir": "D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\runs\\a1r2_cvp\\official_qwen_20260814T145307_50081981",
+    "v2_failure_episode": "D:\\ZJU\\Summer_Camp\\RAVEN-M-A1\\runs\\sys_trrc_v2_full\\official_qwen_20260816T005559_70b00ecd\\episodes\\SportsTrackerTotalDurationForCategoryThisWeek_20260806_aa0c6805\\episode.json"
+  },
+  "status": "PASS",
+  "system_id": "sys_r2_numeric_answer_consistency_guard_v2",
+  "totals": {
+    "eligible_count": 0,
+    "override_count": 0,
+    "projected_rendered_chars": 108423,
+    "review_count": 603,
+    "valid_episode_count": 19
+  },
+  "v2_failure_regression": {
+    "corrected_action": {
+      "text": "180",
+      "type": "answer"
+    },
+    "episode_id": "SportsTrackerTotalDurationForCategoryThisWeek_20260806_aa0c6805",
+    "event": {
+      "computed_total_minutes": 180,
+      "decision_clause": "Calculate the total duration of \"Intense day\" (1 hour 45 minutes) and \"Quick Sweat\" (1 hour 15 minutes) in minutes.",
+      "duration_minutes": [
+        105,
+        75
+      ],
+      "eligible": true,
+      "executed_action": {
+        "text": "180",
+        "type": "answer"
+      },
+      "overridden": true,
+      "proposed_action": {
+        "text": "165",
+        "type": "answer"
+      },
+      "proposed_integer": 165,
+      "reason": "explicit_duration_sum_mismatch",
+      "review_index": 0,
+      "system_id": "sys_r2_numeric_answer_consistency_guard_v2"
+    },
+    "proposed_action": {
+      "text": "165",
+      "type": "answer"
+    },
+    "task_name": "SportsTrackerTotalDurationForCategoryThisWeek"
+  }
+}
