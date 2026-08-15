@@ -2,6 +2,12 @@
 
 ## Current research handoff
 
+The clean vertical-reset audit is
+`evidence/a1/A1_R1_R2_POSITIVE_AND_R3_R12_FAILURE_AUDIT_2026-08-15.md`.
+It treats A1-R2 as the executable positive parent, records R3–R12 as ten
+separate 0/1 gate failures, and explains why the next R3-v2 design must branch
+directly from frozen R2 rather than inherit the serial R3–R12 patch stack.
+
 The latest vertical-iteration synthesis is
 `evidence/a1/A1_VERTICAL_ITERATION_R4_R12_SYNTHESIS_2026-08-15.md`.
 A1-R4 through A1-R12 each stopped on the first frozen capability task with a
