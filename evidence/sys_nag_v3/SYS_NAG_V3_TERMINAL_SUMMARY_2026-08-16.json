@@ -1,0 +1,41 @@
+{
+  "schema": "sys_nag_v3_terminal_summary_v1",
+  "status": "TERMINAL_VALID_SCIENTIFIC_FAILURE",
+  "classification": "ROUTE_LOOP_FAILURE_GUARDS_SILENT_UNATTRIBUTED",
+  "claim_boundary": "matched_same-seed_exploratory_composite_system_not_held_out_not_memory_improvement",
+  "system_id": "sys_r2_numeric_and_pending_terminal_guard_v3",
+  "experiment_id": "SYS_NAG_V3_R2_QWEN3VL32B_AW_HARD_S20260806_G3407_V1",
+  "implementation_commit": "1e8c8e17ab8d3962e7f319896f7192aef9d3cadd",
+  "live_receipt_content_sha256": "90004b753d9498189d78520b381f801dfcc8d61307a339901924eb317a7fd62b",
+  "suite_id": "official_qwen_20260816T033338_0021ddde",
+  "checkpoint_status": "stopped_capability_gate_failure",
+  "checkpoint_file_sha256": "d388fa774533aa702a7308efc7601fdff14ae6205d9c172721b899246287f816",
+  "valid_episode_count": 2,
+  "invalid_attempt_count": 0,
+  "not_run_by_protocol_count": 17,
+  "reward_sum": 1.5,
+  "generation_calls_added_by_summary": 0,
+  "episodes": [
+    {
+      "task_name": "ExpenseDeleteMultiple2",
+      "reward": 1.0,
+      "success": true,
+      "model_call_count": 18,
+      "executed_action_count": 17,
+      "numeric_override_count": 0,
+      "terminal_block_count": 0,
+      "episode_file_sha256": "3a88ea40653bfcb7321fced1cc279168abdada748b1d2ce2b0040b8c240a73cd"
+    },
+    {
+      "task_name": "RetroSavePlaylist",
+      "reward": 0.5,
+      "success": false,
+      "model_call_count": 50,
+      "executed_action_count": 50,
+      "numeric_override_count": 0,
+      "terminal_block_count": 0,
+      "failure_mode": "repeated_settings_backup_restore_other_navigation_cycle_until_native_max_steps",
+      "episode_file_sha256": "3744566f9610f51d91b2e0baaa7152beb49f87ce7ac94afc4853e45a39c58433"
+    }
+  ]
+}
