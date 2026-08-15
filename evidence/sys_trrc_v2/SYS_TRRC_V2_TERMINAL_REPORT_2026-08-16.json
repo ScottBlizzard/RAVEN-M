@@ -1,0 +1,28 @@
+{
+  "schema": "sys_trrc_v2_terminal_report_v1",
+  "protocol_id": "SYS_TRRC_R2_ONE_SHOT_RECOVERY_PREREG_V2",
+  "status": "TERMINAL_SCIENTIFIC_FAILURE_STOPPED_PRESERVATION_GATE_FAILURE",
+  "implementation_commit": "2649c61891cdfa53b8dba823d778a509bb642f33",
+  "valid_episode_count": 4,
+  "success_count": 3,
+  "reward_sum": 3.0,
+  "failure_task": "SportsTrackerTotalDurationForCategoryThisWeek",
+  "failure_episode_id": "SportsTrackerTotalDurationForCategoryThisWeek_20260806_aa0c6805",
+  "failure_episode_reward": 0.0,
+  "failure_episode_steps": 6,
+  "failure_episode_normal_calls": 6,
+  "failure_episode_aux_calls": 0,
+  "failure_episode_trigger_count": 0,
+  "failure_episode_injection_count": 0,
+  "model_proposed_answer": "165",
+  "explicit_durations_minutes": [105, 75],
+  "deterministic_sum_minutes": 180,
+  "classification": "PRESERVATION_FAILURE_WITH_COMPONENT_SILENT_NUMERIC_INCONSISTENCY",
+  "causal_boundary": "The recovery component never triggered; its advice cannot be credited or blamed for the failed answer.",
+  "artifacts": {
+    "result_file_sha256": "14e359ae0a3e00ffc503ec69c96d8ac7bafd30953ff2fe729243c8719338a56d",
+    "checkpoint_file_sha256": "65f578b0c3d70436082d6e5c17e361299c6e614a3c7a890112c238f8f3d32481",
+    "failure_episode_file_sha256": "85ec7d1457695926fcf9c9b02eca4e50e64888211a15bef8650d2627ed2c44bc",
+    "campaign_ledger_file_sha256": "1798c766236c2c960bfcb5a19ee2a193f38c1266f1a38b37146ddc1518a92123"
+  }
+}

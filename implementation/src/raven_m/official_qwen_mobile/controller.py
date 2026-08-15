@@ -204,6 +204,7 @@ class OfficialQwenMobileController:
         stop_after_markor_source_exit: bool = False,
         working_memory: EpisodeMemory | None = None,
         recovery_policy: Any | None = None,
+        answer_consistency_guard: Any | None = None,
         cost_guard: RepeatedNoProgressGuard | None = None,
     ) -> None:
         self.client = client
@@ -217,6 +218,7 @@ class OfficialQwenMobileController:
         self.stop_after_markor_source_exit = bool(stop_after_markor_source_exit)
         self.working_memory = working_memory
         self.recovery_policy = recovery_policy
+        self.answer_consistency_guard = answer_consistency_guard
         self.cost_guard = cost_guard
 
     def _committed_history_summary(
@@ -383,6 +385,10 @@ class OfficialQwenMobileController:
         if self.recovery_policy is not None:
             episode_start_event["recovery_mechanism"] = (
                 self.recovery_policy.audit_record()
+            )
+        if self.answer_consistency_guard is not None:
+            episode_start_event["answer_consistency_guard"] = (
+                self.answer_consistency_guard.audit_record()
             )
         log(episode_start_event)
         try:
@@ -759,6 +765,14 @@ class OfficialQwenMobileController:
                         decision.action_summary
                     )
                 canonical_action = decision.canonical_action
+                if self.answer_consistency_guard is not None:
+                    canonical_action, answer_guard_assessment = (
+                        self.answer_consistency_guard.review(
+                            proposed_action=canonical_action,
+                            action_summary=decision.action_summary,
+                        )
+                    )
+                    record["answer_consistency_guard"] = answer_guard_assessment
                 gate_decision: dict[str, Any] | None = None
                 if self.source_document_coverage_gate is not None:
                     canonical_action, gate_decision = (
@@ -1219,6 +1233,11 @@ class OfficialQwenMobileController:
             "cost_guard": (
                 self.cost_guard.audit_record()
                 if self.cost_guard is not None
+                else None
+            ),
+            "answer_consistency_guard": (
+                self.answer_consistency_guard.audit_record()
+                if self.answer_consistency_guard is not None
                 else None
             ),
         }

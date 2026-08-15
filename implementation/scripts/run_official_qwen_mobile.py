@@ -160,6 +160,18 @@ A7_REMAINING_AFTER_GATE_TASKS = (
 # mechanism and contract modules, and makes it impossible to compose multiple
 # memories in one controller.
 DUAL_ARM_SPECS = {
+    "sys_nag": {
+        "flag": "sys_nag",
+        "label": "SYS-NAG R2 Numeric Answer Guard",
+        "memory_module": "raven_m.official_qwen_mobile.a1r2_compact_verified_pending",
+        "memory_class": "CompactVerifiedPendingMemory",
+        "contract_module": "raven_m.official_qwen_mobile.sys_nag_contract",
+        "entry_key": "sys_nag_valid_entries",
+        "checkpoint_schema": "sys_nag_checkpoint_v1",
+        "result_key": "sys_nag_result",
+        "result_schema": "sys_nag_result_v1",
+        "system_prompt_identity": "a1_working_memory",
+    },
     "sys_trrc_base": {
         "flag": "sys_trrc_mode", "label": "SYS-TRRC-V2-R2-BASE", "recovery_mode": "base",
         "memory_module": "raven_m.official_qwen_mobile.a1r2_compact_verified_pending",
@@ -1483,6 +1495,17 @@ def main() -> None:
     parser.add_argument("--a1r12-preflight-report",type=Path,default=REPOSITORY_ROOT/"evidence/a1r12/A1R12_CHP_ZERO_GENERATION_PREFLIGHT.json")
     parser.add_argument("--a1r12-launch-receipt",type=Path)
     parser.add_argument(
+        "--sys-nag",
+        action="store_true",
+        help="Run R2 with the deterministic numeric-answer consistency guard.",
+    )
+    parser.add_argument(
+        "--sys-nag-preflight-report",
+        type=Path,
+        default=REPOSITORY_ROOT / "evidence/sys_nag/SYS_NAG_ZERO_GENERATION_PREFLIGHT.json",
+    )
+    parser.add_argument("--sys-nag-launch-receipt", type=Path)
+    parser.add_argument(
         "--a1r11-cscp",action="store_true",help="Run prospective A1-R11 coordinate self-check composite."
     )
     parser.add_argument("--a1r11-preflight-report",type=Path,default=REPOSITORY_ROOT/"evidence/a1r11/A1R11_CSCP_ZERO_GENERATION_PREFLIGHT.json")
@@ -1872,6 +1895,7 @@ def main() -> None:
             args.a11_crc_ecobf,
             args.a12_madm,
             args.a1r12_chp,
+            args.sys_nag,
             args.a1r11_cscp,
             args.a1r10_pacp,
             args.a1r9_rlcr,
@@ -1912,6 +1936,7 @@ def main() -> None:
                 ("a11", args.a11_crc_ecobf),
                 ("a12", args.a12_madm),
                 ("a1r12", args.a1r12_chp),
+                ("sys_nag", args.sys_nag),
                 ("a1r11", args.a1r11_cscp),
                 ("a1r10", args.a1r10_pacp),
                 ("a1r9", args.a1r9_rlcr),
@@ -2031,6 +2056,8 @@ def main() -> None:
         if dual_arm_name == "a12"
         else args.a1r12_preflight_report
         if dual_arm_name == "a1r12"
+        else args.sys_nag_preflight_report
+        if dual_arm_name == "sys_nag"
         else args.a1r11_preflight_report
         if dual_arm_name == "a1r11"
         else args.a1r10_preflight_report
@@ -2070,6 +2097,8 @@ def main() -> None:
         if dual_arm_name == "a12"
         else args.a1r12_launch_receipt
         if dual_arm_name == "a1r12"
+        else args.sys_nag_launch_receipt
+        if dual_arm_name == "sys_nag"
         else args.a1r11_launch_receipt
         if dual_arm_name == "a1r11"
         else args.a1r10_launch_receipt
@@ -2409,7 +2438,7 @@ def main() -> None:
                 raise RuntimeError(f"A3/A4/A5 gate tasks missing from manifest: {missing_gate}")
             remaining = [item for item in specs if str(item["task_class"]) not in A345_GATE_TASKS]
             specs = [by_name[name] for name in A345_GATE_TASKS] + remaining
-        elif dual_arm_name in {"bprv2", "a1r2", "a1r3v3"} or (dual_arm_name and dual_arm_name.startswith("sys_trrc_")) or dual_arm_name in {"a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11", "a1r12"}:
+        elif dual_arm_name in {"bprv2", "a1r2", "a1r3v3"} or dual_arm_name == "sys_nag" or (dual_arm_name and dual_arm_name.startswith("sys_trrc_")) or dual_arm_name in {"a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11", "a1r12"}:
             by_name = {str(item["task_class"]): item for item in specs}
             if sys_trrc_arm:
                 campaign_order = (
@@ -2441,7 +2470,7 @@ def main() -> None:
             gate_specs = [by_name[name] for name in gate_tasks]
             specs = (
                 gate_specs + remaining
-                if dual_arm_name in {"a1r2", "a1r3v3", "a1r3"} or (dual_arm_name and dual_arm_name.startswith("sys_trrc_")) or dual_arm_name in {"a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11", "a1r12"} or bpr_mode == "primary"
+                if dual_arm_name in {"a1r2", "a1r3v3", "a1r3"} or dual_arm_name == "sys_nag" or (dual_arm_name and dual_arm_name.startswith("sys_trrc_")) or dual_arm_name in {"a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11", "a1r12"} or bpr_mode == "primary"
                 else gate_specs
             )
             if sys_trrc_arm:
@@ -3319,6 +3348,7 @@ def main() -> None:
             )
             a678_memory = None
             recovery_policy = None
+            answer_consistency_guard = None
             if args.a678_arm == "a6":
                 a678_memory = ShortTransitionEpisodicBuffer(capacity=2, max_chars=240)
             elif args.a678_arm == "a7":
@@ -3407,6 +3437,11 @@ def main() -> None:
                     )
                 else:
                     a678_memory = dual_arm["memory_class_object"]()
+            if dual_arm_name == "sys_nag":
+                from raven_m.official_qwen_mobile.numeric_answer_guard import (
+                    NumericAnswerConsistencyGuard,
+                )
+                answer_consistency_guard = NumericAnswerConsistencyGuard()
             controller = OfficialQwenMobileController(
                 client,
                 max_steps=effective_limit,
@@ -3487,7 +3522,7 @@ def main() -> None:
                     A1R1_BPR_V2_SYSTEM_PROMPT
                     if dual_arm_name == "bprv2"
                     else A1_WORKING_MEMORY_SYSTEM_PROMPT
-                    if dual_arm_name in {"a1r2", "a1r3v3", "a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11", "a1r12"} or (dual_arm_name and dual_arm_name.startswith("sys_trrc_"))
+                    if dual_arm_name in {"a1r2", "a1r3v3", "a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11", "a1r12", "sys_nag"} or (dual_arm_name and dual_arm_name.startswith("sys_trrc_"))
                     else A1_WORKING_MEMORY_SYSTEM_PROMPT
                     if args.a1_working_memory
                     else (
@@ -3566,6 +3601,7 @@ def main() -> None:
                     else None
                 ),
                 recovery_policy=recovery_policy,
+                answer_consistency_guard=answer_consistency_guard,
             )
             episode_id = f"{task_name}_{episode_seed}_{uuid4().hex[:8]}"
             result = controller.run(
@@ -3800,6 +3836,16 @@ def main() -> None:
                 dual_arm_name == "a1r12" and task_name in dual_arm["gate_tasks"] and not bool(result.get("success"))
             ):
                 checkpoint("stopped_capability_gate_failure");raise RuntimeError(f"A1-R12 six-task capability gate failed on {task_name}; scientific failure is terminal")
+            if (
+                dual_arm_name == "sys_nag"
+                and task_name in dual_arm["gate_tasks"]
+                and not bool(result.get("success"))
+            ):
+                checkpoint("stopped_capability_gate_failure")
+                raise RuntimeError(
+                    f"SYS-NAG six-task capability gate failed on {task_name}; "
+                    "scientific failure is terminal"
+                )
             if (
                 dual_arm_name == "a1r11" and task_name in dual_arm["gate_tasks"] and not bool(result.get("success"))
             ):
