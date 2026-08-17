@@ -1,0 +1,585 @@
+{
+  "closure": {
+    "all_artifact_hashes_valid": true,
+    "android_actions_during_finalization": 0,
+    "checkpoint_entries_and_summary_hashes_valid": true,
+    "generation_calls_during_finalization": 0,
+    "invalid_attempt_count": 2,
+    "network_calls_during_finalization": 0,
+    "raw_checkpoint_status": "running",
+    "raw_episode_file_bindings_valid": true,
+    "raw_suite_modified": false,
+    "resolved_invalid_attempt_count": 2,
+    "single_transport_per_valid_call": true,
+    "valid_episode_count": 19
+  },
+  "content_sha256": "99d92c80fc196f452320e13d3e5e3a2f6d4d7c09199fa6e8af94c88953ea0810",
+  "disclosed_defects": [
+    {
+      "code": "LEGACY_AGGREGATE_REFERENCE_SEGMENTS_KEYERROR",
+      "exception": "KeyError: 'reference_segments_path'",
+      "handling": "independent_cpu_only_posthoc_finalizer",
+      "scientific_episode_effect": false,
+      "scope": "post_episode_result_aggregation_only"
+    },
+    {
+      "code": "PRIOR_LIVE_RECEIPT_FILE_NOT_RETAINED",
+      "handling": "preserve_file_sha_chain_and_episode_binding; fully_validate_current_receipt_and_frozen_stable_identity",
+      "scientific_episode_effect": false,
+      "scope": "first_valid_episode_receipt_object"
+    }
+  ],
+  "errors": [],
+  "finalization": {
+    "classification": "POST_HOC_CPU_ONLY_EVIDENCE_LAYER",
+    "frozen_experiment_behavior_changed": false,
+    "raw_checkpoint_promoted_or_rewritten": false,
+    "reason": "all_19_valid_episodes_preceded_legacy_aggregate_exception"
+  },
+  "identity": {
+    "experiment_id": "SYS_NAG_V4_R2_QWEN3VL32B_AW_HARD_S20260806_G3407_V1",
+    "generation_seed": 3407,
+    "implementation_commit": "f0db557a2238901e5c7af6981e9ba4ae2fbf0abc",
+    "mechanism_id": "a1r2_compact_verified_pending_v1",
+    "prospective_arm": "sys_nag",
+    "suite_id": "official_qwen_20260816T041833_e5618ea5",
+    "system_id": "sys_r2_numeric_terminal_and_route_guard_v4",
+    "task_seed": 20260806
+  },
+  "integrity": {
+    "current_live_receipt_content_sha256": "d8b0f6a9d9c227465fa9d5b2b46c819c6c4144ecd43f8b803dc783d347c4b5b9",
+    "current_live_receipt_file_sha256": "d3975a407a60800c01fd7665c1a1402b8d6571f43d6b92379e5612b2fcdd85ec",
+    "evidence_integrity_status": "PASS",
+    "implementation_commit": "f0db557a2238901e5c7af6981e9ba4ae2fbf0abc",
+    "live_receipt_file_sha256_chain": [
+      "872e0e345e519600e3649a14abfa69caa6e0508117a97af21bc515346cda9809",
+      "d3975a407a60800c01fd7665c1a1402b8d6571f43d6b92379e5612b2fcdd85ec"
+    ],
+    "manifest_snapshot_file_sha256": "c1d718e9d380e443d12d2c29ab2182ae801a3befc53881b864cd830f2ad0440a",
+    "offline_replay_content_sha256": "f18d218ca6860aff28eb391f7e920a9e65b1ce43a56b1bdc8b0f64eea93e1827",
+    "offline_replay_file_sha256": "3565616cecd4e3de916f81f6623715e003763f25e970e2c4203472b4f8e86921",
+    "preflight_content_sha256": "10582427c0052364c0c63490eb939f9a2113e5cebdd9592617a52747163c3fab",
+    "preflight_file_sha256": "e099e04170eff6d925180370b014794c555b36a7fc07ce59674bf60f926a5609",
+    "prior_live_receipt_file_available": false,
+    "raw_checkpoint_content_sha256": "a1d88d3abe84b25092d1c06e2106eb0a66b64b200271b180c88f2372a220d600",
+    "raw_checkpoint_file_sha256": "ce9024abbbefad754666f8e6f488ccbaaf4f83d5010cd75f05729e781dab353d",
+    "replay_fixture_content_sha256": "7011a5955e0d7e4ccae7b91b965bb008b8f8cd3073de867925558d8e071d438b",
+    "replay_fixture_file_sha256": "c5c3520f69d315f81d335a1e737ade7e15e0f90be48e481cfabcdad765a1cce3",
+    "run_signature_canonical_sha256": "1051db6a29795e4383c60ac345e0c1c7842a3df923addf56c7483325608060d2",
+    "run_signature_file_sha256": "88d9c90e48bd5f9818004a63d95b0baa741048636298bdb23a66b247225dddb0",
+    "source_freeze_content_sha256": "ac8fae6dc8c80303b308f4b1ececcb2aba0c6bfafbe11b476420fdba41c00ef7",
+    "source_freeze_file_sha256": "93ecc6ec6f7cdc5736ddf4dffd9dc6d7b3a44d7516fd0110fe1005455920fe9f"
+  },
+  "interventions": {
+    "auxiliary_model_call_count": 0,
+    "numeric_override_count": 0,
+    "route_block_count": 4,
+    "route_block_full_success_count": 0,
+    "route_block_tasks": [
+      "ExpenseAddMultipleFromGallery",
+      "MarkorCreateNoteAndSms",
+      "MarkorMergeNotes",
+      "RecipeAddMultipleRecipesFromImage"
+    ],
+    "terminal_block_count": 0
+  },
+  "invalid_attempts": [
+    {
+      "artifact_content_sha256": "ceb54a9ab725960be23889df89869247ff3199b49028bb780637dde15687b04d",
+      "artifact_file_sha256": "dc5b8819ef718bf4629999087e3326c363ed2d1bcf852c68f1769a5718773e32",
+      "episode_id": "RetroSavePlaylist_20260806_d049fbfe",
+      "generation_calls": 3,
+      "partial_file_count": 15,
+      "reason": "external_runner_interruption",
+      "resolved_by_episode_id": "RetroSavePlaylist_20260806_46095590",
+      "scientific_outcome_valid": false
+    },
+    {
+      "episode_id": "RetroSavePlaylist_20260806_7140a803",
+      "episode_json_file_sha256": "3647d028bd951836fb9c78bcbe9c2a1a6397201784e3acb0b71f030426e4933b",
+      "generation_calls": 0,
+      "reason": "controller_or_lifecycle_invalid",
+      "resolved_by_episode_id": "RetroSavePlaylist_20260806_46095590",
+      "scientific_outcome_valid": false
+    }
+  ],
+  "paired_reference": {
+    "reference": "A1-R2",
+    "reference_result_file_sha256": "4c1c3af2ac2fcc522c11efae95975ff6df15e3da01218277bc224f62256c2ebc",
+    "reference_reward_sum": 6.5,
+    "reference_success_count": 6,
+    "reward_delta": 0.0,
+    "success_delta": 0
+  },
+  "performance": {
+    "executed_actions": 544,
+    "model_calls": 558,
+    "reward_sum": 6.5,
+    "success_count": 6,
+    "token_usage": {
+      "completion_tokens": 70919,
+      "prompt_tokens": 2606798,
+      "total_tokens": 2677717
+    },
+    "valid_episode_model_latency_seconds": 15928.167730000021
+  },
+  "schema": "sys_nag_v4_posthoc_complete_result_v1",
+  "scientific_valid": true,
+  "status": "COMPLETE_19_VALID_EPISODES_POSTHOC_FINALIZED_AFTER_AGGREGATION_BUG",
+  "tasks": [
+    {
+      "artifact_file_count": 84,
+      "episode_id": "ExpenseDeleteMultiple2_20260806_e9be9ff5",
+      "episode_json_file_sha256": "15eec85f99736145341f2eac8ff95d6a53c67d9047a1ac4de780765ec2c364aa",
+      "events_jsonl_file_sha256": "0e25f2465a5e8b122eae3d4e1062b0c16a8bff3385fd9aa2a0ec6820409559c5",
+      "executed_actions": 20,
+      "live_receipt_file_sha256": "872e0e345e519600e3649a14abfa69caa6e0508117a97af21bc515346cda9809",
+      "model_calls": 21,
+      "model_latency_seconds": 139.19784480000453,
+      "numeric_override_count": 0,
+      "reward": 1.0,
+      "route_block_count": 0,
+      "route_block_steps": [],
+      "success": true,
+      "summary_canonical_sha256": "ed88f7774c894aaa3d92617d2fb1164d95d8c09d02925438f582ec12c43447b5",
+      "task_name": "ExpenseDeleteMultiple2",
+      "terminal_block_count": 0,
+      "token_usage": {
+        "completion_tokens": 2509,
+        "prompt_tokens": 81108,
+        "total_tokens": 83617
+      }
+    },
+    {
+      "artifact_file_count": 84,
+      "episode_id": "RetroSavePlaylist_20260806_46095590",
+      "episode_json_file_sha256": "6fef4271ff3f4456b4e4248a80aa388e417e7f07994437457cb89b7342d06092",
+      "events_jsonl_file_sha256": "d6e036fd7d5752c1d1d058d0ae2676e33ffd319093b3bed64c624cd4c11b0c98",
+      "executed_actions": 20,
+      "live_receipt_file_sha256": "d3975a407a60800c01fd7665c1a1402b8d6571f43d6b92379e5612b2fcdd85ec",
+      "model_calls": 21,
+      "model_latency_seconds": 460.1325560999999,
+      "numeric_override_count": 0,
+      "reward": 1.0,
+      "route_block_count": 0,
+      "route_block_steps": [],
+      "success": true,
+      "summary_canonical_sha256": "49a19f57a698737a3c4d0dfbb48247f336f1bd7dfda1033a880f2655ca1add20",
+      "task_name": "RetroSavePlaylist",
+      "terminal_block_count": 0,
+      "token_usage": {
+        "completion_tokens": 2392,
+        "prompt_tokens": 81634,
+        "total_tokens": 84026
+      }
+    },
+    {
+      "artifact_file_count": 72,
+      "episode_id": "SimpleCalendarAddOneEvent_20260806_a70d32c6",
+      "episode_json_file_sha256": "fcaaa8907a54ad9d28b747a658c35d0efa914892b563213f6b935589634d7b52",
+      "events_jsonl_file_sha256": "6bcbb1783fb743c07b9a22350c258e00bf0f674aa9da20ceaae3d80f9a964969",
+      "executed_actions": 17,
+      "live_receipt_file_sha256": "d3975a407a60800c01fd7665c1a1402b8d6571f43d6b92379e5612b2fcdd85ec",
+      "model_calls": 18,
+      "model_latency_seconds": 341.9089952999984,
+      "numeric_override_count": 0,
+      "reward": 1.0,
+      "route_block_count": 0,
+      "route_block_steps": [],
+      "success": true,
+      "summary_canonical_sha256": "d02cac68fecad99d29d70af92994a2be7f11efaf71d89314508a40e995ccd8d3",
+      "task_name": "SimpleCalendarAddOneEvent",
+      "terminal_block_count": 0,
+      "token_usage": {
+        "completion_tokens": 2212,
+        "prompt_tokens": 70073,
+        "total_tokens": 72285
+      }
+    },
+    {
+      "artifact_file_count": 26,
+      "episode_id": "SportsTrackerTotalDurationForCategoryThisWeek_20260806_d1f790a8",
+      "episode_json_file_sha256": "717d5b40fbba7fa37e9022be08fdf499ff8592fbb86d339449b0aa9c3b01a4a6",
+      "events_jsonl_file_sha256": "01ad20b34dbe4c312c9857af014ec38718149415a43771143fc62e6233d8f9a7",
+      "executed_actions": 6,
+      "live_receipt_file_sha256": "d3975a407a60800c01fd7665c1a1402b8d6571f43d6b92379e5612b2fcdd85ec",
+      "model_calls": 6,
+      "model_latency_seconds": 185.2988518000011,
+      "numeric_override_count": 0,
+      "reward": 1.0,
+      "route_block_count": 0,
+      "route_block_steps": [],
+      "success": true,
+      "summary_canonical_sha256": "abd803d4edb3ccc2f33bbcfdaa21f65e7b8a3c5fad22d6667feaf6df3c3457e7",
+      "task_name": "SportsTrackerTotalDurationForCategoryThisWeek",
+      "terminal_block_count": 0,
+      "token_usage": {
+        "completion_tokens": 751,
+        "prompt_tokens": 22272,
+        "total_tokens": 23023
+      }
+    },
+    {
+      "artifact_file_count": 68,
+      "episode_id": "RecipeDeleteMultipleRecipesWithConstraint_20260806_dafc924d",
+      "episode_json_file_sha256": "b7fbd8e558af8d1cc4e1c5e406790637f53583b271811cf46cecab6ecb534e96",
+      "events_jsonl_file_sha256": "b80c952582a9be2375d35f888ad2f11a5bc29b1ea19e15b9722b8f5fc8e9569e",
+      "executed_actions": 16,
+      "live_receipt_file_sha256": "d3975a407a60800c01fd7665c1a1402b8d6571f43d6b92379e5612b2fcdd85ec",
+      "model_calls": 17,
+      "model_latency_seconds": 325.563136400001,
+      "numeric_override_count": 0,
+      "reward": 1.0,
+      "route_block_count": 0,
+      "route_block_steps": [],
+      "success": true,
+      "summary_canonical_sha256": "58bd8904606edd035ade15defdb80e8c1d52410561e7b068caf9ce50b1e9042e",
+      "task_name": "RecipeDeleteMultipleRecipesWithConstraint",
+      "terminal_block_count": 0,
+      "token_usage": {
+        "completion_tokens": 1892,
+        "prompt_tokens": 64701,
+        "total_tokens": 66593
+      }
+    },
+    {
+      "artifact_file_count": 40,
+      "episode_id": "OsmAndMarker_20260806_a8106a32",
+      "episode_json_file_sha256": "7a09ed667a94043b542884edbaa1ddf0b296e8eeff6a1317d01833cb26b4ba94",
+      "events_jsonl_file_sha256": "989c993847ba4b50fe00af2614815acab4638acb87fd5fc19ca2e82802dbed76",
+      "executed_actions": 9,
+      "live_receipt_file_sha256": "d3975a407a60800c01fd7665c1a1402b8d6571f43d6b92379e5612b2fcdd85ec",
+      "model_calls": 10,
+      "model_latency_seconds": 264.9133195000004,
+      "numeric_override_count": 0,
+      "reward": 1.0,
+      "route_block_count": 0,
+      "route_block_steps": [],
+      "success": true,
+      "summary_canonical_sha256": "93be4b37b6e127a724400295094bd4331ae0b4e6683ded5ba1e9e3057dd338c9",
+      "task_name": "OsmAndMarker",
+      "terminal_block_count": 0,
+      "token_usage": {
+        "completion_tokens": 1283,
+        "prompt_tokens": 37700,
+        "total_tokens": 38983
+      }
+    },
+    {
+      "artifact_file_count": 90,
+      "episode_id": "BrowserMultiply_20260806_639ed27d",
+      "episode_json_file_sha256": "d9daa2c8171ed1c6c1bdf830e7afb5163ada36846d8b4bd654de20628cc47116",
+      "events_jsonl_file_sha256": "58e88c5d0b20600e6f96044d5cf2d3e1d0ec59c68c5d9602027bcca539172f80",
+      "executed_actions": 22,
+      "live_receipt_file_sha256": "d3975a407a60800c01fd7665c1a1402b8d6571f43d6b92379e5612b2fcdd85ec",
+      "model_calls": 22,
+      "model_latency_seconds": 353.433229199999,
+      "numeric_override_count": 0,
+      "reward": 0.0,
+      "route_block_count": 0,
+      "route_block_steps": [],
+      "success": false,
+      "summary_canonical_sha256": "e25ecc91271c922e2ace08df44df6f4dc3d09539c7782a78e69f7dc70c5ddecd",
+      "task_name": "BrowserMultiply",
+      "terminal_block_count": 0,
+      "token_usage": {
+        "completion_tokens": 2556,
+        "prompt_tokens": 85211,
+        "total_tokens": 87767
+      }
+    },
+    {
+      "artifact_file_count": 238,
+      "episode_id": "ExpenseAddMultipleFromGallery_20260806_06b8604b",
+      "episode_json_file_sha256": "2e2743213a7c4754ec188425b81a732ebd29a1fabd03c169c518971052b6cf18",
+      "events_jsonl_file_sha256": "2df97251e6b9f4b19893c90745788b12a039b10b5a45da3cfefe07e17e6a9d9f",
+      "executed_actions": 58,
+      "live_receipt_file_sha256": "d3975a407a60800c01fd7665c1a1402b8d6571f43d6b92379e5612b2fcdd85ec",
+      "model_calls": 60,
+      "model_latency_seconds": 2935.519882000005,
+      "numeric_override_count": 0,
+      "reward": 0.0,
+      "route_block_count": 1,
+      "route_block_steps": [
+        10
+      ],
+      "success": false,
+      "summary_canonical_sha256": "007d0175266268836f9a1c0dea4c1852f75ca9cc9ba73de6a4756f1c10728c82",
+      "task_name": "ExpenseAddMultipleFromGallery",
+      "terminal_block_count": 0,
+      "token_usage": {
+        "completion_tokens": 7196,
+        "prompt_tokens": 258188,
+        "total_tokens": 265384
+      }
+    },
+    {
+      "artifact_file_count": 56,
+      "episode_id": "ExpenseAddMultipleFromMarkor_20260806_aafbff7a",
+      "episode_json_file_sha256": "d272ce73c152bff941a268757432172d3cc55ec85684d455fb7aed49630d903e",
+      "events_jsonl_file_sha256": "8209d794c1815879bffdea0e8b5816b76fbd5306f336965c1d076c480968948f",
+      "executed_actions": 13,
+      "live_receipt_file_sha256": "d3975a407a60800c01fd7665c1a1402b8d6571f43d6b92379e5612b2fcdd85ec",
+      "model_calls": 14,
+      "model_latency_seconds": 469.8113640999982,
+      "numeric_override_count": 0,
+      "reward": 0.0,
+      "route_block_count": 0,
+      "route_block_steps": [],
+      "success": false,
+      "summary_canonical_sha256": "2f2ef79038fba8bda8cf343b48392d47b63de6359745afe60cf541a696864c25",
+      "task_name": "ExpenseAddMultipleFromMarkor",
+      "terminal_block_count": 0,
+      "token_usage": {
+        "completion_tokens": 1734,
+        "prompt_tokens": 52934,
+        "total_tokens": 54668
+      }
+    },
+    {
+      "artifact_file_count": 72,
+      "episode_id": "MarkorCreateNoteAndSms_20260806_45915a88",
+      "episode_json_file_sha256": "c9fdcb85f160f032b7964d3c9d201c4b4b2078ae9ff29bb77f064d70a6c00895",
+      "events_jsonl_file_sha256": "f1f098923be2c65d2605ae832728cdf0871e8c61dd908cacf7b3fe6063bf60d6",
+      "executed_actions": 17,
+      "live_receipt_file_sha256": "d3975a407a60800c01fd7665c1a1402b8d6571f43d6b92379e5612b2fcdd85ec",
+      "model_calls": 18,
+      "model_latency_seconds": 352.78561609999997,
+      "numeric_override_count": 0,
+      "reward": 0.5,
+      "route_block_count": 1,
+      "route_block_steps": [
+        13
+      ],
+      "success": false,
+      "summary_canonical_sha256": "c319b73a99f2df5a9d4e62cd4b45d509d744e16f956b04e25a20abce70562de9",
+      "task_name": "MarkorCreateNoteAndSms",
+      "terminal_block_count": 0,
+      "token_usage": {
+        "completion_tokens": 1937,
+        "prompt_tokens": 69341,
+        "total_tokens": 71278
+      }
+    },
+    {
+      "artifact_file_count": 312,
+      "episode_id": "MarkorMergeNotes_20260806_ad3c6411",
+      "episode_json_file_sha256": "6b5609cf2d9d3559d4e22edaa79482040cfdc0c8f95423b898da663277a55536",
+      "events_jsonl_file_sha256": "01637960f1ea9ed709052bd68ffcb8ca6359cbe28f72866197b042849c7c9db6",
+      "executed_actions": 77,
+      "live_receipt_file_sha256": "d3975a407a60800c01fd7665c1a1402b8d6571f43d6b92379e5612b2fcdd85ec",
+      "model_calls": 78,
+      "model_latency_seconds": 1516.912517499999,
+      "numeric_override_count": 0,
+      "reward": 0.0,
+      "route_block_count": 1,
+      "route_block_steps": [
+        25
+      ],
+      "success": false,
+      "summary_canonical_sha256": "53f1f3c890d0dbd9bf9f0105ca08f779ffc9a3c0f82b9ec8957a13cb8094b295",
+      "task_name": "MarkorMergeNotes",
+      "terminal_block_count": 0,
+      "token_usage": {
+        "completion_tokens": 11181,
+        "prompt_tokens": 353674,
+        "total_tokens": 364855
+      }
+    },
+    {
+      "artifact_file_count": 82,
+      "episode_id": "MarkorTranscribeVideo_20260806_549a0913",
+      "episode_json_file_sha256": "deb7e94e958b28e56862276f68bf03579b17f831ee41b816e3eac3e8bb372a4c",
+      "events_jsonl_file_sha256": "ae4dadbb5a93049d3a8dbd96eb238723b7797b4086127008148e40fcd372c8bb",
+      "executed_actions": 20,
+      "live_receipt_file_sha256": "d3975a407a60800c01fd7665c1a1402b8d6571f43d6b92379e5612b2fcdd85ec",
+      "model_calls": 20,
+      "model_latency_seconds": 2354.2697564000064,
+      "numeric_override_count": 0,
+      "reward": 0.0,
+      "route_block_count": 0,
+      "route_block_steps": [],
+      "success": false,
+      "summary_canonical_sha256": "687a912175daec6cf7045cfac647aa2413984cf8daf0d9bb3dc858a48811a045",
+      "task_name": "MarkorTranscribeVideo",
+      "terminal_block_count": 0,
+      "token_usage": {
+        "completion_tokens": 2353,
+        "prompt_tokens": 78504,
+        "total_tokens": 80857
+      }
+    },
+    {
+      "artifact_file_count": 482,
+      "episode_id": "OsmAndTrack_20260806_7c82b23d",
+      "episode_json_file_sha256": "964b9a24184db1beab17ecd2f31f5e3b80a19dbf6c234664ab9f84abc8ef8918",
+      "events_jsonl_file_sha256": "aca757f13b790fc90a09f30c94187f28705892e33d9f66ca183ade6d22492126",
+      "executed_actions": 120,
+      "live_receipt_file_sha256": "d3975a407a60800c01fd7665c1a1402b8d6571f43d6b92379e5612b2fcdd85ec",
+      "model_calls": 120,
+      "model_latency_seconds": 3681.2172543000033,
+      "numeric_override_count": 0,
+      "reward": 0.0,
+      "route_block_count": 0,
+      "route_block_steps": [],
+      "success": false,
+      "summary_canonical_sha256": "b7193798cc18b846b1e0f205f991cb3dae04f6c85bc9d9eee078d2970fb3ce83",
+      "task_name": "OsmAndTrack",
+      "terminal_block_count": 0,
+      "token_usage": {
+        "completion_tokens": 16621,
+        "prompt_tokens": 810142,
+        "total_tokens": 826763
+      }
+    },
+    {
+      "artifact_file_count": 82,
+      "episode_id": "RecipeAddMultipleRecipesFromImage_20260806_6e3bf421",
+      "episode_json_file_sha256": "d1f1d9254b2560b857d77f219df225afafa311ec3e95f9fe96b2275f2a0900f6",
+      "events_jsonl_file_sha256": "7503fc918f5c5e859037e9061e4ab9855aed3aaa92b2f524f07786b9badd3708",
+      "executed_actions": 19,
+      "live_receipt_file_sha256": "d3975a407a60800c01fd7665c1a1402b8d6571f43d6b92379e5612b2fcdd85ec",
+      "model_calls": 21,
+      "model_latency_seconds": 550.957687299986,
+      "numeric_override_count": 0,
+      "reward": 0.0,
+      "route_block_count": 1,
+      "route_block_steps": [
+        8
+      ],
+      "success": false,
+      "summary_canonical_sha256": "29cd38748a364be2590bd8649c8010d4de5795fc0099853d14b853ceeadbe80b",
+      "task_name": "RecipeAddMultipleRecipesFromImage",
+      "terminal_block_count": 0,
+      "token_usage": {
+        "completion_tokens": 3038,
+        "prompt_tokens": 81457,
+        "total_tokens": 84495
+      }
+    },
+    {
+      "artifact_file_count": 242,
+      "episode_id": "RecipeAddMultipleRecipesFromMarkor_20260806_6c5ff38d",
+      "episode_json_file_sha256": "72dfb5b13530f3c0d57e3105153d855b8f5360698d98bfd9d051731142263643",
+      "events_jsonl_file_sha256": "229aec1968db7652e3bf43770a668777903f7579f4ed3ecbb1ec42f916f09d1f",
+      "executed_actions": 60,
+      "live_receipt_file_sha256": "d3975a407a60800c01fd7665c1a1402b8d6571f43d6b92379e5612b2fcdd85ec",
+      "model_calls": 60,
+      "model_latency_seconds": 966.4615973000073,
+      "numeric_override_count": 0,
+      "reward": 0.0,
+      "route_block_count": 0,
+      "route_block_steps": [],
+      "success": false,
+      "summary_canonical_sha256": "ef85d1d65fbaa467f41dba24d0197c633397e193e77848f2562136eb887d949d",
+      "task_name": "RecipeAddMultipleRecipesFromMarkor",
+      "terminal_block_count": 0,
+      "token_usage": {
+        "completion_tokens": 6680,
+        "prompt_tokens": 261010,
+        "total_tokens": 267690
+      }
+    },
+    {
+      "artifact_file_count": 100,
+      "episode_id": "RecipeAddMultipleRecipesFromMarkor2_20260806_6031e798",
+      "episode_json_file_sha256": "b609d20e619944c77444d814ee077b1874b2ec20ec16c00c83051f50d7a234d0",
+      "events_jsonl_file_sha256": "f0f0daba9e548e83b0c0f702ea4d85cbfaba97cc7f78f72247d5cd6ebdd85626",
+      "executed_actions": 24,
+      "live_receipt_file_sha256": "d3975a407a60800c01fd7665c1a1402b8d6571f43d6b92379e5612b2fcdd85ec",
+      "model_calls": 25,
+      "model_latency_seconds": 464.17309100000784,
+      "numeric_override_count": 0,
+      "reward": 0.0,
+      "route_block_count": 0,
+      "route_block_steps": [],
+      "success": false,
+      "summary_canonical_sha256": "d82ec9e4fdd02997b263c0d7cd9780b99917dcdfb87eddac7e62f817284cf7f4",
+      "task_name": "RecipeAddMultipleRecipesFromMarkor2",
+      "terminal_block_count": 0,
+      "token_usage": {
+        "completion_tokens": 2835,
+        "prompt_tokens": 97160,
+        "total_tokens": 99995
+      }
+    },
+    {
+      "artifact_file_count": 40,
+      "episode_id": "SaveCopyOfReceiptTaskEval_20260806_ac7e6382",
+      "episode_json_file_sha256": "61d9ad0991e8ab683080f3f65ef3ed34e0c55e323d91acb443120c45f37f33f2",
+      "events_jsonl_file_sha256": "18ca1211a48cc5159b7a77d9710f50d94c6063e8f04a85c36807769a2d35db3e",
+      "executed_actions": 9,
+      "live_receipt_file_sha256": "d3975a407a60800c01fd7665c1a1402b8d6571f43d6b92379e5612b2fcdd85ec",
+      "model_calls": 10,
+      "model_latency_seconds": 167.05520069999693,
+      "numeric_override_count": 0,
+      "reward": 0.0,
+      "route_block_count": 0,
+      "route_block_steps": [],
+      "success": false,
+      "summary_canonical_sha256": "a05e55c17beaf0882dc885e560720c834f6a93549f2e0e0dec676629d7a03ba8",
+      "task_name": "SaveCopyOfReceiptTaskEval",
+      "terminal_block_count": 0,
+      "token_usage": {
+        "completion_tokens": 1184,
+        "prompt_tokens": 37452,
+        "total_tokens": 38636
+      }
+    },
+    {
+      "artifact_file_count": 18,
+      "episode_id": "SportsTrackerActivitiesOnDate_20260806_7bb3a02b",
+      "episode_json_file_sha256": "f155540c37cf4b70e55e1025141f3cb24fc3b29b5b4b122b500bcc095efa7b85",
+      "events_jsonl_file_sha256": "fe123c6158b15b7e55d3167120ade603c00981bba37a1940e12f770933978c3a",
+      "executed_actions": 4,
+      "live_receipt_file_sha256": "d3975a407a60800c01fd7665c1a1402b8d6571f43d6b92379e5612b2fcdd85ec",
+      "model_calls": 4,
+      "model_latency_seconds": 122.50710980000076,
+      "numeric_override_count": 0,
+      "reward": 0.0,
+      "route_block_count": 0,
+      "route_block_steps": [],
+      "success": false,
+      "summary_canonical_sha256": "7628f2f3056b9a375decd649c641e843abaa54b47a146893c1f16c654a6c4f74",
+      "task_name": "SportsTrackerActivitiesOnDate",
+      "terminal_block_count": 0,
+      "token_usage": {
+        "completion_tokens": 518,
+        "prompt_tokens": 14759,
+        "total_tokens": 15277
+      }
+    },
+    {
+      "artifact_file_count": 54,
+      "episode_id": "SportsTrackerTotalDistanceForCategoryOverInterval_20260806_0ebed663",
+      "episode_json_file_sha256": "10ffc8423a6bdff65198eb6fc8ea63439976ba4b2d4b6c49e5173eb96406daad",
+      "events_jsonl_file_sha256": "48949d547d1c53ff694de995a8067ab3a3d1227faea9840abb4cda23b6b3b467",
+      "executed_actions": 13,
+      "live_receipt_file_sha256": "d3975a407a60800c01fd7665c1a1402b8d6571f43d6b92379e5612b2fcdd85ec",
+      "model_calls": 13,
+      "model_latency_seconds": 276.04872040000555,
+      "numeric_override_count": 0,
+      "reward": 0.0,
+      "route_block_count": 0,
+      "route_block_steps": [],
+      "success": false,
+      "summary_canonical_sha256": "408f80d70da88dc3a0988a703817e4eaebbaa4048f7ae1ac3fdc5fd0a9e83e62",
+      "task_name": "SportsTrackerTotalDistanceForCategoryOverInterval",
+      "terminal_block_count": 0,
+      "token_usage": {
+        "completion_tokens": 2047,
+        "prompt_tokens": 49478,
+        "total_tokens": 51525
+      }
+    }
+  ],
+  "verdicts": {
+    "accuracy": "NO_ACCURACY_GAIN_OVER_A1R2",
+    "causal_benefit_claim_permitted": false,
+    "numeric_component": "NOT_ACTIVATED",
+    "same_identity_rerun_authorized": false,
+    "successful_episodes_attributable_to_new_v4_components": 0,
+    "task_level_route_component": "ACTIVATED_FOUR_EPISODES_WITH_ZERO_NEW_FULL_SUCCESS",
+    "terminal_component": "NOT_ACTIVATED"
+  }
+}
