@@ -1,0 +1,35 @@
+{
+  "decision_boundary": {
+    "action_override_count": 0,
+    "evaluator_used": false,
+    "extra_model_calls": 0,
+    "forced_termination_count": 0,
+    "full_model_response_used": true,
+    "hidden_ui_used": false,
+    "model_authored_text_only": true,
+    "screen_text_or_ocr_used": false,
+    "task_name_rules": false
+  },
+  "experiment_id": "A1R14_RGVR_QWEN3VL32B_AW_HARD_S20260806_G3407_V1",
+  "generation_seed": 3407,
+  "memory": {
+    "base": "exact_a1r2_compact_verified_pending",
+    "evidence_ttl_requests": 8,
+    "max_evidence_values": 6,
+    "max_render_chars": 1100,
+    "min_values_to_render": 2,
+    "response_observation_fallback": true,
+    "ttl_requests": 8
+  },
+  "mechanism_id": "a1r14_response_grounded_value_register_v1",
+  "model_id": "Qwen/Qwen3-VL-32B-Instruct",
+  "model_revision": "0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+  "orchestration": {
+    "capability_gate_tasks": 6,
+    "release_remaining_after": 7,
+    "target_first": true,
+    "target_gate_task": "BrowserMultiply"
+  },
+  "schema": "a1r14_rgvr_config_v1",
+  "task_seed": 20260806
+}

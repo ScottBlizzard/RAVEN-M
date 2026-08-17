@@ -1130,6 +1130,19 @@ class OfficialQwenMobileController:
                             source_response_sha256=call.response_sha256,
                             source_screenshot_sha256=str(before["screenshot_sha256"]),
                         )
+                    if hasattr(self.working_memory, "write_model_response"):
+                        record["memory_response_write"] = (
+                            self.working_memory.write_model_response(
+                                source_step=step_index,
+                                model_response=call.content,
+                                action_summary=decision.action_summary,
+                                source_call_id=call.call_id,
+                                source_response_sha256=call.response_sha256,
+                                source_screenshot_sha256=str(
+                                    before["screenshot_sha256"]
+                                ),
+                            )
+                        )
                 if self.recovery_policy is not None:
                     recovery_transition = dict(transition)
                     recovery_transition["remaining_native_decision_slots"] = (
