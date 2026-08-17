@@ -1,0 +1,331 @@
+{
+  "browser_target": {
+    "expected_model_authored_values": [
+      "1",
+      "8",
+      "10",
+      "7",
+      "2"
+    ],
+    "historical_reward": 0.0,
+    "mathematical_product_for_audit_only_not_runtime_action": 1120,
+    "pre_product_exact_render": {
+      "added_chars": 136,
+      "combined_render_sha256": "3544f57d5067646401198488553d655478defa3292fc5813abbf6294ec658843",
+      "exact_text": "TRANSIENT MODEL-AUTHORED EVIDENCE (unverified; current screenshot remains authoritative): observed integer sequence = [1, 8, 10, 7, 2].",
+      "exact_text_sha256": "457642add74f4e1c29edfaaac383554d68be3cd5f8b60fabb004425e01afdfa3",
+      "request_step": 18,
+      "value_count": 5
+    },
+    "pre_product_request_step": 18,
+    "task_name": "BrowserMultiply"
+  },
+  "claim_boundary": {
+    "held_out": false,
+    "offline_pass_does_not_predict_live_success": true,
+    "posthoc_development_trace": true,
+    "runtime_arithmetic_or_action_override": false,
+    "runtime_ocr_or_ui_tree": false
+  },
+  "content_sha256": "2e2c5b2c70ffc6d19103314123269fd8c194fab1d9e4f1fc632a58bd98bcde4d",
+  "episodes": [
+    {
+      "activation_count": 0,
+      "append_count": 0,
+      "episode_id": "ExpenseDeleteMultiple2_20260806_e9be9ff5",
+      "final_values": [],
+      "historical_success": true,
+      "reads": [],
+      "render_count": 0,
+      "serialized_audit_bytes": 8006,
+      "task_name": "ExpenseDeleteMultiple2"
+    },
+    {
+      "activation_count": 0,
+      "append_count": 0,
+      "episode_id": "RetroSavePlaylist_20260806_46095590",
+      "final_values": [],
+      "historical_success": true,
+      "reads": [],
+      "render_count": 0,
+      "serialized_audit_bytes": 7810,
+      "task_name": "RetroSavePlaylist"
+    },
+    {
+      "activation_count": 0,
+      "append_count": 0,
+      "episode_id": "SimpleCalendarAddOneEvent_20260806_a70d32c6",
+      "final_values": [],
+      "historical_success": true,
+      "reads": [],
+      "render_count": 0,
+      "serialized_audit_bytes": 7025,
+      "task_name": "SimpleCalendarAddOneEvent"
+    },
+    {
+      "activation_count": 0,
+      "append_count": 0,
+      "episode_id": "SportsTrackerTotalDurationForCategoryThisWeek_20260806_d1f790a8",
+      "final_values": [],
+      "historical_success": true,
+      "reads": [],
+      "render_count": 0,
+      "serialized_audit_bytes": 3294,
+      "task_name": "SportsTrackerTotalDurationForCategoryThisWeek"
+    },
+    {
+      "activation_count": 0,
+      "append_count": 0,
+      "episode_id": "RecipeDeleteMultipleRecipesWithConstraint_20260806_dafc924d",
+      "final_values": [],
+      "historical_success": true,
+      "reads": [],
+      "render_count": 0,
+      "serialized_audit_bytes": 6682,
+      "task_name": "RecipeDeleteMultipleRecipesWithConstraint"
+    },
+    {
+      "activation_count": 0,
+      "append_count": 0,
+      "episode_id": "OsmAndMarker_20260806_a8106a32",
+      "final_values": [],
+      "historical_success": true,
+      "reads": [],
+      "render_count": 0,
+      "serialized_audit_bytes": 4713,
+      "task_name": "OsmAndMarker"
+    },
+    {
+      "activation_count": 1,
+      "append_count": 5,
+      "episode_id": "BrowserMultiply_20260806_639ed27d",
+      "final_values": [
+        "1",
+        "8",
+        "10",
+        "7",
+        "2"
+      ],
+      "historical_success": false,
+      "reads": [
+        {
+          "added_chars": 126,
+          "combined_render_sha256": "37d636eb938bac313a086ead3a9f18ddf4310bbecad28e2863ce37dfb278c74e",
+          "exact_text": "TRANSIENT MODEL-AUTHORED EVIDENCE (unverified; current screenshot remains authoritative): observed integer sequence = [1, 8].",
+          "exact_text_sha256": "9b66a64b2dacbb5623c5bed2eb4c8db1563d4b9013a91b995b5b2d08c74d50ce",
+          "request_step": 15,
+          "value_count": 2
+        },
+        {
+          "added_chars": 130,
+          "combined_render_sha256": "2252159e497feca06fcb2b0e641e3168ee5d8ff96555a9a185096f7b301c6314",
+          "exact_text": "TRANSIENT MODEL-AUTHORED EVIDENCE (unverified; current screenshot remains authoritative): observed integer sequence = [1, 8, 10].",
+          "exact_text_sha256": "89b7bbe8c64689bd29f470344a01f4117056cff48e296df6391bf68468e31be3",
+          "request_step": 16,
+          "value_count": 3
+        },
+        {
+          "added_chars": 133,
+          "combined_render_sha256": "735f293ad3bdd6962a749ef2bdefea8199dca70424c7627f1bee7e288550df10",
+          "exact_text": "TRANSIENT MODEL-AUTHORED EVIDENCE (unverified; current screenshot remains authoritative): observed integer sequence = [1, 8, 10, 7].",
+          "exact_text_sha256": "2125e21a8af5d42e5a740cdaef20c784614ee1060f289327ab50e8a60613ad91",
+          "request_step": 17,
+          "value_count": 4
+        },
+        {
+          "added_chars": 136,
+          "combined_render_sha256": "3544f57d5067646401198488553d655478defa3292fc5813abbf6294ec658843",
+          "exact_text": "TRANSIENT MODEL-AUTHORED EVIDENCE (unverified; current screenshot remains authoritative): observed integer sequence = [1, 8, 10, 7, 2].",
+          "exact_text_sha256": "457642add74f4e1c29edfaaac383554d68be3cd5f8b60fabb004425e01afdfa3",
+          "request_step": 18,
+          "value_count": 5
+        },
+        {
+          "added_chars": 136,
+          "combined_render_sha256": "b6a82abc24d7e321d63d238706aed631e8994b5c660ba6ec452b01764c45e20e",
+          "exact_text": "TRANSIENT MODEL-AUTHORED EVIDENCE (unverified; current screenshot remains authoritative): observed integer sequence = [1, 8, 10, 7, 2].",
+          "exact_text_sha256": "457642add74f4e1c29edfaaac383554d68be3cd5f8b60fabb004425e01afdfa3",
+          "request_step": 19,
+          "value_count": 5
+        },
+        {
+          "added_chars": 136,
+          "combined_render_sha256": "b6a82abc24d7e321d63d238706aed631e8994b5c660ba6ec452b01764c45e20e",
+          "exact_text": "TRANSIENT MODEL-AUTHORED EVIDENCE (unverified; current screenshot remains authoritative): observed integer sequence = [1, 8, 10, 7, 2].",
+          "exact_text_sha256": "457642add74f4e1c29edfaaac383554d68be3cd5f8b60fabb004425e01afdfa3",
+          "request_step": 20,
+          "value_count": 5
+        },
+        {
+          "added_chars": 136,
+          "combined_render_sha256": "b6a82abc24d7e321d63d238706aed631e8994b5c660ba6ec452b01764c45e20e",
+          "exact_text": "TRANSIENT MODEL-AUTHORED EVIDENCE (unverified; current screenshot remains authoritative): observed integer sequence = [1, 8, 10, 7, 2].",
+          "exact_text_sha256": "457642add74f4e1c29edfaaac383554d68be3cd5f8b60fabb004425e01afdfa3",
+          "request_step": 21,
+          "value_count": 5
+        }
+      ],
+      "render_count": 7,
+      "serialized_audit_bytes": 13277,
+      "task_name": "BrowserMultiply"
+    },
+    {
+      "activation_count": 0,
+      "append_count": 0,
+      "episode_id": "ExpenseAddMultipleFromGallery_20260806_06b8604b",
+      "final_values": [],
+      "historical_success": false,
+      "reads": [],
+      "render_count": 0,
+      "serialized_audit_bytes": 18880,
+      "task_name": "ExpenseAddMultipleFromGallery"
+    },
+    {
+      "activation_count": 0,
+      "append_count": 0,
+      "episode_id": "ExpenseAddMultipleFromMarkor_20260806_aafbff7a",
+      "final_values": [],
+      "historical_success": false,
+      "reads": [],
+      "render_count": 0,
+      "serialized_audit_bytes": 6002,
+      "task_name": "ExpenseAddMultipleFromMarkor"
+    },
+    {
+      "activation_count": 0,
+      "append_count": 0,
+      "episode_id": "MarkorCreateNoteAndSms_20260806_45915a88",
+      "final_values": [],
+      "historical_success": false,
+      "reads": [],
+      "render_count": 0,
+      "serialized_audit_bytes": 6602,
+      "task_name": "MarkorCreateNoteAndSms"
+    },
+    {
+      "activation_count": 0,
+      "append_count": 0,
+      "episode_id": "MarkorMergeNotes_20260806_ad3c6411",
+      "final_values": [],
+      "historical_success": false,
+      "reads": [],
+      "render_count": 0,
+      "serialized_audit_bytes": 25128,
+      "task_name": "MarkorMergeNotes"
+    },
+    {
+      "activation_count": 0,
+      "append_count": 0,
+      "episode_id": "MarkorTranscribeVideo_20260806_549a0913",
+      "final_values": [],
+      "historical_success": false,
+      "reads": [],
+      "render_count": 0,
+      "serialized_audit_bytes": 7711,
+      "task_name": "MarkorTranscribeVideo"
+    },
+    {
+      "activation_count": 0,
+      "append_count": 0,
+      "episode_id": "OsmAndTrack_20260806_7c82b23d",
+      "final_values": [],
+      "historical_success": false,
+      "reads": [],
+      "render_count": 0,
+      "serialized_audit_bytes": 34996,
+      "task_name": "OsmAndTrack"
+    },
+    {
+      "activation_count": 0,
+      "append_count": 0,
+      "episode_id": "RecipeAddMultipleRecipesFromImage_20260806_6e3bf421",
+      "final_values": [],
+      "historical_success": false,
+      "reads": [],
+      "render_count": 0,
+      "serialized_audit_bytes": 7689,
+      "task_name": "RecipeAddMultipleRecipesFromImage"
+    },
+    {
+      "activation_count": 0,
+      "append_count": 0,
+      "episode_id": "RecipeAddMultipleRecipesFromMarkor_20260806_6c5ff38d",
+      "final_values": [],
+      "historical_success": false,
+      "reads": [],
+      "render_count": 0,
+      "serialized_audit_bytes": 18356,
+      "task_name": "RecipeAddMultipleRecipesFromMarkor"
+    },
+    {
+      "activation_count": 0,
+      "append_count": 0,
+      "episode_id": "RecipeAddMultipleRecipesFromMarkor2_20260806_6031e798",
+      "final_values": [],
+      "historical_success": false,
+      "reads": [],
+      "render_count": 0,
+      "serialized_audit_bytes": 9102,
+      "task_name": "RecipeAddMultipleRecipesFromMarkor2"
+    },
+    {
+      "activation_count": 0,
+      "append_count": 0,
+      "episode_id": "SaveCopyOfReceiptTaskEval_20260806_ac7e6382",
+      "final_values": [],
+      "historical_success": false,
+      "reads": [],
+      "render_count": 0,
+      "serialized_audit_bytes": 4747,
+      "task_name": "SaveCopyOfReceiptTaskEval"
+    },
+    {
+      "activation_count": 0,
+      "append_count": 0,
+      "episode_id": "SportsTrackerActivitiesOnDate_20260806_7bb3a02b",
+      "final_values": [],
+      "historical_success": false,
+      "reads": [],
+      "render_count": 0,
+      "serialized_audit_bytes": 2740,
+      "task_name": "SportsTrackerActivitiesOnDate"
+    },
+    {
+      "activation_count": 0,
+      "append_count": 0,
+      "episode_id": "SportsTrackerTotalDistanceForCategoryOverInterval_20260806_0ebed663",
+      "final_values": [],
+      "historical_success": false,
+      "reads": [],
+      "render_count": 0,
+      "serialized_audit_bytes": 5813,
+      "task_name": "SportsTrackerTotalDistanceForCategoryOverInterval"
+    }
+  ],
+  "errors": [],
+  "experiment_id": "A1R13_EVR_QWEN3VL32B_AW_HARD_S20260806_G3407_V1",
+  "generation_calls": 0,
+  "mechanism_id": "a1r13_evidence_value_register_v1",
+  "schema": "a1r13_evr_offline_replay_v1",
+  "source": {
+    "classification": "posthoc_design_development_not_confirmatory",
+    "fixture_content_sha256": "142b159c22fa887c9f1a082fa2ab2ecd7c3c80cb9666e90f18f4d6ee0be54aee",
+    "fixture_file_sha256": "a3f9b86b14a8072721051d312dc5efa73619f3433087bbfa7217a7d54b07d813"
+  },
+  "status": "PASS",
+  "totals": {
+    "activation_count": 1,
+    "active_episode_count": 1,
+    "added_rendered_chars": 933,
+    "append_count": 5,
+    "episode_count": 19,
+    "max_added_chars_per_read": 136,
+    "max_serialized_audit_bytes": 34996,
+    "max_v5_render_chars": 416,
+    "r2_rendered_chars": 96117,
+    "render_count": 7,
+    "six_success_active_count": 0,
+    "step_count": 558,
+    "v5_rendered_chars": 97050
+  }
+}
