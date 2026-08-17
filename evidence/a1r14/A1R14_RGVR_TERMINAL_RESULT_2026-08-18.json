@@ -1,0 +1,215 @@
+{
+  "claim_boundary": {
+    "memory_effect_evaluated": false,
+    "nonempty_value_read_observed": false,
+    "one_value_retained": true,
+    "same_identity_rerun_forbidden": true
+  },
+  "classification": "PARTIAL_EXPOSURE_OBSERVATION_REGEX_COVERAGE_REFUTED",
+  "closure": {
+    "checkpoint_content_sha256": "86296d30f9d2084590100222b390886d5ebbc2dbe80699a27e17155571259a65",
+    "checkpoint_file_sha256": "cbbd8dbfdc27861a999b12aa9066df8cd209758d47ead09606ab4af3ddb93c9f",
+    "episode_json_sha256": "4099ae15fff6bfbb79bb5641f611292c6cb6566c361224687ef35c026622918d",
+    "generation_calls_during_finalization": 0,
+    "invalid_attempt_count": 0,
+    "not_run_by_protocol_count": 18,
+    "preflight_content_sha256": "f98d5bdad7b5c993d908a55fd8ad108cd7acb371d8f79edb6e53abb20599d4fc",
+    "receipt_content_sha256": "96706516bf4bf1c847432ea5449a7761a15615d720b7c91718bc97cb01fe0544",
+    "receipt_file_sha256": "3380766c616d6b12d1fc28db7f20115654c8bf11a719d66b04cb9695825bf00c",
+    "result_content_sha256": "9b4218479802995f92b9c5bf28718766421cfb7ce13ec1056650a4fb49fb7365",
+    "result_file_sha256": "b5176fdfd885095dd5d2c53484df3e3e445a3bc50a69f0bf194387f2881849bd",
+    "run_signature_file_sha256": "cae021e23324aca8b44428392da7bf69e9475b88e55fee5fac4066ad1ae65558",
+    "valid_episode_count": 1
+  },
+  "content_sha256": "fc194e9dfe77859baa7dced9c33c9fe80d542afbffa2c39cbc1b55939dbbbd9a",
+  "errors": [],
+  "identity": {
+    "experiment_id": "A1R14_RGVR_QWEN3VL32B_AW_HARD_S20260806_G3407_V1",
+    "implementation_commit": "dfc8393efabfe9a4b080e6ac18786eb1f7ed2bc0",
+    "mechanism_id": "a1r14_response_grounded_value_register_v1",
+    "suite_id": "official_qwen_20260818T045139_bad7844b"
+  },
+  "outcome": {
+    "episode_id": "BrowserMultiply_20260806_88e8e919",
+    "evidence_counters": {
+      "activation_count": 1,
+      "append_count": 1,
+      "capacity_suppression_count": 0,
+      "clear_count": 0,
+      "expiry_count": 0,
+      "rejection_count": 22,
+      "render_count": 0
+    },
+    "executed_actions": 22,
+    "model_calls": 22,
+    "response_counters": {
+      "append_count": 1,
+      "duplicate_suppression_count": 0,
+      "rejection_count": 21,
+      "write_attempt_count": 22
+    },
+    "retained_values": [
+      "7"
+    ],
+    "reward": 0.0,
+    "task_name": "BrowserMultiply",
+    "termination_reason": "max_steps"
+  },
+  "schema": "a1r14_rgvr_terminal_evidence_v1",
+  "sealed_at": "2026-08-17T21:04:38.157622+00:00",
+  "status": "TERMINAL_VALID_SCIENTIFIC_FAILURE",
+  "tasks": [
+    {
+      "episode_id": "BrowserMultiply_20260806_88e8e919",
+      "execution_status": "VALID_SCIENTIFIC_FAILURE",
+      "reward": 0.0,
+      "seed": 20260806,
+      "success": false,
+      "task_name": "BrowserMultiply"
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "ExpenseDeleteMultiple2"
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "RetroSavePlaylist"
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "SimpleCalendarAddOneEvent"
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "SportsTrackerTotalDurationForCategoryThisWeek"
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "RecipeDeleteMultipleRecipesWithConstraint"
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "OsmAndMarker"
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "ExpenseAddMultipleFromGallery"
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "ExpenseAddMultipleFromMarkor"
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "MarkorCreateNoteAndSms"
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "MarkorMergeNotes"
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "MarkorTranscribeVideo"
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "OsmAndTrack"
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "RecipeAddMultipleRecipesFromImage"
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "RecipeAddMultipleRecipesFromMarkor"
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "RecipeAddMultipleRecipesFromMarkor2"
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "SaveCopyOfReceiptTaskEval"
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "SportsTrackerActivitiesOnDate"
+    },
+    {
+      "episode_id": null,
+      "execution_status": "NOT_RUN_BY_PROTOCOL",
+      "reward": null,
+      "seed": 20260806,
+      "success": null,
+      "task_name": "SportsTrackerTotalDistanceForCategoryOverInterval"
+    }
+  ]
+}
