@@ -1,0 +1,776 @@
+{
+  "schema": "p3_scer_r2_zero_generation_audit_v1",
+  "status": "PREFLIGHT_INVALID_NO_LIVE",
+  "generation_calls": 0,
+  "live_authorized": false,
+  "candidate": {
+    "direction": "outcome_completion_judgment",
+    "pro_name": "R2-SCER v1",
+    "design_status": "UNVALIDATED_PRO_BLUEPRINT",
+    "parent": "A1-R2",
+    "pro_live_state": "LIVE_NO_GO"
+  },
+  "source": {
+    "design": {
+      "path": "design_reviews/pro_candidates/2026-08-15/GPT_PRO_OPEN_V2_OUTCOME_JUDGMENT_DESIGN_2026-08-15.md",
+      "size_bytes": 84752,
+      "sha256": "e41e8d2fdb6a8c4ffbf0dcaa99a3af6fbdae16f2581f06ac8a90b93a11bdaec0"
+    },
+    "r2_result": {
+      "path": "evidence/a1r2/A1R2_CVP_SCORED_RESULT_2026-08-14.json",
+      "size_bytes": 30407,
+      "sha256": "4c1c3af2ac2fcc522c11efae95975ff6df15e3da01218277bc224f62256c2ebc"
+    },
+    "r2_suite_id": "official_qwen_20260814T145307_50081981",
+    "r2_result_content_sha256": "33ccb1fe3ef95534a068d1700ce4cadcd6c68a451da63c5f08be927a466e7df0",
+    "sys_nag_v4_result": {
+      "path": "evidence/sys_nag_v4/SYS_NAG_V4_COMPLETE_RESULT_2026-08-18.json",
+      "size_bytes": 25538,
+      "sha256": "635f926cd2d5b3966c832e16183ddfeb0cef2f498539bf60a884fc542cb2ba8f"
+    },
+    "sys_nag_v4_result_content_sha256": "99d92c80fc196f452320e13d3e5e3a2f6d4d7c09199fa6e8af94c88953ea0810"
+  },
+  "observable_scheduler_projection": {
+    "t2_terminal_open_claim_success_tasks": [
+      "ExpenseDeleteMultiple2",
+      "RetroSavePlaylist",
+      "SimpleCalendarAddOneEvent",
+      "SportsTrackerTotalDurationForCategoryThisWeek",
+      "RecipeDeleteMultipleRecipesWithConstraint",
+      "OsmAndMarker"
+    ],
+    "t2_terminal_open_claim_failure_tasks": [
+      "ExpenseAddMultipleFromGallery",
+      "MarkorTranscribeVideo",
+      "RecipeAddMultipleRecipesFromMarkor",
+      "SaveCopyOfReceiptTaskEval",
+      "SportsTrackerActivitiesOnDate",
+      "SportsTrackerTotalDistanceForCategoryOverInterval"
+    ],
+    "t3_refresh_proxy_success_tasks": [
+      "ExpenseDeleteMultiple2",
+      "SimpleCalendarAddOneEvent",
+      "SportsTrackerTotalDurationForCategoryThisWeek",
+      "RecipeDeleteMultipleRecipesWithConstraint",
+      "OsmAndMarker"
+    ],
+    "t3_refresh_proxy_failure_tasks": [
+      "BrowserMultiply",
+      "ExpenseAddMultipleFromGallery",
+      "ExpenseAddMultipleFromMarkor",
+      "MarkorCreateNoteAndSms",
+      "MarkorMergeNotes",
+      "MarkorTranscribeVideo",
+      "OsmAndTrack",
+      "RecipeAddMultipleRecipesFromImage",
+      "RecipeAddMultipleRecipesFromMarkor",
+      "RecipeAddMultipleRecipesFromMarkor2",
+      "SaveCopyOfReceiptTaskEval",
+      "SportsTrackerActivitiesOnDate"
+    ],
+    "fixed_seven": [
+      {
+        "task_name": "BrowserMultiply",
+        "episode_id": "BrowserMultiply_20260806_54623170",
+        "episode_json_sha256": "149dc5fba971c7c75b7b975d3aa51e1d341fbcc03d0935070c21057bad2bb4ac",
+        "success": false,
+        "reward": 0.0,
+        "termination_reason": "max_steps",
+        "executed_actions": 22,
+        "model_calls": 22,
+        "same_state_refresh_count": 5,
+        "t3_exact_recurrence_proxy_opportunity": true,
+        "terminal_proposals": [],
+        "t2_opportunity_count": 0,
+        "screenshot_file_count": 44,
+        "screenshot_manifest_sha256": "1d98cb25a3a7b7fdd8d4b522b92c262e7f3018fce21e8538a63017fc459d4740"
+      },
+      {
+        "task_name": "ExpenseDeleteMultiple2",
+        "episode_id": "ExpenseDeleteMultiple2_20260806_a27af967",
+        "episode_json_sha256": "494d4ffaaefb6613f3ef614b696c766fd6038e6a666ab5cf45d2a197bb698447",
+        "success": true,
+        "reward": 1.0,
+        "termination_reason": "model_terminate_success",
+        "executed_actions": 17,
+        "model_calls": 18,
+        "same_state_refresh_count": 5,
+        "t3_exact_recurrence_proxy_opportunity": true,
+        "terminal_proposals": [
+          {
+            "step": 17,
+            "terminal_status": "success",
+            "open_pending": "Bike Repairs",
+            "t2_terminal_with_open_claim": true,
+            "request_sha256": "beaa616896a96dd7d2044047493c107aa7eda032d1ed037d5cb17bc37a411652",
+            "response_sha256": "97807f2e3b1bfbc6eff72a6048e0318ce2c4bfa29ebddd817d5651fdd5d34cc4",
+            "screenshot_sha256": "49483e57fb7c562b3d37c1682621d3ff31f15749cd2f05567c97a14a0118485f"
+          }
+        ],
+        "t2_opportunity_count": 1,
+        "screenshot_file_count": 35,
+        "screenshot_manifest_sha256": "666bb94de4bd160605e1f000771497e6c5ed7cb1ede31a767233ac66bcbcf12d"
+      },
+      {
+        "task_name": "RetroSavePlaylist",
+        "episode_id": "RetroSavePlaylist_20260806_269b2c65",
+        "episode_json_sha256": "56ded696d6c6f0c13bbd0d8dcef9583b57af6ad8cb3176133ac36dede24c07e9",
+        "success": true,
+        "reward": 1.0,
+        "termination_reason": "model_terminate_success",
+        "executed_actions": 24,
+        "model_calls": 25,
+        "same_state_refresh_count": 0,
+        "t3_exact_recurrence_proxy_opportunity": false,
+        "terminal_proposals": [
+          {
+            "step": 24,
+            "terminal_status": "success",
+            "open_pending": "Finalize export by saving file",
+            "t2_terminal_with_open_claim": true,
+            "request_sha256": "365bdc30727aaeea93eba37b0fdd514bd7b556b59a4cfc8d97306260bb30eb65",
+            "response_sha256": "102bdd46c87a6b39c34cf65f2694c0cd87bf4ac11ea9a973cf0f7f9d364111b4",
+            "screenshot_sha256": "759cdb98e316550af8234335acf57779ea5f8b7d8f637dfb9cbf6f9730f331e6"
+          }
+        ],
+        "t2_opportunity_count": 1,
+        "screenshot_file_count": 49,
+        "screenshot_manifest_sha256": "4518a325b0b2ff7628cb023afb02cbce77b2df695b847da83bc0492988b9c1fb"
+      },
+      {
+        "task_name": "SimpleCalendarAddOneEvent",
+        "episode_id": "SimpleCalendarAddOneEvent_20260806_728d3349",
+        "episode_json_sha256": "0756500a2c6efaa485cdd930c3b9e6ff58a75e3a34452e411db22377d52e158c",
+        "success": true,
+        "reward": 1.0,
+        "termination_reason": "model_terminate_success",
+        "executed_actions": 22,
+        "model_calls": 23,
+        "same_state_refresh_count": 1,
+        "t3_exact_recurrence_proxy_opportunity": true,
+        "terminal_proposals": [
+          {
+            "step": 22,
+            "terminal_status": "success",
+            "open_pending": "end time needs to be set to 09:00",
+            "t2_terminal_with_open_claim": true,
+            "request_sha256": "f173868e5aff77d15c3eedccda00813d65a752a37da3f6f0fe241fb953ae928a",
+            "response_sha256": "09a28f1b14588c5aec356b63caf6f2daa152c8e9d24725a4776ab6b20aacc6ec",
+            "screenshot_sha256": "424f53fea4e8fbe1da855ab5c38c61d6901d3718e2d1b84955c8658b57c5fa51"
+          }
+        ],
+        "t2_opportunity_count": 1,
+        "screenshot_file_count": 45,
+        "screenshot_manifest_sha256": "a94aa2045a8ebbf12681776a17c774ed28f3fec8c4e8bac04918c5a152d68ce6"
+      },
+      {
+        "task_name": "SportsTrackerTotalDurationForCategoryThisWeek",
+        "episode_id": "SportsTrackerTotalDurationForCategoryThisWeek_20260806_e34aeaf5",
+        "episode_json_sha256": "c236765bff60a417bdc0da69edec8e24d0625c2e9a4be7df5e995221c4b18035",
+        "success": true,
+        "reward": 1.0,
+        "termination_reason": "model_answer",
+        "executed_actions": 6,
+        "model_calls": 6,
+        "same_state_refresh_count": 1,
+        "t3_exact_recurrence_proxy_opportunity": true,
+        "terminal_proposals": [
+          {
+            "step": 5,
+            "terminal_status": "answer",
+            "open_pending": "navigate past welcome screen",
+            "t2_terminal_with_open_claim": true,
+            "request_sha256": "65f20ccf19bc751b949cfc64dd766f00beb42345eda5abc5f02482ad36804112",
+            "response_sha256": "7b84b0ea114bdd1742af455dd8292aa52a5ffda3b4628cf18f5b45b24882e0c5",
+            "screenshot_sha256": "7d18b1e95469769cb76308b6cc59814724e68210780703ecfb07988d6599e081"
+          }
+        ],
+        "t2_opportunity_count": 1,
+        "screenshot_file_count": 12,
+        "screenshot_manifest_sha256": "4ec69f4e89dcf42f3f2e30d9e9e7972dc2a12c67cc68891aca4f9e3555234eae"
+      },
+      {
+        "task_name": "RecipeDeleteMultipleRecipesWithConstraint",
+        "episode_id": "RecipeDeleteMultipleRecipesWithConstraint_20260806_b4feab19",
+        "episode_json_sha256": "5d1dbf1e8e3ead7818ffd6aa67fb9ac02b4bcb40e91ab0294506ae6c8ccf4a4e",
+        "success": true,
+        "reward": 1.0,
+        "termination_reason": "model_terminate_success",
+        "executed_actions": 17,
+        "model_calls": 18,
+        "same_state_refresh_count": 2,
+        "t3_exact_recurrence_proxy_opportunity": true,
+        "terminal_proposals": [
+          {
+            "step": 17,
+            "terminal_status": "success",
+            "open_pending": "Confirm deletion of this recipe",
+            "t2_terminal_with_open_claim": true,
+            "request_sha256": "81afa2ec95fcd35bbfe42b3acb714996886827fffec6f366c8ee6644f5cfd6b8",
+            "response_sha256": "1ca3086337c3595f84a842d90a9d04871c88def016793fc0c9266c380bd18b5e",
+            "screenshot_sha256": "8191ad5d57672f3fd0ccb2c5a01bf74fc2951c8b3df66cedb9eb8575de6139dd"
+          }
+        ],
+        "t2_opportunity_count": 1,
+        "screenshot_file_count": 35,
+        "screenshot_manifest_sha256": "cad0a8bb7491e5a5d18b940211c6d09c2b3a62e2b3c85709be326203badf452a"
+      },
+      {
+        "task_name": "OsmAndMarker",
+        "episode_id": "OsmAndMarker_20260806_8517b31f",
+        "episode_json_sha256": "be3ded1024325388bc25c4701820575f3927756eadede7e4681cd2efc13d507d",
+        "success": true,
+        "reward": 1.0,
+        "termination_reason": "model_terminate_success",
+        "executed_actions": 11,
+        "model_calls": 12,
+        "same_state_refresh_count": 2,
+        "t3_exact_recurrence_proxy_opportunity": true,
+        "terminal_proposals": [
+          {
+            "step": 11,
+            "terminal_status": "success",
+            "open_pending": "add marker at location",
+            "t2_terminal_with_open_claim": true,
+            "request_sha256": "96b2287bb1de3dc74bc26484e0abad7c28fc4dcdbfd097eb5962e812e4f25a6e",
+            "response_sha256": "3b12b4e340dae07fabfdf8a1fd7fc4ac509c0bdb52467ccc59689a6a9fb5ebf6",
+            "screenshot_sha256": "ed8e5820de0ecd6b46bc795266de2aeb184cee5380e862f09ceb15c2b8cc1a8b"
+          }
+        ],
+        "t2_opportunity_count": 1,
+        "screenshot_file_count": 23,
+        "screenshot_manifest_sha256": "5459d6b0f76e91f16244dca1670cfde4a69e9522494ce4cc076e37e8e76b08bb"
+      }
+    ],
+    "episodes": [
+      {
+        "task_name": "ExpenseDeleteMultiple2",
+        "episode_id": "ExpenseDeleteMultiple2_20260806_a27af967",
+        "episode_json_sha256": "494d4ffaaefb6613f3ef614b696c766fd6038e6a666ab5cf45d2a197bb698447",
+        "success": true,
+        "reward": 1.0,
+        "termination_reason": "model_terminate_success",
+        "executed_actions": 17,
+        "model_calls": 18,
+        "same_state_refresh_count": 5,
+        "t3_exact_recurrence_proxy_opportunity": true,
+        "terminal_proposals": [
+          {
+            "step": 17,
+            "terminal_status": "success",
+            "open_pending": "Bike Repairs",
+            "t2_terminal_with_open_claim": true,
+            "request_sha256": "beaa616896a96dd7d2044047493c107aa7eda032d1ed037d5cb17bc37a411652",
+            "response_sha256": "97807f2e3b1bfbc6eff72a6048e0318ce2c4bfa29ebddd817d5651fdd5d34cc4",
+            "screenshot_sha256": "49483e57fb7c562b3d37c1682621d3ff31f15749cd2f05567c97a14a0118485f"
+          }
+        ],
+        "t2_opportunity_count": 1,
+        "screenshot_file_count": 35,
+        "screenshot_manifest_sha256": "666bb94de4bd160605e1f000771497e6c5ed7cb1ede31a767233ac66bcbcf12d"
+      },
+      {
+        "task_name": "RetroSavePlaylist",
+        "episode_id": "RetroSavePlaylist_20260806_269b2c65",
+        "episode_json_sha256": "56ded696d6c6f0c13bbd0d8dcef9583b57af6ad8cb3176133ac36dede24c07e9",
+        "success": true,
+        "reward": 1.0,
+        "termination_reason": "model_terminate_success",
+        "executed_actions": 24,
+        "model_calls": 25,
+        "same_state_refresh_count": 0,
+        "t3_exact_recurrence_proxy_opportunity": false,
+        "terminal_proposals": [
+          {
+            "step": 24,
+            "terminal_status": "success",
+            "open_pending": "Finalize export by saving file",
+            "t2_terminal_with_open_claim": true,
+            "request_sha256": "365bdc30727aaeea93eba37b0fdd514bd7b556b59a4cfc8d97306260bb30eb65",
+            "response_sha256": "102bdd46c87a6b39c34cf65f2694c0cd87bf4ac11ea9a973cf0f7f9d364111b4",
+            "screenshot_sha256": "759cdb98e316550af8234335acf57779ea5f8b7d8f637dfb9cbf6f9730f331e6"
+          }
+        ],
+        "t2_opportunity_count": 1,
+        "screenshot_file_count": 49,
+        "screenshot_manifest_sha256": "4518a325b0b2ff7628cb023afb02cbce77b2df695b847da83bc0492988b9c1fb"
+      },
+      {
+        "task_name": "SimpleCalendarAddOneEvent",
+        "episode_id": "SimpleCalendarAddOneEvent_20260806_728d3349",
+        "episode_json_sha256": "0756500a2c6efaa485cdd930c3b9e6ff58a75e3a34452e411db22377d52e158c",
+        "success": true,
+        "reward": 1.0,
+        "termination_reason": "model_terminate_success",
+        "executed_actions": 22,
+        "model_calls": 23,
+        "same_state_refresh_count": 1,
+        "t3_exact_recurrence_proxy_opportunity": true,
+        "terminal_proposals": [
+          {
+            "step": 22,
+            "terminal_status": "success",
+            "open_pending": "end time needs to be set to 09:00",
+            "t2_terminal_with_open_claim": true,
+            "request_sha256": "f173868e5aff77d15c3eedccda00813d65a752a37da3f6f0fe241fb953ae928a",
+            "response_sha256": "09a28f1b14588c5aec356b63caf6f2daa152c8e9d24725a4776ab6b20aacc6ec",
+            "screenshot_sha256": "424f53fea4e8fbe1da855ab5c38c61d6901d3718e2d1b84955c8658b57c5fa51"
+          }
+        ],
+        "t2_opportunity_count": 1,
+        "screenshot_file_count": 45,
+        "screenshot_manifest_sha256": "a94aa2045a8ebbf12681776a17c774ed28f3fec8c4e8bac04918c5a152d68ce6"
+      },
+      {
+        "task_name": "SportsTrackerTotalDurationForCategoryThisWeek",
+        "episode_id": "SportsTrackerTotalDurationForCategoryThisWeek_20260806_e34aeaf5",
+        "episode_json_sha256": "c236765bff60a417bdc0da69edec8e24d0625c2e9a4be7df5e995221c4b18035",
+        "success": true,
+        "reward": 1.0,
+        "termination_reason": "model_answer",
+        "executed_actions": 6,
+        "model_calls": 6,
+        "same_state_refresh_count": 1,
+        "t3_exact_recurrence_proxy_opportunity": true,
+        "terminal_proposals": [
+          {
+            "step": 5,
+            "terminal_status": "answer",
+            "open_pending": "navigate past welcome screen",
+            "t2_terminal_with_open_claim": true,
+            "request_sha256": "65f20ccf19bc751b949cfc64dd766f00beb42345eda5abc5f02482ad36804112",
+            "response_sha256": "7b84b0ea114bdd1742af455dd8292aa52a5ffda3b4628cf18f5b45b24882e0c5",
+            "screenshot_sha256": "7d18b1e95469769cb76308b6cc59814724e68210780703ecfb07988d6599e081"
+          }
+        ],
+        "t2_opportunity_count": 1,
+        "screenshot_file_count": 12,
+        "screenshot_manifest_sha256": "4ec69f4e89dcf42f3f2e30d9e9e7972dc2a12c67cc68891aca4f9e3555234eae"
+      },
+      {
+        "task_name": "RecipeDeleteMultipleRecipesWithConstraint",
+        "episode_id": "RecipeDeleteMultipleRecipesWithConstraint_20260806_b4feab19",
+        "episode_json_sha256": "5d1dbf1e8e3ead7818ffd6aa67fb9ac02b4bcb40e91ab0294506ae6c8ccf4a4e",
+        "success": true,
+        "reward": 1.0,
+        "termination_reason": "model_terminate_success",
+        "executed_actions": 17,
+        "model_calls": 18,
+        "same_state_refresh_count": 2,
+        "t3_exact_recurrence_proxy_opportunity": true,
+        "terminal_proposals": [
+          {
+            "step": 17,
+            "terminal_status": "success",
+            "open_pending": "Confirm deletion of this recipe",
+            "t2_terminal_with_open_claim": true,
+            "request_sha256": "81afa2ec95fcd35bbfe42b3acb714996886827fffec6f366c8ee6644f5cfd6b8",
+            "response_sha256": "1ca3086337c3595f84a842d90a9d04871c88def016793fc0c9266c380bd18b5e",
+            "screenshot_sha256": "8191ad5d57672f3fd0ccb2c5a01bf74fc2951c8b3df66cedb9eb8575de6139dd"
+          }
+        ],
+        "t2_opportunity_count": 1,
+        "screenshot_file_count": 35,
+        "screenshot_manifest_sha256": "cad0a8bb7491e5a5d18b940211c6d09c2b3a62e2b3c85709be326203badf452a"
+      },
+      {
+        "task_name": "BrowserMultiply",
+        "episode_id": "BrowserMultiply_20260806_54623170",
+        "episode_json_sha256": "149dc5fba971c7c75b7b975d3aa51e1d341fbcc03d0935070c21057bad2bb4ac",
+        "success": false,
+        "reward": 0.0,
+        "termination_reason": "max_steps",
+        "executed_actions": 22,
+        "model_calls": 22,
+        "same_state_refresh_count": 5,
+        "t3_exact_recurrence_proxy_opportunity": true,
+        "terminal_proposals": [],
+        "t2_opportunity_count": 0,
+        "screenshot_file_count": 44,
+        "screenshot_manifest_sha256": "1d98cb25a3a7b7fdd8d4b522b92c262e7f3018fce21e8538a63017fc459d4740"
+      },
+      {
+        "task_name": "ExpenseAddMultipleFromGallery",
+        "episode_id": "ExpenseAddMultipleFromGallery_20260806_4caedc43",
+        "episode_json_sha256": "6bca92449b282a6d4de1b3169f3aa6a3ba261877f05ab4ced15f35f832b725a2",
+        "success": false,
+        "reward": 0.0,
+        "termination_reason": "model_terminate_success",
+        "executed_actions": 13,
+        "model_calls": 14,
+        "same_state_refresh_count": 2,
+        "t3_exact_recurrence_proxy_opportunity": true,
+        "terminal_proposals": [
+          {
+            "step": 13,
+            "terminal_status": "success",
+            "open_pending": "add expenses from expenses.jpg",
+            "t2_terminal_with_open_claim": true,
+            "request_sha256": "6481e1a4d9b287a81c1fc1907642d7cacfaa5544386f637417b9d3a4e9c450bf",
+            "response_sha256": "420e53bb1a18228a64be702bc3070eed67809e195c7505412dca066a7067d743",
+            "screenshot_sha256": "79c960c5fe1c7d18661dd56453dbb57f77db9715f490477a3a61330a44b945d2"
+          }
+        ],
+        "t2_opportunity_count": 1,
+        "screenshot_file_count": 27,
+        "screenshot_manifest_sha256": "abc3c5c5b213b873fec0183c1d09656c07c82b880304131cbb0a65828d923823"
+      },
+      {
+        "task_name": "ExpenseAddMultipleFromMarkor",
+        "episode_id": "ExpenseAddMultipleFromMarkor_20260806_faf5c468",
+        "episode_json_sha256": "e04beeca8719f41883b2e86918a153d07f5793e1caff8aa1b1a43fe1e2122d9c",
+        "success": false,
+        "reward": 0.0,
+        "termination_reason": "max_steps",
+        "executed_actions": 60,
+        "model_calls": 60,
+        "same_state_refresh_count": 6,
+        "t3_exact_recurrence_proxy_opportunity": true,
+        "terminal_proposals": [],
+        "t2_opportunity_count": 0,
+        "screenshot_file_count": 120,
+        "screenshot_manifest_sha256": "6b300778d2e7b3b5bd0b5202d5ceec15f70c619f77032b327cc08144d03a5c95"
+      },
+      {
+        "task_name": "MarkorCreateNoteAndSms",
+        "episode_id": "MarkorCreateNoteAndSms_20260806_150c1638",
+        "episode_json_sha256": "53e40dfdf96346e77601dffa091c9f97d3c8456ae7e1ec8b88c67748aade7ad8",
+        "success": false,
+        "reward": 0.5,
+        "termination_reason": "max_steps",
+        "executed_actions": 18,
+        "model_calls": 18,
+        "same_state_refresh_count": 1,
+        "t3_exact_recurrence_proxy_opportunity": true,
+        "terminal_proposals": [],
+        "t2_opportunity_count": 0,
+        "screenshot_file_count": 36,
+        "screenshot_manifest_sha256": "74a1397d91a1ad6994bbc9204b4a2e2546a2da20646c2f34df2bb6b4c10a80dd"
+      },
+      {
+        "task_name": "MarkorMergeNotes",
+        "episode_id": "MarkorMergeNotes_20260806_6367b3d1",
+        "episode_json_sha256": "e32f186765487b37703497c121198df3c6141850069ca51c0d2bcf2988768176",
+        "success": false,
+        "reward": 0.0,
+        "termination_reason": "max_steps",
+        "executed_actions": 78,
+        "model_calls": 78,
+        "same_state_refresh_count": 27,
+        "t3_exact_recurrence_proxy_opportunity": true,
+        "terminal_proposals": [],
+        "t2_opportunity_count": 0,
+        "screenshot_file_count": 156,
+        "screenshot_manifest_sha256": "c4d472e4d10264203af3af9207c502eb95ea4e5fae77d896ba962a379158c901"
+      },
+      {
+        "task_name": "MarkorTranscribeVideo",
+        "episode_id": "MarkorTranscribeVideo_20260806_737baf69",
+        "episode_json_sha256": "6e0f98632edaaa9256f21e87dbcb3c3689390c5d03e793392d67215353ae4f74",
+        "success": false,
+        "reward": 0.0,
+        "termination_reason": "model_answer",
+        "executed_actions": 14,
+        "model_calls": 14,
+        "same_state_refresh_count": 5,
+        "t3_exact_recurrence_proxy_opportunity": true,
+        "terminal_proposals": [
+          {
+            "step": 13,
+            "terminal_status": "answer",
+            "open_pending": "open video for transcription",
+            "t2_terminal_with_open_claim": true,
+            "request_sha256": "7690b1b08cfdd42ba915aae1858f681587a54e79375a97501bb35c2b73f10544",
+            "response_sha256": "ddc7afda4329fe69f2fa9e8b986bfada8040d325260a5bea7e742033bc4df6d6",
+            "screenshot_sha256": "28f477ff013d453e60ca97232c88bf2c71846e0d630b3ac4c897280887ca16b4"
+          }
+        ],
+        "t2_opportunity_count": 1,
+        "screenshot_file_count": 28,
+        "screenshot_manifest_sha256": "677de10cef69d6ecdebc8049c39e70bc232bc4154213bf307ba6b0dce28438bd"
+      },
+      {
+        "task_name": "OsmAndMarker",
+        "episode_id": "OsmAndMarker_20260806_8517b31f",
+        "episode_json_sha256": "be3ded1024325388bc25c4701820575f3927756eadede7e4681cd2efc13d507d",
+        "success": true,
+        "reward": 1.0,
+        "termination_reason": "model_terminate_success",
+        "executed_actions": 11,
+        "model_calls": 12,
+        "same_state_refresh_count": 2,
+        "t3_exact_recurrence_proxy_opportunity": true,
+        "terminal_proposals": [
+          {
+            "step": 11,
+            "terminal_status": "success",
+            "open_pending": "add marker at location",
+            "t2_terminal_with_open_claim": true,
+            "request_sha256": "96b2287bb1de3dc74bc26484e0abad7c28fc4dcdbfd097eb5962e812e4f25a6e",
+            "response_sha256": "3b12b4e340dae07fabfdf8a1fd7fc4ac509c0bdb52467ccc59689a6a9fb5ebf6",
+            "screenshot_sha256": "ed8e5820de0ecd6b46bc795266de2aeb184cee5380e862f09ceb15c2b8cc1a8b"
+          }
+        ],
+        "t2_opportunity_count": 1,
+        "screenshot_file_count": 23,
+        "screenshot_manifest_sha256": "5459d6b0f76e91f16244dca1670cfde4a69e9522494ce4cc076e37e8e76b08bb"
+      },
+      {
+        "task_name": "OsmAndTrack",
+        "episode_id": "OsmAndTrack_20260806_1823722c",
+        "episode_json_sha256": "cfa31b22d5608fb2306166724367347d65b017d346ce4352c39e95214e1270a2",
+        "success": false,
+        "reward": 0.0,
+        "termination_reason": "max_steps",
+        "executed_actions": 120,
+        "model_calls": 120,
+        "same_state_refresh_count": 67,
+        "t3_exact_recurrence_proxy_opportunity": true,
+        "terminal_proposals": [],
+        "t2_opportunity_count": 0,
+        "screenshot_file_count": 240,
+        "screenshot_manifest_sha256": "1c20b6efd71a7bc45e5761cfe4b24d1af99084a97b60d0741b792f30ed8e7c2c"
+      },
+      {
+        "task_name": "RecipeAddMultipleRecipesFromImage",
+        "episode_id": "RecipeAddMultipleRecipesFromImage_20260806_4c0dccd5",
+        "episode_json_sha256": "43fe4d61c5d8c2cecc3d182a60816682edfdb0c640b1035289db01f411baf9e4",
+        "success": false,
+        "reward": 0.0,
+        "termination_reason": "max_steps",
+        "executed_actions": 60,
+        "model_calls": 60,
+        "same_state_refresh_count": 1,
+        "t3_exact_recurrence_proxy_opportunity": true,
+        "terminal_proposals": [],
+        "t2_opportunity_count": 0,
+        "screenshot_file_count": 120,
+        "screenshot_manifest_sha256": "30a190d67b217cf53e32c198a98e05a22108dbed3bb3e632d5c989d5723a9e43"
+      },
+      {
+        "task_name": "RecipeAddMultipleRecipesFromMarkor",
+        "episode_id": "RecipeAddMultipleRecipesFromMarkor_20260806_154a3c03",
+        "episode_json_sha256": "2c8099cba26a5876530cd0640bdc78c26e2d2bf12a217c8315e10e3349452089",
+        "success": false,
+        "reward": 0.0,
+        "termination_reason": "model_terminate_success",
+        "executed_actions": 28,
+        "model_calls": 29,
+        "same_state_refresh_count": 1,
+        "t3_exact_recurrence_proxy_opportunity": true,
+        "terminal_proposals": [
+          {
+            "step": 28,
+            "terminal_status": "success",
+            "open_pending": "paste content into Title field",
+            "t2_terminal_with_open_claim": true,
+            "request_sha256": "d8f874f3993d24e1e86caacbde4a55f1953bdaea6e619b982e03f1eef0cdb794",
+            "response_sha256": "e6678d16f5abfdcc909b4560e6fe47ba6cf215bcef05f1ac26448a8546d83e5a",
+            "screenshot_sha256": "4044393d751dcb349489aaf342d58a76260d79380de62fa2ad76b4bff6d5575c"
+          }
+        ],
+        "t2_opportunity_count": 1,
+        "screenshot_file_count": 57,
+        "screenshot_manifest_sha256": "c2ad3a74bcdd5013ae19aba0f23e66b2d0f568f606a242bbbed84274f5034d0c"
+      },
+      {
+        "task_name": "RecipeAddMultipleRecipesFromMarkor2",
+        "episode_id": "RecipeAddMultipleRecipesFromMarkor2_20260806_92d8511a",
+        "episode_json_sha256": "c9800fb672739760c221bfd1122ef2d192c582b492fc749660153cf40fc1020a",
+        "success": false,
+        "reward": 0.0,
+        "termination_reason": "max_steps",
+        "executed_actions": 60,
+        "model_calls": 60,
+        "same_state_refresh_count": 1,
+        "t3_exact_recurrence_proxy_opportunity": true,
+        "terminal_proposals": [],
+        "t2_opportunity_count": 0,
+        "screenshot_file_count": 120,
+        "screenshot_manifest_sha256": "d465b7ca3155bc626a30217ca769613c9b5a15eb12010cdf45ea6c9d196216a9"
+      },
+      {
+        "task_name": "SaveCopyOfReceiptTaskEval",
+        "episode_id": "SaveCopyOfReceiptTaskEval_20260806_289b77f0",
+        "episode_json_sha256": "b43fd4358317f85653feb176c143111b99b60931892a2cc09aae4d41501c90a4",
+        "success": false,
+        "reward": 0.0,
+        "termination_reason": "model_terminate_success",
+        "executed_actions": 10,
+        "model_calls": 11,
+        "same_state_refresh_count": 2,
+        "t3_exact_recurrence_proxy_opportunity": true,
+        "terminal_proposals": [
+          {
+            "step": 10,
+            "terminal_status": "success",
+            "open_pending": "Confirm copying image to Download folder",
+            "t2_terminal_with_open_claim": true,
+            "request_sha256": "a38dfa11629a3d7fa8fd9f988e00fd24d3ab1d24b84739e78fa0c98201a806d2",
+            "response_sha256": "f9af35e119219b3261255d0fbf387c4f627188d542e4e3570fb36a272d28cd3e",
+            "screenshot_sha256": "81a491098d7445e83a606d6b219dc27995eb93a0cf79543be2a93e7d9584fe56"
+          }
+        ],
+        "t2_opportunity_count": 1,
+        "screenshot_file_count": 21,
+        "screenshot_manifest_sha256": "907de0d6a0147bcef0f4163006ba3aa4132375133e5ed564974fa90fb26433ad"
+      },
+      {
+        "task_name": "SportsTrackerActivitiesOnDate",
+        "episode_id": "SportsTrackerActivitiesOnDate_20260806_d2df83f9",
+        "episode_json_sha256": "c711857eb1bbea7dddc8be28ffbbac9560b23383220a849cc0170f253fc43c14",
+        "success": false,
+        "reward": 0.0,
+        "termination_reason": "model_answer",
+        "executed_actions": 7,
+        "model_calls": 7,
+        "same_state_refresh_count": 1,
+        "t3_exact_recurrence_proxy_opportunity": true,
+        "terminal_proposals": [
+          {
+            "step": 6,
+            "terminal_status": "answer",
+            "open_pending": "find activities for October 02",
+            "t2_terminal_with_open_claim": true,
+            "request_sha256": "22c070fc1ef10becae2ccd3afe574328a888840311da47d226130d3c0fd32ee1",
+            "response_sha256": "e228250ada0114c3cde3088ec09d721910aa9ae918270fa1d6bfe995912c43b3",
+            "screenshot_sha256": "0f07314ae5bcd782e13b3a641f7a548fa1dd4a281d7f58d130bef9e8602f2a82"
+          }
+        ],
+        "t2_opportunity_count": 1,
+        "screenshot_file_count": 14,
+        "screenshot_manifest_sha256": "85bb11454ddecbc2b99a1cb0aaf2de3e495e2e262008559a5f29909fca734fee"
+      },
+      {
+        "task_name": "SportsTrackerTotalDistanceForCategoryOverInterval",
+        "episode_id": "SportsTrackerTotalDistanceForCategoryOverInterval_20260806_35bba8b5",
+        "episode_json_sha256": "3a3f8e7c3a4189e9961fcdf5366438c3413588c185cf0cd696752aa9e151e85d",
+        "success": false,
+        "reward": 0.0,
+        "termination_reason": "model_answer",
+        "executed_actions": 8,
+        "model_calls": 8,
+        "same_state_refresh_count": 0,
+        "t3_exact_recurrence_proxy_opportunity": false,
+        "terminal_proposals": [
+          {
+            "step": 7,
+            "terminal_status": "answer",
+            "open_pending": "convert distances to meters and sum them",
+            "t2_terminal_with_open_claim": true,
+            "request_sha256": "c54730cc3825be117e13425e52a49d07ecc185faddda232ef6e6ce44f7b25dc4",
+            "response_sha256": "19f3c06f6670df2e580afda81365ab109c8de9c0d4459253eb1f2fa959ada709",
+            "screenshot_sha256": "fc10404f29998d8e0e85a4bd06b584c6c4849ba6e8d62d8cfcb371a6ff37e588"
+          }
+        ],
+        "t2_opportunity_count": 1,
+        "screenshot_file_count": 16,
+        "screenshot_manifest_sha256": "cfb49e70701125e8f016be6fdd8476ffbf7c051c9b3d5dbb00dff330b123446e"
+      }
+    ]
+  },
+  "existing_direction_evidence": {
+    "sys_nag_v4_success_count": 6,
+    "sys_nag_v4_reward_sum": 6.5,
+    "sys_nag_v4_terminal_block_count": 0,
+    "sys_nag_v4_route_block_count": 4,
+    "sys_nag_v4_route_block_full_success_count": 0,
+    "interpretation": "Existing deterministic completion/recovery guards preserve the R2 score but do not establish a new win; they do not validate SCER and must not be relabeled as its control."
+  },
+  "hard_gates": {
+    "raw_r2_materialization": {
+      "status": "PASS",
+      "episode_count": 19,
+      "screenshot_file_count": 1198,
+      "note": "This closes the Pro document's historical raw-suite availability gap."
+    },
+    "visible_only_annotation_packet": {
+      "status": "FAIL",
+      "required_independent_reviewers": 2,
+      "available_human_reviewers": 0,
+      "locked_event_annotations": 0,
+      "required_labels": [
+        "directly_visible_established",
+        "directly_visible_contradicted",
+        "visibility_limited",
+        "unsupported_continuation",
+        "forgotten_open_obligation",
+        "repeated_ineffective_commitment"
+      ],
+      "reason": "No blinded visible-only human annotation, disagreement log, adjudication, or reviewer identity is present in the repository."
+    },
+    "cross_task_target_event_coverage": {
+      "status": "NOT_EVALUABLE",
+      "required_distinct_tasks": 2,
+      "observable_t2_failed_tasks": [
+        "ExpenseAddMultipleFromGallery",
+        "MarkorTranscribeVideo",
+        "RecipeAddMultipleRecipesFromMarkor",
+        "SaveCopyOfReceiptTaskEval",
+        "SportsTrackerActivitiesOnDate",
+        "SportsTrackerTotalDistanceForCategoryOverInterval"
+      ],
+      "observable_t3_proxy_failed_tasks": [
+        "BrowserMultiply",
+        "ExpenseAddMultipleFromGallery",
+        "ExpenseAddMultipleFromMarkor",
+        "MarkorCreateNoteAndSms",
+        "MarkorMergeNotes",
+        "MarkorTranscribeVideo",
+        "OsmAndTrack",
+        "RecipeAddMultipleRecipesFromImage",
+        "RecipeAddMultipleRecipesFromMarkor",
+        "RecipeAddMultipleRecipesFromMarkor2",
+        "SaveCopyOfReceiptTaskEval",
+        "SportsTrackerActivitiesOnDate"
+      ],
+      "reason": "Scheduler opportunities are observable, but whether they cover independently labeled outcome-judgment errors depends on missing annotations."
+    },
+    "six_success_counterexamples": {
+      "status": "RISK_OBSERVED_BUT_NOT_ADJUDICATED",
+      "t2_success_task_count": 6,
+      "t2_success_tasks": [
+        "ExpenseDeleteMultiple2",
+        "RetroSavePlaylist",
+        "SimpleCalendarAddOneEvent",
+        "SportsTrackerTotalDurationForCategoryThisWeek",
+        "RecipeDeleteMultipleRecipesWithConstraint",
+        "OsmAndMarker"
+      ],
+      "t3_proxy_success_task_count": 5,
+      "t3_proxy_success_tasks": [
+        "ExpenseDeleteMultiple2",
+        "SimpleCalendarAddOneEvent",
+        "SportsTrackerTotalDurationForCategoryThisWeek",
+        "RecipeDeleteMultipleRecipesWithConstraint",
+        "OsmAndMarker"
+      ],
+      "reason": "The proposed scheduler would expose historical successes; correctness/false-reject risk cannot be certified without the frozen visible-only audit."
+    },
+    "expense_first_gate_intervention_opportunity": {
+      "status": "OBSERVABLE_T2_OPPORTUNITY",
+      "t2_opportunity_count": 1,
+      "not_sufficient_for_live": true
+    },
+    "specialist_judgment_quality": {
+      "status": "NOT_EVALUABLE_PREGENERATION",
+      "reason": "The Pro contract requires comparison to locked visible-only labels before specialist output may authorize live."
+    }
+  },
+  "errors": [
+    "visible_only_independent_annotation_missing",
+    "cross_task_target_event_coverage_not_evaluable",
+    "success_false_reject_risk_not_adjudicated",
+    "specialist_judgment_quality_reference_missing"
+  ],
+  "adjudication": {
+    "verdict": "PREFLIGHT_INVALID_NO_LIVE",
+    "minimal_repair_attempted": "Close the obsolete raw-suite gap and compute exact task-independent T2 and T3-proxy exposure, including all six success counterexamples and the fixed seven.",
+    "why_repair_is_insufficient": "Removing the independent visible-only reference would let the same model-defined claim and same-model accountant establish their own correctness. Replacing it with reward, UI tree, future frames, or SYS-NAG labels would violate the design's evidence boundary.",
+    "why_not_reduce_to_another_guard": "A deterministic pending-terminal/route guard is a different treatment family already explored by SYS-NAG V3/V4; silently substituting it would neither test SCER nor create an independent P3 identity.",
+    "seven_task_live_result": "NOT_RUN_G0_INVALID",
+    "not_zero_of_seven": true,
+    "next_action": "Seal P3, update the final matrix/HANDOFF, and stop the four-direction pipeline with no unauthorized live generation."
+  },
+  "content_sha256": "f56f1d43022e353b8623a00ded4e55c241c42a6ac7607b0969e863fc1fa0c8cb"
+}

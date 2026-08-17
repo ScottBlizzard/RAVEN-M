@@ -1,5 +1,26 @@
 # RAVEN-M A0-A12 Research Artifact Manifest
 
+## 2026-08-18 R15 and three-direction candidate pipeline
+
+- `evidence/r15_browser_forensics/R15_BROWSER_FORENSIC_2026-08-18.md` and
+  `.json` - step-aligned BrowserMultiply forensics. R15 succeeded, but EVR
+  render/read was zero; no reusable R15-derived live arm was authorized.
+- `evidence/p1_failure_recovery/P1_TCRA_R2_ZERO_GENERATION_AUDIT.json` - P1
+  recovery G0. The detector hits a successful Calendar trajectory and is
+  sealed `PREFLIGHT_INVALID_NO_LIVE`.
+- `evidence/p2_long_horizon/P2_SCOPE_R2_ZERO_GENERATION_AUDIT.json` - P2
+  coordination G0. Raw midpoint exposure is bound, but the required blinded
+  semantic annotation does not exist.
+- `evidence/p3_outcome_judgment/P3_SCER_R2_ZERO_GENERATION_AUDIT.json` - P3
+  outcome-judgment G0. Raw R2 materialization passes; independent visible-only
+  labels and false-reject adjudication remain absent.
+- `evidence/candidate_pipeline/CANDIDATE_PIPELINE_RESULT_2026-08-18.md` and
+  `.json` - final four-direction matrix. No new candidate passed G0; therefore
+  no seven-task live run was authorized and no invalid arm is reported as
+  `0/7`.
+- `design_reviews/pro_candidates/2026-08-15/` - byte-preserved original Pro
+  blueprints plus P1/P2/P3 adjudications. Pro prose is explicitly not evidence.
+
 ## 2026-08-15 A1-R3 prospective entry points
 
 - `protocols/A1R3_STALE_RESISTANT_PENDING_PREREG_2026-08-15.md` - frozen

@@ -1,0 +1,137 @@
+{
+  "schema": "candidate_pipeline_result_v1",
+  "status": "COMPLETE",
+  "date": "2026-08-18",
+  "generation_calls_in_forensic_and_p1_p2_p3_g0": 0,
+  "fixed_seven": [
+    "BrowserMultiply",
+    "ExpenseDeleteMultiple2",
+    "RetroSavePlaylist",
+    "SimpleCalendarAddOneEvent",
+    "SportsTrackerTotalDurationForCategoryThisWeek",
+    "RecipeDeleteMultipleRecipesWithConstraint",
+    "OsmAndMarker"
+  ],
+  "systems": [
+    {
+      "name": "A1-R2",
+      "class": "formal_19_task_reference",
+      "tasks_run": 19,
+      "success_count": 6,
+      "reward_sum": 6.5,
+      "model_calls": 603,
+      "executed_actions": 595,
+      "total_tokens": 2685730,
+      "conclusion": "best_complete_pure_memory_parent"
+    },
+    {
+      "name": "SYS-NAG V4",
+      "class": "formal_19_task_composite_reference",
+      "tasks_run": 19,
+      "success_count": 6,
+      "reward_sum": 6.5,
+      "model_calls": 558,
+      "executed_actions": 544,
+      "total_tokens": 2677717,
+      "activation": {
+        "route_blocks": 4,
+        "route_block_successes": 0
+      },
+      "conclusion": "preserved_r2_score_no_new_success"
+    },
+    {
+      "name": "A1-R15 target-first",
+      "class": "formal_single_target_diagnostic",
+      "tasks_run": 1,
+      "success_count": 1,
+      "reward_sum": 1.0,
+      "classification": "TARGET_SUCCESS_WITHOUT_MATURE_EVR_READ_UNATTRIBUTED",
+      "evr_render_read_count": 0,
+      "conclusion": "NO_GO_R15_DERIVED_LIVE_CANDIDATE"
+    }
+  ],
+  "candidate_directions": [
+    {
+      "name": "R15-derived seventh-task candidate",
+      "direction": "pure_memory_parser_extension",
+      "g0": "NO_GO",
+      "seven_task_result": "NOT_RUN_NO_REUSABLE_PRIMITIVE",
+      "live_generation_calls": 0
+    },
+    {
+      "name": "P1 TCRA-R2",
+      "direction": "failure_recovery",
+      "g0": "PREFLIGHT_INVALID_NO_LIVE",
+      "seven_task_result": "NOT_RUN_G0_INVALID",
+      "live_generation_calls": 0
+    },
+    {
+      "name": "P2 SYS-SCOPE-R2",
+      "direction": "long_horizon_coordination",
+      "g0": "PREFLIGHT_INVALID_NO_LIVE",
+      "seven_task_result": "NOT_RUN_G0_INVALID",
+      "live_generation_calls": 0
+    },
+    {
+      "name": "P3 R2-SCER v1",
+      "direction": "outcome_completion_judgment",
+      "g0": "PREFLIGHT_INVALID_NO_LIVE",
+      "seven_task_result": "NOT_RUN_G0_INVALID",
+      "live_generation_calls": 0
+    }
+  ],
+  "pipeline_closure": {
+    "r15_forensic_complete": true,
+    "pro_documents_fully_read_and_audited": 3,
+    "scientifically_valid_new_live_candidates": 0,
+    "seven_task_runs_required": 0,
+    "nineteen_task_expansions_required": 0,
+    "invalid_candidates_not_mislabeled_zero_of_seven": true,
+    "gpu_generation_not_used_without_g0": true
+  },
+  "most_credible_conclusion": "The current evidence supports R2's compact pending ledger as the best complete pure-memory parent, but does not support a new reusable R15 parser primitive or any of the three Pro treatments under their own pre-generation evidence gates. P1 has a success-path detector false positive; P2 and P3 require independent semantic labels that do not exist. No illegal live result was manufactured.",
+  "reporting_boundary": {
+    "held_out": false,
+    "r15_plus_r2_stitched_score_forbidden": true,
+    "guard_silent_success_component_credit": false,
+    "prose_is_not_evidence": true
+  },
+  "source_files": {
+    "r2": {
+      "path": "evidence/a1r2/A1R2_CVP_SCORED_RESULT_2026-08-14.json",
+      "size_bytes": 30407,
+      "sha256": "4c1c3af2ac2fcc522c11efae95975ff6df15e3da01218277bc224f62256c2ebc"
+    },
+    "v4": {
+      "path": "evidence/sys_nag_v4/SYS_NAG_V4_COMPLETE_RESULT_2026-08-18.json",
+      "size_bytes": 25538,
+      "sha256": "635f926cd2d5b3966c832e16183ddfeb0cef2f498539bf60a884fc542cb2ba8f"
+    },
+    "r15": {
+      "path": "evidence/a1r15/A1R15_EOVR_TERMINAL_RESULT_2026-08-18.json",
+      "size_bytes": 7752,
+      "sha256": "7059f46452e30e977f0cdec76111bb66a089d5e2e9e458800d7b0f00f628a4ab"
+    },
+    "r15_forensic": {
+      "path": "evidence/r15_browser_forensics/R15_BROWSER_FORENSIC_2026-08-18.json",
+      "size_bytes": 2237233,
+      "sha256": "2f9848692083c4b060da917a2fbe59f99da46391c54e8704491670f9abdfcb73"
+    },
+    "p1": {
+      "path": "evidence/p1_failure_recovery/P1_TCRA_R2_ZERO_GENERATION_AUDIT.json",
+      "size_bytes": 377379,
+      "sha256": "1ed065767d73dd2a0f97694ffac38b3755323408f2a0396de9d773d506f2c147"
+    },
+    "p2": {
+      "path": "evidence/p2_long_horizon/P2_SCOPE_R2_ZERO_GENERATION_AUDIT.json",
+      "size_bytes": 23857,
+      "sha256": "2cf93c309f2a7e29277a4a5cc7a84520f5fe217cb84b312764934ba609dbf065"
+    },
+    "p3": {
+      "path": "evidence/p3_outcome_judgment/P3_SCER_R2_ZERO_GENERATION_AUDIT.json",
+      "size_bytes": 35707,
+      "sha256": "44013065833f132a10d0cfaa7c5cb9b1332097fbbeb75ae90f59eca84b679fe2"
+    }
+  },
+  "content_sha256": "f158b875018e618ad2d793a4bf9171944dd33b2c59f6f5fb43c7e5bb1671a737"
+}
