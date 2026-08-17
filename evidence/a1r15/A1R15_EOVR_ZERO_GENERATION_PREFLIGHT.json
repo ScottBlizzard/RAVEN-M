@@ -1,0 +1,39 @@
+{
+  "checks": {
+    "focused_tests": {
+      "passed": true,
+      "returncode": 0
+    },
+    "focused_tests_output_tail": "..........                                                               [100%]\n============================== warnings summary ===============================\nC:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\requests\\__init__.py:113\n  C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\requests\\__init__.py:113: RequestsDependencyWarning: urllib3 (2.3.0) or chardet (7.0.1)/charset_normalizer (3.4.4) doesn't match a supported version!\n    warnings.warn(\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n",
+    "git": {
+      "head": "c21cad1d5456c37cf72fa677d5fa08d2d8f28665",
+      "worktree_status": []
+    },
+    "offline_replay": {
+      "content_sha256": "9f6a9edfde403a689c19ce3f9086bca85bea28ef845fb92ca3cb6f426e6ce97b",
+      "status": "PASS",
+      "totals": {
+        "active_episode_count": 1,
+        "episode_count": 19,
+        "max_serialized_audit_bytes": 57291,
+        "six_success_active_count": 0,
+        "step_count": 537,
+        "target_render_count": 9,
+        "target_response_append_count": 5
+      }
+    }
+  },
+  "content_sha256": "3f3eca08a1dde0648d414d921bbab6d7a440f48198c069fcc2c619ab8cce8aaf",
+  "created_at": "2026-08-17T21:26:50.889334+00:00",
+  "errors": [],
+  "experiment_id": "A1R15_EOVR_QWEN3VL32B_AW_HARD_S20260806_G3407_V1",
+  "fixture_content_sha256": "735da6445f9959c6049cf433319317405ef981b8017f7caae82651f04b8af860",
+  "generation_calls": 0,
+  "implementation_commit": "c21cad1d5456c37cf72fa677d5fa08d2d8f28665",
+  "live_generation_authorized": true,
+  "mechanism_id": "a1r15_explicit_observation_value_register_v1",
+  "offline_replay_content_sha256": "9f6a9edfde403a689c19ce3f9086bca85bea28ef845fb92ca3cb6f426e6ce97b",
+  "schema": "a1r15_eovr_preflight_v1",
+  "source_freeze_content_sha256": "31e96874b38bc586b1f1a1b705d6477f0e095b883365130d45a36dc8122017fe",
+  "status": "PASS"
+}
