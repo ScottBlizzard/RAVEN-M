@@ -1,0 +1,44 @@
+{
+  "checks": {
+    "focused_tests": {
+      "passed": true,
+      "returncode": 0
+    },
+    "focused_tests_output_tail": "...........                                                              [100%]\n",
+    "git": {
+      "head": "c510578554432775884680e536e14818976e7857",
+      "worktree_status": []
+    },
+    "parent_replay": {
+      "content_sha256": "2e2c5b2c70ffc6d19103314123269fd8c194fab1d9e4f1fc632a58bd98bcde4d",
+      "status": "PASS",
+      "totals": {
+        "activation_count": 1,
+        "active_episode_count": 1,
+        "added_rendered_chars": 933,
+        "append_count": 5,
+        "episode_count": 19,
+        "max_added_chars_per_read": 136,
+        "max_serialized_audit_bytes": 34996,
+        "max_v5_render_chars": 416,
+        "r2_rendered_chars": 96117,
+        "render_count": 7,
+        "six_success_active_count": 0,
+        "step_count": 558,
+        "v5_rendered_chars": 97050
+      }
+    }
+  },
+  "content_sha256": "319fab56f1ea4a9ed6826fff7dd5f5a0916e2aeaa43158a0710e53f4f0b705c5",
+  "created_at": "2026-08-17T20:11:49.001490+00:00",
+  "errors": [],
+  "experiment_id": "A1R13D_EVR_TARGET_FIRST_QWEN3VL32B_AW_HARD_S20260806_G3407_V1",
+  "generation_calls": 0,
+  "implementation_commit": "c510578554432775884680e536e14818976e7857",
+  "live_generation_authorized": true,
+  "mechanism_id": "a1r13_evidence_value_register_v1",
+  "parent_replay_content_sha256": "2e2c5b2c70ffc6d19103314123269fd8c194fab1d9e4f1fc632a58bd98bcde4d",
+  "schema": "a1r13d_evr_target_first_preflight_v1",
+  "source_freeze_content_sha256": "9b0a948a6e9b40dbd5e5b0fbef45bc8bb48b2b57a85ebfe2b87af530d6587ea8",
+  "status": "PASS"
+}
