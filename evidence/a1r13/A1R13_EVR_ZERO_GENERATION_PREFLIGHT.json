@@ -1,0 +1,67 @@
+{
+  "checks": {
+    "config_content_sha256": "5dc5db8763bac59ab0cb3368da6e3810ce0e4007794bbc2c922a1f6903c3a327",
+    "focused_tests": {
+      "passed": true,
+      "returncode": 0
+    },
+    "focused_tests_output_tail": "...............                                                          [100%]\n============================== warnings summary ===============================\nC:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\requests\\__init__.py:113\n  C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\requests\\__init__.py:113: RequestsDependencyWarning: urllib3 (2.3.0) or chardet (7.0.1)/charset_normalizer (3.4.4) doesn't match a supported version!\n    warnings.warn(\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n",
+    "git": {
+      "head": "2b49ffb754b98623ca6dae970ed5577970d9f14f",
+      "worktree_status": []
+    },
+    "offline_replay": {
+      "browser_target": {
+        "expected_model_authored_values": [
+          "1",
+          "8",
+          "10",
+          "7",
+          "2"
+        ],
+        "historical_reward": 0.0,
+        "mathematical_product_for_audit_only_not_runtime_action": 1120,
+        "pre_product_exact_render": {
+          "added_chars": 136,
+          "combined_render_sha256": "3544f57d5067646401198488553d655478defa3292fc5813abbf6294ec658843",
+          "exact_text": "TRANSIENT MODEL-AUTHORED EVIDENCE (unverified; current screenshot remains authoritative): observed integer sequence = [1, 8, 10, 7, 2].",
+          "exact_text_sha256": "457642add74f4e1c29edfaaac383554d68be3cd5f8b60fabb004425e01afdfa3",
+          "request_step": 18,
+          "value_count": 5
+        },
+        "pre_product_request_step": 18,
+        "task_name": "BrowserMultiply"
+      },
+      "content_sha256": "2e2c5b2c70ffc6d19103314123269fd8c194fab1d9e4f1fc632a58bd98bcde4d",
+      "status": "PASS",
+      "totals": {
+        "activation_count": 1,
+        "active_episode_count": 1,
+        "added_rendered_chars": 933,
+        "append_count": 5,
+        "episode_count": 19,
+        "max_added_chars_per_read": 136,
+        "max_serialized_audit_bytes": 34996,
+        "max_v5_render_chars": 416,
+        "r2_rendered_chars": 96117,
+        "render_count": 7,
+        "six_success_active_count": 0,
+        "step_count": 558,
+        "v5_rendered_chars": 97050
+      }
+    }
+  },
+  "content_sha256": "277f37840a5af4d3822d311ed441bcd4f31c960b8f3c002cef50f84d8e6e703a",
+  "created_at": "2026-08-17T19:27:58.542677+00:00",
+  "errors": [],
+  "experiment_id": "A1R13_EVR_QWEN3VL32B_AW_HARD_S20260806_G3407_V1",
+  "fixture_content_sha256": "142b159c22fa887c9f1a082fa2ab2ecd7c3c80cb9666e90f18f4d6ee0be54aee",
+  "generation_calls": 0,
+  "implementation_commit": "2b49ffb754b98623ca6dae970ed5577970d9f14f",
+  "live_generation_authorized": true,
+  "mechanism_id": "a1r13_evidence_value_register_v1",
+  "offline_replay_content_sha256": "2e2c5b2c70ffc6d19103314123269fd8c194fab1d9e4f1fc632a58bd98bcde4d",
+  "schema": "a1r13_evr_zero_generation_preflight_v1",
+  "source_freeze_content_sha256": "d9e1871d4301f2f89a08a87fe71191753225b4f5f5f3a79bd497f12ad99222ce",
+  "status": "PASS"
+}
