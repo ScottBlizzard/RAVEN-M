@@ -1,0 +1,97 @@
+{
+  "checks": {
+    "exact_text_delta_smoke": {
+      "base_text_sha256": "31c69ed84914220186cfc5672290d1f1ab1e32f2a6f084d71534d5cad15a255a",
+      "exact_delta_tokens": 4,
+      "final_text_sha256": "5ed7ad23975512a4cc70cce314730f403e218238043901d1b38b88e0278291c3"
+    },
+    "focused_tests": {
+      "passed": true,
+      "returncode": 0
+    },
+    "focused_tests_output_tail": "..........................                                               [100%]\n============================== warnings summary ===============================\nC:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\requests\\__init__.py:113\n  C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\requests\\__init__.py:113: RequestsDependencyWarning: urllib3 (2.3.0) or chardet (7.0.1)/charset_normalizer (3.4.4) doesn't match a supported version!\n    warnings.warn(\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n",
+    "git": {
+      "head": "b173595b456c74890a896e4195b31a8e517a7e67",
+      "worktree_status": []
+    },
+    "local_processor_identity": {
+      "content_sha256": "89bf49dc2cd3df2323409c8bd1fef7d913a96e2eafd090f59124728074b3683b",
+      "processor_files_sha256": {
+        "chat_template.json": "5c72a170d2a4a1a3bc5adad2e689ae28138a9700e5b8c96c0266331e86c0acce",
+        "config.json": "d2dd0c60d01b9e195d9447c52da61c7302d28828524914c044d9c6e1b81d0427",
+        "configuration.json": "2d4464e2ead06bc9bc718c781309ad1e7baded626d66e8dcdc8b469ba185faf0",
+        "generation_config.json": "1e241830b48b397cb0900101421df5450baddc7adf01e5fc86b5615865f3bae4",
+        "merges.txt": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+        "preprocessor_config.json": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516",
+        "tokenizer.json": "a5d85b6dcc535e6b93115a9ef287e6132fdbf30270da6218194ba742261173c7",
+        "tokenizer_config.json": "c2da771801886ad9ae98181793ffd3dfb7f1af30f6f7c6a4e15d7dbba52e2399",
+        "video_preprocessor_config.json": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13",
+        "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+      },
+      "processor_path": "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\cache\\qwen3_vl_32b_tokenizer\\models--Qwen--Qwen3-VL-32B-Instruct\\snapshots\\0cfaf48183f594c314753d30a4c4974bc75f3ccb",
+      "python_executable": "C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+      "python_executable_sha256": "5f7b89a612c9b8af1d6456cdfcd1dbe5ca630849e79aebced9bee9a6694952ec",
+      "runtime_identity": {
+        "packages": {
+          "Pillow": "11.3.0",
+          "huggingface-hub": "1.6.0",
+          "numpy": "2.4.6",
+          "safetensors": "0.7.0",
+          "tokenizers": "0.22.2",
+          "torch": "2.5.1+cu121",
+          "torchvision": "0.20.1+cu121",
+          "transformers": "5.5.4"
+        },
+        "python_executable": "C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "python_executable_sha256": "5f7b89a612c9b8af1d6456cdfcd1dbe5ca630849e79aebced9bee9a6694952ec",
+        "python_implementation": "CPython",
+        "python_version": "3.11.9",
+        "schema": "sys_trrc_local_processor_runtime_v1"
+      },
+      "schema": "sys_r2_lrer_local_processor_identity_v1"
+    },
+    "offline_replay": {
+      "browser": {
+        "deferred_response_excluded": true,
+        "r15_all_five_observations_present": true,
+        "r15_found_values": [
+          "1",
+          "8",
+          "10",
+          "7",
+          "2"
+        ],
+        "r15_opportunity_count": 1,
+        "r15_source_steps": [
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17
+        ],
+        "r15_trigger_step": 18,
+        "r2_opportunity_count": 1,
+        "r2_trigger_step": 18
+      },
+      "content_sha256": "01551b79870ba738dc9e139858bb89bcc490720b61aa4fcdf4b609e7d776ef34",
+      "status": "PASS"
+    }
+  },
+  "content_sha256": "99090abb21debe3fc413e75011a4ebe128f024db40ce72c29142a047229198ea",
+  "created_at": "2026-08-18T07:24:52.091116+00:00",
+  "errors": [],
+  "experiment_id": "SYS_R2_LRER_QWEN3VL32B_S20260806_G3407_V1",
+  "fixture_content_sha256": "4e483e6998d6b89fe0383c9ddf59d72b949b6f82fef1f7499137a5fb4dd6694b",
+  "generation_calls": 0,
+  "implementation_commit": "b173595b456c74890a896e4195b31a8e517a7e67",
+  "live_generation_authorized": true,
+  "mechanism_id": "a1r2_compact_verified_pending_v1",
+  "offline_replay_content_sha256": "01551b79870ba738dc9e139858bb89bcc490720b61aa4fcdf4b609e7d776ef34",
+  "schema": "sys_r2_lrer_zero_generation_preflight_v1",
+  "source_freeze_content_sha256": "53201182edf7aeb875fadde31c76af4403802456ced75e103355d261a821549f",
+  "status": "PASS",
+  "system_id": "sys_r2_late_raw_evidence_rehydration_v1"
+}
