@@ -10,7 +10,7 @@
       "android_world/task_evals/information_retrieval/proto/task_pb2_grpc.py": "0136cd56ec38ead7eb274d988c550a31d051963f45d4ee5693f0ce5bd4beaee6"
     }
   },
-  "content_sha256": "9d96ca98f040fe7dba32f7c7099b64923df4abdb3d0b64e4c10f9b71e9035c14",
+  "content_sha256": "780d8712914bf4331c6368665f8d362aed6299bc4304d0b75788b51437640bec",
   "experiment_id": "A4V2_FAITHFUL_OFFLINE_AWM_QWEN3VL32B_AW_HARD_S20260806_V1",
   "include_optional": false,
   "instance_generation": "random.seed(seed); numpy.random.seed(seed); task_type.generate_random_params()",
@@ -19,7 +19,7 @@
   "plan_file_sha256": "638648d136bbfce6fe753e4724c3941e6b4e092c64693bf215ff4006b456f60f",
   "plan_path": "implementation/configs/a4v2_awm_donor_acquisition_plan.json",
   "protocol_amendment_path": "protocols/A4V2_DONOR_ACQUISITION_PLAN_V2_AMENDMENT_2026-08-19.md",
-  "protocol_amendment_sha256": "270170d517a8ea0d5bd033300b87fe3a7a5cf808c6b6843cc17731a02202a40c",
+  "protocol_amendment_sha256": "3b9c6d89f90db52bcd918f064cac1226c36fea1841d4956bbaa94d42d684dc5c",
   "schema": "a4v2.donor_acquisition_manifest.v1",
   "supplement_routes": [],
   "tasks": [

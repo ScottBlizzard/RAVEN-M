@@ -1,6 +1,6 @@
 # A4-v2 donor acquisition plan v2 amendment
 
-Date: 2026-08-19  
+Date: 2026-08-19
 Experiment identity: `A4V2_FAITHFUL_OFFLINE_AWM_QWEN3VL32B_AW_HARD_S20260806_V1`
 
 This prospective amendment is frozen before the first A4-v2 donor model call.
