@@ -1,0 +1,20 @@
+{
+  "schema": "exploratory_direction_diag_config_v1",
+  "direction": "outcome_completion_judgment",
+  "system_id": "diag_p3_scer_r2_full_v1",
+  "experiment_id": "P3_DIAG_SCER_R2_FULL_QWEN3VL32B_S20260806_G3407_V1",
+  "task_seed": 20260806,
+  "generation_seed": 3407,
+  "non_fail_fast": true,
+  "seven_task_order": ["BrowserMultiply", "ExpenseDeleteMultiple2", "RetroSavePlaylist", "SimpleCalendarAddOneEvent", "SportsTrackerTotalDurationForCategoryThisWeek", "RecipeDeleteMultipleRecipesWithConstraint", "OsmAndMarker"],
+  "full_suite_release_requires": "7/7",
+  "mid_episode_calls": 1,
+  "terminal_calls": 1,
+  "aux_calls_per_episode": 2,
+  "aux_max_completion_tokens": 256,
+  "aux_total_tokens_per_episode": 8192,
+  "aux_timeout_seconds": 60,
+  "receipt_max_chars": 450,
+  "terminal_deferrals": 1,
+  "aux_retry": 0
+}
