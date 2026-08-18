@@ -1,5 +1,15 @@
 # Qwen Mobile Memory Study: A0 → A1 → A2
 
+## Final summer-camp synthesis — 2026-08-18
+
+The complete final-report packet, including the 14-page presentation, the
+cross-arm evidence synthesis, the sealed R15 4/7 diagnostic, and a prompt for
+an independent Pro-level narrative audit, is indexed at
+[`final_report_2026-08-18/README.md`](final_report_2026-08-18/README.md).
+
+This packet supersedes earlier presentation narratives, but it does not alter
+or relabel any frozen experiment result.
+
 ## Current research handoff
 
 The clean vertical-reset audit is
