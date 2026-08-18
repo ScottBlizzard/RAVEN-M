@@ -1,0 +1,580 @@
+{
+  "claim_boundary": {
+    "browser_not_rerun": true,
+    "browser_success_not_attributed_to_evr": true,
+    "cross_process_same_seed_not_exact_counterfactual": true,
+    "live_successes_not_attributed_to_evr": true,
+    "not_held_out": true,
+    "not_original_a1r15_prospective_full_suite": true,
+    "post_terminal_schedule_amendment": true,
+    "remaining_twelve_prohibited": true
+  },
+  "closure": {
+    "checkpoint_content_sha256": "c4295225271cbc161d0218664433431f519d1c262855d89f04e514b34a78049d",
+    "checkpoint_file_sha256": "4b452e54c38a9ad7884dc31f9b2fa7257b66dc2ec79b6bc0765e7245de1f85e0",
+    "imported_parent_count": 1,
+    "invalid_attempt_count": 0,
+    "preflight_content_sha256": "1fa15ac59fa5cda1e45c1b84c79e075c59face94d1c3ab349da77bac26dfeaaf",
+    "preflight_file_sha256": "a50c04877616263f7ee5ff2d466b75122fbb5f6265233176814f96e1f17e942d",
+    "receipt_content_sha256": "00aaa3c1c25d467cb7e9c169a6b1350f87883de70b618ece507a3551df7c41e6",
+    "receipt_file_sha256": "6e763250a83e5c12775fb83596d70c6b9bb354eeb3e67bcff97d04f379b9b268",
+    "run_signature_content_sha256": "b342da8fc39cc7003efdac41994faf38da85a735188ff1e699a855ff31529114",
+    "run_signature_file_sha256": "e18495ddc586ffd9557cee0fb10833388f1f19691c58cab2cef50e8e5c263184",
+    "runner_result_content_sha256": "73eb81540c7033cb432a13806d72a24e3713342ad683f66010327d4f69c36bce",
+    "runner_result_file_sha256": "8f9865a1a6a2f39a4d2bef852e3c3c90847462ee72cf9a0f6f95c351f0e0b1f2",
+    "single_transport_per_call": true,
+    "source_freeze_content_sha256": "c78156bbf918175b936aa6b3720e8343f72a649bb6c10d190bfd691d91183ce8",
+    "source_freeze_file_sha256": "94bd99623f0a045978e4bd28554a0c8996a16ed8500f86c23652691691ab11ac",
+    "suite_lifecycle_error_count": 0,
+    "usage_missing_count": 0,
+    "valid_live_episode_count": 6
+  },
+  "content_sha256": "53b78fd02ad18153a2e8a465def27c44a9303d2d915db6be01a17930b5c71404",
+  "evidence_class": "TRANSPARENT_POST_TERMINAL_STITCHED_BEHAVIORAL_DIAGNOSTIC",
+  "generation_calls_by_finalizer": 0,
+  "historical_target_mechanism_gate": "FAIL_NO_MATURE_EVR_READ",
+  "identity": {
+    "evidence_commit_at_launch": "8aab5d87460b4f93c3089531f8506e93d7681f6a",
+    "experiment_id": "A1R15_EOVR_QWEN3VL32B_AW_HARD_S20260806_G3407_V1_STITCHED_CONTINUATION",
+    "generation_seed": 3407,
+    "implementation_commit": "92cc75fb3d7c8037674ad490f972e4b7ac013ec5",
+    "mechanism_id": "a1r15_explicit_observation_value_register_v1",
+    "parent_mechanism_commit": "c21cad1d5456c37cf72fa677d5fa08d2d8f28665",
+    "suite_id": "official_qwen_20260818T202647_af6efacf",
+    "task_seed": 20260806
+  },
+  "imported_parent_browser": {
+    "artifacts": {
+      "classification": "TARGET_SUCCESS_WITHOUT_MATURE_EVR_READ_UNATTRIBUTED",
+      "episode_id": "BrowserMultiply_20260806_afd4acbc",
+      "episode_json_sha256": "b7bfd75c644e20d52f7436a21799c9f2e3736af20a84e378de4334daa2158765",
+      "evr_rendered_value_read_count": 0,
+      "forensic_file_sha256": "08286ac3ca0846641dbfd920b21b7bfcb779a106e62b8b7aec403d0c52d574e0",
+      "implementation_commit": "c21cad1d5456c37cf72fa677d5fa08d2d8f28665",
+      "mechanism_id": "a1r15_explicit_observation_value_register_v1",
+      "reward": 1.0,
+      "seed": 20260806,
+      "snapshot_file_sha256": "3d5c68e5808ca52d98aa3ce06f6a8b45537340621cddad190fec8666b86a41e3",
+      "success": true,
+      "success_attributed_to_evr": false,
+      "task_name": "BrowserMultiply",
+      "terminal_result_content_sha256": "d4a7337744f940422e880a1db5a11c586fd08aab45826da535838888096bca52",
+      "terminal_result_file_sha256": "bae43a382ec442da886aaa4604c1fdfd43a3c07f869aca978093fdecd15b7a78"
+    },
+    "attribution": "TARGET_SUCCESS_WITHOUT_MATURE_EVR_READ_UNATTRIBUTED",
+    "cost": {
+      "availability": "NOT_AVAILABLE_FROM_FROZEN_PARENT_BUNDLE",
+      "completion_tokens": null,
+      "elapsed_seconds": null,
+      "executed_actions": 20,
+      "model_calls": 21,
+      "prompt_tokens": null,
+      "total_tokens": null
+    },
+    "episode_id": "BrowserMultiply_20260806_afd4acbc",
+    "evr": {
+      "activation_count": 1,
+      "render_count": 0,
+      "rendered_read_count": 0,
+      "response_append_count": 2,
+      "retained_values": [
+        8,
+        2
+      ],
+      "successful_use_count": 0
+    },
+    "execution_status": "IMPORTED_PARENT_VALID_SUCCESS",
+    "reward": 1.0,
+    "seed": 20260806,
+    "success": true,
+    "task_name": "BrowserMultiply"
+  },
+  "live_continuation_tasks": [
+    {
+      "artifacts": {
+        "canonical_summary_sha256": "5afd10f2247a5fc6f49ec077f558f116fafd9600ed1d6ff37fe36002c2361317",
+        "episode_json_sha256": "a4ae795d321bcd12296002acf13694b79ab94b79a35158432f466bff6c979b70",
+        "events_jsonl_sha256": "b87d7864a0cbe1202abc3ae06cee65f9052c19210a0e4762d2a44e1fc4826d8b",
+        "verified_screenshot_artifact_count": 43
+      },
+      "attribution": "SUCCESS_COMPONENT_SILENT_OR_UNUSED_UNATTRIBUTED",
+      "base_r2_memory": {
+        "nonempty_read_count": 20,
+        "write_attempt_count": 21,
+        "write_success_count": 6
+      },
+      "cost": {
+        "completion_tokens": 2513,
+        "elapsed_seconds": 1214.42547,
+        "executed_actions": 21,
+        "model_calls": 22,
+        "prompt_tokens": 84977,
+        "total_tokens": 87490
+      },
+      "episode_id": "ExpenseDeleteMultiple2_20260806_2a82c4c9",
+      "evr": {
+        "activation_count": 0,
+        "goal_eligible": false,
+        "opportunity_count": 0,
+        "render_count": 0,
+        "rendered_read_count": 0,
+        "response_append_count": 0,
+        "retained_values": [],
+        "successful_use_count": 0
+      },
+      "execution_status": "VALID_SUCCESS",
+      "historical_r2_reference": {
+        "comparison": "TIE",
+        "executed_actions": 17,
+        "model_calls": 18,
+        "not_a_matched_contemporaneous_ablation": true,
+        "reward": 1.0,
+        "total_tokens": 70990
+      },
+      "l0_l6": {
+        "earliest_failure_breakpoint": "NO_FAILURE_BREAKPOINT",
+        "evaluator_visible_to_model": false,
+        "failure_chain": null
+      },
+      "model_claimed_status": "success",
+      "reward": 1.0,
+      "seed": 20260806,
+      "success": true,
+      "task_name": "ExpenseDeleteMultiple2",
+      "termination_reason": "model_terminate_success",
+      "transport": {
+        "single_transport_per_call": true,
+        "transport_attempts": 22,
+        "usage_missing_count": 0
+      }
+    },
+    {
+      "artifacts": {
+        "canonical_summary_sha256": "dc4bec7f2c50a60450ac50094d63c8fd6ac55ad637ee73dde99d2489de1bd6f0",
+        "episode_json_sha256": "60bea319eeb933bbb15424689211d224e3f97226d6f9f62d24853931d6baca50",
+        "events_jsonl_sha256": "8e5498cd107e15f0293484e800273522de5935f7002ca33881d1b71f77ca7935",
+        "verified_screenshot_artifact_count": 57
+      },
+      "attribution": "SUCCESS_COMPONENT_SILENT_OR_UNUSED_UNATTRIBUTED",
+      "base_r2_memory": {
+        "nonempty_read_count": 24,
+        "write_attempt_count": 28,
+        "write_success_count": 11
+      },
+      "cost": {
+        "completion_tokens": 3364,
+        "elapsed_seconds": 1402.491,
+        "executed_actions": 28,
+        "model_calls": 29,
+        "prompt_tokens": 114899,
+        "total_tokens": 118263
+      },
+      "episode_id": "RetroSavePlaylist_20260806_4f060ea1",
+      "evr": {
+        "activation_count": 0,
+        "goal_eligible": false,
+        "opportunity_count": 0,
+        "render_count": 0,
+        "rendered_read_count": 0,
+        "response_append_count": 0,
+        "retained_values": [],
+        "successful_use_count": 0
+      },
+      "execution_status": "VALID_SUCCESS",
+      "historical_r2_reference": {
+        "comparison": "TIE",
+        "executed_actions": 24,
+        "model_calls": 25,
+        "not_a_matched_contemporaneous_ablation": true,
+        "reward": 1.0,
+        "total_tokens": 100657
+      },
+      "l0_l6": {
+        "earliest_failure_breakpoint": "NO_FAILURE_BREAKPOINT",
+        "evaluator_visible_to_model": false,
+        "failure_chain": null
+      },
+      "model_claimed_status": "success",
+      "reward": 1.0,
+      "seed": 20260806,
+      "success": true,
+      "task_name": "RetroSavePlaylist",
+      "termination_reason": "model_terminate_success",
+      "transport": {
+        "single_transport_per_call": true,
+        "transport_attempts": 29,
+        "usage_missing_count": 0
+      }
+    },
+    {
+      "artifacts": {
+        "canonical_summary_sha256": "8b271b3d91669a3d211771eca657a7afbb7c6e55ceea8e6492e0ef65141e0e88",
+        "episode_json_sha256": "0f74488f6ce6519bf03c440874871ccfd4ff852922ed94e5aaa8d2f6f5cf24ad",
+        "events_jsonl_sha256": "2b3d9e2574c9d9eb5fddf7f4f32ef8615ac59ec375d292ebf7b9ce2f7d006e1c",
+        "verified_screenshot_artifact_count": 68
+      },
+      "attribution": "REGRESSION_COMPONENT_SILENT_ZERO_OPPORTUNITY",
+      "base_r2_memory": {
+        "nonempty_read_count": 32,
+        "write_attempt_count": 34,
+        "write_success_count": 15
+      },
+      "cost": {
+        "completion_tokens": 4380,
+        "elapsed_seconds": 1592.586193,
+        "executed_actions": 34,
+        "model_calls": 34,
+        "prompt_tokens": 136509,
+        "total_tokens": 140889
+      },
+      "episode_id": "SimpleCalendarAddOneEvent_20260806_871028dc",
+      "evr": {
+        "activation_count": 0,
+        "goal_eligible": false,
+        "opportunity_count": 0,
+        "render_count": 0,
+        "rendered_read_count": 0,
+        "response_append_count": 0,
+        "retained_values": [],
+        "successful_use_count": 0
+      },
+      "execution_status": "VALID_SCIENTIFIC_FAILURE",
+      "historical_r2_reference": {
+        "comparison": "REGRESSION",
+        "executed_actions": 22,
+        "model_calls": 23,
+        "not_a_matched_contemporaneous_ablation": true,
+        "reward": 1.0,
+        "total_tokens": 93576
+      },
+      "l0_l6": {
+        "earliest_failure_breakpoint": "L4@step0",
+        "evaluator_visible_to_model": false,
+        "failure_chain": {
+          "alternative_explanation": "Visible launcher/calendar state and transition timing differed from the frozen R2 success; this is not evidence that EVR content caused the loss.",
+          "earliest_breakpoint": "L4@step0",
+          "first_meaningful_divergence": "L1/L2@step1",
+          "root_cause": "The first launcher swipe produced almost no visible transition; the live route opened an October 9 day view and used 17 next-day actions instead of the R2 month-view date selection, exhausting the 34-step budget immediately before save.",
+          "terminal_failure": "MAX_STEPS_BEFORE_SAVE"
+        }
+      },
+      "model_claimed_status": null,
+      "reward": 0.0,
+      "seed": 20260806,
+      "success": false,
+      "task_name": "SimpleCalendarAddOneEvent",
+      "termination_reason": "max_steps",
+      "transport": {
+        "single_transport_per_call": true,
+        "transport_attempts": 34,
+        "usage_missing_count": 0
+      }
+    },
+    {
+      "artifacts": {
+        "canonical_summary_sha256": "9dcc6cf884879bc7e8c3a1c28a98cdc134fa5821fb69ba62c5f730c287f2c37f",
+        "episode_json_sha256": "883328e6e4e75a2601c6127e2bdf2519d5aabed58652cce000a9173d28accac3",
+        "events_jsonl_sha256": "9fdef508301d7cf8992fd2ef052a68edee3346da951f77914d252942bc245634",
+        "verified_screenshot_artifact_count": 22
+      },
+      "attribution": "SUCCESS_COMPONENT_SILENT_OR_UNUSED_UNATTRIBUTED",
+      "base_r2_memory": {
+        "nonempty_read_count": 10,
+        "write_attempt_count": 11,
+        "write_success_count": 5
+      },
+      "cost": {
+        "completion_tokens": 1265,
+        "elapsed_seconds": 738.323798,
+        "executed_actions": 11,
+        "model_calls": 11,
+        "prompt_tokens": 41350,
+        "total_tokens": 42615
+      },
+      "episode_id": "SportsTrackerTotalDurationForCategoryThisWeek_20260806_de03b99a",
+      "evr": {
+        "activation_count": 0,
+        "goal_eligible": false,
+        "opportunity_count": 0,
+        "render_count": 0,
+        "rendered_read_count": 0,
+        "response_append_count": 0,
+        "retained_values": [],
+        "successful_use_count": 0
+      },
+      "execution_status": "VALID_SUCCESS",
+      "historical_r2_reference": {
+        "comparison": "TIE",
+        "executed_actions": 6,
+        "model_calls": 6,
+        "not_a_matched_contemporaneous_ablation": true,
+        "reward": 1.0,
+        "total_tokens": 23103
+      },
+      "l0_l6": {
+        "earliest_failure_breakpoint": "NO_FAILURE_BREAKPOINT",
+        "evaluator_visible_to_model": false,
+        "failure_chain": null
+      },
+      "model_claimed_status": "answer",
+      "reward": 1.0,
+      "seed": 20260806,
+      "success": true,
+      "task_name": "SportsTrackerTotalDurationForCategoryThisWeek",
+      "termination_reason": "model_answer",
+      "transport": {
+        "single_transport_per_call": true,
+        "transport_attempts": 11,
+        "usage_missing_count": 0
+      }
+    },
+    {
+      "artifacts": {
+        "canonical_summary_sha256": "e731341dc5967c312aad402dd384e7555e50ea6f412452d0853a77bb22011bf8",
+        "episode_json_sha256": "9a73cafc3ab183bc2bc0bd66cde9496d132dc6bb6ad40b963f0e3bc4ad6ff4ad",
+        "events_jsonl_sha256": "af719b516e8920fcfd36d17a32790776a4ee4e90b88994bdb950515c432b8be1",
+        "verified_screenshot_artifact_count": 67
+      },
+      "attribution": "REGRESSION_COMPONENT_SILENT_ZERO_OPPORTUNITY",
+      "base_r2_memory": {
+        "nonempty_read_count": 14,
+        "write_attempt_count": 33,
+        "write_success_count": 2
+      },
+      "cost": {
+        "completion_tokens": 4099,
+        "elapsed_seconds": 1800.149936,
+        "executed_actions": 33,
+        "model_calls": 34,
+        "prompt_tokens": 137636,
+        "total_tokens": 141735
+      },
+      "episode_id": "RecipeDeleteMultipleRecipesWithConstraint_20260806_3e7239b3",
+      "evr": {
+        "activation_count": 0,
+        "goal_eligible": false,
+        "opportunity_count": 0,
+        "render_count": 0,
+        "rendered_read_count": 0,
+        "response_append_count": 0,
+        "retained_values": [],
+        "successful_use_count": 0
+      },
+      "execution_status": "VALID_SCIENTIFIC_FAILURE",
+      "historical_r2_reference": {
+        "comparison": "REGRESSION",
+        "executed_actions": 17,
+        "model_calls": 18,
+        "not_a_matched_contemporaneous_ablation": true,
+        "reward": 1.0,
+        "total_tokens": 70389
+      },
+      "l0_l6": {
+        "earliest_failure_breakpoint": "L1/L2@step1",
+        "evaluator_visible_to_model": false,
+        "failure_chain": {
+          "alternative_explanation": "Launcher viewport/state nondeterminism plus absent no-progress recovery explains the route; EVR was ineligible and silent.",
+          "earliest_breakpoint": "L1/L2@step1",
+          "first_meaningful_divergence": "L1/L2@step1; L4 no-progress was clear by step3",
+          "root_cause": "R2 saw and opened Broccoli at step1; the live drawer began lower in the list and the model kept swiping in the same direction despite near-zero progress, then terminated failure without entering the app.",
+          "terminal_failure": "APP_NOT_REACHED_REPETITIVE_ROUTE"
+        }
+      },
+      "model_claimed_status": "failure",
+      "reward": 0.0,
+      "seed": 20260806,
+      "success": false,
+      "task_name": "RecipeDeleteMultipleRecipesWithConstraint",
+      "termination_reason": "model_terminate_failure",
+      "transport": {
+        "single_transport_per_call": true,
+        "transport_attempts": 34,
+        "usage_missing_count": 0
+      }
+    },
+    {
+      "artifacts": {
+        "canonical_summary_sha256": "fd242ad67368086842cdcdc27b60a1da5bdc0d60ee294bee94279e6abb907ab1",
+        "episode_json_sha256": "34472560695d069f239770ee17f4d884bb6302f9e129d3f956e8b185739d5a9e",
+        "events_jsonl_sha256": "2d8df8e78b035c9b6d5f1b2ee7ae4eb8d8420987fa61dbcc309cde9cb8f251e6",
+        "verified_screenshot_artifact_count": 27
+      },
+      "attribution": "REGRESSION_COMPONENT_SILENT_ZERO_OPPORTUNITY",
+      "base_r2_memory": {
+        "nonempty_read_count": 13,
+        "write_attempt_count": 13,
+        "write_success_count": 4
+      },
+      "cost": {
+        "completion_tokens": 1825,
+        "elapsed_seconds": 1019.401838,
+        "executed_actions": 13,
+        "model_calls": 14,
+        "prompt_tokens": 53361,
+        "total_tokens": 55186
+      },
+      "episode_id": "OsmAndMarker_20260806_f37910f7",
+      "evr": {
+        "activation_count": 0,
+        "goal_eligible": false,
+        "opportunity_count": 0,
+        "render_count": 0,
+        "rendered_read_count": 0,
+        "response_append_count": 0,
+        "retained_values": [],
+        "successful_use_count": 0
+      },
+      "execution_status": "VALID_SCIENTIFIC_FAILURE",
+      "historical_r2_reference": {
+        "comparison": "REGRESSION",
+        "executed_actions": 11,
+        "model_calls": 12,
+        "not_a_matched_contemporaneous_ablation": true,
+        "reward": 1.0,
+        "total_tokens": 47113
+      },
+      "l0_l6": {
+        "earliest_failure_breakpoint": "L4@step2",
+        "evaluator_visible_to_model": false,
+        "failure_chain": {
+          "alternative_explanation": "Early app-start/state divergence and weak completion grounding, not EVR, best explain the failure.",
+          "earliest_breakpoint": "L4@step2",
+          "first_meaningful_divergence": "L2@step3",
+          "root_cause": "The first OsmAnd launch tap barely changed the screen, causing a repeated tap and an extra onboarding path; later the model treated the map zoom-plus as add-marker and selected the place-card Add/favorite action rather than Marker, then treated the orange favorite pin as proof and terminated success while the evaluator returned zero.",
+          "terminal_failure": "VISIBLE_EVIDENCE_INSUFFICIENT_FALSE_SUCCESS"
+        }
+      },
+      "model_claimed_status": "success",
+      "reward": 0.0,
+      "seed": 20260806,
+      "success": false,
+      "task_name": "OsmAndMarker",
+      "termination_reason": "model_terminate_success",
+      "transport": {
+        "single_transport_per_call": true,
+        "transport_attempts": 14,
+        "usage_missing_count": 0
+      }
+    }
+  ],
+  "network_calls_by_finalizer": 0,
+  "performance": {
+    "historical_r2_six_reference": {
+      "descriptive_outcome_comparison": {
+        "regressions": 3,
+        "ties": 3,
+        "wins": 0
+      },
+      "executed_actions": 97,
+      "live_minus_r2": {
+        "executed_actions": 43,
+        "model_calls": 42,
+        "total_tokens": 180350
+      },
+      "model_calls": 102,
+      "not_a_matched_contemporaneous_ablation": true,
+      "successes": 6,
+      "total": 6,
+      "total_tokens": 405828
+    },
+    "imported_parent_successes": 1,
+    "live_continuation_cost": {
+      "completion_tokens": 17446,
+      "elapsed_seconds": 7767.378235,
+      "executed_actions": 140,
+      "model_calls": 144,
+      "prompt_tokens": 568732,
+      "total_tokens": 586178
+    },
+    "live_continuation_successes": 3,
+    "live_continuation_total": 6,
+    "not_run_by_gate_count": 12,
+    "remaining_twelve_released": false,
+    "stitched_observed_successes": 4,
+    "stitched_observed_total": 7,
+    "stitched_total_elapsed_seconds": null,
+    "stitched_total_tokens": null
+  },
+  "remaining_tasks": [
+    {
+      "execution_status": "NOT_RUN_BY_7_OF_7_GATE",
+      "reward": null,
+      "success": null,
+      "task_name": "ExpenseAddMultipleFromGallery"
+    },
+    {
+      "execution_status": "NOT_RUN_BY_7_OF_7_GATE",
+      "reward": null,
+      "success": null,
+      "task_name": "ExpenseAddMultipleFromMarkor"
+    },
+    {
+      "execution_status": "NOT_RUN_BY_7_OF_7_GATE",
+      "reward": null,
+      "success": null,
+      "task_name": "MarkorCreateNoteAndSms"
+    },
+    {
+      "execution_status": "NOT_RUN_BY_7_OF_7_GATE",
+      "reward": null,
+      "success": null,
+      "task_name": "MarkorMergeNotes"
+    },
+    {
+      "execution_status": "NOT_RUN_BY_7_OF_7_GATE",
+      "reward": null,
+      "success": null,
+      "task_name": "MarkorTranscribeVideo"
+    },
+    {
+      "execution_status": "NOT_RUN_BY_7_OF_7_GATE",
+      "reward": null,
+      "success": null,
+      "task_name": "OsmAndTrack"
+    },
+    {
+      "execution_status": "NOT_RUN_BY_7_OF_7_GATE",
+      "reward": null,
+      "success": null,
+      "task_name": "RecipeAddMultipleRecipesFromImage"
+    },
+    {
+      "execution_status": "NOT_RUN_BY_7_OF_7_GATE",
+      "reward": null,
+      "success": null,
+      "task_name": "RecipeAddMultipleRecipesFromMarkor"
+    },
+    {
+      "execution_status": "NOT_RUN_BY_7_OF_7_GATE",
+      "reward": null,
+      "success": null,
+      "task_name": "RecipeAddMultipleRecipesFromMarkor2"
+    },
+    {
+      "execution_status": "NOT_RUN_BY_7_OF_7_GATE",
+      "reward": null,
+      "success": null,
+      "task_name": "SaveCopyOfReceiptTaskEval"
+    },
+    {
+      "execution_status": "NOT_RUN_BY_7_OF_7_GATE",
+      "reward": null,
+      "success": null,
+      "task_name": "SportsTrackerActivitiesOnDate"
+    },
+    {
+      "execution_status": "NOT_RUN_BY_7_OF_7_GATE",
+      "reward": null,
+      "success": null,
+      "task_name": "SportsTrackerTotalDistanceForCategoryOverInterval"
+    }
+  ],
+  "schema": "a1r15_stitched_continuation_final_evidence_v1",
+  "status": "SEALED_SIX_TASK_DIAGNOSTIC_NO_RELEASE",
+  "target_performance_gate": "PASS_IMPORTED_BROWSER_REWARD_1",
+  "verdicts": {
+    "accuracy": "FAIL_STITCHED_SEVEN_GATE_4_OF_7",
+    "cost": "LIVE_SIX_REPORTED_PARENT_BROWSER_TOKEN_AND_TIME_UNAVAILABLE",
+    "mechanism": "EVR_NOT_EVALUATED_IN_LIVE_SIX_ZERO_OPPORTUNITY_AND_ZERO_USE"
+  }
+}
