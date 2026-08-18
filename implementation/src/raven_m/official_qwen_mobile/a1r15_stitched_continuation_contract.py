@@ -17,6 +17,7 @@ REPOSITORY_ROOT = original.REPOSITORY_ROOT
 MECHANISM_ID = original.MECHANISM_ID
 EXPERIMENT_ID = "A1R15_EOVR_QWEN3VL32B_AW_HARD_S20260806_G3407_V1_STITCHED_CONTINUATION"
 PARENT_MECHANISM_COMMIT = "c21cad1d5456c37cf72fa677d5fa08d2d8f28665"
+PARENT_MECHANISM_BLOB_SHA1 = "df561222a77328fc0370efb3dde78db8cbb8fbe9"
 PARENT_EVIDENCE_COMMIT = "32bcca78cb91c220f6dfec7833e783f6f312a5e2"
 TASK_SEED = original.TASK_SEED
 GENERATION_SEED = original.GENERATION_SEED
@@ -160,9 +161,8 @@ def source_freeze_payload(commit: str) -> dict[str, Any]:
         blob = subprocess.check_output(["git", "-C", str(REPOSITORY_ROOT), "show", f"{commit}:{name}"])
         if _git("hash-object", "--path", name, str(path)) != _git("rev-parse", f"{commit}:{name}"): raise RuntimeError(f"current source drift: {name}")
         files[name] = sha256(blob).hexdigest()
-    original_blob = _git("rev-parse", f"{PARENT_MECHANISM_COMMIT}:implementation/src/raven_m/official_qwen_mobile/a1r15_explicit_observation_value_register.py")
     current_blob = _git("rev-parse", f"{commit}:implementation/src/raven_m/official_qwen_mobile/a1r15_explicit_observation_value_register.py")
-    if original_blob != current_blob: raise RuntimeError("A1-R15 mechanism source changed since frozen implementation")
+    if PARENT_MECHANISM_BLOB_SHA1 != current_blob: raise RuntimeError("A1-R15 mechanism source changed since frozen implementation")
     payload = {"schema": "a1r15_stitched_continuation_source_freeze_v1", "implementation_commit": commit, "parent_mechanism_commit": PARENT_MECHANISM_COMMIT, "mechanism_blob_sha1": current_blob, "files": files, "parent_browser": parent_browser_binding()}
     return {**payload, "content_sha256": content_sha256(payload)}
 
