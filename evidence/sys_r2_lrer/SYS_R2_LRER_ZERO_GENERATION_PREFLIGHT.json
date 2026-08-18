@@ -11,7 +11,7 @@
     },
     "focused_tests_output_tail": "..........................                                               [100%]\n============================== warnings summary ===============================\nC:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\requests\\__init__.py:113\n  C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\requests\\__init__.py:113: RequestsDependencyWarning: urllib3 (2.3.0) or chardet (7.0.1)/charset_normalizer (3.4.4) doesn't match a supported version!\n    warnings.warn(\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n",
     "git": {
-      "head": "b173595b456c74890a896e4195b31a8e517a7e67",
+      "head": "b8d5ba16daa94e3a3ddec4da0990d7f100331c61",
       "worktree_status": []
     },
     "local_processor_identity": {
@@ -80,18 +80,18 @@
       "status": "PASS"
     }
   },
-  "content_sha256": "99090abb21debe3fc413e75011a4ebe128f024db40ce72c29142a047229198ea",
-  "created_at": "2026-08-18T07:24:52.091116+00:00",
+  "content_sha256": "ee4a6d470b40f9c80321eebb10b57ac2b2eb5547957bd59a785e8b106705ade1",
+  "created_at": "2026-08-18T07:38:22.828235+00:00",
   "errors": [],
   "experiment_id": "SYS_R2_LRER_QWEN3VL32B_S20260806_G3407_V1",
   "fixture_content_sha256": "4e483e6998d6b89fe0383c9ddf59d72b949b6f82fef1f7499137a5fb4dd6694b",
   "generation_calls": 0,
-  "implementation_commit": "b173595b456c74890a896e4195b31a8e517a7e67",
+  "implementation_commit": "b8d5ba16daa94e3a3ddec4da0990d7f100331c61",
   "live_generation_authorized": true,
   "mechanism_id": "a1r2_compact_verified_pending_v1",
   "offline_replay_content_sha256": "01551b79870ba738dc9e139858bb89bcc490720b61aa4fcdf4b609e7d776ef34",
   "schema": "sys_r2_lrer_zero_generation_preflight_v1",
-  "source_freeze_content_sha256": "53201182edf7aeb875fadde31c76af4403802456ced75e103355d261a821549f",
+  "source_freeze_content_sha256": "b0cace69ff5caa2a454b74269d3a2fb6fa54d6d889045cd1a99f189e9280654b",
   "status": "PASS",
   "system_id": "sys_r2_late_raw_evidence_rehydration_v1"
 }
