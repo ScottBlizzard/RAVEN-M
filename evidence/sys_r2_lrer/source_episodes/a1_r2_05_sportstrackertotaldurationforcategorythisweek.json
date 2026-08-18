@@ -1,0 +1,105 @@
+{
+  "content_sha256": "26650be8d1514747766c615e65b1239694f04cd9a984729db8535cf18e07bf30",
+  "episode_id": "SportsTrackerTotalDurationForCategoryThisWeek_20260806_e34aeaf5",
+  "historical_reward": 1.0,
+  "historical_success": true,
+  "native_max_steps": 16,
+  "schema": "sys_r2_lrer_source_episode_snapshot_v1",
+  "source_arm": "A1-R2",
+  "source_episode_path": "runs/a1r2_cvp/official_qwen_20260814T145307_50081981/episodes/SportsTrackerTotalDurationForCategoryThisWeek_20260806_e34aeaf5/episode.json",
+  "source_episode_sha256": "c236765bff60a417bdc0da69edec8e24d0625c2e9a4be7df5e995221c4b18035",
+  "steps": [
+    {
+      "action_summary": "MEMORY[observed=none; verified=none; pending=locate OpenTracks app] | Swipe up from the bottom of the screen to open the app drawer.",
+      "canonical_action": {
+        "duration_ms": 400,
+        "type": "swipe",
+        "x": 0.4994994994994995,
+        "x2": 0.4934934934934935,
+        "y": 0.7427427427427428,
+        "y2": 0.2872872872872873
+      },
+      "executed": true,
+      "source_call_id": "fc2511fa-396c-4038-85b8-550b1fe19670",
+      "source_response_sha256": "6591bd67c2aa2ce3491b214fa88d2bcc6f6addffa7d3d87c9ef25fca4ca0a98d",
+      "step": 0,
+      "terminal_status": null,
+      "thought": "I need to find the OpenTracks app to check the total duration of mountain biking activities this week. Since it's not on the home screen, I performed a swipe up to access the app drawer where all apps are listed."
+    },
+    {
+      "action_summary": "Swipe up from the bottom of the screen to scroll through the app drawer and locate the OpenTracks app.",
+      "canonical_action": {
+        "duration_ms": 400,
+        "type": "swipe",
+        "x": 0.4994994994994995,
+        "x2": 0.4914914914914915,
+        "y": 0.7847847847847848,
+        "y2": 0.3283283283283283
+      },
+      "executed": true,
+      "source_call_id": "b5262a94-d09f-4ce2-aef0-30ce29b309f9",
+      "source_response_sha256": "3201d26d6ee9c62a33c21223cc5a4ad17a4c3726506f1f9041c4828c5dde9422",
+      "step": 1,
+      "terminal_status": null,
+      "thought": "I need to find the OpenTracks app in the app drawer to proceed with checking the mountain biking activities for this week. Since it's not visible on the current screen, I will swipe up to reveal more apps."
+    },
+    {
+      "action_summary": "Tap on the OpenTracks app icon to open it.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.3883883883883884,
+        "y": 0.5125125125125125
+      },
+      "executed": true,
+      "source_call_id": "c80dfcf1-00dd-470b-a38d-5ca8751c7d85",
+      "source_response_sha256": "7b8a31078d1fc31eaeb8d41b60c4aeb4a9f792a5e4851d246a9198dec66f23c6",
+      "step": 2,
+      "terminal_status": null,
+      "thought": "The OpenTracks app is visible on the screen, so I can proceed to open it to check the mountain biking activities for this week."
+    },
+    {
+      "action_summary": "MEMORY[observed=OpenTracks app welcome screen visible; verified=OpenTracks app opened; pending=navigate past welcome screen] | Tap the orange play button to continue to the main interface of the OpenTracks app.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.8708708708708709,
+        "y": 0.8398398398398398
+      },
+      "executed": true,
+      "source_call_id": "9704dfd3-0bb0-4d47-b036-f15a158d5573",
+      "source_response_sha256": "c44cd6d9fd6f889eeb2b549bdb42d5dcb41450ce24f49d85cf84de02d6003408",
+      "step": 3,
+      "terminal_status": null,
+      "thought": "The OpenTracks app has been successfully opened, and the welcome screen is displayed. To proceed with finding the total duration of mountain biking activities for this week, I need to advance past the welcome screen by tapping the play button."
+    },
+    {
+      "action_summary": "MEMORY[observed=OpenTracks welcome screen with orange play button; verified=OpenTracks app opened; pending=navigate past welcome screen] | Tap the orange play button to proceed to the main interface.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.8708708708708709,
+        "y": 0.8398398398398398
+      },
+      "executed": true,
+      "source_call_id": "e490f7c5-5760-440a-a651-50c17c3e09ed",
+      "source_response_sha256": "951a2c406150fe5e763ececb6d124fabc683adcd3e86c384859693b7d5811ab7",
+      "step": 4,
+      "terminal_status": null,
+      "thought": "The current screen is a welcome or informational screen in the OpenTracks app, and I need to proceed past it to access the main interface where activity data can be viewed. The orange play button at the bottom right is likely the way to continue."
+    },
+    {
+      "action_summary": "MEMORY[observed=\"Intense day\" (1:45:00) on Tuesday, \"Quick Sweat\" (1:15:00) on Monday; verified=two mountain biking activities found with durations; pending=calculate total duration in minutes] | Calculate the total duration of mountain biking activities: 105 + 75 = 180 minutes.",
+      "canonical_action": {
+        "text": "180",
+        "type": "answer"
+      },
+      "executed": true,
+      "source_call_id": "7af9d6d0-55e5-497a-a747-d5351022bb96",
+      "source_response_sha256": "7b84b0ea114bdd1742af455dd8292aa52a5ffda3b4628cf18f5b45b24882e0c5",
+      "step": 5,
+      "terminal_status": "answer",
+      "thought": "I need to find the total duration of mountain biking activities for this week. The current screen shows a list of activities with their durations and dates. I can see two entries labeled \"Intense day\" and \"Quick Sweat,\" both marked with a bicycle icon, indicating they are mountain biking activities. These occurred on Tuesday and Monday, respectively, which falls within this week (starting from Monday). Their durations are 1:45:00 and 1:15:00. Converting these to minutes gives me 105 minutes and 75 minutes, respectively. Adding them together results in 180 minutes."
+    }
+  ],
+  "task_goal": "What was the total duration of mountain biking activities in the OpenTracks app this week? Assume the week starts from Monday. Express your answer in minutes as a single integer.",
+  "task_name": "SportsTrackerTotalDurationForCategoryThisWeek",
+  "task_seed": 20260806
+}

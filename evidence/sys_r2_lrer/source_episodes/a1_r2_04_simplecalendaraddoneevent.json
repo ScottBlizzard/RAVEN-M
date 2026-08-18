@@ -1,0 +1,337 @@
+{
+  "content_sha256": "4e5c3017880ef2d1b524d6dd85efab3ef88a5bd80d0beb2a734a89e842106b38",
+  "episode_id": "SimpleCalendarAddOneEvent_20260806_728d3349",
+  "historical_reward": 1.0,
+  "historical_success": true,
+  "native_max_steps": 34,
+  "schema": "sys_r2_lrer_source_episode_snapshot_v1",
+  "source_arm": "A1-R2",
+  "source_episode_path": "runs/a1r2_cvp/official_qwen_20260814T145307_50081981/episodes/SimpleCalendarAddOneEvent_20260806_728d3349/episode.json",
+  "source_episode_sha256": "0756500a2c6efaa485cdd930c3b9e6ff58a75e3a34452e411db22377d52e158c",
+  "steps": [
+    {
+      "action_summary": "MEMORY[observed=none; verified=none; pending=Open Simple Calendar Pro] | Swipe up from the bottom of the screen to open the app drawer.",
+      "canonical_action": {
+        "duration_ms": 400,
+        "type": "swipe",
+        "x": 0.4994994994994995,
+        "x2": 0.4914914914914915,
+        "y": 0.7427427427427428,
+        "y2": 0.2872872872872873
+      },
+      "executed": true,
+      "source_call_id": "1b13e683-5393-4f4f-9d26-97c8825498c7",
+      "source_response_sha256": "3ba935f45b005454cabd20e049c4db7642d68021dcb61017efb85864a57fe588",
+      "step": 0,
+      "terminal_status": null,
+      "thought": "I need to open the Simple Calendar Pro app to create a new event. Since it's not visible on the home screen, I performed a swipe up gesture to access the app drawer where all installed apps are listed. This will help me locate and open the calendar app."
+    },
+    {
+      "action_summary": "MEMORY[observed=Calendar app icon is visible; verified=none; pending=Open Simple Calendar Pro] | Tap on the Calendar app icon to open it.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.16216216216216217,
+        "y": 0.46846846846846846
+      },
+      "executed": true,
+      "source_call_id": "9afccc0d-77d9-4770-b1b3-db383065518d",
+      "source_response_sha256": "50112366195d014a1ca909209d6d041ddcee2ac9fcfd58604cd42f08aa201cec",
+      "step": 1,
+      "terminal_status": null,
+      "thought": "I need to open the Simple Calendar Pro app to create a new event. The app icon is visible on the screen, so I will tap it to proceed."
+    },
+    {
+      "action_summary": "Tap on the date \"26\" in the calendar grid to open the event creation interface.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.6416416416416416,
+        "y": 0.7307307307307307
+      },
+      "executed": true,
+      "source_call_id": "0e36bfba-c6f7-4aca-97b8-2384d7d4529f",
+      "source_response_sha256": "7c47836d54cb0f2e373738ed684011a0ad9d4442387aea08ee036b97684447b1",
+      "step": 2,
+      "terminal_status": null,
+      "thought": "The goal is to create a calendar event on October 26th at 8 AM. The current screen shows the month of October, and I can see the date \"26\" in the grid. To proceed, I need to select this date to start creating the event."
+    },
+    {
+      "action_summary": "Tap the plus button in the bottom right corner to start creating a new event.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.8948948948948949,
+        "y": 0.9259259259259259
+      },
+      "executed": true,
+      "source_call_id": "9401df2f-6531-4167-acb8-2a5b8bdbedb1",
+      "source_response_sha256": "3a5686f770497c00eba11501757abf6809c218cfb941c6cb31c226e5aca8f217",
+      "step": 3,
+      "terminal_status": null,
+      "thought": "The goal is to create a calendar event for 'Workshop on Project X' on October 26th at 8 AM lasting 60 minutes. The current screen shows the date selected, and there's a plus button in the bottom right corner which is typically used to add new events."
+    },
+    {
+      "action_summary": "Tap on the \"Event\" button in the bottom right corner to start creating a new calendar event.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.8948948948948949,
+        "y": 0.9259259259259259
+      },
+      "executed": true,
+      "source_call_id": "4ce9a2ad-9616-4d74-aba0-50d7bd4d94b5",
+      "source_response_sha256": "3415f88cc41bd56a0b0eb74ff12716d7bb03b0d9419cf5a4a311f744789c46e0",
+      "step": 4,
+      "terminal_status": null,
+      "thought": "The goal is to create a calendar event for 'Workshop on Project X' on October 26th at 8 AM lasting 60 minutes. The current screen shows the option to add an event, which aligns with the next step in creating the calendar entry."
+    },
+    {
+      "action_summary": "Type 'Workshop on Project X' into the Title field.",
+      "canonical_action": {
+        "clear_text": false,
+        "text": "Workshop on Project X",
+        "type": "type_text"
+      },
+      "executed": true,
+      "source_call_id": "0e451030-cacc-4195-8b47-68e3fa4d2257",
+      "source_response_sha256": "e02134f18bacda3a100e8a3ddea31dc23e5876b91454e94104a3cee12bf1e1f0",
+      "step": 5,
+      "terminal_status": null,
+      "thought": "I need to enter the event title 'Workshop on Project X' as specified in the task. The title field is currently active, so I can type directly into it."
+    },
+    {
+      "action_summary": "Tap on the start time field showing 16:00 to change it to 8:00.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.8978978978978979,
+        "y": 0.45345345345345345
+      },
+      "executed": true,
+      "source_call_id": "b2a1c391-5afe-4379-876b-d18b7ef243bd",
+      "source_response_sha256": "bbdc1b7fd13356052b3b161350c614ca028f8290fd9fcc57967a3a9d9939682c",
+      "step": 6,
+      "terminal_status": null,
+      "thought": "I need to update the start time of the event to 8:00 AM as specified in the task. The current start time is set to 16:00 (4:00 PM), which needs to be changed. I will tap on the start time field to modify it."
+    },
+    {
+      "action_summary": "MEMORY[observed=Time picker showing 16:00; verified=none; pending=Change start time to 8:00] | Tap on the number 8 in the hour wheel to set the start time to 8:00.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.2952952952952953,
+        "y": 0.6176176176176176
+      },
+      "executed": true,
+      "source_call_id": "0f4ba883-3458-43ee-a7b7-d742136d9146",
+      "source_response_sha256": "493f85767cf9d05f132d1483b2f854e201e48d40c74d33cb62b66857ce277058",
+      "step": 7,
+      "terminal_status": null,
+      "thought": "I need to change the start time from 16:00 to 8:00 as part of creating the event. The hour wheel is currently set to 16, so I should tap on 8 to set the correct hour."
+    },
+    {
+      "action_summary": "MEMORY[observed=Start time set to 08:00; verified=Start time set to 8:00; pending=Confirm start time and proceed to set duration and description] | Tap the OK button to confirm the start time of 8:00.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.7697697697697697,
+        "y": 0.7577577577577578
+      },
+      "executed": true,
+      "source_call_id": "1c04f4e0-f677-4908-ab6e-e196227bf73c",
+      "source_response_sha256": "ac86c2760e88a869a0eeb57610f28680e9d8778692eca8f59c04868f8a8c942f",
+      "step": 8,
+      "terminal_status": null,
+      "thought": "The start time has been correctly set to 8:00. The next step is to confirm this selection by tapping the OK button."
+    },
+    {
+      "action_summary": "Tap on the end time field showing 08:00 to change it to 09:00.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.8948948948948949,
+        "y": 0.5125125125125125
+      },
+      "executed": true,
+      "source_call_id": "93d14665-573f-4e58-a4ed-2b0b879cd09e",
+      "source_response_sha256": "2a0ecb3098922ef7ce566fce5cc79856584f112947c3b39516b9d14e79752e6b",
+      "step": 9,
+      "terminal_status": null,
+      "thought": "The start time has been successfully set to 8:00, but the end time still needs to be adjusted to 9:00 to ensure the event lasts for 60 minutes. The next step is to tap on the end time field to change it."
+    },
+    {
+      "action_summary": "Tap the OK button to confirm the start time of 8:00.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.7697697697697697,
+        "y": 0.7577577577577578
+      },
+      "executed": true,
+      "source_call_id": "fdd8fb4a-ec0d-48ce-95a6-b18a47348087",
+      "source_response_sha256": "72695aa52e3683991931e12c4a0f50b3c850c936c9b97f5f9c034b2c71985f34",
+      "step": 10,
+      "terminal_status": null,
+      "thought": "The start time has been set to 8:00, and now I need to confirm this selection to proceed with setting the end time for the event. The OK button is visible and should be tapped to confirm the start time."
+    },
+    {
+      "action_summary": "Tap on the end time field showing 08:00 to change it to 09:00.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.8978978978978979,
+        "y": 0.5145145145145145
+      },
+      "executed": true,
+      "source_call_id": "0242d7f9-9348-4548-a9b6-7b94f64f870d",
+      "source_response_sha256": "9b5337cf26ab49c2d9d3167ac2e7134470b0a2ab2001cd13f550090c0fa5e9b4",
+      "step": 11,
+      "terminal_status": null,
+      "thought": "The start time has been set to 8:00, but the end time is still incorrectly set to 8:00. I need to update the end time to 9:00 to ensure the event lasts for 60 minutes as required. The next step is to tap on the end time field to adjust it."
+    },
+    {
+      "action_summary": "Tap the OK button to confirm the start time of 8:00.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.7687687687687688,
+        "y": 0.7577577577577578
+      },
+      "executed": true,
+      "source_call_id": "f7917c90-318a-4500-ae12-5d98d1f8b09e",
+      "source_response_sha256": "915821a6f57c8c249e22c497255c0b34d1d73ae205b1610b8ab57080c37be455",
+      "step": 12,
+      "terminal_status": null,
+      "thought": "The start time has been set to 8:00, and now I need to confirm this selection to proceed with setting the end time and adding the description. The OK button is visible and should be tapped to confirm the start time."
+    },
+    {
+      "action_summary": "Tap on the end time field showing 08:00 to change it to 09:00.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.8948948948948949,
+        "y": 0.5135135135135135
+      },
+      "executed": true,
+      "source_call_id": "4c72fc2a-9af6-4ce5-9348-da274458fd9f",
+      "source_response_sha256": "b1036bb91e42aa5a29b987cea494f6709212e1d3e8722446cf83fc5bb3cf017f",
+      "step": 13,
+      "terminal_status": null,
+      "thought": "The start time has been set to 8:00, but the end time still shows 8:00 and needs to be changed to 9:00 to ensure the event lasts for 60 minutes. I need to tap on the end time field to adjust it."
+    },
+    {
+      "action_summary": "Tap the OK button to confirm the start time of 8:00.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.7697697697697697,
+        "y": 0.7577577577577578
+      },
+      "executed": true,
+      "source_call_id": "c54bf04b-d42b-4d52-aa02-a22cf55c3b0e",
+      "source_response_sha256": "438233cf3270e023baa3f1e7e6c40e0230764443ee9d2db30d4a397462ebbfdc",
+      "step": 14,
+      "terminal_status": null,
+      "thought": "The start time has been set to 8:00, and now I need to confirm this selection to proceed with setting the end time and adding the description. The OK button is visible and should be tapped to confirm the start time."
+    },
+    {
+      "action_summary": "Tap on the end time field showing 08:00 to change it to 09:00.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.8978978978978979,
+        "y": 0.5135135135135135
+      },
+      "executed": true,
+      "source_call_id": "afd591f4-2d10-4e24-8470-88fed055c54e",
+      "source_response_sha256": "9ec8f6ce3592c7fffd6531d8359d70970cc771ef47d0a83f8d0f29a57aeed8f2",
+      "step": 15,
+      "terminal_status": null,
+      "thought": "The start time has been set to 8:00, but the end time is still showing 8:00. I need to change the end time to 9:00 to ensure the event lasts for 60 minutes as required. The next step should be to tap on the end time field to adjust it."
+    },
+    {
+      "action_summary": "MEMORY[observed=Time picker showing 08:00; verified=start time set to 08:00; pending=end time needs to be set to 09:00] | Tap on the number 9 in the hour wheel to set the end time to 09:00.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.25625625625625625,
+        "y": 0.5645645645645646
+      },
+      "executed": true,
+      "source_call_id": "55a193d6-d0a1-47fe-a86f-a4fb114318d2",
+      "source_response_sha256": "063a569bf04a6f912bfd2d6aa1cffd52f9b262a20c5c405e8a608e8bf488abb7",
+      "step": 16,
+      "terminal_status": null,
+      "thought": "I need to set the end time for the event to 09:00, as the start time is already correctly set to 08:00. The current screen shows the time picker with the hour set to 8. To proceed, I should select 9 on the hour wheel to change the end time to 09:00."
+    },
+    {
+      "action_summary": "Tap the OK button to confirm the end time of 09:00.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.7687687687687688,
+        "y": 0.7577577577577578
+      },
+      "executed": true,
+      "source_call_id": "23dcac8f-877c-4613-987f-e1c7aeb089ce",
+      "source_response_sha256": "7ba031c8267504d0a30f2b048d5d2992b8bc06d89ab3a0ef008139d5f0cfc86f",
+      "step": 17,
+      "terminal_status": null,
+      "thought": "The end time has been set to 09:00, which matches the requirement for a 60-minute event starting at 8:00. The next step is to confirm this selection by tapping the OK button."
+    },
+    {
+      "action_summary": "Tap on the Description field to enter 'We will strategize about upcoming project milestones. Let's be punctual.'.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.1781781781781782,
+        "y": 0.2982982982982983
+      },
+      "executed": true,
+      "source_call_id": "b637b1ee-9432-4920-a1c3-df71bc0ea86b",
+      "source_response_sha256": "da5ac074281f4bf4cedd931cca0a33e744efdb887c82e8cd675a80d9933cff1f",
+      "step": 18,
+      "terminal_status": null,
+      "thought": "The start time is correctly set to 08:00 and the end time is now correctly set to 09:00, fulfilling the duration requirement of 60 minutes. The next step is to add the description as specified in the task."
+    },
+    {
+      "action_summary": "Type 'We will strategize about upcoming project milestones. Let's be punctual.' into the Description field.",
+      "canonical_action": {
+        "clear_text": false,
+        "text": "We will strategize about upcoming project milestones. Let's be punctual.",
+        "type": "type_text"
+      },
+      "executed": true,
+      "source_call_id": "25717807-93bb-4ebc-afaa-2bd2b4c9c233",
+      "source_response_sha256": "e0824a26d3526bd8043c4f721b2ec38df64c7aa791a15338745df30e0125f18a",
+      "step": 19,
+      "terminal_status": null,
+      "thought": "The description field is active, and I need to enter the specified description for the event. The start and end times are correctly set to 08:00 and 09:00, respectively, which matches the requirement of a 60-minute duration."
+    },
+    {
+      "action_summary": "Tap the checkmark in the top right corner to save the event.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.938938938938939,
+        "y": 0.08708708708708708
+      },
+      "executed": true,
+      "source_call_id": "d98e2205-0cac-413f-9a89-a84213f796dd",
+      "source_response_sha256": "6ad018e43dfc9a3b9afe8f77ac2cbbd03a79e2ed35b84543983dc8555707b871",
+      "step": 20,
+      "terminal_status": null,
+      "thought": "The event details are correctly set with the title, description, start time, and end time. The next logical step is to save the event."
+    },
+    {
+      "action_summary": "Tap the OK button on the disclaimer popup to dismiss it.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.7777777777777778,
+        "y": 0.6296296296296297
+      },
+      "executed": true,
+      "source_call_id": "51f687e7-b5cf-4920-a7e6-65e27b45bd61",
+      "source_response_sha256": "c8add3ee08cb11ff1774735385c182b724e0412e9dc9136efad03a069a394f9e",
+      "step": 21,
+      "terminal_status": null,
+      "thought": "The disclaimer popup needs to be dismissed before proceeding to save the event. The OK button on the popup should be tapped to close it."
+    },
+    {
+      "action_summary": "MEMORY[observed=Event 'Workshop on Project X' scheduled for 2023-10-26 from 08:00 to 09:00 with description 'We will strategize about upcoming project milestones. Let's be punctual.'; verified=start time 08:00, end time 09:00, title, description, date; pending=None] | Terminate the task as successfully completed.",
+      "canonical_action": null,
+      "executed": false,
+      "source_call_id": "6c26d460-9ebb-482d-8e80-bdbaf6d2a9cf",
+      "source_response_sha256": "09a28f1b14588c5aec356b63caf6f2daa152c8e9d24725a4776ab6b20aacc6ec",
+      "step": 22,
+      "terminal_status": "success",
+      "thought": "The event 'Workshop on Project X' is correctly set for October 26, 2023, from 8:00 to 9:00 with the appropriate description. All requirements have been met and verified on the screen."
+    }
+  ],
+  "task_goal": "In Simple Calendar Pro, create a calendar event on 2023-10-26 at 8h with the title 'Workshop on Project X' and the description 'We will strategize about upcoming project milestones. Let's be punctual.'. The event should last for 60 mins.",
+  "task_name": "SimpleCalendarAddOneEvent",
+  "task_seed": 20260806
+}

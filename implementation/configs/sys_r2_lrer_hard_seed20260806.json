@@ -1,0 +1,20 @@
+{
+  "schema": "sys_r2_lrer_config_v1",
+  "system_id": "sys_r2_late_raw_evidence_rehydration_v1",
+  "experiment_id": "SYS_R2_LRER_QWEN3VL32B_S20260806_G3407_V1",
+  "parent_mechanism_id": "a1r2_compact_verified_pending_v1",
+  "task_seed": 20260806,
+  "generation_seed": 3407,
+  "min_eligibility_fraction": [7, 10],
+  "result_action_families": ["type_text", "answer", "terminate_success"],
+  "max_raw_actions": 8,
+  "max_action_chars": 700,
+  "max_total_raw_chars": 4000,
+  "max_render_chars": 5400,
+  "max_deferrals_per_episode": 1,
+  "auxiliary_model_calls": 0,
+  "native_budget_increase": 0,
+  "non_fail_fast_seven": true,
+  "seven_task_order": ["BrowserMultiply", "ExpenseDeleteMultiple2", "RetroSavePlaylist", "SimpleCalendarAddOneEvent", "SportsTrackerTotalDurationForCategoryThisWeek", "RecipeDeleteMultipleRecipesWithConstraint", "OsmAndMarker"],
+  "full_suite_release_requires": "7/7"
+}

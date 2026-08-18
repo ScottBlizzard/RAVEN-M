@@ -1,0 +1,266 @@
+{
+  "content_sha256": "a5efb53a4cbdd01dff66d86a9d6aa2d04230a43c6555315690717def692f3944",
+  "episode_id": "RecipeDeleteMultipleRecipesWithConstraint_20260806_b4feab19",
+  "historical_reward": 1.0,
+  "historical_success": true,
+  "native_max_steps": 40,
+  "schema": "sys_r2_lrer_source_episode_snapshot_v1",
+  "source_arm": "A1-R2",
+  "source_episode_path": "runs/a1r2_cvp/official_qwen_20260814T145307_50081981/episodes/RecipeDeleteMultipleRecipesWithConstraint_20260806_b4feab19/episode.json",
+  "source_episode_sha256": "5d1dbf1e8e3ead7818ffd6aa67fb9ac02b4bcb40e91ab0294506ae6c8ccf4a4e",
+  "steps": [
+    {
+      "action_summary": "MEMORY[observed=none; verified=none; pending=Locate and open the Broccoli app] | Swipe up to open the app drawer and find the Broccoli app.",
+      "canonical_action": {
+        "duration_ms": 400,
+        "type": "swipe",
+        "x": 0.4994994994994995,
+        "x2": 0.4934934934934935,
+        "y": 0.7427427427427428,
+        "y2": 0.2872872872872873
+      },
+      "executed": true,
+      "source_call_id": "1b79add1-e264-4a37-976a-09a7261a9c32",
+      "source_response_sha256": "dbfa19b732c8c9170431946ffa14c349f9dd386b9e42fa95f50c47aaf39b0336",
+      "step": 0,
+      "terminal_status": null,
+      "thought": "I need to delete recipes from the Broccoli app that include zucchini in their directions. To do this, I first need to locate and open the Broccoli app on my phone. Since it's not visible on the home screen, I performed a swipe up gesture to access the app drawer where all installed apps are listed."
+    },
+    {
+      "action_summary": "MEMORY[observed=Broccoli app icon is visible; verified=none; pending=Open the Broccoli app] | Tap on the Broccoli app icon to open it.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.6156156156156156,
+        "y": 0.33233233233233234
+      },
+      "executed": true,
+      "source_call_id": "df883237-b2ea-4494-8018-85ea66f84ea1",
+      "source_response_sha256": "e309eb6091abe9f3844c08fcd21231cde60e5c75be800919fcc2dccf4a105913",
+      "step": 1,
+      "terminal_status": null,
+      "thought": "I need to open the Broccoli app to proceed with deleting recipes that contain zucchini in their directions. The app is visible on the screen, so my next step is to tap on it to launch it."
+    },
+    {
+      "action_summary": "MEMORY[observed=Broccoli app splash screen visible; verified=none; pending=Wait for app to load completely] | Wait for the app to finish loading.",
+      "canonical_action": {
+        "duration_ms": 2000,
+        "type": "wait"
+      },
+      "executed": true,
+      "source_call_id": "3df17547-7cc9-4fcf-8465-266148ad9ec5",
+      "source_response_sha256": "68e1aa7e091b59338e21c7d1e7d30c5bedd0aad2b4e504362a1cf26b86f4dd28",
+      "step": 2,
+      "terminal_status": null,
+      "thought": "The Broccoli app is currently loading, as indicated by the splash screen. Since the app hasn't fully loaded yet, I need to wait for it to become responsive before proceeding with any actions."
+    },
+    {
+      "action_summary": "MEMORY[observed=Recipes screen visible with list of recipes; verified=app loaded completely; pending=search for recipes using zucchini] | Tap on the magnifying glass icon to open the search function.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.938938938938939,
+        "y": 0.14514514514514515
+      },
+      "executed": true,
+      "source_call_id": "c3b03c0d-db21-40d9-85b3-66aac503e01f",
+      "source_response_sha256": "5704275dcb1527287d9ea9b47b656c0c21b3182eabc7345a74d431ca4106651b",
+      "step": 3,
+      "terminal_status": null,
+      "thought": "The app has loaded, and I can see a list of recipes. To find recipes containing zucchini in the directions, I should use the search function. The magnifying glass icon at the top right corner likely represents the search feature."
+    },
+    {
+      "action_summary": "MEMORY[observed=Search bar is active and ready for input; verified=app loaded completely; pending=search for recipes using zucchini] | Type \"zucchini\" into the search bar.",
+      "canonical_action": {
+        "clear_text": false,
+        "text": "zucchini",
+        "type": "type_text"
+      },
+      "executed": true,
+      "source_call_id": "838ae563-aa14-41bd-bb69-4adbd6fdd264",
+      "source_response_sha256": "c94f604a5d567109485c0fe41c48ad7eab98c4fb10fd42e726afcbbef30b3f16",
+      "step": 4,
+      "terminal_status": null,
+      "thought": "To find recipes that use zucchini, I need to type \"zucchini\" into the search bar. This will allow me to locate all relevant recipes containing zucchini in their directions."
+    },
+    {
+      "action_summary": "Tap on the first recipe titled \"Zucchini Noodles with Pesto\" to view its details.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.5945945945945946,
+        "y": 0.22822822822822822
+      },
+      "executed": true,
+      "source_call_id": "f1e6c65f-581c-487a-8e9e-a1e3396bede7",
+      "source_response_sha256": "33590608861aaf0c04e823c76cb0b99253bdd948fda766e33ea53d412ac78973",
+      "step": 5,
+      "terminal_status": null,
+      "thought": "The search for recipes containing zucchini has been successfully completed, and the results are displayed. The next step is to delete these recipes as per the user's request. To do this, I need to select one of the recipes to view its details and look for a delete option."
+    },
+    {
+      "action_summary": "Tap on the three dots icon in the top right corner to open the options menu.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.948948948948949,
+        "y": 0.08408408408408409
+      },
+      "executed": true,
+      "source_call_id": "27c6f6f5-aae4-4c2c-b26e-e8e8f9c1cb2e",
+      "source_response_sha256": "a9e52861fc84655331f16063cd210183786132d3ac8893117f14386b04f035ac",
+      "step": 6,
+      "terminal_status": null,
+      "thought": "To delete the recipe, I need to access additional options, which are typically found in the menu represented by the three dots icon. This will likely provide an option to delete the recipe."
+    },
+    {
+      "action_summary": "Tap on the \"Delete\" option to remove the recipe.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.6576576576576577,
+        "y": 0.25125125125125125
+      },
+      "executed": true,
+      "source_call_id": "5edf6b2e-2091-4162-8ef0-230d843d8e59",
+      "source_response_sha256": "2be89871af25b3ea390b10d7ff8e18e8c4c924b6fc7b948b1231255bdc3778eb",
+      "step": 7,
+      "terminal_status": null,
+      "thought": "The goal is to delete recipes that use zucchini. The current screen shows the options menu for the \"Zucchini Noodles with Pesto\" recipe, and the \"Delete\" option is visible. Selecting this will remove the recipe as required."
+    },
+    {
+      "action_summary": "Tap on the DELETE button to confirm the deletion of the recipe.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.7947947947947948,
+        "y": 0.5395395395395396
+      },
+      "executed": true,
+      "source_call_id": "6a3d7134-a109-446f-9b7d-5b8adae305d4",
+      "source_response_sha256": "84059c08e8d6b817faf0f36be167ac64d663bfcf458853776bb2014820737a9c",
+      "step": 8,
+      "terminal_status": null,
+      "thought": "The goal is to delete recipes that use zucchini. The current screen shows a confirmation dialog for deleting the \"Zucchini Noodles with Pesto\" recipe, which matches the criteria. To proceed with the deletion, I need to confirm by tapping the DELETE button."
+    },
+    {
+      "action_summary": "Tap on the second recipe titled Zucchini Noodles with Pesto to view its details.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.6016016016016016,
+        "y": 0.37537537537537535
+      },
+      "executed": true,
+      "source_call_id": "2b07c240-d34e-47d1-9f66-4ed30b9a4a73",
+      "source_response_sha256": "ebdd8ce6ecf9edf0ba0738791ef585d78baa30b85311be72a2ea066f3b788197",
+      "step": 9,
+      "terminal_status": null,
+      "thought": "I need to delete recipes containing zucchini. The search results show two entries for \"Zucchini Noodles with Pesto.\" I've already deleted the first one, so now I should focus on deleting the second one."
+    },
+    {
+      "action_summary": "Tap on the three dots icon in the top right corner to open the options menu.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.948948948948949,
+        "y": 0.08408408408408409
+      },
+      "executed": true,
+      "source_call_id": "9bd59020-e815-4209-9e16-972aa8568ff3",
+      "source_response_sha256": "a4b3fb02b34a3e7ed5c5c254bba28f7a95005362b958d50424470f0ebb5cae51",
+      "step": 10,
+      "terminal_status": null,
+      "thought": "I need to delete this recipe since it contains zucchini in the directions. The three dots icon in the top right corner likely provides options for managing the recipe, including deletion."
+    },
+    {
+      "action_summary": "Tap on the Delete option to remove the recipe.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.6486486486486487,
+        "y": 0.2502502502502503
+      },
+      "executed": true,
+      "source_call_id": "de35055a-f89e-4fe7-96c1-bb26032b4aeb",
+      "source_response_sha256": "50fd47dab1edcd097db7dcc6d088d59de429bf42b9d5843ec78a035debd1d877",
+      "step": 11,
+      "terminal_status": null,
+      "thought": "The goal is to delete recipes that use zucchini in the directions. I have already opened the options menu for the second recipe titled \"Zucchini Noodles with Pesto.\" The next logical step is to select the Delete option from this menu to remove the recipe."
+    },
+    {
+      "action_summary": "MEMORY[observed=Delete this recipe? dialog with CANCEL and DELETE buttons; verified=Second recipe titled Zucchini Noodles with Pesto is being deleted; pending=Confirm deletion of this recipe] | Tap on the DELETE button to confirm the deletion of the recipe.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.7947947947947948,
+        "y": 0.5385385385385385
+      },
+      "executed": true,
+      "source_call_id": "39b2b380-9977-42b2-a02e-7d4dc0043923",
+      "source_response_sha256": "d7510eb6a6a09671b1a8902d4b0c40f14f330a99aa51ca8c35dc6607d9b6344a",
+      "step": 12,
+      "terminal_status": null,
+      "thought": "I need to confirm the deletion of the second recipe that contains zucchini in its directions. The confirmation dialog is currently displayed, and I should proceed by tapping the DELETE button to remove this recipe as part of my task."
+    },
+    {
+      "action_summary": "Tap on the \"Zucchini Noodles with Pesto\" recipe to view its details.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.5765765765765766,
+        "y": 0.2182182182182182
+      },
+      "executed": true,
+      "source_call_id": "497e84e4-cca6-451c-ac1c-917ab9bc2d8e",
+      "source_response_sha256": "ea5c748be182d377c8b0f504034d5a88c1e5c943898d34af9bd670a2bebb337f",
+      "step": 13,
+      "terminal_status": null,
+      "thought": "The current screen shows the search results for recipes containing \"zucchini,\" and there is one recipe listed: \"Zucchini Noodles with Pesto.\" Since the previous steps involved deleting this recipe, and it still appears here, it seems the deletion might not have been successful or the app needs to refresh. To ensure the task is complete, I should attempt to delete this recipe again."
+    },
+    {
+      "action_summary": "Tap on the three dots icon in the top right corner to open the options menu.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.948948948948949,
+        "y": 0.08408408408408409
+      },
+      "executed": true,
+      "source_call_id": "5658d04a-a654-46da-9c96-2942a1432fde",
+      "source_response_sha256": "c3e34b0224873f9853043d82b56fc697f91dc04909763eb794046fc1b07499cc",
+      "step": 14,
+      "terminal_status": null,
+      "thought": "I need to delete this recipe as it contains zucchini in the directions. The three dots icon in the top right corner likely provides options for managing the recipe, including deletion."
+    },
+    {
+      "action_summary": "MEMORY[observed=Delete option is visible in the menu for the Zucchini Noodles with Pesto recipe; verified=Second recipe titled Zucchini Noodles with Pesto is being deleted; pending=Confirm deletion of this recipe] | Tap on the Delete option to remove the recipe.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.6486486486486487,
+        "y": 0.2502502502502503
+      },
+      "executed": true,
+      "source_call_id": "07de315d-1627-415a-8fcd-7c527ab31365",
+      "source_response_sha256": "a59986d5c6ec03b7daa8b602c26a852155546579074c33ff388ee55d5747492b",
+      "step": 15,
+      "terminal_status": null,
+      "thought": "I need to confirm the deletion of this recipe as part of the task to remove all recipes containing zucchini. The Delete option is visible in the menu, and selecting it will proceed with removing this recipe."
+    },
+    {
+      "action_summary": "Tap on the DELETE button to confirm the deletion of the recipe.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.7947947947947948,
+        "y": 0.5385385385385385
+      },
+      "executed": true,
+      "source_call_id": "503ab3fd-0065-4c16-b6c7-7e0abc93a493",
+      "source_response_sha256": "55af6d7b4f8aca7c7b4538134920718f611da377bd10e64eeb4e546b9d835537",
+      "step": 16,
+      "terminal_status": null,
+      "thought": "The current screen shows a confirmation dialog for deleting the recipe \"Zucchini Noodles with Pesto.\" To proceed with the task of removing recipes that use zucchini, I need to confirm this deletion by tapping on the DELETE button."
+    },
+    {
+      "action_summary": "MEMORY[observed=\"No recipes found.\" after searching for zucchini; verified=All zucchini-containing recipes have been deleted; pending=None] | Terminate the task as all required recipes have been deleted.",
+      "canonical_action": null,
+      "executed": false,
+      "source_call_id": "42266c45-61ac-4237-a4ee-b55e77c4f527",
+      "source_response_sha256": "1ca3086337c3595f84a842d90a9d04871c88def016793fc0c9266c380bd18b5e",
+      "step": 17,
+      "terminal_status": "success",
+      "thought": "The search for recipes containing zucchini has returned no results, indicating that all relevant recipes have been successfully deleted. This aligns with the task goal of removing all recipes using zucchini from the Broccoli app."
+    }
+  ],
+  "task_goal": "Delete the recipes from Broccoli app that use zucchini in the directions.",
+  "task_name": "RecipeDeleteMultipleRecipesWithConstraint",
+  "task_seed": 20260806
+}

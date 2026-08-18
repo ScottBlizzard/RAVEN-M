@@ -1,0 +1,414 @@
+{
+  "analysis_type": "CPU_ONLY_ZERO_GENERATION_DEVELOPMENT_REPLAY",
+  "browser": {
+    "deferred_response_excluded": true,
+    "r15_all_five_observations_present": true,
+    "r15_found_values": [
+      "1",
+      "8",
+      "10",
+      "7",
+      "2"
+    ],
+    "r15_opportunity_count": 1,
+    "r15_source_steps": [
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17
+    ],
+    "r15_trigger_step": 18,
+    "r2_opportunity_count": 1,
+    "r2_trigger_step": 18
+  },
+  "content_sha256": "01551b79870ba738dc9e139858bb89bcc490720b61aa4fcdf4b609e7d776ef34",
+  "errors": [],
+  "expectation": {
+    "deferred_proposal_must_be_excluded": true,
+    "r15_expected_values": [
+      "1",
+      "8",
+      "10",
+      "7",
+      "2"
+    ],
+    "r15_prior_raw_action_count": 8,
+    "r2_browser_trigger_step": 18,
+    "r2_six_success_trigger_count": 0
+  },
+  "experiment_id": "SYS_R2_LRER_QWEN3VL32B_S20260806_G3407_V1",
+  "fixed_seven": [
+    "BrowserMultiply",
+    "ExpenseDeleteMultiple2",
+    "RetroSavePlaylist",
+    "SimpleCalendarAddOneEvent",
+    "SportsTrackerTotalDurationForCategoryThisWeek",
+    "RecipeDeleteMultipleRecipesWithConstraint",
+    "OsmAndMarker"
+  ],
+  "fixture_content_sha256": "4e483e6998d6b89fe0383c9ddf59d72b949b6f82fef1f7499137a5fb4dd6694b",
+  "generation_calls": 0,
+  "historical_successes": [
+    {
+      "episode_id": "ExpenseDeleteMultiple2_20260806_a27af967",
+      "historical_reward": 1.0,
+      "opportunity_count": 0,
+      "task_name": "ExpenseDeleteMultiple2",
+      "trigger_step": null
+    },
+    {
+      "episode_id": "RetroSavePlaylist_20260806_269b2c65",
+      "historical_reward": 1.0,
+      "opportunity_count": 0,
+      "task_name": "RetroSavePlaylist",
+      "trigger_step": null
+    },
+    {
+      "episode_id": "SimpleCalendarAddOneEvent_20260806_728d3349",
+      "historical_reward": 1.0,
+      "opportunity_count": 0,
+      "task_name": "SimpleCalendarAddOneEvent",
+      "trigger_step": null
+    },
+    {
+      "episode_id": "SportsTrackerTotalDurationForCategoryThisWeek_20260806_e34aeaf5",
+      "historical_reward": 1.0,
+      "opportunity_count": 0,
+      "task_name": "SportsTrackerTotalDurationForCategoryThisWeek",
+      "trigger_step": null
+    },
+    {
+      "episode_id": "RecipeDeleteMultipleRecipesWithConstraint_20260806_b4feab19",
+      "historical_reward": 1.0,
+      "opportunity_count": 0,
+      "task_name": "RecipeDeleteMultipleRecipesWithConstraint",
+      "trigger_step": null
+    },
+    {
+      "episode_id": "OsmAndMarker_20260806_8517b31f",
+      "historical_reward": 1.0,
+      "opportunity_count": 0,
+      "task_name": "OsmAndMarker",
+      "trigger_step": null
+    }
+  ],
+  "r15_browser": {
+    "episode_id": "BrowserMultiply_20260806_afd4acbc",
+    "historical_reward": 1.0,
+    "opportunity": {
+      "assessment": {
+        "action_family": "type_text",
+        "blocked": true,
+        "eligible": true,
+        "event": "result_action_review",
+        "executed_action_count": 18,
+        "native_max_steps": 22,
+        "proposal_payload_stored_or_rendered": false,
+        "reason": "one_shot_late_raw_evidence_rehydration",
+        "remaining_native_decision_slots": 3,
+        "request_step": 18
+      },
+      "deferred_proposal": {
+        "action_family": "type_text",
+        "action_summary": "MEMORY[observed=input field active with keyboard visible; numbers 1, 8, 10, 7, 2 recorded; pending=enter product 1120 into the field] | Type '1120' into the input field.",
+        "response_sha256": "cc688239381a4b741fd5e07765173269cb27838d1939b9a331eeed3031f78d57"
+      },
+      "deferred_proposal_excluded": true,
+      "prepared_injection": {
+        "preparation_error": null,
+        "source_response_sha256s": [
+          "bab1bc912c6734b08cc117484c31de089afb20c95d99993881d028ab50f4a78a",
+          "30e84acc80a6c4da2b145872a49b817b8a2f273f71d50c82585e12a9e88a245a",
+          "041b3b6f2319bf0ab1c010a859f01cf2ccf1b74a9b8dba2b4a9f88bc491bdd4e",
+          "b8d1144ee3781324886c1e1e52efaddf68f8653c3138a89ee3b1ac416fd71384",
+          "78a41cddabaab47695ca768e3c8b614c467852a2c3d4dd7b3c859283b7e74867",
+          "6aa918ef502d5562037a32c392fe3fbb3cb2749a5bcce71a24a63dd5888a0d9c",
+          "9a54f845859b57f5469d702d12caa61b3f98b87c97221f8787b83ebc01232ec0",
+          "f57ee2eed486ffa334cb8ee276479df8218eca0c86d85d097d12da07d293118b"
+        ],
+        "source_steps": [
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17
+        ],
+        "text": "LATE MODEL-AUTHORED EVIDENCE (unverified; expires after this request):\n- source step 10 (response bab1bc912c6734b08cc117484c31de089afb20c95d99993881d028ab50f4a78a): THOUGHT: I need to open the 'task.html' file with Chrome to proceed with the task. The prompt is asking me to choose how to open the file, and selecting 'Just once' will allow me to use Chrome for this instance without changing default settings permanently. ACTION: MEMORY[observed=task.html file visible in Downloads; prompt to open with Chrome; options 'Just once' and 'Always'; none of the task requirements are verified yet; pending=open task.html with Chrome] | Tap on 'Just once' to open the file with Chrome.\n- source step 11 (response 30e84acc80a6c4da2b145872a49b817b8a2f273f71d50c82585e12a9e88a245a): THOUGHT: The screen is blank, which suggests that the task.html file might not have loaded properly or there's a delay in rendering. Since we've already attempted to open it with Chrome and selected 'Just once', we should wait for the content to load. ACTION: MEMORY[observed=blank screen after attempting to open task.html with Chrome; none of the task requirements are verified yet; pending=wait for task.html to load] | Wait for 2 seconds to allow the page to load.\n- source step 12 (response 041b3b6f2319bf0ab1c010a859f01cf2ccf1b74a9b8dba2b4a9f88bc491bdd4e): THOUGHT: The task.html file has loaded successfully in Chrome, displaying a button labeled 'Click Me' and the number 1. According to the instructions, I need to click this button five times while remembering the numbers displayed each time. The first number is 1. ACTION: MEMORY[observed=task.html loaded in Chrome with 'Click Me' button and number 1 displayed; none of the task requirements are verified yet; pending=click the button 5 times and record the numbers] | Click the 'Click Me' button.\n- source step 13 (response b8d1144ee3781324886c1e1e52efaddf68f8653c3138a89ee3b1ac416fd71384): THOUGHT: I need to click the 'Click Me' button four more times to complete the task of clicking it five times total. The current number displayed is 8, which I will record along with the next four numbers that appear after each click. ACTION: MEMORY[observed=task.html loaded in Chrome with 'Click Me' button and number 8 displayed; clicked once so far; pending=click the button 4 more times and record all numbers] | Click the 'Click Me' button.\n- source step 14 (response 78a41cddabaab47695ca768e3c8b614c467852a2c3d4dd7b3c859283b7e74867): THOUGHT: I have clicked the 'Click Me' button twice so far, and the numbers displayed are 1 and 8. I need to click the button three more times to complete the task of clicking it five times total. The next step is to continue clicking the button to record all five numbers. ACTION: MEMORY[observed=task.html loaded in Chrome with 'Click Me' button and number 10 displayed; clicked twice so far with numbers 1 and 8 recorded; pending=click the button 3 more times and record all numbers] | Click the 'Click Me' button.\n- source step 15 (response 6aa918ef502d5562037a32c392fe3fbb3cb2749a5bcce71a24a63dd5888a0d9c): THOUGHT: I have clicked the 'Click Me' button three times so far, and the numbers displayed are 1, 8, and 10. The current number shown is 7, which means I need to click the button two more times to complete the task of clicking it five times total. After that, I will calculate the product of all the numbers displayed. ACTION: MEMORY[observed=task.html loaded in Chrome with 'Click Me' button and number 7 displayed; clicked three times so far with numbers 1, 8, and 10 recorded; pending=click the button 2 more times and record all numbers] | Click the 'Click Me' button.\n- source step 16 (response 9a54f845859b57f5469d702d12caa61b3f98b87c97221f8787b83ebc01232ec0): THOUGHT: I have clicked the 'Click Me' button four times so far, and the numbers displayed are 1, 8, 10, and 7. The current number shown is 2, which is the fifth click. I need to record this number and then calculate the product of all five numbers. ACTION: MEMORY[observed=task.html loaded in Chrome with 'Click Me' button and number 2 displayed; clicked four times so far with numbers 1, 8, 10, and 7 recorded; pending=click the button one more time and record the final number] | Click the 'Click Me' button.\n- source step 17 (response f57ee2eed486ffa334cb8ee276479df8218eca0c86d85d097d12da07d293118b): THOUGHT: I have clicked the 'Click Me' button five times and recorded the numbers displayed: 1, 8, 10, 7, and 2. Now, I need to calculate their product: 1 × 8 × 10 × 7 × 2 = 1120. The next step is to enter this product into the form. ACTION: MEMORY[observed=task.html loaded in Chrome with 'Click Me' button and number 2 displayed; clicked five times with numbers 1, 8, 10, 7, and 2 recorded; pending=enter the product of these numbers into the form] | Tap on the input fie\nBefore choosing any result action, reconstruct the exact task-relevant facts in step order, check that all required observations are covered, and independently recompute every arithmetic or logical constraint. Do not assume common, default, or example values. If evidence is insufficient or contradictory, gather visible evidence instead of guessing. The current screenshot is authoritative; decide the action yourself.",
+        "text_sha256": "2948ae6bbccf36c9503d2af7106cc999597f9a66d46bf3cbe3b8832d16a212a4",
+        "ticket_id": "lrer_inject_0001"
+      },
+      "source_action_summaries": [
+        "MEMORY[observed=task.html file visible in Downloads; prompt to open with Chrome; options 'Just once' and 'Always'; none of the task requirements are verified yet; pending=open task.html with Chrome] | Tap on 'Just once' to open the file with Chrome.",
+        "MEMORY[observed=blank screen after attempting to open task.html with Chrome; none of the task requirements are verified yet; pending=wait for task.html to load] | Wait for 2 seconds to allow the page to load.",
+        "MEMORY[observed=task.html loaded in Chrome with 'Click Me' button and number 1 displayed; none of the task requirements are verified yet; pending=click the button 5 times and record the numbers] | Click the 'Click Me' button.",
+        "MEMORY[observed=task.html loaded in Chrome with 'Click Me' button and number 8 displayed; clicked once so far; pending=click the button 4 more times and record all numbers] | Click the 'Click Me' button.",
+        "MEMORY[observed=task.html loaded in Chrome with 'Click Me' button and number 10 displayed; clicked twice so far with numbers 1 and 8 recorded; pending=click the button 3 more times and record all numbers] | Click the 'Click Me' button.",
+        "MEMORY[observed=task.html loaded in Chrome with 'Click Me' button and number 7 displayed; clicked three times so far with numbers 1, 8, and 10 recorded; pending=click the button 2 more times and record all numbers] | Click the 'Click Me' button.",
+        "MEMORY[observed=task.html loaded in Chrome with 'Click Me' button and number 2 displayed; clicked four times so far with numbers 1, 8, 10, and 7 recorded; pending=click the button one more time and record the final number] | Click the 'Click Me' button.",
+        "MEMORY[observed=task.html loaded in Chrome with 'Click Me' button and number 2 displayed; clicked five times with numbers 1, 8, 10, 7, and 2 recorded; pending=enter the product of these numbers into the form] | Tap on the input field labeled 'Enter the product' to activate it."
+      ],
+      "source_response_sha256s": [
+        "bab1bc912c6734b08cc117484c31de089afb20c95d99993881d028ab50f4a78a",
+        "30e84acc80a6c4da2b145872a49b817b8a2f273f71d50c82585e12a9e88a245a",
+        "041b3b6f2319bf0ab1c010a859f01cf2ccf1b74a9b8dba2b4a9f88bc491bdd4e",
+        "b8d1144ee3781324886c1e1e52efaddf68f8653c3138a89ee3b1ac416fd71384",
+        "78a41cddabaab47695ca768e3c8b614c467852a2c3d4dd7b3c859283b7e74867",
+        "6aa918ef502d5562037a32c392fe3fbb3cb2749a5bcce71a24a63dd5888a0d9c",
+        "9a54f845859b57f5469d702d12caa61b3f98b87c97221f8787b83ebc01232ec0",
+        "f57ee2eed486ffa334cb8ee276479df8218eca0c86d85d097d12da07d293118b"
+      ],
+      "source_steps": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "source_window_count": 8,
+      "trigger_step": 18,
+      "triggered": true
+    },
+    "task_name": "BrowserMultiply",
+    "value_coverage": {
+      "all_expected_values_covered": true,
+      "all_expected_values_rendered": true,
+      "exact_observation_phrases": [
+        "number 1 displayed",
+        "number 8 displayed",
+        "number 10 displayed",
+        "number 7 displayed",
+        "number 2 displayed"
+      ],
+      "expected_values": [
+        "1",
+        "8",
+        "10",
+        "7",
+        "2"
+      ],
+      "found_values": [
+        "1",
+        "8",
+        "10",
+        "7",
+        "2"
+      ],
+      "rendered_found_values": [
+        "1",
+        "8",
+        "10",
+        "7",
+        "2"
+      ]
+    }
+  },
+  "r2_browser": {
+    "episode_id": "BrowserMultiply_20260806_54623170",
+    "historical_reward": 0.0,
+    "opportunity": {
+      "assessment": {
+        "action_family": "type_text",
+        "blocked": true,
+        "eligible": true,
+        "event": "result_action_review",
+        "executed_action_count": 18,
+        "native_max_steps": 22,
+        "proposal_payload_stored_or_rendered": false,
+        "reason": "one_shot_late_raw_evidence_rehydration",
+        "remaining_native_decision_slots": 3,
+        "request_step": 18
+      },
+      "deferred_proposal": {
+        "action_family": "type_text",
+        "action_summary": "MEMORY[observed=Enter the product field is active; verified=button clicked 5 times; pending=enter the product of the 5 numbers] | Type the product of the 5 numbers into the input field.",
+        "response_sha256": "7fde6fb4b72b94a2d7d8b84bbaf90857bc04b21324e80b44b69ae12aba529942"
+      },
+      "deferred_proposal_excluded": true,
+      "prepared_injection": {
+        "preparation_error": null,
+        "source_response_sha256s": [
+          "8b19f8fe0d498d5cf31ec9897922aa58d30c5ea4252ccfee72286853f7c5f93b",
+          "20c5aa859aa5d6b7fe4c4fb45e3dc62429bfbbf54d189c0ef4a82c3fca0071b6",
+          "0fdb9e4da90f8cc877b33ecaeaac3e39414d7534cf54223db555516afbda17bb",
+          "5f474fc899194d15bf09e2239539cf89dd155da8673bd3619ea6bcd16b8ec1a7",
+          "13ec5e881371684a7517504ddddd0daacbd63f0a14230b98cccc0b626c52793b",
+          "5a936fcc8b4253c86c4a2fd361952c11688d8e4dd68d08f9e66fd0d5388ccbf6",
+          "6c64c168713027d6853deed20572a608ef6e76afdc093ec08f9b23fd4ad0dd87",
+          "829cc2f51964f9f9645df56737ee3aaae1a0fc70aa26c283eec09cd178b4b59c"
+        ],
+        "source_steps": [
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17
+        ],
+        "text": "LATE MODEL-AUTHORED EVIDENCE (unverified; expires after this request):\n- source step 10 (response 8b19f8fe0d498d5cf31ec9897922aa58d30c5ea4252ccfee72286853f7c5f93b): THOUGHT: The goal is to open the task.html file with Chrome and proceed with the instructions. The current screen shows a prompt asking how to open the file, with options for \"Just once\" or \"Always.\" Selecting \"Just once\" will allow me to open the file with Chrome without changing default settings permanently. ACTION: Tap on \"Just once\" to open the task.html file with Chrome.\n- source step 11 (response 20c5aa859aa5d6b7fe4c4fb45e3dc62429bfbbf54d189c0ef4a82c3fca0071b6): THOUGHT: The page appears to be loading or not displaying content yet. I need to wait for it to fully load so that I can interact with the button and record the numbers displayed. ACTION: Wait for 2 seconds to allow the page to load completely.\n- source step 12 (response 0fdb9e4da90f8cc877b33ecaeaac3e39414d7534cf54223db555516afbda17bb): THOUGHT: The goal is to click the button 5 times and remember the numbers displayed. Currently, the number '1' is shown, which suggests that the first click has already been registered or this is the initial state before any clicks. I need to proceed with clicking the button four more times to complete the required five clicks. ACTION: MEMORY[observed=button labeled \"Click Me\" visible; current number displayed is 1; verified=page loaded with interactive button; pending=click button 4 more times to record all 5 numbers] | Click on the \"Click Me\" button.\n- source step 13 (response 5f474fc899194d15bf09e2239539cf89dd155da8673bd3619ea6bcd16b8ec1a7): THOUGHT: I need to click the \"Click Me\" button four more times to record all five numbers displayed. The current number shown is 8, which is the first number in the sequence. ACTION: MEMORY[observed=number 8 displayed; verified=page loaded with interactive button; pending=click button 4 more times to record all 5 numbers] | Click on the \"Click Me\" button.\n- source step 14 (response 13ec5e881371684a7517504ddddd0daacbd63f0a14230b98cccc0b626c52793b): THOUGHT: I need to continue clicking the \"Click Me\" button to record all five numbers displayed. So far, I've clicked it twice and seen the number 10. I should click it three more times to complete the task of recording all five numbers. ACTION: MEMORY[observed=number 10 displayed after second click; verified=page loaded with interactive button; pending=click button 3 more times to record all 5 numbers] | Click on the Click Me button.\n- source step 15 (response 5a936fcc8b4253c86c4a2fd361952c11688d8e4dd68d08f9e66fd0d5388ccbf6): THOUGHT: I need to click the \"Click Me\" button two more times to complete the requirement of clicking it five times total. The current number displayed is 7, which will be one of the numbers I need to remember for calculating the product later. ACTION: MEMORY[observed=number 7 displayed after 3 clicks; verified=button clicked 3 times; pending=click button 2 more times to record all 5 numbers] | Click on the \"Click Me\" button.\n- source step 16 (response 6c64c168713027d6853deed20572a608ef6e76afdc093ec08f9b23fd4ad0dd87): THOUGHT: I need to click the \"Click Me\" button two more times to complete the task of recording all five numbers displayed. The current screen shows the number 2, which is likely one of the numbers I need to remember. After clicking the button twice more, I will have all five numbers and can then calculate their product. ACTION: MEMORY[observed=number 2 displayed; verified=button clicked 3 times; pending=click button 2 more times to record all 5 numbers] | Click on the \"Click Me\" button.\n- source step 17 (response 829cc2f51964f9f9645df56737ee3aaae1a0fc70aa26c283eec09cd178b4b59c): THOUGHT: I need to click the \"Click Me\" button two more times to complete the task of clicking it five times total. This will allow me to record all five numbers displayed and then calculate their product. ACTION: MEMORY[observed=button clicked 3 times; verified=button clicked 3 times; pending=click button 2 more times to record all 5 numbers] | Click on the \"Click Me\" button.\nBefore choosing any result action, reconstruct the exact task-relevant facts in step order, check that all required observations are covered, and independently recompute every arithmetic or logical constraint. Do not assume common, default, or example values. If evidence is insufficient or contradictory, gather visible evidence instead of guessing. The current screenshot is authoritative; decide the action yourself.",
+        "text_sha256": "fe67576e9baa54beb357a1034dbae13ec8e6553f79389b6f2fc92c0e8457b2b9",
+        "ticket_id": "lrer_inject_0001"
+      },
+      "source_action_summaries": [
+        "Tap on \"Just once\" to open the task.html file with Chrome.",
+        "Wait for 2 seconds to allow the page to load completely.",
+        "MEMORY[observed=button labeled \"Click Me\" visible; current number displayed is 1; verified=page loaded with interactive button; pending=click button 4 more times to record all 5 numbers] | Click on the \"Click Me\" button.",
+        "MEMORY[observed=number 8 displayed; verified=page loaded with interactive button; pending=click button 4 more times to record all 5 numbers] | Click on the \"Click Me\" button.",
+        "MEMORY[observed=number 10 displayed after second click; verified=page loaded with interactive button; pending=click button 3 more times to record all 5 numbers] | Click on the Click Me button.",
+        "MEMORY[observed=number 7 displayed after 3 clicks; verified=button clicked 3 times; pending=click button 2 more times to record all 5 numbers] | Click on the \"Click Me\" button.",
+        "MEMORY[observed=number 2 displayed; verified=button clicked 3 times; pending=click button 2 more times to record all 5 numbers] | Click on the \"Click Me\" button.",
+        "MEMORY[observed=button clicked 3 times; verified=button clicked 3 times; pending=click button 2 more times to record all 5 numbers] | Click on the \"Click Me\" button."
+      ],
+      "source_response_sha256s": [
+        "8b19f8fe0d498d5cf31ec9897922aa58d30c5ea4252ccfee72286853f7c5f93b",
+        "20c5aa859aa5d6b7fe4c4fb45e3dc62429bfbbf54d189c0ef4a82c3fca0071b6",
+        "0fdb9e4da90f8cc877b33ecaeaac3e39414d7534cf54223db555516afbda17bb",
+        "5f474fc899194d15bf09e2239539cf89dd155da8673bd3619ea6bcd16b8ec1a7",
+        "13ec5e881371684a7517504ddddd0daacbd63f0a14230b98cccc0b626c52793b",
+        "5a936fcc8b4253c86c4a2fd361952c11688d8e4dd68d08f9e66fd0d5388ccbf6",
+        "6c64c168713027d6853deed20572a608ef6e76afdc093ec08f9b23fd4ad0dd87",
+        "829cc2f51964f9f9645df56737ee3aaae1a0fc70aa26c283eec09cd178b4b59c"
+      ],
+      "source_steps": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "source_window_count": 8,
+      "trigger_step": 18,
+      "triggered": true
+    },
+    "task_name": "BrowserMultiply"
+  },
+  "r2_six_successes": [
+    {
+      "episode_id": "ExpenseDeleteMultiple2_20260806_a27af967",
+      "historical_reward": 1.0,
+      "opportunity": {
+        "assessment": null,
+        "deferred_proposal": null,
+        "deferred_proposal_excluded": true,
+        "prepared_injection": null,
+        "source_action_summaries": [],
+        "source_response_sha256s": [],
+        "source_steps": [],
+        "source_window_count": 0,
+        "trigger_step": null,
+        "triggered": false
+      },
+      "task_name": "ExpenseDeleteMultiple2"
+    },
+    {
+      "episode_id": "RetroSavePlaylist_20260806_269b2c65",
+      "historical_reward": 1.0,
+      "opportunity": {
+        "assessment": null,
+        "deferred_proposal": null,
+        "deferred_proposal_excluded": true,
+        "prepared_injection": null,
+        "source_action_summaries": [],
+        "source_response_sha256s": [],
+        "source_steps": [],
+        "source_window_count": 0,
+        "trigger_step": null,
+        "triggered": false
+      },
+      "task_name": "RetroSavePlaylist"
+    },
+    {
+      "episode_id": "SimpleCalendarAddOneEvent_20260806_728d3349",
+      "historical_reward": 1.0,
+      "opportunity": {
+        "assessment": null,
+        "deferred_proposal": null,
+        "deferred_proposal_excluded": true,
+        "prepared_injection": null,
+        "source_action_summaries": [],
+        "source_response_sha256s": [],
+        "source_steps": [],
+        "source_window_count": 0,
+        "trigger_step": null,
+        "triggered": false
+      },
+      "task_name": "SimpleCalendarAddOneEvent"
+    },
+    {
+      "episode_id": "SportsTrackerTotalDurationForCategoryThisWeek_20260806_e34aeaf5",
+      "historical_reward": 1.0,
+      "opportunity": {
+        "assessment": null,
+        "deferred_proposal": null,
+        "deferred_proposal_excluded": true,
+        "prepared_injection": null,
+        "source_action_summaries": [],
+        "source_response_sha256s": [],
+        "source_steps": [],
+        "source_window_count": 0,
+        "trigger_step": null,
+        "triggered": false
+      },
+      "task_name": "SportsTrackerTotalDurationForCategoryThisWeek"
+    },
+    {
+      "episode_id": "RecipeDeleteMultipleRecipesWithConstraint_20260806_b4feab19",
+      "historical_reward": 1.0,
+      "opportunity": {
+        "assessment": null,
+        "deferred_proposal": null,
+        "deferred_proposal_excluded": true,
+        "prepared_injection": null,
+        "source_action_summaries": [],
+        "source_response_sha256s": [],
+        "source_steps": [],
+        "source_window_count": 0,
+        "trigger_step": null,
+        "triggered": false
+      },
+      "task_name": "RecipeDeleteMultipleRecipesWithConstraint"
+    },
+    {
+      "episode_id": "OsmAndMarker_20260806_8517b31f",
+      "historical_reward": 1.0,
+      "opportunity": {
+        "assessment": null,
+        "deferred_proposal": null,
+        "deferred_proposal_excluded": true,
+        "prepared_injection": null,
+        "source_action_summaries": [],
+        "source_response_sha256s": [],
+        "source_steps": [],
+        "source_window_count": 0,
+        "trigger_step": null,
+        "triggered": false
+      },
+      "task_name": "OsmAndMarker"
+    }
+  ],
+  "runtime_policy_module": "raven_m.official_qwen_mobile.r15_derived_evidence_consolidation",
+  "schema": "sys_r2_lrer_offline_replay_v1",
+  "status": "PASS",
+  "system_id": "sys_r2_late_raw_evidence_rehydration_v1",
+  "totals": {
+    "generation_calls": 0,
+    "r15_trigger_count": 1,
+    "r2_episode_count": 7,
+    "r2_six_success_trigger_count": 0,
+    "r2_trigger_count": 1
+  }
+}

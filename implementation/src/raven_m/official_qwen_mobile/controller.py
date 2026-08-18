@@ -431,6 +431,48 @@ class OfficialQwenMobileController:
                         "auxiliary_call_attempt_index": None,
                         "normal_injection": None,
                     }
+                    if hasattr(self.recovery_policy, "prepare_direct_injection"):
+                        direct = self.recovery_policy.prepare_direct_injection(
+                            context={
+                                "request_step": step_index,
+                                "goal": effective_goal,
+                                "recent_prior_executed_responses": [
+                                    {
+                                        "source_step": int(prior.get("step")),
+                                        "thought": str((prior.get("decision") or {}).get("thought") or ""),
+                                        "action_summary": str((prior.get("decision") or {}).get("action_summary") or ""),
+                                        "response_sha256": str(((prior.get("model_call") or {}).get("response_sha256")) or ""),
+                                    }
+                                    for prior in steps
+                                    if bool(prior.get("executed"))
+                                    and isinstance(prior.get("decision"), dict)
+                                ][-8:],
+                                "r2_memory_audit": (
+                                    self.working_memory.audit_record()
+                                    if self.working_memory is not None else {}
+                                ),
+                                "current_screenshot_sha256": before["screenshot_sha256"],
+                                "current_screenshot_path": str(screenshot.resolve()),
+                            }
+                        )
+                        if direct is not None:
+                            if not isinstance(direct, dict):
+                                raise RuntimeError("Direct recovery injection must be a dict")
+                            recovery_text = str(direct.get("injection_text") or "")
+                            direct_ticket = str(direct.get("ticket_id") or "")
+                            if not recovery_text or not direct_ticket:
+                                raise RuntimeError("Direct recovery injection is incomplete")
+                            recovery_injection = {
+                                "ticket_id": direct_ticket,
+                                "source_auxiliary_call_id": None,
+                                "direct_injection": True,
+                                "exact_injected_text": recovery_text,
+                                "exact_injected_text_sha256": sha256(recovery_text.encode("utf-8")).hexdigest(),
+                                "rendered_chars": len(recovery_text),
+                                "source_steps": list(direct.get("source_steps") or []),
+                                "source_response_sha256s": list(direct.get("source_response_sha256s") or []),
+                            }
+                            recovery_step["normal_injection"] = recovery_injection
                     recovery_prepare_started = time.perf_counter()
                     prepared_aux = self.recovery_policy.prepare_aux(
                         context={
@@ -458,6 +500,8 @@ class OfficialQwenMobileController:
                     recovery_projection_cpu_seconds += recovery_prepare_seconds
                     recovery_step["prepare_aux_seconds"] = recovery_prepare_seconds
                     if prepared_aux is not None:
+                        if recovery_injection is not None:
+                            raise RuntimeError("Policy prepared direct and auxiliary injections together")
                         max_auxiliary_calls = int(
                             getattr(self.recovery_policy, "max_auxiliary_calls", 1)
                         )
@@ -762,6 +806,46 @@ class OfficialQwenMobileController:
                     termination_reason = "official_output_invalid"
                     break
                 record["decision"] = decision.audit_record()
+                if self.recovery_policy is not None and hasattr(
+                    self.recovery_policy, "review_result_action"
+                ):
+                    result_action_review = self.recovery_policy.review_result_action(
+                        proposed_action=decision.canonical_action,
+                        terminal_status=decision.terminal_status,
+                        executed_action_count=sum(
+                            1 for prior in steps if bool(prior.get("executed"))
+                        ),
+                        native_max_steps=self.max_steps,
+                        remaining_native_decision_slots=(
+                            self.max_steps - step_index - 1
+                        ),
+                        request_step=step_index,
+                    )
+                    record["late_raw_evidence_review"] = result_action_review
+                    if bool(result_action_review.get("blocked")):
+                        record["layers"]["L2_protocol_coordinate"] = {
+                            "parse_valid": True,
+                            "model_canonical_action": decision.canonical_action,
+                            "executed_canonical_action": None,
+                            "deferred_for_late_raw_evidence_rehydration": True,
+                        }
+                        record["layers"]["L3_execution"] = {
+                            "attempted": False,
+                            "completed": False,
+                            "blocked_by_late_raw_evidence_rehydration": True,
+                        }
+                        record["history_commit"] = {
+                            "policy": getattr(self.recovery_policy, "system_id", "unknown"),
+                            "model_action_summary": decision.action_summary,
+                            "committed_history_summary": None,
+                            "attestation_applied": False,
+                            "controller_guidance_applied": False,
+                            "deferred_response_not_committed": True,
+                        }
+                        record["history_after"] = list(history)
+                        steps.append(record)
+                        log(record)
+                        continue
                 if isinstance(self.working_memory, VerifiedProgressMemory):
                     record["progress_parse"] = self.working_memory.record_progress_parse(
                         decision.action_summary

@@ -1,0 +1,366 @@
+{
+  "content_sha256": "c33ea9f37c1497fa37d3d0b9ccd6e4fca3ac9bdf6dbf0e70a8bdfc4f231a8380",
+  "episode_id": "RetroSavePlaylist_20260806_269b2c65",
+  "historical_reward": 1.0,
+  "historical_success": true,
+  "native_max_steps": 50,
+  "schema": "sys_r2_lrer_source_episode_snapshot_v1",
+  "source_arm": "A1-R2",
+  "source_episode_path": "runs/a1r2_cvp/official_qwen_20260814T145307_50081981/episodes/RetroSavePlaylist_20260806_269b2c65/episode.json",
+  "source_episode_sha256": "56ded696d6c6f0c13bbd0d8dcef9583b57af6ad8cb3176133ac36dede24c07e9",
+  "steps": [
+    {
+      "action_summary": "Open the app drawer to find and launch the Retro Music app.",
+      "canonical_action": {
+        "duration_ms": 400,
+        "type": "swipe",
+        "x": 0.4994994994994995,
+        "x2": 0.4994994994994995,
+        "y": 0.7387387387387387,
+        "y2": 0.2782782782782783
+      },
+      "executed": true,
+      "source_call_id": "5b4029b9-4051-46dc-85a6-37fb35c1ffe5",
+      "source_response_sha256": "5fb6cebc41defb59e941e39047e342912bf25f81e43abd78cafccc6f17b3bacc",
+      "step": 0,
+      "terminal_status": null,
+      "thought": "To create a playlist in Retro Music, I first need to locate and open the Retro Music app. Since it's not visible on the home screen, I should access the app drawer or search for the app."
+    },
+    {
+      "action_summary": "Swipe up to scroll down the app drawer and look for the Retro Music app.",
+      "canonical_action": {
+        "duration_ms": 400,
+        "type": "swipe",
+        "x": 0.4994994994994995,
+        "x2": 0.4914914914914915,
+        "y": 0.7847847847847848,
+        "y2": 0.3283283283283283
+      },
+      "executed": true,
+      "source_call_id": "aedbc6eb-5eb1-4995-aac5-1887172df413",
+      "source_response_sha256": "e8665b14bfcc281e694886da3e2f2066a2ad1b2b11a638a056e5d98b57e34b54",
+      "step": 1,
+      "terminal_status": null,
+      "thought": "To create a playlist in Retro Music, I need to first locate and open the Retro Music app. Since it's not visible on this screen, I should scroll through the app drawer to find it."
+    },
+    {
+      "action_summary": "MEMORY[observed=Retro Music app icon is visible in the app drawer; verified=none; pending=Launch Retro Music app] | Tap on the Retro Music app icon to open it.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.6156156156156156,
+        "y": 0.6986986986986987
+      },
+      "executed": true,
+      "source_call_id": "46019efa-958e-4cf7-9525-1e582708adf9",
+      "source_response_sha256": "aea886bf6ab415336a1f2c230cb17fec342effddab6953a4a240ecdd378cbdf3",
+      "step": 2,
+      "terminal_status": null,
+      "thought": "I need to open the Retro Music app to start creating the playlist \"Metal Mayhem 375\". The app icon is visible on the screen, so I should tap it to launch the app."
+    },
+    {
+      "action_summary": "Wait for 2 seconds to allow the Retro Music app to finish loading.",
+      "canonical_action": {
+        "duration_ms": 2000,
+        "type": "wait"
+      },
+      "executed": true,
+      "source_call_id": "db29bb4a-ae3d-4c34-b489-9715d84bbfee",
+      "source_response_sha256": "270d1dbdffeac323f53db9c8edae7e8c3c233f215d77a6c99273ae560835c4fd",
+      "step": 3,
+      "terminal_status": null,
+      "thought": "The Retro Music app is still launching, as indicated by the splash screen. I need to wait for the app to fully load before proceeding with creating the playlist."
+    },
+    {
+      "action_summary": "Tap on the 'playlists' icon in the bottom navigation bar to access the playlist management section.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.9019019019019019,
+        "y": 0.928928928928929
+      },
+      "executed": true,
+      "source_call_id": "b7401bc1-cf79-4525-8434-34d46ee14d2d",
+      "source_response_sha256": "85c517c7fa1a77cb034a5b764beae4f940fb38cf049dbb7c799b130346bd8622",
+      "step": 4,
+      "terminal_status": null,
+      "thought": "The Retro Music app has successfully launched, as evidenced by the visible interface. The next step is to create a playlist titled \"Metal Mayhem 375\" with the specified songs. To do this, I need to navigate to the section where playlists can be managed or created. Typically, this would involve accessing the library or playlists section of the app."
+    },
+    {
+      "action_summary": "Tap on the three-dot menu icon at the top right corner to explore options for creating a new playlist.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.948948948948949,
+        "y": 0.0890890890890891
+      },
+      "executed": true,
+      "source_call_id": "deb3f168-29f1-48c6-bf8b-48b1a89ffc39",
+      "source_response_sha256": "ec480695f93d0899df6849e16728882c95d5baff05a00c85d5db7db1776f30a9",
+      "step": 5,
+      "terminal_status": null,
+      "thought": "To create a new playlist, I need to find an option that allows me to add or create playlists. Typically, this might be found in the menu options, often represented by three dots or a plus sign."
+    },
+    {
+      "action_summary": "Tap on 'New playlist' to start creating the playlist.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.6916916916916916,
+        "y": 0.2072072072072072
+      },
+      "executed": true,
+      "source_call_id": "a44d79f8-2ead-4a00-8e2f-d6386d1150cb",
+      "source_response_sha256": "c8defc8e37979cbde0333a96a5e9c547c1f57852152fe7093dd5b0cda27ac9fb",
+      "step": 6,
+      "terminal_status": null,
+      "thought": "The goal is to create a new playlist titled \"Metal Mayhem 375\" with specific songs. The current screen shows the option to create a new playlist, which aligns with the next step in achieving the task."
+    },
+    {
+      "action_summary": "MEMORY[observed=Playlist name input field is visible; verified=none; pending=Enter playlist name \"Metal Mayhem 375\"] | Type \"Metal Mayhem 375\" into the playlist name field.",
+      "canonical_action": {
+        "clear_text": false,
+        "text": "Metal Mayhem 375",
+        "type": "type_text"
+      },
+      "executed": true,
+      "source_call_id": "a86ec5aa-3e9d-43df-9e51-0b8a0139188e",
+      "source_response_sha256": "4bb621e05b240264f40c7e9be09e7f180182779d54d296e2a51795e6e72d0206",
+      "step": 7,
+      "terminal_status": null,
+      "thought": "I need to enter the name \"Metal Mayhem 375\" into the playlist name field to proceed with creating the playlist as per the task requirements."
+    },
+    {
+      "action_summary": "MEMORY[observed=\"Playlist name field contains 'Metal Mayhem 375'\"; verified=\"Playlist name entered correctly\"; pending=\"Create the playlist\"] | Tap on the 'Create' button to finalize the creation of the playlist.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.7737737737737738,
+        "y": 0.4194194194194194
+      },
+      "executed": true,
+      "source_call_id": "75d6f5ac-f0d8-41bc-be6a-a22edfdd4e86",
+      "source_response_sha256": "691bc6e12f9b7f3db658140770bde810bb289e9473a78f9fa5adcc95805750eb",
+      "step": 8,
+      "terminal_status": null,
+      "thought": "The playlist name \"Metal Mayhem 375\" has been entered correctly. The next logical step is to create the playlist by tapping the 'Create' button."
+    },
+    {
+      "action_summary": "Tap on the music note icon in the bottom navigation bar to access the song library.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.3003003003003003,
+        "y": 0.928928928928929
+      },
+      "executed": true,
+      "source_call_id": "4992dad2-fcb3-4db1-a1cb-34d75e44fd45",
+      "source_response_sha256": "7b13848b35b7e80c1573d0a532b84620ed23cd6e0aa191fc86175acfb6bf12e5",
+      "step": 9,
+      "terminal_status": null,
+      "thought": "The playlist \"Metal Mayhem 375\" has been successfully created, but it currently contains no songs. The next step is to add the specified songs in the correct order: Heartbeat Away, Reflections, and Endless Summer. To do this, I need to navigate to the song library or search for these songs."
+    },
+    {
+      "action_summary": "Tap on the three-dot menu icon next to \"Heartbeat Away\" to open the options menu.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.9369369369369369,
+        "y": 0.3083083083083083
+      },
+      "executed": true,
+      "source_call_id": "3095c4a4-cf70-405a-b3cf-5c8e40292413",
+      "source_response_sha256": "15d87838bd4234d287d8dd39952271110c429feb39c954c80dc97f36ba5f3429",
+      "step": 10,
+      "terminal_status": null,
+      "thought": "I need to add songs to the newly created playlist \"Metal Mayhem 375\" in the specified order. The first song on the list is \"Heartbeat Away,\" which I can see in the current screen. To add it to the playlist, I should tap on the three-dot menu next to \"Heartbeat Away\" to access options for adding it to a playlist."
+    },
+    {
+      "action_summary": "Tap on \"Add to playlist\" in the options menu.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.7197197197197197,
+        "y": 0.47847847847847846
+      },
+      "executed": true,
+      "source_call_id": "83c4d52e-bb5f-45cc-affc-6ec0940a59fd",
+      "source_response_sha256": "12625ba75503289997fb9e12d95f98c23f1f71d7191103b184b4497dc97d6275",
+      "step": 11,
+      "terminal_status": null,
+      "thought": "I need to add \"Heartbeat Away\" to the newly created playlist \"Metal Mayhem 375\". The options menu is open, and I should select \"Add to playlist\" to proceed with adding this song to the correct playlist."
+    },
+    {
+      "action_summary": "Tap on \"Metal Mayhem 375\" in the \"Add to playlist\" dialog to add \"Heartbeat Away\" to the playlist.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.3283283283283283,
+        "y": 0.5345345345345346
+      },
+      "executed": true,
+      "source_call_id": "2ff9d3f0-cbf7-4297-9b51-60841639a22c",
+      "source_response_sha256": "833e388ddcd3fec05a1bdd32492507787b92e2a689745cd93a0896edff086792",
+      "step": 12,
+      "terminal_status": null,
+      "thought": "The goal is to add the song \"Heartbeat Away\" to the playlist \"Metal Mayhem 375\". The current screen shows the \"Add to playlist\" dialog with the option to select \"Metal Mayhem 375\", which matches the required playlist name. Selecting this option will add the song to the correct playlist."
+    },
+    {
+      "action_summary": "Tap on the three-dot menu icon next to Reflections to open the options menu.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.9369369369369369,
+        "y": 0.6776776776776777
+      },
+      "executed": true,
+      "source_call_id": "4eb509b1-58ec-449b-897d-5a59257a7597",
+      "source_response_sha256": "58c60429876d674da52a2f8e085df5cc2ff97803e29652156cd2a4655347a1b5",
+      "step": 13,
+      "terminal_status": null,
+      "thought": "I need to add \"Reflections\" to the playlist next. The three-dot menu icon next to \"Reflections\" is visible, which will allow me to access the options to add it to the playlist."
+    },
+    {
+      "action_summary": "Tap on \"Add to playlist\" in the options menu.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.7197197197197197,
+        "y": 0.1981981981981982
+      },
+      "executed": true,
+      "source_call_id": "6d89c4c2-ee76-4f81-a2ec-c8bced4e9cc4",
+      "source_response_sha256": "64a145cf939220d8860a0a43de8b4b9280192b8a797359a31a93ad4400738461",
+      "step": 14,
+      "terminal_status": null,
+      "thought": "I need to add \"Reflections\" to the playlist \"Metal Mayhem 375\". The options menu is open, and I can see the \"Add to playlist\" option, which will allow me to select the correct playlist."
+    },
+    {
+      "action_summary": "Tap on \"Metal Mayhem 375\" in the Add to playlist dialog to add Reflections to the playlist.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.3283283283283283,
+        "y": 0.5345345345345346
+      },
+      "executed": true,
+      "source_call_id": "52166e0d-fc59-464e-9aaf-520d2405d4b2",
+      "source_response_sha256": "3d443da5f59ee0b44139a544e356594b3e3f0548acab2fe0b2e915e15b404b02",
+      "step": 15,
+      "terminal_status": null,
+      "thought": "I need to add the song \"Reflections\" to the playlist \"Metal Mayhem 375\". The dialog box is open, showing the option to select the playlist. I should tap on \"Metal Mayhem 375\" to add this song to the playlist."
+    },
+    {
+      "action_summary": "Tap on the three-dot menu icon next to Endless Summer to open the options menu.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.9369369369369369,
+        "y": 0.23523523523523523
+      },
+      "executed": true,
+      "source_call_id": "bd138c3c-7f83-4c4a-b2ec-e91b949da794",
+      "source_response_sha256": "f51aadd9784fa8152d6aeabd23bc0130a49e4ff91ec44ccdebb8a4f80c79cd7d",
+      "step": 16,
+      "terminal_status": null,
+      "thought": "I need to add \"Endless Summer\" to the playlist \"Metal Mayhem 375\". The song is visible on the screen, and I should tap the three-dot menu next to it to access the options for adding it to a playlist."
+    },
+    {
+      "action_summary": "Tap on \"Add to playlist\" in the options menu.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.7217217217217218,
+        "y": 0.4044044044044044
+      },
+      "executed": true,
+      "source_call_id": "d09a848c-a64e-4180-a44d-5502f9b32c8e",
+      "source_response_sha256": "17a5b25d1848899efe606ce65220a84f58df6a5a28f0b825c653a85c0a1e3932",
+      "step": 17,
+      "terminal_status": null,
+      "thought": "I need to add \"Endless Summer\" to the playlist \"Metal Mayhem 375\". The options menu is open, and I should select \"Add to playlist\" to proceed with adding this song to the desired playlist."
+    },
+    {
+      "action_summary": "Tap on \"Metal Mayhem 375\" in the Add to playlist dialog to add Endless Summer to the playlist.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.3003003003003003,
+        "y": 0.5345345345345346
+      },
+      "executed": true,
+      "source_call_id": "13eda966-ec69-45d6-ad98-675bdfe73d37",
+      "source_response_sha256": "00c7ac8ce6f8fdda2d014c10ad299bcf1845a3d9c1e96161c97119cfa07aa27a",
+      "step": 18,
+      "terminal_status": null,
+      "thought": "I need to add \"Endless Summer\" to the playlist \"Metal Mayhem 375\". The dialog box is open, showing the option to select the playlist. I should tap on \"Metal Mayhem 375\" to add this song to the playlist."
+    },
+    {
+      "action_summary": "Tap on the 'playlists' icon in the bottom navigation bar to access the playlist management section.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.9019019019019019,
+        "y": 0.928928928928929
+      },
+      "executed": true,
+      "source_call_id": "bb546325-e1bf-43ec-908d-1b256b4edd90",
+      "source_response_sha256": "01d95638e376dd17c7305ec0a31f8800a6f1dbd135a3fd733be3afcc8c252b08",
+      "step": 19,
+      "terminal_status": null,
+      "thought": "The playlist \"Metal Mayhem 375\" has been created and the specified songs have been added in the correct order. The next step is to export this playlist to the Downloads directory. To do this, I need to navigate back to the playlist section where I can find options for exporting or sharing the playlist."
+    },
+    {
+      "action_summary": "Tap on the three-dot menu icon next to the 'Metal Mayhem 375' playlist to open the options menu.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.42542542542542544,
+        "y": 0.38038038038038036
+      },
+      "executed": true,
+      "source_call_id": "3d1bf597-15ec-4425-9284-a48d06f07180",
+      "source_response_sha256": "c5deff8e2b1ce8dcc74cc3a06faacba5762d03f60fc5a2516448932513a97e18",
+      "step": 20,
+      "terminal_status": null,
+      "thought": "The playlist 'Metal Mayhem 375' has been successfully created with the specified songs. The next step is to export this playlist to the Downloads directory. To do this, I need to access the options menu for the playlist, which is typically done by tapping on the three-dot menu icon next to the playlist."
+    },
+    {
+      "action_summary": "Tap on 'Save as file' to begin exporting the playlist.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.5735735735735735,
+        "y": 0.7587587587587588
+      },
+      "executed": true,
+      "source_call_id": "04731c22-179b-41fc-97de-01231f00be9f",
+      "source_response_sha256": "a5224f98ab044c5e0ee7fcfa075b17270780f90ac23910c09049db15ce257243",
+      "step": 21,
+      "terminal_status": null,
+      "thought": "To export the playlist, I need to select the 'Save as file' option from the menu. This will likely initiate the process of saving the playlist to a specified location on the device, such as the Downloads directory."
+    },
+    {
+      "action_summary": "Wait for 2 seconds to allow the export process to complete and the next screen to load.",
+      "canonical_action": {
+        "duration_ms": 2000,
+        "type": "wait"
+      },
+      "executed": true,
+      "source_call_id": "c885b844-74b2-4d68-88b1-d75dcb2bd657",
+      "source_response_sha256": "e3d23b60dae120a59609bef988bd09dc43fa8c2e29c0aa6298fb8d5dfdc4c76f",
+      "step": 22,
+      "terminal_status": null,
+      "thought": "The screen appears to be blank or loading, which might indicate that the export process is still in progress or that there's a delay in displaying the next screen. Since we've already initiated the 'Save as file' action, waiting for a moment could allow the system to complete the export and display the appropriate confirmation or file save dialog."
+    },
+    {
+      "action_summary": "MEMORY[observed=Playlist file named \"Metal Mayhem 375\" is ready to be saved in Downloads; verified=Playlist created with correct songs, export initiated; pending=Finalize export by saving file] | Tap on the 'SAVE' button to save the playlist file to the Downloads directory.",
+      "canonical_action": {
+        "type": "tap",
+        "x": 0.8588588588588588,
+        "y": 0.9459459459459459
+      },
+      "executed": true,
+      "source_call_id": "be779b8a-b68d-4feb-b845-f85ff54169e6",
+      "source_response_sha256": "9705059e580a4cbf985dfe68e5abf5db90bbab7c95ccb85d17d57d434f561e07",
+      "step": 23,
+      "terminal_status": null,
+      "thought": "The goal was to create a playlist titled \"Metal Mayhem 375\" with specific songs and export it to the Downloads directory. The current screen shows that the playlist file is ready to be saved in the Downloads folder, as indicated by the 'SAVE' button at the bottom right. This suggests that all prior steps have been completed successfully, and saving the file will finalize the task."
+    },
+    {
+      "action_summary": "MEMORY[observed=Playlist 'Metal Mayhem 375' with 3 songs visible; notification confirms 'Saved playlist to 33.'; verified=Playlist created with correct songs, export initiated and completed; pending=None] | Terminate the task as it has been successfully completed.",
+      "canonical_action": null,
+      "executed": false,
+      "source_call_id": "356c9f35-97fb-459f-ab1c-2d4f44c4ad73",
+      "source_response_sha256": "102bdd46c87a6b39c34cf65f2694c0cd87bf4ac11ea9a973cf0f7f9d364111b4",
+      "step": 24,
+      "terminal_status": "success",
+      "thought": "The playlist has been successfully created and exported, as indicated by the confirmation message. The task requirements have been fully met."
+    }
+  ],
+  "task_goal": "Create a playlist in Retro Music titled \"Metal Mayhem 375\" with the following songs, in order: Heartbeat Away, Reflections, Endless Summer. Then export the playlist to the Downloads directory on the device.",
+  "task_name": "RetroSavePlaylist",
+  "task_seed": 20260806
+}
