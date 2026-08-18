@@ -9,8 +9,10 @@ is read-only and adds no model call or action intervention.
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
+from datetime import datetime, timezone
 from hashlib import sha256
 import json
+from pathlib import Path
 import re
 from typing import Any
 
@@ -18,11 +20,46 @@ from typing import Any
 SCHEMA = "a4v2.faithful_offline_awm_bank.v1"
 MECHANISM_ID = "a4v2_faithful_offline_awm_memory_v1"
 UPSTREAM_COMMIT = "8c0ff8cd11d648c8fceb99e4e42f37e3b75381b1"
+EXPECTED_ROUTES = {
+    ("browser", "open_local_task"),
+    ("pro_expense", "delete"),
+    ("retro_music", "create_playlist"),
+    ("simple_calendar_pro", "add_event"),
+    ("opentracks", "retrieve_duration"),
+    ("broccoli", "delete_recipe"),
+    ("osmand", "open_location_result"),
+}
 
 
 def json_sha256(value: Any) -> str:
     payload = json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
     return sha256(payload.encode("utf-8")).hexdigest()
+
+
+def validate_acquisition_receipt(path: Path) -> dict[str, Any]:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    expected_content = json_sha256(
+        {key: value for key, value in payload.items() if key != "content_sha256"}
+    )
+    try:
+        age = (datetime.now(timezone.utc) - datetime.fromisoformat(str(payload.get("qualified_at")))).total_seconds()
+    except Exception:
+        age = float("inf")
+    if (
+        payload.get("schema") != "a4v2.acquisition_server_receipt.v1"
+        or payload.get("experiment_id") != "A4V2_FAITHFUL_OFFLINE_AWM_QWEN3VL32B_AW_HARD_S20260806_V1"
+        or payload.get("status") != "pass"
+        or payload.get("generation_calls") != 0
+        or payload.get("served_model_id") != "Qwen/Qwen3-VL-32B-Instruct"
+        or payload.get("served_model_ids_observed") != ["Qwen/Qwen3-VL-32B-Instruct"]
+        or payload.get("host") != "127.0.0.1"
+        or int(payload.get("port", -1)) != 18000
+        or payload.get("content_sha256") != expected_content
+        or age < -60
+        or age > 43200
+    ):
+        raise ValueError("A4-v2 acquisition server receipt is invalid or stale")
+    return payload
 
 
 def _compact(value: Any) -> str:
@@ -71,7 +108,10 @@ def classify_goal(goal: str) -> RouteSignature | None:
         ) else "multiple"
         return RouteSignature("broccoli", "delete_recipe", "recipe", constraint)
     if "osmand" in value and any(term in value for term in ("marker", "favorite", "location")):
-        return RouteSignature("osmand", "add_location_marker", "location", "*")
+        return RouteSignature(
+            "osmand", "open_location_result", "location",
+            "pre_final_favorite_or_marker_choice",
+        )
     return None
 
 
@@ -96,14 +136,17 @@ def validate_bank(payload: Any) -> list[InducedWorkflow]:
     induction = payload.get("induction") or {}
     if (
         induction.get("mode") != "offline_model_induced"
-        or int(induction.get("generation_calls") or 0) < 1
+        or int(induction.get("generation_calls") or 0) != 7
         or induction.get("upstream_commit") != UPSTREAM_COMMIT
         or not re.fullmatch(r"[0-9a-f]{64}", str(induction.get("prompt_sha256") or ""))
+        or not re.fullmatch(r"[0-9a-f]{64}", str(induction.get("packet_index_sha256") or ""))
+        or not re.fullmatch(r"[0-9a-f]{64}", str(induction.get("checkpoint_sha256") or ""))
+        or not re.fullmatch(r"[0-9a-f]{64}", str(induction.get("checkpoint_content_sha256") or ""))
     ):
         raise ValueError("A4-v2 bank lacks faithful offline induction provenance")
     raw_workflows = payload.get("workflows")
-    if not isinstance(raw_workflows, list) or not raw_workflows:
-        raise ValueError("A4-v2 bank has no induced workflows")
+    if not isinstance(raw_workflows, list) or len(raw_workflows) != len(EXPECTED_ROUTES):
+        raise ValueError("A4-v2 bank must contain exactly seven induced workflows")
     if payload.get("bank_sha256") != json_sha256(raw_workflows):
         raise ValueError("A4-v2 workflow payload hash drifted")
 
@@ -119,7 +162,7 @@ def validate_bank(payload: Any) -> list[InducedWorkflow]:
         donor_seeds = tuple(int(item) for item in raw.get("donor_seeds") or ())
         if len(set(donor_ids)) < 2 or len(set(donor_seeds)) < 2:
             raise ValueError(f"{workflow_id} needs at least two independent donors")
-        if not donor_tasks or len(donor_ids) != len(donor_seeds):
+        if not donor_tasks or not (len(donor_ids) == len(donor_seeds) == len(donor_tasks)):
             raise ValueError(f"{workflow_id} donor provenance is incomplete")
         text = _compact(raw.get("text"))
         numbered_steps = re.findall(r"(?:^|\s)(\d+)\.\s+", text)
@@ -141,6 +184,9 @@ def validate_bank(payload: Any) -> list[InducedWorkflow]:
                 induction_response_sha256=response_sha,
             )
         )
+    observed_routes = {(record.route.app, record.route.operation) for record in records}
+    if observed_routes != EXPECTED_ROUTES:
+        raise ValueError("A4-v2 bank route set drifted")
     return records
 
 
@@ -227,4 +273,3 @@ class FaithfulOfflineWorkflowMemory:
             "evaluator_used_during_scored_decision": False,
             "retrievals": list(self.retrievals),
         }
-

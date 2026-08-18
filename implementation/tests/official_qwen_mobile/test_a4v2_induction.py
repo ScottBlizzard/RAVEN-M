@@ -7,6 +7,7 @@ from pathlib import Path
 import pytest
 
 from raven_m.official_qwen_mobile.a4v2_induction import build_induction_packet
+from implementation.scripts.freeze_a4v2_workflow_bank import _literal_leaks
 
 
 def _episode(path: Path, *, seed: int, reward: float = 1.0) -> dict:
@@ -14,13 +15,14 @@ def _episode(path: Path, *, seed: int, reward: float = 1.0) -> dict:
         "task_name": "ExpenseDeleteSingle",
         "seed": seed,
         "task_goal": 'Delete expense "Coffee" with amount: $12.50',
+        "task_params": {"merchant": "Alice Cafe", "date": "2026-08-18"},
         "evaluator_reward": reward,
         "success": reward == 1.0,
         "error": None,
         "steps": [
             {
                 "decision": {
-                    "thought": 'Find Coffee, then open its menu.',
+                    "thought": 'Find Coffee from Alice Cafe on 2026-08-18, then open its menu.',
                     "action_summary": 'Tapped the Coffee row at x=0.5 y=0.4.',
                     "canonical_action": {"type": "tap", "x": 0.5, "y": 0.4},
                 }
@@ -60,7 +62,12 @@ def test_build_packet_masks_values_and_locks_sources(tmp_path: Path) -> None:
     assert packet["generation_calls"] == 0
     assert "Coffee" not in packet["prompt"]
     assert "$12.50" not in packet["prompt"]
+    assert "Alice Cafe" not in packet["prompt"]
+    assert "2026-08-18" not in packet["prompt"]
     assert "x=0.5" not in packet["prompt"]
+    assert {"Coffee", "$12.50", "Alice Cafe", "2026-08-18"}.issubset(packet["literal_denylist"])
+    assert _literal_leaks("1. Open Alice Cafe. 2. Continue.", packet["literal_denylist"])
+    assert not _literal_leaks("1. Open the matching record. 2. Continue.", packet["literal_denylist"])
     assert len(packet["source_lock"]) == 3
 
 

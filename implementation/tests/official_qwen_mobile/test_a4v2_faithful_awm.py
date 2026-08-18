@@ -4,6 +4,8 @@ from hashlib import sha256
 
 import pytest
 
+from implementation.scripts.build_a4v2_shuffled_ablation_bank import build as build_shuffled_bank
+
 from raven_m.official_qwen_mobile.a4v2_faithful_awm import (
     FaithfulOfflineWorkflowMemory,
     SCHEMA,
@@ -29,12 +31,43 @@ def _bank(*, operation: str = "delete") -> dict:
                 "constraint_family": "*",
             },
             "donor_ids": ["d1", "d2", "d3"],
-            "donor_task_classes": ["ExpenseDeleteMultiple", "ExpenseDeleteSingle"],
+            "donor_task_classes": ["ExpenseDeleteMultiple", "ExpenseDeleteSingle", "ExpenseDeleteDuplicates"],
             "donor_seeds": [11, 12, 13],
             "text": "1. Locate the target record using visible fields. 2. Open its delete control and confirm deletion from visible UI evidence.",
             "induction_response_sha256": _sha("induced response"),
         }
     ]
+    for workflow_id, app, route_operation in (
+        ("browser_open_v1", "browser", "open_local_task"),
+        ("retro_playlist_v1", "retro_music", "create_playlist"),
+        ("calendar_event_v1", "simple_calendar_pro", "add_event"),
+        ("opentracks_duration_v1", "opentracks", "retrieve_duration"),
+        ("broccoli_delete_v1", "broccoli", "delete_recipe"),
+        ("osmand_marker_v1", "osmand", "open_location_result"),
+    ):
+        text = (
+            "1. Search for the requested visible location and inspect the matching result. "
+            "2. Open the matching result card using only visible evidence. "
+            "3. Stop when the location-result choice surface is visible; do not select any final option."
+            if app == "osmand"
+            else "1. Inspect the current visible route state. 2. Follow the compatible visible control and verify the transition."
+        )
+        workflows.append(
+            {
+                "workflow_id": workflow_id,
+                "route": {
+                    "app": app,
+                    "operation": route_operation,
+                    "object_family": "*",
+                    "constraint_family": "*",
+                },
+                "donor_ids": [f"{workflow_id}_d1", f"{workflow_id}_d2"],
+                "donor_task_classes": ["EasyDonorOne", "EasyDonorTwo"],
+                "donor_seeds": [11, 12],
+                "text": text,
+                "induction_response_sha256": _sha(workflow_id),
+            }
+        )
     return {
         "schema": SCHEMA,
         "status": "ready",
@@ -42,10 +75,13 @@ def _bank(*, operation: str = "delete") -> dict:
         "scored_hard_inputs_used": False,
         "induction": {
             "mode": "offline_model_induced",
-            "generation_calls": 1,
+            "generation_calls": 7,
             "upstream_commit": UPSTREAM_COMMIT,
             "model_id": "test-inducer",
             "prompt_sha256": _sha("prompt"),
+            "packet_index_sha256": _sha("packet index"),
+            "checkpoint_sha256": _sha("checkpoint file"),
+            "checkpoint_content_sha256": _sha("checkpoint content"),
         },
         "workflows": workflows,
         "bank_sha256": json_sha256(workflows),
@@ -64,9 +100,9 @@ def test_exact_operation_match_injects_and_is_read_only() -> None:
 
 
 def test_same_app_different_operation_is_never_a_fallback() -> None:
-    memory = FaithfulOfflineWorkflowMemory(bank_payload=_bank(operation="add"))
+    memory = FaithfulOfflineWorkflowMemory(bank_payload=_bank())
     rendered, audit = memory.read(
-        {"goal": "Delete the following expenses from Arduia Pro Expense: A, B."}
+        {"goal": "Add the following expenses to Arduia Pro Expense: A, B."}
     )
     assert rendered == ""
     assert audit["retrieved_count"] == 0
@@ -90,6 +126,7 @@ def test_route_classifier_covers_all_seven_preregistered_families() -> None:
 def test_bank_rejects_single_donor_and_old_generic_fallback() -> None:
     payload = _bank()
     payload["workflows"][0]["donor_ids"] = ["d1"]
+    payload["workflows"][0]["donor_task_classes"] = ["ExpenseDeleteMultiple"]
     payload["workflows"][0]["donor_seeds"] = [11]
     payload["bank_sha256"] = json_sha256(payload["workflows"])
     with pytest.raises(ValueError, match="two independent donors"):
@@ -115,3 +152,13 @@ def test_bank_hash_and_induction_provenance_are_mandatory() -> None:
     with pytest.raises(ValueError, match="induction provenance"):
         validate_bank(payload)
 
+
+def test_shuffled_active_control_is_deranged_length_matched_and_valid() -> None:
+    primary = _bank()
+    control = build_shuffled_bank(primary)
+    validate_bank(control)
+    mapping = control["ablation"]["mapping"]
+    assert len(mapping) == 7
+    assert all(row["target_workflow_id"] != row["content_source_workflow_id"] for row in mapping)
+    primary_counts = {row["workflow_id"]: len(row["text"].split()) for row in primary["workflows"]}
+    assert all(len(row["text"].split()) == primary_counts[row["workflow_id"]] for row in control["workflows"])

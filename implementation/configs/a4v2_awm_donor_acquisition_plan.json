@@ -1,5 +1,8 @@
 {
-  "schema": "a4v2.awm_donor_acquisition_plan.v1",
+  "schema": "a4v2.awm_donor_acquisition_plan.v2",
+  "plan_revision": 2,
+  "supersedes_unexecuted_plan_schema": "a4v2.awm_donor_acquisition_plan.v1",
+  "revision_reason": "Before any donor generation, replace the cross-operation OpenTracks count donor with a second independent ActivityDuration seed so exact App+operation fidelity is literal rather than inferred from a broader read-metric family.",
   "status": "pending_collection",
   "parent_controller": "A0_OFFICIAL_QWEN3VL32B_SCREENSHOT_ONLY",
   "androidworld_commit": "3e50888527ef9f29b9157ecd537e408008bb1c85",
@@ -10,10 +13,11 @@
       "route_id": "browser_open_local_task",
       "route": {"app": "browser", "operation": "open_local_task", "object_family": "interactive_html", "constraint_family": "*"},
       "minimum_successes": 2,
-      "optional_third_success": false,
+      "optional_third_success": true,
       "slots": [
         {"task_class": "BrowserDraw", "difficulty": "easy", "task_seed": 20260831, "native_max_steps": 12},
-        {"task_class": "BrowserMaze", "difficulty": "easy", "task_seed": 20260832, "native_max_steps": 18}
+        {"task_class": "BrowserMaze", "difficulty": "easy", "task_seed": 20260832, "native_max_steps": 18},
+        {"task_class": "BrowserDraw", "difficulty": "easy", "task_seed": 20260851, "native_max_steps": 12, "optional": true}
       ]
     },
     {
@@ -56,8 +60,8 @@
       "optional_third_success": true,
       "slots": [
         {"task_class": "SportsTrackerActivityDuration", "difficulty": "easy", "task_seed": 20260842, "native_max_steps": 16},
-        {"task_class": "SportsTrackerActivitiesCountForWeek", "difficulty": "easy", "task_seed": 20260843, "native_max_steps": 14},
-        {"task_class": "SportsTrackerLongestDistanceActivity", "difficulty": "easy", "task_seed": 20260844, "native_max_steps": 14, "optional": true}
+        {"task_class": "SportsTrackerActivityDuration", "difficulty": "easy", "task_seed": 20260843, "native_max_steps": 16},
+        {"task_class": "SportsTrackerActivityDuration", "difficulty": "easy", "task_seed": 20260844, "native_max_steps": 16, "optional": true}
       ]
     },
     {
@@ -72,8 +76,8 @@
       ]
     },
     {
-      "route_id": "osmand_add_location_marker",
-      "route": {"app": "osmand", "operation": "add_location_marker", "object_family": "location", "constraint_family": "*"},
+      "route_id": "osmand_open_location_result",
+      "route": {"app": "osmand", "operation": "open_location_result", "object_family": "location", "constraint_family": "pre_final_favorite_or_marker_choice"},
       "minimum_successes": 2,
       "optional_third_success": true,
       "slots": [
@@ -84,6 +88,15 @@
     }
   ],
   "required_slot_count": 14,
-  "optional_slot_count": 6
+  "optional_slot_count": 7,
+  "supplement_policy": "After all 14 required slots, each deficient route consumes its optional slot first (when present), then exactly the next slot below. Every selected supplement runs regardless of prior supplement reward. No route exceeds four total attempts under this identity.",
+  "ordered_final_fallback_slots": [
+    {"route_id": "browser_open_local_task", "task_class": "BrowserDraw", "difficulty": "easy", "task_seed": 20260901, "native_max_steps": 12},
+    {"route_id": "expense_delete", "task_class": "ExpenseDeleteSingle", "difficulty": "easy", "task_seed": 20260902, "native_max_steps": 12},
+    {"route_id": "retro_create_playlist", "task_class": "RetroCreatePlaylist", "difficulty": "medium", "task_seed": 20260903, "native_max_steps": 30},
+    {"route_id": "calendar_add_event", "task_class": "SimpleCalendarAddOneEventTomorrow", "difficulty": "easy", "task_seed": 20260904, "native_max_steps": 26},
+    {"route_id": "opentracks_retrieve_duration", "task_class": "SportsTrackerActivityDuration", "difficulty": "easy", "task_seed": 20260905, "native_max_steps": 16},
+    {"route_id": "broccoli_delete_recipe", "task_class": "RecipeDeleteSingleRecipe", "difficulty": "easy", "task_seed": 20260906, "native_max_steps": 14},
+    {"route_id": "osmand_open_location_result", "task_class": "OsmAndFavorite", "difficulty": "medium", "task_seed": 20260907, "native_max_steps": 20}
+  ]
 }
-

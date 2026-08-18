@@ -25,7 +25,7 @@ def _compact(value: Any) -> str:
     return " ".join(str(value).split()).strip()
 
 
-def _goal_literals(goal: str) -> list[str]:
+def _goal_literals(goal: str, task_params: Any = None) -> list[str]:
     literals: set[str] = set()
     literals.update(match.strip() for match in re.findall(r'["\']([^"\']{2,})["\']', goal))
     literals.update(re.findall(r"(?<![A-Za-z])\$?\d+(?:[.:/-]\d+)+(?![A-Za-z])", goal))
@@ -33,7 +33,29 @@ def _goal_literals(goal: str) -> list[str]:
         key, separator, value = line.partition(":")
         if separator and key.strip() and value.strip():
             literals.add(value.strip().strip(".,;"))
-    return sorted((item for item in literals if len(item) >= 2), key=lambda item: (-len(item), item))
+    def collect(value: Any, key: str = "") -> None:
+        if key in {"pixel_sha256", "__type__", "mode", "size"}:
+            return
+        if isinstance(value, dict):
+            for child_key, child in value.items():
+                collect(child, str(child_key))
+        elif isinstance(value, (list, tuple)):
+            for child in value:
+                collect(child, key)
+        elif isinstance(value, (str, int, float)) and not isinstance(value, bool):
+            text = str(value).strip()
+            if len(text) >= 2 and not re.fullmatch(r"[0-9a-f]{32,}", text, re.IGNORECASE):
+                literals.add(text)
+    collect(task_params)
+    def sensitive(item: str) -> bool:
+        compact = item.strip()
+        return bool(
+            len(compact) >= 4
+            or re.search(r"\d", compact)
+            or re.search(r"\s", compact)
+            or re.search(r"[^A-Za-z0-9_]", compact)
+        )
+    return sorted((item for item in literals if sensitive(item)), key=lambda item: (-len(item), item))
 
 
 def _mask(text: str, literals: list[str]) -> str:
@@ -42,6 +64,7 @@ def _mask(text: str, literals: list[str]) -> str:
         output = re.sub(re.escape(literal), f"{{task_value_{index}}}", output, flags=re.IGNORECASE)
     # Coordinates are never part of an AWM semantic workflow input.
     output = re.sub(r"\b(?:x|y|x2|y2)\s*[=:]\s*\d+(?:\.\d+)?", "", output, flags=re.IGNORECASE)
+    output = re.sub(r"\(\s*\d+(?:\.\d+)?\s*,\s*\d+(?:\.\d+)?\s*\)", "", output)
     return _compact(output)
 
 
@@ -109,7 +132,7 @@ def build_induction_packet(
         if failed:
             raise ValueError(f"donor {donor['donor_id']} failed: {failed}")
         goal = str(episode.get("task_goal") or "")
-        literals = _goal_literals(goal)
+        literals = _goal_literals(goal, episode.get("task_params"))
         masked_literals.extend(literals)
         donor_id = str(donor["donor_id"])
         donor_ids.append(donor_id)
@@ -127,10 +150,16 @@ def build_induction_packet(
     if len(set(donor_ids)) != len(donor_ids) or len(set(donor_seeds)) < 2:
         raise ValueError("donor IDs must be unique and at least two seeds independent")
 
+    route_boundary = (
+        "Boundary: stop at the visible location-result choice surface. Do not recommend, name, or describe any Favorite, star, flag, or Marker selection. The final numbered step MUST end with this exact sentence: 'Stop when the location-result choice surface is visible; do not select any final option.'"
+        if route_id == "osmand_open_location_result"
+        else "Boundary: include only steps supported as the exact reusable route subroutine; omit donor-only terminal operations."
+    )
     prompt = "\n\n".join(
         [
             INDUCTION_INSTRUCTION,
             f"Route: {json.dumps(route, ensure_ascii=False, sort_keys=True)}",
+            route_boundary,
             "## Concrete successful examples\n" + json.dumps(examples, ensure_ascii=False, indent=2),
             "## Summary workflows",
         ]
@@ -149,6 +178,7 @@ def build_induction_packet(
         "masked_literal_sha256s": sorted(
             {sha256(item.encode("utf-8")).hexdigest() for item in masked_literals}
         ),
+        "literal_denylist": sorted(set(masked_literals), key=lambda item: (-len(item), item)),
         "prompt": prompt,
         "prompt_sha256": sha256(prompt.encode("utf-8")).hexdigest(),
         "generation_calls": 0,

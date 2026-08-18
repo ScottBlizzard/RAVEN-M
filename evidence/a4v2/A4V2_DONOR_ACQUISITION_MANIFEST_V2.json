@@ -1,0 +1,181 @@
+{
+  "androidworld_commit": "3e50888527ef9f29b9157ecd537e408008bb1c85",
+  "androidworld_worktree_identity": {
+    "head": "3e50888527ef9f29b9157ecd537e408008bb1c85",
+    "tracked_diff_sha256": "f1498c466a88acddeb2e414e79078090fc51c94aba5592208bcf8b8c8041a2ec",
+    "untracked_files": {
+      "android_world/task_evals/information_retrieval/proto/state_pb2.py": "7fcc0e0c1cd8c1d03d644e23a2c2d3e17709d6f1cddc4b04655be9bda035cde4",
+      "android_world/task_evals/information_retrieval/proto/state_pb2_grpc.py": "d0e6c85813268da7b989e6034cca76e56d73fe1aa279a1db2a98930bb8d75ed3",
+      "android_world/task_evals/information_retrieval/proto/task_pb2.py": "1cc5638cf6dc51463dffd7ca9ee3c85cbabcb66e89815ee4bf53f61dc7c7e84c",
+      "android_world/task_evals/information_retrieval/proto/task_pb2_grpc.py": "0136cd56ec38ead7eb274d988c550a31d051963f45d4ee5693f0ce5bd4beaee6"
+    }
+  },
+  "content_sha256": "9d96ca98f040fe7dba32f7c7099b64923df4abdb3d0b64e4c10f9b71e9035c14",
+  "experiment_id": "A4V2_FAITHFUL_OFFLINE_AWM_QWEN3VL32B_AW_HARD_S20260806_V1",
+  "include_optional": false,
+  "instance_generation": "random.seed(seed); numpy.random.seed(seed); task_type.generate_random_params()",
+  "manifest_role": "required_panel",
+  "parent_controller": "A0_OFFICIAL_QWEN3VL32B_SCREENSHOT_ONLY",
+  "plan_file_sha256": "638648d136bbfce6fe753e4724c3941e6b4e092c64693bf215ff4006b456f60f",
+  "plan_path": "implementation/configs/a4v2_awm_donor_acquisition_plan.json",
+  "protocol_amendment_path": "protocols/A4V2_DONOR_ACQUISITION_PLAN_V2_AMENDMENT_2026-08-19.md",
+  "protocol_amendment_sha256": "270170d517a8ea0d5bd033300b87fe3a7a5cf808c6b6843cc17731a02202a40c",
+  "schema": "a4v2.donor_acquisition_manifest.v1",
+  "supplement_routes": [],
+  "tasks": [
+    {
+      "difficulty": "easy",
+      "goal_hash": "718939e1bcb87baad829d91972bb7a7855a1c04246c01ce2e8c1ed9122726fc4",
+      "native_max_steps": 12,
+      "optional": false,
+      "route_id": "browser_open_local_task",
+      "task_class": "BrowserDraw",
+      "task_id": "browser_open_local_task_01_s20260831",
+      "task_params_hash": "c007935e204800a7eb8917ac63730cb5800460ad059df2f16b7ac7b81584ad3d",
+      "task_seed": 20260831
+    },
+    {
+      "difficulty": "easy",
+      "goal_hash": "1080b2735d42c3291b709bcb18c4bd8a9e4ec107d31c8a5c868ff4670eb41eb1",
+      "native_max_steps": 18,
+      "optional": false,
+      "route_id": "browser_open_local_task",
+      "task_class": "BrowserMaze",
+      "task_id": "browser_open_local_task_02_s20260832",
+      "task_params_hash": "707c40cf882d6060495870c17ab1236548c4fe73786d540e35cf161815610608",
+      "task_seed": 20260832
+    },
+    {
+      "difficulty": "easy",
+      "goal_hash": "147bfa50654e4c082c53ea05c24da88dd9d7f0ac65cb6ca16e244fd96a04646e",
+      "native_max_steps": 20,
+      "optional": false,
+      "route_id": "expense_delete",
+      "task_class": "ExpenseDeleteMultiple",
+      "task_id": "expense_delete_01_s20260833",
+      "task_params_hash": "a5236880420f812607ba23ec320f46951304ce8d456abe4dcddea46e55f94f2b",
+      "task_seed": 20260833
+    },
+    {
+      "difficulty": "easy",
+      "goal_hash": "3fa9e6d7965fb90c5e93d6bfe15e61b43013d6f0a51721d2ed5b77be1528bc18",
+      "native_max_steps": 12,
+      "optional": false,
+      "route_id": "expense_delete",
+      "task_class": "ExpenseDeleteSingle",
+      "task_id": "expense_delete_02_s20260834",
+      "task_params_hash": "8635d8d50ca5911390275d25cd037bb51c4e0e3a4e1bac440850340e013d7b22",
+      "task_seed": 20260834
+    },
+    {
+      "difficulty": "medium",
+      "goal_hash": "3fd18525febdc01acba42e5ee60b4931f92a8bde5f6b19faed9d10d7c9fadfba",
+      "native_max_steps": 30,
+      "optional": false,
+      "route_id": "retro_create_playlist",
+      "task_class": "RetroCreatePlaylist",
+      "task_id": "retro_create_playlist_01_s20260836",
+      "task_params_hash": "8ed231d94220c3baa21e9946c3681876ca712e405563b9fe9958bfd7ea95cb8f",
+      "task_seed": 20260836
+    },
+    {
+      "difficulty": "medium",
+      "goal_hash": "489799a4a1ab6c992bdf8a7b065516ee5cdc57d2219954606451b0e05e2acc8a",
+      "native_max_steps": 30,
+      "optional": false,
+      "route_id": "retro_create_playlist",
+      "task_class": "RetroCreatePlaylist",
+      "task_id": "retro_create_playlist_02_s20260837",
+      "task_params_hash": "f5d880031f87ab12db41d08ce93db95810f1663b7fe451431c4c63a4b8aeb4a3",
+      "task_seed": 20260837
+    },
+    {
+      "difficulty": "easy",
+      "goal_hash": "84f2c7f8f8515378ae89b0852175e4b773387aae4f8803affc7fcad2b6e7e901",
+      "native_max_steps": 26,
+      "optional": false,
+      "route_id": "calendar_add_event",
+      "task_class": "SimpleCalendarAddOneEventTomorrow",
+      "task_id": "calendar_add_event_01_s20260839",
+      "task_params_hash": "28d894d445fa0d7e6747cfe919d32b2d6fb877d97dd37a43b0c727001dae21e9",
+      "task_seed": 20260839
+    },
+    {
+      "difficulty": "medium",
+      "goal_hash": "22554de2ce36d316fd076ed1718e0f7efcab5306bf1c62b38c29e62d83f42b6c",
+      "native_max_steps": 30,
+      "optional": false,
+      "route_id": "calendar_add_event",
+      "task_class": "SimpleCalendarAddOneEventRelativeDay",
+      "task_id": "calendar_add_event_02_s20260840",
+      "task_params_hash": "52a97513c14742a0885e5f8a4751315b2535abb1aa134c2895045383eaae189f",
+      "task_seed": 20260840
+    },
+    {
+      "difficulty": "easy",
+      "goal_hash": "811bcd3c6e87222b887b95c89ad10a3567248df6d85656d2ec617cdeacdbb00e",
+      "native_max_steps": 16,
+      "optional": false,
+      "route_id": "opentracks_retrieve_duration",
+      "task_class": "SportsTrackerActivityDuration",
+      "task_id": "opentracks_retrieve_duration_01_s20260842",
+      "task_params_hash": "07eb54a716ff092ae358bc1ec4c067035a41133d0a13f5bc43febbc27f2e978e",
+      "task_seed": 20260842
+    },
+    {
+      "difficulty": "easy",
+      "goal_hash": "a5c82ec6cf81d491459d85817bb6d250378366d007f681ab306542a35665af4c",
+      "native_max_steps": 16,
+      "optional": false,
+      "route_id": "opentracks_retrieve_duration",
+      "task_class": "SportsTrackerActivityDuration",
+      "task_id": "opentracks_retrieve_duration_02_s20260843",
+      "task_params_hash": "6d29f61d8e5736f9ec4b5f60bfb61db06dce6f431c6ce94e5a4f4a7186eae308",
+      "task_seed": 20260843
+    },
+    {
+      "difficulty": "easy",
+      "goal_hash": "0fafce4b83689031d1a50d764b5e38bd4de1e570ad0aaa3648587f9d6122f125",
+      "native_max_steps": 24,
+      "optional": false,
+      "route_id": "broccoli_delete_recipe",
+      "task_class": "RecipeDeleteMultipleRecipes",
+      "task_id": "broccoli_delete_recipe_01_s20260845",
+      "task_params_hash": "b51da44c9ff2add70e07db4bca1017e955e4ef5991e503f610a9c357c4962685",
+      "task_seed": 20260845
+    },
+    {
+      "difficulty": "medium",
+      "goal_hash": "3755fd823733ed47401cd6940cbb208db7ccb0893cd0f984e890c76d12e6030e",
+      "native_max_steps": 34,
+      "optional": false,
+      "route_id": "broccoli_delete_recipe",
+      "task_class": "RecipeDeleteMultipleRecipesWithNoise",
+      "task_id": "broccoli_delete_recipe_02_s20260846",
+      "task_params_hash": "765cb0c4539b3ba18b29c6029a5bfe24cb0913c376d80cc225effc110bae76f4",
+      "task_seed": 20260846
+    },
+    {
+      "difficulty": "medium",
+      "goal_hash": "bab767bf641bef74e171890ac7c9802f57780964ec9193924c4b0ebe1fc71328",
+      "native_max_steps": 20,
+      "optional": false,
+      "route_id": "osmand_open_location_result",
+      "task_class": "OsmAndFavorite",
+      "task_id": "osmand_open_location_result_01_s20260848",
+      "task_params_hash": "1a67143c77c816aa43de42d2ca10dac469ef3c2ac7b9ff35b22b190de7c0fe27",
+      "task_seed": 20260848
+    },
+    {
+      "difficulty": "medium",
+      "goal_hash": "e811dc8593686455f59939685030d55bc33a341d4cac5e5ff57bb50afb675501",
+      "native_max_steps": 20,
+      "optional": false,
+      "route_id": "osmand_open_location_result",
+      "task_class": "OsmAndFavorite",
+      "task_id": "osmand_open_location_result_02_s20260849",
+      "task_params_hash": "61c912bdb3cb8888a9ee2d63623e3b7fa70b80db84b46021a7a018b05c848913",
+      "task_seed": 20260849
+    }
+  ]
+}

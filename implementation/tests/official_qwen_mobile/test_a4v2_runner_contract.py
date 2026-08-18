@@ -16,7 +16,11 @@ def test_runner_exposes_distinct_a4v2_identity_and_fixed_seven() -> None:
     assert '"OsmAndMarker"' in source
     assert '"scientific_fail_fast": False' in source
     assert 'args.a345_arm != "a4v2" and task_name in A345_REQUIRED_GATE_TASKS' in source
-    assert 'args.a345_arm == "a4v2" and len(summaries) != 7' in source
+    assert 'and len(summaries) != len(expected_keys)' in source
+    assert 'A4-v2 remaining12 is locked until the seven-task parent is 7/7' in source
+    assert 'A4V2_WORKFLOW_SYSTEM_PROMPT if args.a345_arm == "a4v2"' in source
+    assert '"schema": "a4v2.scored_checkpoint.v1"' in source
+    assert 'A4V2_SHUFFLED_INCOMPATIBLE_CONTENT_ACTIVE_CONTROL_V1' in source
 
 
 def test_runner_loads_only_validated_frozen_bank() -> None:
@@ -27,4 +31,3 @@ def test_runner_loads_only_validated_frozen_bank() -> None:
     assert "FaithfulOfflineWorkflowMemory(" in source
     assert "_validate_a4v2_preflight(" in source
     assert "_validate_a4v2_receipt(" in source
-

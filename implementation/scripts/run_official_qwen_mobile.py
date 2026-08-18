@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import argparse
-from datetime import datetime
+from datetime import datetime, timezone
 from hashlib import sha256
 import json
 import math
@@ -59,6 +59,7 @@ from raven_m.official_qwen_mobile.protocol import (  # noqa: E402
     A2_VERIFIED_PROGRESS_SYSTEM_PROMPT,
     A3_CONACT_SYSTEM_PROMPT,
     A4_WORKFLOW_SYSTEM_PROMPT,
+    A4V2_WORKFLOW_SYSTEM_PROMPT,
     A5_VISUAL_GRAPH_SYSTEM_PROMPT,
     A1R1_BPR_V2_SYSTEM_PROMPT,
     EVIDENCE_QUALIFIED_PROGRESS_SYSTEM_PROMPT,
@@ -80,6 +81,7 @@ from raven_m.official_qwen_mobile.a4v2_faithful_awm import (  # noqa: E402
     FaithfulOfflineWorkflowMemory,
     MECHANISM_ID as A4V2_MECHANISM_ID,
     validate_bank as validate_a4v2_bank,
+    validate_acquisition_receipt as validate_a4v2_acquisition_receipt,
 )
 from raven_m.official_qwen_mobile.a345_contract import (  # noqa: E402
     A345_GATE_TASKS,
@@ -775,6 +777,22 @@ def _load_a4v2_bank(path: Path) -> dict:
 
 def _validate_a4v2_preflight(path: Path, *, bank_path: Path) -> dict:
     payload = json.loads(path.read_text(encoding="utf-8"))
+    bank = _load_a4v2_bank(bank_path)
+    expected_bank_mode = (
+        "shuffled_incompatible_active_control"
+        if (bank.get("ablation") or {}).get("identity")
+        == "A4V2_SHUFFLED_INCOMPATIBLE_CONTENT_ACTIVE_CONTROL_V1"
+        else "primary_faithful_offline_awm"
+    )
+    hard = json.loads(A1_MANIFEST.read_text(encoding="utf-8"))
+    hard_order = [
+        str(item["task_class"]) for item in hard.get("instances") or []
+        if int(item.get("task_seed", -1)) == 20260806
+    ]
+    remaining_twelve = [name for name in hard_order if name not in A4V2_SEVEN_TASKS]
+    content_sha = _json_digest(
+        {key: value for key, value in payload.items() if key != "content_sha256"}
+    )
     if (
         payload.get("schema") != "a4v2.zero_generation_preflight.v1"
         or payload.get("experiment_id") != A4V2_EXPERIMENT_ID
@@ -783,22 +801,57 @@ def _validate_a4v2_preflight(path: Path, *, bank_path: Path) -> dict:
         or payload.get("generation_calls") != 0
         or payload.get("workflow_bank_sha256") != _sha256(bank_path)
         or payload.get("seven_task_order") != list(A4V2_SEVEN_TASKS)
+        or payload.get("content_sha256") != content_sha
+        or payload.get("workflow_count") != 7
+        or payload.get("bank_mode") != expected_bank_mode
+        or payload.get("system_prompt_sha256")
+        != sha256(A4V2_WORKFLOW_SYSTEM_PROMPT.encode("utf-8")).hexdigest()
+        or payload.get("remaining_twelve_order") != remaining_twelve
+        or payload.get("campaign_task_order_sha256")
+        != _json_digest(list(A4V2_SEVEN_TASKS) + remaining_twelve)
     ):
         raise RuntimeError("A4-v2 zero-generation preflight is invalid or drifted")
+    source_freeze = payload.get("source_freeze") or {}
+    evidence_freeze = payload.get("evidence_freeze") or {}
+    if not source_freeze or not evidence_freeze:
+        raise RuntimeError("A4-v2 preflight source/evidence closure is empty")
+    for relative, expected in {**source_freeze, **evidence_freeze}.items():
+        current = REPOSITORY_ROOT / str(relative)
+        if not current.is_file() or _sha256(current) != expected:
+            raise RuntimeError(f"A4-v2 preflight-bound file drift: {relative}")
+    if payload.get("source_freeze_sha256") != _json_digest(source_freeze):
+        raise RuntimeError("A4-v2 source-freeze digest drift")
+    if payload.get("evidence_freeze_sha256") != _json_digest(evidence_freeze):
+        raise RuntimeError("A4-v2 evidence-freeze digest drift")
     return payload
 
 
 def _validate_a4v2_receipt(path: Path, *, preflight_path: Path, bank_path: Path) -> dict:
     payload = json.loads(path.read_text(encoding="utf-8"))
+    preflight = json.loads(preflight_path.read_text(encoding="utf-8"))
+    content_sha = _json_digest(
+        {key: value for key, value in payload.items() if key != "content_sha256"}
+    )
+    try:
+        age_seconds = (
+            datetime.now(timezone.utc) - datetime.fromisoformat(str(payload.get("qualified_at")))
+        ).total_seconds()
+    except Exception:
+        age_seconds = float("inf")
     if (
         payload.get("schema") != "a4v2.live_server_receipt.v1"
         or payload.get("experiment_id") != A4V2_EXPERIMENT_ID
         or payload.get("status") != "pass"
         or payload.get("generation_calls") != 0
         or payload.get("preflight_sha256") != _sha256(preflight_path)
+        or payload.get("preflight_content_sha256") != preflight.get("content_sha256")
+        or payload.get("repository_commit") != preflight.get("implementation_commit")
         or payload.get("workflow_bank_sha256") != _sha256(bank_path)
         or payload.get("served_model_id") != MODEL_ID
         or int(payload.get("port", -1)) != 18000
+        or payload.get("content_sha256") != content_sha
+        or age_seconds < -60
+        or age_seconds > 43200
     ):
         raise RuntimeError("A4-v2 live-server receipt is invalid or drifted")
     return payload
@@ -1437,6 +1490,68 @@ def _load_a10_checkpoint(
     return summaries, entries, invalid_attempts
 
 
+def _a4v2_checkpoint_content_sha256(payload: dict) -> str:
+    return _json_digest({key: value for key, value in payload.items() if key != "content_sha256"})
+
+
+def _load_a4v2_checkpoint(
+    *, suite_dir: Path, checkpoint: dict, run_signature_sha256: str,
+    experiment_id: str, mechanism_id: str,
+) -> tuple[list[dict], list[dict], list[dict]]:
+    if (
+        checkpoint.get("schema") != "a4v2.scored_checkpoint.v1"
+        or checkpoint.get("experiment_id") != experiment_id
+        or checkpoint.get("mechanism_id") != mechanism_id
+        or checkpoint.get("run_signature_sha256") != run_signature_sha256
+        or checkpoint.get("content_sha256") != _a4v2_checkpoint_content_sha256(checkpoint)
+    ):
+        raise RuntimeError("A4-v2 checkpoint identity or content hash mismatch")
+    summaries = list(checkpoint.get("valid_summaries") or [])
+    entries = list(checkpoint.get("a4v2_valid_entries") or [])
+    invalid_attempts = list(checkpoint.get("invalid_attempts") or [])
+    if len(entries) != len(summaries):
+        raise RuntimeError("A4-v2 checkpoint entry/summary cardinality mismatch")
+    for summary, entry in zip(summaries, entries, strict=True):
+        if entry.get("run_signature_sha256") != run_signature_sha256:
+            raise RuntimeError("A4-v2 checkpoint entry signature drift")
+        expected_identity = (
+            str(summary.get("task_name")),
+            int(summary.get("seed", -1)),
+            str(summary.get("episode_id")),
+        )
+        entry_identity = (
+            str(entry.get("task_name")),
+            int(entry.get("seed", -1)),
+            str(entry.get("episode_id")),
+        )
+        if entry_identity != expected_identity:
+            raise RuntimeError("A4-v2 checkpoint entry identity mismatch")
+        episode_path = suite_dir / "episodes" / entry_identity[2] / "episode.json"
+        if not episode_path.is_file() or _sha256(episode_path) != entry.get("episode_json_sha256"):
+            raise RuntimeError("A4-v2 checkpoint episode artifact hash mismatch")
+        on_disk = json.loads(episode_path.read_text(encoding="utf-8"))
+        if (
+            _json_digest(on_disk) != entry.get("summary_sha256")
+            or _json_digest(summary) != entry.get("summary_sha256")
+            or not _episode_infrastructure_valid(on_disk, require_single_transport=True)
+        ):
+            raise RuntimeError("A4-v2 checkpoint episode validity closure failed")
+    for attempt in invalid_attempts:
+        artifact = attempt.get("artifact") or {}
+        episode_id = str(attempt.get("episode_id") or "")
+        episode_path = suite_dir / "episodes" / episode_id / "episode.json"
+        if (
+            not episode_id
+            or not episode_path.is_file()
+            or _sha256(episode_path) != artifact.get("episode_json_sha256")
+        ):
+            raise RuntimeError("A4-v2 invalid episode artifact hash mismatch")
+        invalid_summary = json.loads(episode_path.read_text(encoding="utf-8"))
+        if _json_digest(invalid_summary) != artifact.get("summary_sha256"):
+            raise RuntimeError("A4-v2 invalid episode summary closure mismatch")
+    return summaries, entries, invalid_attempts
+
+
 def _load_dual_arm_checkpoint(
     *,
     suite_dir: Path,
@@ -1544,6 +1659,11 @@ def main() -> None:
             "generation; a shorter replacement-run value prevents a dead SSH "
             "tunnel from blocking the runner for an hour."
         ),
+    )
+    parser.add_argument(
+        "--single-transport-no-retry",
+        action="store_true",
+        help="Disable automatic HTTP retry for auditable acquisition runs.",
     )
     parser.add_argument(
         "--observation-backend",
@@ -1935,6 +2055,14 @@ def main() -> None:
         type=Path,
         help="Fresh server receipt bound to the A4-v2 preflight and frozen bank.",
     )
+    parser.add_argument("--a4v2-acquisition-receipt", type=Path)
+    parser.add_argument("--a4v2-remaining12", action="store_true")
+    parser.add_argument("--a4v2-seven-aggregate", type=Path)
+    parser.add_argument(
+        "--a4v2-shuffled-control-primary-result",
+        type=Path,
+        help="Run the pre-frozen shuffled-content active control only for primary paired-gain tasks.",
+    )
     parser.add_argument(
         "--transient-observation-carry",
         action="store_true",
@@ -2025,6 +2153,7 @@ def main() -> None:
         help="Live GPU server launch receipt; mandatory for scored A2.",
     )
     args = parser.parse_args()
+    a4v2_primary_result: dict | None = None
 
     if bool(args.a7_continuation_plan) != bool(args.a7_parent_suite_dir):
         parser.error(
@@ -2396,14 +2525,18 @@ def main() -> None:
         or (dual_scored_arm and not sys_trrc_arm and dual_arm_name != "sys_lrer")
     ) and not (dual_arm_name == "bprv2" and bpr_mode == "empty_read")
     held_out_ineligible_reason = args.held_out_ineligible_reason
-    if a678_scored_arm or a10_scored_arm or dual_scored_arm:
+    if a678_scored_arm or a10_scored_arm or dual_scored_arm or (
+        a345_scored_arm and args.a345_arm == "a4v2"
+    ):
         # This seed and its A0/A1/A2/A3-A5 outcomes have already been inspected.
         # A6-A8 are valid paired mechanism comparisons, not held-out evidence.
         held_out_eligible = False
         held_out_ineligible_reason = (
-            "post_observed_seed20260806_composite_system_comparison"
-            if sys_trrc_arm else
-            "post_observed_seed20260806_memory_mechanism_comparison"
+            "post_observed_seed20260806_fixed_seven_workflow_transfer_diagnostic"
+            if a345_scored_arm and args.a345_arm == "a4v2"
+            else "post_observed_seed20260806_composite_system_comparison"
+            if sys_trrc_arm
+            else "post_observed_seed20260806_memory_mechanism_comparison"
         )
     scored_memory_arm = bool(
         args.a1_working_memory
@@ -2418,6 +2551,7 @@ def main() -> None:
         and not scored_memory_arm
         and not a678_post_gate_diagnostic
         and not enriched_diag_arm
+        and args.run_stage != "a4v2_donor_acquisition_v1"
     ):
         parser.error("--resume-suite-dir is restricted to scored memory arms")
     if scored_memory_arm:
@@ -2540,9 +2674,33 @@ def main() -> None:
                 if not args.a4v2_workflow_bank.is_file():
                     parser.error("A4-v2 requires a frozen faithful offline workflow bank")
                 try:
-                    _load_a4v2_bank(args.a4v2_workflow_bank.resolve())
+                    a4v2_bank = _load_a4v2_bank(args.a4v2_workflow_bank.resolve())
                 except Exception as exc:
                     parser.error(str(exc))
+                if args.a4v2_shuffled_control_primary_result is not None:
+                    if not args.a4v2_shuffled_control_primary_result.is_file():
+                        parser.error("A4-v2 shuffled control requires the sealed primary formal result")
+                    try:
+                        a4v2_primary_result = json.loads(
+                            args.a4v2_shuffled_control_primary_result.read_text(encoding="utf-8")
+                        )
+                        primary_body = {
+                            key: value for key, value in a4v2_primary_result.items()
+                            if key != "content_sha256"
+                        }
+                        required = list(a4v2_primary_result.get("ablation_required_tasks") or [])
+                        if (
+                            a4v2_primary_result.get("schema") != "a4v2.formal_result.v1"
+                            or a4v2_primary_result.get("content_sha256") != _json_digest(primary_body)
+                            or not required
+                            or (a4v2_bank.get("ablation") or {}).get("identity")
+                            != "A4V2_SHUFFLED_INCOMPATIBLE_CONTENT_ACTIVE_CONTROL_V1"
+                        ):
+                            raise RuntimeError("A4-v2 primary result or shuffled bank identity drift")
+                    except Exception as exc:
+                        parser.error(str(exc))
+                elif (a4v2_bank.get("ablation") or {}).get("identity"):
+                    parser.error("a shuffled A4-v2 bank is forbidden in the primary campaign")
                 if not args.a4v2_preflight_report.is_file():
                     parser.error(f"A4-v2 preflight is missing: {args.a4v2_preflight_report}")
                 try:
@@ -2725,7 +2883,35 @@ def main() -> None:
             if missing_gate:
                 raise RuntimeError(f"A3/A4/A4-v2/A5 tasks missing from manifest: {missing_gate}")
             if args.a345_arm == "a4v2":
-                specs = [by_name[name] for name in A4V2_SEVEN_TASKS]
+                if args.a4v2_remaining12 and args.a4v2_shuffled_control_primary_result is not None:
+                    raise RuntimeError("A4-v2 remaining12 and shuffled control are mutually exclusive")
+                if args.a4v2_shuffled_control_primary_result is not None:
+                    assert a4v2_primary_result is not None
+                    primary_order = [str(row.get("task_name")) for row in a4v2_primary_result.get("tasks") or []]
+                    required = set(str(item) for item in a4v2_primary_result["ablation_required_tasks"])
+                    selected = [name for name in primary_order if name in required]
+                    if not selected or len(selected) != len(required) or not required.issubset(by_name):
+                        raise RuntimeError("A4-v2 shuffled control task closure failed")
+                    specs = [by_name[name] for name in selected]
+                elif args.a4v2_remaining12:
+                    if args.a4v2_seven_aggregate is None or not args.a4v2_seven_aggregate.is_file():
+                        raise RuntimeError("A4-v2 remaining12 requires the sealed seven-task aggregate")
+                    seven_parent = json.loads(args.a4v2_seven_aggregate.read_text(encoding="utf-8"))
+                    observed = {
+                        str(row.get("task_name")): row
+                        for row in seven_parent.get("per_task") or []
+                    }
+                    if (
+                        len(observed) != 7
+                        or set(observed) != set(A4V2_SEVEN_TASKS)
+                        or any(row.get("reward") != 1.0 or row.get("success") is not True for row in observed.values())
+                    ):
+                        raise RuntimeError("A4-v2 remaining12 is locked until the seven-task parent is 7/7")
+                    specs = [item for item in specs if str(item["task_class"]) not in A4V2_SEVEN_TASKS]
+                else:
+                    if args.a4v2_seven_aggregate is not None:
+                        raise RuntimeError("A4-v2 seven-task stage forbids a parent aggregate")
+                    specs = [by_name[name] for name in A4V2_SEVEN_TASKS]
             else:
                 remaining = [item for item in specs if str(item["task_class"]) not in A345_GATE_TASKS]
                 specs = [by_name[name] for name in A345_GATE_TASKS] + remaining
@@ -2925,7 +3111,36 @@ def main() -> None:
         "console_port": args.console_port,
         "grpc_port": args.grpc_port,
         "adb_path": str(Path(args.adb_path).resolve()),
+        "transport_policy": (
+            "single_http_attempt_no_automatic_retry"
+            if args.single_transport_no_retry
+            else "default_client_transport_policy"
+        ),
     }
+    if args.run_stage == "a4v2_donor_acquisition_v1":
+        if (
+            not args.single_transport_no_retry
+            or args.a345_arm is not None
+            or args.a4v2_acquisition_receipt is None
+            or not args.a4v2_acquisition_receipt.is_file()
+        ):
+            raise RuntimeError("A4-v2 donor acquisition must use plain A0 with single transport")
+        acquisition_receipt = validate_a4v2_acquisition_receipt(
+            args.a4v2_acquisition_receipt.resolve()
+        )
+        acquisition_manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
+        run_signature.update(
+            {
+                "experiment_id": "A4V2_FAITHFUL_OFFLINE_AWM_QWEN3VL32B_AW_HARD_S20260806_V1_DONOR_ACQUISITION",
+                "method": "a0_official_qwen3vl32b_screenshot_only_donor_acquisition",
+                "donor_scored_hard_inputs_used": False,
+                "scientific_fail_fast": False,
+                "donor_plan_sha256": acquisition_manifest["plan_file_sha256"],
+                "donor_protocol_amendment_sha256": acquisition_manifest["protocol_amendment_sha256"],
+                "acquisition_server_receipt_sha256": _sha256(args.a4v2_acquisition_receipt),
+                "acquisition_server_receipt_content_sha256": acquisition_receipt["content_sha256"],
+            }
+        )
     if enriched_diag_arm:
         assert dual_preflight is not None and dual_preflight_path is not None
         assert dual_launch is not None
@@ -2953,14 +3168,33 @@ def main() -> None:
         )
     if a345_scored_arm:
         if args.a345_arm == "a4v2":
+            if args.a4v2_shuffled_control_primary_result is not None:
+                run_signature["experiment_id"] = "A4V2_SHUFFLED_INCOMPATIBLE_CONTENT_ACTIVE_CONTROL_V1"
+                run_signature["method"] = "a4v2_shuffled_incompatible_workflow_content_control_v1"
             run_signature.update(
                 {
                     "diagnostic_tasks": list(A4V2_SEVEN_TASKS),
+                    "a4v2_campaign_stage": (
+                        "shuffled_active_control"
+                        if args.a4v2_shuffled_control_primary_result is not None
+                        else "remaining12" if args.a4v2_remaining12 else "fixed_seven"
+                    ),
+                    "a4v2_seven_parent_sha256": (
+                        _sha256(args.a4v2_seven_aggregate) if args.a4v2_remaining12 else None
+                    ),
+                    "a4v2_primary_result_sha256": (
+                        _sha256(args.a4v2_shuffled_control_primary_result)
+                        if args.a4v2_shuffled_control_primary_result is not None
+                        else None
+                    ),
                     "scientific_fail_fast": False,
                     "release_remaining_12_only_if_successes": 7,
                     "a4v2_preflight_sha256": _sha256(args.a4v2_preflight_report),
                     "a4v2_launch_receipt_sha256": _sha256(args.a4v2_launch_receipt),
                     "a4v2_workflow_bank_sha256": _sha256(args.a4v2_workflow_bank),
+                    "a4v2_system_prompt_sha256": sha256(
+                        A4V2_WORKFLOW_SYSTEM_PROMPT.encode("utf-8")
+                    ).hexdigest(),
                 }
             )
         else:
@@ -3330,6 +3564,7 @@ def main() -> None:
     suite_lifecycle_errors: list[dict] = []
     valid_entries: list[dict] = []
     a10_valid_entries: list[dict] = []
+    a4v2_valid_entries: list[dict] = []
     dual_valid_entries: list[dict] = []
     orphan_episode_directories: list[str] = []
     if args.resume_suite_dir is not None:
@@ -3358,7 +3593,13 @@ def main() -> None:
                 if dual_arm_name == "a1r3v3"
                 else json.loads((suite_dir / "checkpoint.json").read_text(encoding="utf-8"))
             )
-            if a345_scored_arm and checkpoint.get("status") in A345_TERMINAL_CHECKPOINT_STATUSES:
+            if (
+                a345_scored_arm
+                and args.a345_arm == "a4v2"
+                and checkpoint.get("status") in {"complete", "stopped_incomplete_or_invalid"}
+            ):
+                raise RuntimeError("A4-v2 terminal state cannot be resumed")
+            if a345_scored_arm and args.a345_arm != "a4v2" and checkpoint.get("status") in A345_TERMINAL_CHECKPOINT_STATUSES:
                 raise RuntimeError("A3/A4/A5 scientific or activation gate failure is terminal and cannot be resumed")
             if (
                 a7_gated_continuation
@@ -3445,6 +3686,29 @@ def main() -> None:
                     raise RuntimeError("DIAG6 infrastructure-invalid attempt limit is terminal")
                 summaries = list(checkpoint.get("valid_summaries") or [])
                 invalid_attempts = list(checkpoint.get("invalid_attempts") or [])
+            elif a345_scored_arm and args.a345_arm == "a4v2":
+                summaries, a4v2_valid_entries, invalid_attempts = _load_a4v2_checkpoint(
+                    suite_dir=suite_dir,
+                    checkpoint=checkpoint,
+                    run_signature_sha256=run_signature_sha256,
+                    experiment_id=run_signature["experiment_id"],
+                    mechanism_id=run_signature["method"],
+                )
+            elif a345_scored_arm and args.a345_arm == "a4v2":
+                payload.update(
+                    {
+                        "schema": "a4v2.scored_checkpoint.v1",
+                        "experiment_id": run_signature["experiment_id"],
+                        "mechanism_id": run_signature["method"],
+                        "run_signature_sha256": run_signature_sha256,
+                        "a4v2_campaign_stage": run_signature["a4v2_campaign_stage"],
+                        "a4v2_preflight_sha256": run_signature["a4v2_preflight_sha256"],
+                        "a4v2_launch_receipt_sha256": run_signature["a4v2_launch_receipt_sha256"],
+                        "a4v2_workflow_bank_sha256": run_signature["a4v2_workflow_bank_sha256"],
+                        "a4v2_valid_entries": a4v2_valid_entries,
+                        "lifecycle_errors": list(suite_lifecycle_errors),
+                    }
+                )
             elif dual_scored_arm:
                 if (
                     dual_arm_name in {"a12", "bprv2"}
@@ -3560,7 +3824,9 @@ def main() -> None:
                         ),
                     }
                 )
-                if sys_trrc_arm or dual_arm_name == "sys_lrer":
+                if sys_trrc_arm or dual_arm_name == "sys_lrer" or (
+                    a345_scored_arm and args.a345_arm == "a4v2"
+                ):
                     payload["lifecycle_errors"] = list(suite_lifecycle_errors)
             elif a10_scored_arm:
                 payload.update(
@@ -3609,6 +3875,8 @@ def main() -> None:
                         "four_task_diagnostic": a89_diagnostic_report(summaries),
                     }
                 )
+        if a345_scored_arm and args.a345_arm == "a4v2":
+            payload["content_sha256"] = _a4v2_checkpoint_content_sha256(payload)
         if sys_trrc_arm or dual_arm_name in {"sys_nag", "a1r13", "a1r13d", "a1r14", "a1r15", "sys_lrer"}:
             payload["content_sha256"] = dual_arm["contract"].content_sha256(payload)
         if dual_arm_name == "bprv2":
@@ -3852,6 +4120,7 @@ def main() -> None:
             or a678_memory_arm
             or a10_scored_arm
             or dual_memory_arm
+            or args.single_transport_no_retry
         ),
     )
     health = client.health()
@@ -4128,6 +4397,9 @@ def main() -> None:
                         _sha256(args.a2_launch_receipt)
                         if args.a2_verified_progress_memory
                         else (
+                            _sha256(args.a4v2_launch_receipt)
+                            if a345_scored_arm and args.a345_arm == "a4v2"
+                            else (
                             _sha256(args.a10_launch_receipt)
                             if a10_scored_arm
                             else (
@@ -4138,7 +4410,13 @@ def main() -> None:
                                     if a678_memory_arm else None
                                 )
                             )
+                            )
                         )
+                    ),
+                    "a4v2_acquisition_receipt_sha256": (
+                        _sha256(args.a4v2_acquisition_receipt)
+                        if args.run_stage == "a4v2_donor_acquisition_v1"
+                        else None
                     ),
                     "stop_after_markor_source_exit": bool(
                         args.stop_after_markor_source_exit
@@ -4163,7 +4441,8 @@ def main() -> None:
                     if args.a2_verified_progress_memory
                     else (
                     A3_CONACT_SYSTEM_PROMPT if args.a345_arm == "a3" else (
-                    A4_WORKFLOW_SYSTEM_PROMPT if args.a345_arm in {"a4", "a4v2"} else (
+                    A4V2_WORKFLOW_SYSTEM_PROMPT if args.a345_arm == "a4v2" else (
+                    A4_WORKFLOW_SYSTEM_PROMPT if args.a345_arm == "a4" else (
                     A5_VISUAL_GRAPH_SYSTEM_PROMPT if args.a345_arm == "a5" else (
                     A1R1_BPR_V2_SYSTEM_PROMPT
                     if dual_arm_name == "bprv2"
@@ -4183,7 +4462,7 @@ def main() -> None:
                                 else OFFICIAL_SYSTEM_PROMPT
                             )
                         )
-                    )))))
+                    ))))))
                 ),
                 history_policy=(
                     "source_document_coverage_action_ledger_v1"
@@ -4340,7 +4619,15 @@ def main() -> None:
                             )
                         )
                     )
-                    or ((dual_arm_name == "a12" or enriched_diag_arm) and same_task_invalid_count > 2))
+                    or ((dual_arm_name == "a12" or enriched_diag_arm) and same_task_invalid_count > 2)
+                    or (
+                        a345_scored_arm
+                        and args.a345_arm == "a4v2"
+                        and (
+                            same_task_invalid_count > 1
+                            or len(invalid_attempts) > 2
+                        )
+                    ))
                 )
                 checkpoint(
                     "infrastructure_incomplete"
@@ -4376,7 +4663,9 @@ def main() -> None:
                     and not attempt.get("resolved_by_episode_id")
                 ):
                     attempt["resolved_by_episode_id"] = episode_id
-            if a10_scored_arm or dual_memory_arm:
+            if a10_scored_arm or dual_memory_arm or (
+                a345_scored_arm and args.a345_arm == "a4v2"
+            ):
                 _atomic_json(
                     suite_dir / "episodes" / episode_id / "episode.json",
                     result,
@@ -4387,6 +4676,14 @@ def main() -> None:
                     a2_episode_reference(
                         suite_dir=suite_dir,
                         episode_dir=suite_dir / "episodes" / episode_id,
+                        summary=result,
+                        run_signature_sha256=run_signature_sha256,
+                    )
+                )
+            elif a345_scored_arm and args.a345_arm == "a4v2":
+                a4v2_valid_entries.append(
+                    _a10_episode_entry(
+                        suite_dir=suite_dir,
                         summary=result,
                         run_signature_sha256=run_signature_sha256,
                     )
@@ -4706,7 +5003,10 @@ def main() -> None:
         if (
             completed_ordered_keys != expected_keys
             or (args.a345_arm != "a4v2" and len(summaries) != 19)
-            or (args.a345_arm == "a4v2" and len(summaries) != 7)
+            or (
+                args.a345_arm == "a4v2"
+                and len(summaries) != len(expected_keys)
+            )
             or any(not item.get("resolved_by_episode_id") for item in invalid_attempts)
             or suite_lifecycle_errors
             or any(not _episode_infrastructure_valid(item) for item in summaries)

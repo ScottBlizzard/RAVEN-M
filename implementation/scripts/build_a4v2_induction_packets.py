@@ -24,7 +24,7 @@ REQUIRED_ROUTES = {
     "calendar_add_event",
     "opentracks_retrieve_duration",
     "broccoli_delete_recipe",
-    "osmand_add_location_marker",
+    "osmand_open_location_result",
 }
 
 
@@ -35,6 +35,11 @@ def _sha(path: Path) -> str:
 def _write(path: Path, payload: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, indent=2, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def _content_sha(payload: dict) -> str:
+    body = {key: value for key, value in payload.items() if key != "content_sha256"}
+    return sha256(json.dumps(body, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()
 
 
 def main() -> None:
@@ -52,7 +57,12 @@ def main() -> None:
     )
     args = parser.parse_args()
     lock = json.loads(args.source_lock.read_text(encoding="utf-8"))
-    if lock.get("schema") != "a4v2.donor_source_lock.v1":
+    if (
+        lock.get("schema") != "a4v2.donor_source_lock.v1"
+        or lock.get("status") != "ready"
+        or lock.get("scored_hard_inputs_used") is not False
+        or lock.get("content_sha256") != _content_sha(lock)
+    ):
         raise RuntimeError("wrong donor source-lock schema")
     groups = lock.get("route_groups") or []
     if {str(item.get("route_id")) for item in groups} != REQUIRED_ROUTES:
@@ -80,7 +90,7 @@ def main() -> None:
         "schema": "a4v2.awm_induction_index.v1",
         "generation_calls": 0,
         "ready_for_induction": True,
-        "source_lock_path": str(args.source_lock.resolve()),
+        "source_lock_path": str(args.source_lock.resolve().relative_to(REPOSITORY_ROOT.resolve())).replace("\\", "/"),
         "source_lock_sha256": _sha(args.source_lock),
         "packets": index_rows,
     }
@@ -90,4 +100,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

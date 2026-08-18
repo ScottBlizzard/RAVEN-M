@@ -159,6 +159,19 @@ A4_WORKFLOW_SUFFIX = r"""
 
 A4_WORKFLOW_SYSTEM_PROMPT = OFFICIAL_SYSTEM_PROMPT + A4_WORKFLOW_SUFFIX
 
+A4V2_WORKFLOW_SUFFIX = r"""
+
+# A4-v2 faithful offline workflow memory
+
+- A user-message workflow block, when present, was induced offline from at least two independent-seed evaluator-confirmed non-Hard donor episodes on one exact reusable route.
+- Treat it as optional reusable prior procedure, not as evidence that the current task is complete, and never copy donor-specific values.
+- Apply a step only when the current screenshot visibly supports the same route subroutine; current pixels override workflow text.
+- If no compatible workflow is retrieved, act exactly as the official baseline.
+- Do not add a planner, critic, reflection call, action guard, or controller override.
+"""
+
+A4V2_WORKFLOW_SYSTEM_PROMPT = OFFICIAL_SYSTEM_PROMPT + A4V2_WORKFLOW_SUFFIX
+
 
 # A5 is deliberately named as an isolated in-trial graph adaptation.  Full
 # HyMEM additionally requires an offline successful-trajectory graph, learned
