@@ -1,6 +1,12 @@
-# Exploratory Direction Diagnostics: P1/P2/P3 over frozen A1-R2
+# Exploratory Direction Diagnostics: C0/P1/P2/P3 over frozen A1-R2
 
-Status: prospectively frozen before any DIAG model generation.
+Status: **SUPERSEDED_DRAFT_NO_LIVE**. No model generation used this draft.
+
+This shared-four-arm architecture was retired before runner integration after
+the research program was corrected to two sequential stages: first an
+evidence-driven R15-success-derived system, then three independently repaired
+Pro systems.  The draft is preserved verbatim as design provenance and must
+not authorize a preflight, receipt, or live run.
 
 Parent evidence commit: `46d9248fdc96721862ba4d919381846d250d960c`.
 Parent behavior: `a1r2_compact_verified_pending_v1`.
@@ -50,26 +56,55 @@ Only infrastructure-invalid episodes may be replaced, with the invalid raw
 artifact retained. Transport retry is disabled. Every valid model call must
 have exactly one transport attempt.
 
-## P1-DIAG: TCRA-R2-FULL exploratory
+## Common minimal auxiliary envelope
+
+All four systems retain byte/semantics-frozen R2 and differ primarily in when
+they ask and what bounded question they ask.  Each permits at most one
+additional call to the same frozen Qwen snapshot per episode, with no retry,
+192 completion tokens, a 60-second transport deadline, and exact multimodal
+input plus reserved completion not exceeding 8192 tokens.  The native action
+budget is unchanged.  The auxiliary output is advisory text only: it cannot
+execute, override, or terminate.  All auxiliary calls/tokens/latency are
+separately charged.  No auxiliary text is stored in ordinary history or R2;
+it is delivered on exactly one subsequent normal request and then expires.
+
+## C0-DIAG: one-shot late evidence consolidation
+
+- System ID: `diag_c0_late_evidence_consolidation_r2_v1`
+- Experiment ID: `C0_DIAG_LEC_R2_QWEN3VL32B_S20260806_G3407_V1`
+- After executed actions reach 40% of the native budget, wait for the first
+  proposed task-independent result-bearing action family (`type_text` or
+  `answer`).  Before executing that proposal, defer it once and ask for
+  `FACTS / CHECK / RECOMMENDATION` grounded only in goal, current screenshot,
+  model-authored history, current R2 ledger and the deferred action family.
+  If no such proposal appears, the first normal request after 75% is a
+  task-independent fallback.  The exact action text is never used by the
+  trigger.  The original proposal is not silently executed; the executor
+  chooses anew after the one-request advisory.
+- The accountant must consolidate exact task-relevant facts already present,
+  flag missing observations or unsupported derivations/constraints, and state
+  what evidence should support the next result-bearing action.  It receives no
+  task/app identity, hidden UI, evaluator, reward, future frame, known number
+  sequence or answer.  It is not an R13--R15 parser extension.
+- This is a new prospective hypothesis motivated by R15.  The historical R15
+  success remains `TARGET_SUCCESS_WITHOUT_MATURE_EVR_READ_UNATTRIBUTED`; the
+  previous NO-GO excludes silent-EVR causal claims, not this new identity.
+
+## P1-DIAG: minimal one-shot recovery critic
 
 - System ID: `diag_p1_tcra_r2_full_v1`
 - Experiment ID: `P1_DIAG_TCRA_R2_FULL_QWEN3VL32B_S20260806_G3407_V1`
-- Mechanism: frozen R2 plus E1/E2 recurrence monitor, one same-model
-  counterfactual candidate B, and deterministic route-divergence arbitration.
-- E1/E2 are exactly those materialized by
-  `P1_TCRA_R2_ZERO_GENERATION_AUDIT.json`: middle-92%-RGB exact state,
-  12 executed-action window, E1 two identical S--q(a)-->S supports, E2 two
-  non-overlapping equal RLE routes of length 2..6 returning to S, and base A
-  re-entering the blocked first route key.
-- One auxiliary call per episode, no retry, max completion 256, aux timeout
-  60s, remaining native decisions at least 6, current screenshot only.
-- Candidate B uses the Pro document's specialized recovery prompt and official
-  action schema. It cannot answer/terminate/Home/Menu, repeat A, or repeat any
-  blocked route entry. If valid and divergent it replaces A for this one
-  native decision; otherwise A executes. Only the executed proposal enters
-  history and R2 memory.
-- The known Calendar historical E2 exposure is retained unchanged and is a
-  prospective regression-risk measurement, not an exception.
+- Mechanism: frozen R2 plus the already implemented task-independent detector
+  requiring two consecutive executions of the same canonical action family,
+  each producing no detectable RGB change (`changed_pixel_fraction_gt_5 <=
+  0.001`), with at least one native decision remaining.
+- At the following request a one-shot recovery critic explains why the current
+  approach may be failing, recommends one visibly grounded route different
+  from the repeated approach, and names a visible check.  The short advisory
+  is injected into that normal request; the executor remains the only action
+  chooser.  There is no candidate arbitration or action override.
+- Historical success activation and the heavier Pro TCRA qualification remain
+  disclosed risk evidence, not runtime dependencies or live blockers.
 
 ## P2-DIAG: SYS-SCOPE-R2 Full exploratory
 
@@ -78,41 +113,31 @@ have exactly one transport attempt.
 - Mechanism: frozen R2 plus one Phase Coordinator call on the first normal
   request after executed actions reach `ceil(native_max_steps/2)`.
 - The trigger reads only executed-action count, native max, and used/not-used.
-- The Coordinator receives goal, the same current screenshot, the current R2
-  ledger and at most eight committed summaries. It uses the exact SCOPE Full
-  prompt and returns `PASS_THROUGH` or a validated immutable 2--3 phase
-  envelope.
-- One auxiliary call per episode, no retry, max completion 256, timeout 60s.
-  A valid envelope is injected for at most eight normal executor requests,
-  max 700 characters, never history/R2, and never updated or replanned.
-- It cannot emit actions, coordinates, completion verdicts, failure diagnoses,
-  app routes, recovery instructions, or terminal decisions. Current screenshot
-  remains authoritative; executor action/parser/native budget are unchanged.
+- The Coordinator receives goal, the same current screenshot, current R2
+  ledger and at most eight model-authored history items.  It returns exactly
+  `CONFIRMED / OPEN / NEXT_PHASE` as a short PhaseEnvelope.
+- The envelope is injected into exactly the next normal request and expires;
+  there is no persistent FSM, update or replan.  It cannot emit coordinates,
+  completion verdicts or terminal decisions.  Current screenshot remains
+  authoritative; executor action/parser/native budget are unchanged.
 
 ## P3-DIAG: R2-SCER Full exploratory
 
 - System ID: `diag_p3_scer_r2_full_v1`
 - Experiment ID: `P3_DIAG_SCER_R2_FULL_QWEN3VL32B_S20260806_G3407_V1`
-- Mechanism: frozen R2 plus task-independent T1/T2/T3 scheduling and a
-  visible-only Evidence Accountant.
-- T1: previous injected nonempty pending is cleared, replaced, or moved into
-  verified by the current model-authored R2 prefix without an active receipt.
-- T2: success terminal or answer is proposed while the same request contains
-  nonempty injected pending, terminal slot unused, and at least one subsequent
-  native decision slot remains.
-- T3: identical normalized verified+pending is model-authored again after at
-  least one executed action, with the mid-episode slot unused.
-- At most one T1/T3 auxiliary call and one T2 call per episode, no retry,
-  max completion 256 each, combined aux input+output ceiling 8192, timeout 60s.
-- T1/T3 do not alter the already proposed ordinary action; their receipt is
-  advisory on the next request. T2 defers terminal once, queues the accountant
-  call on the next request using the same authoritative current screenshot,
-  then gives the executor one reconsideration. A second terminal is accepted.
-- Accountant sees only goal, exact open claim, trigger, last canonical action,
-  and up to two current/past model-visible RGB frames with hashes. It emits the
-  Pro document's exact-substring fact/span JSON. It never recommends actions or
-  claims evaluator success. Invalid output fails open.
-- One current receipt, max 450 characters, is injected outside history/R2.
+- Mechanism: frozen R2 plus one task-independent completion-evidence check.
+  When the executor first proposes `answer` or `terminate(success)`, at least
+  one native decision remains, and the slot is unused, the controller defers
+  that terminal proposal without executing it and queues one visible-only
+  outcome critic call on the next request.
+- The critic sees only goal, current screenshot, current R2 ledger,
+  model-authored history and the deferred proposal. It returns exactly
+  `SUPPORTED / UNCONFIRMED / VERIFY_NEXT`. Its max-450-character advisory is
+  injected into the reconsideration request and then expires. A later terminal
+  proposal is accepted. Invalid auxiliary output fails open.
+- This bounded veto plus one ordinary reconsideration is part of the treatment
+  and is fully charged; it does not read reward/evaluator, directly declare
+  success, execute an action, or increase the native decision budget.
 
 ## Evidence and interpretation
 

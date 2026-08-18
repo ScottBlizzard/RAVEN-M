@@ -1,5 +1,6 @@
 {
-  "schema": "exploratory_direction_diag_config_v1",
+  "status": "SUPERSEDED_DRAFT_NO_LIVE",
+  "schema": "exploratory_direction_diag_config_v2",
   "direction": "failure_recovery",
   "system_id": "diag_p1_tcra_r2_full_v1",
   "experiment_id": "P1_DIAG_TCRA_R2_FULL_QWEN3VL32B_S20260806_G3407_V1",
@@ -8,12 +9,13 @@
   "non_fail_fast": true,
   "seven_task_order": ["BrowserMultiply", "ExpenseDeleteMultiple2", "RetroSavePlaylist", "SimpleCalendarAddOneEvent", "SportsTrackerTotalDurationForCategoryThisWeek", "RecipeDeleteMultipleRecipesWithConstraint", "OsmAndMarker"],
   "full_suite_release_requires": "7/7",
-  "monitor_window": 12,
-  "route_rle_min": 2,
-  "route_rle_max": 6,
-  "min_remaining_native_decisions": 6,
+  "detector": "two_consecutive_same_family_no_rgb_progress",
+  "no_progress_pixel_fraction": 0.001,
+  "required_supports": 2,
+  "min_remaining_native_decisions": 1,
   "aux_calls_per_episode": 1,
-  "aux_max_completion_tokens": 256,
+  "aux_max_completion_tokens": 192,
+  "aux_total_tokens_per_episode": 8192,
   "aux_timeout_seconds": 60,
   "aux_retry": 0
 }

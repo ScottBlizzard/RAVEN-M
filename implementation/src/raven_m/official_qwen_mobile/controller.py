@@ -435,6 +435,10 @@ class OfficialQwenMobileController:
                     prepared_aux = self.recovery_policy.prepare_aux(
                         context={
                             "request_step": step_index,
+                            "executed_action_count": sum(
+                                1 for prior in steps if bool(prior.get("executed"))
+                            ),
+                            "native_max_steps": self.max_steps,
                             "goal": effective_goal,
                             "history": list(history),
                             "recent_action_summaries": list(history[-4:]),
@@ -454,12 +458,16 @@ class OfficialQwenMobileController:
                     recovery_projection_cpu_seconds += recovery_prepare_seconds
                     recovery_step["prepare_aux_seconds"] = recovery_prepare_seconds
                     if prepared_aux is not None:
-                        if any(
-                            attempt.get("model_call") is not None
+                        max_auxiliary_calls = int(
+                            getattr(self.recovery_policy, "max_auxiliary_calls", 1)
+                        )
+                        if sum(
+                            1
                             for attempt in auxiliary_model_call_attempts
-                        ):
+                            if attempt.get("model_call") is not None
+                        ) >= max_auxiliary_calls:
                             raise RuntimeError(
-                                "Recovery policy attempted more than one auxiliary model call"
+                                "Recovery policy attempted more than one auxiliary model call or exceeded its explicit cap"
                             )
                         if not isinstance(prepared_aux, dict):
                             raise RuntimeError("Recovery auxiliary preparation must be a dict")
@@ -786,6 +794,10 @@ class OfficialQwenMobileController:
                         remaining_native_decision_slots=(
                             self.max_steps - step_index - 1
                         ),
+                        executed_action_count=sum(
+                            1 for prior in steps if bool(prior.get("executed"))
+                        ),
+                        native_max_steps=self.max_steps,
                     )
                     record["route_recurrence_consistency_guard"] = (
                         route_guard_assessment
@@ -846,7 +858,11 @@ class OfficialQwenMobileController:
                         raise RuntimeError(
                             "Route-recurrence guard blocked without an audit message"
                         )
-                    history.append(guard_message)
+                    persist_guard_message = bool(
+                        route_guard_assessment.get("persist_history_message", True)
+                    )
+                    if persist_guard_message:
+                        history.append(guard_message)
                     record["layers"]["L3_execution"] = {
                         "attempted": False,
                         "completed": False,
@@ -855,7 +871,12 @@ class OfficialQwenMobileController:
                     record["history_commit"] = {
                         "policy": "sys_nag_v4_route_recurrence_guard",
                         "model_action_summary": decision.action_summary,
-                        "committed_history_summary": guard_message,
+                        "committed_history_summary": (
+                            guard_message if persist_guard_message else None
+                        ),
+                        "transient_controller_event": (
+                            None if persist_guard_message else guard_message
+                        ),
                         "attestation_applied": False,
                         "controller_guidance_applied": True,
                         "attestation_reason": None,

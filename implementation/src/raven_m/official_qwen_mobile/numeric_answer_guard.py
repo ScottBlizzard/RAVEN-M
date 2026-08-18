@@ -231,6 +231,8 @@ class NumericAnswerConsistencyGuard:
         before_pixels: np.ndarray | None = None,
         before_descriptor: VisualDescriptor | None = None,
         remaining_native_decision_slots: int,
+        executed_action_count: int | None = None,
+        native_max_steps: int | None = None,
     ) -> dict[str, Any]:
         """Block the third exploratory revisit of the same visible decision."""
 
