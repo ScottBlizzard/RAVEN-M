@@ -216,6 +216,19 @@ DUAL_ARM_SPECS = {
         / "evidence/a1r15/A1R15_EOVR_REPLAY_FIXTURE.json",
         "system_prompt_identity": "a1_working_memory",
     },
+    "a1r15c": {
+        "flag": "a1r15_stitched_continuation",
+        "label": "A1-R15 stitched post-terminal continuation",
+        "memory_module": "raven_m.official_qwen_mobile.a1r15_explicit_observation_value_register",
+        "memory_class": "ExplicitObservationValueRegisterMemory",
+        "contract_module": "raven_m.official_qwen_mobile.a1r15_stitched_continuation_contract",
+        "entry_key": "a1r15_stitched_valid_entries",
+        "checkpoint_schema": "a1r15_eovr_stitched_continuation_checkpoint_v1",
+        "result_key": "a1r15_stitched_continuation_result",
+        "result_schema": "a1r15_eovr_stitched_continuation_result_v1",
+        "reference_segments_path": REPOSITORY_ROOT / "evidence/a1r15/A1R15_EOVR_REPLAY_FIXTURE.json",
+        "system_prompt_identity": "a1_working_memory",
+    },
     "sys_lrer": {
         "flag": "sys_r2_lrer",
         "label": "SYS-R2-LRER late raw-evidence rehydration",
@@ -1405,7 +1418,7 @@ def _load_dual_arm_checkpoint(
         "contract"
     ].SYSTEM_ID:
         raise RuntimeError(f"{arm['label']} checkpoint system identity mismatch")
-    if (arm["arm"].startswith("sys_trrc_") or arm["arm"] in {"sys_nag", "a1r13", "a1r13d", "a1r14", "a1r15", "sys_lrer"}) and checkpoint.get(
+    if (arm["arm"].startswith("sys_trrc_") or arm["arm"] in {"sys_nag", "a1r13", "a1r13d", "a1r14", "a1r15", "a1r15c", "sys_lrer"}) and checkpoint.get(
         "content_sha256"
     ) != arm["contract"].content_sha256(checkpoint):
         raise RuntimeError(f"{arm['label']} checkpoint content hash mismatch")
@@ -1603,6 +1616,9 @@ def main() -> None:
     )
     parser.add_argument("--a1r15-preflight-report", type=Path, default=REPOSITORY_ROOT / "evidence/a1r15/A1R15_EOVR_ZERO_GENERATION_PREFLIGHT.json")
     parser.add_argument("--a1r15-launch-receipt", type=Path)
+    parser.add_argument("--a1r15-stitched-continuation", action="store_true", help="Run the schedule-only A1-R15 post-terminal continuation.")
+    parser.add_argument("--a1r15-stitched-preflight-report", type=Path, default=REPOSITORY_ROOT / "evidence/a1r15_stitched_continuation/A1R15_STITCHED_CONTINUATION_ZERO_GENERATION_PREFLIGHT.json")
+    parser.add_argument("--a1r15-stitched-launch-receipt", type=Path)
     parser.add_argument(
         "--sys-r2-lrer", action="store_true",
         help="Run R2 plus one-shot late raw-evidence rehydration.",
@@ -2030,6 +2046,7 @@ def main() -> None:
             args.a1r13d_evr,
             args.a1r14_rgvr,
             args.a1r15_eovr,
+            args.a1r15_stitched_continuation,
             args.sys_r2_lrer,
             args.sys_nag,
             args.a1r11_cscp,
@@ -2075,6 +2092,7 @@ def main() -> None:
                 ("a1r13d", args.a1r13d_evr),
                 ("a1r14", args.a1r14_rgvr),
                 ("a1r15", args.a1r15_eovr),
+                ("a1r15c", args.a1r15_stitched_continuation),
                 ("sys_lrer", args.sys_r2_lrer),
                 ("a1r12", args.a1r12_chp),
                 ("sys_nag", args.sys_nag),
@@ -2233,6 +2251,8 @@ def main() -> None:
         if dual_arm_name == "a1r14"
         else args.a1r15_preflight_report
         if dual_arm_name == "a1r15"
+        else args.a1r15_stitched_preflight_report
+        if dual_arm_name == "a1r15c"
         else args.sys_r2_lrer_preflight_report
         if dual_arm_name == "sys_lrer"
         else args.a1r12_preflight_report
@@ -2284,6 +2304,8 @@ def main() -> None:
         if dual_arm_name == "a1r14"
         else args.a1r15_launch_receipt
         if dual_arm_name == "a1r15"
+        else args.a1r15_stitched_launch_receipt
+        if dual_arm_name == "a1r15c"
         else args.sys_r2_lrer_launch_receipt
         if dual_arm_name == "sys_lrer"
         else args.a1r12_launch_receipt
@@ -2326,7 +2348,7 @@ def main() -> None:
     prospective_gate_arm = (
         (args.a678_arm in {"a8v2", "a9"} and not a89_four_task_diagnostic)
         or a10_scored_arm
-        or (dual_scored_arm and not sys_trrc_arm and dual_arm_name != "sys_lrer")
+        or (dual_scored_arm and not sys_trrc_arm and dual_arm_name not in {"sys_lrer", "a1r15c"})
     ) and not (dual_arm_name == "bprv2" and bpr_mode == "empty_read")
     held_out_ineligible_reason = args.held_out_ineligible_reason
     if a678_scored_arm or a10_scored_arm or dual_scored_arm:
@@ -2405,7 +2427,7 @@ def main() -> None:
             except Exception as exc:
                 parser.error(str(exc))
             if (
-                (dual_arm_name.startswith("sys_trrc_") or dual_arm_name == "sys_lrer")
+                (dual_arm_name.startswith("sys_trrc_") or dual_arm_name in {"sys_lrer", "a1r15c"})
                 and args.url.rstrip("/") != "http://127.0.0.1:18000"
             ):
                 parser.error(f"{dual_arm['label']} runner URL must match its qualified 127.0.0.1:18000 receipt")
@@ -2631,7 +2653,7 @@ def main() -> None:
                 raise RuntimeError(f"A3/A4/A5 gate tasks missing from manifest: {missing_gate}")
             remaining = [item for item in specs if str(item["task_class"]) not in A345_GATE_TASKS]
             specs = [by_name[name] for name in A345_GATE_TASKS] + remaining
-        elif dual_arm_name in {"bprv2", "a1r2", "a1r3v3", "sys_lrer"} or dual_arm_name == "sys_nag" or (dual_arm_name and dual_arm_name.startswith("sys_trrc_")) or dual_arm_name in {"a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11", "a1r12", "a1r13", "a1r13d", "a1r14", "a1r15"}:
+        elif dual_arm_name in {"bprv2", "a1r2", "a1r3v3", "sys_lrer", "a1r15c"} or dual_arm_name == "sys_nag" or (dual_arm_name and dual_arm_name.startswith("sys_trrc_")) or dual_arm_name in {"a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11", "a1r12", "a1r13", "a1r13d", "a1r14", "a1r15"}:
             by_name = {str(item["task_class"]): item for item in specs}
             if sys_trrc_arm:
                 campaign_order = (
@@ -2663,7 +2685,7 @@ def main() -> None:
             gate_specs = [by_name[name] for name in gate_tasks]
             specs = (
                 [by_name[name] for name in dual_arm["contract"].FULL_TASK_ORDER]
-                if dual_arm_name in {"a1r13d", "a1r14", "a1r15", "sys_lrer"}
+                if dual_arm_name in {"a1r13d", "a1r14", "a1r15", "sys_lrer", "a1r15c"}
                 else gate_specs + remaining
                 if dual_arm_name in {"a1r2", "a1r3v3", "a1r3"} or dual_arm_name == "sys_nag" or (dual_arm_name and dual_arm_name.startswith("sys_trrc_")) or dual_arm_name in {"a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11", "a1r12", "a1r13"} or bpr_mode == "primary"
                 else gate_specs
@@ -3075,6 +3097,30 @@ def main() -> None:
                     "local_token_projection": sys_trrc_local_processor_identity,
                 }
             )
+        elif dual_arm_name == "a1r15c":
+            run_signature.update(
+                {
+                    "task_order": "six_non_fail_fast_then_remaining_twelve_if_imported_Browser_plus_six_is_7_of_7",
+                    "reward_fail_fast": False,
+                    "scientific_failure_rerun": False,
+                    "A0_preservation_tasks": [],
+                    "A0_preservation_required_for_continuation": False,
+                    "capability_gate_tasks": list(dual_arm["gate_tasks"]),
+                    "ordinary_history_deduplicated": True,
+                    "response_prefix_required": True,
+                    "official_system_prompt_unchanged": False,
+                    "system_prompt_identity": "exact_A1_WORKING_MEMORY_SYSTEM_PROMPT",
+                    "post_terminal_schedule_amendment_only": True,
+                    "parent_browser": dual_arm["contract"].parent_browser_binding(),
+                    "browser_rerun": False,
+                    "evr_model_authored_values_only": True,
+                    "evr_extra_model_calls": 0,
+                    "guard": False,
+                    "action_override": False,
+                    "forced_termination": False,
+                    "held_out": False,
+                }
+            )
         elif dual_arm_name in {"a1r3v3", "a1r3", "a1r4"} or dual_arm_name in {"a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11", "a1r12", "a1r13", "a1r13d", "a1r14", "a1r15"}:
             run_signature.update(
                 {
@@ -3317,6 +3363,11 @@ def main() -> None:
                 raise RuntimeError(
                     "SYS-R2-LRER terminal state cannot be resumed"
                 )
+            if (
+                dual_arm_name == "a1r15c"
+                and checkpoint.get("status") in {"complete_six_task_diagnostic_no_release", "complete", "stopped_incomplete_or_invalid", "infrastructure_incomplete"}
+            ):
+                raise RuntimeError("A1-R15 stitched continuation terminal state cannot be resumed")
             if enriched_diag_arm:
                 expected_diag_identity = {
                     "schema": "enriched_memory_diagnostic6_checkpoint_v1",
@@ -3496,7 +3547,10 @@ def main() -> None:
                         "four_task_diagnostic": a89_diagnostic_report(summaries),
                     }
                 )
-        if sys_trrc_arm or dual_arm_name in {"sys_nag", "a1r13", "a1r13d", "a1r14", "a1r15", "sys_lrer"}:
+        if dual_arm_name == "a1r15c":
+            payload["imported_parent_browser"] = dual_arm["contract"].parent_browser_binding()
+            payload["stitched_seven_gate"] = dual_arm["contract"].stitched_seven_report(summaries)
+        if sys_trrc_arm or dual_arm_name in {"sys_nag", "a1r13", "a1r13d", "a1r14", "a1r15", "a1r15c", "sys_lrer"}:
             payload["content_sha256"] = dual_arm["contract"].content_sha256(payload)
         if dual_arm_name == "bprv2":
             _append_bpr_checkpoint(suite_dir, payload)
@@ -3606,7 +3660,7 @@ def main() -> None:
             }
             result_payload["content_sha256"] = dual_arm["contract"].content_sha256(result_payload)
             _atomic_json(suite_dir / "sys_r2_lrer_result.json", result_payload)
-        if dual_arm_name in {"a1r13", "a1r13d", "a1r14", "a1r15"}:
+        if dual_arm_name in {"a1r13", "a1r13d", "a1r14", "a1r15", "a1r15c"}:
             completed = {str(item.get("task_name")): item for item in summaries}
             task_rows = []
             for expected_task in dual_arm["contract"].FULL_TASK_ORDER:
@@ -3632,6 +3686,7 @@ def main() -> None:
                 "schema": dual_arm["result_schema"],
                 "status": (
                     "COMPLETE" if status == "complete"
+                    else "SEALED_SIX_TASK_DIAGNOSTIC_NO_RELEASE" if status == "complete_six_task_diagnostic_no_release"
                     else f"TERMINAL_{status.upper()}" if terminal
                     else "RUNNING_PARTIAL"
                 ),
@@ -3664,11 +3719,29 @@ def main() -> None:
                 "invalid_attempts": list(invalid_attempts),
                 "errors": [],
             }
+            if dual_arm_name == "a1r15c":
+                formal_payload.update(
+                    {
+                        "evidence_class": "TRANSPARENT_POST_TERMINAL_STITCHED_BEHAVIORAL_DIAGNOSTIC",
+                        "imported_parent_browser": dual_arm["contract"].parent_browser_binding(),
+                        "stitched_seven_gate": dual_arm["contract"].stitched_seven_report(summaries),
+                        "claim_boundary": {
+                            "original_a1r15_terminal_result_unchanged": True,
+                            "original_target_mechanism_gate_historically_failed": True,
+                            "browser_success_attributed_to_evr": False,
+                            "not_original_prospective_full_suite": True,
+                            "not_held_out": True,
+                        },
+                    }
+                )
             formal_payload["content_sha256"] = dual_arm["contract"].content_sha256(
                 formal_payload
             )
             _atomic_json(
                 suite_dir / (
+                    "a1r15_stitched_continuation_result.json"
+                    if dual_arm_name == "a1r15c"
+                    else
                     "a1r15_result.json"
                     if dual_arm_name == "a1r15"
                     else "a1r14_result.json"
@@ -3768,6 +3841,12 @@ def main() -> None:
                 if (
                     task_name not in dual_arm["contract"].SEVEN_TASK_ORDER
                     and not _gate_passed(dual_arm["contract"].seven_gate_report(summaries))
+                ):
+                    break
+            elif dual_arm_name == "a1r15c":
+                if (
+                    task_name not in dual_arm["contract"].CAPABILITY_GATE_TASKS
+                    and not _gate_passed(dual_arm["contract"].stitched_seven_report(summaries))
                 ):
                     break
             elif dual_arm_name == "bprv2" and bpr_mode == "primary" and task_name not in A0_PRESERVATION_TASKS:
@@ -3955,7 +4034,7 @@ def main() -> None:
                         max_render_chars=1200,
                         receipt_render_mode="enabled",
                     )
-                elif dual_arm_name in {"a1r13", "a1r13d", "a1r14", "a1r15"}:
+                elif dual_arm_name in {"a1r13", "a1r13d", "a1r14", "a1r15", "a1r15c"}:
                     config = json.loads(
                         dual_arm["config_path"].read_text(encoding="utf-8")
                     )
@@ -4055,7 +4134,7 @@ def main() -> None:
                     A1R1_BPR_V2_SYSTEM_PROMPT
                     if dual_arm_name == "bprv2"
                     else A1_WORKING_MEMORY_SYSTEM_PROMPT
-                    if dual_arm_name in {"a1r2", "a1r3v3", "a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11", "a1r12", "a1r13", "a1r13d", "a1r14", "a1r15", "sys_nag", "sys_lrer"} or (dual_arm_name and dual_arm_name.startswith("sys_trrc_"))
+                    if dual_arm_name in {"a1r2", "a1r3v3", "a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11", "a1r12", "a1r13", "a1r13d", "a1r14", "a1r15", "a1r15c", "sys_nag", "sys_lrer"} or (dual_arm_name and dual_arm_name.startswith("sys_trrc_"))
                     else A1_WORKING_MEMORY_SYSTEM_PROMPT
                     if args.a1_working_memory
                     else (
@@ -4618,6 +4697,14 @@ def main() -> None:
             raise RuntimeError(
                 f"{args.a678_arm.upper()} cannot aggregate: {closure_errors}"
             )
+    if (
+        dual_arm_name == "a1r15c"
+        and len(summaries) == len(dual_arm["contract"].CAPABILITY_GATE_TASKS)
+        and not _gate_passed(dual_arm["contract"].stitched_seven_report(summaries))
+    ):
+        checkpoint("complete_six_task_diagnostic_no_release")
+        print(json.dumps({"status": "COMPLETE_SIX_TASK_DIAGNOSTIC_NO_RELEASE", "suite_dir": str(suite_dir)}, indent=2))
+        return
     if dual_scored_arm:
         gate = dual_arm["preservation_report"](summaries)
         if (dual_arm_name != "bprv2" or bpr_mode == "primary") and not (
@@ -5270,6 +5357,7 @@ def main() -> None:
         and dual_arm_name != "a1r13d"
         and dual_arm_name != "a1r14"
         and dual_arm_name != "a1r15"
+        and dual_arm_name != "a1r15c"
     ):
         result_label = dual_arm["label"] if dual_scored_arm else "A10"
         result_prefix = result_label.upper()
