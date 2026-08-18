@@ -1,0 +1,32 @@
+{
+  "schema": "a4v2.offline_readiness.v1",
+  "created_at": "2026-08-18",
+  "status": "BLOCKED_ONLY_ON_DONOR_COLLECTION_AND_INDUCTION",
+  "generation_calls_during_this_preparation": 0,
+  "completed": {
+    "old_a4_mismatch_audited": true,
+    "new_experiment_identity_frozen": true,
+    "official_upstream_commit_bound": true,
+    "exact_route_retriever_implemented": true,
+    "same_app_cross_operation_fallback_forbidden": true,
+    "minimum_two_independent_donors_enforced": true,
+    "immutable_bank_hash_enforced": true,
+    "fixed_seven_runner_integrated": true,
+    "scored_read_path_adds_model_calls": 0,
+    "scored_read_path_updates_bank": false,
+    "focused_unit_tests_passed": 10,
+    "related_regression_tests_passed": 24
+  },
+  "missing": {
+    "required_evaluator_confirmed_nonhard_successes": 14,
+    "optional_robustness_successes": 6,
+    "offline_induction_calls_after_required_donors": 7,
+    "frozen_ready_bank": true,
+    "live_server_receipt_after_gpu_is_free": true,
+    "seven_task_scored_result": true,
+    "remaining_12_expansion_amendment_only_if_seven_of_seven": true
+  },
+  "why_not_live_now": "The active LRER suite owns the shared GPU/emulator. Concurrent donor collection would invalidate both campaigns.",
+  "next_artifact": "A4V2_DONOR_SOURCE_LOCK.json after the 14 required donor slots complete",
+  "claim_boundary": "No A4-v2 effectiveness claim exists before donor collection, model induction, bank freeze, and the fixed seven-task run."
+}

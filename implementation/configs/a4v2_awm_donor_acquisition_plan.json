@@ -1,0 +1,89 @@
+{
+  "schema": "a4v2.awm_donor_acquisition_plan.v1",
+  "status": "pending_collection",
+  "parent_controller": "A0_OFFICIAL_QWEN3VL32B_SCREENSHOT_ONLY",
+  "androidworld_commit": "3e50888527ef9f29b9157ecd537e408008bb1c85",
+  "scored_hard_inputs_forbidden": true,
+  "selection_policy": "Collect every slot regardless of preceding reward. Only evaluator-confirmed Easy/Medium successes enter induction. An unsuccessful slot is analyzed and replaced only under a new donor seed; scored Hard traces are never donors.",
+  "route_groups": [
+    {
+      "route_id": "browser_open_local_task",
+      "route": {"app": "browser", "operation": "open_local_task", "object_family": "interactive_html", "constraint_family": "*"},
+      "minimum_successes": 2,
+      "optional_third_success": false,
+      "slots": [
+        {"task_class": "BrowserDraw", "difficulty": "easy", "task_seed": 20260831, "native_max_steps": 12},
+        {"task_class": "BrowserMaze", "difficulty": "easy", "task_seed": 20260832, "native_max_steps": 18}
+      ]
+    },
+    {
+      "route_id": "expense_delete",
+      "route": {"app": "pro_expense", "operation": "delete", "object_family": "expense_record", "constraint_family": "*"},
+      "minimum_successes": 2,
+      "optional_third_success": true,
+      "slots": [
+        {"task_class": "ExpenseDeleteMultiple", "difficulty": "easy", "task_seed": 20260833, "native_max_steps": 20},
+        {"task_class": "ExpenseDeleteSingle", "difficulty": "easy", "task_seed": 20260834, "native_max_steps": 12},
+        {"task_class": "ExpenseDeleteDuplicates", "difficulty": "medium", "task_seed": 20260835, "native_max_steps": 18, "optional": true}
+      ]
+    },
+    {
+      "route_id": "retro_create_playlist",
+      "route": {"app": "retro_music", "operation": "create_playlist", "object_family": "playlist", "constraint_family": "ordered_items"},
+      "minimum_successes": 2,
+      "optional_third_success": true,
+      "slots": [
+        {"task_class": "RetroCreatePlaylist", "difficulty": "medium", "task_seed": 20260836, "native_max_steps": 30},
+        {"task_class": "RetroCreatePlaylist", "difficulty": "medium", "task_seed": 20260837, "native_max_steps": 30},
+        {"task_class": "RetroCreatePlaylist", "difficulty": "medium", "task_seed": 20260838, "native_max_steps": 30, "optional": true}
+      ]
+    },
+    {
+      "route_id": "calendar_add_event",
+      "route": {"app": "simple_calendar_pro", "operation": "add_event", "object_family": "calendar_event", "constraint_family": "*"},
+      "minimum_successes": 2,
+      "optional_third_success": true,
+      "slots": [
+        {"task_class": "SimpleCalendarAddOneEventTomorrow", "difficulty": "easy", "task_seed": 20260839, "native_max_steps": 26},
+        {"task_class": "SimpleCalendarAddOneEventRelativeDay", "difficulty": "medium", "task_seed": 20260840, "native_max_steps": 30},
+        {"task_class": "SimpleCalendarAddOneEventInTwoWeeks", "difficulty": "medium", "task_seed": 20260841, "native_max_steps": 30, "optional": true}
+      ]
+    },
+    {
+      "route_id": "opentracks_retrieve_duration",
+      "route": {"app": "opentracks", "operation": "retrieve_duration", "object_family": "activity", "constraint_family": "*"},
+      "minimum_successes": 2,
+      "optional_third_success": true,
+      "slots": [
+        {"task_class": "SportsTrackerActivityDuration", "difficulty": "easy", "task_seed": 20260842, "native_max_steps": 16},
+        {"task_class": "SportsTrackerActivitiesCountForWeek", "difficulty": "easy", "task_seed": 20260843, "native_max_steps": 14},
+        {"task_class": "SportsTrackerLongestDistanceActivity", "difficulty": "easy", "task_seed": 20260844, "native_max_steps": 14, "optional": true}
+      ]
+    },
+    {
+      "route_id": "broccoli_delete_recipe",
+      "route": {"app": "broccoli", "operation": "delete_recipe", "object_family": "recipe", "constraint_family": "*"},
+      "minimum_successes": 2,
+      "optional_third_success": true,
+      "slots": [
+        {"task_class": "RecipeDeleteMultipleRecipes", "difficulty": "easy", "task_seed": 20260845, "native_max_steps": 24},
+        {"task_class": "RecipeDeleteMultipleRecipesWithNoise", "difficulty": "medium", "task_seed": 20260846, "native_max_steps": 34},
+        {"task_class": "RecipeDeleteSingleRecipe", "difficulty": "easy", "task_seed": 20260847, "native_max_steps": 14, "optional": true}
+      ]
+    },
+    {
+      "route_id": "osmand_add_location_marker",
+      "route": {"app": "osmand", "operation": "add_location_marker", "object_family": "location", "constraint_family": "*"},
+      "minimum_successes": 2,
+      "optional_third_success": true,
+      "slots": [
+        {"task_class": "OsmAndFavorite", "difficulty": "medium", "task_seed": 20260848, "native_max_steps": 20},
+        {"task_class": "OsmAndFavorite", "difficulty": "medium", "task_seed": 20260849, "native_max_steps": 20},
+        {"task_class": "OsmAndFavorite", "difficulty": "medium", "task_seed": 20260850, "native_max_steps": 20, "optional": true}
+      ]
+    }
+  ],
+  "required_slot_count": 14,
+  "optional_slot_count": 6
+}
+

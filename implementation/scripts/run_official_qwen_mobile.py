@@ -76,6 +76,11 @@ from raven_m.official_qwen_mobile.a345_memory import (  # noqa: E402
     OnlinePageGraphMemory,
     ProactiveFoldedContextMemory,
 )
+from raven_m.official_qwen_mobile.a4v2_faithful_awm import (  # noqa: E402
+    FaithfulOfflineWorkflowMemory,
+    MECHANISM_ID as A4V2_MECHANISM_ID,
+    validate_bank as validate_a4v2_bank,
+)
 from raven_m.official_qwen_mobile.a345_contract import (  # noqa: E402
     A345_GATE_TASKS,
     A345_REQUIRED_GATE_TASKS,
@@ -153,6 +158,16 @@ A7_REMAINING_AFTER_GATE_TASKS = (
     "SportsTrackerActivitiesOnDate",
     "SportsTrackerTotalDistanceForCategoryOverInterval",
 )
+A4V2_SEVEN_TASKS = (
+    "BrowserMultiply",
+    "ExpenseDeleteMultiple2",
+    "RetroSavePlaylist",
+    "SimpleCalendarAddOneEvent",
+    "SportsTrackerTotalDurationForCategoryThisWeek",
+    "RecipeDeleteMultipleRecipesWithConstraint",
+    "OsmAndMarker",
+)
+A4V2_EXPERIMENT_ID = "A4V2_FAITHFUL_OFFLINE_AWM_QWEN3VL32B_AW_HARD_S20260806_V1"
 
 
 # New prospective arms are loaded only after CLI selection.  This keeps the
@@ -750,6 +765,43 @@ def _load_a4_workflows(path: Path) -> list[dict]:
     if payload.get("bank_sha256") != workflow_sha:
         raise RuntimeError("A4 workflow payload hash drifted")
     return workflows
+
+
+def _load_a4v2_bank(path: Path) -> dict:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    validate_a4v2_bank(payload)
+    return payload
+
+
+def _validate_a4v2_preflight(path: Path, *, bank_path: Path) -> dict:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if (
+        payload.get("schema") != "a4v2.zero_generation_preflight.v1"
+        or payload.get("experiment_id") != A4V2_EXPERIMENT_ID
+        or payload.get("mechanism_id") != A4V2_MECHANISM_ID
+        or payload.get("status") != "pass"
+        or payload.get("generation_calls") != 0
+        or payload.get("workflow_bank_sha256") != _sha256(bank_path)
+        or payload.get("seven_task_order") != list(A4V2_SEVEN_TASKS)
+    ):
+        raise RuntimeError("A4-v2 zero-generation preflight is invalid or drifted")
+    return payload
+
+
+def _validate_a4v2_receipt(path: Path, *, preflight_path: Path, bank_path: Path) -> dict:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if (
+        payload.get("schema") != "a4v2.live_server_receipt.v1"
+        or payload.get("experiment_id") != A4V2_EXPERIMENT_ID
+        or payload.get("status") != "pass"
+        or payload.get("generation_calls") != 0
+        or payload.get("preflight_sha256") != _sha256(preflight_path)
+        or payload.get("workflow_bank_sha256") != _sha256(bank_path)
+        or payload.get("served_model_id") != MODEL_ID
+        or int(payload.get("port", -1)) != 18000
+    ):
+        raise RuntimeError("A4-v2 live-server receipt is invalid or drifted")
+    return payload
 
 
 def _episode_infrastructure_valid(
@@ -1515,8 +1567,8 @@ def main() -> None:
     )
     parser.add_argument(
         "--a345-arm",
-        choices=("a3", "a4", "a5"),
-        help="Run one frozen A3/A4/A5 public-memory-kernel arm.",
+        choices=("a3", "a4", "a4v2", "a5"),
+        help="Run one frozen A3/A4/A4-v2/A5 public-memory arm.",
     )
     parser.add_argument(
         "--a678-arm",
@@ -1867,6 +1919,21 @@ def main() -> None:
         "--a345-launch-receipt",
         type=Path,
         help="Live frozen-server receipt created after GPU start and before the first scored call.",
+    )
+    parser.add_argument(
+        "--a4v2-workflow-bank",
+        type=Path,
+        default=REPOSITORY_ROOT / "evidence" / "a4v2" / "A4V2_FROZEN_WORKFLOW_BANK.json",
+    )
+    parser.add_argument(
+        "--a4v2-preflight-report",
+        type=Path,
+        default=REPOSITORY_ROOT / "evidence" / "a4v2" / "A4V2_ZERO_GENERATION_PREFLIGHT.json",
+    )
+    parser.add_argument(
+        "--a4v2-launch-receipt",
+        type=Path,
+        help="Fresh server receipt bound to the A4-v2 preflight and frozen bank.",
     )
     parser.add_argument(
         "--transient-observation-carry",
@@ -2469,31 +2536,58 @@ def main() -> None:
             except Exception as exc:
                 parser.error(str(exc))
         elif a345_scored_arm:
-            if not args.a345_preflight_report.is_file():
+            if args.a345_arm == "a4v2":
+                if not args.a4v2_workflow_bank.is_file():
+                    parser.error("A4-v2 requires a frozen faithful offline workflow bank")
+                try:
+                    _load_a4v2_bank(args.a4v2_workflow_bank.resolve())
+                except Exception as exc:
+                    parser.error(str(exc))
+                if not args.a4v2_preflight_report.is_file():
+                    parser.error(f"A4-v2 preflight is missing: {args.a4v2_preflight_report}")
+                try:
+                    _validate_a4v2_preflight(
+                        args.a4v2_preflight_report.resolve(),
+                        bank_path=args.a4v2_workflow_bank.resolve(),
+                    )
+                except Exception as exc:
+                    parser.error(str(exc))
+                if args.a4v2_launch_receipt is None or not args.a4v2_launch_receipt.is_file():
+                    parser.error("A4-v2 scored generation requires a fresh live receipt")
+                try:
+                    _validate_a4v2_receipt(
+                        args.a4v2_launch_receipt.resolve(),
+                        preflight_path=args.a4v2_preflight_report.resolve(),
+                        bank_path=args.a4v2_workflow_bank.resolve(),
+                    )
+                except Exception as exc:
+                    parser.error(str(exc))
+            elif not args.a345_preflight_report.is_file():
                 parser.error(f"A3/A4/A5 preflight is missing: {args.a345_preflight_report}")
-            try:
-                preflight = validate_a345_preflight_report(args.a345_preflight_report.resolve())
-            except Exception as exc:
-                parser.error(str(exc))
-            if args.a345_arm == "a4" and not args.a345_workflow_bank.is_file():
-                parser.error("A4 requires the frozen independent-donor workflow bank")
-            if args.a345_arm == "a4":
-                if args.a345_workflow_bank.resolve() != A4_WORKFLOW_BANK.resolve():
-                    parser.error("A4 scored run must use the canonical preflight-qualified workflow bank")
-                expected_bank_sha = (preflight.get("checks") or {}).get(
-                    "a4_workflow_bank_sha256"
-                )
-                if expected_bank_sha != _sha256(args.a345_workflow_bank.resolve()):
-                    parser.error("A4 workflow bank drifted after zero-generation preflight")
-            if args.a345_launch_receipt is None or not args.a345_launch_receipt.is_file():
-                parser.error("A3/A4/A5 scored generation requires a live launch receipt")
-            try:
-                validate_a345_launch_receipt(
-                    args.a345_launch_receipt.resolve(),
-                    preflight_path=args.a345_preflight_report.resolve(),
-                )
-            except Exception as exc:
-                parser.error(str(exc))
+            else:
+                try:
+                    preflight = validate_a345_preflight_report(args.a345_preflight_report.resolve())
+                except Exception as exc:
+                    parser.error(str(exc))
+                if args.a345_arm == "a4" and not args.a345_workflow_bank.is_file():
+                    parser.error("A4 requires the frozen independent-donor workflow bank")
+                if args.a345_arm == "a4":
+                    if args.a345_workflow_bank.resolve() != A4_WORKFLOW_BANK.resolve():
+                        parser.error("A4 scored run must use the canonical preflight-qualified workflow bank")
+                    expected_bank_sha = (preflight.get("checks") or {}).get(
+                        "a4_workflow_bank_sha256"
+                    )
+                    if expected_bank_sha != _sha256(args.a345_workflow_bank.resolve()):
+                        parser.error("A4 workflow bank drifted after zero-generation preflight")
+                if args.a345_launch_receipt is None or not args.a345_launch_receipt.is_file():
+                    parser.error("A3/A4/A5 scored generation requires a live launch receipt")
+                try:
+                    validate_a345_launch_receipt(
+                        args.a345_launch_receipt.resolve(),
+                        preflight_path=args.a345_preflight_report.resolve(),
+                    )
+                except Exception as exc:
+                    parser.error(str(exc))
         elif args.a1_working_memory:
             validate_preflight_report(args.a1_preflight_report.resolve())
         else:
@@ -2626,11 +2720,15 @@ def main() -> None:
             raise RuntimeError("memory-arm seed filter did not produce exactly 19 unique Hard tasks")
         if a345_scored_arm:
             by_name = {str(item["task_class"]): item for item in specs}
-            missing_gate = sorted(set(A345_GATE_TASKS) - set(by_name))
+            required_names = A4V2_SEVEN_TASKS if args.a345_arm == "a4v2" else A345_GATE_TASKS
+            missing_gate = sorted(set(required_names) - set(by_name))
             if missing_gate:
-                raise RuntimeError(f"A3/A4/A5 gate tasks missing from manifest: {missing_gate}")
-            remaining = [item for item in specs if str(item["task_class"]) not in A345_GATE_TASKS]
-            specs = [by_name[name] for name in A345_GATE_TASKS] + remaining
+                raise RuntimeError(f"A3/A4/A4-v2/A5 tasks missing from manifest: {missing_gate}")
+            if args.a345_arm == "a4v2":
+                specs = [by_name[name] for name in A4V2_SEVEN_TASKS]
+            else:
+                remaining = [item for item in specs if str(item["task_class"]) not in A345_GATE_TASKS]
+                specs = [by_name[name] for name in A345_GATE_TASKS] + remaining
         elif dual_arm_name in {"bprv2", "a1r2", "a1r3v3", "sys_lrer"} or dual_arm_name == "sys_nag" or (dual_arm_name and dual_arm_name.startswith("sys_trrc_")) or dual_arm_name in {"a1r3", "a1r4", "a1r5", "a1r6", "a1r7", "a1r8", "a1r9", "a1r10", "a1r11", "a1r12", "a1r13", "a1r13d", "a1r14", "a1r15"}:
             by_name = {str(item["task_class"]): item for item in specs}
             if sys_trrc_arm:
@@ -2762,7 +2860,9 @@ def main() -> None:
             else A10_EXPERIMENT_ID
             if a10_scored_arm
             else (
-                f"{args.a345_arm.upper()}_PUBLIC_MEMORY_KERNEL_QWEN3VL32B_AW_HARD_S20260806_V1"
+                A4V2_EXPERIMENT_ID
+                if args.a345_arm == "a4v2"
+                else f"{args.a345_arm.upper()}_PUBLIC_MEMORY_KERNEL_QWEN3VL32B_AW_HARD_S20260806_V1"
                 if a345_scored_arm
                 else (
                     (
@@ -2795,6 +2895,7 @@ def main() -> None:
                 {
                     "a3": "a3_memgui_conact_folded_context_v1",
                     "a4": "a4_awm_frozen_donor_workflow_memory_v1",
+                    "a4v2": A4V2_MECHANISM_ID,
                     "a5": "a5_hymem_online_visual_symbolic_graph_v1",
                 }[args.a345_arm]
                 if a345_scored_arm
@@ -2851,19 +2952,31 @@ def main() -> None:
             }
         )
     if a345_scored_arm:
-        run_signature.update(
-            {
-                "qualification_gate_tasks": list(A345_GATE_TASKS),
-                "qualification_gate_required_successes": 5,
-                "qualification_gate_fail_fast": True,
-                "schedule_note": "post-hoc capability-preservation gate, not new held-out evidence",
-                "a345_preflight_sha256": _sha256(args.a345_preflight_report),
-                "a345_launch_receipt_sha256": _sha256(args.a345_launch_receipt),
-                "a4_workflow_bank_sha256": (
-                    _sha256(args.a345_workflow_bank) if args.a345_arm == "a4" else None
-                ),
-            }
-        )
+        if args.a345_arm == "a4v2":
+            run_signature.update(
+                {
+                    "diagnostic_tasks": list(A4V2_SEVEN_TASKS),
+                    "scientific_fail_fast": False,
+                    "release_remaining_12_only_if_successes": 7,
+                    "a4v2_preflight_sha256": _sha256(args.a4v2_preflight_report),
+                    "a4v2_launch_receipt_sha256": _sha256(args.a4v2_launch_receipt),
+                    "a4v2_workflow_bank_sha256": _sha256(args.a4v2_workflow_bank),
+                }
+            )
+        else:
+            run_signature.update(
+                {
+                    "qualification_gate_tasks": list(A345_GATE_TASKS),
+                    "qualification_gate_required_successes": 5,
+                    "qualification_gate_fail_fast": True,
+                    "schedule_note": "post-hoc capability-preservation gate, not new held-out evidence",
+                    "a345_preflight_sha256": _sha256(args.a345_preflight_report),
+                    "a345_launch_receipt_sha256": _sha256(args.a345_launch_receipt),
+                    "a4_workflow_bank_sha256": (
+                        _sha256(args.a345_workflow_bank) if args.a345_arm == "a4" else None
+                    ),
+                }
+            )
     if a678_scored_arm:
         config_path = REPOSITORY_ROOT / (
             A7_CONTINUATION_CONFIG
@@ -4050,7 +4163,7 @@ def main() -> None:
                     if args.a2_verified_progress_memory
                     else (
                     A3_CONACT_SYSTEM_PROMPT if args.a345_arm == "a3" else (
-                    A4_WORKFLOW_SYSTEM_PROMPT if args.a345_arm == "a4" else (
+                    A4_WORKFLOW_SYSTEM_PROMPT if args.a345_arm in {"a4", "a4v2"} else (
                     A5_VISUAL_GRAPH_SYSTEM_PROMPT if args.a345_arm == "a5" else (
                     A1R1_BPR_V2_SYSTEM_PROMPT
                     if dual_arm_name == "bprv2"
@@ -4111,6 +4224,13 @@ def main() -> None:
                             )
                             if args.a345_arm == "a4"
                             else (
+                                FaithfulOfflineWorkflowMemory(
+                                    bank_payload=_load_a4v2_bank(args.a4v2_workflow_bank),
+                                    max_chars=1800,
+                                    max_workflows=3,
+                                )
+                                if args.a345_arm == "a4v2"
+                                else (
                                 OnlinePageGraphMemory(
                                     max_edges=12, max_chars=1800, max_hamming=6
                                 )
@@ -4119,6 +4239,7 @@ def main() -> None:
                         ActionWorkingMemory(max_items=6, max_chars=3000)
                         if args.a1_working_memory
                         else None
+                                )
                                 )
                             )
                         )
@@ -4287,7 +4408,7 @@ def main() -> None:
                     )
                 )
             completed_keys.add((task_name, episode_seed))
-            if a345_scored_arm and len(summaries) == 1 and not _a345_activation_valid(
+            if a345_scored_arm and args.a345_arm != "a4v2" and len(summaries) == 1 and not _a345_activation_valid(
                 result, str(args.a345_arm)
             ):
                 checkpoint("stopped_memory_activation_failure")
@@ -4295,7 +4416,7 @@ def main() -> None:
                     f"{args.a345_arm.upper()} first task did not prove memory exposure; "
                     "the suite is invalid and must not continue"
                 )
-            if a345_scored_arm and task_name in A345_REQUIRED_GATE_TASKS and not bool(
+            if a345_scored_arm and args.a345_arm != "a4v2" and task_name in A345_REQUIRED_GATE_TASKS and not bool(
                 result.get("success")
             ):
                 checkpoint("stopped_capability_gate_failure")
@@ -4584,7 +4705,8 @@ def main() -> None:
         ]
         if (
             completed_ordered_keys != expected_keys
-            or len(summaries) != 19
+            or (args.a345_arm != "a4v2" and len(summaries) != 19)
+            or (args.a345_arm == "a4v2" and len(summaries) != 7)
             or any(not item.get("resolved_by_episode_id") for item in invalid_attempts)
             or suite_lifecycle_errors
             or any(not _episode_infrastructure_valid(item) for item in summaries)
