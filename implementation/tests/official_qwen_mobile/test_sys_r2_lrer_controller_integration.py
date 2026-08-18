@@ -43,6 +43,11 @@ def test_runner_binds_new_identity_and_non_fail_fast_seven() -> None:
     assert 'task_name not in dual_arm["contract"].SEVEN_TASK_ORDER' in source
     assert 'complete_seven_task_diagnostic_no_release' in source
     assert 'sys_r2_lrer_result.json' in source
+    assert 'dual_arm_name == "sys_lrer")\n                and args.url.rstrip("/") != "http://127.0.0.1:18000"' in source
+    assert '"RESUMABLE_INFRASTRUCTURE_INVALID"' in source
+    assert '"TERMINAL_INFRASTRUCTURE_INCOMPLETE"' in source
+    assert '"SUCCESS_COMPONENT_SILENT_UNATTRIBUTED"' in source
+    assert '"committed_injections": committed_injections' in source
     # SYS-LRER is explicitly excluded from the generic fail-fast prospective gate.
     assert 'dual_arm_name != "sys_lrer"' in source
 
@@ -54,4 +59,3 @@ def test_runner_uses_exact_r2_parent_and_fresh_policy_per_episode() -> None:
     assert 'ttl_requests=8, max_render_chars=1100' in block
     assert "LateRawEvidenceRehydrationPolicy" in block
     assert "sys_trrc_text_delta_counter" in block
-

@@ -1414,6 +1414,26 @@ def _load_dual_arm_checkpoint(
     invalid_attempts = list(checkpoint.get("invalid_attempts") or [])
     if len(entries) != len(summaries):
         raise RuntimeError(f"{arm['label']} checkpoint entry/summary cardinality mismatch")
+    if arm["arm"] == "sys_lrer":
+        for attempt in invalid_attempts:
+            if attempt.get("reason") != "controller_or_lifecycle_invalid":
+                continue
+            episode_id = str(attempt.get("episode_id") or "")
+            artifact = attempt.get("artifact") or {}
+            episode_path = suite_dir / "episodes" / episode_id / "episode.json"
+            if (
+                not episode_id
+                or not episode_path.is_file()
+                or _sha256(episode_path) != artifact.get("episode_json_sha256")
+            ):
+                raise RuntimeError("SYS-R2-LRER invalid episode artifact hash mismatch")
+            invalid_summary = json.loads(episode_path.read_text(encoding="utf-8"))
+            if (
+                _json_digest(invalid_summary) != artifact.get("summary_sha256")
+                or int(invalid_summary.get("model_call_count") or 0)
+                != int(artifact.get("model_call_count") or 0)
+            ):
+                raise RuntimeError("SYS-R2-LRER invalid episode summary closure mismatch")
     for summary, entry in zip(summaries, entries, strict=True):
         if entry.get("run_signature_sha256") != run_signature_sha256:
             raise RuntimeError(f"{arm['label']} checkpoint entry signature drift")
@@ -2385,10 +2405,10 @@ def main() -> None:
             except Exception as exc:
                 parser.error(str(exc))
             if (
-                dual_arm_name.startswith("sys_trrc_")
+                (dual_arm_name.startswith("sys_trrc_") or dual_arm_name == "sys_lrer")
                 and args.url.rstrip("/") != "http://127.0.0.1:18000"
             ):
-                parser.error("SYS-TRRC runner URL must match its qualified 127.0.0.1:18000 receipt")
+                parser.error(f"{dual_arm['label']} runner URL must match its qualified 127.0.0.1:18000 receipt")
             if dual_arm_name.startswith("sys_trrc_"):
                 expected_processor_hashes = (
                     ((dual_preflight.get("checks") or {}).get(
@@ -3489,6 +3509,18 @@ def main() -> None:
             task_rows = []
             for expected_task in dual_arm["contract"].FULL_TASK_ORDER:
                 item = completed.get(expected_task)
+                recovery_audit = (item or {}).get("recovery_mechanism") or {}
+                committed_injections = list(recovery_audit.get("committed_injections") or [])
+                if item and item.get("success") and committed_injections:
+                    attribution = "SUCCESS_WITH_COMMITTED_LRER_MECHANISM_CONSISTENT_ABLATION_UNRESOLVED"
+                elif item and item.get("success"):
+                    attribution = "SUCCESS_COMPONENT_SILENT_UNATTRIBUTED"
+                elif item and committed_injections:
+                    attribution = "ACTIVATED_NO_GAIN"
+                elif item:
+                    attribution = "NO_OPPORTUNITY_OR_UNUSED_FAILURE"
+                else:
+                    attribution = "NOT_RUN_BY_PROTOCOL"
                 task_rows.append(
                     {
                         "task_name": expected_task,
@@ -3501,6 +3533,15 @@ def main() -> None:
                         "episode_id": item.get("episode_id") if item else None,
                         "reward": item.get("evaluator_reward") if item else None,
                         "success": item.get("success") if item else None,
+                        "normal_model_calls": int(item.get("normal_decision_call_count") or item.get("model_call_count") or 0) if item else None,
+                        "executed_actions": int(item.get("executed_action_count") or 0) if item else None,
+                        "token_usage": _usage_totals([item]) if item else None,
+                        "elapsed_seconds": (
+                            datetime.fromisoformat(item["finished_at"]).timestamp()
+                            - datetime.fromisoformat(item["started_at"]).timestamp()
+                        ) if item else None,
+                        "attribution": attribution,
+                        "committed_injections": committed_injections,
                     }
                 )
             gate = dual_arm["contract"].seven_gate_report(summaries)
@@ -3511,6 +3552,10 @@ def main() -> None:
                     "COMPLETE_19" if status == "complete"
                     else "TERMINAL_SEVEN_TASK_DIAGNOSTIC_FAIL"
                     if status == "complete_seven_task_diagnostic_no_release"
+                    else "RESUMABLE_INFRASTRUCTURE_INVALID"
+                    if status == "stopped_invalid_episode"
+                    else "TERMINAL_INFRASTRUCTURE_INCOMPLETE"
+                    if status == "infrastructure_incomplete"
                     else f"TERMINAL_{status.upper()}" if status.startswith("stopped_")
                     else "RUNNING_PARTIAL"
                 ),
@@ -3526,7 +3571,8 @@ def main() -> None:
                 "claim_boundary": {
                     "observed_diagnostic_set": True,
                     "held_out": False,
-                    "r15_success_not_attributed_to_evr": True,
+                    "historical_r15_success_not_attributed_to_lrer": True,
+                    "mechanism_support_requires_committed_injection_and_success": True,
                     "single_arm_mechanism_consistent_not_strictly_causal": True,
                     "auxiliary_model_calls": 0,
                 },
@@ -3540,6 +3586,14 @@ def main() -> None:
                 "performance": {
                     "success_count": sum(int(bool(item.get("success"))) for item in summaries),
                     "reward_sum": sum(float(item.get("evaluator_reward") or 0.0) for item in summaries),
+                    "normal_model_calls": sum(int(item.get("normal_decision_call_count") or item.get("model_call_count") or 0) for item in summaries),
+                    "executed_actions": sum(int(item.get("executed_action_count") or 0) for item in summaries),
+                    "token_usage": _usage_totals(summaries),
+                    "elapsed_seconds": sum(
+                        datetime.fromisoformat(item["finished_at"]).timestamp()
+                        - datetime.fromisoformat(item["started_at"]).timestamp()
+                        for item in summaries
+                    ),
                 },
                 "mechanism_funnel": {
                     "eligible_count": sum(int(((audit.get("counters") or {}).get("eligible_count") or 0)) for audit in recovery_audits),
