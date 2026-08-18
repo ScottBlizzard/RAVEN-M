@@ -1,0 +1,28 @@
+{
+  "checks": {
+    "focused_tests": {
+      "passed": true,
+      "returncode": 0
+    },
+    "git": {
+      "head": "ba67a740f13d7003371e34897e078b59844da9ff",
+      "worktree_status": []
+    },
+    "parent_browser": {
+      "episode_json_sha256": "b7bfd75c644e20d52f7436a21799c9f2e3736af20a84e378de4334daa2158765",
+      "status": "PASS"
+    },
+    "test_tail": "............                                                             [100%]\n============================== warnings summary ===============================\nC:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\requests\\__init__.py:113\n  C:\\Users\\lenovo\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\requests\\__init__.py:113: RequestsDependencyWarning: urllib3 (2.3.0) or chardet (7.0.1)/charset_normalizer (3.4.4) doesn't match a supported version!\n    warnings.warn(\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n"
+  },
+  "content_sha256": "cdd5951545bf42e3fcf90d38675f07279fef1d7c199dbf8b2a0820a16ecd771d",
+  "created_at": "2026-08-18T12:01:01.640054+00:00",
+  "errors": [],
+  "experiment_id": "A1R15_EOVR_QWEN3VL32B_AW_HARD_S20260806_G3407_V1_STITCHED_CONTINUATION",
+  "generation_calls": 0,
+  "implementation_commit": "ba67a740f13d7003371e34897e078b59844da9ff",
+  "live_generation_authorized": true,
+  "mechanism_id": "a1r15_explicit_observation_value_register_v1",
+  "schema": "a1r15_eovr_stitched_continuation_preflight_v1",
+  "source_freeze_content_sha256": "fcb513628fc365909ae7709f3cdd26fe4849e946c7ae590eaa87cb021968382f",
+  "status": "PASS"
+}
