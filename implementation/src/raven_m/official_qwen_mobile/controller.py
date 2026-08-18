@@ -206,6 +206,7 @@ class OfficialQwenMobileController:
         recovery_policy: Any | None = None,
         answer_consistency_guard: Any | None = None,
         cost_guard: RepeatedNoProgressGuard | None = None,
+        post_action_settle_seconds: float = 0.0,
     ) -> None:
         self.client = client
         self.max_steps = max(1, int(max_steps))
@@ -220,6 +221,13 @@ class OfficialQwenMobileController:
         self.recovery_policy = recovery_policy
         self.answer_consistency_guard = answer_consistency_guard
         self.cost_guard = cost_guard
+        self.post_action_settle_seconds = float(post_action_settle_seconds)
+        if (
+            not np.isfinite(self.post_action_settle_seconds)
+            or self.post_action_settle_seconds < 0.0
+            or self.post_action_settle_seconds > 5.0
+        ):
+            raise ValueError("post_action_settle_seconds must be finite and within [0, 5]")
 
     def _committed_history_summary(
         self,
@@ -382,6 +390,10 @@ class OfficialQwenMobileController:
                 else None
             ),
         }
+        if self.post_action_settle_seconds:
+            episode_start_event["post_action_settle_seconds"] = (
+                self.post_action_settle_seconds
+            )
         if self.recovery_policy is not None:
             episode_start_event["recovery_mechanism"] = (
                 self.recovery_policy.audit_record()
@@ -1085,6 +1097,17 @@ class OfficialQwenMobileController:
                     "latency_seconds": execution_latency,
                     "mapped_action": mapped_record,
                 }
+                if self.post_action_settle_seconds:
+                    settle_started = time.perf_counter()
+                    time.sleep(self.post_action_settle_seconds)
+                    record["layers"]["L3_execution"]["post_action_settle"] = {
+                        "policy": "fixed_visible_frame_settle_before_single_capture_v1",
+                        "requested_seconds": self.post_action_settle_seconds,
+                        "observed_seconds": time.perf_counter() - settle_started,
+                        "additional_model_calls": 0,
+                        "additional_actions": 0,
+                        "additional_state_captures": 0,
+                    }
                 after_state = env.get_state(wait_to_stabilize=True)
                 pending_state = after_state
                 after = _audit_snapshot(

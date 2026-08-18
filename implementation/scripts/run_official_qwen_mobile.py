@@ -21,9 +21,8 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 REPOSITORY_ROOT = PROJECT_ROOT.parent
 LOCAL_RUNTIME = REPOSITORY_ROOT / "06_local_runtime"
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
-sys.path.insert(0, str(LOCAL_RUNTIME / "scripts"))
 
-import androidworld_compat  # noqa: E402,F401
+from raven_m import androidworld_compat  # noqa: E402,F401
 from android_world import registry  # noqa: E402
 from android_world.env import android_world_controller, env_launcher  # noqa: E402
 from raven_m.models.vllm_client import VLLMClient  # noqa: E402
@@ -228,6 +227,20 @@ DUAL_ARM_SPECS = {
         "result_schema": "sys_r2_lrer_result_v1",
         "reference_segments_path": REPOSITORY_ROOT
         / "evidence/sys_r2_lrer/SYS_R2_LRER_REPLAY_FIXTURE.json",
+        "system_prompt_identity": "a1_working_memory",
+    },
+    "sys_lrer_v2": {
+        "flag": "sys_r2_lrer_v2",
+        "label": "SYS-R2-SLRER V2 stabilized late raw-evidence rehydration",
+        "memory_module": "raven_m.official_qwen_mobile.a1r2_compact_verified_pending",
+        "memory_class": "CompactVerifiedPendingMemory",
+        "contract_module": "raven_m.official_qwen_mobile.sys_r2_lrer_v2_contract",
+        "entry_key": "sys_r2_lrer_v2_valid_entries",
+        "checkpoint_schema": "sys_r2_lrer_v2_checkpoint_v1",
+        "result_key": "sys_r2_lrer_v2_result",
+        "result_schema": "sys_r2_lrer_v2_result_v1",
+        "reference_segments_path": REPOSITORY_ROOT
+        / "evidence/sys_r2_lrer_v2/SYS_R2_LRER_V2_REPLAY_FIXTURE.json",
         "system_prompt_identity": "a1_working_memory",
     },
     "sys_nag": {
@@ -1401,11 +1414,11 @@ def _load_dual_arm_checkpoint(
         raise RuntimeError(
             f"{arm['label']} checkpoint identity mismatch; cross-arm resume is forbidden"
         )
-    if arm["arm"] in {"sys_nag", "sys_lrer"} and checkpoint.get("system_id") != arm[
+    if arm["arm"] in {"sys_nag", "sys_lrer", "sys_lrer_v2"} and checkpoint.get("system_id") != arm[
         "contract"
     ].SYSTEM_ID:
         raise RuntimeError(f"{arm['label']} checkpoint system identity mismatch")
-    if (arm["arm"].startswith("sys_trrc_") or arm["arm"] in {"sys_nag", "a1r13", "a1r13d", "a1r14", "a1r15", "sys_lrer"}) and checkpoint.get(
+    if (arm["arm"].startswith("sys_trrc_") or arm["arm"] in {"sys_nag", "a1r13", "a1r13d", "a1r14", "a1r15", "sys_lrer", "sys_lrer_v2"}) and checkpoint.get(
         "content_sha256"
     ) != arm["contract"].content_sha256(checkpoint):
         raise RuntimeError(f"{arm['label']} checkpoint content hash mismatch")
@@ -1414,7 +1427,7 @@ def _load_dual_arm_checkpoint(
     invalid_attempts = list(checkpoint.get("invalid_attempts") or [])
     if len(entries) != len(summaries):
         raise RuntimeError(f"{arm['label']} checkpoint entry/summary cardinality mismatch")
-    if arm["arm"] == "sys_lrer":
+    if arm["arm"] in {"sys_lrer", "sys_lrer_v2"}:
         for attempt in invalid_attempts:
             if attempt.get("reason") != "controller_or_lifecycle_invalid":
                 continue
@@ -1606,6 +1619,13 @@ def main() -> None:
     parser.add_argument(
         "--sys-r2-lrer", action="store_true",
         help="Run R2 plus one-shot late raw-evidence rehydration.",
+    )
+    parser.add_argument(
+        "--sys-r2-lrer-v2", action="store_true",
+        help=(
+            "Run the independent stabilized LRER V2 identity; preflight, "
+            "receipt, processor, and output arguments reuse the SYS-R2-LRER slots."
+        ),
     )
     parser.add_argument(
         "--sys-r2-lrer-preflight-report", type=Path,
@@ -2031,6 +2051,7 @@ def main() -> None:
             args.a1r14_rgvr,
             args.a1r15_eovr,
             args.sys_r2_lrer,
+            args.sys_r2_lrer_v2,
             args.sys_nag,
             args.a1r11_cscp,
             args.a1r10_pacp,
@@ -2054,9 +2075,16 @@ def main() -> None:
             "--evidence-qualified-progress, and --source-document-coverage "
             "--source-document-coverage-gate, --a1-working-memory, and "
             "--a2-verified-progress-memory, --a345-arm, --a678-arm, --a10-ecobf, "
-            "--a10-v2-emobf, --a11-crc-ecobf, --a12-madm, --a1r13-evr, --a1r13d-evr, --a1r14-rgvr, --a1r15-eovr, --a1r12-chp, --a1r11-cscp, --a1r10-pacp, --a1r9-rlcr, --a1r8-rcrp, --a1r7-grpl, --a1r6-gapl, --a1r5-tipl, --a1r4-wrpl, --a1r3v3-oscnr, --a1r3-srpl, --a1r2-cvp, --a1r1-bpr-v2-mode, and "
+            "--a10-v2-emobf, --a11-crc-ecobf, --a12-madm, --a1r13-evr, --a1r13d-evr, --a1r14-rgvr, --a1r15-eovr, --sys-r2-lrer-v2, --a1r12-chp, --a1r11-cscp, --a1r10-pacp, --a1r9-rlcr, --a1r8-rcrp, --a1r7-grpl, --a1r6-gapl, --a1r5-tipl, --a1r4-wrpl, --a1r3v3-oscnr, --a1r3-srpl, --a1r2-cvp, --a1r1-bpr-v2-mode, and "
             "--enriched-memory-diagnostic are mutually exclusive"
         )
+    if args.sys_r2_lrer_v2:
+        # Reuse the mature SYS-LRER runner/result/checkpoint plumbing while
+        # replacing every scientific identity and source contract.  Keeping
+        # the internal arm key stable prevents a second, divergent copy of the
+        # seven-task non-fail-fast state machine.
+        DUAL_ARM_SPECS["sys_lrer"] = dict(DUAL_ARM_SPECS["sys_lrer_v2"])
+        args.sys_r2_lrer = True
     held_out_eligible = not bool(args.diagnostic) and not bool(
         args.held_out_ineligible_reason
     )
@@ -2097,6 +2125,8 @@ def main() -> None:
         None,
     )
     dual_arm = _load_dual_arm(dual_arm_name) if dual_arm_name else None
+    if dual_arm is not None and args.sys_r2_lrer_v2:
+        dual_arm["arm"] = "sys_lrer_v2"
     sys_trrc_token_projector = None
     sys_trrc_text_delta_counter = None
     sys_trrc_local_processor_identity: dict | None = None
@@ -2335,7 +2365,7 @@ def main() -> None:
         held_out_eligible = False
         held_out_ineligible_reason = (
             "post_observed_seed20260806_composite_system_comparison"
-            if sys_trrc_arm else
+            if sys_trrc_arm or dual_arm_name in {"sys_lrer", "sys_nag"} else
             "post_observed_seed20260806_memory_mechanism_comparison"
         )
     scored_memory_arm = bool(
@@ -3058,6 +3088,11 @@ def main() -> None:
                 {
                     "system_id": dual_arm["contract"].SYSTEM_ID,
                     "task_order": "fixed_non_fail_fast_seven_then_remaining_twelve_if_7_of_7",
+                    "reward_fail_fast": False,
+                    "A0_preservation_tasks": [],
+                    "A0_preservation_required_for_continuation": False,
+                    "seven_task_diagnostic_non_fail_fast": True,
+                    "remaining_twelve_release_requires": "7/7",
                     "seven_task_gate": list(dual_arm["contract"].CAPABILITY_GATE_TASKS),
                     "r2_parent_mechanism_id": "a1r2_compact_verified_pending_v1",
                     "r2_parent_immutable": True,
@@ -3069,6 +3104,16 @@ def main() -> None:
                     "max_deferrals_per_episode": 1,
                     "max_direct_injections_per_episode": 1,
                     "auxiliary_model_calls": 0,
+                    "post_action_settle_seconds": float(
+                        dual_arm["contract"].EXPECTED_CONFIG.get(
+                            "post_action_settle_seconds", 0.0
+                        )
+                    ),
+                    "post_action_state_capture_count": int(
+                        dual_arm["contract"].EXPECTED_CONFIG.get(
+                            "post_action_state_capture_count", 1
+                        )
+                    ),
                     "guard": True,
                     "action_override": False,
                     "forced_termination": False,
@@ -3505,13 +3550,49 @@ def main() -> None:
         else:
             _atomic_json(suite_dir / "checkpoint.json", payload)
         if dual_arm_name == "sys_lrer":
+            is_lrer_v2 = dual_arm["arm"] == "sys_lrer_v2"
             completed = {str(item.get("task_name")): item for item in summaries}
+            reference_payload = (
+                json.loads(
+                    dual_arm["reference_segments_path"].read_text(encoding="utf-8")
+                )
+                if is_lrer_v2
+                else {}
+            )
+            reference_rows = {
+                str(row.get("task_name")): row
+                for row in (
+                    reference_payload.get("v1_r2_episodes")
+                    or reference_payload.get("r2_episodes")
+                    or []
+                )
+            }
+            r2_outcomes = dual_arm["contract"].r2_outcome_map() if is_lrer_v2 else {}
+            unresolved_infra_tasks = {
+                str(item.get("task_name"))
+                for item in invalid_attempts
+                if item.get("task_name")
+                and not item.get("resolved_by_episode_id")
+            }
             task_rows = []
             for expected_task in dual_arm["contract"].FULL_TASK_ORDER:
                 item = completed.get(expected_task)
                 recovery_audit = (item or {}).get("recovery_mechanism") or {}
+                recovery_counters = recovery_audit.get("counters") or {}
                 committed_injections = list(recovery_audit.get("committed_injections") or [])
-                if item and item.get("success") and committed_injections:
+                settle_rows = [
+                    (((step.get("layers") or {}).get("L3_execution") or {}).get("post_action_settle") or {})
+                    for step in ((item or {}).get("steps") or [])
+                    if bool(step.get("executed"))
+                ]
+                if is_lrer_v2:
+                    attribution = dual_arm["contract"].task_attribution(
+                        task_name=expected_task,
+                        summary=item,
+                        recovery_audit=recovery_audit,
+                        unresolved_infrastructure=expected_task in unresolved_infra_tasks,
+                    )
+                elif item and item.get("success") and committed_injections:
                     attribution = "SUCCESS_WITH_COMMITTED_LRER_MECHANISM_CONSISTENT_ABLATION_UNRESOLVED"
                 elif item and item.get("success"):
                     attribution = "SUCCESS_COMPONENT_SILENT_UNATTRIBUTED"
@@ -3521,6 +3602,24 @@ def main() -> None:
                     attribution = "NO_OPPORTUNITY_OR_UNUSED_FAILURE"
                 else:
                     attribution = "NOT_RUN_BY_PROTOCOL"
+                prior_r2_success = bool(r2_outcomes[expected_task]["success"]) if is_lrer_v2 else False
+                if item and item.get("success"):
+                    comparative_outcome = "PRESERVED" if prior_r2_success else "GAIN_CANDIDATE"
+                elif item:
+                    comparative_outcome = "REGRESSION" if prior_r2_success else "NO_GAIN"
+                elif expected_task in unresolved_infra_tasks:
+                    comparative_outcome = "INFRA_INVALID"
+                else:
+                    comparative_outcome = "NOT_RUN_BY_PROTOCOL"
+                lrer_state = (
+                    "COMMITTED"
+                    if committed_injections
+                    else "DEFERRED_NOT_COMMITTED"
+                    if int(recovery_counters.get("deferral_count") or 0)
+                    else "ELIGIBLE_NOT_DEFERRED"
+                    if int(recovery_counters.get("eligible_count") or 0)
+                    else "NO_OPPORTUNITY"
+                )
                 task_rows.append(
                     {
                         "task_name": expected_task,
@@ -3528,6 +3627,7 @@ def main() -> None:
                         "execution_status": (
                             "VALID_SUCCESS" if item and item.get("success")
                             else "VALID_SCIENTIFIC_FAILURE" if item
+                            else "INFRA_INVALID" if is_lrer_v2 and expected_task in unresolved_infra_tasks
                             else "NOT_RUN_BY_PROTOCOL"
                         ),
                         "episode_id": item.get("episode_id") if item else None,
@@ -3542,6 +3642,43 @@ def main() -> None:
                         ) if item else None,
                         "attribution": attribution,
                         "committed_injections": committed_injections,
+                        **(
+                            {
+                                "prior_r2_outcome": {
+                                    "success": prior_r2_success,
+                                    "reward": r2_outcomes[expected_task]["reward"],
+                                    "episode_id": r2_outcomes[expected_task]["episode_id"],
+                                },
+                                "comparative_outcome": comparative_outcome,
+                                "frame_settle_active": bool(item),
+                                "lrer": {
+                                    "state": lrer_state if item else None,
+                                    "eligible_count": int(recovery_counters.get("eligible_count") or 0) if item else None,
+                                    "deferral_count": int(recovery_counters.get("deferral_count") or 0) if item else None,
+                                    "injection_commit_count": int(recovery_counters.get("injection_commit_count") or 0) if item else None,
+                                },
+                                "first_divergence_from_r2": dual_arm["contract"].first_response_divergence(
+                                    item, reference_rows.get(expected_task)
+                                ),
+                                "post_action_settle": (
+                                    {
+                                        "requested_seconds": float(
+                                            dual_arm["contract"].EXPECTED_CONFIG.get(
+                                                "post_action_settle_seconds", 0.0
+                                            )
+                                        ),
+                                        "event_count": len(settle_rows),
+                                        "observed_seconds": sum(
+                                            float(row.get("observed_seconds") or 0.0)
+                                            for row in settle_rows
+                                        ),
+                                    }
+                                    if item else None
+                                ),
+                            }
+                            if is_lrer_v2
+                            else {}
+                        ),
                     }
                 )
             gate = dual_arm["contract"].seven_gate_report(summaries)
@@ -3575,6 +3712,15 @@ def main() -> None:
                     "mechanism_support_requires_committed_injection_and_success": True,
                     "single_arm_mechanism_consistent_not_strictly_causal": True,
                     "auxiliary_model_calls": 0,
+                    **(
+                        {
+                            "frame_settle_and_lrer_effects_not_separately_identifiable": True,
+                            "component_silent_refers_to_lrer_only": True,
+                            "frame_settle_active_on_every_executed_action": True,
+                        }
+                        if is_lrer_v2
+                        else {}
+                    ),
                 },
                 "closure": {
                     "valid_episode_count": len(summaries),
@@ -3594,7 +3740,48 @@ def main() -> None:
                         - datetime.fromisoformat(item["started_at"]).timestamp()
                         for item in summaries
                     ),
+                    **(
+                        {
+                            "post_action_settle_seconds": sum(
+                                float(
+                                    (row.get("post_action_settle") or {}).get(
+                                        "observed_seconds"
+                                    )
+                                    or 0.0
+                                )
+                                for row in task_rows
+                                if row.get("execution_status")
+                                in {"VALID_SUCCESS", "VALID_SCIENTIFIC_FAILURE"}
+                            )
+                        }
+                        if is_lrer_v2
+                        else {}
+                    ),
                 },
+                **(
+                    {
+                        "verdicts": {
+                            "accuracy": (
+                                f"COMPLETE_19_{sum(int(bool(item.get('success'))) for item in summaries)}_SUCCESSES"
+                                if status == "complete"
+                                else f"SEVEN_TASK_{gate.get('success_count', 0)}_OF_7"
+                                if status == "complete_seven_task_diagnostic_no_release"
+                                else "NOT_YET_ADJUDICATED"
+                            ),
+                            "mechanism": (
+                                "COMPOSITE_CANDIDATE_SUPPORT_ABLATION_UNRESOLVED"
+                                if any(
+                                    row["attribution"] == "MECHANISM_CONSISTENT_CANDIDATE_SUPPORT"
+                                    for row in task_rows
+                                )
+                                else "NOT_ESTABLISHED"
+                            ),
+                            "cost": "DESCRIPTIVE_ONLY_NO_MATCHED_RUNTIME_CONTROL",
+                        }
+                    }
+                    if is_lrer_v2
+                    else {}
+                ),
                 "mechanism_funnel": {
                     "eligible_count": sum(int(((audit.get("counters") or {}).get("eligible_count") or 0)) for audit in recovery_audits),
                     "deferral_count": sum(int(((audit.get("counters") or {}).get("deferral_count") or 0)) for audit in recovery_audits),
@@ -3605,7 +3792,16 @@ def main() -> None:
                 "errors": [],
             }
             result_payload["content_sha256"] = dual_arm["contract"].content_sha256(result_payload)
-            _atomic_json(suite_dir / "sys_r2_lrer_result.json", result_payload)
+            if dual_arm["arm"] == "sys_lrer_v2":
+                dual_arm["contract"].validate_result_payload(
+                    result_payload, checkpoint_payload=payload
+                )
+            result_filename = (
+                "sys_r2_lrer_v2_result.json"
+                if dual_arm["arm"] == "sys_lrer_v2"
+                else "sys_r2_lrer_result.json"
+            )
+            _atomic_json(suite_dir / result_filename, result_payload)
         if dual_arm_name in {"a1r13", "a1r13d", "a1r14", "a1r15"}:
             completed = {str(item.get("task_name")): item for item in summaries}
             task_rows = []
@@ -3854,6 +4050,7 @@ def main() -> None:
             a678_memory = None
             recovery_policy = None
             answer_consistency_guard = None
+            post_action_settle_seconds = 0.0
             if args.a678_arm == "a6":
                 a678_memory = ShortTransitionEpisodicBuffer(capacity=2, max_chars=240)
             elif args.a678_arm == "a7":
@@ -3911,12 +4108,26 @@ def main() -> None:
                     a678_memory = dual_arm["memory_class_object"](
                         ttl_requests=8, max_render_chars=1100
                     )
-                    from raven_m.official_qwen_mobile.r15_derived_evidence_consolidation import (
-                        LateRawEvidenceRehydrationPolicy,
+                    post_action_settle_seconds = float(
+                        config.get("post_action_settle_seconds") or 0.0
                     )
-                    recovery_policy = LateRawEvidenceRehydrationPolicy(
-                        text_delta_counter=sys_trrc_text_delta_counter,
-                    )
+                    if post_action_settle_seconds:
+                        from raven_m.official_qwen_mobile.r15_derived_evidence_consolidation_v2 import (
+                            POST_ACTION_SETTLE_SECONDS,
+                            StabilizedLateRawEvidenceRehydrationPolicy,
+                        )
+                        if post_action_settle_seconds != POST_ACTION_SETTLE_SECONDS:
+                            raise RuntimeError("SYS-R2-LRER V2 settle duration drift")
+                        recovery_policy = StabilizedLateRawEvidenceRehydrationPolicy(
+                            text_delta_counter=sys_trrc_text_delta_counter,
+                        )
+                    else:
+                        from raven_m.official_qwen_mobile.r15_derived_evidence_consolidation import (
+                            LateRawEvidenceRehydrationPolicy,
+                        )
+                        recovery_policy = LateRawEvidenceRehydrationPolicy(
+                            text_delta_counter=sys_trrc_text_delta_counter,
+                        )
                 elif dual_arm_name and dual_arm_name.startswith("sys_trrc_"):
                     a678_memory = dual_arm["memory_class_object"](
                         ttl_requests=8, max_render_chars=1100
@@ -4135,6 +4346,7 @@ def main() -> None:
                 ),
                 recovery_policy=recovery_policy,
                 answer_consistency_guard=answer_consistency_guard,
+                post_action_settle_seconds=post_action_settle_seconds,
             )
             episode_id = f"{task_name}_{episode_seed}_{uuid4().hex[:8]}"
             result = controller.run(
@@ -4526,12 +4738,15 @@ def main() -> None:
                     f"SYS-R2-LRER seven-task diagnostic closure failed: {errors}"
                 )
             checkpoint("complete_seven_task_diagnostic_no_release")
-            result = json.loads(
-                (suite_dir / "sys_r2_lrer_result.json").read_text(encoding="utf-8")
+            result_filename = (
+                "sys_r2_lrer_v2_result.json"
+                if dual_arm["arm"] == "sys_lrer_v2"
+                else "sys_r2_lrer_result.json"
             )
+            result = json.loads((suite_dir / result_filename).read_text(encoding="utf-8"))
             print(
                 json.dumps(
-                    {"suite_dir": str(suite_dir), "sys_r2_lrer_result": result},
+                    {"suite_dir": str(suite_dir), dual_arm["result_key"]: result},
                     indent=2,
                     ensure_ascii=False,
                 )
@@ -5270,6 +5485,7 @@ def main() -> None:
         and dual_arm_name != "a1r13d"
         and dual_arm_name != "a1r14"
         and dual_arm_name != "a1r15"
+        and dual_arm_name != "sys_lrer"
     ):
         result_label = dual_arm["label"] if dual_scored_arm else "A10"
         result_prefix = result_label.upper()
@@ -5927,8 +6143,27 @@ def main() -> None:
                     "read_causal_records": causal_read_analysis,
                     "errors": [],
                 }
-    _atomic_json(suite_dir / "aggregate.json", aggregate)
-    checkpoint("complete")
+    if dual_arm_name == "sys_lrer":
+        # The checkpoint sidecar is the only formal SYS-LRER result builder.
+        # Seal it first, then project that exact self-bound object into the
+        # human-facing aggregate; never construct a second generic result.
+        checkpoint("complete")
+        result_filename = (
+            "sys_r2_lrer_v2_result.json"
+            if dual_arm["arm"] == "sys_lrer_v2"
+            else "sys_r2_lrer_result.json"
+        )
+        aggregate[dual_arm["result_key"]] = json.loads(
+            (suite_dir / result_filename).read_text(encoding="utf-8")
+        )
+        aggregate["scientific_design"] = "post_observed_composite_diagnostic"
+        aggregate["system_intervention"] = dual_arm["contract"].SYSTEM_ID
+        aggregate["seven_task_gate"] = dual_arm["contract"].seven_gate_report(summaries)
+        aggregate["A0_preservation_monitor"] = None
+        _atomic_json(suite_dir / "aggregate.json", aggregate)
+    else:
+        _atomic_json(suite_dir / "aggregate.json", aggregate)
+        checkpoint("complete")
     if dual_arm_name and dual_arm_name.startswith("sys_trrc_"):
         aggregate["sys_trrc_result"] = json.loads(
             (suite_dir / "sys_trrc_result.json").read_text(encoding="utf-8")
