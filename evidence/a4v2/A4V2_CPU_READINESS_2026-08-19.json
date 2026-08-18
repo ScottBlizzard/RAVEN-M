@@ -1,0 +1,39 @@
+{
+  "adb": {
+    "boot_completed": "1",
+    "devices": "List of devices attached\nemulator-5554\tdevice\n\n",
+    "wm_size": "Physical size: 1080x2400"
+  },
+  "content_sha256": "2a0d9d9c2397b00442127661591bac5cf16f52b18685a7b09004397ab18fabdb",
+  "created_at": "2026-08-18T17:31:25.020063+00:00",
+  "errors": [],
+  "focused_tests": {
+    "command": [
+      "D:\\ZJU\\Summer_Camp\\RAVEN-M-Research\\06_local_runtime\\envs\\androidworld\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "implementation/tests/official_qwen_mobile/test_a4v2_faithful_awm.py",
+      "implementation/tests/official_qwen_mobile/test_a4v2_induction.py",
+      "implementation/tests/official_qwen_mobile/test_a4v2_runner_contract.py",
+      "implementation/tests/official_qwen_mobile/test_a4v2_donor_pipeline.py",
+      "implementation/tests/official_qwen_mobile/test_a4v2_finalizer.py",
+      "-q",
+      "-p",
+      "no:cacheprovider"
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "...............                                                          [100%]\n"
+  },
+  "generation_calls": 0,
+  "model_service": {
+    "ready": false,
+    "served_model_ids": [],
+    "url": "http://127.0.0.1:18000"
+  },
+  "repository_head": "e0603793e2c9904e0b28a22308fffe37eb17a06e",
+  "required_files_present": true,
+  "schema": "a4v2.cpu_readiness.v1",
+  "status": "CPU_READY_EXTERNAL_MODEL_UNAVAILABLE",
+  "worktree_clean": true
+}
