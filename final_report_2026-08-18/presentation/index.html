@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>GUI Agent 长程任务中的记忆机制探索｜夏令营最终汇报</title>
+  <title>GUI Agent 长程任务中的记忆：从系统增益到信息归因｜夏令营最终汇报</title>
   <link rel="stylesheet" href="slides.css" />
 </head>
 <body>
@@ -15,303 +15,313 @@
     <img class="brand-white" src="assets/zju-logo.png" alt="浙江大学" />
     <div class="cover-panel">
       <p class="eyebrow" style="color:#bddafa">SUMMER CAMP · FINAL REPORT</p>
-      <h1>GUI Agent 长程任务中的<br />记忆机制探索</h1>
-      <p class="subtitle">从多维实验比较，到可审计的信息谱系分析</p>
+      <h1>GUI Agent 长程任务中的<br />记忆：从系统增益到信息归因</h1>
+      <p class="subtitle">一条配对系统进展，以及一次由反例推动的分析尺度转折</p>
     </div>
     <div class="cover-meta">浙江大学夏令营课题最终汇报<br />汇报人：________　·　2026.08.19</div>
   </section>
 
-  <!-- 02 研究主线 -->
-  <section class="slide content" data-title="研究主线">
+  <!-- 02 研究问题 -->
+  <section class="slide content" data-title="研究问题">
     <p class="eyebrow">RESEARCH QUESTION</p>
-    <h2>研究问题逐步收敛：记忆是否有用，取决于信息如何影响决策</h2>
-    <div class="story" style="margin-top:34px;">
-      <div class="story-step"><div class="story-num">01</div><h3>先让失败可信</h3><p>复现基线，冻结配置，排除基础设施与人为错误。</p></div>
-      <div class="story-step"><div class="story-num">02</div><h3>横向比较机制</h3><p>复刻文献思想，也设计多种最小记忆与负对照。</p></div>
-      <div class="story-step"><div class="story-num">03</div><h3>纵向追求提升</h3><p>从 A1 到 R2，先保护已有能力，再争取新增成功。</p></div>
-      <div class="story-step"><div class="story-num">04</div><h3>重新定义问题</h3><p>R15 单题成功与 4/7 补测共同限定：先找断点，再选干预。</p></div>
-    </div>
-    <div class="takeaway">贯穿全程的判断标准：最终分数、运行代价、机制激活、行为分叉与因果归因必须分开报告。</div>
-    <span class="page">02 / 14</span>
-  </section>
-
-  <!-- 03 可信实验 -->
-  <section class="slide content" data-title="可信实验">
-    <p class="eyebrow">TRUSTWORTHY EXPERIMENTS</p>
-    <h2>第一项成果不是一个新模块，而是一套可信的实验基础</h2>
-    <div class="grid2" style="grid-template-columns:.88fr 1.12fr;">
-      <div class="grid2" style="gap:14px;">
-        <div class="card tint"><div class="metric">57 / 57</div><div class="metric-label">三 seed 全部科学有效</div></div>
-        <div class="card tint"><div class="metric">0</div><div class="metric-label">动作执行失败</div></div>
-        <div class="card tint"><div class="metric">19</div><div class="metric-label">AndroidWorld Hard 任务</div></div>
-        <div class="card tint"><div class="metric">32B</div><div class="metric-label">Qwen3-VL 模型</div></div>
+    <h2>记忆何时才有资格获得“有用”的信用？</h2>
+    <div class="question-contrast">
+      <div class="contrast-item">
+        <div class="contrast-kicker">A1</div>
+        <div class="contrast-metric">5 / 19</div>
+        <p>出现一个新增成功，<br />但调用、token 与错误循环显著增加</p>
       </div>
-      <div class="card">
-        <h3>每条轨迹保留完整证据链</h3>
-        <div class="evidence-strip" style="grid-template-columns:1fr 1fr;">
-          <div class="evidence-box">截图 / UI 状态</div><div class="evidence-box">Thought / Action</div>
-          <div class="evidence-box">memory write / read / 注入</div><div class="evidence-box">执行动作 / evaluator</div>
-        </div>
-        <div class="divider"></div>
-        <ul class="bullets">
-          <li><strong>系统结果：</strong>是否成功，调用、token 与耗时多少</li>
-          <li><strong>机制激活：</strong>记忆是否真的写入并进入模型请求</li>
-          <li><strong>因果归因：</strong>相关读取是否先于有益动作分叉</li>
-        </ul>
+      <div class="contrast-symbol">≠</div>
+      <div class="contrast-item alert">
+        <div class="contrast-kicker">A2</div>
+        <div class="contrast-metric">656 / 705</div>
+        <p>多数调用读到记忆，<br />最终却是 <strong>0 / 19</strong></p>
+      </div>
+      <div class="contrast-symbol">≠</div>
+      <div class="contrast-item">
+        <div class="contrast-kicker">R2</div>
+        <div class="contrast-metric">6 / 19</div>
+        <p>完整系统结果更好，<br />但缺少 matched read-disabled 消融</p>
       </div>
     </div>
-    <div class="takeaway">“代码接上了”“记忆被读取了”“成功由记忆造成”是三个不同命题。</div>
-    <span class="page">03 / 14</span>
+    <div class="research-question">
+      <span>研究问题</span>
+      <strong>什么信息、在什么任务上、通过哪一阶段，才会产生可验证的有益动作分叉？</strong>
+    </div>
+    <div class="takeaway">active ≠ useful；success ≠ causal credit。最终分数、机制激活和因果归因必须分开。</div>
+    <span class="page">02 / 13</span>
   </section>
 
-  <!-- 04 基线与失败 -->
-  <section class="slide content" data-title="基线与失败结构">
-    <p class="eyebrow">BASELINE & FAILURE STRUCTURE</p>
-    <h2>基线既有明显 seed 波动，也证明“忘记”不是失败的统一解释</h2>
-    <div class="grid2" style="grid-template-columns:1.02fr .98fr;">
-      <div class="card">
-        <h3>同一 19 题集的完整成功数</h3>
-        <div class="bars" style="margin-top:20px;">
+  <!-- 03 证据尺 -->
+  <section class="slide content" data-title="证据尺">
+    <p class="eyebrow">EVIDENCE SCALE</p>
+    <h2>三 seed 基线先告诉我们：单个分数不是稳定能力，也不是机制因果</h2>
+    <div class="grid2 evidence-layout">
+      <div>
+        <h3>同一 19 题集，完整成功数仍明显波动</h3>
+        <div class="bars seed-bars">
           <div class="bar-row"><div class="bar-label mono">20260806</div><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><div class="bar-value">4 / 19</div></div>
           <div class="bar-row"><div class="bar-label mono">20260807</div><div class="bar-track"><div class="bar-fill" style="width:50%"></div></div><div class="bar-value">2 / 19</div></div>
           <div class="bar-row"><div class="bar-label mono">20260808</div><div class="bar-track"><div class="bar-fill" style="width:25%"></div></div><div class="bar-value">1 / 19</div></div>
         </div>
-        <div class="divider"></div>
-        <div class="grid3" style="gap:10px;">
-          <div><div class="metric" style="font-size:34px">7 / 57</div><p class="tiny">完整成功</p></div>
-          <div><div class="metric warn" style="font-size:34px">21</div><p class="tiny">虚假成功声明</p></div>
-          <div><div class="metric" style="font-size:34px">39</div><p class="tiny">重复状态</p></div>
-        </div>
+        <div class="baseline-summary"><strong>7 / 57</strong><span>完整成功</span><b>57 / 57</b><span>科学有效 episode</span></div>
       </div>
-      <div class="card">
-        <h3>开发 seed 的最早可证失败层</h3>
-        <div class="bars" style="margin-top:18px;">
-          <div class="bar-row"><div class="bar-label">目标 / 约束</div><div class="bar-track"><div class="bar-fill bad" style="width:100%"></div></div><div class="bar-value">9</div></div>
-          <div class="bar-row"><div class="bar-label">状态 / 语义</div><div class="bar-track"><div class="bar-fill warn" style="width:33.3%"></div></div><div class="bar-value">3</div></div>
-          <div class="bar-row"><div class="bar-label">工作记忆</div><div class="bar-track"><div class="bar-fill" style="width:22.2%"></div></div><div class="bar-value">2</div></div>
-          <div class="bar-row"><div class="bar-label">动作前置</div><div class="bar-track"><div class="bar-fill" style="width:11.1%"></div></div><div class="bar-value">1</div></div>
-          <div class="bar-row"><div class="bar-label">成功</div><div class="bar-track"><div class="bar-fill good" style="width:44.4%"></div></div><div class="bar-value">4</div></div>
+      <div class="evidence-axes">
+        <div class="axis">
+          <div class="axis-title">系统比较强度</div>
+          <div class="axis-line"><span>单例</span><i></i><span>子集</span><i></i><span>逐题配对</span><i></i><span>多 seed</span></div>
+          <p>任务、seed、模型、controller 与运行条件是否可比？</p>
         </div>
+        <div class="axis">
+          <div class="axis-title">机制归因强度</div>
+          <div class="axis-line"><span>共现</span><i></i><span>读取</span><i></i><span>动作分叉</span><i></i><span>匹配反事实</span></div>
+          <p>信息是否进入请求、先于相关动作，并产生 evaluator 进展？</p>
+        </div>
+        <div class="evidence-note"><strong>R2：</strong>系统比较较强，组件因果仍弱。<br /><strong>R15 Browser：</strong>单轨迹观察很强，跨 arm 因果比较仍弱。</div>
       </div>
     </div>
-    <div class="takeaway">因此研究问题不是“加不加记忆”，而是记忆能否保存任务相关绑定，并在正确决策点发挥作用。</div>
-    <span class="page">04 / 14</span>
+    <div class="takeaway">A0 的 4/2/1 是后续所有单 seed 结果的“证据校准器”，不是可以忽略的附属数字。</div>
+    <span class="page">03 / 13</span>
   </section>
 
-  <!-- 05 实验设计 -->
-  <section class="slide content" data-title="实验设计">
-    <p class="eyebrow">EXPERIMENT DESIGN</p>
-    <h2>两条实验轴覆盖“记什么”与“怎样提升”，五个维度共同裁决</h2>
-    <div class="card" style="padding:25px 28px;">
-      <div class="lane"><div class="lane-name">横向｜文献启发</div><div class="lane-track"><span class="pill neg">A3 · 经验记忆</span><span class="pill neg">A4 · 工作流记忆</span><span class="pill neg">A5 · 分层记忆</span></div></div>
-      <div class="lane"><div class="lane-name">横向｜自主设计</div><div class="lane-track"><span class="pill neg">A6 · 转移回放</span><span class="pill">A7 · 透明控制</span><span class="pill neg">A8–A12 · 恢复/义务/前沿</span></div></div>
-      <div class="divider"></div>
-      <div class="lane"><div class="lane-name">纵向｜能力提升</div><div class="lane-track"><span class="pill">A0 · 4/19</span><span class="arrow">→</span><span class="pill">A1 · 5/19</span><span class="arrow">→</span><span class="pill neg">A2 · 0/19</span><span class="arrow">→</span><span class="pill hit">R2 · 6/19</span><span class="arrow">→</span><span class="pill neg">R3–R14 gates</span><span class="arrow">→</span><span class="pill">R15 · 4/7 诊断</span></div></div>
+  <!-- 04 A1 -> A2 -->
+  <section class="slide content" data-title="A1到A2">
+    <p class="eyebrow">THE FIRST CONTRADICTION</p>
+    <h2>A1 → A2：记忆越活跃，结果反而可能越差</h2>
+    <div class="score-trajectory">
+      <div class="score-node"><span>A0</span><strong>4 / 19</strong><small>无显式记忆</small></div>
+      <div class="score-arrow">→</div>
+      <div class="score-node positive"><span>A1</span><strong>5 / 19</strong><small>515 writes · 580 reads</small></div>
+      <div class="score-arrow">→</div>
+      <div class="score-node negative"><span>A2</span><strong>0 / 19</strong><small>656 / 705 调用读到记忆</small></div>
     </div>
-    <div class="grid4" style="margin-top:20px;">
-      <div class="card tint"><h3>结果</h3><p class="small">成功与逐题得失</p></div>
-      <div class="card tint"><h3>代价</h3><p class="small">调用、token、耗时</p></div>
-      <div class="card tint"><h3>激活</h3><p class="small">写入、读取、注入</p></div>
-      <div class="card tint"><h3>因果</h3><p class="small">信息保真与行为分叉</p></div>
-    </div>
-    <div class="takeaway">同一实验在不同维度上可能得到相反判断，不能只看最终分数。</div>
-    <span class="page">05 / 14</span>
-  </section>
-
-  <!-- 06 多维比较 -->
-  <section class="slide content" data-title="多维比较">
-    <p class="eyebrow">MULTI-DIMENSIONAL COMPARISON</p>
-    <h2>同一组实验换五个比较维度，结论不再是简单的“有效或无效”</h2>
-    <table class="table-tight" style="font-size:12px;">
-      <thead><tr><th style="width:9%">方法</th><th style="width:12%">完整结果</th><th style="width:15%">总 token</th><th style="width:24%">机制激活</th><th style="width:22%">行为 / 因果</th><th>综合裁决</th></tr></thead>
-      <tbody>
-        <tr><td><strong>A0</strong></td><td>4/19</td><td>1.273M</td><td>无显式记忆</td><td>行为基线</td><td>开发 seed 参照</td></tr>
-        <tr><td><strong>A1</strong></td><td class="good"><strong>5/19</strong></td><td>3.464M</td><td>515 writes / 580 reads</td><td>相对 A0：1 胜、0 负</td><td>有正信号，但代价高</td></tr>
-        <tr><td><strong>A2</strong></td><td class="bad"><strong>0/19</strong></td><td>3.170M</td><td>656/705 调用读到记忆</td><td>0 新增、丢失 A1 全部 5 题</td><td>强反例：激活不等于收益</td></tr>
-        <tr><td><strong>R2</strong></td><td class="good"><strong>6/19</strong></td><td>2.686M</td><td>六个成功均有非空读取</td><td>相对 A1：1 胜、0 负</td><td>系统结果最强；因果待消融</td></tr>
-        <tr><td><strong>A6</strong></td><td class="bad"><strong>0/19</strong></td><td>—</td><td>625 actions；持续回放活跃</td><td>读取后重复与低变化动作增加</td><td>信息过量会稳定错误</td></tr>
-        <tr><td><strong>R15</strong></td><td><strong>4/7*</strong></td><td>0.586M / 六题</td><td>六题全部 0 activation/read</td><td>相对 R2 六题：0 胜、3 平、3 负</td><td>产生诊断线索，未形成通用升级</td></tr>
-      </tbody>
-    </table>
-    <p class="tiny" style="margin-top:9px;">* 旧 Browser 成功与后续六题拼接的描述性诊断面板；不是完整 19 题结果，也不是匹配消融。</p>
-    <div class="takeaway">最重要的实验结论：分数、成本、激活率和因果证据必须同时比较，单一维度会误导设计。</div>
-    <span class="page">06 / 14</span>
-  </section>
-
-  <!-- 07 R2 -->
-  <section class="slide content" data-title="R2主结果">
-    <p class="eyebrow" style="z-index:30; background:#fff; width:260px;">MAIN SYSTEM RESULT</p>
-    <h2>R2 是目前最扎实的完整结果：能力提升、零退化、成本下降</h2>
-    <div class="grid2" style="grid-template-columns:.9fr 1.1fr;">
-      <div class="card dark" style="min-height:400px; display:flex; flex-direction:column; justify-content:center;">
-        <p class="eyebrow" style="color:#bddafa">COMPACT VERIFIED + PENDING MEMORY</p>
-        <div class="metric" style="font-size:92px;">6 / 19</div>
-        <p style="margin:20px 0 0; color:#dce8f7">保留 A1 的五个成功任务<br />新增 <strong style="color:#fff">OsmAndMarker</strong></p>
-        <div class="divider" style="background:rgba(255,255,255,.22)"></div>
-        <p class="small" style="color:#c5d8ee">逐题配对：1 胜 · 0 负 · 18 平</p>
+    <div class="split-evidence">
+      <div>
+        <h3>A1 给出正信号，也暴露代价</h3>
+        <ul class="bullets compact">
+          <li>相对 A0：1 胜、0 负、18 平</li>
+          <li>一个 Recipe 轨迹支持 persistent pending 的候选价值</li>
+          <li>但 token、耗时与长循环同步增加</li>
+        </ul>
       </div>
       <div>
-        <div class="grid2" style="gap:14px;">
-          <div class="card"><div class="metric good">−22.5%</div><div class="metric-label">相对 A1 的总 token</div></div>
-          <div class="card"><div class="metric good">−23.1%</div><div class="metric-label">相对 A1 的有效耗时</div></div>
-          <div class="card"><div class="metric">603</div><div class="metric-label">模型调用，与 A1 持平</div></div>
-          <div class="card"><div class="metric">6.5</div><div class="metric-label">总奖励，高于 A1 的 5.5</div></div>
-        </div>
-        <div class="callout" style="margin-top:16px;"><strong>设计变化：</strong>把记忆压缩成“已验证事实 + 未完成事项”，避免与历史重复。</div>
-        <p class="small" style="margin-top:12px;">边界：非空读取证明机制活跃；缺少匹配的 read-disabled 消融，不能把全部收益强归因于记忆。</p>
-      </div>
-    </div>
-    <div class="takeaway">R2 回答了“怎样在不破坏已有能力的前提下改进系统”，但尚未回答“收益究竟由哪段信息造成”。</div>
-    <span class="page">07 / 14</span>
-  </section>
-
-  <!-- 08 负结果 -->
-  <section class="slide content" data-title="负结果的结构">
-    <p class="eyebrow">WHAT THE NEGATIVE RESULTS TAUGHT US</p>
-    <h2>大量零分并非白跑，它们分别排除了四种看似合理的设计路径</h2>
-    <table class="table-tight">
-      <thead><tr><th style="width:22%">失败类型</th><th style="width:35%">已有数据</th><th>真正得到的设计结论</th></tr></thead>
-      <tbody>
-        <tr><td><strong>论文思想的最小移植</strong></td><td>A3：12/34 合规写入；A4：错误 donor 注入 34/34 步；A5：0/34 合规写入</td><td>最小外挂不能替代 donor、匹配、训练、检索与完整系统</td></tr>
-        <tr><td><strong>更多记忆与回放</strong></td><td>A6 为 0/19，625 actions 中重复与低变化行为增多</td><td>信息量增加可能稳定错误策略，而非提升能力</td></tr>
-        <tr><td><strong>读到了就能恢复</strong></td><td>A8–A12 的读取集中在失败题；A10-v2 有 6 次读取但 0 个有益分叉</td><td>读取必须相关、及时，并真正改变下一动作</td></tr>
-        <tr><td><strong>连续针对首题打补丁</strong></td><td>R3–R12 是十次独立 0/1 gate；后版本继承全部旧补丁</td><td>串行堆栈与单轨迹过拟合破坏可归因性</td></tr>
-      </tbody>
-    </table>
-    <div class="grid2" style="margin-top:18px; gap:18px;">
-      <div class="callout"><strong>旧流程：</strong>失败症状 → 增加字段、规则或提示。</div>
-      <div class="callout" style="background:#0a765d"><strong>新需求：</strong>先定位跨轨迹的共同断点，再设计单一变量。</div>
-    </div>
-    <div class="takeaway">大量实验已经审计“记忆写入以后”；R15 进一步说明，“写入以前”的信息变换也必须进入证据链。</div>
-    <span class="page">08 / 14</span>
-  </section>
-
-  <!-- 09 R15 -->
-  <section class="slide content" data-title="R15发现">
-    <p class="eyebrow" style="z-index:30; background:#fff; width:310px; margin-bottom:16px;">THE R15 TURNING POINT</p>
-    <h2 style="margin-top:8px;">R15 提供关键正例，但七题补测只得到 4/7</h2>
-    <div class="grid2" style="grid-template-columns:1.08fr .92fr;">
-      <div class="card">
-        <h3>四条轨迹都看到：1 × 8 × 10 × 7 × 2</h3>
-        <div class="grid4" style="margin-top:21px;">
-          <div class="card tint" style="padding:16px"><span class="tag bad">R2</span><div class="metric" style="font-size:31px; margin-top:17px">120</div></div>
-          <div class="card tint" style="padding:16px"><span class="tag bad">R13D</span><div class="metric" style="font-size:31px; margin-top:17px">720</div></div>
-          <div class="card tint" style="padding:16px"><span class="tag bad">R14</span><div class="metric" style="font-size:31px; margin-top:17px">2310</div></div>
-          <div class="card" style="padding:16px; border:2px solid #0a8a69"><span class="tag good">R15</span><div class="metric good" style="font-size:31px; margin-top:17px">1120</div></div>
-        </div>
-        <div class="divider"></div>
-        <p class="small">R15 的原始 Thought / Action 历史逐步保留了五个值，最终计算正确并通过 evaluator。</p>
-      </div>
-      <div>
-        <div class="grid2" style="gap:12px;">
-          <div class="card dark" style="padding:20px"><div class="metric" style="font-size:50px">4 / 7</div><div class="metric-label" style="color:#cfe1f8">固定诊断面板</div></div>
-          <div class="card tint" style="padding:20px"><div class="metric" style="font-size:50px">0 / 6</div><div class="metric-label">补跑六题机制激活</div></div>
-        </div>
-        <div class="callout" style="margin-top:14px; background:#183b6b"><strong>作用域检验：</strong>Browser 暴露了历史变换中的信息损失；另外六题没有同类值流，三项回归则来自导航、恢复与完成验证。</div>
-      </div>
-    </div>
-    <div class="takeaway">R15 不是更强的通用系统；它的价值是产生一个可审计解释，并由 4/7 补测明确限定这个解释能够覆盖什么。</div>
-    <span class="page">09 / 14</span>
-  </section>
-
-  <!-- 10 信息谱系 -->
-  <section class="slide content" data-title="信息谱系分析">
-    <p class="eyebrow">INFORMATION LINEAGE FOR GUI AGENTS</p>
-    <h2>把任务相关事实作为审计单位，才能定位最早的信息断点</h2>
-    <div class="flow" style="margin-top:22px;">
-      <div class="flow-node" style="border:2px solid #e9822d; background:#fff7ef"><div class="n">L0</div><h3>屏幕像素</h3><p>事实是否出现</p></div>
-      <div class="flow-node" style="border:2px solid #e9822d; background:#fff7ef"><div class="n">L1</div><h3>原始表述</h3><p>是否正确说出</p></div>
-      <div class="flow-node" style="border:2px solid #e9822d; background:#fff7ef"><div class="n">L2</div><h3>历史变换</h3><p>是否保留</p></div>
-      <div class="flow-node"><div class="n">L3</div><h3>记忆写入</h3><p>真正存入什么</p></div>
-      <div class="flow-node"><div class="n">L4</div><h3>读取注入</h3><p>是否相关及时</p></div>
-      <div class="flow-node"><div class="n">L5</div><h3>动作分叉</h3><p>是否改变决策</p></div>
-      <div class="flow-node"><div class="n">L6</div><h3>结果闭环</h3><p>进展与 evaluator</p></div>
-    </div>
-    <div class="grid3" style="margin-top:22px;">
-      <div class="card tint"><h3>新的分析单位</h3><p class="small">不再问“组件运行了吗”，而问一个关键事实在哪一层丢失。</p></div>
-      <div class="card tint"><h3>新的因果判据</h3><p class="small">相关读取必须先于动作分叉，并产生可见进展。</p></div>
-      <div class="card tint"><h3>新的数据价值</h3><p class="small">失败轨迹也能区分感知、变换、写入、检索和使用错误。</p></div>
-    </div>
-    <div class="callout" style="margin-top:16px;"><strong>由数据产生的可检验假设：</strong>相较于“记忆是否激活”，任务事实抵达哪一层、又在哪一层丢失，可能更能解释最终成败。</div>
-    <span class="page">10 / 14</span>
-  </section>
-
-  <!-- 11 R15 作用域 -->
-  <section class="slide content" data-title="R15作用域">
-    <p class="eyebrow">WHAT 4/7 ACTUALLY TELLS US</p>
-    <h2>三项回归表明：长程失败不只有“忘记”这一种来源</h2>
-    <div class="grid3" style="gap:14px; margin-bottom:18px;">
-      <div class="card tint" style="padding:17px"><div class="metric" style="font-size:36px">0 / 6</div><div class="metric-label">机制激活 / 读取</div></div>
-      <div class="card tint" style="padding:17px"><div class="metric" style="font-size:36px">3 平 · 3 负</div><div class="metric-label">相对 R2 六题的描述性对照</div></div>
-      <div class="card tint" style="padding:17px"><div class="metric warn" style="font-size:36px">+180,350</div><div class="metric-label">额外 token</div></div>
-    </div>
-    <table class="table-tight" style="font-size:12px;">
-      <thead><tr><th style="width:17%">任务</th><th style="width:22%">最早可见问题</th><th style="width:31%">失败链</th><th>对应干预</th></tr></thead>
-      <tbody>
-        <tr><td><strong>Calendar</strong></td><td>路由与预算管理</td><td>无效首步后逐日导航，34 步耗尽仍未保存</td><td>路线级恢复与预算感知</td></tr>
-        <tr><td><strong>Recipe</strong></td><td>识别与无进展恢复</td><td>未识别并打开 Broccoli，重复滚动后主动失败</td><td>状态变化检测与重定位</td></tr>
-        <tr><td><strong>OsmAnd</strong></td><td>完成证据不足</td><td>把 Add / favorite 误当 Marker，错误宣告完成</td><td>结果前证据核验</td></tr>
-      </tbody>
-    </table>
-    <div class="takeaway">4/7 不支持把 Browser 的单题解释外推为通用提升；它进一步要求先定位最早断点，再决定改记忆、恢复策略还是完成验证。</div>
-    <span class="page">11 / 14</span>
-  </section>
-
-  <!-- 12 与现有工作的分析尺度对照 -->
-  <section class="slide content" data-title="分析尺度对照">
-    <p class="eyebrow">COMPARISON OF ANALYSIS UNITS</p>
-    <h2>代表工作多比较系统增益；我们追踪事实在哪一层失效</h2>
-    <div class="grid2" style="grid-template-columns:1.03fr .97fr;">
-      <div class="card">
-        <h3>代表性工作主要比较什么</h3>
-        <table class="table-tight" style="font-size:12px;">
-          <tbody>
-            <tr><td><strong>AWM</strong></td><td>归纳并调用成功工作流，比较系统任务表现</td></tr>
-            <tr><td><strong>HyMEM / MemGUI-Agent</strong></td><td>设计结构化或混合记忆，以组件消融检验总体增益</td></tr>
-            <tr><td><strong>MemGUI-Bench</strong></td><td>构造记忆密集任务，以任务与分层指标衡量能力</td></tr>
-            <tr><td><strong>ATMem</strong></td><td>配对 memory-ON/OFF rollout，估计策略层的记忆贡献</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="card dark">
-        <p class="eyebrow" style="color:#bddafa">OUR ADDITIONAL ANALYSIS SCALE</p>
-        <h3 style="color:#fff">从系统级比较下沉到事实级归因</h3>
-        <ul class="bullets" style="color:#dce8f7">
-          <li>单位：完成任务所需的最小事实</li>
-          <li>链路：原始表述 → 历史变换 → 写入 → 读取 → 动作</li>
-          <li>判据：相关读取 → 有益分叉 → evaluator 结果</li>
-          <li>结果：同为零分，也能定位不同的最早断点</li>
+        <h3>A2 是“高激活、零收益”的强反例</h3>
+        <ul class="bullets compact">
+          <li>丢失 A1 的全部五个成功任务</li>
+          <li>单条最近进度难以表达集合与跨页面路线</li>
+          <li>“更可信、更频繁”不是单调改进轴</li>
         </ul>
       </div>
     </div>
-    <p class="tiny" style="margin-top:12px;">相关工作：Agent Workflow Memory；HyMEM；MemGUI-Agent；MemGUI-Bench；ATMem。对照的是主要实验与归因尺度，不否定各论文内部分析。</p>
-    <div class="takeaway">系统级增益回答“是否有效”；事实级谱系补充解释“为什么在这里有效或失效”，并直接指出下一次干预应发生在哪一层。</div>
-    <span class="page">12 / 14</span>
+    <div class="takeaway">问题从“有没有记忆”转为：失败发生在没写入、内容不相关、读后不分叉，还是任务本就不是记忆瓶颈？</div>
+    <span class="page">04 / 13</span>
   </section>
 
-  <!-- 13 总结 -->
-  <section class="slide content" data-title="总结">
-    <p class="eyebrow">CONCLUSION</p>
-    <h2>一个月的工作最终形成：一个结果、一组边界、一个问题</h2>
-    <div class="grid3">
-      <div class="card dark"><div class="metric">01</div><h3 style="margin-top:18px">可信实验资产</h3><p class="small" style="color:#dce8f7">57 条三 seed 基线、完整轨迹、失败分层与严格评测边界。</p></div>
-      <div class="card"><div class="metric">02</div><h3 style="margin-top:18px">系统与经验结论</h3><p class="small">R2 达到 6/19 且降低成本；多类负结果界定何种记忆不会有效。</p></div>
-      <div class="card"><div class="metric">03</div><h3 style="margin-top:18px">可检验问题</h3><p class="small">R15 的 1/1 线索与 4/7 边界共同提出：最早信息断点能否更好指导干预？</p></div>
+  <!-- 05 A3-A12 -->
+  <section class="slide content" data-title="横向断点矩阵">
+    <p class="eyebrow">WHAT THE NEGATIVE RESULTS ACTUALLY MEAN</p>
+    <h2>A3-A12 不是失败方法目录，而是不同信息断点的探针</h2>
+    <table class="lineage-matrix">
+      <thead>
+        <tr><th>代表实验</th><th>机会</th><th>激活 / 写入</th><th>相关性</th><th>读取</th><th>有益分叉</th><th>结果与证据功能</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>A5</strong><small>分层/图记忆</small></td><td class="hm yes">●</td><td class="hm no">0/34</td><td class="hm na">-</td><td class="hm na">-</td><td class="hm na">-</td><td><b>未激活</b>：不能评价后续检索价值</td></tr>
+        <tr><td><strong>A4</strong><small>工作流记忆</small></td><td class="hm partial">△</td><td class="hm yes">●</td><td class="hm no">add → delete</td><td class="hm yes">34/34</td><td class="hm no">0</td><td><b>内容不相关</b>：donor 匹配先于 read count</td></tr>
+        <tr><td><strong>A8</strong><small>复访恢复</small></td><td class="hm yes">●</td><td class="hm yes">●</td><td class="hm partial">△</td><td class="hm yes">14</td><td class="hm no">0</td><td><b>有读无恢复</b>：提醒重复不等于替代动作</td></tr>
+        <tr><td><strong>A6</strong><small>持续转移回放</small></td><td class="hm yes">●</td><td class="hm over">过度</td><td class="hm partial">△</td><td class="hm over">持续</td><td class="hm bad">错误稳定</td><td><b>过度活跃</b>：重复与低变化动作增加</td></tr>
+        <tr><td><strong>A7 / A9</strong><small>透明 / 稀疏控制</small></td><td class="hm partial">△</td><td class="hm partial">△</td><td class="hm partial">△</td><td class="hm partial">△</td><td class="hm no">无新增证据</td><td><b>静默成功</b>：成功共现不能给组件记功</td></tr>
+        <tr><td><strong>A10-A12</strong><small>精细触发</small></td><td class="hm partial">部分</td><td class="hm partial">部分</td><td class="hm yes">更严格</td><td class="hm yes">失败题</td><td class="hm no">0</td><td><b>仍停在 L5</b>：精细触发不自动产生行动</td></tr>
+      </tbody>
+    </table>
+    <div class="matrix-legend"><span><i class="yes"></i>直接观察到</span><span><i class="partial"></i>部分/不充分</span><span><i class="no"></i>明确断点</span><strong>相同的 0 分，对应完全不同的下一步干预。</strong></div>
+    <div class="takeaway">这些结果约束的是“简单外挂实现”，不是对 AWM、HyMEM 或 MemGUI-Agent 完整系统的否定。</div>
+    <span class="page">05 / 13</span>
+  </section>
+
+  <!-- 06 R2 -->
+  <section class="slide content" data-title="R2主结果">
+    <p class="eyebrow">MAIN SYSTEM RESULT</p>
+    <h2>R2 是目前最可靠的完整系统进展，但不是机制因果终点</h2>
+    <div class="r2-layout">
+      <div class="r2-hero">
+        <p>COMPACT VERIFIED + PENDING</p>
+        <div class="r2-score">6 <span>/ 19</span></div>
+        <div class="r2-pair">相对 A1：<strong>1 胜 · 0 负 · 18 平</strong></div>
+        <div class="r2-preserve">保留 A1 五个成功，并新增 <b>OsmAndMarker</b></div>
+      </div>
+      <div class="r2-detail">
+        <div class="r2-stat"><strong>−22.5%</strong><span>总 token</span></div>
+        <div class="r2-stat"><strong>−23.1%</strong><span>有效耗时</span></div>
+        <div class="r2-stat neutral"><strong>603 = 603</strong><span>模型调用与 A1 持平</span></div>
+        <div class="boundary-box">
+          <b>必须同时讲清的边界</b>
+          <p>固定单 seed 配对；严格 cost gate 因 calls 未下降而 <strong>FAIL</strong>；没有 matched read-disabled 消融。</p>
+        </div>
+      </div>
     </div>
-    <div class="callout" style="margin-top:24px;"><strong>下一步验证：</strong>分别对选择性信息保真、无进展恢复和完成证据检查做匹配消融，再扩展到多 seed、多模型。</div>
-    <div class="takeaway">最终回答：记忆的价值不在“存得更多”，而在正确证据能够穿过整条信息链，并在正确决策点产生可验证的有益分叉。</div>
-    <span class="page">13 / 14</span>
+    <div class="takeaway">允许结论：R2 系统身份在该 seed 上更好、更省 token/time；禁止结论：稳定泛化或某段记忆文本已被证明致因。</div>
+    <span class="page">06 / 13</span>
   </section>
 
-  <!-- 14 结束 -->
-  <section class="slide ending" data-title="结束">
-    <div class="ending-inner">
-      <p class="eyebrow" style="color:#bddafa">TAKE-HOME MESSAGE</p>
-      <h2 style="font-size:48px; max-width:900px; margin-left:auto; margin-right:auto;">从“记忆是否运行”到“信息为何有效”</h2>
-      <div class="ending-line"></div>
-      <p style="max-width:760px; color:#dbe8f7; font-size:22px;">最有价值的结果不是 4/7，而是知道下一次实验应该改变哪一层。</p>
+  <!-- 07 归因缺口 -->
+  <section class="slide content" data-title="R2归因缺口">
+    <p class="eyebrow">SYSTEM RESULT ≠ COMPONENT CAUSALITY</p>
+    <h2>R2 的关键缺口：6/6 成功有 read，仍不构成因果</h2>
+    <div class="causal-gap">
+      <div class="causal-side strong-side">
+        <span>已经建立</span>
+        <h3>配对系统结果</h3>
+        <div class="causal-number">1w / 0l / 18t</div>
+        <p>同一固定 19 题上保留五项能力、增加一项能力，token/time 更低。</p>
+      </div>
+      <div class="causal-bridge">
+        <div class="bridge-line"></div>
+        <strong>缺少反事实</strong>
+        <p>同一状态<br />read-enabled vs read-disabled<br />或内容删除</p>
+      </div>
+      <div class="causal-side weak-side">
+        <span>尚未建立</span>
+        <h3>组件因果信用</h3>
+        <div class="causal-number">6 / 6 reads</div>
+        <p>读取与成功只是共现；必须观察相关信息是否先于有益动作分叉。</p>
+      </div>
+    </div>
+    <div class="credit-rule">只有“相关信息进入请求 → 动作发生相关分叉 → evaluator 出现进展 → 匹配反事实成立”，才能授予强因果信用。</div>
+    <div class="takeaway">主动暴露最佳结果的归因边界，不会削弱成果；它恰恰说明后续实验该补什么证据。</div>
+    <span class="page">07 / 13</span>
+  </section>
+
+  <!-- 08 R15 Browser -->
+  <section class="slide content" data-title="R15 Browser">
+    <p class="eyebrow">THE R15 TURNING POINT</p>
+    <h2>Browser 成功了，但新组件没有读：归因单位必须下沉到任务事实</h2>
+    <div class="fact-timeline">
+      <div class="fact-dot">1</div><div class="fact-link"></div>
+      <div class="fact-dot">8</div><div class="fact-link"></div>
+      <div class="fact-dot">10</div><div class="fact-link"></div>
+      <div class="fact-dot">7</div><div class="fact-link"></div>
+      <div class="fact-dot">2</div><div class="fact-link calc"></div>
+      <div class="fact-result">1120</div>
+    </div>
+    <div class="browser-comparison">
+      <span>R2 <b>120</b></span><span>R13D <b>720</b></span><span>R14 <b>2310</b></span><span class="correct">R15 <b>1120</b></span>
+    </div>
+    <div class="three-levels">
+      <div><span>事实</span><p>普通 Thought/Action 历史逐步保留五值并算对；成熟 EVR read = 0。</p></div>
+      <div><span>允许解释</span><p>只从 writer/read 开始审计不足；上游保真与答案合成都需要被观测。</p></div>
+      <div><span>待验证假设</span><p>在累积事实任务中，保留任务相关原始事实会提高正确动作概率。</p></div>
+    </div>
+    <div class="takeaway">R15 Browser 是“成功但组件无信用”的直接反例；它改变的是审计顺序，不是最佳方法排名。</div>
+    <span class="page">08 / 13</span>
+  </section>
+
+  <!-- 09 R15 4/7 -->
+  <section class="slide content" data-title="R15作用域">
+    <p class="eyebrow">WHAT 4/7 ACTUALLY MEANS</p>
+    <h2>R15 的 4/7 是诊断组合，不是可以进入排行榜的方法分数</h2>
+    <div class="task-strip">
+      <div class="task-cell browser"><strong>Browser</strong><b>成功</b><small>普通历史五值链<br />EVR read = 0</small></div>
+      <div class="task-cell silent"><strong>Expense</strong><b>成功</b><small>组件静默</small></div>
+      <div class="task-cell silent"><strong>Retro</strong><b>成功</b><small>组件静默</small></div>
+      <div class="task-cell silent"><strong>Sports</strong><b>成功</b><small>组件静默</small></div>
+      <div class="task-cell regress"><strong>Calendar</strong><b>回归</b><small>零机会</small></div>
+      <div class="task-cell regress"><strong>Recipe</strong><b>回归</b><small>零机会</small></div>
+      <div class="task-cell regress"><strong>OsmAnd</strong><b>回归</b><small>零机会</small></div>
+    </div>
+    <div class="scope-summary">
+      <div><strong>3 / 6</strong><span>continuation</span></div>
+      <div><strong>0</strong><span>六题 opportunity / activation / read / use</span></div>
+      <div><strong>0w · 3t · 3r</strong><span>相对历史 R2，非匹配</span></div>
+      <div><strong>+180,350</strong><span>额外 token</span></div>
+    </div>
+    <div class="scope-boundary">
+      <b>可以排除：</b>EVR 内容直接毒化三项回归，因为它从未进入请求。
+      <b>不能排除：</b>起始状态、路线、temperature、长轨迹与其他 run-identity 差异。
+    </div>
+    <div class="takeaway">一个无组件读取的正例、三个静默成功、三个零机会回归：4/7 把“得分”拆成作用域、激活与归因。</div>
+    <span class="page">09 / 13</span>
+  </section>
+
+  <!-- 10 异质瓶颈 -->
+  <section class="slide content" data-title="任务瓶颈">
+    <p class="eyebrow">MATCH THE INTERVENTION TO THE BOTTLENECK</p>
+    <h2>同是长程失败，四类任务需要的干预并不相同</h2>
+    <table class="bottleneck-table">
+      <thead><tr><th>代表任务</th><th>任务所需信息</th><th>最早/主要瓶颈</th><th>更匹配的最小干预</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Browser</strong><small>累积数值</small></td><td>五个值、完整乘积、提交前核验</td><td><span class="focus-tag memory">事实保真 + 答案合成</span></td><td>exact-prefix 三臂事实保留反事实</td></tr>
+        <tr><td><strong>Calendar</strong><small>添加事件</small></td><td>日期定位、跳转路线、剩余预算</td><td><span class="focus-tag route">路由 / 预算</span></td><td>路线恢复 + budget-aware jump</td></tr>
+        <tr><td><strong>Recipe</strong><small>约束删除</small></td><td>目标识别、滚动后的状态变化</td><td><span class="focus-tag recovery">识别 / 无进展恢复</span></td><td>object checklist + re-localization</td></tr>
+        <tr><td><strong>OsmAnd</strong><small>添加 Marker</small></td><td>控件语义、页面转移、完成证据</td><td><span class="focus-tag verify">grounding / 完成验证</span></td><td>transition verification + evidence gate</td></tr>
+      </tbody>
+    </table>
+    <div class="intervention-rule"><strong>干预选择规则：</strong>先定位任务所需最小事实的最早断点，再决定使用记忆、路由恢复、状态重定位还是完成核验。</div>
+    <div class="takeaway">“长程任务失败”不是一个可操作的机制目标；“某类任务事实在某一阶段失去可用性”才是。</div>
+    <span class="page">10 / 13</span>
+  </section>
+
+  <!-- 11 信息机会链 -->
+  <section class="slide content" data-title="信息机会链">
+    <p class="eyebrow">INFORMATION OPPORTUNITY CHAIN</p>
+    <h2>从组件审计到事实级归因：追踪信息在哪一层首次失去可用性</h2>
+    <div class="flow lineage-flow">
+      <div class="flow-node upstream"><div class="n">L0</div><h3>屏幕像素</h3><p>事实是否出现</p></div>
+      <div class="flow-node upstream"><div class="n">L1</div><h3>原始表述</h3><p>是否正确说出</p></div>
+      <div class="flow-node upstream"><div class="n">L2</div><h3>历史变换</h3><p>是否保持可用</p></div>
+      <div class="flow-node"><div class="n">L3</div><h3>记忆写入</h3><p>真正存入什么</p></div>
+      <div class="flow-node"><div class="n">L4</div><h3>读取注入</h3><p>是否相关及时</p></div>
+      <div class="flow-node"><div class="n">L5</div><h3>动作分叉</h3><p>是否改变决策</p></div>
+      <div class="flow-node"><div class="n">L6</div><h3>结果闭环</h3><p>是否产生进展</p></div>
+    </div>
+    <div class="mechanism-chain">
+      <span>opportunity</span><i>→</i><span>activation</span><i>→</i><span>append</span><i>→</i><span>read / use</span><i>→</i><span>action divergence</span><i>→</i><span>evaluator progress</span>
+    </div>
+    <div class="breakpoint-examples">
+      <span><b>A5</b> L3 未写入</span>
+      <span><b>A4</b> L4 前相关性失败</span>
+      <span><b>A8-A12</b> 有读无 L5</span>
+      <span><b>R15 六题</b> opportunity = 0</span>
+      <span><b>Browser</b> 成功但 EVR 静默</span>
+    </div>
+    <div class="hypothesis-box"><strong>数据驱动、待验证的框架：</strong>任一前置环节为 0，就不给组件记功；链条闭合后，强因果仍需 matched counterfactual。</div>
+    <div class="takeaway">它不是“更强记忆算法”，而是一套把负结果转化为下一次可证伪实验的诊断尺度。</div>
+    <span class="page">11 / 13</span>
+  </section>
+
+  <!-- 12 相关工作 -->
+  <section class="slide content" data-title="相关工作尺度">
+    <p class="eyebrow">COMPLEMENTARY ANALYSIS SCALES</p>
+    <h2>与相关工作的差异不在“谁更强”，而在研究对象与归因单位</h2>
+    <table class="related-table">
+      <thead><tr><th>工作</th><th>主要研究对象</th><th>主要分析单位 / 归因尺度</th><th>本项目不能据此声称什么</th></tr></thead>
+      <tbody>
+        <tr><td><strong>AWM</strong></td><td>成功样例归纳与检索工作流</td><td>workflow / task / 系统消融</td><td>A4 donor 错配不能评价完整 AWM</td></tr>
+        <tr><td><strong>HyMEM</strong></td><td>结构化图与连续轨迹记忆</td><td>graph / retrieval / 组件与系统</td><td>A5 未复刻学习表示与完整系统</td></tr>
+        <tr><td><strong>MemGUI-Agent</strong></td><td>主动上下文管理策略</td><td>context action / 训练后 policy</td><td>A3 零样本字段不是完整复现</td></tr>
+        <tr><td><strong>MemGUI-Bench</strong></td><td>memory-centric GUI 评测</td><td>task / challenge / 分层指标</td><td>本项目尚不是通用 benchmark</td></tr>
+        <tr><td><strong>ATMem</strong></td><td>task-driving state 与配对 rollout</td><td>policy / memory-ON-OFF 贡献</td><td>本项目尚缺同等强度 matched intervention</td></tr>
+        <tr class="our-row"><td><strong>本项目</strong></td><td>冻结轨迹中最小任务事实的可用性</td><td>fact × stage × trajectory：L0-L6</td><td>当前是诊断框架，不是已验证的通用方法</td></tr>
+      </tbody>
+    </table>
+    <p class="source-line">Sources: AWM (arXiv:2409.07429); HyMEM (Findings of ACL 2026); MemGUI-Agent (arXiv:2606.19926); MemGUI-Bench (arXiv:2602.06075); ATMem (arXiv:2606.31612).</p>
+    <div class="takeaway">本项目补充的是事实级断点诊断；只有 matched intervention 能把这一尺度从解释框架推进到稳健因果结论。</div>
+    <span class="page">12 / 13</span>
+  </section>
+
+  <!-- 13 结论 -->
+  <section class="slide ending conclusion" data-title="结论">
+    <div class="ending-inner conclusion-inner">
       <img class="brand-white" src="assets/zju-logo.png" alt="浙江大学" />
-      <p style="margin-top:18px; color:#dbe8f7">谢谢 · Questions & Discussion</p>
+      <p class="eyebrow" style="color:#bddafa">CONCLUSION</p>
+      <h2>一个系统结果，一组证据边界，一个可检验框架</h2>
+      <div class="conclusion-lines">
+        <div><span>01</span><p><strong>系统结果</strong>　R2 在固定单 seed 的完整 19 题上达到 6/19，相对 A1 为 1w/0l/18t，并降低 token/time。</p></div>
+        <div><span>02</span><p><strong>证据边界</strong>　激活、读取、动作分叉与成功不能混为一谈；R15 的 4/7 进一步限制了单题解释的作用域。</p></div>
+        <div><span>03</span><p><strong>分析框架</strong>　下一步以任务所需最小事实为单位追踪 L0-L6，并用 matched 反事实授予机制信用。</p></div>
+      </div>
+      <div class="final-question">哪条任务事实，在哪一层失去可用性，什么干预能让它产生有益动作分叉？</div>
+      <p class="questions">Questions & Discussion</p>
     </div>
   </section>
 
@@ -319,7 +329,7 @@
 
 <div class="nav" aria-hidden="true">
   <button id="prev" title="上一页">◀</button>
-  <span id="counter">1 / 14</span>
+  <span id="counter">1 / 13</span>
   <button id="next" title="下一页">▶</button>
   <span>←/→ 翻页 · P 打印</span>
 </div>

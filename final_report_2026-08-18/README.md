@@ -5,15 +5,18 @@
 
 ## 一句话结论
 
-本项目最可靠的完整系统结果仍是 R2 的 6/19；R15 的价值不是成为更强系统，而是由 Browser 正轨迹暴露“信息可能在进入记忆前丢失”，再由固定七题 4/7 补测限定这一解释的适用范围，进而把研究从组件级比较推进到任务事实的逐阶段归因。
+本项目最可靠的完整系统结果仍是 R2 的 6/19；R15 的价值不是成为更强系统，而是由 Browser 正轨迹暴露“成功与组件因果信用可以错位”，再由固定七题 4/7 补测限定这一解释的适用范围，进而把研究从组件级比较推进到任务事实的逐阶段归因。
 
 ## 建议阅读顺序
 
-1. [`PROJECT_SYNTHESIS_FOR_PRO.md`](PROJECT_SYNTHESIS_FOR_PRO.md)：完整故事、数据、结论边界与可检验问题。
-2. [`PRO_RETHINK_PROMPT.md`](PRO_RETHINK_PROMPT.md)：可直接交给新 Pro 的复审提示。
-3. [`presentation/GUI_Agent记忆机制探索_夏令营最终汇报_v4_R15封存版.pdf`](presentation/GUI_Agent记忆机制探索_夏令营最终汇报_v4_R15封存版.pdf)：14 页、15 分钟正式汇报。
-4. [`presentation/index.html`](presentation/index.html)：可编辑、可浏览器播放的演示稿源文件。
-5. [`evidence_snapshot/A_SERIES_INFORMATION_LINEAGE_AUDIT_2026-08-18.md`](evidence_snapshot/A_SERIES_INFORMATION_LINEAGE_AUDIT_2026-08-18.md)：R15 Browser 发现后的 A0–A12 离线重审快照。
+1. [`PRO_FINAL_REPORT_RETHINK.md`](PRO_FINAL_REPORT_RETHINK.md)：Pro 对全部证据、故事线、逐页方案与答辩边界的完整重审。
+2. [`presentation/GUI_Agent记忆机制探索_夏令营最终汇报_v5_信息归因版.pdf`](presentation/GUI_Agent记忆机制探索_夏令营最终汇报_v5_信息归因版.pdf)：据此重构的 13 页、15 分钟正式汇报。
+3. [`presentation/index.html`](presentation/index.html)：新版可编辑、可浏览器播放的演示稿源文件。
+4. [`PROJECT_SYNTHESIS_FOR_PRO.md`](PROJECT_SYNTHESIS_FOR_PRO.md)：完整故事、数据、结论边界与可检验问题。
+5. [`PRO_RETHINK_PROMPT.md`](PRO_RETHINK_PROMPT.md)：交给 Pro 的复审任务书。
+6. [`evidence_snapshot/A_SERIES_INFORMATION_LINEAGE_AUDIT_2026-08-18.md`](evidence_snapshot/A_SERIES_INFORMATION_LINEAGE_AUDIT_2026-08-18.md)：R15 Browser 发现后的 A0–A12 离线重审快照。
+
+旧版 14 页 PDF `presentation/GUI_Agent记忆机制探索_夏令营最终汇报_v4_R15封存版.pdf` 保留用于版本追溯，不再作为首选汇报稿。
 
 ## 冻结事实
 
@@ -53,17 +56,18 @@ R2 正式结果位于：
 
 因此，4/7 不支持把 Browser 的单题解释外推为通用提升，但它支持一个更一般的研究策略：先定位最早失效环节，再判断应该修改记忆、恢复策略还是完成验证。
 
-## 汇报主线
+## V5 汇报主线
 
 最终汇报不按实验编号流水展开，而按认识变化组织：
 
-1. 建立可信实验基础，区分系统结果、机制激活和因果归因。
-2. 横向比较多类记忆，纵向得到 R2 的 6/19 完整结果。
-3. 用多维比较解释大量负结果为何仍有科学价值。
-4. R15 Browser 暴露历史变换前后的信息断裂。
-5. 固定七题 4/7 将 R15 限定为诊断线索，而不是通用系统升级。
-6. 提出任务事实的信息谱系：像素 → 原始表述 → 历史变换 → 记忆写入 → 读取 → 动作分叉 → evaluator。
-7. 与现有代表工作形成尺度互补：系统级实验回答“是否有效”，事实级谱系进一步解释“为何在这里有效或失效”。
+1. 用“记忆何时有资格获得因果信用？”定义研究问题，而不是从实验时间线开始。
+2. 用 A0 三 seed 建立系统可比性与机制归因两条正交证据尺。
+3. 用 A1→A2 的矛盾说明：记忆活跃不等于收益。
+4. 将 A3–A12 按未激活、不相关、有读无分叉、过度活跃和静默成功组织成断点矩阵。
+5. 把 R2 的 6/19 作为完整系统结果高潮，同时主动呈现单 seed、cost gate FAIL 与无 read-disabled 的边界。
+6. 先讲 R15 Browser 的“成功但组件无信用”，再用七题 4/7 限制作用域，避免单例外推。
+7. 从 Browser、Calendar、Recipe、Osm 的不同瓶颈推出 L0–L6 信息机会链，而不是先给框架再挑案例。
+8. 与相关工作只比较研究对象与归因尺度，不做优劣宣判。
 
 ## 禁止越界的表述
 

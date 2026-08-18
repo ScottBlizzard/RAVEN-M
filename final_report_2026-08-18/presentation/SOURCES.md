@@ -2,6 +2,8 @@
 
 ## Internal evidence
 
+- Final narrative and claim-boundary review: `../PRO_FINAL_REPORT_RETHINK.md`
+
 - Three-seed baseline: `../../evidence/baseline/official_qwen32b_full_hard_combined_corrected_final.md`
 - A1 result: `../../evidence/a1/A1_ACTION_WORKING_MEMORY_RESULTS_2026-08-10.md`
 - A2 result: `../../evidence/a2/A2_SCORED_RESULT_20260811.md`
