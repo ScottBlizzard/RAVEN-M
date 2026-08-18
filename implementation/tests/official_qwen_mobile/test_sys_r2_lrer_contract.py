@@ -113,3 +113,16 @@ def test_full_completion_requires_order_gate_and_system_boundaries() -> None:
 def test_source_freeze_rejects_non_commit_identity_before_touching_files() -> None:
     with pytest.raises(RuntimeError, match="implementation commit invalid"):
         contract.source_freeze_payload("not-a-commit")
+
+
+def test_start_wrapper_disables_flashinfer_sampler_for_frozen_server_runtime() -> None:
+    wrapper = (
+        contract.REPOSITORY_ROOT
+        / "implementation"
+        / "scripts"
+        / "start_sys_r2_lrer_server.sh"
+    ).read_text(encoding="utf-8")
+    assert (
+        'export VLLM_USE_FLASHINFER_SAMPLER="${VLLM_USE_FLASHINFER_SAMPLER:-0}"'
+        in wrapper
+    )

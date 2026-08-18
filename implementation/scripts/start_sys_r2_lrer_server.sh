@@ -8,6 +8,7 @@ MODEL_DIR="${RAVEN_MODEL_SOURCE:-/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-m
 export PYTHONPATH="$ROOT/implementation/src"
 "$ENV_DIR/bin/python" "$ROOT/implementation/scripts/preflight_sys_r2_lrer.py" --validate-existing
 export CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-0}"
+export VLLM_USE_FLASHINFER_SAMPLER="${VLLM_USE_FLASHINFER_SAMPLER:-0}"
 exec "$ENV_DIR/bin/python" "$ENV_DIR/bin/vllm" serve "$(realpath "$MODEL_DIR")" \
   --served-model-name Qwen/Qwen3-VL-32B-Instruct \
   --host 127.0.0.1 \
