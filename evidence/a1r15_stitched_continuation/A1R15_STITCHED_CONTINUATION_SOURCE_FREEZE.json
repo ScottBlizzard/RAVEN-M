@@ -1,5 +1,5 @@
 {
-  "content_sha256": "fcb513628fc365909ae7709f3cdd26fe4849e946c7ae590eaa87cb021968382f",
+  "content_sha256": "c78156bbf918175b936aa6b3720e8343f72a649bb6c10d190bfd691d91183ce8",
   "files": {
     "evidence/a1r15/A1R15_EOVR_TERMINAL_RESULT_2026-08-18.json": "bae43a382ec442da886aaa4604c1fdfd43a3c07f869aca978093fdecd15b7a78",
     "evidence/r15_browser_forensics/R15_BROWSER_FORENSIC_2026-08-18.json": "08286ac3ca0846641dbfd920b21b7bfcb779a106e62b8b7aec403d0c52d574e0",
@@ -18,7 +18,7 @@
     "implementation/src/raven_m/official_qwen_mobile/a1r14_response_value_register.py": "3269a50c24088d2950fcd8322d3514ae059622f087ab54b887aba173e66c7b8a",
     "implementation/src/raven_m/official_qwen_mobile/a1r15_contract.py": "552fa3ef582cb899745fe145395c73e6c88f8867c618bcb8f06749ed385bbd55",
     "implementation/src/raven_m/official_qwen_mobile/a1r15_explicit_observation_value_register.py": "14927b9e972facc76fe53b825b990d00851a752e4024a2db6c3b516698e4cbf4",
-    "implementation/src/raven_m/official_qwen_mobile/a1r15_stitched_continuation_contract.py": "3c8f602427053f95e6944a5da7d8c2c8a630cfa828227f0bf6d5d17400857e48",
+    "implementation/src/raven_m/official_qwen_mobile/a1r15_stitched_continuation_contract.py": "ba58edb576ceb3d515a598f9e9fe66e43a5f9e1fde5330f660d6807b84bb6226",
     "implementation/src/raven_m/official_qwen_mobile/a1r2_compact_verified_pending.py": "ed5a4e93d9fcc5938158b698c312f453205a361b48d7a5839c8b61375c506d1a",
     "implementation/src/raven_m/official_qwen_mobile/controller.py": "25d3241ebe3253992d4ab61542bbc4bce3c9cc772e762ef22c831fdbbf4fd9f3",
     "implementation/src/raven_m/official_qwen_mobile/protocol.py": "9eefe9dc089f076089377d7c5fb228cdcb12e676d404973441cbc6894865a689",
@@ -27,7 +27,7 @@
     "protocols/A1R15_EXPLICIT_OBSERVATION_VALUE_REGISTER_PREREG_2026-08-18.md": "b5a46a14bc6af1ea86bfec10157ac997348ba7d6ab426554e84dedc409ee04c1",
     "protocols/A1R15_STITCHED_CONTINUATION_AMENDMENT_2026-08-18.md": "f7362e783aa1aa0e3e3a84ad96b21f47aa0be939515e883c3870376552483aa8"
   },
-  "implementation_commit": "ba67a740f13d7003371e34897e078b59844da9ff",
+  "implementation_commit": "92cc75fb3d7c8037674ad490f972e4b7ac013ec5",
   "mechanism_blob_sha1": "df561222a77328fc0370efb3dde78db8cbb8fbe9",
   "parent_browser": {
     "classification": "TARGET_SUCCESS_WITHOUT_MATURE_EVR_READ_UNATTRIBUTED",
