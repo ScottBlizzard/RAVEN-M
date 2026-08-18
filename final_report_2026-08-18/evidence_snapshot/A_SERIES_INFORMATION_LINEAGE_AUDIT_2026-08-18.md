@@ -1,6 +1,6 @@
 # A-series information-lineage audit after the R15 Browser finding
 
-Date: 2026-08-18  
+Date: 2026-08-18
 Scope: frozen A0--A12 evidence plus the later R15 Browser forensic. This is an
 offline audit; it makes no new generation call and does not relabel any prior
 arm.
@@ -98,4 +98,3 @@ trace is not required. Across failures, the same audit can distinguish:
 - `evidence/diag6/A10V2_DIAGNOSTIC6_RESULT_2026-08-13.md`
 - `evidence/diag6/A11_A12_DIAGNOSTIC6_RESULTS_2026-08-13.md`
 - `evidence/r15_browser_forensics/R15_BROWSER_FORENSIC_2026-08-18.md`
-
