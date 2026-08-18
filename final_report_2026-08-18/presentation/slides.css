@@ -259,6 +259,91 @@
     .cover-panel h1 { font-size: 45px; line-height: 1.16; }
     .cover-panel .subtitle { font-size: 21px; }
 
+    /* V6 logic-first layouts. */
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr 92px 1fr;
+      align-items: stretch;
+      margin: 26px 0 26px;
+    }
+    .problem-axis { min-height: 278px; padding: 30px 34px 26px; border-top: 6px solid var(--blue); background: #f2f7fd; }
+    .problem-axis.causal-axis { border-color: var(--warn); background: #fff7ef; }
+    .problem-axis > span { color: var(--blue); font-size: 14px; font-weight: 800; letter-spacing: .1em; }
+    .problem-axis.causal-axis > span { color: #a65e21; }
+    .problem-axis h3 { margin: 18px 0 14px; font-size: 29px; }
+    .problem-axis p { margin: 0; color: var(--muted); font-size: 17px; line-height: 1.55; }
+    .problem-separator { display: grid; place-content: center; color: #9aa9bb; font-size: 42px; font-weight: 800; }
+    .axis-proof { margin-top: 22px; padding-top: 14px; border-top: 1px solid #cbd9e8; color: var(--zju); font-size: 14px; font-weight: 800; }
+
+    .baseline-definition { padding: 6px 0 0 12px; }
+    .baseline-definition > span { color: var(--blue); font-size: 14px; font-weight: 800; letter-spacing: .08em; }
+    .baseline-definition h3 { margin: 16px 0 18px; font-size: 28px; }
+    .baseline-definition .evidence-note { margin-top: 23px; }
+
+    .evolution-grid {
+      display: grid;
+      grid-template-columns: 1fr 48px 1fr 48px 1fr;
+      align-items: stretch;
+      margin-top: 10px;
+    }
+    .evolution-card { min-height: 340px; padding: 24px 24px 20px; border-top: 6px solid #8da5c0; background: #f4f7fb; }
+    .evolution-card.a1 { border-color: var(--blue); background: #eef5fd; }
+    .evolution-card.r2 { border-color: var(--good); background: #eef9f5; }
+    .evolution-card > span { color: var(--blue); font-size: 12px; font-weight: 800; letter-spacing: .06em; }
+    .evolution-card h3 { min-height: 60px; margin: 14px 0 15px; font-size: 21px; }
+    .evolution-card p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.55; }
+    .evolution-result { margin-top: 21px; padding-top: 16px; border-top: 1px solid #cedae7; }
+    .evolution-result strong { display: block; color: var(--zju); font: 800 38px/1 Arial, sans-serif; }
+    .evolution-card.r2 .evolution-result strong { color: var(--good); }
+    .evolution-result small { display: block; min-height: 34px; margin-top: 8px; color: var(--muted); font-size: 12px; line-height: 1.4; }
+    .evolution-arrow { display: grid; place-content: center; color: var(--blue); font-size: 34px; font-weight: 800; }
+    .evolution-rule { margin-top: 18px; padding: 13px 18px; border-left: 5px solid var(--blue); background: #edf5ff; font-size: 15px; }
+
+    .negative-audit-table { margin-top: 4px; table-layout: fixed; }
+    .negative-audit-table th { padding: 8px 9px; font-size: 12px; }
+    .negative-audit-table th:first-child { width: 15%; }
+    .negative-audit-table th:nth-child(2) { width: 20%; }
+    .negative-audit-table th:nth-child(3) { width: 17%; }
+    .negative-audit-table th:nth-child(4) { width: 13%; }
+    .negative-audit-table td { padding: 8px 9px; font-size: 12px; line-height: 1.35; vertical-align: middle; }
+    .negative-audit-table td:first-child small { display: block; margin-top: 2px; color: var(--muted); }
+    .audit-tag { display: inline-block; padding: 4px 7px; border-radius: 4px; font-size: 11px; font-weight: 800; }
+    .audit-tag.active { color: #08755a; background: #e4f5ef; }
+    .audit-tag.inactive { color: #9b3d48; background: #fcebed; }
+    .audit-tag.mismatch { color: #9a5a1c; background: #fff1e3; }
+    .audit-tag.over { color: #a4511d; background: #fff0e6; }
+    .audit-tag.confounded { color: #275f9d; background: #eaf2fc; }
+    .negative-logic { margin-top: 13px; padding: 11px 15px; background: var(--zju); color: #fff; font-size: 13px; line-height: 1.45; }
+
+    .r2-failure-grid { display: grid; grid-template-columns: 1.04fr .96fr; gap: 26px; margin-top: 8px; }
+    .failure-column { min-height: 225px; padding: 22px 26px 20px; border-top: 6px solid var(--warn); background: #fff7ef; }
+    .failure-column.judgment-failure { border-color: var(--bad); background: #fff2f3; }
+    .failure-count { color: var(--zju); font: 800 51px/1 Arial, sans-serif; }
+    .failure-count span { color: #8291a4; font-size: 24px; }
+    .failure-column h3 { margin: 12px 0 9px; font-size: 22px; }
+    .failure-column p { margin: 0 0 12px; color: var(--muted); font-size: 14px; line-height: 1.46; }
+    .failure-column > b { color: var(--zju); font-size: 13px; }
+    .intervention-lessons { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 17px; }
+    .intervention-lessons > div { padding: 13px 15px 12px; border-top: 4px solid #8ea8c2; background: #f4f7fa; }
+    .intervention-lessons span { color: var(--blue); font-size: 13px; font-weight: 800; }
+    .intervention-lessons p { margin: 7px 0 0; color: var(--muted); font-size: 12px; line-height: 1.4; }
+    .causal-foot { margin-top: 14px; padding: 10px 14px; border: 1px solid #cbdced; color: var(--muted); font-size: 12px; line-height: 1.4; }
+    .causal-foot strong { color: var(--zju); }
+
+    .failure-families { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 18px; }
+    .failure-families > div { min-height: 92px; padding: 13px 12px; border-top: 4px solid #8ea8c2; background: #f4f7fa; }
+    .failure-families b { display: block; color: var(--zju); font-size: 14px; }
+    .failure-families span { display: block; margin-top: 7px; color: var(--muted); font-size: 11px; line-height: 1.4; }
+
+    .claim-test-table { margin-top: 8px; table-layout: fixed; }
+    .claim-test-table th { padding: 10px 11px; font-size: 12px; }
+    .claim-test-table th:first-child { width: 17%; }
+    .claim-test-table th:nth-child(2) { width: 29%; }
+    .claim-test-table th:nth-child(3) { width: 19%; }
+    .claim-test-table td { padding: 15px 12px; font-size: 13px; line-height: 1.45; vertical-align: middle; }
+    .claim-test-table td:first-child { color: var(--zju); }
+    .next-test { margin-top: 20px; padding: 17px 19px; border-left: 6px solid var(--good); background: #eef9f5; color: var(--ink); font-size: 15px; line-height: 1.5; }
+
     .question-contrast {
       display: grid;
       grid-template-columns: 1fr 62px 1fr 62px 1fr;
