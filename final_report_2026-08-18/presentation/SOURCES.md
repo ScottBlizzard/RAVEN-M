@@ -16,12 +16,19 @@
 
 ## Representative external work
 
+- Qin et al., **MobileUse: A Hierarchical Reflection-Driven GUI Agent for Autonomous Mobile Operation**, NeurIPS 2025: https://proceedings.neurips.cc/paper_files/paper/2025/file/3994410d63ec68ce9a66011a34c9a2c4-Paper-Conference.pdf
+- Google Research, **AndroidWorld official task list**: https://google-research.github.io/android_world/task_list.html
 - Wang et al., **Agent Workflow Memory**, arXiv:2409.07429: https://arxiv.org/abs/2409.07429
 - Zhu et al., **Hybrid Self-evolving Structured Memory for Computer-Use Agents (HyMEM)**, Findings of ACL 2026: https://aclanthology.org/2026.findings-acl.549/
 - Liu et al., **MemGUI-Agent: An End-to-End Long-Horizon Mobile GUI Agent with Proactive Context Management**, arXiv:2606.19926: https://arxiv.org/abs/2606.19926
 - Liu et al., **MemGUI-Bench: Benchmarking Memory of Mobile GUI Agents in Dynamic Environments**, arXiv:2602.06075: https://arxiv.org/abs/2602.06075
 - Liu et al., **What Memory Do GUI Agents Really Need? From Passive Records to Active Task-Driving States (ATMem)**, arXiv:2606.31612: https://arxiv.org/abs/2606.31612
 
-The slide-level comparison concerns each paper's main system/evaluation unit.
+The R2-MobileUse comparison is a numerical and architectural context only.
+Both use the official AndroidWorld Hard difficulty split, but the backbone,
+run protocol, seed, and benchmark version are not controlled as a matched
+comparison. It is not a leaderboard claim.
+
+The slide-level analysis comparison concerns each paper's main system/evaluation unit.
 It does not claim that these papers lack internal analysis, and it does not
 claim that fact preservation or stage-wise diagnostics are globally new.

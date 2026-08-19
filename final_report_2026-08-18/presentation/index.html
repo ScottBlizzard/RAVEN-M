@@ -131,53 +131,45 @@
   <!-- 06 R2 -->
   <section class="slide content" data-title="R2主结果">
     <p class="eyebrow">MAIN SYSTEM RESULT</p>
-    <h2>R2 是目前最可靠的完整系统进展，但不是机制因果终点</h2>
-    <div class="r2-layout">
-      <div class="r2-hero">
+    <h2>R2 用最小任务账本做到 6 / 19：系统增益与低复杂度同时成立</h2>
+    <div class="r2-context-layout">
+      <div class="r2-hero compact-hero">
         <p>COMPACT VERIFIED + PENDING</p>
         <div class="r2-score">6 <span>/ 19</span></div>
+        <div class="r2-percent">31.6% · AndroidWorld Hard</div>
         <div class="r2-pair">相对 A1：<strong>1 胜 · 0 负 · 18 平</strong></div>
-        <div class="r2-preserve">保留 A1 五个成功，并新增 <b>OsmAndMarker</b></div>
+        <div class="r2-mini-stats"><span><b>-22.5%</b> token</span><span><b>-23.1%</b> time</span><span><b>0</b> 额外模型调用</span></div>
       </div>
-      <div class="r2-detail">
-        <div class="r2-stat"><strong>−22.5%</strong><span>总 token</span></div>
-        <div class="r2-stat"><strong>−23.1%</strong><span>有效耗时</span></div>
-        <div class="r2-stat neutral"><strong>603 = 603</strong><span>模型调用与 A1 持平</span></div>
-        <div class="boundary-box">
-          <b>必须同时讲清的边界</b>
-          <p>固定单 seed 配对；严格 cost gate 因 calls 未下降而 <strong>FAIL</strong>；没有 matched read-disabled 消融。</p>
-        </div>
+      <div class="hard-coordinate">
+        <div class="coordinate-head"><span>NUMERICAL CONTEXT, NOT A LEADERBOARD</span><b>同一官方 Hard 难度划分的数值坐标</b></div>
+        <div class="compare-row"><span>MobileUse Base</span><i><em style="width:43.4%"></em></i><b>13.7</b></div>
+        <div class="compare-row"><span>+ Action Reflector</span><i><em style="width:71.8%"></em></i><b>22.7</b></div>
+        <div class="compare-row"><span>+ Trajectory Reflector</span><i><em style="width:78.2%"></em></i><b>24.7</b></div>
+        <div class="compare-row mobile-best"><span>+ Global Reflector</span><i><em style="width:100%"></em></i><b>31.6</b></div>
+        <div class="compare-row ours"><span>R2 · 最小账本</span><i><em style="width:100%"></em></i><b>31.6</b></div>
+        <div class="architecture-contrast"><strong>复杂度证据</strong><span>R2：单执行器 + 账本</span><span>MobileUse：Operator + Progressor + 三级 Reflector</span></div>
       </div>
     </div>
-    <div class="takeaway">允许结论：R2 系统身份在该 seed 上更好、更省 token/time；禁止结论：稳定泛化或某段记忆文本已被证明致因。</div>
+    <p class="source-line">Sources: MobileUse, NeurIPS 2025, Table 4; official AndroidWorld task list. 不同 backbone、run、seed 与版本，仅作数值和复杂度语境。</p>
+    <div class="takeaway">可守住的亮点：在混合能力的 19 个 Hard 任务上，轻量记忆干预达到 MobileUse 最强 Hard 消融的同一数值，同时不引入规划器、验证器或反思器调用。</div>
     <span class="page">06 / 13</span>
   </section>
 
-  <!-- 07 R2 失败与后续干预 -->
-  <section class="slide content" data-title="R2失败结构">
-    <p class="eyebrow">WHY THE BEST SYSTEM STILL FAILS</p>
-    <h2>R2 的 13 个失败不是同一种记忆问题，统一补丁自然难以奏效</h2>
-    <div class="r2-failure-grid">
-      <div class="failure-column long-failure">
-        <div class="failure-count">7 <span>/ 13</span></div>
-        <h3>耗尽步数，长期未解决</h3>
-        <p>失败组平均 38.31 actions；MarkorMerge 与 OsmAndTrack 合计贡献 94 / 130 次 same-state refresh。</p>
-        <b>需要：路线恢复、多对象 frontier、可执行替代策略</b>
-      </div>
-      <div class="failure-column judgment-failure">
-        <div class="failure-count">6 <span>/ 13</span></div>
-        <h3>主动给出错误完成判断</h3>
-        <p>3 个错误 terminate(success)，3 个错误 answer；不是增加 pending 文本就能解决。</p>
-        <b>需要：对象核验、答案检查、completion grounding</b>
-      </div>
-    </div>
-    <div class="intervention-lessons">
-      <div><span>未真正检验</span><p>R3、A5 未激活；P2/P3 未通过预检；R15 六题零机会。</p></div>
-      <div><span>检验后否定充分性</span><p>A8、R9、A10-A12 有触发或读取，但没有有益动作分叉。</p></div>
-      <div><span>局部改善仍不足</span><p>R11 改善一次删除；R12 降低重复成本，完整任务仍有其他瓶颈。</p></div>
-    </div>
-    <div class="causal-foot"><strong>R2 的边界：</strong>它优化的是任务状态表示，不增加感知、规划、恢复或完成验证；6 / 6 成功有 read 仍缺 matched read-disabled 消融。</div>
-    <div class="takeaway">“观察到重复”可以是真的，但“重复是唯一根因、文字提醒足以解决”可以同时是错的。</div>
+  <!-- 07 旧实验重读 -->
+  <section class="slide content" data-title="旧实验重读">
+    <p class="eyebrow">THE SAME ZERO CAN CONTAIN DIFFERENT EVIDENCE</p>
+    <h2>终分都为 0，但轨迹已经告诉我们：修复发生在不同层，剩余瓶颈也不同</h2>
+    <table class="retrospective-table">
+      <thead><tr><th>升级链</th><th>仅看终分</th><th>轨迹中的真实变化</th><th>机会链断点</th><th>为什么仍未成功</th></tr></thead>
+      <tbody>
+        <tr><td><strong>R5 → R6</strong><small>目标保持</small></td><td><b>0 → 0</b></td><td>原始目标重新进入上下文，goal 丢失被修复</td><td><span class="layer-tag fixed">L2-L4 已修</span></td><td>错误空间点击与弱恢复仍在 L5-L6</td></tr>
+        <tr><td><strong>R7 → R9</strong><small>循环恢复</small></td><td><b>0 → 0</b></td><td>R9 检测器实际触发 3 次</td><td><span class="layer-tag reached">到达 L4</span></td><td>提醒未产生有效动作分叉，停在 L5</td></tr>
+        <tr><td><strong>R10 → R11</strong><small>对象核验</small></td><td><b>0 → 0</b></td><td>一次错误删除被纠正</td><td><span class="layer-tag partial">局部 L5-L6</span></td><td>完整任务仍含其他对象与完成验证瓶颈</td></tr>
+        <tr><td><strong>R11 → R12</strong><small>去重压缩</small></td><td><b>0 → 0</b></td><td>去除 174 条重复记录，token -4.37%</td><td><span class="layer-tag cost">成本侧改善</span></td><td>降低冗余不等于获得新的解题策略</td></tr>
+      </tbody>
+    </table>
+    <div class="maturity-strip"><span><b>已建立</b> 描述性映射</span><span><b>有证据</b> 回顾性断点区分</span><span class="pending"><b>尚未建立</b> 前瞻预测有效性</span></div>
+    <div class="takeaway">这不是事后为失败改名：它解释了“按旧诊断为何应升级、按断点诊断为何仍不会过关”，并把下一次干预从继续堆字段改为修复最早断点。</div>
     <span class="page">07 / 13</span>
   </section>
 
@@ -232,64 +224,83 @@
     <span class="page">09 / 13</span>
   </section>
 
-  <!-- 10 信息机会链 -->
-  <section class="slide content" data-title="信息机会链">
-    <p class="eyebrow">INFORMATION OPPORTUNITY CHAIN</p>
-    <h2>R2 与 R15 共同推动新顺序：先追踪任务事实，再评价记忆组件</h2>
-    <div class="flow lineage-flow">
-      <div class="flow-node upstream"><div class="n">L0</div><h3>屏幕像素</h3><p>事实是否出现</p></div>
-      <div class="flow-node upstream"><div class="n">L1</div><h3>原始表述</h3><p>是否正确说出</p></div>
-      <div class="flow-node upstream"><div class="n">L2</div><h3>历史变换</h3><p>是否保持可用</p></div>
-      <div class="flow-node"><div class="n">L3</div><h3>记忆写入</h3><p>真正存入什么</p></div>
-      <div class="flow-node"><div class="n">L4</div><h3>读取注入</h3><p>是否相关及时</p></div>
-      <div class="flow-node"><div class="n">L5</div><h3>动作分叉</h3><p>是否改变决策</p></div>
-      <div class="flow-node"><div class="n">L6</div><h3>结果闭环</h3><p>是否产生进展</p></div>
+  <!-- 10 Hard 任务构成 -->
+  <section class="slide content" data-title="Hard任务构成">
+    <p class="eyebrow">WHY 6 / 19 IS A MEANINGFUL SYSTEM RESULT</p>
+    <h2>这 19 题不是“纯记忆小测”：R2 在混合能力 Hard 集上保留并扩展成功</h2>
+    <div class="hard-scope-layout">
+      <div class="official-mix">
+        <span>OFFICIAL ANDROIDWORLD HARD TASK CLASSES</span>
+        <h3>官方标签覆盖至少 10 类需求</h3>
+        <div class="demand-cloud">
+          <b>memorization</b><b>multi-app</b><b>screen reading</b><b>data entry</b><b>transcription</b>
+          <b>complex UI</b><b>search</b><b>repetition</b><b>math / counting</b><b>information retrieval</b>
+        </div>
+        <p>因此主结果始终使用完整 19 题分母，不从标签中事后挑选一个更好看的“记忆子集”。</p>
+      </div>
+      <div class="success-coverage">
+        <span>R2 SUCCESS COVERAGE · 6 TASKS</span>
+        <div class="coverage-row"><b>多对象 / 约束</b><p>ExpenseDeleteMultiple2 · RecipeDeleteConstraint</p></div>
+        <div class="coverage-row"><b>长流程状态</b><p>RetroSavePlaylist · CalendarAddEvent</p></div>
+        <div class="coverage-row"><b>聚合 / 核验</b><p>SportsTotalDuration · OsmAndMarker</p></div>
+        <div class="coverage-summary"><strong>31.6%</strong><span>轻量记忆干预在混合 Hard 能力上的系统表现</span></div>
+      </div>
     </div>
-    <div class="failure-families">
-      <div><b>事实 / 答案</b><span>Browser、Sports：保留、计算与单位核验</span></div>
-      <div><b>多对象集合</b><span>Recipe、Markor、Expense：对象 frontier 与约束</span></div>
-      <div><b>路线 / 恢复</b><span>MarkorMerge、OsmAndTrack：替代路径与重定位</span></div>
-      <div><b>完成判断</b><span>错误 terminate / answer：证据门与 evaluator grounding</span></div>
-    </div>
-    <div class="hypothesis-box"><strong>匹配干预规则：</strong>只有相关事实先于动作分叉并带来 evaluator 进展，且匹配反事实支持，才给组件因果信用。</div>
-    <div class="takeaway">框架的价值不是给失败重新命名，而是决定下一次该操纵哪一层、用什么局部指标验证。</div>
+    <p class="source-line">Source: official AndroidWorld task list. 标签描述任务需求，不等价于对失败根因的机制标注。</p>
+    <div class="takeaway">R2 的价值不是“解决了所有记忆题”，而是在不增加复合能力模块的前提下，让一个最小任务账本对多种长程任务形态都没有造成能力回归。</div>
     <span class="page">10 / 13</span>
   </section>
 
   <!-- 11 相关工作 -->
   <section class="slide content" data-title="相关工作尺度">
     <p class="eyebrow">COMPLEMENTARY ANALYSIS SCALES</p>
-    <h2>不宣称“比论文更强”：本项目补充的是更细的事实级归因单位</h2>
-    <table class="related-table">
-      <thead><tr><th>工作</th><th>主要研究对象</th><th>主要分析单位 / 归因尺度</th><th>本项目不能据此声称什么</th></tr></thead>
-      <tbody>
-        <tr><td><strong>AWM</strong></td><td>成功样例归纳与检索工作流</td><td>workflow / task / 系统消融</td><td>A4 donor 错配不能评价完整 AWM</td></tr>
-        <tr><td><strong>HyMEM</strong></td><td>结构化图与连续轨迹记忆</td><td>graph / retrieval / 组件与系统</td><td>A5 未复刻学习表示与完整系统</td></tr>
-        <tr><td><strong>MemGUI-Agent</strong></td><td>主动上下文管理策略</td><td>context action / 训练后 policy</td><td>A3 零样本字段不是完整复现</td></tr>
-        <tr><td><strong>MemGUI-Bench</strong></td><td>memory-centric GUI 评测</td><td>task / challenge / 分层指标</td><td>本项目尚不是通用 benchmark</td></tr>
-        <tr><td><strong>ATMem</strong></td><td>task-driving state 与配对 rollout</td><td>policy / memory-ON-OFF 贡献</td><td>本项目尚缺同等强度 matched intervention</td></tr>
-        <tr class="our-row"><td><strong>本项目</strong></td><td>冻结轨迹中最小任务事实的可用性</td><td>fact × stage × trajectory：L0-L6</td><td>当前是诊断框架，不是已验证的通用方法</td></tr>
-      </tbody>
-    </table>
-    <p class="source-line">Sources: AWM (arXiv:2409.07429); HyMEM (Findings of ACL 2026); MemGUI-Agent (arXiv:2606.19926); MemGUI-Bench (arXiv:2602.06075); ATMem (arXiv:2606.31612).</p>
-    <div class="takeaway">本项目补充的是事实级断点诊断；只有 matched intervention 能把这一尺度从解释框架推进到稳健因果结论。</div>
+    <h2>论文多在任务、故障类型或模块层分析；我们把信用继续下沉到单条事实的最早断点</h2>
+    <div class="analysis-scale-grid">
+      <div class="scale-card">
+        <span>MOBILEUSE · NEURIPS 2025</span>
+        <h3>系统组件与分层反思</h3>
+        <p>按 error type 分析，并消融 Action / Trajectory / Global Reflector 与 Progressor。</p>
+        <div class="scale-unit">单位：任务 / 故障类型 / 模块</div>
+      </div>
+      <div class="scale-card">
+        <span>MEMGUI-BENCH · 2026</span>
+        <h3>记忆保持率与五类失败</h3>
+        <p>用 IRR、memory-unit 指标和 failure modes 专门衡量 GUI Agent 记忆。</p>
+        <div class="scale-unit">单位：任务 / challenge / memory unit</div>
+      </div>
+      <div class="scale-card ours-scale">
+        <span>本项目 · FROZEN TRACE AUDIT</span>
+        <h3>事实 × 阶段 × 轨迹</h3>
+        <p>定位最早断点，再检查 opportunity、read、action divergence 与 progress。</p>
+        <div class="scale-unit">单位：单条事实的因果信用链</div>
+      </div>
+    </div>
+    <div class="scale-bridge"><b>互补而非替代</b><span>宽尺度告诉我们“哪类系统容易失败”</span><i>→</i><span>细尺度告诉我们“下一次应操纵哪一层”</span></div>
+    <p class="source-line">Sources: MobileUse, NeurIPS 2025; MemGUI-Bench, arXiv:2602.06075. 不声称事实级分析普遍首次出现。</p>
+    <div class="takeaway">潜在新意不在于再发明一个字段，而在于把轨迹审计变成可反驳的 credit-assignment：只有通过匹配反事实，组件才能获得因果信用。</div>
     <span class="page">11 / 13</span>
   </section>
 
-  <!-- 12 结论边界与下一步 -->
+  <!-- 12 信息机会链与验证边界 -->
   <section class="slide content" data-title="证据与下一步">
-    <p class="eyebrow">CLAIM - EVIDENCE - DECISIVE TEST</p>
-    <h2>三条结论分别需要三种证据，下一步不再继续堆通用记忆字段</h2>
-    <table class="claim-test-table">
-      <thead><tr><th>当前结论</th><th>已经建立的证据</th><th>仍不能声称</th><th>信息增益最大的验证</th></tr></thead>
-      <tbody>
-        <tr><td><strong>R2 是系统进展</strong></td><td>完整 19 题；对 A1 为 1w / 0l / 18t；token / time 更低</td><td>稳定泛化、组件因果</td><td>A1 / R2 多 seed；R2 matched read / content ablation</td></tr>
-        <tr><td><strong>失败瓶颈异质</strong></td><td>7 题耗尽预算；6 题错误完成或答案；不同激活断点</td><td>所有失败都是记忆问题</td><td>按任务族冻结事实、动作分叉和局部 progress 指标</td></tr>
-        <tr><td><strong>L0-L6 可组织诊断</strong></td><td>A5 未写入、A4 错配、有读无分叉、silent success 等反例</td><td>已验证的新算法或普遍定律</td><td>Browser exact-prefix 三臂反事实 + 一项瓶颈匹配在线干预</td></tr>
-      </tbody>
-    </table>
-    <div class="next-test"><strong>最小决定性实验：</strong>冻结 Browser 同一截图、prompt 与 decoding，对比原历史、真实五值、等长无关数值，观察正确 1120 与首个动作分叉。</div>
-    <div class="takeaway">下一步的目标不是“再做一个模块”，而是用最小反事实区分事实保真、一般上下文和随机推理。</div>
+    <p class="eyebrow">INFORMATION OPPORTUNITY CHAIN · CURRENT STATUS</p>
+    <h2>它已经能解释旧实验为何失败；能否前瞻指导新设计，仍需决定性检验</h2>
+    <div class="flow lineage-flow compact-lineage">
+      <div class="flow-node upstream"><div class="n">L0</div><h3>屏幕事实</h3><p>是否出现</p></div>
+      <div class="flow-node upstream"><div class="n">L1</div><h3>原始表述</h3><p>是否说对</p></div>
+      <div class="flow-node upstream"><div class="n">L2</div><h3>历史变换</h3><p>是否保真</p></div>
+      <div class="flow-node"><div class="n">L3</div><h3>写入</h3><p>存入什么</p></div>
+      <div class="flow-node"><div class="n">L4</div><h3>读取</h3><p>是否相关</p></div>
+      <div class="flow-node"><div class="n">L5</div><h3>动作分叉</h3><p>是否改变</p></div>
+      <div class="flow-node"><div class="n">L6</div><h3>结果闭环</h3><p>是否进展</p></div>
+    </div>
+    <div class="evidence-levels">
+      <div class="done"><span>01</span><b>描述性映射</b><p>已在 A / R 系列轨迹中建立</p></div>
+      <div class="done"><span>02</span><b>回顾性区分</b><p>能区分未激活、错配、有读无分叉、局部改善</p></div>
+      <div class="todo"><span>03</span><b>前瞻预测</b><p>尚未证明能稳定选出更优干预</p></div>
+    </div>
+    <div class="decisive-tests"><b>两步验证</b><span>盲法双人标注最早断点 + 一致性</span><i>→</i><span>预注册的瓶颈匹配干预 vs 等长无关信息</span></div>
+    <div class="takeaway">当前贡献是有证据支持的回顾性诊断框架；下一步若能预测哪种最小干预有效，才升级为经过验证的设计方法。</div>
     <span class="page">12 / 13</span>
   </section>
 
@@ -298,11 +309,11 @@
     <div class="ending-inner conclusion-inner">
       <img class="brand-white" src="assets/zju-logo.png" alt="浙江大学" />
       <p class="eyebrow" style="color:#bddafa">CONCLUSION</p>
-      <h2>一条系统演进，一组异质失败，一个可检验框架</h2>
+      <h2>轻量系统增益，异质失败证据，可检验的分析转折</h2>
       <div class="conclusion-lines">
-        <div><span>01</span><p><strong>纵向结果</strong>　A0 无显式账本，A1 给出 pending 的正信号但成本较高，R2 以最小 verified / pending 保留五题并新增一题。</p></div>
-        <div><span>02</span><p><strong>失败解释</strong>　R2 的 13 个失败分为长期未解决与错误完成判断；后续负结果分别否定实现、相关性或充分性。</p></div>
-        <div><span>03</span><p><strong>分析框架</strong>　R15 促使审计从组件下沉到任务事实；下一步用 L0-L6 与 matched 反事实选择瓶颈匹配干预。</p></div>
+        <div><span>01</span><p><strong>系统结果</strong>　R2 以最小 verified / pending 账本达到 6 / 19，在混合 Hard 任务上取得 31.6%，且零额外模型调用。</p></div>
+        <div><span>02</span><p><strong>实验结论</strong>　横向说明纯记忆并非普适解；纵向说明记忆不是越多越好，选择性保留比持续堆叠更有效。</p></div>
+        <div><span>03</span><p><strong>分析转折</strong>　R15 促使审计从组件下沉到任务事实；旧实验已支持回顾性断点诊断，前瞻预测仍待匹配反事实验证。</p></div>
       </div>
       <div class="final-question">不是“记忆越多越好”，而是哪条事实、在哪一层、通过什么干预真正改变了动作。</div>
       <p class="questions">Questions & Discussion</p>
