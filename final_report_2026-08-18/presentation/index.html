@@ -16,7 +16,7 @@
     <div class="cover-panel">
       <p class="eyebrow" style="color:#bddafa">SUMMER CAMP · FINAL REPORT</p>
       <h1>GUI Agent 长程任务中的<br />记忆：从系统增益到信息归因</h1>
-      <p class="subtitle">从显式任务账本的纵向改进，到事实级因果归因的分析转折</p>
+      <p class="subtitle">从任务状态保持与经验复用，到记忆的能力边界和事实级归因</p>
     </div>
     <div class="cover-meta">浙江大学夏令营课题最终汇报<br />汇报人：许奕　·　2026.08.19</div>
   </section>
@@ -47,7 +47,7 @@
         <b>产出：事实级信息机会链与可验证假设</b>
       </div>
     </div>
-    <div class="research-question compact-question"><span>最终回答</span><strong>什么样的记忆能带来系统增益，以及我们如何知道增益真正来自它？</strong></div>
+    <div class="research-question compact-question"><span>最终回答</span><strong>记忆是在保存已有能力、复用已有经验，还是被要求创造原本不存在的能力？</strong></div>
     <div class="takeaway">接下来按这个认识顺序展开：先看实验基础和设计，再看结果、矛盾与方法转折。</div>
     <span class="page">02 / 12</span>
   </section>
@@ -115,7 +115,7 @@
   <!-- 05 横向探索 -->
   <section class="slide content" data-title="横向探索">
     <p class="eyebrow">HORIZONTAL EXPLORATION · WHAT WAS ACTUALLY TESTED</p>
-    <h2>同时展开的横向探索说明：换一种记忆形式，并不会自动转化为任务成功</h2>
+    <h2>横向实验揭示：记得更多、复用经验、补齐能力不是一回事</h2>
     <table class="negative-audit-table">
       <thead><tr><th>方向</th><th>实际改动</th><th>运行证据</th><th>结果</th><th>获得的认识</th></tr></thead>
       <tbody>
@@ -127,7 +127,7 @@
       </tbody>
     </table>
     <div class="negative-logic"><strong>A4-v2 最新封存：</strong>24 个有效 donor episode = 6 成功 + 18 科学失败；454 calls / 442 actions。因 4 条路线 coverage blocked，workflow induction 与七题评分按协议停止。</div>
-    <div class="takeaway">横向实验不只比较“记忆形式”：它进一步发现，纯记忆可能在信息、策略甚至可复用 donor 的前置条件上就被卡住。</div>
+    <div class="takeaway">共同边界是：记忆可以保存或重组已有信息，但只有存在可执行能力与可复用经验时，才可能进一步转化为成功。</div>
     <span class="page">05 / 12</span>
   </section>
 
@@ -162,7 +162,7 @@
   <!-- 07 R2 剩余失败 -->
   <section class="slide content" data-title="R2失败结构">
     <p class="eyebrow">WHY R2 STOPS AT 6 / 19</p>
-    <h2>R2 解决了“待办是否可见”，但剩余 13 题多数卡在它没有增加的能力</h2>
+    <h2>R2 剩余 13 题说明：保存任务状态，不等于拥有路线与核验能力</h2>
     <div class="r2-failure-grid">
       <div class="failure-column long-failure">
         <div class="failure-count">7 <span>/ 13</span></div>
@@ -178,11 +178,11 @@
       </div>
     </div>
     <div class="intervention-lessons">
-      <div><span>记忆能改善什么</span><p>让目标、待办和已核验事实持续可用。</p></div>
-      <div><span>记忆不能凭空生成什么</span><p>新路线、精确视觉定位和可靠完成验证。</p></div>
-      <div><span>由此产生的新问题</span><p>后续补丁没涨分，究竟是没生效，还是只修了局部？</p></div>
+      <div><span>保存已有状态</span><p>R2 让目标、待办和已核验事实持续可用。</p></div>
+      <div><span>复用已有经验</span><p>AWM 可能提供 workflow，但前提是先有成功 donor。</p></div>
+      <div><span>不能替代能力生成</span><p>新路线、视觉定位与完成核验仍需其他能力。</p></div>
     </div>
-    <div class="takeaway">到这里故事产生了真正的矛盾：我们知道 R2 的边界，也做了针对性补丁，但仅靠终分仍无法判断每次升级到底修到了哪里。</div>
+    <div class="takeaway">因此更准确的理解是：记忆是能力放大器，而不是能力发生器；接下来仍要判断失败究竟发生在记忆、经验还是执行能力。</div>
     <span class="page">07 / 12</span>
   </section>
 
@@ -259,21 +259,18 @@
     <span class="page">10 / 12</span>
   </section>
 
-  <!-- 11 文献坐标与验证边界 -->
+  <!-- 11 统一解释与验证边界 -->
   <section class="slide content" data-title="相关工作与验证">
-    <p class="eyebrow">WHAT IS DIFFERENT, AND WHAT IS NOT YET PROVEN</p>
-    <h2>与论文相比，我们增加的是“前置条件 + 事实级断点”的审计尺度</h2>
-    <div class="analysis-scale-grid compact-scales">
-      <div class="scale-card"><span>AWM · arXiv:2409.07429</span><h3>从成功轨迹归纳工作流</h3><p>先获得成功 demonstrations，再 induction、检索与复用。</p><div class="scale-unit">workflow / task / system</div></div>
-      <div class="scale-card"><span>MEMGUI-BENCH · 2026</span><h3>保持率与五类失败</h3><p>用 IRR 和 memory-unit 指标衡量记忆。</p><div class="scale-unit">任务 / challenge / memory unit</div></div>
-      <div class="scale-card ours-scale"><span>本项目 · FROZEN TRACE</span><h3>P0 + 事实 × 阶段 × 轨迹</h3><p>先审 donor / opportunity，再定位最早事实断点。</p><div class="scale-unit">前置条件到结果的信用链</div></div>
+    <p class="eyebrow">A UNIFIED INTERPRETATION</p>
+    <h2>综合全部实验：记忆能保存与复用已有能力，但未能单独补齐缺失能力</h2>
+    <div class="memory-boundary-model">
+      <div class="boundary-row retain"><span>01</span><div><b>保存已有状态</b><h3>已经会做，但容易忘</h3></div><p><strong>对应机制</strong> R2 verified / pending 账本</p><p><strong>项目证据</strong> 6 / 19；相对 A1 1w / 0l，token / time 更低</p></div>
+      <div class="boundary-row reuse"><span>02</span><div><b>复用已有经验</b><h3>曾经成功，但不会稳定迁移</h3></div><p><strong>对应机制</strong> AWM workflow memory</p><p><strong>项目证据</strong> 24 个 slot 后仅 3 / 7 路线具备 donor coverage</p></div>
+      <div class="boundary-row create"><span>03</span><div><b>生成缺失能力</b><h3>从未形成可靠路线或核验</h3></div><p><strong>所需能力</strong> 规划、感知、恢复、grounding</p><p><strong>项目证据</strong> R2 失败中 7 题长期未解，6 题错误完成</p></div>
     </div>
-    <div class="validation-footer">
-      <div><b>目前已经支持</b><p>描述性映射 + 回顾性断点区分</p></div>
-      <div class="future"><b>仍需决定性验证</b><p>盲法双人标注 + 预注册的瓶颈匹配干预</p></div>
-    </div>
-    <p class="source-line">Sources: AWM, arXiv:2409.07429; MemGUI-Bench, arXiv:2602.06075; A4-v2 donor acquisition closure. 不声称该尺度普遍首次出现。</p>
-    <div class="takeaway">后续研究空间由此变得具体：记忆评测不仅要问“读到了吗”，还要测 donor coverage、信息机会与最早断点能否预测有效干预。</div>
+    <div class="decisive-donor-test"><b>决定性后续实验</b><span>人工 / 强模型 expert donor + memory ON/OFF</span><i>→</i><span>成功：自生成 donor 是瓶颈</span><i>｜</i><span>仍失败：执行能力才是瓶颈</span></div>
+    <p class="source-line">Related coordinates: AWM (workflow reuse), MemGUI-Bench (memory measurement). 本项目进一步追问记忆作用所需的能力基础。</p>
+    <div class="takeaway">这形成了可检验的研究命题：记忆收益取决于基础能力与经验覆盖，而 donor coverage 和最早断点应能预测哪类干预有效。</div>
     <span class="page">11 / 12</span>
   </section>
 
@@ -282,13 +279,13 @@
     <div class="ending-inner conclusion-inner">
       <img class="brand-white" src="assets/zju-logo.png" alt="浙江大学" />
       <p class="eyebrow" style="color:#bddafa">CONCLUSION</p>
-      <h2>轻量系统增益，异质失败证据，可检验的分析转折</h2>
+        <h2>记忆能保存和复用能力，但未能单独补齐缺失能力</h2>
       <div class="conclusion-lines">
         <div><span>01</span><p><strong>系统结果</strong>　R2 以最小 verified / pending 账本达到 6 / 19，在混合 Hard 任务上取得 31.6%，且零额外模型调用。</p></div>
-        <div><span>02</span><p><strong>实验结论</strong>　纵向说明记忆不是越多越好；A4-v2 进一步表明，可复用 donor coverage 本身也可能成为上游瓶颈。</p></div>
-        <div><span>03</span><p><strong>分析转折</strong>　R15 与 A4-v2 把审计扩展为 P0 + L0-L6；回顾性断点诊断已有证据，前瞻预测仍待验证。</p></div>
+        <div><span>02</span><p><strong>统一解释</strong>　R2 保存已有任务状态；AWM 复用已有成功经验；路线、感知和核验仍需要基础能力。</p></div>
+        <div><span>03</span><p><strong>研究命题</strong>　P0 + L0-L6 将能力基础、donor coverage、事实断点和行为结果放入同一可验证框架。</p></div>
       </div>
-      <div class="final-question">不是“记忆越多越好”，而是哪条事实、在哪一层、通过什么干预真正改变了动作。</div>
+      <div class="final-question">不是“记忆越多越好”，而是已有能力能否被保存、复用，并真正改变动作。</div>
       <p class="questions">Questions & Discussion</p>
     </div>
   </section>

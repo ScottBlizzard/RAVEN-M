@@ -655,6 +655,23 @@
     .validation-footer b { color:var(--zju); font-size:13px; }
     .validation-footer p { margin:5px 0 0; color:var(--muted); font-size:12px; line-height:1.35; }
 
+    .slide[data-title="相关工作与验证"] h2 { margin-bottom:15px; font-size:35px; }
+    .memory-boundary-model { display:grid; gap:8px; margin-top:7px; }
+    .boundary-row { display:grid; grid-template-columns:52px 245px 1fr 1.2fr; gap:16px; align-items:center; min-height:93px; padding:12px 16px; border-left:6px solid var(--blue); background:#f2f7fd; }
+    .boundary-row.reuse { border-color:var(--good); background:#eef9f5; }
+    .boundary-row.create { border-color:var(--warn); background:#fff7ef; }
+    .boundary-row > span { color:var(--blue); font:800 24px/1 Arial,sans-serif; }
+    .boundary-row.reuse > span { color:var(--good); }
+    .boundary-row.create > span { color:var(--warn); }
+    .boundary-row div b { color:var(--zju); font-size:13px; }
+    .boundary-row h3 { margin:5px 0 0; font-size:17px; }
+    .boundary-row > p { margin:0; color:var(--muted); font-size:12px; line-height:1.4; }
+    .boundary-row > p strong { display:block; margin-bottom:3px; color:var(--zju); font-size:11px; }
+    .decisive-donor-test { display:grid; grid-template-columns:125px 1.35fr 28px 1fr 18px 1fr; gap:8px; align-items:center; margin-top:12px; padding:11px 14px; background:var(--zju); color:#fff; }
+    .decisive-donor-test b { color:var(--sky); font-size:12px; }
+    .decisive-donor-test span { font-size:11px; line-height:1.35; }
+    .decisive-donor-test i { color:var(--sky); font-style:normal; text-align:center; }
+
     .compact-lineage { margin-top:10px; }
     .compact-lineage .flow-node { min-height:96px; padding:12px 7px; }
     .compact-lineage .flow-node h3 { font-size:14px; }
