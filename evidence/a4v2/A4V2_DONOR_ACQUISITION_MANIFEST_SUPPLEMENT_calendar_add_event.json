@@ -1,0 +1,51 @@
+{
+  "androidworld_commit": "3e50888527ef9f29b9157ecd537e408008bb1c85",
+  "androidworld_worktree_identity": {
+    "head": "3e50888527ef9f29b9157ecd537e408008bb1c85",
+    "tracked_diff_sha256": "f1498c466a88acddeb2e414e79078090fc51c94aba5592208bcf8b8c8041a2ec",
+    "untracked_files": {
+      "android_world/task_evals/information_retrieval/proto/state_pb2.py": "7fcc0e0c1cd8c1d03d644e23a2c2d3e17709d6f1cddc4b04655be9bda035cde4",
+      "android_world/task_evals/information_retrieval/proto/state_pb2_grpc.py": "d0e6c85813268da7b989e6034cca76e56d73fe1aa279a1db2a98930bb8d75ed3",
+      "android_world/task_evals/information_retrieval/proto/task_pb2.py": "1cc5638cf6dc51463dffd7ca9ee3c85cbabcb66e89815ee4bf53f61dc7c7e84c",
+      "android_world/task_evals/information_retrieval/proto/task_pb2_grpc.py": "0136cd56ec38ead7eb274d988c550a31d051963f45d4ee5693f0ce5bd4beaee6"
+    }
+  },
+  "content_sha256": "c2e317d6c6185acdeeb8fc907ccf9f2a904d42d2ae29f0d311374924b49041c4",
+  "experiment_id": "A4V2_FAITHFUL_OFFLINE_AWM_QWEN3VL32B_AW_HARD_S20260806_V1",
+  "include_optional": false,
+  "instance_generation": "random.seed(seed); numpy.random.seed(seed); task_type.generate_random_params()",
+  "manifest_role": "deficit_supplement",
+  "parent_controller": "A0_OFFICIAL_QWEN3VL32B_SCREENSHOT_ONLY",
+  "plan_file_sha256": "638648d136bbfce6fe753e4724c3941e6b4e092c64693bf215ff4006b456f60f",
+  "plan_path": "implementation/configs/a4v2_awm_donor_acquisition_plan.json",
+  "protocol_amendment_path": "protocols/A4V2_DONOR_ACQUISITION_PLAN_V2_AMENDMENT_2026-08-19.md",
+  "protocol_amendment_sha256": "3b9c6d89f90db52bcd918f064cac1226c36fea1841d4956bbaa94d42d684dc5c",
+  "schema": "a4v2.donor_acquisition_manifest.v1",
+  "supplement_routes": [
+    "calendar_add_event"
+  ],
+  "tasks": [
+    {
+      "difficulty": "medium",
+      "goal_hash": "4249efc72267c2dd25971bb055870e6d5074fd5729c06a236e829d23c28bb8f6",
+      "native_max_steps": 30,
+      "optional": true,
+      "route_id": "calendar_add_event",
+      "task_class": "SimpleCalendarAddOneEventInTwoWeeks",
+      "task_id": "calendar_add_event_03_s20260841",
+      "task_params_hash": "0701875576b4ca0dff44e3129a8e134ed725e42c581d468a07261633688ef9ba",
+      "task_seed": 20260841
+    },
+    {
+      "difficulty": "easy",
+      "goal_hash": "4dc2f8aee43264daefc42443640bf6f6e6c99e33006aac53513184436cb5a8c8",
+      "native_max_steps": 26,
+      "optional": true,
+      "route_id": "calendar_add_event",
+      "task_class": "SimpleCalendarAddOneEventTomorrow",
+      "task_id": "calendar_add_event_90_s20260904",
+      "task_params_hash": "3bf2c98f4bde0eeac461c6e9818497bec06ebb5e8c5d163caedf3315c7e4151d",
+      "task_seed": 20260904
+    }
+  ]
+}

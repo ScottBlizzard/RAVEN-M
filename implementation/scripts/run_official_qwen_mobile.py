@@ -3117,6 +3117,7 @@ def main() -> None:
             else "default_client_transport_policy"
         ),
     }
+    acquisition_receipt_records: list[dict] = []
     if args.run_stage == "a4v2_donor_acquisition_v1":
         if (
             not args.single_transport_no_retry
@@ -3128,6 +3129,42 @@ def main() -> None:
         acquisition_receipt = validate_a4v2_acquisition_receipt(
             args.a4v2_acquisition_receipt.resolve()
         )
+        current_receipt_record = {
+            "file_sha256": _sha256(args.a4v2_acquisition_receipt),
+            "content_sha256": acquisition_receipt["content_sha256"],
+            "qualified_at": acquisition_receipt["qualified_at"],
+            "pid": int(acquisition_receipt["pid"]),
+            "repository_commit": acquisition_receipt["repository_commit"],
+            "model_manifest_sha256": acquisition_receipt["model_manifest_sha256"],
+        }
+        signature_receipt_sha256 = current_receipt_record["file_sha256"]
+        signature_receipt_content_sha256 = current_receipt_record["content_sha256"]
+        if args.resume_suite_dir is not None:
+            frozen_signature_path = args.resume_suite_dir.resolve() / "run_signature.json"
+            if not frozen_signature_path.is_file():
+                raise RuntimeError("A4-v2 acquisition resume signature is missing")
+            frozen_signature_preview = json.loads(
+                frozen_signature_path.read_text(encoding="utf-8")
+            )
+            signature_receipt_sha256 = str(
+                frozen_signature_preview.get("acquisition_server_receipt_sha256") or ""
+            )
+            signature_receipt_content_sha256 = str(
+                frozen_signature_preview.get("acquisition_server_receipt_content_sha256") or ""
+            )
+            if len(signature_receipt_sha256) != 64 or len(signature_receipt_content_sha256) != 64:
+                raise RuntimeError("A4-v2 acquisition frozen receipt binding is invalid")
+            acquisition_receipt_records.append(
+                {
+                    "file_sha256": signature_receipt_sha256,
+                    "content_sha256": signature_receipt_content_sha256,
+                    "role": "initial_frozen_signature_receipt",
+                }
+            )
+            current_receipt_record["role"] = "active_infrastructure_replacement_receipt"
+        else:
+            current_receipt_record["role"] = "initial_active_receipt"
+        acquisition_receipt_records.append(current_receipt_record)
         acquisition_manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
         run_signature.update(
             {
@@ -3137,8 +3174,8 @@ def main() -> None:
                 "scientific_fail_fast": False,
                 "donor_plan_sha256": acquisition_manifest["plan_file_sha256"],
                 "donor_protocol_amendment_sha256": acquisition_manifest["protocol_amendment_sha256"],
-                "acquisition_server_receipt_sha256": _sha256(args.a4v2_acquisition_receipt),
-                "acquisition_server_receipt_content_sha256": acquisition_receipt["content_sha256"],
+                "acquisition_server_receipt_sha256": signature_receipt_sha256,
+                "acquisition_server_receipt_content_sha256": signature_receipt_content_sha256,
             }
         )
     if enriched_diag_arm:
@@ -3732,6 +3769,16 @@ def main() -> None:
             else:
                 summaries = list(checkpoint.get("valid_summaries") or [])
                 invalid_attempts = list(checkpoint.get("invalid_attempts") or [])
+                if args.run_stage == "a4v2_donor_acquisition_v1":
+                    by_file_sha = {
+                        str(item.get("file_sha256")): dict(item)
+                        for item in list(checkpoint.get("acquisition_server_receipts") or [])
+                        + acquisition_receipt_records
+                        if isinstance(item, dict) and len(str(item.get("file_sha256") or "")) == 64
+                    }
+                    acquisition_receipt_records = [
+                        by_file_sha[key] for key in sorted(by_file_sha)
+                    ]
         suite_id = suite_dir.name
     else:
         suite_id = f"official_qwen_{datetime.now().strftime('%Y%m%dT%H%M%S')}_{uuid4().hex[:8]}"
@@ -3780,6 +3827,8 @@ def main() -> None:
                 "valid_summaries": summaries,
                 "invalid_attempts": invalid_attempts,
             }
+            if args.run_stage == "a4v2_donor_acquisition_v1":
+                payload["acquisition_server_receipts"] = acquisition_receipt_records
             if enriched_diag_arm:
                 payload.update(
                     {

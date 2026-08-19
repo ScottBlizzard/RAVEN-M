@@ -1,0 +1,336 @@
+{
+  "episode_id": "ExpenseDeleteMultiple_20260833_97220749",
+  "error": null,
+  "evaluator_reward": 1.0,
+  "executed_action_count": 14,
+  "lifecycle_errors": [],
+  "model_call_count": 15,
+  "schema": "a4v2.portable_successful_donor_episode.v1",
+  "seed": 20260833,
+  "source_episode_sha256": "2d463e3bf69f797caa53505768c4efa24b4acb2e2b5ac39072fe1715b379e1ab",
+  "source_events_sha256": "4a075bca02aef17ee708cb1792b06dc0588600d3a9e0ebb5c70b12b0baf1dd8b",
+  "steps": [
+    {
+      "decision": {
+        "action_summary": "\"I swiped up to open the app drawer to find the Pro Expense app.\"",
+        "canonical_action": {
+          "duration_ms": 400,
+          "type": "swipe",
+          "x": 0.4994994994994995,
+          "x2": 0.4934934934934935,
+          "y": 0.7427427427427428,
+          "y2": 0.2872872872872873
+        },
+        "terminal_status": null,
+        "thought": "I need to delete specific expenses from the Pro Expense app. To do this, I first need to locate and open the Pro Expense app on my phone. Since it's not visible on the home screen, I performed a swipe up gesture to access the app drawer where all installed apps are listed."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "5718491bb807651f1e8131c83b64bccb098f8ef9c33d1325ae75fd5735955975",
+        "response_sha256": "36a91a8fc68abdb7b561422287b62eafffb6ecb96f062a19a26bd90cac5744be",
+        "transport_attempts": 1
+      },
+      "step": 0
+    },
+    {
+      "decision": {
+        "action_summary": "\"I swiped up in the app drawer to search for the Pro Expense app.\"",
+        "canonical_action": {
+          "duration_ms": 400,
+          "type": "swipe",
+          "x": 0.4994994994994995,
+          "x2": 0.4914914914914915,
+          "y": 0.7877877877877878,
+          "y2": 0.3283283283283283
+        },
+        "terminal_status": null,
+        "thought": "I need to delete specific expenses from the Pro Expense app, but I haven't opened it yet. To do this, I first have to locate the app in my app drawer. Since it's not visible on the current screen, I performed a swipe-up gesture to scroll through the app list and find the Pro Expense app."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "75389958147710fc7664b48a2403561aa958b9ae4fd99eb7bb27edd8560b9470",
+        "response_sha256": "704483778ab0be27904d8fdf0372c62164553eb3393c03e171d73b0117b1a850",
+        "transport_attempts": 1
+      },
+      "step": 1
+    },
+    {
+      "decision": {
+        "action_summary": "\"I opened the Pro Expense app to begin managing my expenses.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.3843843843843844,
+          "y": 0.6926926926926927
+        },
+        "terminal_status": null,
+        "thought": "I have located the Pro Expense app in the app drawer. To proceed with deleting the specified expenses, I need to open the app. By tapping on the Pro Expense icon, I will access the application where I can manage and delete the expenses such as Tailoring Services, Furnishing, and Ride-Sharing."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "36d6ae44e28407aa6f33f6d547f8893551c4d9568551be103bf01e2051c49bf5",
+        "response_sha256": "57413248176f892dcdee63bcd24d9d0c3434cb6de5837164692e53bb09e430ec",
+        "transport_attempts": 1
+      },
+      "step": 2
+    },
+    {
+      "decision": {
+        "action_summary": "\"I opened the Pro Expense app to start deleting specific expenses.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.3843843843843844,
+          "y": 0.6976976976976977
+        },
+        "terminal_status": null,
+        "thought": "I have opened the Pro Expense app to manage my expenses. My goal is to delete specific entries: Tailoring Services, Furnishing, and Ride-Sharing. To do this, I need to access the list of expenses within the app. By tapping on the Pro Expense icon, I am now inside the app where I can view and edit my expense records."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "4f8eba74d2a2790059b41b9479a2c9b9cda0b381639b79165c86f7b6ff5d038a",
+        "response_sha256": "9ced9c86421e25ea695bb0b09c9fe5b95c583bb1392ce728deaf6327f927961d",
+        "transport_attempts": 1
+      },
+      "step": 3
+    },
+    {
+      "decision": {
+        "action_summary": "\"I tapped on \\\"Tailoring Services\\\" to view its details for deletion.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.4114114114114114,
+          "y": 0.7507507507507507
+        },
+        "terminal_status": null,
+        "thought": "I am currently in the Pro Expense app and need to delete specific expenses: Tailoring Services, Furnishing, and Ride-Sharing. To do this, I first need to access the detailed view of these expenses. By tapping on \"Tailoring Services,\" I am opening its details so that I can proceed with deleting it."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "6f0323d1c76596a15c68474e8f75cc65da7acdbd82b916443e09a0ab53a019be",
+        "response_sha256": "3d36251d4b0b0102a0ca7bcd1d6c946e764362958ef6323ea98ad86a0cae04bd",
+        "transport_attempts": 1
+      },
+      "step": 4
+    },
+    {
+      "decision": {
+        "action_summary": "\"I tapped on \\\"Tailoring Services\\\" to view its details for deletion.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.4114114114114114,
+          "y": 0.7537537537537538
+        },
+        "terminal_status": null,
+        "thought": "I am in the process of deleting specific expenses from my Pro Expense app. I have already accessed the details of \"Tailoring Services\" and now need to proceed with deleting it. By tapping on \"Tailoring Services,\" I likely intended to view its detailed information so that I can find the option to delete this expense."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "e524df63f13c1e8ccdfbc034c90bd8f934522a3642de21ac178932a9ba3c3375",
+        "response_sha256": "c989e0b75a780c7c380d79f333e248ef2941258e8f5cebe354313d0650f44e0d",
+        "transport_attempts": 1
+      },
+      "step": 5
+    },
+    {
+      "decision": {
+        "action_summary": "\"I tapped the trash bin icon to delete the \\\"Tailoring Services\\\" expense.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.8948948948948949,
+          "y": 0.6906906906906907
+        },
+        "terminal_status": null,
+        "thought": "I am in the process of deleting specific expenses from my Pro Expense app. I have already accessed the details of \"Tailoring Services\" and now need to proceed with deleting it. By tapping on the trash bin icon, I intend to confirm the deletion of this expense."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "c79f47cc85cfff76d6a7e99f5b4a9ec9b7b4c5eb4473dbc328ecac6a298c65e5",
+        "response_sha256": "58cc1d6b408002acb1fd18e130be4ef86c32158af4d8c56c557ba415af403a83",
+        "transport_attempts": 1
+      },
+      "step": 6
+    },
+    {
+      "decision": {
+        "action_summary": "\"I confirmed the deletion of the \\\"Tailoring Services\\\" expense in the Pro Expense app.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.4994994994994995,
+          "y": 0.9259259259259259
+        },
+        "terminal_status": null,
+        "thought": "I have just deleted the \"Tailoring Services\" expense from my Pro Expense app. Now, I need to confirm this deletion to ensure it is finalized. By tapping \"CONFIRM,\" I am completing the process of removing this expense from my records."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "8854b37ca3b2ab980cabeae74d8383d0624e8bf56c6a8dafd97b561ccc179844",
+        "response_sha256": "850415a7c34906fa61788ec34fea27e0db28945f06dd9691bdda73aa5a38f9af",
+        "transport_attempts": 1
+      },
+      "step": 7
+    },
+    {
+      "decision": {
+        "action_summary": "\"I tapped on the \\\"Furnishing\\\" expense to view its details for deletion.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.34634634634634637,
+          "y": 0.7497497497497497
+        },
+        "terminal_status": null,
+        "thought": "I have already deleted the \"Tailoring Services\" expense. Now, I need to delete the remaining expenses: \"Furnishing\" and \"Ride-Sharing.\" To do this, I will tap on the \"Furnishing\" expense to view its details so that I can proceed with the deletion."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "28aad010a179ee0fa43279dfa6f4cfba97bc793fe2ff4cc772414c60e4833f79",
+        "response_sha256": "c2402cdeb0a369303876def9e0c9392ad5de81fd1dc9b9ec0c62d64715637e38",
+        "transport_attempts": 1
+      },
+      "step": 8
+    },
+    {
+      "decision": {
+        "action_summary": "\"I tapped the trash bin icon to delete the \\\"Furnishing\\\" expense.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.8948948948948949,
+          "y": 0.6906906906906907
+        },
+        "terminal_status": null,
+        "thought": "I am in the process of deleting specific expenses from my Pro Expense app. After successfully deleting \"Tailoring Services,\" I now need to delete \"Furnishing.\" I've tapped on the trash bin icon next to the \"Furnishing\" expense detail to initiate its deletion."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "606440bce7a348d627f1f2df30903a2b518e411015b2a0df69f44002ea921507",
+        "response_sha256": "dfeb30b5e57c191e418d196255691003163b9438bf6b4b3077a94de9ae019820",
+        "transport_attempts": 1
+      },
+      "step": 9
+    },
+    {
+      "decision": {
+        "action_summary": "\"I confirmed the deletion of the \\\"Furnishing\\\" expense in the Pro Expense app.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.4994994994994995,
+          "y": 0.9259259259259259
+        },
+        "terminal_status": null,
+        "thought": "I have just deleted the \"Furnishing\" expense and now need to confirm this deletion. By tapping on \"CONFIRM,\" I am finalizing the removal of this expense from my records in the Pro Expense app. This step is necessary to ensure that the expense is permanently removed."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "5e306a6d8e9f0f17e08d15ab8703678cfb7a40528529842c7e5bb279e1fb7217",
+        "response_sha256": "a8fcd58137cf90bec9306632cd784b65f1bdcd29c2b1cd168b083d722ba910df",
+        "transport_attempts": 1
+      },
+      "step": 10
+    },
+    {
+      "decision": {
+        "action_summary": "\"I tapped on the \\\"Ride-Sharing\\\" expense to view its details for deletion.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.3663663663663664,
+          "y": 0.7407407407407407
+        },
+        "terminal_status": null,
+        "thought": "I have already deleted the \"Tailoring Services\" and \"Furnishing\" expenses. Now, I need to delete the \"Ride-Sharing\" expense as part of my task. To do this, I tapped on the \"Ride-Sharing\" entry to view its details so that I can proceed with the deletion."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "b5961066df08080b6f4792e002b20b82cb9551469da78ebd01c1528fe38ef6ee",
+        "response_sha256": "04eca0fcee77aa9b6d0663f96cc87d9190bf16f6a8a55a5f6d1cf0d3646371fc",
+        "transport_attempts": 1
+      },
+      "step": 11
+    },
+    {
+      "decision": {
+        "action_summary": "\"I tapped the trash bin icon to delete the \\\"Ride-Sharing\\\" expense.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.8948948948948949,
+          "y": 0.6906906906906907
+        },
+        "terminal_status": null,
+        "thought": "I am in the process of deleting specific expenses from my Pro Expense app. After successfully deleting \"Tailoring Services\" and \"Furnishing,\" I now need to delete \"Ride-Sharing.\" I've accessed the details of the \"Ride-Sharing\" expense, and my next step is to tap the trash bin icon to initiate its deletion."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "ce07f5417be996e9b60c35cb4e5b5792d219b7e5a6fa66ff5110d8e84b644b56",
+        "response_sha256": "16917d78d72829a3bb6b1f05533e2e3cfd93bf7c747ed8aa10dd8e2314db0226",
+        "transport_attempts": 1
+      },
+      "step": 12
+    },
+    {
+      "decision": {
+        "action_summary": "\"I confirmed the deletion of the Ride-Sharing expense in the Pro Expense app.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.4994994994994995,
+          "y": 0.9259259259259259
+        },
+        "terminal_status": null,
+        "thought": "I have successfully navigated through the Pro Expense app to delete three specific expenses: Tailoring Services, Furnishing, and Ride-Sharing. Each expense was located, selected for deletion, and confirmed removed. Now, I am at the final confirmation step for deleting the Ride-Sharing expense. By tapping \"CONFIRM,\" I will complete the deletion process for all specified expenses."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "7aba63b3c31e51af61a030d65185e6ee7461ab3b2691510e7291d207768cf12b",
+        "response_sha256": "9f605cb21e8aac3ea5e0e2880629480eb0d4d2a3155257f941b0fbeaed46b18e",
+        "transport_attempts": 1
+      },
+      "step": 13
+    },
+    {
+      "decision": {
+        "action_summary": "\"I deleted the Tailoring Services, Furnishing, and Ride-Sharing expenses from the Pro Expense app.\"",
+        "canonical_action": null,
+        "terminal_status": "success",
+        "thought": "I have successfully deleted the specified expenses—Tailoring Services, Furnishing, and Ride-Sharing—from the Pro Expense app. The home screen now shows no outstanding expenses for the week, confirming that all targeted entries have been removed. This completes the task as requested."
+      },
+      "executed": false,
+      "model_call": {
+        "request_sha256": "3cd985f8d4c349ebeec8ccef49c9bf8eae4347274a5b82c7502af72ad3da8e6e",
+        "response_sha256": "160bac941790a20901e333a8113f272aa6ee7a3935f6bf645602b702573578cd",
+        "transport_attempts": 1
+      },
+      "step": 14
+    }
+  ],
+  "success": true,
+  "task_goal": "Delete the following expenses from pro expense: Tailoring Services, Furnishing, Ride-Sharing.",
+  "task_name": "ExpenseDeleteMultiple",
+  "task_params": {
+    "row_objects": [
+      {
+        "amount": 27144,
+        "category": 8,
+        "created_date": 1697083200000,
+        "expense_id": -1,
+        "modified_date": 1697083200000,
+        "name": "Tailoring Services",
+        "note": "Remember to transfer funds"
+      },
+      {
+        "amount": 32467,
+        "category": 4,
+        "created_date": 1696906800000,
+        "expense_id": -1,
+        "modified_date": 1696906800000,
+        "name": "Furnishing",
+        "note": "Monthly recurring"
+      },
+      {
+        "amount": 13626,
+        "category": 7,
+        "created_date": 1696784400000,
+        "expense_id": -1,
+        "modified_date": 1696784400000,
+        "name": "Ride-Sharing",
+        "note": "Monthly recurring"
+      }
+    ]
+  },
+  "termination_reason": "model_terminate_success"
+}

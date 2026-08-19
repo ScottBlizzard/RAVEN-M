@@ -1,0 +1,344 @@
+{
+  "episode_id": "SportsTrackerActivityDuration_20260844_701fb3de",
+  "error": null,
+  "evaluator_reward": 1.0,
+  "executed_action_count": 16,
+  "lifecycle_errors": [],
+  "model_call_count": 16,
+  "schema": "a4v2.portable_successful_donor_episode.v1",
+  "seed": 20260844,
+  "source_episode_sha256": "946255b16e2f7dcf1c2ba58bfcac0cb98516b2f5a586bd04aa4676d7565aa2af",
+  "source_events_sha256": "6ab687aaefc1f78f54d14ffcdb7fb2e8d3b4f0fd7b0f8cb4db5acae1c5ceba37",
+  "steps": [
+    {
+      "decision": {
+        "action_summary": "\"I swiped up to open the app drawer to locate the OpenTracks app.\"",
+        "canonical_action": {
+          "duration_ms": 400,
+          "type": "swipe",
+          "x": 0.4994994994994995,
+          "x2": 0.4934934934934935,
+          "y": 0.7427427427427428,
+          "y2": 0.2872872872872873
+        },
+        "terminal_status": null,
+        "thought": "I need to find the OpenTracks app to check my kayaking activity duration from October 13. Since it's not on the home screen, I performed a swipe up to access the app drawer where all apps are listed."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "b57560d5cb7cf2c46db69b092284a17f4c08eb20189d20d4397dfdc4c1c9c7e9",
+        "response_sha256": "e2083c79530e0827dde47f68d1e123c63348e2e2b18211d100d24c0ff016fe11",
+        "transport_attempts": 1
+      },
+      "step": 0
+    },
+    {
+      "decision": {
+        "action_summary": "\"I swiped up to open the app drawer to locate the OpenTracks app.\"",
+        "canonical_action": {
+          "duration_ms": 400,
+          "type": "swipe",
+          "x": 0.4994994994994995,
+          "x2": 0.4934934934934935,
+          "y": 0.7427427427427428,
+          "y2": 0.3203203203203203
+        },
+        "terminal_status": null,
+        "thought": "I need to find the OpenTracks app to check my kayaking activity duration from October 13. Since it's not on the home screen, I swiped up to open the app drawer where all apps are listed."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "0a92385b60d63a968ea7f70d27a109f3e27e021d0c2e6dbe577586eebf0ad94d",
+        "response_sha256": "38ff2c41b93449d575a624a33c91b6ee9a9d84d72df3f5a967485c2742e70aea",
+        "transport_attempts": 1
+      },
+      "step": 1
+    },
+    {
+      "decision": {
+        "action_summary": "\"I exited the home screen menu to return to the main home screen.\"",
+        "canonical_action": {
+          "type": "press_back"
+        },
+        "terminal_status": null,
+        "thought": "I need to access the OpenTracks app to check my kayaking activity duration from October 13. Since I'm currently on the home screen with a menu open, I pressed the back button to exit this menu and return to the home screen. This will allow me to locate and open the OpenTracks app from the app drawer."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "05bbe538a4666f963c14f0e61a6557b94b9a0738a229798f354cf1fad4383e7b",
+        "response_sha256": "30b1617ca3fdb5d524c784f8008523b8189304c10684e19e4d834a6491fd977f",
+        "transport_attempts": 1
+      },
+      "step": 2
+    },
+    {
+      "decision": {
+        "action_summary": "\"I swiped up to open the app drawer to locate the OpenTracks app.\"",
+        "canonical_action": {
+          "duration_ms": 400,
+          "type": "swipe",
+          "x": 0.4994994994994995,
+          "x2": 0.4934934934934935,
+          "y": 0.7427427427427428,
+          "y2": 0.2872872872872873
+        },
+        "terminal_status": null,
+        "thought": "I need to find the OpenTracks app to check my kayaking activity duration from October 13. Since it's not on the home screen, I swiped up to access the app drawer where all apps are listed."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "fda57fdc36807f7d19037271a5b9b608be080bf66f23f3d512754d173635abfb",
+        "response_sha256": "eeb34fd81504069483a0ebd74fcd2c88ed5a10ec159b8c65d6a6c96545d54ffd",
+        "transport_attempts": 1
+      },
+      "step": 3
+    },
+    {
+      "decision": {
+        "action_summary": "\"I swiped up to open the app drawer to locate the OpenTracks app.\"",
+        "canonical_action": {
+          "duration_ms": 400,
+          "type": "swipe",
+          "x": 0.4994994994994995,
+          "x2": 0.4934934934934935,
+          "y": 0.7427427427427428,
+          "y2": 0.2872872872872873
+        },
+        "terminal_status": null,
+        "thought": "I need to find the OpenTracks app to check my kayaking activity duration from October 13. Since it's not on the home screen, I swiped up to access the app drawer where all apps are listed."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "2e9660114994c2905cff5179a426cc261a86fce8312112f509173d4f1fbfa956",
+        "response_sha256": "eeb34fd81504069483a0ebd74fcd2c88ed5a10ec159b8c65d6a6c96545d54ffd",
+        "transport_attempts": 1
+      },
+      "step": 4
+    },
+    {
+      "decision": {
+        "action_summary": "\"I swiped up in the app drawer to find the OpenTracks app.\"",
+        "canonical_action": {
+          "duration_ms": 400,
+          "type": "swipe",
+          "x": 0.5135135135135135,
+          "x2": 0.5135135135135135,
+          "y": 0.7967967967967968,
+          "y2": 0.3033033033033033
+        },
+        "terminal_status": null,
+        "thought": "I am trying to locate the OpenTracks app in the app drawer to check my kayaking activity duration from October 13. Since I haven't found it yet, I performed a swipe gesture to scroll through the app list and reveal more apps."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "1392a3235f518380ad3669df3eabbfb8f3101b67b1a86d87ed27fd584972ee9b",
+        "response_sha256": "8741cdc45ec2c0e264c82719c4e057f488ae25e85aaeb35016a90b8931058023",
+        "transport_attempts": 1
+      },
+      "step": 5
+    },
+    {
+      "decision": {
+        "action_summary": "\"I opened the OpenTracks app to check my kayaking activity duration for October 13.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.3843843843843844,
+          "y": 0.5395395395395396
+        },
+        "terminal_status": null,
+        "thought": "I have been trying to locate and open the OpenTracks app from the app drawer. After several attempts, I finally found the app icon and tapped on it to open the application. My intention is to access my kayaking activity data for October 13th to determine how long the activity lasted."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "28e39a5d82b566c2f9db32cc4acad0fdba734a96c90dad8e7b5aa1cdb002263d",
+        "response_sha256": "974225398252055d95fd1aa717ca922b88db9dcc68693d36167df2097badde83",
+        "transport_attempts": 1
+      },
+      "step": 6
+    },
+    {
+      "decision": {
+        "action_summary": "\"I opened the OpenTracks app to check my kayaking activity duration for October 13.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.3843843843843844,
+          "y": 0.5395395395395396
+        },
+        "terminal_status": null,
+        "thought": "I have opened the OpenTracks app to check my kayaking activity duration for October 13. Now, I need to navigate within the app to find the specific activity and view its details."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "8015b1cea5c6d74cc768144d197009bd91aa6875a151594e15b37c5b6ac65b55",
+        "response_sha256": "273aa9e141a63ce19338f61f5969fd6c46c5687dc87d8040a0805044a1b8a110",
+        "transport_attempts": 1
+      },
+      "step": 7
+    },
+    {
+      "decision": {
+        "action_summary": "\"I tapped the button to proceed past the welcome screen in the OpenTracks app.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.8708708708708709,
+          "y": 0.8398398398398398
+        },
+        "terminal_status": null,
+        "thought": "I opened the OpenTracks app to check my kayaking activity duration for October 13. The app displayed a welcome screen, and I tapped the button to proceed past it so I could access my activity history."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "8fd2c50fe5f70e596d108239cf9962293d26cb507191e06dfbdc3375e7c445e3",
+        "response_sha256": "db5ec4064533959d937a9f2a5703bf697daebeaa549f2f9e41127b0993a1f847",
+        "transport_attempts": 1
+      },
+      "step": 8
+    },
+    {
+      "decision": {
+        "action_summary": "\"I tapped the button to proceed past the welcome screen in the OpenTracks app.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.8708708708708709,
+          "y": 0.8398398398398398
+        },
+        "terminal_status": null,
+        "thought": "I opened the OpenTracks app and encountered a welcome screen that explained that OSMDashboard is needed for viewing recordings on a map. Since my goal is to check the duration of my kayaking activity on October 13, I tapped the button to proceed past this informational screen so I could access my activity data."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "81759d77e7924b1fc16bb0316b0f3073f888819a7e2b0b81ef5c2699789722c2",
+        "response_sha256": "12557ee48a53d9c5420599d356118bd17a719ff126f479cd460312395d3a1ce4",
+        "transport_attempts": 1
+      },
+      "step": 9
+    },
+    {
+      "decision": {
+        "action_summary": "\"I tapped the button to proceed past the welcome screen in the OpenTracks app.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.8708708708708709,
+          "y": 0.8398398398398398
+        },
+        "terminal_status": null,
+        "thought": "I opened the OpenTracks app and encountered a welcome screen that explained that OSMDashboard is needed for viewing recordings on a map. Since my goal is to find out how long my kayaking activity on October 13 lasted, I tapped the button to proceed past this informational screen so I could access my activity data."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "5be210639422dab3b01df7e816089c7c840634cd4dd00fc78eccc3a5e805a306",
+        "response_sha256": "e1b6fe80f0bf43466e2bf0bc576c9b6741e08eab338b3cd6df8beef5a6e858c4",
+        "transport_attempts": 1
+      },
+      "step": 10
+    },
+    {
+      "decision": {
+        "action_summary": "\"I waited for the OpenTracks app to load completely to view my kayaking activity duration for October 13.\"",
+        "canonical_action": {
+          "duration_ms": 2000,
+          "type": "wait"
+        },
+        "terminal_status": null,
+        "thought": "I have opened the OpenTracks app and navigated past the welcome screens to access my activity data. Now, I need to find the specific kayaking activity from October 13. Since the app is still loading or I might be on a blank screen, I will wait for it to fully load so that I can view my activities."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "3a36f155d00f8ac7725c27168b11259aada3545cd775daab7b676c75f7059644",
+        "response_sha256": "169b43ec1274c3926a401b25402a285f9af375f6aa684612ce099c513579adfc",
+        "transport_attempts": 1
+      },
+      "step": 11
+    },
+    {
+      "decision": {
+        "action_summary": "\"I navigated back to find the kayaking activity for October 13 in the OpenTracks app.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.06906906906906907,
+          "y": 0.928928928928929
+        },
+        "terminal_status": null,
+        "thought": "I opened the OpenTracks app to check my kayaking activity duration for October 13. However, the screen currently displays data for a different activity on October 10. To find the correct information, I need to navigate back and locate the specific kayaking activity from October 13."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "77e626bebedfa31c9da381a9eae2e3df3635a4a1c3b97384d0abce1c5db84edd",
+        "response_sha256": "b1bfb87ee40d325aedddb9b048bef89d7e86c3a3d0f03f99deda1df2abda3b17",
+        "transport_attempts": 1
+      },
+      "step": 12
+    },
+    {
+      "decision": {
+        "action_summary": "\"I navigated back to the main list of activities to locate the kayaking activity for October 13.\"",
+        "canonical_action": {
+          "type": "press_back"
+        },
+        "terminal_status": null,
+        "thought": "I am currently viewing the details of a surfing activity from October 10, but I need to find the kayaking activity for October 13. To do this, I will navigate back to the main list of activities in the OpenTracks app so I can search for the correct date and activity type."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "25764bae3d2ffa164abd687c9121484d63cf6f48094baf85654e7a9362215368",
+        "response_sha256": "303ac1a34c6e7b813b024a5570b85c76322e58bc8234770f62ce9ef8eed0f4b3",
+        "transport_attempts": 1
+      },
+      "step": 13
+    },
+    {
+      "decision": {
+        "action_summary": "\"I swiped up to scroll through the list of activities to find the kayaking activity for October 13.\"",
+        "canonical_action": {
+          "duration_ms": 400,
+          "type": "swipe",
+          "x": 0.4994994994994995,
+          "x2": 0.4914914914914915,
+          "y": 0.8228228228228228,
+          "y2": 0.3203203203203203
+        },
+        "terminal_status": null,
+        "thought": "I am trying to find the kayaking activity for October 13 in the OpenTracks app. Since it's not visible on the current screen, I need to scroll through the list of activities to locate it. By swiping up, I am moving further down the list to see more entries and hopefully find the kayaking activity."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "0ca4b0e4df79ce924548c01410e576672080142de8b2b22bb4c6426a4aaa8e6b",
+        "response_sha256": "73619234da1cfeb6a0f46b461e6393eb762718a99dd5c9e0298f4fe16826e66a",
+        "transport_attempts": 1
+      },
+      "step": 14
+    },
+    {
+      "decision": {
+        "action_summary": "\"I opened the OpenTracks app and found that my kayaking activity on October 13 lasted 45 minutes.\"",
+        "canonical_action": {
+          "text": "45",
+          "type": "answer"
+        },
+        "terminal_status": "answer",
+        "thought": "I opened the OpenTracks app from the app drawer to check my kayaking activity duration for October 13. I navigated through the app, passed the welcome screen, and accessed the list of activities. By scrolling through the list, I located the specific kayaking activity for October 13 and reviewed its details to find out how long it lasted."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "fc2bea2af4325ce934c540d95ea06fe39494584f1149ada8e438142e036b7f73",
+        "response_sha256": "60a63e3596a9fb20c3382c073f3b839e8bea90751e66e492578078a38f0ccac9",
+        "transport_attempts": 1
+      },
+      "step": 15
+    }
+  ],
+  "success": true,
+  "task_goal": "How long was my kayaking activity October 13 in the OpenTracks app? Express your answer in minutes as a single integer.",
+  "task_name": "SportsTrackerActivityDuration",
+  "task_params": {
+    "activity_description": "Expanded my understanding of the world.",
+    "activity_name": "Recovery day",
+    "category": "kayaking",
+    "date": "October 13 2023",
+    "distance": "500",
+    "duration": "45",
+    "elevation": "700",
+    "start_time": "2:45pm"
+  },
+  "termination_reason": "model_answer"
+}

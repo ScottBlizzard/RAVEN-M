@@ -18,3 +18,7 @@
 *.webp binary
 *.zip binary
 design_reviews/pro_candidates/2026-08-15/GPT_PRO_OPEN_V2_*.md -text
+evidence/a4v2/A4V2_ACQUISITION_SERVER_*.json -text -eol -diff
+evidence/a4v2/A4V2_DONOR_ACQUISITION_MANIFEST_SUPPLEMENT_*.json -text -eol -diff
+evidence/a4v2/A4V2_DONOR_ACQUISITION_RESULT.json -text -eol -diff
+evidence/a4v2/donor_snapshots/*.json -text -eol -diff

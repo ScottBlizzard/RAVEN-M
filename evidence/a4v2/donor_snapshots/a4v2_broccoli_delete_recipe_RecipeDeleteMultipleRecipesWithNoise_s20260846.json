@@ -1,0 +1,829 @@
+{
+  "episode_id": "RecipeDeleteMultipleRecipesWithNoise_20260846_4a406fb3",
+  "error": null,
+  "evaluator_reward": 1.0,
+  "executed_action_count": 21,
+  "lifecycle_errors": [],
+  "model_call_count": 22,
+  "schema": "a4v2.portable_successful_donor_episode.v1",
+  "seed": 20260846,
+  "source_episode_sha256": "3e717dc631e7614e19f8c0dcedab66dce4613d379f29378e1585810ea2f84cf1",
+  "source_events_sha256": "c82eba14836517dfb83074496dceb8b1953667eb41b036abce28d1ba62b31596",
+  "steps": [
+    {
+      "decision": {
+        "action_summary": "\"I swiped up to open the app drawer to find the Broccoli app.\"",
+        "canonical_action": {
+          "duration_ms": 400,
+          "type": "swipe",
+          "x": 0.4994994994994995,
+          "x2": 0.4934934934934935,
+          "y": 0.7427427427427428,
+          "y2": 0.2872872872872873
+        },
+        "terminal_status": null,
+        "thought": "I need to delete specific recipes from the Broccoli app. To do this, I first need to locate and open the Broccoli app on my phone. Since it's not visible on the home screen, I performed a swipe up gesture to access the app drawer where all installed apps are listed."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "98d669ab8e2bd62e84ab0b288b171afbea1b6ba1f7d46630f670d0fff12bf9f4",
+        "response_sha256": "1e39e45b210a7e78ce72851130f9f6be80874ad3540346711b17126ab397285d",
+        "transport_attempts": 1
+      },
+      "step": 0
+    },
+    {
+      "decision": {
+        "action_summary": "\"I opened the Broccoli app to manage my recipes.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.6126126126126126,
+          "y": 0.33233233233233234
+        },
+        "terminal_status": null,
+        "thought": "I opened the app drawer and located the Broccoli app. By tapping on it, I intended to access my recipe collection so that I could proceed with deleting the specific recipes mentioned in the task: Pan-Seared Salmon with Quinoa, Eggplant Parmesan, and Garlic Butter Shrimp."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "ee0c8ec0071309308c87e7c280ea274a7d843e02fe00ed2070345f02328566b9",
+        "response_sha256": "280db1c9560ae588a7004371b655ae7f844c1cf7c1534d0bda32dd0a5003b3df",
+        "transport_attempts": 1
+      },
+      "step": 1
+    },
+    {
+      "decision": {
+        "action_summary": "\"I waited for the Broccoli app to finish loading.\"",
+        "canonical_action": {
+          "duration_ms": 2000,
+          "type": "wait"
+        },
+        "terminal_status": null,
+        "thought": "I opened the Broccoli app to manage my recipes, and now I need to locate the specific recipes I want to delete: Pan-Seared Salmon with Quinoa, Eggplant Parmesan, and Garlic Butter Shrimp. Since the app is still loading, I should wait for it to fully load so I can access the recipe list."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "a0d1f6f723a239fad4989a1dc6248331a5a4e7aabb897d84a750bbfd6fa4b11d",
+        "response_sha256": "dfc97059b73cae92f244718696b29f497775a920cdb2073d205962ed9de585b1",
+        "transport_attempts": 1
+      },
+      "step": 2
+    },
+    {
+      "decision": {
+        "action_summary": "\"I swiped up to scroll down the recipe list in order to find the recipes I want to delete.\"",
+        "canonical_action": {
+          "duration_ms": 400,
+          "type": "swipe",
+          "x": 0.4994994994994995,
+          "x2": 0.4914914914914915,
+          "y": 0.8628628628628628,
+          "y2": 0.3103103103103103
+        },
+        "terminal_status": null,
+        "thought": "I need to delete specific recipes from the Broccoli app: Pan-Seared Salmon with Quinoa, Eggplant Parmesan, and Garlic Butter Shrimp. Since these recipes are not visible on the current screen, I performed a swipe operation to scroll down the list of recipes. My intention is to locate the recipes that need to be deleted so I can proceed with removing them."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "e22ab0ab731fdf9f609e42aa032b4a5e5837d5aa9a77a22c8bcc99154334adb1",
+        "response_sha256": "1e81b53fff13bad6a39f43f95a8d045ee206e5b9face8e4b4e6f2e6f1ca46fec",
+        "transport_attempts": 1
+      },
+      "step": 3
+    },
+    {
+      "decision": {
+        "action_summary": "\"I swiped up to continue scrolling through the recipe list in search of the recipes to delete.\"",
+        "canonical_action": {
+          "duration_ms": 400,
+          "type": "swipe",
+          "x": 0.5185185185185185,
+          "x2": 0.5245245245245245,
+          "y": 0.8668668668668669,
+          "y2": 0.04904904904904905
+        },
+        "terminal_status": null,
+        "thought": "I am currently scrolling through the recipe list in the Broccoli app to locate the specific recipes I want to delete: Pan-Seared Salmon with Quinoa, Eggplant Parmesan, and Garlic Butter Shrimp. Since I've already scrolled down a bit and can see \"Eggplant Parmesan\" at the bottom of the screen, I need to continue scrolling to find the other two recipes."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "e8da3341edc2adb1c81587b145a6b5b8034d4bde63bdd5c51010471914c8fbc7",
+        "response_sha256": "a253ed6410cc3f7a486138ea4cce28ec91c8640a326e6ef5ad60cd449ea794c9",
+        "transport_attempts": 1
+      },
+      "step": 4
+    },
+    {
+      "decision": {
+        "action_summary": "\"I tapped on \\\"Eggplant Parmesan\\\" to access its details for deletion.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.5945945945945946,
+          "y": 0.21421421421421422
+        },
+        "terminal_status": null,
+        "thought": "I am in the process of deleting specific recipes from the Broccoli app. I have already scrolled through the list and located \"Eggplant Parmesan\" and \"Garlic Butter Shrimp.\" My next step is to select \"Eggplant Parmesan\" so that I can proceed with deleting it."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "47d6d331f3adaa63f2e79a80fd836ba673ffedfad3245f18cb5ddda577b65666",
+        "response_sha256": "ad34a1493c21281badc527e98a7c17c71bcbb05dbc7b6d29d6422744b87d8086",
+        "transport_attempts": 1
+      },
+      "step": 5
+    },
+    {
+      "decision": {
+        "action_summary": "\"I tapped the menu icon to access more options for managing the \\\"Eggplant Parmesan\\\" recipe.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.948948948948949,
+          "y": 0.08408408408408409
+        },
+        "terminal_status": null,
+        "thought": "I have accessed the details of the \"Eggplant Parmesan\" recipe, and now I need to proceed with deleting it. To do this, I tapped on the menu icon (three dots) at the top right corner of the screen to reveal additional options, which likely include the option to delete the recipe."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "406801d2345de39014ebae5b0ece97aa52a6540f2ea6f3af202c6cfefd25bb15",
+        "response_sha256": "491339ef30460e56837584825f442133e6f7d6b3631b68ae3c0f9e2f91b15bc2",
+        "transport_attempts": 1
+      },
+      "step": 6
+    },
+    {
+      "decision": {
+        "action_summary": "\"I selected the \\\"Delete\\\" option for the Eggplant Parmesan recipe.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.6916916916916916,
+          "y": 0.2502502502502503
+        },
+        "terminal_status": null,
+        "thought": "I have located the Eggplant Parmesan recipe and accessed its details. My intention is to delete this recipe as part of my task to remove specific recipes from the Broccoli app. I tapped on the \"Delete\" option in the menu to proceed with removing this recipe."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "aa1f651136264c9e109860d03c78532c18e85d6a09fa5f98fb34219b93f80f61",
+        "response_sha256": "fa949a4113dac81835138bcb464727a08bd71487487d0a997114aa1ee69250d8",
+        "transport_attempts": 1
+      },
+      "step": 7
+    },
+    {
+      "decision": {
+        "action_summary": "\"I confirmed the deletion of the Eggplant Parmesan recipe.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.7957957957957958,
+          "y": 0.5395395395395396
+        },
+        "terminal_status": null,
+        "thought": "I have reached the confirmation dialog for deleting the Eggplant Parmesan recipe. To proceed with removing it from my collection, I tapped on the \"DELETE\" option to confirm my choice."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "126e37a152e9c8c85746284b15d940364db99ee819e324275d992098aa282a07",
+        "response_sha256": "bdf460a26c51715461ef3d711f0eb6b7934deb9e3ba578f832e74f86260ebd8d",
+        "transport_attempts": 1
+      },
+      "step": 8
+    },
+    {
+      "decision": {
+        "action_summary": "\"I confirmed the deletion of the Eggplant Parmesan recipe.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.7957957957957958,
+          "y": 0.5395395395395396
+        },
+        "terminal_status": null,
+        "thought": "I have already accessed the details of the \"Eggplant Parmesan\" recipe and selected the delete option. Now, I need to confirm the deletion by tapping on \"DELETE\" in the confirmation dialog. This will remove the recipe from my collection in the Broccoli app."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "17006f1f0a88618074225b06ab9eb9366f8f2ef5edb86e1970f6777a636d83fc",
+        "response_sha256": "8ba3e16b8da380f87822bffb0d7b97b5f5ce4ff87b9877a865a0d6f41a38287f",
+        "transport_attempts": 1
+      },
+      "step": 9
+    },
+    {
+      "decision": {
+        "action_summary": "\"I navigated back to the main recipe list to find the next recipe for deletion.\"",
+        "canonical_action": {
+          "type": "press_back"
+        },
+        "terminal_status": null,
+        "thought": "I have already deleted the \"Eggplant Parmesan\" recipe. Now, I need to locate and delete the remaining recipes: \"Pan-Seared Salmon with Quinoa\" and \"Garlic Butter Shrimp.\" Since I'm currently viewing a different recipe, I will navigate back to the main recipe list to continue searching for the next recipe to delete."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "db655e351ba73b6fe4c1090a9fe0ce398d71241079593a4caae0db3b6c455ea4",
+        "response_sha256": "7982e032b3d49655c49a39cf20ab294f0aaa1afd7c0bcc9b61c51041becbb9e0",
+        "transport_attempts": 1
+      },
+      "step": 10
+    },
+    {
+      "decision": {
+        "action_summary": "\"I accessed the details of the \\\"Garlic Butter Shrimp\\\" recipe to prepare for deletion.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.5945945945945946,
+          "y": 0.33633633633633636
+        },
+        "terminal_status": null,
+        "thought": "I am currently in the Broccoli app, looking at the list of recipes. I need to delete \"Garlic Butter Shrimp\" as part of my task. Since it's visible on the screen, I tapped on it to access its details so that I can proceed with the deletion process."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "4a4125f0c121e70b31e96ac3397fb38f806ef5940a18ab7f05015c8257f07f39",
+        "response_sha256": "666da06dc4927b74e7f70f684cbc98e82cfead20a810fe32bac900bf0f96e93f",
+        "transport_attempts": 1
+      },
+      "step": 11
+    },
+    {
+      "decision": {
+        "action_summary": "\"I tapped the menu icon to access options for managing the Garlic Butter Shrimp recipe.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.948948948948949,
+          "y": 0.08408408408408409
+        },
+        "terminal_status": null,
+        "thought": "I am currently in the details view of the \"Garlic Butter Shrimp\" recipe. To proceed with deleting this recipe, I need to access the menu options that likely contain the delete function. By tapping on the three-dot menu icon, I can reveal additional actions related to managing this recipe, including deletion."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "22b18d0051122d3d9459a7c92a6192df325fd7427acf1becc24ea75e0ce2f2c8",
+        "response_sha256": "376ba5c4b72860c10f260157a1636fd4b9387993ea8a90f3b0eaad955400b422",
+        "transport_attempts": 1
+      },
+      "step": 12
+    },
+    {
+      "decision": {
+        "action_summary": "\"I selected the \\\"Delete\\\" option for the Garlic Butter Shrimp recipe.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.6916916916916916,
+          "y": 0.2502502502502503
+        },
+        "terminal_status": null,
+        "thought": "I am in the process of deleting specific recipes from the Broccoli app. After accessing the details of the \"Garlic Butter Shrimp\" recipe, I tapped on the \"Delete\" option to initiate its removal. This aligns with my goal of deleting the listed recipes."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "d3c95be8576b24ea71c739dbd46c6959bce807ec57602a208dbb89c5296461df",
+        "response_sha256": "f63103e91d7f1e2b99d2e63cdf34b9a732b7342462f1a142c956f64ed0382823",
+        "transport_attempts": 1
+      },
+      "step": 13
+    },
+    {
+      "decision": {
+        "action_summary": "\"I confirmed the deletion of the Garlic Butter Shrimp recipe.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.7957957957957958,
+          "y": 0.5395395395395396
+        },
+        "terminal_status": null,
+        "thought": "I am in the process of deleting specific recipes from the Broccoli app. After navigating to the Garlic Butter Shrimp recipe, I accessed the deletion option and confirmed my intention to delete it by tapping on \"DELETE.\" This action aligns with my goal of removing the listed recipes."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "077e51696ec29a3191bf58074719bb10cf566557ecc9dcba8993d89f5b1fbcdf",
+        "response_sha256": "a8620dabefabe5114f6a9c5c5734c495fd7f2f96ad5d67381c3236ef8039ecce",
+        "transport_attempts": 1
+      },
+      "step": 14
+    },
+    {
+      "decision": {
+        "action_summary": "\"I swiped up to continue scrolling through the recipe list in search of the \\\"Pan-Seared Salmon with Quinoa\\\" recipe.\"",
+        "canonical_action": {
+          "duration_ms": 400,
+          "type": "swipe",
+          "x": 0.4994994994994995,
+          "x2": 0.4914914914914915,
+          "y": 0.8628628628628628,
+          "y2": 0.3303303303303303
+        },
+        "terminal_status": null,
+        "thought": "I have successfully deleted the \"Eggplant Parmesan\" and \"Garlic Butter Shrimp\" recipes from the Broccoli app. Now, I need to locate the \"Pan-Seared Salmon with Quinoa\" recipe to complete the task. Since it's not visible on the current screen, I will swipe up to scroll through the list and find it."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "2b700df0ebcb58406e919fd1c80c684450255982a256d5ce29cf3441fa7408df",
+        "response_sha256": "452b60d05ebd27edb99d1d7faed59bcc4fad28ed83d7fb0c6bfd1a9416f99705",
+        "transport_attempts": 1
+      },
+      "step": 15
+    },
+    {
+      "decision": {
+        "action_summary": "\"I tapped on the \\\"Pan-Seared Salmon with Quinoa\\\" recipe to view its details for deletion.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.6016016016016016,
+          "y": 0.6776776776776777
+        },
+        "terminal_status": null,
+        "thought": "I have located the \"Pan-Seared Salmon with Quinoa\" recipe in the list. My next step is to access its details so that I can proceed with deleting it, as per my task of removing specific recipes from the Broccoli app."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "b60b30eb1cf70aa352f7f6c27ef4f3ef1a4840418c4cf3f6d7db8f98438cd598",
+        "response_sha256": "f4ba26b986167282bdc85762fd938e2ff7ddeaf043381aa7d0ef53cd17fdfcba",
+        "transport_attempts": 1
+      },
+      "step": 16
+    },
+    {
+      "decision": {
+        "action_summary": "\"I tapped the menu icon to access options for managing the Pan-Seared Salmon with Quinoa recipe.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.948948948948949,
+          "y": 0.08408408408408409
+        },
+        "terminal_status": null,
+        "thought": "I have navigated to the details page of the \"Pan-Seared Salmon with Quinoa\" recipe. To proceed with deleting this recipe, I need to access the options menu, which is typically represented by the three-dot icon in the top right corner. Tapping this icon will likely reveal additional actions, including the delete option."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "40d134929fad40ff3b3f80e8a6c4a58099789d2a62b3f0b3672721b05d5e1522",
+        "response_sha256": "ce03392b0fe1d68451b6b1d313b08c82d3aefd1b6855e7221ad95b1f440135c5",
+        "transport_attempts": 1
+      },
+      "step": 17
+    },
+    {
+      "decision": {
+        "action_summary": "\"I selected the \\\"Delete\\\" option for the Pan-Seared Salmon with Quinoa recipe.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.6916916916916916,
+          "y": 0.2502502502502503
+        },
+        "terminal_status": null,
+        "thought": "I have navigated to the details of the \"Pan-Seared Salmon with Quinoa\" recipe and accessed the menu options. My intention is to delete this recipe as part of my task to remove specific recipes from the Broccoli app. I tapped on the \"Delete\" option to proceed with removing this recipe."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "1ef7658cd70a86e01b55001486f9a7ccf861a053208bbfb7f07ced486de26b17",
+        "response_sha256": "7d1950a58c55fe3682227809b1973f8ffd51fb3fba60057b578647ceef3c1990",
+        "transport_attempts": 1
+      },
+      "step": 18
+    },
+    {
+      "decision": {
+        "action_summary": "\"I confirmed the deletion of the Pan-Seared Salmon with Quinoa recipe.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.7957957957957958,
+          "y": 0.5395395395395396
+        },
+        "terminal_status": null,
+        "thought": "I have reached the confirmation dialog for deleting the \"Pan-Seared Salmon with Quinoa\" recipe. To complete the deletion process, I need to confirm my action by tapping the \"DELETE\" button. This will remove the recipe from my collection in the Broccoli app."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "877f4054f109454fb7c13822b4fc5aa3582645cfc59cefc4adf876101f1db271",
+        "response_sha256": "2f1f2f85cfe54639c8fccdac9289af8204350d62484310116e90502c05872ce4",
+        "transport_attempts": 1
+      },
+      "step": 19
+    },
+    {
+      "decision": {
+        "action_summary": "\"I closed the Broccoli app after deleting the specified recipes.\"",
+        "canonical_action": {
+          "type": "press_home"
+        },
+        "terminal_status": null,
+        "thought": "I have successfully deleted all the specified recipes from the Broccoli app: Pan-Seared Salmon with Quinoa, Eggplant Parmesan, and Garlic Butter Shrimp. To ensure that these changes are saved and to exit the app, I am now closing the Broccoli app."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "4cd99c7bbb539ac25042ace022cdf73fc83ca1d4d8368bb48e06f0baf8edf485",
+        "response_sha256": "4a8fce840de1fc03333fba93c010b09644803c9f39e85d7a37f42e7780eb8dc9",
+        "transport_attempts": 1
+      },
+      "step": 20
+    },
+    {
+      "decision": {
+        "action_summary": "\"I deleted the specified recipes from the Broccoli app and closed the app to finalize the changes.\"",
+        "canonical_action": null,
+        "terminal_status": "success",
+        "thought": "I have successfully deleted the three specified recipes—Pan-Seared Salmon with Quinoa, Eggplant Parmesan, and Garlic Butter Shrimp—from the Broccoli app. To ensure that these changes are saved and to exit the app, I closed it. This completes the task of removing the unwanted recipes."
+      },
+      "executed": false,
+      "model_call": {
+        "request_sha256": "e7557c76d5b2f876a3873903cc3c248ecf7adce2fa9a63eaeea9a342801c810a",
+        "response_sha256": "3ca52b6f5985835c336be14cdde11f3ec688392bfa097e3d8233fe5603996af9",
+        "transport_attempts": 1
+      },
+      "step": 21
+    }
+  ],
+  "success": true,
+  "task_goal": "Delete the following recipes from Broccoli app: Pan-Seared Salmon with Quinoa, Eggplant Parmesan, Garlic Butter Shrimp.",
+  "task_name": "RecipeDeleteMultipleRecipesWithNoise",
+  "task_params": {
+    "noise_row_objects": [
+      {
+        "description": "A quick and easy meal, perfect for busy weekdays.",
+        "directions": "Sauté cooked rice with vegetables, add soy sauce and scrambled eggs. Toss until hot. Garnish with fresh herbs for a more vibrant taste.",
+        "favorite": 0,
+        "imageName": "",
+        "ingredients": "various amounts",
+        "preparationTime": "20 mins",
+        "recipeId": -1,
+        "servings": "1 serving",
+        "source": "",
+        "title": "Quick Fried Rice"
+      },
+      {
+        "description": "An ideal recipe for experimenting with different flavors and ingredients.",
+        "directions": "Sauté onions, carrots, and celery, add broth, canned tomatoes, and chickpeas. Simmer with spinach and seasonings. Garnish with fresh herbs for a more vibrant taste.",
+        "favorite": 0,
+        "imageName": "",
+        "ingredients": "as needed",
+        "preparationTime": "3 hrs",
+        "recipeId": -1,
+        "servings": "1 serving",
+        "source": "",
+        "title": "Chickpea Vegetable Soup"
+      },
+      {
+        "description": "A quick and easy meal, perfect for busy weekdays.",
+        "directions": "Roast sweet potato cubes, mix with black beans, and use as filling for tacos. Top with avocado and cilantro lime sauce. Garnish with fresh herbs for a more vibrant taste.",
+        "favorite": 0,
+        "imageName": "",
+        "ingredients": "quantities to taste",
+        "preparationTime": "20 mins",
+        "recipeId": -1,
+        "servings": "3-4 servings",
+        "source": "",
+        "title": "Sweet Potato and Black Bean Tacos"
+      },
+      {
+        "description": "A delicious and healthy choice for any time of the day.",
+        "directions": "Mix cooked quinoa, black beans, corn, tomato sauce, and spices. Stuff into bell peppers and bake until tender. Garnish with fresh herbs for a more vibrant taste.",
+        "favorite": 0,
+        "imageName": "",
+        "ingredients": "various amounts",
+        "preparationTime": "4 hrs",
+        "recipeId": -1,
+        "servings": "6 servings",
+        "source": "",
+        "title": "Stuffed Bell Peppers"
+      },
+      {
+        "description": "An ideal recipe for experimenting with different flavors and ingredients.",
+        "directions": "Fill pita pockets with lettuce, cucumber, tomato, feta, olives, and Greek dressing. Try adding a pinch of your favorite spices for extra flavor.",
+        "favorite": 0,
+        "imageName": "",
+        "ingredients": "various amounts",
+        "preparationTime": "45 mins",
+        "recipeId": -1,
+        "servings": "2 servings",
+        "source": "",
+        "title": "Greek Salad Pita Pockets"
+      },
+      {
+        "description": "A delicious and healthy choice for any time of the day.",
+        "directions": "Cook onions, carrots, celery, garlic, and lentils in vegetable broth until lentils are tender. Season with thyme and bay leaves. Try adding a pinch of your favorite spices for extra flavor.",
+        "favorite": 0,
+        "imageName": "",
+        "ingredients": "subject to change",
+        "preparationTime": "4 hrs",
+        "recipeId": -1,
+        "servings": "3-4 servings",
+        "source": "",
+        "title": "Lentil Soup"
+      },
+      {
+        "description": "A delicious and healthy choice for any time of the day.",
+        "directions": "Sauté onions, garlic, carrots, and spices. Add canned chickpeas, diced tomatoes, and vegetable broth. Simmer until flavors meld. Try adding a pinch of your favorite spices for extra flavor.",
+        "favorite": 0,
+        "imageName": "",
+        "ingredients": "to preference",
+        "preparationTime": "4 hrs",
+        "recipeId": -1,
+        "servings": "2 servings",
+        "source": "",
+        "title": "Moroccan Chickpea Stew"
+      },
+      {
+        "description": "A delicious and healthy choice for any time of the day.",
+        "directions": "Stir-fry beef slices with broccoli, bell peppers, and onions in soy sauce and garlic. Serve over rice or noodles. Garnish with fresh herbs for a more vibrant taste.",
+        "favorite": 0,
+        "imageName": "",
+        "ingredients": "subject to change",
+        "preparationTime": "10 mins",
+        "recipeId": -1,
+        "servings": "3-4 servings",
+        "source": "",
+        "title": "Beef Stir Fry"
+      },
+      {
+        "description": "A delicious and healthy choice for any time of the day.",
+        "directions": "Cook chicken pieces in a pan, add onions, garlic, and ginger. Stir in curry powder, coconut milk, and mango pieces. Simmer until chicken is cooked. Feel free to substitute with ingredients you have on hand.",
+        "favorite": 0,
+        "imageName": "",
+        "ingredients": "various amounts",
+        "preparationTime": "2 hrs",
+        "recipeId": -1,
+        "servings": "8 servings",
+        "source": "",
+        "title": "Mango Chicken Curry"
+      },
+      {
+        "description": "A delicious and healthy choice for any time of the day.",
+        "directions": "Top sliced baguette with a mix of chopped tomatoes, basil, garlic, olive oil, salt, and pepper. Try adding a pinch of your favorite spices for extra flavor.",
+        "favorite": 0,
+        "imageName": "",
+        "ingredients": "varies",
+        "preparationTime": "10 mins",
+        "recipeId": -1,
+        "servings": "8 servings",
+        "source": "",
+        "title": "Tomato Basil Bruschetta"
+      },
+      {
+        "description": "A quick and easy meal, perfect for busy weekdays.",
+        "directions": "Butter bread slices, layer with cheese, tomato slices, and basil. Grill until bread is toasted and cheese is melted. Try adding a pinch of your favorite spices for extra flavor.",
+        "favorite": 0,
+        "imageName": "",
+        "ingredients": "quantities to taste",
+        "preparationTime": "3 hrs",
+        "recipeId": -1,
+        "servings": "2 servings",
+        "source": "",
+        "title": "Grilled Cheese with Tomato and Basil"
+      },
+      {
+        "description": "A delicious and healthy choice for any time of the day.",
+        "directions": "Layer turkey and cheese on bread, grill in a panini press until golden. Feel free to substitute with ingredients you have on hand.",
+        "favorite": 0,
+        "imageName": "",
+        "ingredients": "per individual taste",
+        "preparationTime": "20 mins",
+        "recipeId": -1,
+        "servings": "1 serving",
+        "source": "",
+        "title": "Turkey and Cheese Panini"
+      },
+      {
+        "description": "An ideal recipe for experimenting with different flavors and ingredients.",
+        "directions": "Toss cooked noodles with a Thai peanut sauce, sliced red bell peppers, cabbage, carrots, and cilantro. Try adding a pinch of your favorite spices for extra flavor.",
+        "favorite": 0,
+        "imageName": "",
+        "ingredients": "adjustable",
+        "preparationTime": "4 hrs",
+        "recipeId": -1,
+        "servings": "2 servings",
+        "source": "",
+        "title": "Thai Peanut Noodle Salad"
+      },
+      {
+        "description": "A quick and easy meal, perfect for busy weekdays.",
+        "directions": "Mix cooked shrimp with avocado, tomatoes, cucumber, and onion. Dress with lime juice, olive oil, salt, and pepper. Garnish with fresh herbs for a more vibrant taste.",
+        "favorite": 0,
+        "imageName": "",
+        "ingredients": "to your liking",
+        "preparationTime": "4 hrs",
+        "recipeId": -1,
+        "servings": "1 serving",
+        "source": "",
+        "title": "Shrimp Avocado Salad"
+      },
+      {
+        "description": "A delicious and healthy choice for any time of the day.",
+        "directions": "Blend together raspberries, almond milk, banana, and a scoop of almond butter until smooth. Try adding a pinch of your favorite spices for extra flavor.",
+        "favorite": 0,
+        "imageName": "",
+        "ingredients": "to preference",
+        "preparationTime": "1 hrs",
+        "recipeId": -1,
+        "servings": "3-4 servings",
+        "source": "",
+        "title": "Raspberry Almond Smoothie"
+      },
+      {
+        "description": "An ideal recipe for experimenting with different flavors and ingredients.",
+        "directions": "Cook onions, garlic, bell peppers, and carrots. Add canned tomatoes, kidney beans, black beans, corn, and chili seasoning. Simmer until vegetables are tender. Try adding a pinch of your favorite spices for extra flavor.",
+        "favorite": 0,
+        "imageName": "",
+        "ingredients": "as per recipe",
+        "preparationTime": "4 hrs",
+        "recipeId": -1,
+        "servings": "1 serving",
+        "source": "",
+        "title": "Vegetarian Chili"
+      },
+      {
+        "description": "A delicious and healthy choice for any time of the day.",
+        "directions": "Bake salmon fillets and serve with a sauce made from Greek yogurt, dill, lemon juice, and garlic. Garnish with fresh herbs for a more vibrant taste.",
+        "favorite": 0,
+        "imageName": "",
+        "ingredients": "see directions",
+        "preparationTime": "30 mins",
+        "recipeId": -1,
+        "servings": "1 serving",
+        "source": "",
+        "title": "Salmon with Dill Sauce"
+      },
+      {
+        "description": "A delicious and healthy choice for any time of the day.",
+        "directions": "Spread hummus on bread, add cucumber, bell pepper, carrot, and lettuce. Garnish with fresh herbs for a more vibrant taste.",
+        "favorite": 0,
+        "imageName": "",
+        "ingredients": "various amounts",
+        "preparationTime": "10 mins",
+        "recipeId": -1,
+        "servings": "8 servings",
+        "source": "",
+        "title": "Veggie and Hummus Sandwich"
+      },
+      {
+        "description": "An ideal recipe for experimenting with different flavors and ingredients.",
+        "directions": "Sauté onions and garlic, add cubed butternut squash and broth. Puree until smooth and season with nutmeg, salt, and pepper. Try adding a pinch of your favorite spices for extra flavor.",
+        "favorite": 0,
+        "imageName": "",
+        "ingredients": "to your liking",
+        "preparationTime": "4 hrs",
+        "recipeId": -1,
+        "servings": "6 servings",
+        "source": "",
+        "title": "Butternut Squash Soup"
+      },
+      {
+        "description": "An ideal recipe for experimenting with different flavors and ingredients.",
+        "directions": "Mix cooked quinoa with diced vegetables, feta cheese, and a lemon olive oil dressing. Try adding a pinch of your favorite spices for extra flavor.",
+        "favorite": 0,
+        "imageName": "",
+        "ingredients": "to your liking",
+        "preparationTime": "30 mins",
+        "recipeId": -1,
+        "servings": "2 servings",
+        "source": "",
+        "title": "Quinoa Salad with Vegetables"
+      },
+      {
+        "description": "A quick and easy meal, perfect for busy weekdays.",
+        "directions": "Pulse cauliflower in a food processor until it resembles rice. Sauté with vegetables, soy sauce, and add scrambled eggs. Try adding a pinch of your favorite spices for extra flavor.",
+        "favorite": 0,
+        "imageName": "",
+        "ingredients": "adjustable",
+        "preparationTime": "1 hrs",
+        "recipeId": -1,
+        "servings": "3-4 servings",
+        "source": "",
+        "title": "Cauliflower Fried \"Rice\""
+      },
+      {
+        "description": "An ideal recipe for experimenting with different flavors and ingredients.",
+        "directions": "Cook pasta, stir in pesto sauce and cooked peas. Add Parmesan cheese before serving. Try adding a pinch of your favorite spices for extra flavor.",
+        "favorite": 0,
+        "imageName": "",
+        "ingredients": "optional ingredients",
+        "preparationTime": "30 mins",
+        "recipeId": -1,
+        "servings": "3-4 servings",
+        "source": "",
+        "title": "Pesto Pasta with Peas"
+      },
+      {
+        "description": "A quick and easy meal, perfect for busy weekdays.",
+        "directions": "Thread cherry tomatoes, basil leaves, and mozzarella balls onto skewers. Drizzle with balsamic glaze. Garnish with fresh herbs for a more vibrant taste.",
+        "favorite": 0,
+        "imageName": "",
+        "ingredients": "optional ingredients",
+        "preparationTime": "30 mins",
+        "recipeId": -1,
+        "servings": "2 servings",
+        "source": "",
+        "title": "Caprese Salad Skewers"
+      },
+      {
+        "description": "A delicious and healthy choice for any time of the day.",
+        "directions": "Sauté sliced sausage, bell peppers, and onions until browned. Serve with mustard or on a hoagie roll. Feel free to substitute with ingredients you have on hand.",
+        "favorite": 0,
+        "imageName": "",
+        "ingredients": "as needed",
+        "preparationTime": "3 hrs",
+        "recipeId": -1,
+        "servings": "3-4 servings",
+        "source": "",
+        "title": "Sausage and Peppers Skillet"
+      },
+      {
+        "description": "A quick and easy meal, perfect for busy weekdays.",
+        "directions": "Toss chopped kale, cooked quinoa, dried cranberries, sliced almonds, and feta cheese with a lemon vinaigrette. Feel free to substitute with ingredients you have on hand.",
+        "favorite": 0,
+        "imageName": "",
+        "ingredients": "optional ingredients",
+        "preparationTime": "10 mins",
+        "recipeId": -1,
+        "servings": "2 servings",
+        "source": "",
+        "title": "Kale and Quinoa Salad"
+      },
+      {
+        "description": "A quick and easy meal, perfect for busy weekdays.",
+        "directions": "Stuff chicken breasts with a mixture of spinach, feta, garlic, and herbs. Bake until chicken is cooked through. Feel free to substitute with ingredients you have on hand.",
+        "favorite": 0,
+        "imageName": "",
+        "ingredients": "to preference",
+        "preparationTime": "1 hrs",
+        "recipeId": -1,
+        "servings": "2 servings",
+        "source": "",
+        "title": "Spinach and Feta Stuffed Chicken"
+      },
+      {
+        "description": "An ideal recipe for experimenting with different flavors and ingredients.",
+        "directions": "Toast bread, top with mashed avocado, a fried egg, salt, pepper, and chili flakes. Try adding a pinch of your favorite spices for extra flavor.",
+        "favorite": 0,
+        "imageName": "",
+        "ingredients": "varies",
+        "preparationTime": "20 mins",
+        "recipeId": -1,
+        "servings": "2 servings",
+        "source": "",
+        "title": "Avocado Toast with Egg"
+      },
+      {
+        "description": "A delicious and healthy choice for any time of the day.",
+        "directions": "Mix shredded cooked chicken with BBQ sauce. Place on tortillas with cheese, fold and cook until crispy. Try adding a pinch of your favorite spices for extra flavor.",
+        "favorite": 0,
+        "imageName": "",
+        "ingredients": "various amounts",
+        "preparationTime": "1 hrs",
+        "recipeId": -1,
+        "servings": "3-4 servings",
+        "source": "",
+        "title": "BBQ Chicken Quesadillas"
+      },
+      {
+        "description": "A delicious and healthy choice for any time of the day.",
+        "directions": "Spread pizza dough with tomato sauce, top with slices of mozzarella cheese and fresh basil leaves. Bake until crust is golden. Garnish with fresh herbs for a more vibrant taste.",
+        "favorite": 0,
+        "imageName": "",
+        "ingredients": "optional ingredients",
+        "preparationTime": "1 hrs",
+        "recipeId": -1,
+        "servings": "8 servings",
+        "source": "",
+        "title": "Classic Margherita Pizza"
+      }
+    ],
+    "row_objects": [
+      {
+        "description": "A quick and easy meal, perfect for busy weekdays.",
+        "directions": "Pan-sear salmon fillets until crispy. Serve over cooked quinoa with a side of steamed asparagus. Try adding a pinch of your favorite spices for extra flavor.",
+        "favorite": 0,
+        "imageName": "",
+        "ingredients": "quantities to taste",
+        "preparationTime": "1 hrs",
+        "recipeId": -1,
+        "servings": "8 servings",
+        "source": "",
+        "title": "Pan-Seared Salmon with Quinoa"
+      },
+      {
+        "description": "A delicious and healthy choice for any time of the day.",
+        "directions": "Slice eggplant, bread, and fry. Layer in a baking dish with marinara sauce and mozzarella cheese. Bake until bubbly. Try adding a pinch of your favorite spices for extra flavor.",
+        "favorite": 0,
+        "imageName": "",
+        "ingredients": "flexible ingredients",
+        "preparationTime": "45 mins",
+        "recipeId": -1,
+        "servings": "8 servings",
+        "source": "",
+        "title": "Eggplant Parmesan"
+      },
+      {
+        "description": "A quick and easy meal, perfect for busy weekdays.",
+        "directions": "Sauté shrimp in butter and minced garlic until pink. Sprinkle with parsley and serve with lemon wedges. Feel free to substitute with ingredients you have on hand.",
+        "favorite": 0,
+        "imageName": "",
+        "ingredients": "flexible ingredients",
+        "preparationTime": "10 mins",
+        "recipeId": -1,
+        "servings": "1 serving",
+        "source": "",
+        "title": "Garlic Butter Shrimp"
+      }
+    ]
+  },
+  "termination_reason": "model_terminate_success"
+}

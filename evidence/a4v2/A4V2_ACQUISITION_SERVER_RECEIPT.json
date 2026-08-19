@@ -1,0 +1,52 @@
+{
+  "content_sha256": "15405b35b678e55f36fdffba60061296429a29f175b4cb7cff634e5116514bc6",
+  "experiment_id": "A4V2_FAITHFUL_OFFLINE_AWM_QWEN3VL32B_AW_HARD_S20260806_V1",
+  "generation_calls": 0,
+  "host": "127.0.0.1",
+  "launch_intent_sha256": "b3e9723a159306e9afa0f5f722f253723a4273163467797c1a95505f35f795ef",
+  "model_manifest_sha256": "18e0909c7d993853d6d0f62443461a74009754f90db026a1723cab80121c7872",
+  "model_realpath": "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope",
+  "packages": {
+    "torch": "2.11.0",
+    "transformers": "5.14.1",
+    "vllm": "0.26.0"
+  },
+  "pid": 1571,
+  "port": 18000,
+  "process_cmdline": [
+    "/root/autodl-tmp/envs/qwen_vllm/bin/python",
+    "/root/autodl-tmp/envs/qwen_vllm/bin/vllm",
+    "serve",
+    "/root/autodl-tmp/models/Qwen3-VL-32B-Instruct-modelscope",
+    "--served-model-name",
+    "Qwen/Qwen3-VL-32B-Instruct",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "18000",
+    "--tensor-parallel-size",
+    "1",
+    "--dtype",
+    "bfloat16",
+    "--gpu-memory-utilization",
+    "0.92",
+    "--max-model-len",
+    "65536",
+    "--max-num-seqs",
+    "1",
+    "--limit-mm-per-prompt",
+    "{\"image\":1}",
+    "--generation-config",
+    "vllm",
+    "--no-enable-log-requests"
+  ],
+  "qualified_at": "2026-08-18T17:43:09.593242+00:00",
+  "remote_qualification_sha256": "42145c27762e6f2a4192fe9b1499fcc3d37380f336a223492b05a702da4c676a",
+  "repository_commit": "69244d4812d5d958c33c017d44f82f19d534694e",
+  "schema": "a4v2.acquisition_server_receipt.v1",
+  "served_model_id": "Qwen/Qwen3-VL-32B-Instruct",
+  "served_model_ids_observed": [
+    "Qwen/Qwen3-VL-32B-Instruct"
+  ],
+  "status": "pass"
+}

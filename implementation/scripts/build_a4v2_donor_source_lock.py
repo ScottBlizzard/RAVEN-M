@@ -4,9 +4,11 @@
 from __future__ import annotations
 
 import argparse
+from datetime import datetime
 from hashlib import sha256
 import json
 from pathlib import Path
+import sys
 from typing import Any
 
 
@@ -14,6 +16,37 @@ ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_OUTPUT = ROOT / "evidence/a4v2/A4V2_DONOR_SOURCE_LOCK.json"
 DEFAULT_REPORT = ROOT / "evidence/a4v2/A4V2_DONOR_ACQUISITION_RESULT.json"
 DEFAULT_SNAPSHOTS = ROOT / "evidence/a4v2/donor_snapshots"
+
+
+def _replay_manifest_instance_identities(
+    manifest_rows: dict[tuple[str, int], dict[str, Any]],
+) -> dict[tuple[str, int], dict[str, Any]]:
+    """Recreate the exact pre-initialization identity used by the runner.
+
+    ``task_instances._digest`` intentionally hashes native AndroidWorld Python
+    objects, while ``episode_start.task_params`` is the controller's JSON-safe
+    projection of those objects.  Comparing either representation directly to
+    the other incorrectly invalidates tasks whose params contain row objects.
+    Re-instantiating through the runner's verifier closes both representations
+    without weakening the frozen manifest check.
+    """
+
+    sys.path.insert(0, str(ROOT / "implementation/src"))
+    from android_world import registry
+    from raven_m.multi_framework_benchmark.task_instances import instantiate_verified
+    from raven_m.official_qwen_mobile.controller import _json_safe
+
+    available = registry.TaskRegistry().get_registry(
+        registry.TaskRegistry.ANDROID_WORLD_FAMILY
+    )
+    identities: dict[tuple[str, int], dict[str, Any]] = {}
+    for key, spec in manifest_rows.items():
+        instance = instantiate_verified(available, spec)
+        identities[key] = {
+            "task_params": _json_safe(instance.params),
+            "goal_before_initialization": str(instance.goal),
+        }
+    return identities
 
 
 def _file_sha(path: Path) -> str:
@@ -148,8 +181,15 @@ def build(
             if key in manifest_rows:
                 raise RuntimeError(f"duplicate donor key across manifests: {key}")
             manifest_rows[key] = {**row, "manifest_role": manifest.get("manifest_role")}
+    replayed_identities = _replay_manifest_instance_identities(manifest_rows)
     observed: dict[tuple[str, int], list[tuple[dict[str, Any], Path, Path, dict[str, Any], Path]]] = {}
     suite_provenance: list[dict[str, Any]] = []
+    receipt_files = list((ROOT / "evidence/a4v2").glob("A4V2_ACQUISITION_SERVER_RECEIPT*.json"))
+    receipts_by_file_sha = {
+        _file_sha(path): (path, json.loads(path.read_text(encoding="utf-8")))
+        for path in receipt_files
+    }
+    allowed_receipts_by_signature: dict[str, set[str]] = {}
     for suite in suite_dirs:
         signature_path = suite / "run_signature.json"
         if not signature_path.is_file():
@@ -165,11 +205,45 @@ def build(
         ):
             raise RuntimeError(f"donor suite identity drift: {suite}")
         signature_sha = _file_sha(signature_path)
+        checkpoint_path = suite / "checkpoint.json"
+        if not checkpoint_path.is_file():
+            raise RuntimeError(f"donor suite checkpoint missing: {suite}")
+        checkpoint = json.loads(checkpoint_path.read_text(encoding="utf-8"))
+        allowed_receipts = {str(signature.get("acquisition_server_receipt_sha256") or "")}
+        receipt_records = list(checkpoint.get("acquisition_server_receipts") or [])
+        allowed_receipts.update(str(item.get("file_sha256") or "") for item in receipt_records)
+        if any(len(item) != 64 for item in allowed_receipts):
+            raise RuntimeError(f"donor suite receipt rotation chain is invalid: {suite}")
+        for receipt_sha in allowed_receipts:
+            if receipt_sha not in receipts_by_file_sha:
+                raise RuntimeError(f"donor acquisition receipt artifact missing: {receipt_sha}")
+            receipt_path, receipt = receipts_by_file_sha[receipt_sha]
+            if (
+                receipt.get("status") != "pass"
+                or len(str(receipt.get("repository_commit") or "")) != 40
+                or receipt.get("served_model_id") != signature.get("model_id")
+                or receipt.get("content_sha256") != _content_sha(receipt)
+            ):
+                raise RuntimeError(f"donor acquisition receipt identity drift: {receipt_path}")
+            if (
+                receipt_sha == signature.get("acquisition_server_receipt_sha256")
+                and receipt.get("content_sha256")
+                != signature.get("acquisition_server_receipt_content_sha256")
+            ):
+                raise RuntimeError(f"donor initial acquisition receipt binding drift: {receipt_path}")
+            matching = [row for row in receipt_records if row.get("file_sha256") == receipt_sha]
+            if matching and any(
+                row.get("content_sha256") != receipt.get("content_sha256") for row in matching
+            ):
+                raise RuntimeError(f"donor acquisition receipt content drift: {receipt_path}")
+        allowed_receipts_by_signature[_digest(signature)] = allowed_receipts
         suite_provenance.append(
             {
                 "suite": str(suite.resolve()),
                 "run_signature_sha256": signature_sha,
                 "run_signature_content_sha256": _digest(signature),
+                "checkpoint_sha256": _file_sha(checkpoint_path),
+                "acquisition_server_receipt_sha256s": sorted(allowed_receipts),
             }
         )
         for episode_path in suite.glob("episodes/*/episode.json"):
@@ -196,12 +270,20 @@ def build(
                 if line.strip()
             ]
             start = event_rows[0] if event_rows else {}
+            initialized = event_rows[1] if len(event_rows) > 1 else {}
+            replayed = replayed_identities[key]
             return (
                 _episode_valid(candidate)
                 and _events_valid(candidate_events, episode=candidate)
-                and _digest(start.get("task_params")) == str(spec["task_params_hash"])
-                and sha256(str(candidate.get("task_goal")).encode("utf-8")).hexdigest()
+                and _digest(start.get("task_params")) == _digest(replayed["task_params"])
+                and sha256(
+                    str(start.get("task_goal_before_initialization")).encode("utf-8")
+                ).hexdigest()
                 == str(spec["goal_hash"])
+                and str(start.get("task_goal_before_initialization"))
+                == replayed["goal_before_initialization"]
+                and str(initialized.get("task_goal_after_initialization"))
+                == str(candidate.get("task_goal"))
                 and int((candidate.get("run_metadata") or {}).get("native_max_steps") or -1)
                 == int(spec["native_max_steps"])
                 and (candidate.get("run_metadata") or {}).get("diagnostic") is True
@@ -211,7 +293,7 @@ def build(
                 and (candidate.get("run_metadata") or {}).get("run_signature_sha256")
                 == _digest(candidate_signature)
                 and (candidate.get("run_metadata") or {}).get("a4v2_acquisition_receipt_sha256")
-                == candidate_signature.get("acquisition_server_receipt_sha256")
+                in allowed_receipts_by_signature[_digest(candidate_signature)]
             )
         valid_records = [record for record in records if valid_record(record)]
         if len(valid_records) > 1:
@@ -276,22 +358,71 @@ def build(
             raise RuntimeError(f"supplement was run for an already-qualified route: {row['route_id']}")
     route_groups = []
     deficits = []
+    attempted_keys = {
+        (str(row.get("task_class")), int(row.get("task_seed", -1)))
+        for row in outcomes
+        if row.get("status") != "NOT_RUN"
+    }
+    fallback_by_route = {
+        str(row["route_id"]): (str(row["task_class"]), int(row["task_seed"]))
+        for row in plan.get("ordered_final_fallback_slots") or []
+    }
     for group in plan.get("route_groups") or []:
         route_id = str(group["route_id"])
         donors = successful_by_route.get(route_id, [])
         if len({int(item["task_seed"]) for item in donors}) < int(group["minimum_successes"]):
+            frozen_keys = {
+                (str(item["task_class"]), int(item["task_seed"]))
+                for item in group.get("slots") or []
+            }
+            if route_id in fallback_by_route:
+                frozen_keys.add(fallback_by_route[route_id])
+            exhausted = frozen_keys <= attempted_keys
             deficits.append(
                 {
                     "route_id": route_id,
                     "minimum_successes": int(group["minimum_successes"]),
                     "observed_successes": len(donors),
-                    "next_action": "version acquisition plan and add a previously unused seed",
+                    "frozen_slot_count": len(frozen_keys),
+                    "attempted_frozen_slot_count": len(frozen_keys & attempted_keys),
+                    "frozen_attempts_exhausted": exhausted,
+                    "next_action": (
+                        "DONOR_COVERAGE_BLOCKED; no additional seed is authorized under this identity"
+                        if exhausted
+                        else "run the remaining already-frozen supplement slot"
+                    ),
                 }
             )
         route_groups.append({"route_id": route_id, "route": group["route"], "donors": donors})
+    all_records = [record[0] for records in observed.values() for record in records]
+    prompt_tokens = completion_tokens = transport_attempts = missing_usage_calls = 0
+    elapsed_seconds = 0.0
+    for episode in all_records:
+        if episode.get("started_at") and episode.get("finished_at"):
+            elapsed_seconds += (
+                datetime.fromisoformat(str(episode["finished_at"]))
+                - datetime.fromisoformat(str(episode["started_at"]))
+            ).total_seconds()
+        for step in episode.get("steps") or []:
+            call = step.get("model_call") or {}
+            if not call:
+                continue
+            usage = call.get("usage") or {}
+            if not usage:
+                missing_usage_calls += 1
+            prompt_tokens += int(usage.get("prompt_tokens") or 0)
+            completion_tokens += int(usage.get("completion_tokens") or 0)
+            transport_attempts += int((call.get("raven_meta") or {}).get("transport_attempts") or 0)
+    status = (
+        "READY_FOR_SOURCE_LOCK"
+        if not deficits and len(outcomes) >= 14
+        else "DONOR_COVERAGE_BLOCKED"
+        if deficits and all(bool(item["frozen_attempts_exhausted"]) for item in deficits)
+        else "MORE_DONORS_REQUIRED"
+    )
     report: dict[str, Any] = {
         "schema": "a4v2.donor_acquisition_result.v1",
-        "status": "READY_FOR_SOURCE_LOCK" if not deficits and len(outcomes) >= 14 else "MORE_DONORS_REQUIRED",
+        "status": status,
         "plan_file_sha256": _file_sha(plan_path),
         "manifest_file_sha256s": [_file_sha(path) for path in manifest_paths],
         "protocol_amendment_sha256": manifests[0]["protocol_amendment_sha256"],
@@ -299,10 +430,69 @@ def build(
         "suite_provenance": suite_provenance,
         "outcomes": outcomes,
         "route_deficits": deficits,
+        "route_coverage": [
+            {
+                "route_id": item["route_id"],
+                "minimum_successes": int(
+                    next(
+                        group["minimum_successes"]
+                        for group in plan["route_groups"]
+                        if group["route_id"] == item["route_id"]
+                    )
+                ),
+                "observed_successes": len(item["donors"]),
+                "qualified": len(item["donors"])
+                >= int(
+                    next(
+                        group["minimum_successes"]
+                        for group in plan["route_groups"]
+                        if group["route_id"] == item["route_id"]
+                    )
+                ),
+                "successful_donor_ids": [donor["donor_id"] for donor in item["donors"]],
+                "successful_donor_seeds": [int(donor["task_seed"]) for donor in item["donors"]],
+            }
+            for item in route_groups
+        ],
+        "attempted_slot_count": len(outcomes),
+        "valid_success_count": sum(row.get("status") == "VALID_SUCCESS" for row in outcomes),
+        "valid_scientific_failure_count": sum(
+            row.get("status") == "VALID_SCIENTIFIC_FAILURE" for row in outcomes
+        ),
+        "infrastructure_invalid_attempt_count": sum(
+            not bool(attempt.get("infrastructure_valid"))
+            for row in outcomes for attempt in row.get("attempts") or []
+        ),
         "generation_calls": sum(
             int(record[0].get("model_call_count") or 0)
             for records in observed.values() for record in records
         ),
+        "executed_actions": sum(int(item.get("executed_action_count") or 0) for item in all_records),
+        "token_usage": {
+            "prompt_tokens": prompt_tokens,
+            "completion_tokens": completion_tokens,
+            "total_tokens": prompt_tokens + completion_tokens,
+            "missing_usage_call_count": missing_usage_calls,
+        },
+        "transport": {
+            "attempt_count": transport_attempts,
+            "single_transport_per_completed_model_call": transport_attempts
+            == sum(int(item.get("model_call_count") or 0) for item in all_records),
+        },
+        "elapsed_seconds_sum": elapsed_seconds,
+        "downstream_authorization": {
+            "source_lock": status == "READY_FOR_SOURCE_LOCK",
+            "offline_induction": "AUTHORIZED" if status == "READY_FOR_SOURCE_LOCK" else "NOT_RUN_BY_PROTOCOL",
+            "workflow_bank": "AUTHORIZED" if status == "READY_FOR_SOURCE_LOCK" else "NOT_RUN_BY_PROTOCOL",
+            "scored_seven": "AUTHORIZED" if status == "READY_FOR_SOURCE_LOCK" else "NOT_RUN_BY_PROTOCOL",
+        },
+        "claim_boundary": {
+            "evidence_class": "post_observed_donor_acquisition_diagnostic",
+            "not_held_out": True,
+            "failure_scope": "the frozen A0 screenshot-only controller, plan-v2 donor panel, seeds, budgets, and finite fallback schedule",
+            "awm_general_invalidity_claim_forbidden": True,
+            "no_induction_or_scored_transfer_claim": status != "READY_FOR_SOURCE_LOCK",
+        },
     }
     report["content_sha256"] = _content_sha(report)
     _write(report_path, report)
@@ -342,7 +532,7 @@ def main() -> None:
     )
     print(json.dumps({"status": result["status"], "route_deficits": result["route_deficits"], "report": str(args.report)}, indent=2))
     if result["status"] != "READY_FOR_SOURCE_LOCK":
-        raise SystemExit(2)
+        raise SystemExit(3 if result["status"] == "DONOR_COVERAGE_BLOCKED" else 2)
 
 
 if __name__ == "__main__":

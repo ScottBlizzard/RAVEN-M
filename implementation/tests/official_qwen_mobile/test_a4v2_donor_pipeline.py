@@ -5,8 +5,10 @@ import json
 from pathlib import Path
 
 from implementation.scripts.build_a4v2_donor_source_lock import (
+    _digest as source_digest,
     _episode_valid,
     _events_valid,
+    _replay_manifest_instance_identities,
 )
 
 
@@ -35,6 +37,19 @@ def test_materialized_required_manifest_is_exact_and_self_hashed() -> None:
     ]
     osm = [row for row in payload["tasks"] if row["route_id"] == "osmand_open_location_result"]
     assert len(osm) == 2
+
+
+def test_manifest_native_params_replay_to_controller_json_projection() -> None:
+    path = ROOT / "evidence/a4v2/A4V2_DONOR_ACQUISITION_MANIFEST_V2.json"
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    rows = {
+        (str(row["task_class"]), int(row["task_seed"])): row
+        for row in payload["tasks"]
+    }
+    identities = _replay_manifest_instance_identities(rows)
+    assert set(identities) == set(rows)
+    assert all(source_digest(item["task_params"]) for item in identities.values())
+    assert all(item["goal_before_initialization"] for item in identities.values())
 
 
 def test_donor_validity_requires_single_transport_and_evaluator_closure(tmp_path: Path) -> None:
@@ -79,3 +94,17 @@ def test_runner_freezes_donor_and_scoring_claim_boundaries() -> None:
     assert "a0_official_qwen3vl32b_screenshot_only_donor_acquisition" in source
     assert "single_http_attempt_no_automatic_retry" in source
     assert "post_observed_seed20260806_fixed_seven_workflow_transfer_diagnostic" in source
+    assert "initial_frozen_signature_receipt" in source
+    assert "active_infrastructure_replacement_receipt" in source
+    assert 'payload["acquisition_server_receipts"] = acquisition_receipt_records' in source
+    assert 'frozen_signature_preview.get("acquisition_server_receipt_sha256")' in source
+
+
+def test_source_lock_builder_freezes_receipt_rotation_and_finite_exhaustion() -> None:
+    source = (ROOT / "implementation/scripts/build_a4v2_donor_source_lock.py").read_text(
+        encoding="utf-8"
+    )
+    assert "allowed_receipts_by_signature" in source
+    assert "acquisition_server_receipt_sha256s" in source
+    assert "DONOR_COVERAGE_BLOCKED; no additional seed is authorized" in source
+    assert '"scored_seven": "AUTHORIZED" if status == "READY_FOR_SOURCE_LOCK"' in source

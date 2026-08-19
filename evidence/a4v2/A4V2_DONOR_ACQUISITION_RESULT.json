@@ -1,0 +1,766 @@
+{
+  "attempted_slot_count": 24,
+  "claim_boundary": {
+    "awm_general_invalidity_claim_forbidden": true,
+    "evidence_class": "post_observed_donor_acquisition_diagnostic",
+    "failure_scope": "the frozen A0 screenshot-only controller, plan-v2 donor panel, seeds, budgets, and finite fallback schedule",
+    "no_induction_or_scored_transfer_claim": true,
+    "not_held_out": true
+  },
+  "content_sha256": "a000d2fb4ec99736b66997358028c9ed94347af1bbad3473df72e8b98c48be68",
+  "downstream_authorization": {
+    "offline_induction": "NOT_RUN_BY_PROTOCOL",
+    "scored_seven": "NOT_RUN_BY_PROTOCOL",
+    "source_lock": false,
+    "workflow_bank": "NOT_RUN_BY_PROTOCOL"
+  },
+  "elapsed_seconds_sum": 16905.421588999998,
+  "executed_actions": 442,
+  "generation_calls": 454,
+  "infrastructure_invalid_attempt_count": 2,
+  "manifest_file_sha256s": [
+    "7839f633572d214ce80b90c6693ec1ae8a3dadb1006f5b98fbe41591ac583c5b",
+    "705cd88d4902c4f7c411cf67f738e9109398d7347a7c008e83f9365300ed92cc",
+    "eb7441d19c91de056f172dc67d6b6831bb88b5030629cbfc2df864a99e466290",
+    "ef795ddbe266d2846eb901ca8ab2dcc502da80478f9ecd93bba10725ed44e63a",
+    "07a8c9a0d9157b00707cdd457499cf5bb85cf1306b3edd4738e4cc8ac1e6fce2",
+    "ec27f2177cbdc42e356113e33ea25b966bbe0d90cce0d74c9f47b0a545720121"
+  ],
+  "outcomes": [
+    {
+      "attempts": [
+        {
+          "episode_id": "BrowserDraw_20260831_335ba4ec",
+          "episode_sha256": "d27f514c2a6f82a44de9999b32052ecede552164ea9ebb2a05bee3dd8417e351",
+          "events_sha256": "351455dffc8d76db29c438741270016ec61114fb786c42a35309eac8585238c1",
+          "infrastructure_valid": true
+        }
+      ],
+      "difficulty": "easy",
+      "episode_id": "BrowserDraw_20260831_335ba4ec",
+      "manifest_role": "required_panel",
+      "optional": false,
+      "reward": 0.0,
+      "route_id": "browser_open_local_task",
+      "run_signature_sha256": "00c822edb930b68d9cab234c8bdf16ccc46ba67702537624fdada75afcd539f0",
+      "source_episode_sha256": "d27f514c2a6f82a44de9999b32052ecede552164ea9ebb2a05bee3dd8417e351",
+      "source_events_sha256": "351455dffc8d76db29c438741270016ec61114fb786c42a35309eac8585238c1",
+      "status": "VALID_SCIENTIFIC_FAILURE",
+      "task_class": "BrowserDraw",
+      "task_seed": 20260831
+    },
+    {
+      "attempts": [
+        {
+          "episode_id": "BrowserMaze_20260832_62c21763",
+          "episode_sha256": "671c01936144b9d06f915fca4cc6129b29d08e759c256bf8e2157230a96fe340",
+          "events_sha256": "2f0145d9604e06fa4da807f9ee12fa6afb1077f90d9d0cd638c537f7ef2b670f",
+          "infrastructure_valid": true
+        }
+      ],
+      "difficulty": "easy",
+      "episode_id": "BrowserMaze_20260832_62c21763",
+      "manifest_role": "required_panel",
+      "optional": false,
+      "reward": 0.0,
+      "route_id": "browser_open_local_task",
+      "run_signature_sha256": "00c822edb930b68d9cab234c8bdf16ccc46ba67702537624fdada75afcd539f0",
+      "source_episode_sha256": "671c01936144b9d06f915fca4cc6129b29d08e759c256bf8e2157230a96fe340",
+      "source_events_sha256": "2f0145d9604e06fa4da807f9ee12fa6afb1077f90d9d0cd638c537f7ef2b670f",
+      "status": "VALID_SCIENTIFIC_FAILURE",
+      "task_class": "BrowserMaze",
+      "task_seed": 20260832
+    },
+    {
+      "attempts": [
+        {
+          "episode_id": "ExpenseDeleteMultiple_20260833_97220749",
+          "episode_sha256": "2d463e3bf69f797caa53505768c4efa24b4acb2e2b5ac39072fe1715b379e1ab",
+          "events_sha256": "4a075bca02aef17ee708cb1792b06dc0588600d3a9e0ebb5c70b12b0baf1dd8b",
+          "infrastructure_valid": true
+        }
+      ],
+      "difficulty": "easy",
+      "episode_id": "ExpenseDeleteMultiple_20260833_97220749",
+      "manifest_role": "required_panel",
+      "optional": false,
+      "reward": 1.0,
+      "route_id": "expense_delete",
+      "run_signature_sha256": "00c822edb930b68d9cab234c8bdf16ccc46ba67702537624fdada75afcd539f0",
+      "source_episode_sha256": "2d463e3bf69f797caa53505768c4efa24b4acb2e2b5ac39072fe1715b379e1ab",
+      "source_events_sha256": "4a075bca02aef17ee708cb1792b06dc0588600d3a9e0ebb5c70b12b0baf1dd8b",
+      "status": "VALID_SUCCESS",
+      "task_class": "ExpenseDeleteMultiple",
+      "task_seed": 20260833
+    },
+    {
+      "attempts": [
+        {
+          "episode_id": "ExpenseDeleteSingle_20260834_f8f62898",
+          "episode_sha256": "2ac4208e54207ef39b2bdaed8538526fb5379b3107035c52f215cff00d53750b",
+          "events_sha256": "586feec1529ca7166f92ec558e139022bfe6206b89dcc9af059991f88e54f35e",
+          "infrastructure_valid": true
+        }
+      ],
+      "difficulty": "easy",
+      "episode_id": "ExpenseDeleteSingle_20260834_f8f62898",
+      "manifest_role": "required_panel",
+      "optional": false,
+      "reward": 1.0,
+      "route_id": "expense_delete",
+      "run_signature_sha256": "00c822edb930b68d9cab234c8bdf16ccc46ba67702537624fdada75afcd539f0",
+      "source_episode_sha256": "2ac4208e54207ef39b2bdaed8538526fb5379b3107035c52f215cff00d53750b",
+      "source_events_sha256": "586feec1529ca7166f92ec558e139022bfe6206b89dcc9af059991f88e54f35e",
+      "status": "VALID_SUCCESS",
+      "task_class": "ExpenseDeleteSingle",
+      "task_seed": 20260834
+    },
+    {
+      "attempts": [
+        {
+          "episode_id": "RetroCreatePlaylist_20260836_84f5e0d7",
+          "episode_sha256": "e3ef4e17742d00065308720fbb1e6a0a90d4c44b0fff6aac45b9883aa53be655",
+          "events_sha256": "fca3155621f90540195c6dc3e5e6bd3d8db3aa4cfd7935f88a208cef19d6a792",
+          "infrastructure_valid": true
+        }
+      ],
+      "difficulty": "medium",
+      "episode_id": "RetroCreatePlaylist_20260836_84f5e0d7",
+      "manifest_role": "required_panel",
+      "optional": false,
+      "reward": 0.0,
+      "route_id": "retro_create_playlist",
+      "run_signature_sha256": "00c822edb930b68d9cab234c8bdf16ccc46ba67702537624fdada75afcd539f0",
+      "source_episode_sha256": "e3ef4e17742d00065308720fbb1e6a0a90d4c44b0fff6aac45b9883aa53be655",
+      "source_events_sha256": "fca3155621f90540195c6dc3e5e6bd3d8db3aa4cfd7935f88a208cef19d6a792",
+      "status": "VALID_SCIENTIFIC_FAILURE",
+      "task_class": "RetroCreatePlaylist",
+      "task_seed": 20260836
+    },
+    {
+      "attempts": [
+        {
+          "episode_id": "RetroCreatePlaylist_20260837_4ac1b0c0",
+          "episode_sha256": "b067b377ee3aa78c6e820768ed141419e11e8cfd61a3a5f6cc974e7598bad883",
+          "events_sha256": "f31ba4d97a23d5d7ca8d89a8e346a875fd373efaccc7b5dc660048ef7fa200ba",
+          "infrastructure_valid": true
+        }
+      ],
+      "difficulty": "medium",
+      "episode_id": "RetroCreatePlaylist_20260837_4ac1b0c0",
+      "manifest_role": "required_panel",
+      "optional": false,
+      "reward": 0.0,
+      "route_id": "retro_create_playlist",
+      "run_signature_sha256": "00c822edb930b68d9cab234c8bdf16ccc46ba67702537624fdada75afcd539f0",
+      "source_episode_sha256": "b067b377ee3aa78c6e820768ed141419e11e8cfd61a3a5f6cc974e7598bad883",
+      "source_events_sha256": "f31ba4d97a23d5d7ca8d89a8e346a875fd373efaccc7b5dc660048ef7fa200ba",
+      "status": "VALID_SCIENTIFIC_FAILURE",
+      "task_class": "RetroCreatePlaylist",
+      "task_seed": 20260837
+    },
+    {
+      "attempts": [
+        {
+          "episode_id": "SimpleCalendarAddOneEventTomorrow_20260839_18da39ab",
+          "episode_sha256": "fddad793ccbd0f83778a38e69c1e00d5b8e52f2ac8455afeb57eca37491d32f1",
+          "events_sha256": "251e1980bad70e4928f40c798816e3ff20b9d116f5c3d725828111b948548b61",
+          "infrastructure_valid": true
+        }
+      ],
+      "difficulty": "easy",
+      "episode_id": "SimpleCalendarAddOneEventTomorrow_20260839_18da39ab",
+      "manifest_role": "required_panel",
+      "optional": false,
+      "reward": 0.0,
+      "route_id": "calendar_add_event",
+      "run_signature_sha256": "00c822edb930b68d9cab234c8bdf16ccc46ba67702537624fdada75afcd539f0",
+      "source_episode_sha256": "fddad793ccbd0f83778a38e69c1e00d5b8e52f2ac8455afeb57eca37491d32f1",
+      "source_events_sha256": "251e1980bad70e4928f40c798816e3ff20b9d116f5c3d725828111b948548b61",
+      "status": "VALID_SCIENTIFIC_FAILURE",
+      "task_class": "SimpleCalendarAddOneEventTomorrow",
+      "task_seed": 20260839
+    },
+    {
+      "attempts": [
+        {
+          "episode_id": "SimpleCalendarAddOneEventRelativeDay_20260840_7667e7ba",
+          "episode_sha256": "ef6a0ed52626e017d6632cc50d7c5fbf9f6b80420b48fa60238f158fac99d12f",
+          "events_sha256": "2cb7454d36cc0e96ccabf6813a215ee571f7517f8a8f434ad4e9b3a309aea030",
+          "infrastructure_valid": true
+        }
+      ],
+      "difficulty": "medium",
+      "episode_id": "SimpleCalendarAddOneEventRelativeDay_20260840_7667e7ba",
+      "manifest_role": "required_panel",
+      "optional": false,
+      "reward": 0.0,
+      "route_id": "calendar_add_event",
+      "run_signature_sha256": "00c822edb930b68d9cab234c8bdf16ccc46ba67702537624fdada75afcd539f0",
+      "source_episode_sha256": "ef6a0ed52626e017d6632cc50d7c5fbf9f6b80420b48fa60238f158fac99d12f",
+      "source_events_sha256": "2cb7454d36cc0e96ccabf6813a215ee571f7517f8a8f434ad4e9b3a309aea030",
+      "status": "VALID_SCIENTIFIC_FAILURE",
+      "task_class": "SimpleCalendarAddOneEventRelativeDay",
+      "task_seed": 20260840
+    },
+    {
+      "attempts": [
+        {
+          "episode_id": "SportsTrackerActivityDuration_20260842_eaceb53c",
+          "episode_sha256": "49ed2d116602faf8e99f20a34178ec78b89bf6a90ca857f03154fd64bcb8df90",
+          "events_sha256": "7a7a10126bb420282724fd97aba43c9976a8d7d3417da582c2273a16a0e013aa",
+          "infrastructure_valid": true
+        }
+      ],
+      "difficulty": "easy",
+      "episode_id": "SportsTrackerActivityDuration_20260842_eaceb53c",
+      "manifest_role": "required_panel",
+      "optional": false,
+      "reward": 0.0,
+      "route_id": "opentracks_retrieve_duration",
+      "run_signature_sha256": "00c822edb930b68d9cab234c8bdf16ccc46ba67702537624fdada75afcd539f0",
+      "source_episode_sha256": "49ed2d116602faf8e99f20a34178ec78b89bf6a90ca857f03154fd64bcb8df90",
+      "source_events_sha256": "7a7a10126bb420282724fd97aba43c9976a8d7d3417da582c2273a16a0e013aa",
+      "status": "VALID_SCIENTIFIC_FAILURE",
+      "task_class": "SportsTrackerActivityDuration",
+      "task_seed": 20260842
+    },
+    {
+      "attempts": [
+        {
+          "episode_id": "SportsTrackerActivityDuration_20260843_624ddb3e",
+          "episode_sha256": "dfc27a50243b04341433e0560b135292e4d775e5dc330a6d60bcec84ffc6cb79",
+          "events_sha256": "1037dae8e20655a3f753458980918b9eb8a59976ad7285136de67af156d7908b",
+          "infrastructure_valid": true
+        }
+      ],
+      "difficulty": "easy",
+      "episode_id": "SportsTrackerActivityDuration_20260843_624ddb3e",
+      "manifest_role": "required_panel",
+      "optional": false,
+      "reward": 1.0,
+      "route_id": "opentracks_retrieve_duration",
+      "run_signature_sha256": "00c822edb930b68d9cab234c8bdf16ccc46ba67702537624fdada75afcd539f0",
+      "source_episode_sha256": "dfc27a50243b04341433e0560b135292e4d775e5dc330a6d60bcec84ffc6cb79",
+      "source_events_sha256": "1037dae8e20655a3f753458980918b9eb8a59976ad7285136de67af156d7908b",
+      "status": "VALID_SUCCESS",
+      "task_class": "SportsTrackerActivityDuration",
+      "task_seed": 20260843
+    },
+    {
+      "attempts": [
+        {
+          "episode_id": "RecipeDeleteMultipleRecipes_20260845_07a488cb",
+          "episode_sha256": "d2a690dd4670190ebfaf424212660a6f9c6c646e5cb8e2b5dda13b866996a68c",
+          "events_sha256": "10243061903702b99e7c5f744af95d8050e7604a184a4e9c3ffd23cfb510b2ac",
+          "infrastructure_valid": true
+        }
+      ],
+      "difficulty": "easy",
+      "episode_id": "RecipeDeleteMultipleRecipes_20260845_07a488cb",
+      "manifest_role": "required_panel",
+      "optional": false,
+      "reward": 1.0,
+      "route_id": "broccoli_delete_recipe",
+      "run_signature_sha256": "00c822edb930b68d9cab234c8bdf16ccc46ba67702537624fdada75afcd539f0",
+      "source_episode_sha256": "d2a690dd4670190ebfaf424212660a6f9c6c646e5cb8e2b5dda13b866996a68c",
+      "source_events_sha256": "10243061903702b99e7c5f744af95d8050e7604a184a4e9c3ffd23cfb510b2ac",
+      "status": "VALID_SUCCESS",
+      "task_class": "RecipeDeleteMultipleRecipes",
+      "task_seed": 20260845
+    },
+    {
+      "attempts": [
+        {
+          "episode_id": "RecipeDeleteMultipleRecipesWithNoise_20260846_4a406fb3",
+          "episode_sha256": "3e717dc631e7614e19f8c0dcedab66dce4613d379f29378e1585810ea2f84cf1",
+          "events_sha256": "c82eba14836517dfb83074496dceb8b1953667eb41b036abce28d1ba62b31596",
+          "infrastructure_valid": true
+        }
+      ],
+      "difficulty": "medium",
+      "episode_id": "RecipeDeleteMultipleRecipesWithNoise_20260846_4a406fb3",
+      "manifest_role": "required_panel",
+      "optional": false,
+      "reward": 1.0,
+      "route_id": "broccoli_delete_recipe",
+      "run_signature_sha256": "00c822edb930b68d9cab234c8bdf16ccc46ba67702537624fdada75afcd539f0",
+      "source_episode_sha256": "3e717dc631e7614e19f8c0dcedab66dce4613d379f29378e1585810ea2f84cf1",
+      "source_events_sha256": "c82eba14836517dfb83074496dceb8b1953667eb41b036abce28d1ba62b31596",
+      "status": "VALID_SUCCESS",
+      "task_class": "RecipeDeleteMultipleRecipesWithNoise",
+      "task_seed": 20260846
+    },
+    {
+      "attempts": [
+        {
+          "episode_id": "OsmAndFavorite_20260848_51986a96",
+          "episode_sha256": "5a6c7b7e8bb82f374e6d4e184750d93a32418711f435203e10f25adf4d1e99d6",
+          "events_sha256": "bb7ebc75976bb0f358977feda1526d8bf36d404ed6271443e86c09d5c61ff224",
+          "infrastructure_valid": true
+        }
+      ],
+      "difficulty": "medium",
+      "episode_id": "OsmAndFavorite_20260848_51986a96",
+      "manifest_role": "required_panel",
+      "optional": false,
+      "reward": 0.0,
+      "route_id": "osmand_open_location_result",
+      "run_signature_sha256": "00c822edb930b68d9cab234c8bdf16ccc46ba67702537624fdada75afcd539f0",
+      "source_episode_sha256": "5a6c7b7e8bb82f374e6d4e184750d93a32418711f435203e10f25adf4d1e99d6",
+      "source_events_sha256": "bb7ebc75976bb0f358977feda1526d8bf36d404ed6271443e86c09d5c61ff224",
+      "status": "VALID_SCIENTIFIC_FAILURE",
+      "task_class": "OsmAndFavorite",
+      "task_seed": 20260848
+    },
+    {
+      "attempts": [
+        {
+          "episode_id": "OsmAndFavorite_20260849_8878d1cb",
+          "episode_sha256": "78d3d5467d519305fa805413942e86c09c37030cbd1d0dd10414da8582d76289",
+          "events_sha256": "5d89d4785c673490188e43055d8f9b546e2f425b62e13547e71bb7c4f18945c4",
+          "infrastructure_valid": true
+        }
+      ],
+      "difficulty": "medium",
+      "episode_id": "OsmAndFavorite_20260849_8878d1cb",
+      "manifest_role": "required_panel",
+      "optional": false,
+      "reward": 0.0,
+      "route_id": "osmand_open_location_result",
+      "run_signature_sha256": "00c822edb930b68d9cab234c8bdf16ccc46ba67702537624fdada75afcd539f0",
+      "source_episode_sha256": "78d3d5467d519305fa805413942e86c09c37030cbd1d0dd10414da8582d76289",
+      "source_events_sha256": "5d89d4785c673490188e43055d8f9b546e2f425b62e13547e71bb7c4f18945c4",
+      "status": "VALID_SCIENTIFIC_FAILURE",
+      "task_class": "OsmAndFavorite",
+      "task_seed": 20260849
+    },
+    {
+      "attempts": [
+        {
+          "episode_id": "BrowserDraw_20260851_f4342df1",
+          "episode_sha256": "b0f291263d6722a78b15e8a6ecbde7d706b2bda6ef73ea2a66a3a7df89963a76",
+          "events_sha256": "9ef5a5a06d5a94a67e9bdc02f0e2164aff5053f957ab74ac4c3c16555833d094",
+          "infrastructure_valid": true
+        }
+      ],
+      "difficulty": "easy",
+      "episode_id": "BrowserDraw_20260851_f4342df1",
+      "manifest_role": "deficit_supplement",
+      "optional": true,
+      "reward": 0.0,
+      "route_id": "browser_open_local_task",
+      "run_signature_sha256": "7b396b70b2be13ad40ab7f366771a416ce06919454cdcb55af62adead307a62c",
+      "source_episode_sha256": "b0f291263d6722a78b15e8a6ecbde7d706b2bda6ef73ea2a66a3a7df89963a76",
+      "source_events_sha256": "9ef5a5a06d5a94a67e9bdc02f0e2164aff5053f957ab74ac4c3c16555833d094",
+      "status": "VALID_SCIENTIFIC_FAILURE",
+      "task_class": "BrowserDraw",
+      "task_seed": 20260851
+    },
+    {
+      "attempts": [
+        {
+          "episode_id": "BrowserDraw_20260901_e2686ba4",
+          "episode_sha256": "f63e97172ac78f4850d4d2237db2f8d5dcb3a85d32f097c4d8432a729d88525e",
+          "events_sha256": "83edc66f14388422f5bb7b2d12017819fd47bf3c293d3ca4ffa61045efc5073d",
+          "infrastructure_valid": true
+        }
+      ],
+      "difficulty": "easy",
+      "episode_id": "BrowserDraw_20260901_e2686ba4",
+      "manifest_role": "deficit_supplement",
+      "optional": true,
+      "reward": 0.0,
+      "route_id": "browser_open_local_task",
+      "run_signature_sha256": "7b396b70b2be13ad40ab7f366771a416ce06919454cdcb55af62adead307a62c",
+      "source_episode_sha256": "f63e97172ac78f4850d4d2237db2f8d5dcb3a85d32f097c4d8432a729d88525e",
+      "source_events_sha256": "83edc66f14388422f5bb7b2d12017819fd47bf3c293d3ca4ffa61045efc5073d",
+      "status": "VALID_SCIENTIFIC_FAILURE",
+      "task_class": "BrowserDraw",
+      "task_seed": 20260901
+    },
+    {
+      "attempts": [
+        {
+          "episode_id": "RetroCreatePlaylist_20260838_1fd81704",
+          "episode_sha256": "6090dbfe0f71138cf5509c29202cad805ced0633bc0701d134d7307b85434c52",
+          "events_sha256": "a74658bad31e094110a39ead6961eeeb93f8e9d46137058f1d20d5e364818476",
+          "infrastructure_valid": false
+        },
+        {
+          "episode_id": "RetroCreatePlaylist_20260838_b1e01792",
+          "episode_sha256": "69f579c3f118847159f6a0e1aca0973187c28ee10a0bef581ae511024be3d98a",
+          "events_sha256": "59017e048c36842df0f04e2418172b5f7a0bb9425b8164788215718bc13a60f5",
+          "infrastructure_valid": true
+        }
+      ],
+      "difficulty": "medium",
+      "episode_id": "RetroCreatePlaylist_20260838_b1e01792",
+      "manifest_role": "deficit_supplement",
+      "optional": true,
+      "reward": 0.0,
+      "route_id": "retro_create_playlist",
+      "run_signature_sha256": "bc1cfed038d2f55b8c52bf49ea0d89f320bb5acb20953e2244a66aa9e01b8422",
+      "source_episode_sha256": "69f579c3f118847159f6a0e1aca0973187c28ee10a0bef581ae511024be3d98a",
+      "source_events_sha256": "59017e048c36842df0f04e2418172b5f7a0bb9425b8164788215718bc13a60f5",
+      "status": "VALID_SCIENTIFIC_FAILURE",
+      "task_class": "RetroCreatePlaylist",
+      "task_seed": 20260838
+    },
+    {
+      "attempts": [
+        {
+          "episode_id": "RetroCreatePlaylist_20260903_d97b9dc5",
+          "episode_sha256": "96d633d66d7480e4777ae37a016a87f5c83312fcec56f914bf07c608fcfd25b1",
+          "events_sha256": "5e4f6a963930a5b331cd5d77c62eccddc06bc82b5caf3649858712b9015b5843",
+          "infrastructure_valid": true
+        }
+      ],
+      "difficulty": "medium",
+      "episode_id": "RetroCreatePlaylist_20260903_d97b9dc5",
+      "manifest_role": "deficit_supplement",
+      "optional": true,
+      "reward": 0.0,
+      "route_id": "retro_create_playlist",
+      "run_signature_sha256": "bc1cfed038d2f55b8c52bf49ea0d89f320bb5acb20953e2244a66aa9e01b8422",
+      "source_episode_sha256": "96d633d66d7480e4777ae37a016a87f5c83312fcec56f914bf07c608fcfd25b1",
+      "source_events_sha256": "5e4f6a963930a5b331cd5d77c62eccddc06bc82b5caf3649858712b9015b5843",
+      "status": "VALID_SCIENTIFIC_FAILURE",
+      "task_class": "RetroCreatePlaylist",
+      "task_seed": 20260903
+    },
+    {
+      "attempts": [
+        {
+          "episode_id": "SimpleCalendarAddOneEventInTwoWeeks_20260841_4ae30b12",
+          "episode_sha256": "90e8bfc0699f7aca032056e47dff7eb250f6bde8c4c2c0e7e08da87fbbb11085",
+          "events_sha256": "560000bedd9f5802e6fb2e43414c863463cbe646266273e08c25a5110e5af208",
+          "infrastructure_valid": true
+        }
+      ],
+      "difficulty": "medium",
+      "episode_id": "SimpleCalendarAddOneEventInTwoWeeks_20260841_4ae30b12",
+      "manifest_role": "deficit_supplement",
+      "optional": true,
+      "reward": 0.0,
+      "route_id": "calendar_add_event",
+      "run_signature_sha256": "13f98e0c54ae88e0a0209aba117eac06a3fbac50e3230e5c68f8e59e2456b086",
+      "source_episode_sha256": "90e8bfc0699f7aca032056e47dff7eb250f6bde8c4c2c0e7e08da87fbbb11085",
+      "source_events_sha256": "560000bedd9f5802e6fb2e43414c863463cbe646266273e08c25a5110e5af208",
+      "status": "VALID_SCIENTIFIC_FAILURE",
+      "task_class": "SimpleCalendarAddOneEventInTwoWeeks",
+      "task_seed": 20260841
+    },
+    {
+      "attempts": [
+        {
+          "episode_id": "SimpleCalendarAddOneEventTomorrow_20260904_d3266ffd",
+          "episode_sha256": "4e8b4fc7bf2432197ca8c4ccb8ac174655f47df28192faae2ff93ffb04327c95",
+          "events_sha256": "2b9c6f7e6a32a714c0b41092045c791ed323a32a6484f6a9b1b304a0ade64ad9",
+          "infrastructure_valid": true
+        }
+      ],
+      "difficulty": "easy",
+      "episode_id": "SimpleCalendarAddOneEventTomorrow_20260904_d3266ffd",
+      "manifest_role": "deficit_supplement",
+      "optional": true,
+      "reward": 0.0,
+      "route_id": "calendar_add_event",
+      "run_signature_sha256": "13f98e0c54ae88e0a0209aba117eac06a3fbac50e3230e5c68f8e59e2456b086",
+      "source_episode_sha256": "4e8b4fc7bf2432197ca8c4ccb8ac174655f47df28192faae2ff93ffb04327c95",
+      "source_events_sha256": "2b9c6f7e6a32a714c0b41092045c791ed323a32a6484f6a9b1b304a0ade64ad9",
+      "status": "VALID_SCIENTIFIC_FAILURE",
+      "task_class": "SimpleCalendarAddOneEventTomorrow",
+      "task_seed": 20260904
+    },
+    {
+      "attempts": [
+        {
+          "episode_id": "SportsTrackerActivityDuration_20260844_701fb3de",
+          "episode_sha256": "946255b16e2f7dcf1c2ba58bfcac0cb98516b2f5a586bd04aa4676d7565aa2af",
+          "events_sha256": "6ab687aaefc1f78f54d14ffcdb7fb2e8d3b4f0fd7b0f8cb4db5acae1c5ceba37",
+          "infrastructure_valid": true
+        }
+      ],
+      "difficulty": "easy",
+      "episode_id": "SportsTrackerActivityDuration_20260844_701fb3de",
+      "manifest_role": "deficit_supplement",
+      "optional": true,
+      "reward": 1.0,
+      "route_id": "opentracks_retrieve_duration",
+      "run_signature_sha256": "5541537ec4c15ba1c2cb9d8289c2c1fa5c76b7864ebc56f7bb0ab240e230e4a7",
+      "source_episode_sha256": "946255b16e2f7dcf1c2ba58bfcac0cb98516b2f5a586bd04aa4676d7565aa2af",
+      "source_events_sha256": "6ab687aaefc1f78f54d14ffcdb7fb2e8d3b4f0fd7b0f8cb4db5acae1c5ceba37",
+      "status": "VALID_SUCCESS",
+      "task_class": "SportsTrackerActivityDuration",
+      "task_seed": 20260844
+    },
+    {
+      "attempts": [
+        {
+          "episode_id": "SportsTrackerActivityDuration_20260905_ad886c68",
+          "episode_sha256": "b40c7c9f323ab9588aa06b651800182f16492f79b45e9846e05196a9fb8ee20c",
+          "events_sha256": "05a5c788887dd0a70df3a5572887dcf1be47eb876ab05d7ffac7f625a8369bd8",
+          "infrastructure_valid": true
+        }
+      ],
+      "difficulty": "easy",
+      "episode_id": "SportsTrackerActivityDuration_20260905_ad886c68",
+      "manifest_role": "deficit_supplement",
+      "optional": true,
+      "reward": 0.0,
+      "route_id": "opentracks_retrieve_duration",
+      "run_signature_sha256": "5541537ec4c15ba1c2cb9d8289c2c1fa5c76b7864ebc56f7bb0ab240e230e4a7",
+      "source_episode_sha256": "b40c7c9f323ab9588aa06b651800182f16492f79b45e9846e05196a9fb8ee20c",
+      "source_events_sha256": "05a5c788887dd0a70df3a5572887dcf1be47eb876ab05d7ffac7f625a8369bd8",
+      "status": "VALID_SCIENTIFIC_FAILURE",
+      "task_class": "SportsTrackerActivityDuration",
+      "task_seed": 20260905
+    },
+    {
+      "attempts": [
+        {
+          "episode_id": "OsmAndFavorite_20260850_1b71a507",
+          "episode_sha256": "6c1ed4ce1b20b90c169f74ba17eb219056e5cef5bf7136b31586b05966e66b8f",
+          "events_sha256": "e004065d6c3cd3ca6f9d48fcbf3bcf5721b708bba85784d05835409b142acf7d",
+          "infrastructure_valid": true
+        },
+        {
+          "episode_id": "OsmAndFavorite_20260850_20558a70",
+          "episode_sha256": "131a24b60444fbcd819ac39ea94a9ed9a7d7b450d4fc2199330ac60f742ab42c",
+          "events_sha256": "1015ab09cd2b0977822a4219fb2adefdc37baa622bc852a6a62cb90f83f48c47",
+          "infrastructure_valid": false
+        }
+      ],
+      "difficulty": "medium",
+      "episode_id": "OsmAndFavorite_20260850_1b71a507",
+      "manifest_role": "deficit_supplement",
+      "optional": true,
+      "reward": 0.0,
+      "route_id": "osmand_open_location_result",
+      "run_signature_sha256": "2584782fe2bfbb4c294b3a64e8e7353b5d6fccf94e9a24aa876948c3c08fca7a",
+      "source_episode_sha256": "6c1ed4ce1b20b90c169f74ba17eb219056e5cef5bf7136b31586b05966e66b8f",
+      "source_events_sha256": "e004065d6c3cd3ca6f9d48fcbf3bcf5721b708bba85784d05835409b142acf7d",
+      "status": "VALID_SCIENTIFIC_FAILURE",
+      "task_class": "OsmAndFavorite",
+      "task_seed": 20260850
+    },
+    {
+      "attempts": [
+        {
+          "episode_id": "OsmAndFavorite_20260907_859b93f2",
+          "episode_sha256": "8e9cc33424d3016c8a32f8bf2aaba8b2ff4df94eedd8ace60484fd31cf473059",
+          "events_sha256": "997cf08f79c61cc9daca0dfbb5f2bdbe423812e5fe06a56ebb543a993614bff0",
+          "infrastructure_valid": true
+        }
+      ],
+      "difficulty": "medium",
+      "episode_id": "OsmAndFavorite_20260907_859b93f2",
+      "manifest_role": "deficit_supplement",
+      "optional": true,
+      "reward": 0.0,
+      "route_id": "osmand_open_location_result",
+      "run_signature_sha256": "2584782fe2bfbb4c294b3a64e8e7353b5d6fccf94e9a24aa876948c3c08fca7a",
+      "source_episode_sha256": "8e9cc33424d3016c8a32f8bf2aaba8b2ff4df94eedd8ace60484fd31cf473059",
+      "source_events_sha256": "997cf08f79c61cc9daca0dfbb5f2bdbe423812e5fe06a56ebb543a993614bff0",
+      "status": "VALID_SCIENTIFIC_FAILURE",
+      "task_class": "OsmAndFavorite",
+      "task_seed": 20260907
+    }
+  ],
+  "plan_file_sha256": "638648d136bbfce6fe753e4724c3941e6b4e092c64693bf215ff4006b456f60f",
+  "protocol_amendment_sha256": "3b9c6d89f90db52bcd918f064cac1226c36fea1841d4956bbaa94d42d684dc5c",
+  "route_coverage": [
+    {
+      "minimum_successes": 2,
+      "observed_successes": 0,
+      "qualified": false,
+      "route_id": "browser_open_local_task",
+      "successful_donor_ids": [],
+      "successful_donor_seeds": []
+    },
+    {
+      "minimum_successes": 2,
+      "observed_successes": 2,
+      "qualified": true,
+      "route_id": "expense_delete",
+      "successful_donor_ids": [
+        "a4v2_expense_delete_ExpenseDeleteMultiple_s20260833",
+        "a4v2_expense_delete_ExpenseDeleteSingle_s20260834"
+      ],
+      "successful_donor_seeds": [
+        20260833,
+        20260834
+      ]
+    },
+    {
+      "minimum_successes": 2,
+      "observed_successes": 0,
+      "qualified": false,
+      "route_id": "retro_create_playlist",
+      "successful_donor_ids": [],
+      "successful_donor_seeds": []
+    },
+    {
+      "minimum_successes": 2,
+      "observed_successes": 0,
+      "qualified": false,
+      "route_id": "calendar_add_event",
+      "successful_donor_ids": [],
+      "successful_donor_seeds": []
+    },
+    {
+      "minimum_successes": 2,
+      "observed_successes": 2,
+      "qualified": true,
+      "route_id": "opentracks_retrieve_duration",
+      "successful_donor_ids": [
+        "a4v2_opentracks_retrieve_duration_SportsTrackerActivityDuration_s20260843",
+        "a4v2_opentracks_retrieve_duration_SportsTrackerActivityDuration_s20260844"
+      ],
+      "successful_donor_seeds": [
+        20260843,
+        20260844
+      ]
+    },
+    {
+      "minimum_successes": 2,
+      "observed_successes": 2,
+      "qualified": true,
+      "route_id": "broccoli_delete_recipe",
+      "successful_donor_ids": [
+        "a4v2_broccoli_delete_recipe_RecipeDeleteMultipleRecipes_s20260845",
+        "a4v2_broccoli_delete_recipe_RecipeDeleteMultipleRecipesWithNoise_s20260846"
+      ],
+      "successful_donor_seeds": [
+        20260845,
+        20260846
+      ]
+    },
+    {
+      "minimum_successes": 2,
+      "observed_successes": 0,
+      "qualified": false,
+      "route_id": "osmand_open_location_result",
+      "successful_donor_ids": [],
+      "successful_donor_seeds": []
+    }
+  ],
+  "route_deficits": [
+    {
+      "attempted_frozen_slot_count": 4,
+      "frozen_attempts_exhausted": true,
+      "frozen_slot_count": 4,
+      "minimum_successes": 2,
+      "next_action": "DONOR_COVERAGE_BLOCKED; no additional seed is authorized under this identity",
+      "observed_successes": 0,
+      "route_id": "browser_open_local_task"
+    },
+    {
+      "attempted_frozen_slot_count": 4,
+      "frozen_attempts_exhausted": true,
+      "frozen_slot_count": 4,
+      "minimum_successes": 2,
+      "next_action": "DONOR_COVERAGE_BLOCKED; no additional seed is authorized under this identity",
+      "observed_successes": 0,
+      "route_id": "retro_create_playlist"
+    },
+    {
+      "attempted_frozen_slot_count": 4,
+      "frozen_attempts_exhausted": true,
+      "frozen_slot_count": 4,
+      "minimum_successes": 2,
+      "next_action": "DONOR_COVERAGE_BLOCKED; no additional seed is authorized under this identity",
+      "observed_successes": 0,
+      "route_id": "calendar_add_event"
+    },
+    {
+      "attempted_frozen_slot_count": 4,
+      "frozen_attempts_exhausted": true,
+      "frozen_slot_count": 4,
+      "minimum_successes": 2,
+      "next_action": "DONOR_COVERAGE_BLOCKED; no additional seed is authorized under this identity",
+      "observed_successes": 0,
+      "route_id": "osmand_open_location_result"
+    }
+  ],
+  "schema": "a4v2.donor_acquisition_result.v1",
+  "status": "DONOR_COVERAGE_BLOCKED",
+  "suite_dirs": [
+    "D:\\ZJU\\Summer_Camp\\RAVEN-M-AWM-Audit\\runs\\a4v2_donor_acquisition_plan_v2\\official_qwen_20260819T014451_25f6221a",
+    "D:\\ZJU\\Summer_Camp\\RAVEN-M-AWM-Audit\\runs\\a4v2_donor_supplement_browser_open_local_task\\official_qwen_20260819T041524_db78271d",
+    "D:\\ZJU\\Summer_Camp\\RAVEN-M-AWM-Audit\\runs\\a4v2_donor_supplement_retro_create_playlist\\official_qwen_20260819T043139_451d3532",
+    "D:\\ZJU\\Summer_Camp\\RAVEN-M-AWM-Audit\\runs\\a4v2_donor_supplement_calendar_add_event\\official_qwen_20260819T050745_3016c8cf",
+    "D:\\ZJU\\Summer_Camp\\RAVEN-M-AWM-Audit\\runs\\a4v2_donor_supplement_opentracks_retrieve_duration\\official_qwen_20260819T053621_ed78ad28",
+    "D:\\ZJU\\Summer_Camp\\RAVEN-M-AWM-Audit\\runs\\a4v2_donor_supplement_osmand_open_location_result\\official_qwen_20260819T055341_af9c4dba"
+  ],
+  "suite_provenance": [
+    {
+      "acquisition_server_receipt_sha256s": [
+        "6a4afb90ed068754804fea27009c740736fd009e25e4cf2c64a66c428be76dbe"
+      ],
+      "checkpoint_sha256": "6f20db49e9eaf0c325e2897a3b3f66792481e691cf05068337f4ab1165388a7a",
+      "run_signature_content_sha256": "9fcb0d648dcc2d5bd0a7cb3c1ab701eb63b6247a61abd2e0d91c9281b4d9fb30",
+      "run_signature_sha256": "00c822edb930b68d9cab234c8bdf16ccc46ba67702537624fdada75afcd539f0",
+      "suite": "D:\\ZJU\\Summer_Camp\\RAVEN-M-AWM-Audit\\runs\\a4v2_donor_acquisition_plan_v2\\official_qwen_20260819T014451_25f6221a"
+    },
+    {
+      "acquisition_server_receipt_sha256s": [
+        "6a4afb90ed068754804fea27009c740736fd009e25e4cf2c64a66c428be76dbe"
+      ],
+      "checkpoint_sha256": "fc1170ff473b0e71fb839842474e880ca7cad1e6674b948ba6d06ee283fedb05",
+      "run_signature_content_sha256": "1efd8329cdfa996ea03554c69df05c1932217eb4c4a50731069b89b1218b40b0",
+      "run_signature_sha256": "7b396b70b2be13ad40ab7f366771a416ce06919454cdcb55af62adead307a62c",
+      "suite": "D:\\ZJU\\Summer_Camp\\RAVEN-M-AWM-Audit\\runs\\a4v2_donor_supplement_browser_open_local_task\\official_qwen_20260819T041524_db78271d"
+    },
+    {
+      "acquisition_server_receipt_sha256s": [
+        "6a4afb90ed068754804fea27009c740736fd009e25e4cf2c64a66c428be76dbe"
+      ],
+      "checkpoint_sha256": "6e01e25111a84f5ca9f2b43386f00c7a980c755ce3c1f5bcd9fb6f24c1949451",
+      "run_signature_content_sha256": "b34b9101458464d53d352b72a6d68538d84f3a5fd794d6ba90504fd694e1bc77",
+      "run_signature_sha256": "bc1cfed038d2f55b8c52bf49ea0d89f320bb5acb20953e2244a66aa9e01b8422",
+      "suite": "D:\\ZJU\\Summer_Camp\\RAVEN-M-AWM-Audit\\runs\\a4v2_donor_supplement_retro_create_playlist\\official_qwen_20260819T043139_451d3532"
+    },
+    {
+      "acquisition_server_receipt_sha256s": [
+        "6a4afb90ed068754804fea27009c740736fd009e25e4cf2c64a66c428be76dbe"
+      ],
+      "checkpoint_sha256": "84789f52808de75492bf1288bec83f3f7cb34f9ee2a530be16fbdd31307ae092",
+      "run_signature_content_sha256": "4d4ab106ce2c6e69a332b0d50e9bc6ccc5903b91a09a85a4f1fc1cb659f10962",
+      "run_signature_sha256": "13f98e0c54ae88e0a0209aba117eac06a3fbac50e3230e5c68f8e59e2456b086",
+      "suite": "D:\\ZJU\\Summer_Camp\\RAVEN-M-AWM-Audit\\runs\\a4v2_donor_supplement_calendar_add_event\\official_qwen_20260819T050745_3016c8cf"
+    },
+    {
+      "acquisition_server_receipt_sha256s": [
+        "6a4afb90ed068754804fea27009c740736fd009e25e4cf2c64a66c428be76dbe"
+      ],
+      "checkpoint_sha256": "626f6dee717f76abe139b35476c267c4f3bcffdfff5a0b3ae305168ade6f1e8f",
+      "run_signature_content_sha256": "e9556b4db7fd8de72667fac61443bfbc03e5f78bf257dacce13cb8093cb90667",
+      "run_signature_sha256": "5541537ec4c15ba1c2cb9d8289c2c1fa5c76b7864ebc56f7bb0ab240e230e4a7",
+      "suite": "D:\\ZJU\\Summer_Camp\\RAVEN-M-AWM-Audit\\runs\\a4v2_donor_supplement_opentracks_retrieve_duration\\official_qwen_20260819T053621_ed78ad28"
+    },
+    {
+      "acquisition_server_receipt_sha256s": [
+        "6a4afb90ed068754804fea27009c740736fd009e25e4cf2c64a66c428be76dbe",
+        "d290489b2b4b59314a90d5fef2c5a34f2f1f2fd5128b3e57c35d03b8d02a1d0e"
+      ],
+      "checkpoint_sha256": "459f1dffca724cc10208527cd6dff1afb6b103290a61a42c4b13fa25ef7fb75f",
+      "run_signature_content_sha256": "dbc6a34e36e8a067f79cfeb199cdc8c5bbc43acd0784e6ad5c299a742588fa72",
+      "run_signature_sha256": "2584782fe2bfbb4c294b3a64e8e7353b5d6fccf94e9a24aa876948c3c08fca7a",
+      "suite": "D:\\ZJU\\Summer_Camp\\RAVEN-M-AWM-Audit\\runs\\a4v2_donor_supplement_osmand_open_location_result\\official_qwen_20260819T055341_af9c4dba"
+    }
+  ],
+  "token_usage": {
+    "completion_tokens": 54544,
+    "missing_usage_call_count": 0,
+    "prompt_tokens": 1661953,
+    "total_tokens": 1716497
+  },
+  "transport": {
+    "attempt_count": 454,
+    "single_transport_per_completed_model_call": true
+  },
+  "valid_scientific_failure_count": 18,
+  "valid_success_count": 6
+}

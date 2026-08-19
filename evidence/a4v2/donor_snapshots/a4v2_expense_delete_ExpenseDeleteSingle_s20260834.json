@@ -1,0 +1,228 @@
+{
+  "episode_id": "ExpenseDeleteSingle_20260834_f8f62898",
+  "error": null,
+  "evaluator_reward": 1.0,
+  "executed_action_count": 9,
+  "lifecycle_errors": [],
+  "model_call_count": 10,
+  "schema": "a4v2.portable_successful_donor_episode.v1",
+  "seed": 20260834,
+  "source_episode_sha256": "2ac4208e54207ef39b2bdaed8538526fb5379b3107035c52f215cff00d53750b",
+  "source_events_sha256": "586feec1529ca7166f92ec558e139022bfe6206b89dcc9af059991f88e54f35e",
+  "steps": [
+    {
+      "decision": {
+        "action_summary": "\"I swiped up to open the app drawer to find the Pro Expense app.\"",
+        "canonical_action": {
+          "duration_ms": 400,
+          "type": "swipe",
+          "x": 0.4994994994994995,
+          "x2": 0.4934934934934935,
+          "y": 0.7427427427427428,
+          "y2": 0.2872872872872873
+        },
+        "terminal_status": null,
+        "thought": "I need to delete an expense named \"Snacks\" from the Pro Expense app. To do this, I first need to locate and open the Pro Expense app on my phone. Since it's not visible on the home screen, I performed a swipe up gesture to access the app drawer, where all installed apps are listed."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "f23bd4cebf177fbd9a50486436448dc0ce7453a4c26810af83f9b67e4cf41190",
+        "response_sha256": "6e2aa225deb67e64c57382935f99fcb1eec3bee92e155c799cf1feda64e5b59f",
+        "transport_attempts": 1
+      },
+      "step": 0
+    },
+    {
+      "decision": {
+        "action_summary": "\"I swiped up to open the app drawer to find the Pro Expense app.\"",
+        "canonical_action": {
+          "duration_ms": 400,
+          "type": "swipe",
+          "x": 0.4994994994994995,
+          "x2": 0.4934934934934935,
+          "y": 0.7387387387387387,
+          "y2": 0.3203203203203203
+        },
+        "terminal_status": null,
+        "thought": "I need to delete an expense entry for \"Snacks\" in the Pro Expense app. To do this, I first opened the app drawer by swiping up from the home screen. Now, I will locate and open the Pro Expense app so I can access my expense records and proceed with deleting the specific entry."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "a5d1196c2f563f6017bd87d472709936c93711baefd816eee7bb85d3eb443a9e",
+        "response_sha256": "74cc157d08816e4bdf6ab7bbbf68040287839af76635da1d31e07f5b477e31a4",
+        "transport_attempts": 1
+      },
+      "step": 1
+    },
+    {
+      "decision": {
+        "action_summary": "\"I swiped up to open the app drawer to find the Pro Expense app.\"",
+        "canonical_action": {
+          "duration_ms": 400,
+          "type": "swipe",
+          "x": 0.4994994994994995,
+          "x2": 0.4934934934934935,
+          "y": 0.7427427427427428,
+          "y2": 0.3203203203203203
+        },
+        "terminal_status": null,
+        "thought": "I need to delete the \"Snacks\" expense from the Pro Expense app. To do this, I first opened the app drawer to locate the Pro Expense app. Since it wasn't visible on the home screen, I swiped up to access all apps."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "64b7b403484c3514d678df321352dbf82849df7b8a35e66a9f338f35ece08d62",
+        "response_sha256": "2e666446fdaf8786ec2dcef77abebade22e29c866f5ca0b16cc5a8d2f0407d4f",
+        "transport_attempts": 1
+      },
+      "step": 2
+    },
+    {
+      "decision": {
+        "action_summary": "\"I swiped up in the app drawer to scroll down and find the Pro Expense app.\"",
+        "canonical_action": {
+          "duration_ms": 400,
+          "type": "swipe",
+          "x": 0.4994994994994995,
+          "x2": 0.4914914914914915,
+          "y": 0.7847847847847848,
+          "y2": 0.3283283283283283
+        },
+        "terminal_status": null,
+        "thought": "I am trying to locate the Pro Expense app in the app drawer. Since it's not visible on this screen, I performed a swipe-up gesture to scroll through the list of apps and reveal more options. My goal is to find and open the Pro Expense app so that I can proceed with deleting the \"Snacks\" expense."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "d98466c571b9f50d936398c33f84dd6dbec61fe19b903efc1f21fc8e1ba3e042",
+        "response_sha256": "9bda776f1072deacf5ed91ecd185d1f765bff40be2463cf041c771c1f6699b08",
+        "transport_attempts": 1
+      },
+      "step": 3
+    },
+    {
+      "decision": {
+        "action_summary": "\"I tapped on the Pro Expense app icon to open it.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.3843843843843844,
+          "y": 0.7057057057057057
+        },
+        "terminal_status": null,
+        "thought": "I have located the Pro Expense app in the app drawer. To proceed with deleting the \"Snacks\" expense, I need to open the app first. By tapping on the Pro Expense icon, I will access the application where I can manage and delete expenses."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "097a453bc52971855f6e7f6a088c7c05ef4aadd9d7c9d63e013609ea4c34955e",
+        "response_sha256": "fb76f689e2dd1d3a16e709347c6eea6c9c6f9fd5e71fcf802d207decf8dfbae2",
+        "transport_attempts": 1
+      },
+      "step": 4
+    },
+    {
+      "decision": {
+        "action_summary": "\"I waited for the Pro Expense app to load completely.\"",
+        "canonical_action": {
+          "duration_ms": 2000,
+          "type": "wait"
+        },
+        "terminal_status": null,
+        "thought": "I have opened the Pro Expense app, and it is currently loading. Since my goal is to delete the \"Snacks\" expense, I need to wait for the app to fully load so that I can access the list of expenses and proceed with deleting the specific entry."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "805d31b3e9c46edff823a5d6e675b06a7c05a971446d8e8eb00c8a28dd3de847",
+        "response_sha256": "6a928aed8e0bd7d930619a2e877dd353f14b50af44dee4f4259fb5fac1dd6c17",
+        "transport_attempts": 1
+      },
+      "step": 5
+    },
+    {
+      "decision": {
+        "action_summary": "\"I accessed the details of the \\\"Snacks\\\" expense to proceed with deleting it.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.31431431431431434,
+          "y": 0.7407407407407407
+        },
+        "terminal_status": null,
+        "thought": "I tapped on the \"Snacks\" expense entry in the Recent section to view its details. My intention is likely to find an option to delete this specific expense, as part of my task to remove it from the Pro Expense app."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "dc3e16ad6de62fe7d25f2ea05d88121953de51a6a9311ecc929b6f716234e233",
+        "response_sha256": "3a58a9760f230ff42de7d1d8ab7b7671951f13ffb12abe5ffc1da1e9f4e065da",
+        "transport_attempts": 1
+      },
+      "step": 6
+    },
+    {
+      "decision": {
+        "action_summary": "\"I tapped the trash bin icon to delete the \\\"Snacks\\\" expense.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.8948948948948949,
+          "y": 0.6906906906906907
+        },
+        "terminal_status": null,
+        "thought": "I have located the \"Snacks\" expense in the Pro Expense app and am now ready to delete it. By tapping on the trash bin icon next to the expense, I intend to initiate the deletion process for this entry."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "1dd291409f2572b73fdcb995a441dedbd5db413e2d161ee814d4c273b6e39ac7",
+        "response_sha256": "c6dd044aec61c84c745805aedaf01d0581557f679d0a07e29556b456bd376abb",
+        "transport_attempts": 1
+      },
+      "step": 7
+    },
+    {
+      "decision": {
+        "action_summary": "\"I confirmed the deletion of the \\\"Snacks\\\" expense in the Pro Expense app.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.4994994994994995,
+          "y": 0.9259259259259259
+        },
+        "terminal_status": null,
+        "thought": "I have successfully navigated through the Pro Expense app to locate and delete the \"Snacks\" expense. After accessing its details, I tapped the trash bin icon to initiate the deletion process. Now, I am at the confirmation screen where I need to confirm the deletion of the item. By tapping \"CONFIRM,\" I will finalize the removal of this expense from my records."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "4e37bd09e0f1f64cb0574e3045ea4e9bb2cb102cc943f9fac4478dd462e54121",
+        "response_sha256": "dd978641c4dc8bebbcc8b028d58a9f09888160b5b22f878478d39431185e3a6d",
+        "transport_attempts": 1
+      },
+      "step": 8
+    },
+    {
+      "decision": {
+        "action_summary": "\"I deleted the \\\"Snacks\\\" expense from the Pro Expense app.\"",
+        "canonical_action": null,
+        "terminal_status": "success",
+        "thought": "I have successfully navigated through the Pro Expense app to locate and delete the \"Snacks\" expense. After opening the app, I accessed the specific expense detail and confirmed its deletion. Now that the task is complete, I can finalize the process by terminating the operation."
+      },
+      "executed": false,
+      "model_call": {
+        "request_sha256": "0670a1edfaf900d28b3e6d6e6a7b4956325f6cdc26f45e3647b0028d3afc1a91",
+        "response_sha256": "0da008460ee6d1629c587af239a547225ecbbe91ac2b960d6dd0d1e4855da0e6",
+        "transport_attempts": 1
+      },
+      "step": 9
+    }
+  ],
+  "success": true,
+  "task_goal": "Delete the following expenses from pro expense: Snacks.",
+  "task_name": "ExpenseDeleteSingle",
+  "task_params": {
+    "row_objects": [
+      {
+        "amount": 21889,
+        "category": 3,
+        "created_date": 1696266000000,
+        "expense_id": -1,
+        "modified_date": 1696266000000,
+        "name": "Snacks",
+        "note": "Remember to transfer funds"
+      }
+    ]
+  },
+  "termination_reason": "model_terminate_success"
+}

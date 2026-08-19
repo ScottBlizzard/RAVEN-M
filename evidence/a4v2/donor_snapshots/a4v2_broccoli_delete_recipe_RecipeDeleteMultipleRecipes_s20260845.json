@@ -1,0 +1,379 @@
+{
+  "episode_id": "RecipeDeleteMultipleRecipes_20260845_07a488cb",
+  "error": null,
+  "evaluator_reward": 1.0,
+  "executed_action_count": 16,
+  "lifecycle_errors": [],
+  "model_call_count": 17,
+  "schema": "a4v2.portable_successful_donor_episode.v1",
+  "seed": 20260845,
+  "source_episode_sha256": "d2a690dd4670190ebfaf424212660a6f9c6c646e5cb8e2b5dda13b866996a68c",
+  "source_events_sha256": "10243061903702b99e7c5f744af95d8050e7604a184a4e9c3ffd23cfb510b2ac",
+  "steps": [
+    {
+      "decision": {
+        "action_summary": "\"I swiped up to open the app drawer to find the Broccoli app.\"",
+        "canonical_action": {
+          "duration_ms": 400,
+          "type": "swipe",
+          "x": 0.4994994994994995,
+          "x2": 0.4934934934934935,
+          "y": 0.7427427427427428,
+          "y2": 0.2872872872872873
+        },
+        "terminal_status": null,
+        "thought": "I need to delete specific recipes from the Broccoli app. To do this, I first need to locate and open the Broccoli app on my phone. Since it's not visible on the home screen, I performed a swipe up gesture to access the app drawer where all installed apps are listed."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "e9b0d31edbeca290895fea9e59323eef68f381f4a5b80cdd75e79a1f5088e942",
+        "response_sha256": "1e39e45b210a7e78ce72851130f9f6be80874ad3540346711b17126ab397285d",
+        "transport_attempts": 1
+      },
+      "step": 0
+    },
+    {
+      "decision": {
+        "action_summary": "\"I opened the Broccoli app to manage my recipes.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.6126126126126126,
+          "y": 0.33233233233233234
+        },
+        "terminal_status": null,
+        "thought": "I opened the app drawer and located the Broccoli app. By tapping on it, I intended to access my recipe collection so that I could proceed with deleting the specific recipes mentioned in the task: Lemon Garlic Tilapia, Zucchini Noodles with Pesto, and Kale and Quinoa Salad."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "95a5ea7f6ceb697232fcaea7a6dcc0a204e89aa07451cecb0ad5cc85ff6ef991",
+        "response_sha256": "2d62d37fd4466406bd9db350961163b0a84121e4775a8e44d82b4f38b7d1eb48",
+        "transport_attempts": 1
+      },
+      "step": 1
+    },
+    {
+      "decision": {
+        "action_summary": "\"I waited for the Broccoli app to finish loading.\"",
+        "canonical_action": {
+          "duration_ms": 2000,
+          "type": "wait"
+        },
+        "terminal_status": null,
+        "thought": "I opened the Broccoli app to manage my recipes, and now I need to locate the specific recipes I want to delete: Lemon Garlic Tilapia, Zucchini Noodles with Pesto, and Kale and Quinoa Salad. Since the app is still loading, I waited for it to fully load so that I can access the recipe list."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "82d4ca0014dbc4ea6d7c734899c6163fbb42a4155dbe76f061d6c6cdd33214c4",
+        "response_sha256": "7c6ac56d3d4f6cf2fa4e9d3cb84ff3af74890b5e2b19c58d9f41f8d058438e83",
+        "transport_attempts": 1
+      },
+      "step": 2
+    },
+    {
+      "decision": {
+        "action_summary": "\"I accessed the details of the \\\"Lemon Garlic Tilapia\\\" recipe to proceed with deleting it.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.6016016016016016,
+          "y": 0.3613613613613614
+        },
+        "terminal_status": null,
+        "thought": "I am in the Broccoli app and need to delete specific recipes: Lemon Garlic Tilapia, Zucchini Noodles with Pesto, and Kale and Quinoa Salad. To begin, I tapped on the \"Lemon Garlic Tilapia\" recipe to access its details or options for deletion."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "5472e5d47d4e41b6291ab38e508de68ecf26204699bf82ab3379163fd4e47356",
+        "response_sha256": "f3c3edcdae983308ac40bbdce19ee391365b4854b7bf28d72b2a2a92771d7b9a",
+        "transport_attempts": 1
+      },
+      "step": 3
+    },
+    {
+      "decision": {
+        "action_summary": "\"I tapped the three dots menu icon to access options for deleting the \\\"Lemon Garlic Tilapia\\\" recipe.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.948948948948949,
+          "y": 0.08408408408408409
+        },
+        "terminal_status": null,
+        "thought": "I am currently viewing the details of the \"Lemon Garlic Tilapia\" recipe in the Broccoli app. To delete this recipe, I need to access additional options, which are likely found in the menu represented by the three dots icon at the top right corner of the screen. By tapping on this icon, I should be able to find the option to delete the recipe."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "8dd848976e50e5c3c1c2dbbd014a5e6968e6356d595a82b0d7ce174a6882fd0e",
+        "response_sha256": "dfd59248350ad9b482d679e89a3db5e05df2d4cf76c9dde5915fdba550404a0b",
+        "transport_attempts": 1
+      },
+      "step": 4
+    },
+    {
+      "decision": {
+        "action_summary": "\"I selected the \\\"Delete\\\" option to remove the \\\"Lemon Garlic Tilapia\\\" recipe.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.6916916916916916,
+          "y": 0.2502502502502503
+        },
+        "terminal_status": null,
+        "thought": "I have accessed the options menu for the \"Lemon Garlic Tilapia\" recipe and now need to delete it as part of my task. I tapped on the \"Delete\" option to proceed with removing this recipe from the app."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "4aea087ddc8d840d3aa3d36c49d60fd790f339cf24063d8bc30925e5ba94512d",
+        "response_sha256": "66f58bb8fdde6a1570f8d64ca9ff58332b626dc9c89d536c7e09f37e4d244541",
+        "transport_attempts": 1
+      },
+      "step": 5
+    },
+    {
+      "decision": {
+        "action_summary": "\"I confirmed the deletion of the \\\"Lemon Garlic Tilapia\\\" recipe.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.7957957957957958,
+          "y": 0.5395395395395396
+        },
+        "terminal_status": null,
+        "thought": "I have reached the confirmation dialog for deleting the \"Lemon Garlic Tilapia\" recipe. To proceed with removing it from my collection, I tapped on the \"DELETE\" option to confirm my choice."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "ceba327656d702a4f2a917a93039ceb686f4e0e9d46328b9470d018570977bad",
+        "response_sha256": "3e1674740bd7525dd028075c9c77dba6b111b62c26e37858618d81fe9f963dd3",
+        "transport_attempts": 1
+      },
+      "step": 6
+    },
+    {
+      "decision": {
+        "action_summary": "\"I confirmed the deletion of the \\\"Lemon Garlic Tilapia\\\" recipe.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.7957957957957958,
+          "y": 0.5395395395395396
+        },
+        "terminal_status": null,
+        "thought": "I have reached the confirmation dialog for deleting the \"Lemon Garlic Tilapia\" recipe. To proceed with removing it from my collection, I tapped on the \"DELETE\" option to confirm my choice."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "5e1cdb80c3f440a89f9330112e55337b4763446b124fe0c6c519c121de056646",
+        "response_sha256": "3e1674740bd7525dd028075c9c77dba6b111b62c26e37858618d81fe9f963dd3",
+        "transport_attempts": 1
+      },
+      "step": 7
+    },
+    {
+      "decision": {
+        "action_summary": "\"I accessed the details of the \\\"Zucchini Noodles with Pesto\\\" recipe to prepare for its deletion.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.6016016016016016,
+          "y": 0.36236236236236236
+        },
+        "terminal_status": null,
+        "thought": "I have successfully deleted the \"Lemon Garlic Tilapia\" recipe from the Broccoli app. Now, I need to delete the remaining recipes: \"Zucchini Noodles with Pesto\" and \"Kale and Quinoa Salad.\" To do this, I will access each recipe's details by tapping on them, then use the menu options to delete them one by one."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "39a0877e063156aff5abeb7132d754218b69a8da7ee929eb6e2622251dc2bf3a",
+        "response_sha256": "da4c0a16a07f23322e4272f711fb61644027885708fa557a42248eac69e61d66",
+        "transport_attempts": 1
+      },
+      "step": 8
+    },
+    {
+      "decision": {
+        "action_summary": "\"I tapped the three dots menu icon to access options for deleting the \\\"Zucchini Noodles with Pesto\\\" recipe.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.948948948948949,
+          "y": 0.08408408408408409
+        },
+        "terminal_status": null,
+        "thought": "I am in the process of deleting specific recipes from the Broccoli app. After successfully deleting \"Lemon Garlic Tilapia,\" I have now accessed the details of \"Zucchini Noodles with Pesto\" to prepare for its deletion. My next step is to find and select the delete option for this recipe as well."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "9dca0af5015307813b4816ae8f34143d4ac34e92e39051f6162e44fe0bde7560",
+        "response_sha256": "f7c9da61b071e157d3da3b7735ff727e1e1e180cccb3e6f9df5fc462a09e3f5f",
+        "transport_attempts": 1
+      },
+      "step": 9
+    },
+    {
+      "decision": {
+        "action_summary": "\"I selected the \\\"Delete\\\" option for the \\\"Zucchini Noodles with Pesto\\\" recipe.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.6916916916916916,
+          "y": 0.2502502502502503
+        },
+        "terminal_status": null,
+        "thought": "I am in the process of deleting specific recipes from the Broccoli app. After accessing the details of the \"Zucchini Noodles with Pesto\" recipe, I tapped on the \"Delete\" option to initiate its removal. This aligns with my goal of deleting this particular recipe along with the others mentioned."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "9e3bb2067bfa1a70c4b2bef1924add04de43e310b68a97ab4204950fada70497",
+        "response_sha256": "d4147d6b4a255ececa7c3cb1e30994177b3dd6acaca15f74d401d2c9ac489441",
+        "transport_attempts": 1
+      },
+      "step": 10
+    },
+    {
+      "decision": {
+        "action_summary": "\"I confirmed the deletion of the \\\"Zucchini Noodles with Pesto\\\" recipe.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.7957957957957958,
+          "y": 0.5395395395395396
+        },
+        "terminal_status": null,
+        "thought": "I am in the process of deleting specific recipes from the Broccoli app. After navigating to the details of the \"Zucchini Noodles with Pesto\" recipe, I accessed the deletion option and confirmed my intention to delete it. Now, I need to confirm this action by tapping \"DELETE\" on the confirmation dialog that appears."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "3bd8fc468237b1e9fafaf215ef49587131bc811f1a75439da0fdf34da730000d",
+        "response_sha256": "f8d400f3dd2f7d25131eaa7c7cf19c8225a77d45d9dd81369c275a9e1b013d50",
+        "transport_attempts": 1
+      },
+      "step": 11
+    },
+    {
+      "decision": {
+        "action_summary": "\"I accessed the details of the \\\"Kale and Quinoa Salad\\\" recipe to prepare for its deletion.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.5945945945945946,
+          "y": 0.21921921921921922
+        },
+        "terminal_status": null,
+        "thought": "I have already deleted the \"Lemon Garlic Tilapia\" and \"Zucchini Noodles with Pesto\" recipes. Now, I need to delete the \"Kale and Quinoa Salad\" recipe as part of my task. To do this, I accessed its details by tapping on it, which will allow me to find the delete option."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "2b6f9b23854f2dcc89d6cfa7794ebc7867145656b393f8749c6ac32b2d97964f",
+        "response_sha256": "26f65b6ea437a625090bc56e1c4bb334921251900f5f687daf84224932bdf0af",
+        "transport_attempts": 1
+      },
+      "step": 12
+    },
+    {
+      "decision": {
+        "action_summary": "\"I tapped the three dots menu icon to access options for deleting the \\\"Kale and Quinoa Salad\\\" recipe.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.948948948948949,
+          "y": 0.08408408408408409
+        },
+        "terminal_status": null,
+        "thought": "I am in the process of deleting specific recipes from the Broccoli app. After successfully deleting \"Lemon Garlic Tilapia\" and \"Zucchini Noodles with Pesto,\" I now need to delete \"Kale and Quinoa Salad.\" I've accessed the details of this recipe and tapped the three dots menu icon to find the delete option, which is a consistent step for removing recipes."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "52661610bb527511b9868b948eb25f8f8b9fe563bb179094b74739bbe2836e67",
+        "response_sha256": "539b3ffa447a4c868fc8f8fc3c0284a3f07f36a3d2f4bf5efe5a6f612829052e",
+        "transport_attempts": 1
+      },
+      "step": 13
+    },
+    {
+      "decision": {
+        "action_summary": "\"I selected the \\\"Delete\\\" option for the \\\"Kale and Quinoa Salad\\\" recipe.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.6916916916916916,
+          "y": 0.2502502502502503
+        },
+        "terminal_status": null,
+        "thought": "I am in the process of deleting specific recipes from the Broccoli app. After successfully deleting \"Lemon Garlic Tilapia\" and \"Zucchini Noodles with Pesto,\" I now have accessed the details of the \"Kale and Quinoa Salad\" recipe. I tapped the three dots menu icon to bring up the options, and my next step is to select the \"Delete\" option to remove this recipe as well."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "7fec1183d89261421b67c38eca2d8d91971d757c76cf5c59cae6f11cecaf053e",
+        "response_sha256": "69a9781e7fcdbf283954f2962c357863d506176ebc84f299f1119b1ebd935386",
+        "transport_attempts": 1
+      },
+      "step": 14
+    },
+    {
+      "decision": {
+        "action_summary": "\"I confirmed the deletion of the \\\"Kale and Quinoa Salad\\\" recipe.\"",
+        "canonical_action": {
+          "type": "tap",
+          "x": 0.7957957957957958,
+          "y": 0.5395395395395396
+        },
+        "terminal_status": null,
+        "thought": "I am in the process of deleting specific recipes from the Broccoli app. After navigating through the app to locate the \"Kale and Quinoa Salad\" recipe, I have reached the confirmation dialog for deletion. By tapping on the \"DELETE\" option, I intend to permanently remove this recipe as part of my task to delete all three specified recipes."
+      },
+      "executed": true,
+      "model_call": {
+        "request_sha256": "d9c72b3fb21dffa3009946eff51f262a3ffe8e5c184a7c3a578520507acd9864",
+        "response_sha256": "022bc0359f763865fca80de0c8745c8071456c8a97b8461c011131968a8b40ca",
+        "transport_attempts": 1
+      },
+      "step": 15
+    },
+    {
+      "decision": {
+        "action_summary": "\"I deleted the specified recipes from the Broccoli app, confirming their removal.\"",
+        "canonical_action": null,
+        "terminal_status": "success",
+        "thought": "I have successfully deleted all the specified recipes—Lemon Garlic Tilapia, Zucchini Noodles with Pesto, and Kale and Quinoa Salad—from the Broccoli app. The confirmation that no recipes are found indicates that these deletions were completed as intended. My task is now complete."
+      },
+      "executed": false,
+      "model_call": {
+        "request_sha256": "defa4a202589767836495191bc3268280bd7b1ca1f500f8206642fa0856986b8",
+        "response_sha256": "d17c3e49486dde81105d9801474b9504b4f69553fa25a31ebf1546f23caf0fb8",
+        "transport_attempts": 1
+      },
+      "step": 16
+    }
+  ],
+  "success": true,
+  "task_goal": "Delete the following recipes from Broccoli app: Lemon Garlic Tilapia, Zucchini Noodles with Pesto, Kale and Quinoa Salad.",
+  "task_name": "RecipeDeleteMultipleRecipes",
+  "task_params": {
+    "row_objects": [
+      {
+        "description": "A quick and easy meal, perfect for busy weekdays.",
+        "directions": "Sauté tilapia in butter, add lemon juice and garlic. Serve with steamed vegetables. Feel free to substitute with ingredients you have on hand.",
+        "favorite": 0,
+        "imageName": "",
+        "ingredients": "as per recipe",
+        "preparationTime": "1 hrs",
+        "recipeId": -1,
+        "servings": "2 servings",
+        "source": "",
+        "title": "Lemon Garlic Tilapia"
+      },
+      {
+        "description": "A quick and easy meal, perfect for busy weekdays.",
+        "directions": "Spiralize zucchini into noodles, sauté with garlic, then mix with pesto sauce. Top with grated Parmesan cheese. Feel free to substitute with ingredients you have on hand.",
+        "favorite": 0,
+        "imageName": "",
+        "ingredients": "subject to change",
+        "preparationTime": "30 mins",
+        "recipeId": -1,
+        "servings": "6 servings",
+        "source": "",
+        "title": "Zucchini Noodles with Pesto"
+      },
+      {
+        "description": "An ideal recipe for experimenting with different flavors and ingredients.",
+        "directions": "Toss chopped kale, cooked quinoa, dried cranberries, sliced almonds, and feta cheese with a lemon vinaigrette. Feel free to substitute with ingredients you have on hand.",
+        "favorite": 0,
+        "imageName": "",
+        "ingredients": "varies",
+        "preparationTime": "1 hrs",
+        "recipeId": -1,
+        "servings": "8 servings",
+        "source": "",
+        "title": "Kale and Quinoa Salad"
+      }
+    ]
+  },
+  "termination_reason": "model_terminate_success"
+}

@@ -1,0 +1,51 @@
+{
+  "androidworld_commit": "3e50888527ef9f29b9157ecd537e408008bb1c85",
+  "androidworld_worktree_identity": {
+    "head": "3e50888527ef9f29b9157ecd537e408008bb1c85",
+    "tracked_diff_sha256": "f1498c466a88acddeb2e414e79078090fc51c94aba5592208bcf8b8c8041a2ec",
+    "untracked_files": {
+      "android_world/task_evals/information_retrieval/proto/state_pb2.py": "7fcc0e0c1cd8c1d03d644e23a2c2d3e17709d6f1cddc4b04655be9bda035cde4",
+      "android_world/task_evals/information_retrieval/proto/state_pb2_grpc.py": "d0e6c85813268da7b989e6034cca76e56d73fe1aa279a1db2a98930bb8d75ed3",
+      "android_world/task_evals/information_retrieval/proto/task_pb2.py": "1cc5638cf6dc51463dffd7ca9ee3c85cbabcb66e89815ee4bf53f61dc7c7e84c",
+      "android_world/task_evals/information_retrieval/proto/task_pb2_grpc.py": "0136cd56ec38ead7eb274d988c550a31d051963f45d4ee5693f0ce5bd4beaee6"
+    }
+  },
+  "content_sha256": "f22444e95d2847347c62d0921f40d97a6394a8530bc3cf49f8592735232344ef",
+  "experiment_id": "A4V2_FAITHFUL_OFFLINE_AWM_QWEN3VL32B_AW_HARD_S20260806_V1",
+  "include_optional": false,
+  "instance_generation": "random.seed(seed); numpy.random.seed(seed); task_type.generate_random_params()",
+  "manifest_role": "deficit_supplement",
+  "parent_controller": "A0_OFFICIAL_QWEN3VL32B_SCREENSHOT_ONLY",
+  "plan_file_sha256": "638648d136bbfce6fe753e4724c3941e6b4e092c64693bf215ff4006b456f60f",
+  "plan_path": "implementation/configs/a4v2_awm_donor_acquisition_plan.json",
+  "protocol_amendment_path": "protocols/A4V2_DONOR_ACQUISITION_PLAN_V2_AMENDMENT_2026-08-19.md",
+  "protocol_amendment_sha256": "3b9c6d89f90db52bcd918f064cac1226c36fea1841d4956bbaa94d42d684dc5c",
+  "schema": "a4v2.donor_acquisition_manifest.v1",
+  "supplement_routes": [
+    "osmand_open_location_result"
+  ],
+  "tasks": [
+    {
+      "difficulty": "medium",
+      "goal_hash": "7ef4d2bb632e5d54921a9d078945b58dc5493ab363816c5cf3186a1371f582e6",
+      "native_max_steps": 20,
+      "optional": true,
+      "route_id": "osmand_open_location_result",
+      "task_class": "OsmAndFavorite",
+      "task_id": "osmand_open_location_result_03_s20260850",
+      "task_params_hash": "d66bde792182d4db1fd6f3188c275fa2ed6c1ed4561ca65327f6abf5d6186374",
+      "task_seed": 20260850
+    },
+    {
+      "difficulty": "medium",
+      "goal_hash": "bab767bf641bef74e171890ac7c9802f57780964ec9193924c4b0ebe1fc71328",
+      "native_max_steps": 20,
+      "optional": true,
+      "route_id": "osmand_open_location_result",
+      "task_class": "OsmAndFavorite",
+      "task_id": "osmand_open_location_result_90_s20260907",
+      "task_params_hash": "1a67143c77c816aa43de42d2ca10dac469ef3c2ac7b9ff35b22b190de7c0fe27",
+      "task_seed": 20260907
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "androidworld_commit": "3e50888527ef9f29b9157ecd537e408008bb1c85",
+  "androidworld_worktree_identity": {
+    "head": "3e50888527ef9f29b9157ecd537e408008bb1c85",
+    "tracked_diff_sha256": "f1498c466a88acddeb2e414e79078090fc51c94aba5592208bcf8b8c8041a2ec",
+    "untracked_files": {
+      "android_world/task_evals/information_retrieval/proto/state_pb2.py": "7fcc0e0c1cd8c1d03d644e23a2c2d3e17709d6f1cddc4b04655be9bda035cde4",
+      "android_world/task_evals/information_retrieval/proto/state_pb2_grpc.py": "d0e6c85813268da7b989e6034cca76e56d73fe1aa279a1db2a98930bb8d75ed3",
+      "android_world/task_evals/information_retrieval/proto/task_pb2.py": "1cc5638cf6dc51463dffd7ca9ee3c85cbabcb66e89815ee4bf53f61dc7c7e84c",
+      "android_world/task_evals/information_retrieval/proto/task_pb2_grpc.py": "0136cd56ec38ead7eb274d988c550a31d051963f45d4ee5693f0ce5bd4beaee6"
+    }
+  },
+  "content_sha256": "92124095811b48931b2b6661eb16080b00b6be2ab8c28ba0d3ceb880e5126df7",
+  "experiment_id": "A4V2_FAITHFUL_OFFLINE_AWM_QWEN3VL32B_AW_HARD_S20260806_V1",
+  "include_optional": false,
+  "instance_generation": "random.seed(seed); numpy.random.seed(seed); task_type.generate_random_params()",
+  "manifest_role": "deficit_supplement",
+  "parent_controller": "A0_OFFICIAL_QWEN3VL32B_SCREENSHOT_ONLY",
+  "plan_file_sha256": "638648d136bbfce6fe753e4724c3941e6b4e092c64693bf215ff4006b456f60f",
+  "plan_path": "implementation/configs/a4v2_awm_donor_acquisition_plan.json",
+  "protocol_amendment_path": "protocols/A4V2_DONOR_ACQUISITION_PLAN_V2_AMENDMENT_2026-08-19.md",
+  "protocol_amendment_sha256": "3b9c6d89f90db52bcd918f064cac1226c36fea1841d4956bbaa94d42d684dc5c",
+  "schema": "a4v2.donor_acquisition_manifest.v1",
+  "supplement_routes": [
+    "opentracks_retrieve_duration"
+  ],
+  "tasks": [
+    {
+      "difficulty": "easy",
+      "goal_hash": "2b6ee83a7e1baef4fcc2ced65f5e6a7dd5cce01c34413472ff627023b6d175ff",
+      "native_max_steps": 16,
+      "optional": true,
+      "route_id": "opentracks_retrieve_duration",
+      "task_class": "SportsTrackerActivityDuration",
+      "task_id": "opentracks_retrieve_duration_03_s20260844",
+      "task_params_hash": "7c4b16c1e8cfcec15f2edcac459b20cec0bc7d972ce7e1a13230c119c43427f3",
+      "task_seed": 20260844
+    },
+    {
+      "difficulty": "easy",
+      "goal_hash": "ddfd3559d7203d5bdc479e68ac2e079dd70c8d95dd196d48599d3dc3825037da",
+      "native_max_steps": 16,
+      "optional": true,
+      "route_id": "opentracks_retrieve_duration",
+      "task_class": "SportsTrackerActivityDuration",
+      "task_id": "opentracks_retrieve_duration_90_s20260905",
+      "task_params_hash": "f0d38521c239aec070be01fa4a49ddbfff96697070145ceea8cb3e91e91efc3e",
+      "task_seed": 20260905
+    }
+  ]
+}
