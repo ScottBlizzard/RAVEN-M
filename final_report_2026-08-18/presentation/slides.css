@@ -595,6 +595,15 @@
     .method-examples { margin-top:18px; }
     .method-examples span { min-height:72px; padding:10px 9px; line-height:1.4; }
     .hypothesis-box { margin-top:13px; padding:12px 16px; border:1px solid #efc69e; background:#fff7ef; color:var(--ink); font-size:14px; }
+    .prerequisite-bar { display:grid; grid-template-columns:170px 1fr 300px; gap:15px; align-items:center; margin-top:-4px; padding:11px 15px; border-left:5px solid var(--warn); background:#fff7ef; }
+    .prerequisite-bar b { color:#a65e21; font-size:13px; }
+    .prerequisite-bar span { color:var(--muted); font-size:12px; }
+    .prerequisite-bar strong { color:var(--zju); font-size:12px; text-align:right; }
+    .slide[data-title="信息机会链"] .lineage-flow { margin-top:11px; }
+    .slide[data-title="信息机会链"] .lineage-flow .flow-node { min-height:102px; padding:13px 9px; }
+    .slide[data-title="信息机会链"] .method-examples { margin-top:12px; }
+    .slide[data-title="信息机会链"] .method-examples span { min-height:64px; padding:8px 8px; }
+    .slide[data-title="信息机会链"] .hypothesis-box { margin-top:10px; padding:10px 14px; font-size:13px; }
 
     .hard-scope-layout { display:grid; grid-template-columns:1.04fr .96fr; gap:28px; margin-top:9px; }
     .official-mix, .success-coverage { min-height:350px; padding:25px 27px 21px; border-top:5px solid var(--blue); background:#f3f7fc; }

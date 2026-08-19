@@ -24,7 +24,7 @@
   <!-- 02 研究逻辑 -->
   <section class="slide content" data-title="研究逻辑">
     <p class="eyebrow">WHAT I DID IN THIS PROJECT</p>
-    <h2>一个月的工作围绕一条主线：把“记忆是否有用”拆成可复现、可比较、可解释的实验</h2>
+    <h2>本课题工作围绕一条主线：把“记忆是否有用”拆成可复现、可比较、可解释的实验</h2>
     <div class="work-map">
       <div class="work-stage foundation">
         <span>01 · 先让结果可信</span>
@@ -37,7 +37,7 @@
         <span>02 · 再探索设计空间</span>
         <h3>横向比较 + 纵向升级</h3>
         <p>横向移植进度、工作流、图记忆与恢复机制；纵向从 A0、A1 迭代到最小账本 R2。</p>
-        <b>产出：一组正负对照 + 最强完整结果 6 / 19</b>
+        <b>产出：A / R 系列正负对照 + 24 个 donor slot + 最强完整结果 6 / 19</b>
       </div>
       <div class="work-arrow">→</div>
       <div class="work-stage audit">
@@ -121,13 +121,13 @@
       <tbody>
         <tr><td><strong>A2</strong><small>可信进度</small></td><td>高频写入经过约束的进度摘要</td><td><span class="audit-tag active">高写入 / 高读取</span></td><td><b>0 / 19</b></td><td>更频繁、更可信的进度仍不是充分条件</td></tr>
         <tr><td><strong>A3 / A5</strong><small>字段 / 图记忆</small></td><td>最小移植 MemGUI / HyMEM 式结构</td><td><span class="audit-tag inactive">不完整 / 未激活</span></td><td><b>0 / 1</b></td><td>说明最小外挂不足，不能外推为原论文无效</td></tr>
-        <tr><td><strong>A4</strong><small>工作流检索</small></td><td>检索同 App donor 以复用 workflow</td><td><span class="audit-tag mismatch">donor 错配</span></td><td><b>0 / 1</b></td><td>相关性在读取前失败，尚未真正检验 AWM</td></tr>
+        <tr><td><strong>A4-v2</strong><small>AWM donor bank</small></td><td>预注册每条路线至少 2 个成功 donor</td><td><span class="audit-tag mismatch">24 / 24 slot 完成</span></td><td><b>3 / 7 路线达标</b></td><td>4 条路线在 4 / 4 机会耗尽后仍无法 induction</td></tr>
         <tr><td><strong>A6</strong><small>持续轨迹回放</small></td><td>把更多历史持续放回上下文</td><td><span class="audit-tag over">机制过度活跃</span></td><td><b>0 / 19</b></td><td>更多记忆可能稳定重复动作与错误路线</td></tr>
         <tr><td><strong>A8-A12</strong><small>停滞与恢复</small></td><td>检测循环、停滞并注入恢复提醒</td><td><span class="audit-tag active">有触发 / 有读取</span></td><td><b>0 个有益分叉</b></td><td>提醒“卡住了”不等于获得替代策略</td></tr>
       </tbody>
     </table>
-    <div class="negative-logic"><strong>横向结论：</strong>纯记忆只在“信息不可用”是主瓶颈时可能直接奏效；感知、路线、恢复与完成核验不会因多一段文本自动出现。</div>
-    <div class="takeaway">这组负结果划出了作用边界，也反过来解释了 R2 为什么选择做减法，而不是继续堆叠字段和历史。</div>
+    <div class="negative-logic"><strong>A4-v2 最新封存：</strong>24 个有效 donor episode = 6 成功 + 18 科学失败；454 calls / 442 actions。因 4 条路线 coverage blocked，workflow induction 与七题评分按协议停止。</div>
+    <div class="takeaway">横向实验不只比较“记忆形式”：它进一步发现，纯记忆可能在信息、策略甚至可复用 donor 的前置条件上就被卡住。</div>
     <span class="page">05 / 12</span>
   </section>
 
@@ -219,7 +219,8 @@
   <!-- 09 信息机会链 -->
   <section class="slide content" data-title="信息机会链">
     <p class="eyebrow">THE NEW AUDIT ORDER</p>
-    <h2>由 R15 推出信息机会链：先追踪任务事实，再评价记忆组件</h2>
+    <h2>R15 让审计下沉到事实，A4-v2 又揭示：记忆在读取前就可能失去机会</h2>
+    <div class="prerequisite-bar"><b>P0 · 方法前置条件</b><span>是否存在可复用 donor / 合法写入机会 / 足够预算？</span><strong>A4-v2：仅 3 / 7 路线获得 donor coverage</strong></div>
     <div class="flow lineage-flow">
       <div class="flow-node upstream"><div class="n">L0</div><h3>屏幕事实</h3><p>是否出现</p></div>
       <div class="flow-node upstream"><div class="n">L1</div><h3>原始表述</h3><p>是否说对</p></div>
@@ -231,12 +232,12 @@
     </div>
     <div class="breakpoint-examples method-examples">
       <span><b>R15 Browser</b>L0-L2 保真；特有组件 L3-L4 静默；仍到达 L6</span>
-      <span><b>A4</b>donor 错配，相关性在 L4 前失败</span>
+      <span><b>A4-v2</b>24 个 slot 后仍有 4 条路线停在 P0，尚未进入 induction</span>
       <span><b>R9</b>提醒到达 L4，但没有有效 L5 分叉</span>
       <span><b>R11</b>出现局部 L6 改善，仍不足以完成全局任务</span>
     </div>
-    <div class="hypothesis-box"><strong>因果信用规则：</strong>只有相关事实先于动作分叉并带来 evaluator 进展，且匹配反事实支持，才把收益归给记忆组件。</div>
-    <div class="takeaway">方法现在才正式出现：它不是另一个记忆模块，而是一套决定“先修哪一层、如何验证”的轨迹诊断顺序。</div>
+    <div class="hypothesis-box"><strong>因果信用规则：</strong>先证明方法有资格进入任务，再证明相关事实先于动作分叉并带来进展；匹配反事实支持后，才把收益归给记忆组件。</div>
+    <div class="takeaway">这套分析从“组件有没有读”扩展为 P0 + L0-L6：先审前置条件，再追任务事实，最后才评价动作与结果。</div>
     <span class="page">09 / 12</span>
   </section>
 
@@ -261,18 +262,18 @@
   <!-- 11 文献坐标与验证边界 -->
   <section class="slide content" data-title="相关工作与验证">
     <p class="eyebrow">WHAT IS DIFFERENT, AND WHAT IS NOT YET PROVEN</p>
-    <h2>我们的增量不在再造记忆字段，而在把轨迹信用分配下沉到单条事实</h2>
+    <h2>与论文相比，我们增加的是“前置条件 + 事实级断点”的审计尺度</h2>
     <div class="analysis-scale-grid compact-scales">
-      <div class="scale-card"><span>MOBILEUSE · NEURIPS 2025</span><h3>系统组件与分层反思</h3><p>按 error type 分析并做模块消融。</p><div class="scale-unit">任务 / 故障类型 / 模块</div></div>
+      <div class="scale-card"><span>AWM · arXiv:2409.07429</span><h3>从成功轨迹归纳工作流</h3><p>先获得成功 demonstrations，再 induction、检索与复用。</p><div class="scale-unit">workflow / task / system</div></div>
       <div class="scale-card"><span>MEMGUI-BENCH · 2026</span><h3>保持率与五类失败</h3><p>用 IRR 和 memory-unit 指标衡量记忆。</p><div class="scale-unit">任务 / challenge / memory unit</div></div>
-      <div class="scale-card ours-scale"><span>本项目 · FROZEN TRACE</span><h3>事实 × 阶段 × 轨迹</h3><p>定位最早断点并检查动作分叉与进展。</p><div class="scale-unit">单条事实的因果信用链</div></div>
+      <div class="scale-card ours-scale"><span>本项目 · FROZEN TRACE</span><h3>P0 + 事实 × 阶段 × 轨迹</h3><p>先审 donor / opportunity，再定位最早事实断点。</p><div class="scale-unit">前置条件到结果的信用链</div></div>
     </div>
     <div class="validation-footer">
       <div><b>目前已经支持</b><p>描述性映射 + 回顾性断点区分</p></div>
       <div class="future"><b>仍需决定性验证</b><p>盲法双人标注 + 预注册的瓶颈匹配干预</p></div>
     </div>
-    <p class="source-line">Sources: MobileUse, NeurIPS 2025; MemGUI-Bench, arXiv:2602.06075. 不声称事实级分析普遍首次出现。</p>
-    <div class="takeaway">可以稳健声称的是一种更细的回顾性诊断框架；只有它能前瞻预测哪种最小干预有效，才升级为经过验证的设计方法。</div>
+    <p class="source-line">Sources: AWM, arXiv:2409.07429; MemGUI-Bench, arXiv:2602.06075; A4-v2 donor acquisition closure. 不声称该尺度普遍首次出现。</p>
+    <div class="takeaway">后续研究空间由此变得具体：记忆评测不仅要问“读到了吗”，还要测 donor coverage、信息机会与最早断点能否预测有效干预。</div>
     <span class="page">11 / 12</span>
   </section>
 
@@ -284,8 +285,8 @@
       <h2>轻量系统增益，异质失败证据，可检验的分析转折</h2>
       <div class="conclusion-lines">
         <div><span>01</span><p><strong>系统结果</strong>　R2 以最小 verified / pending 账本达到 6 / 19，在混合 Hard 任务上取得 31.6%，且零额外模型调用。</p></div>
-        <div><span>02</span><p><strong>实验结论</strong>　横向说明纯记忆并非普适解；纵向说明记忆不是越多越好，选择性保留比持续堆叠更有效。</p></div>
-        <div><span>03</span><p><strong>分析转折</strong>　R15 促使审计从组件下沉到任务事实；旧实验已支持回顾性断点诊断，前瞻预测仍待匹配反事实验证。</p></div>
+        <div><span>02</span><p><strong>实验结论</strong>　纵向说明记忆不是越多越好；A4-v2 进一步表明，可复用 donor coverage 本身也可能成为上游瓶颈。</p></div>
+        <div><span>03</span><p><strong>分析转折</strong>　R15 与 A4-v2 把审计扩展为 P0 + L0-L6；回顾性断点诊断已有证据，前瞻预测仍待验证。</p></div>
       </div>
       <div class="final-question">不是“记忆越多越好”，而是哪条事实、在哪一层、通过什么干预真正改变了动作。</div>
       <p class="questions">Questions & Discussion</p>

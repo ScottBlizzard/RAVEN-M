@@ -13,6 +13,7 @@
 - R15 Browser forensic: `../../evidence/r15_browser_forensics/R15_BROWSER_FORENSIC_2026-08-18.md`
 - R15 stitched 4/7 diagnostic: `../../evidence/a1r15_stitched_continuation/A1R15_STITCHED_CONTINUATION_FINAL_RESULT_2026-08-18.md`
 - Cross-arm information-lineage audit: `../evidence_snapshot/A_SERIES_INFORMATION_LINEAGE_AUDIT_2026-08-18.md`
+- A4-v2 donor-coverage terminal snapshot: `../evidence_snapshot/A4V2_DONOR_COVERAGE_SNAPSHOT_2026-08-19.md`
 
 ## Representative external work
 
